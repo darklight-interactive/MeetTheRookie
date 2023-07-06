@@ -8,16 +8,11 @@ interface IInteractable{
     public void Interact();
 }
 
-
-enum interactionTypes {DEFAULT, COLLECTIBLE, TOGGLEABLE}
-
 [RequireComponent(typeof(BoxCollider2D))]
 public class Interactor : MonoBehaviour
 {
-    interactionTypes type = interactionTypes.DEFAULT;
     private void Awake(){
         GetComponent<BoxCollider2D>().isTrigger = true;
-        
     }
     private void OnTriggerEnter2D(Collider2D collision){
         if(collision.CompareTag("Player")){
