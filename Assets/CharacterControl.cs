@@ -31,9 +31,6 @@ public class CharacterControl : MonoBehaviour
         
         if(!ignoringInputs){
             InputHandler();
-            if(Input.GetKeyDown(KeyCode.E)){
-                CheckInteraction();
-            }
         }
 
         
@@ -50,11 +47,18 @@ public class CharacterControl : MonoBehaviour
     private void CheckInteraction(){
         //box casting, will put a box around our object
         RaycastHit2D[]hits = Physics2D.BoxCastAll(transform.position, interactableBoxRange, 0 , Vector2.zero);
-        if(hits.Length>0){
-            foreach(RaycastHit2D rc in hits){
-                if(rc.transform.TryGetComponent(out IInteractable interactableObj)){
-                    interactableObj.Interact();
-                    return;
+
+        // >> get all objects in area
+        if (hits.Length > 0){
+            foreach (RaycastHit2D rc in hits){
+                if (rc.transform.TryGetComponent(out IInteractable interactableObj))
+                {
+                    // << GET ALL IInteractable interface functions in child scripts and Interact() >>
+                    IInteractable[] interactables = interactableObj.gameObject.GetComponents<IInteractable>();
+                    foreach (IInteractable interaction in interactables)
+                    {
+                        interaction.Interact();
+                    }
                 }
             }
         }

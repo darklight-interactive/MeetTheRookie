@@ -6,7 +6,6 @@ public class Inventory : MonoBehaviour
     public InventoryUI inventoryUI;
     public List<GameObject> items;
 
-
     public GameObject item;
     private GameObject selectedObject;
     public GameObject inventoryPanel;

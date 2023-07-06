@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Toggleable : MonoBehaviour, IInteractable
 {
+    public string prefix = "((TOGGLEABLE)) ";
+
     public Sprite on;
     public Sprite off;
 
@@ -18,13 +20,10 @@ public class Toggleable : MonoBehaviour, IInteractable
         sr.sprite = off;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Interact(){
+
+        Debug.Log(prefix + " called interact");
+
         if(isOn){
             sr.sprite = off;
         }else{

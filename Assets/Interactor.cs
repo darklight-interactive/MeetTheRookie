@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+interface IInteractable
+{
+    GameObject gameObject { get; }
 
-interface IInteractable{
     public void Interact();
 }
-
 
 enum interactionTypes {DEFAULT, COLLECTIBLE, TOGGLEABLE}
 
@@ -17,7 +18,6 @@ public class Interactor : MonoBehaviour
     interactionTypes type = interactionTypes.DEFAULT;
     private void Awake(){
         GetComponent<BoxCollider2D>().isTrigger = true;
-        
     }
     private void OnTriggerEnter2D(Collider2D collision){
         if(collision.CompareTag("Player")){
