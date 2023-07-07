@@ -10,6 +10,7 @@ public class Collectible : MonoBehaviour, IInteractable
     public Sprite physical;
     public Sprite inInventory;
     private SpriteRenderer sr;
+
     public void Interact()
     {
         //ADD LOGIC FOR POPUP

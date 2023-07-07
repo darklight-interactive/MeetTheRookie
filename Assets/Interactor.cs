@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+interface IInteractable
+{
+    GameObject gameObject { get; }
 
-interface IInteractable{
     public void Interact();
 }
 
