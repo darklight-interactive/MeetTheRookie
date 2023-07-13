@@ -28,12 +28,9 @@ public class CharacterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if(!ignoringInputs){
             InputHandler();
         }
-
-        
     }
     
     #region <<INTERACTIONS>>>
@@ -49,7 +46,9 @@ public class CharacterControl : MonoBehaviour
         RaycastHit2D[]hits = Physics2D.BoxCastAll(transform.position, interactableBoxRange, 0 , Vector2.zero);
 
         // >> get all objects in area
-        if (hits.Length > 0){
+        if (hits.Length > 0)
+        {
+            Debug.Log("Character Control.cs :: checkInteraction hits " + hits.Length);
             foreach (RaycastHit2D rc in hits){
                 if (rc.transform.TryGetComponent(out IInteractable interactableObj))
                 {
@@ -74,7 +73,7 @@ public class CharacterControl : MonoBehaviour
             //set inventory active
         }
         if(!inventoryOpen){
-            HandleMcMovement();
+            HandleMovement();
             if(Input.GetKeyDown(KeyCode.E)){
                 CheckInteraction();
             }
@@ -83,7 +82,7 @@ public class CharacterControl : MonoBehaviour
     }
     #endregion
     #region <<MOVEMENT>>
-    public void HandleMcMovement(){
+    public void HandleMovement(){
         
         if(arrowKeys){
             if(Input.GetKey(KeyCode.RightArrow)){

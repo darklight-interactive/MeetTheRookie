@@ -19,7 +19,7 @@ public class Interactor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision){
         if(collision.CompareTag("Player")){
             
-            collision.GetComponent<CharacterControl>().interactIcon.transform.position=transform.position;
+            collision.GetComponent<CharacterControl>().interactIcon.transform.position = transform.position;
             collision.GetComponent<CharacterControl>().OpenInteractableIcon();
             //LOGIC FOR DECIDING WHAT ICON SHOULD SHOW UP HERE USING VARIABLE type
         }
