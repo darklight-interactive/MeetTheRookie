@@ -6,7 +6,6 @@ using UnityEngine.UI;
 interface IInteractable
 {
     GameObject gameObject { get; }
-
     public void Interact();
 }
 

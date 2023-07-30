@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Toggleable : MonoBehaviour, IInteractable
+public class I_Toggleable : MonoBehaviour, IInteractable
 {
+    public bool isLocked = false;
     public string prefix = "((TOGGLEABLE)) ";
 
     public Sprite on;
@@ -31,4 +32,5 @@ public class Toggleable : MonoBehaviour, IInteractable
         }
         isOn = !isOn;
     }
+    
 }

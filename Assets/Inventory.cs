@@ -45,8 +45,8 @@ public class Inventory : MonoBehaviour
         items.Add(item);
         inventoryUI.AddItemToUI(item);
         // Optionally, you can disable or hide the collected item in the scene
-        Debug.Log("ADDED OBJECT TO INVENTORY: "+ item.GetComponent<Collectible>().collectibleName);
-        Debug.Log("OBJECT DESCRIPTION: "+ item.GetComponent<Collectible>().collectibleDescription);
+        Debug.Log("ADDED OBJECT TO INVENTORY: "+ item.GetComponent<I_Collectible>().collectibleName);
+        Debug.Log("OBJECT DESCRIPTION: "+ item.GetComponent<I_Collectible>().collectibleDescription);
         //item.SetActive(true);
     }
 
@@ -83,6 +83,7 @@ public class Inventory : MonoBehaviour
             if (items.Contains(clickedObject))
             {
                 selectedObject = clickedObject;
+                inventoryUI.displayObjectInfo(selectedObject);
                 offset = clickedObject.transform.position - mousePosition;
 
                 // Bring the selected object to the front by increasing its sorting order

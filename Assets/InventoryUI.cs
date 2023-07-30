@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
 
     private Inventory inventory;
     public GameObject inventoryPanel;
+    public GameObject nameAndDescription;
 
     public void AddItemToUI(GameObject newItem)
     {
@@ -22,12 +23,8 @@ public class InventoryUI : MonoBehaviour
             // Set the parent of the new item as the UI parent object
             newItem.transform.SetParent(transform);
 
-            // Add the InventoryItem component to the item object
-            InventoryItem inventoryItem = newItem.AddComponent<InventoryItem>();
-            inventoryItem.SetItem(newItem);
-
             // Set the sprite of the item to the inInventory sprite
-            sr.sprite = newItem.GetComponent<Collectible>().inInventory;
+            sr.sprite = newItem.GetComponent<I_Collectible>().inInventory;
 
             // Add a BoxCollider2D component to the item object
             BoxCollider2D collider = newItem.AddComponent<BoxCollider2D>();
@@ -44,5 +41,13 @@ public class InventoryUI : MonoBehaviour
         {
             Debug.LogWarning("SpriteRenderer component not found on the collectible object.");
         }
+    }
+
+    public void displayObjectInfo(GameObject selectedObject){
+        //clear current object info
+        nameAndDescription.GetComponent<Text>().text = "";
+        Debug.Log( nameAndDescription.GetComponent<Text>().text);
+        nameAndDescription.GetComponent<Text>().text = selectedObject.GetComponent<I_Collectible>().collectibleName + ": " + selectedObject.GetComponent<I_Collectible>().collectibleDescription;
+        //display name and description of selected item
     }
 }
