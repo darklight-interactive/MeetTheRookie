@@ -25,9 +25,12 @@ public class I_Toggleable : MonoBehaviour, IInteractable
 
         Debug.Log(prefix + " called interact");
 
-        if(isOn){
+        if(isOn)
+        {
             sr.sprite = off;
-        }else{
+        }
+        else
+        {
             sr.sprite = on;
         }
         isOn = !isOn;
