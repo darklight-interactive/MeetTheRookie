@@ -2,23 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class Questline : ScriptableObject
+public class QuestLine : MonoBehaviour
 {
-
-    public List <QuestStep> quests;
-    public QuestStep currentQuest;
-
     public string description, title;
+    public int ID;
 
-    public string ID;
+    [Header("Quest Steps")]
+    public QuestStep currentQuest;
+    public List <QuestStep> quests;
 
-    
-    //what do we use for when the quest line is complete??
 
-
-    //progresses the quest line, setting the previous quest to complete & inactive, & 
-    void Progress(){
-
-    }
 }

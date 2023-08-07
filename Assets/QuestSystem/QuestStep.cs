@@ -3,27 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum QuestStepType { NONE, FETCH , TALK_TO , GO_TO , MINIGAME }
 
 /*
 base Quest class contains default Quest structure 
 create new child classes for ea new questline with new names, required items and rewards.
 */
+
 [System.Serializable]
-[CreateAssetMenu(fileName = "NewQuest", menuName = "Quest")]
-public class QuestStep : ScriptableObject
+public abstract class QuestStep : ScriptableObject
 {
-    public GameObject gameManager;
-
-    //locked == if the quest is locked or not, active == if quest is active or not, 
-    //completed == if the quest is completed or not
+    public QuestStepType stepType = QuestStepType.NONE;
     public string description, title;
+    public int ID;
+    
 
-    public string ID;
+    [Header("State")]
+    public bool locked = true;
+    public bool completed = false;
 
-    public UnityEvent testEvent = new UnityEvent();
+    [Space(20), Header("On Complete")]
+    public UnityEvent OnComplete = new UnityEvent();
+}
 
-    public void onComplete(){
-        testEvent?.Invoke();
+[CreateAssetMenu(fileName = "NewFetchQuestStep", menuName = "Fetch Quest")]
+public class FetchQuestStep : QuestStep
+{
+    // Default constructor to set default values
+    public FetchQuestStep()
+    {
+        stepType = QuestStepType.FETCH;
+        title = "Fetch Quest";
+        ID = 1001;
     }
 
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CharacterControl : MonoBehaviour
 {
-    public GameObject interactIcon;
+    [HideInInspector]
+    public Player_Interaction interaction;
+
     public float playerSpeed=5f;
     private Vector3 target;
-    public Vector2 interactableBoxRange= new Vector2(.1f,1f);
     public bool arrowKeys = true;
     public bool inventoryOpen = false;
     //public Inventory inventory;
@@ -20,8 +21,9 @@ public class CharacterControl : MonoBehaviour
     public bool ignoringInputs;
     void Start()
     {
+        interaction = GetComponentInChildren<Player_Interaction>();
+
         target = transform.position;
-        interactIcon.SetActive(false);
         inventoryParent.SetActive(false);
     }
 
@@ -33,36 +35,7 @@ public class CharacterControl : MonoBehaviour
         }
     }
     
-    #region <<INTERACTIONS>>>
-    public void OpenInteractableIcon(){
-        interactIcon.SetActive(true);
-    }
-    public void CloseInteractableIcon(){
-        interactIcon.SetActive(false);
-    }
 
-    private void CheckInteraction(){
-        //box casting, will put a box around our object
-        RaycastHit2D[]hits = Physics2D.BoxCastAll(transform.position, interactableBoxRange, 0 , Vector2.zero);
-
-        // >> get all objects in area
-        if (hits.Length > 0)
-        {
-            Debug.Log("Character Control.cs :: checkInteraction hits " + hits.Length);
-            foreach (RaycastHit2D rc in hits){
-                if (rc.transform.TryGetComponent(out IInteractable interactableObj))
-                {
-                    // << GET ALL IInteractable interface functions in child scripts and Interact() >>
-                    IInteractable[] interactables = interactableObj.gameObject.GetComponents<IInteractable>();
-                    foreach (IInteractable interaction in interactables)
-                    {
-                        interaction.Interact();
-                    }
-                }
-            }
-        }
-    }
-    #endregion
     #region <<INPUT>>
     public void InputHandler(){
         if (Input.GetKeyDown(inventoryKey))
@@ -72,14 +45,16 @@ public class CharacterControl : MonoBehaviour
             Debug.Log("SETTING INVENTORY PARENT TO: " + inventoryOpen);
             //set inventory active
         }
+
         if(!inventoryOpen){
             HandleMovement();
             if(Input.GetKeyDown(KeyCode.E)){
-                CheckInteraction();
+                interaction.InteractWithObject();
             }
         }
-
     }
+
+
     #endregion
     #region <<MOVEMENT>>
     public void HandleMovement(){
@@ -116,4 +91,5 @@ public class CharacterControl : MonoBehaviour
         ignoringInputs = false;
     }
     #endregion
+
 }
