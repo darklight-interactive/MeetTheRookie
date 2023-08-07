@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
-
+    /*
     private Inventory inventory;
     public GameObject inventoryPanel;
     public GameObject nameAndDescription;
@@ -24,7 +24,7 @@ public class InventoryUI : MonoBehaviour
             newItem.transform.SetParent(transform);
 
             // Set the sprite of the item to the inInventory sprite
-            sr.sprite = newItem.GetComponent<I_Collectible>().inInventory;
+            //sr.sprite = newItem.GetComponent<I_Collectible>().inInventory;
 
             // Add a BoxCollider2D component to the item object
             BoxCollider2D collider = newItem.AddComponent<BoxCollider2D>();
@@ -50,4 +50,5 @@ public class InventoryUI : MonoBehaviour
         nameAndDescription.GetComponent<Text>().text = selectedObject.GetComponent<I_Collectible>().collectibleName + ": " + selectedObject.GetComponent<I_Collectible>().collectibleDescription;
         //display name and description of selected item
     }
+    */
 }
