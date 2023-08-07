@@ -11,6 +11,7 @@ public class Player_Interaction : MonoBehaviour
     public GameObject interactIcon;
     public GameObject currInteractable;
     public List<GameObject> allInteractables;
+    public float maxInteractableDistance;
 
     public void Start()
     {
@@ -44,13 +45,15 @@ public class Player_Interaction : MonoBehaviour
 
     private GameObject GetNearestInteractable()
     {
-        float shortestDistance = float.MaxValue;
+        //for TODO just made the shortest distance the max inter distance 
+        //because you don't even want to consider objs outside that range
+        float shortestDistance = maxInteractableDistance;
         GameObject nearestInteractable = null;
 
         foreach (GameObject interactable in allInteractables)
         {
             float currentDistance = Vector2.Distance(transform.position, interactable.transform.position);
-            if (currentDistance < shortestDistance)
+            if (currentDistance < shortestDistance && currentDistance) 
             {
                 shortestDistance = currentDistance;
                 nearestInteractable = interactable;
@@ -59,6 +62,7 @@ public class Player_Interaction : MonoBehaviour
 
         return nearestInteractable;
     }
+
 
     #endregion
 }
