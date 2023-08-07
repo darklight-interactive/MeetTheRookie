@@ -62,7 +62,5 @@ public class Player_Interaction : MonoBehaviour
 
         return nearestInteractable;
     }
-
-
     #endregion
 }

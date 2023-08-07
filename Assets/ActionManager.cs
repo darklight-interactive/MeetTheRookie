@@ -16,6 +16,7 @@ public class ActionManager : MonoBehaviour
     /*
     receive:  {item}
     delete: {item}
+    clear inventory: {}
     sendPlayerTo: {location}
     enterMinigame: {minigame}
     enterCutscene: {cutscene}
