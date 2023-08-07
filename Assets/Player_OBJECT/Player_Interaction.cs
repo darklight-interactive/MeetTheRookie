@@ -53,7 +53,7 @@ public class Player_Interaction : MonoBehaviour
         foreach (GameObject interactable in allInteractables)
         {
             float currentDistance = Vector2.Distance(transform.position, interactable.transform.position);
-            if (currentDistance < shortestDistance && currentDistance) 
+            if (currentDistance < shortestDistance) 
             {
                 shortestDistance = currentDistance;
                 nearestInteractable = interactable;
