@@ -61,9 +61,9 @@ namespace Darklight.UnityExt.Input
 
         private void Start()
         {
-            DefaultTouchActionMap = DefaultUniversalInputActions.FindActionMap("BasicTouch");
-            DefaultKeyboardActionMap = DefaultUniversalInputActions.FindActionMap("BasicKeyboard");
-            DefaultControllerActionMap = DefaultUniversalInputActions.FindActionMap("BasicController");
+            DefaultTouchActionMap = DefaultUniversalInputActions.FindActionMap("DefaultTouch");
+            DefaultKeyboardActionMap = DefaultUniversalInputActions.FindActionMap("DefaultKeyboard");
+            DefaultControllerActionMap = DefaultUniversalInputActions.FindActionMap("DefaultController");
 
             bool deviceFound = DetectAndEnableInputDevice();
             if (deviceFound)

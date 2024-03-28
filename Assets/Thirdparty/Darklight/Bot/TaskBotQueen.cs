@@ -47,6 +47,7 @@ namespace Darklight.Bot
 		}
 		#endregion
 
+
 		public bool Initialized { get; private set; } = false;
 		public string Name { get; set; } = "TaskQueen";
 		public Guid GuidId { get; } = Guid.NewGuid();
