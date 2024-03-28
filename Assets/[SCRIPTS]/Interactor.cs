@@ -17,15 +17,15 @@ public class Interactor : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision){
         if(collision.CompareTag("Player")){
-            
-            collision.GetComponentInChildren<Player_Interaction>().interactIcon.transform.position = transform.position;
-            collision.GetComponentInChildren<Player_Interaction>().OpenInteractableIcon();
+
+            collision.GetComponentInChildren<PlayerInteraction>().interactIcon.transform.position = transform.position;
+            collision.GetComponentInChildren<PlayerInteraction>().OpenInteractableIcon();
             //LOGIC FOR DECIDING WHAT ICON SHOULD SHOW UP HERE USING VARIABLE type
         }
     }
     private void OnTriggerExit2D(Collider2D collision){
         if(collision.CompareTag("Player")){
-            collision.GetComponentInChildren<Player_Interaction>().CloseInteractableIcon();
+            collision.GetComponentInChildren<PlayerInteraction>().CloseInteractableIcon();
         }
     }
     private void PickUp(){

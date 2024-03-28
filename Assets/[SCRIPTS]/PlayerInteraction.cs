@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class Player_Interaction : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour
 {
     public GameObject interactIcon;
     public GameObject currInteractable;
@@ -11,8 +11,8 @@ public class Player_Interaction : MonoBehaviour
 
     public void Start()
     {
-        interactIcon.SetActive(false);
-        allInteractables = new List<GameObject>(GameObject.FindGameObjectsWithTag("Interactable"));
+        //interactIcon.SetActive(false);
+        //allInteractables = new List<GameObject>(GameObject.FindGameObjectsWithTag("Interactable"));
     }
 
     public void Update()

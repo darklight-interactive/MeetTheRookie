@@ -9,6 +9,11 @@ namespace Darklight.UnityExt.Input
 
     public class UniversalInputManager : MonoBehaviour
     {
+        // Action Map
+        private InputActionMap DefaultTouchActionMap;
+        private InputActionMap DefaultKeyboardActionMap;
+        private InputActionMap DefaultControllerActionMap;
+
         public enum InputType
         {
             NULL,
@@ -16,7 +21,6 @@ namespace Darklight.UnityExt.Input
             KEYBOARD,
             GAMEPAD
         }
-
         public static UniversalInputManager Instance { get; private set; }
         public static string Prefix = "<< UNIVERSAL INPUT MANAGER >> ";
         public static InputType DeviceInputType = InputType.NULL;
@@ -27,14 +31,6 @@ namespace Darklight.UnityExt.Input
 
         [Header("Input Action Map")]
         public InputActionAsset DefaultUniversalInputActions;
-
-        // Action Map
-        private InputActionMap DefaultTouchActionMap;
-        private InputActionMap DefaultKeyboardActionMap;
-        private InputActionMap DefaultControllerActionMap;
-
-        // Input Actions
-
 
         private void OnEnable()
         {
@@ -69,6 +65,8 @@ namespace Darklight.UnityExt.Input
             if (deviceFound)
             {
                 Debug.Log(Prefix + $"Found Input : {DeviceInputType}");
+
+
             }
         }
 

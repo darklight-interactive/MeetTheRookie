@@ -2,33 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt.Input;
+using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(PlayerInteraction))]
 public class PlayerController : MonoBehaviour
 {
+    UniversalInputManager inputManager => UniversalInputManager.Instance;
+    PlayerInteraction playerInteraction => GetComponent<PlayerInteraction>();
+    [SerializeField] private Vector2 activeMoveInput = Vector2.zero;
 
-
-
-    [HideInInspector]
-    public Player_Interaction interaction;
-
-    public float playerSpeed = 5f;
-    private Vector3 target;
-    public bool arrowKeys = true;
-    public bool inventoryOpen = false;
-    //public Inventory inventory;
-    public GameObject inventoryParent;
-
-    public KeyCode inventoryKey = KeyCode.I;
-    // Start is called before the first frame update
-
+    // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
+    [Range(0.1f, 1f)] public float playerSpeed = 5f;
     public GameObject floor;
     public bool ignoringInputs;
     void Start()
     {
-        interaction = GetComponentInChildren<Player_Interaction>();
+        Invoke("StartInputListener", 1);
 
-        target = transform.position;
-        inventoryParent.SetActive(false);
+        //target = transform.position;
+        //inventoryParent.SetActive(false);
+    }
+
+    void StartInputListener()
+    {
+        // Subscribe to Universal MoveInput
+        InputAction moveInputAction = UniversalInputManager.MoveInputAction;
+        moveInputAction.performed += context => activeMoveInput = moveInputAction.ReadValue<Vector2>();
+        moveInputAction.canceled += context => activeMoveInput = Vector2.zero;
     }
 
     // Update is called once per frame
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!ignoringInputs)
         {
-            InputHandler();
+            HandleMovement();
         }
     }
 
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
     #region <<INPUT>>
     public void InputHandler()
     {
+        /*
         if (Input.GetKeyDown(inventoryKey))
         {
             inventoryOpen = !inventoryOpen;
@@ -59,14 +61,21 @@ public class PlayerController : MonoBehaviour
             {
                 interaction.InteractWithObject();
             }
-        }
+        }*/
     }
     #endregion
 
     #region <<MOVEMENT>>
     public void HandleMovement()
     {
+        Vector2 moveDirection = activeMoveInput; // Get the base Vec2 Input value
+        moveDirection *= playerSpeed; // Scalar
+        moveDirection *= Vector2.right; // Nullify the Y axis
 
+        Vector3 targetPosition = transform.position + (Vector3)moveDirection;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+
+        /*
         if (arrowKeys)
         {
             if (Input.GetKey(KeyCode.RightArrow))
@@ -87,7 +96,8 @@ public class PlayerController : MonoBehaviour
                 target.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
             }
             transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed * Time.deltaTime);
-        }
+        }*/
+
     }
 
     public void MoveUpLadder(Vector3 position)
@@ -95,7 +105,7 @@ public class PlayerController : MonoBehaviour
         ignoringInputs = true;
         //LOGIC FOR ANIMATION HERE
         transform.position = position;
-        target.y = transform.position.y;
+        //target.y = transform.position.y;
         ignoringInputs = false;
     }
     public void MoveDownLadder(Vector3 position)
@@ -103,7 +113,7 @@ public class PlayerController : MonoBehaviour
         ignoringInputs = true;
         //LOGIC FOR ANIMATION HERE
         transform.position = position;
-        target.y = transform.position.y;
+        //target.y = transform.position.y;
         ignoringInputs = false;
     }
     #endregion
