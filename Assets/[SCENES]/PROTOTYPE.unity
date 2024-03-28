@@ -293,6 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 136521274}
+  - component: {fileID: 136521275}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -316,6 +317,26 @@ Transform:
   - {fileID: 889833718}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &136521275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136521273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction: {fileID: 0}
+  playerSpeed: 5
+  arrowKeys: 1
+  inventoryOpen: 0
+  inventoryParent: {fileID: 0}
+  inventoryKey: 105
+  floor: {fileID: 0}
+  ignoringInputs: 0
 --- !u!1 &577939451
 GameObject:
   m_ObjectHideFlags: 0

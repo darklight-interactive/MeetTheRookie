@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Darklight.UnityExt.Input;
 
-public class CharacterControl : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+
+
+
     [HideInInspector]
     public Player_Interaction interaction;
 
-    public float playerSpeed=5f;
+    public float playerSpeed = 5f;
     private Vector3 target;
     public bool arrowKeys = true;
     public bool inventoryOpen = false;
     //public Inventory inventory;
     public GameObject inventoryParent;
-    
+
     public KeyCode inventoryKey = KeyCode.I;
     // Start is called before the first frame update
 
@@ -30,14 +34,16 @@ public class CharacterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!ignoringInputs){
+        if (!ignoringInputs)
+        {
             InputHandler();
         }
     }
-    
+
 
     #region <<INPUT>>
-    public void InputHandler(){
+    public void InputHandler()
+    {
         if (Input.GetKeyDown(inventoryKey))
         {
             inventoryOpen = !inventoryOpen;
@@ -46,44 +52,54 @@ public class CharacterControl : MonoBehaviour
             //set inventory active
         }
 
-        if(!inventoryOpen){
+        if (!inventoryOpen)
+        {
             HandleMovement();
-            if(Input.GetKeyDown(KeyCode.E)){
+            if (Input.GetKeyDown(KeyCode.E))
+            {
                 interaction.InteractWithObject();
             }
         }
     }
-
-
     #endregion
+
     #region <<MOVEMENT>>
-    public void HandleMovement(){
-        
-        if(arrowKeys){
-            if(Input.GetKey(KeyCode.RightArrow)){
-                target.x+=playerSpeed*Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed*Time.deltaTime);
+    public void HandleMovement()
+    {
+
+        if (arrowKeys)
+        {
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                target.x += playerSpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed * Time.deltaTime);
             }
-            if(Input.GetKey(KeyCode.LeftArrow)){
-                target.x-=playerSpeed*Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed*Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                target.x -= playerSpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed * Time.deltaTime);
             }
-        }else{
-            if(Input.GetMouseButton(0)){
-            target.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+        }
+        else
+        {
+            if (Input.GetMouseButton(0))
+            {
+                target.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
             }
-            transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed*Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, playerSpeed * Time.deltaTime);
         }
     }
 
-    public void MoveUpLadder(Vector3 position){
+    public void MoveUpLadder(Vector3 position)
+    {
         ignoringInputs = true;
         //LOGIC FOR ANIMATION HERE
         transform.position = position;
         target.y = transform.position.y;
         ignoringInputs = false;
     }
-    public void MoveDownLadder(Vector3 position){
+    public void MoveDownLadder(Vector3 position)
+    {
         ignoringInputs = true;
         //LOGIC FOR ANIMATION HERE
         transform.position = position;
@@ -93,3 +109,5 @@ public class CharacterControl : MonoBehaviour
     #endregion
 
 }
+
+
