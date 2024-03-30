@@ -5,7 +5,7 @@ using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(PlayerInteraction))]
+[RequireComponent(typeof(PlayerInteraction), typeof(PlayerAnimationManager))]
 public class PlayerController : MonoBehaviour
 {
     UniversalInputManager inputManager => UniversalInputManager.Instance;
@@ -44,8 +44,14 @@ public class PlayerController : MonoBehaviour
         moveDirection *= playerSpeed; // Scalar
         moveDirection *= Vector2.right; // Nullify the Y axis
 
+        // Set Target Position & Apply
         Vector3 targetPosition = transform.position + (Vector3)moveDirection;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+
+
+        // Update the Animation
+        PlayerAnimationManager animationManager = GetComponent<PlayerAnimationManager>();
+        animationManager.FlipTransform(activeMoveInput);
     }
 }
 
