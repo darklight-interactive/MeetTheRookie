@@ -92,7 +92,7 @@ namespace Darklight.UnityExt
 			}
 		}
 
-		public static void CreateSettingsLabel(string label, string value)
+		public static void CreateTwoColumnLabel(string label, string value)
 		{
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.PrefixLabel(label);

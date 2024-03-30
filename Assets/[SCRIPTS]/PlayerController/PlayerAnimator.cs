@@ -26,29 +26,26 @@ public class PlayerAnimator : MonoBehaviour
     public Spritesheet<PlayerState> interactAnimation = new Spritesheet<PlayerState>(PlayerState.INTERACT);
     #endregion
 
+    #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
     public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
     public void CreateFrameAnimationPlayer()
     {
         FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
         if (FrameAnimationPlayer == null)
         {
-            // Create a new Frame Animation Player Object
-            GameObject newChild = new GameObject("NewFrameAnimationPlayer");
-            newChild.transform.SetParent(transform);
-            newChild.transform.localPosition = Vector3.zero;
-
             // Add the required components
-            FrameAnimationPlayer = newChild.AddComponent<FrameAnimationPlayer>();
-            SpriteRenderer sr = newChild.AddComponent<SpriteRenderer>();
+            FrameAnimationPlayer = this.gameObject.AddComponent<FrameAnimationPlayer>();
+            SpriteRenderer sr = this.gameObject.AddComponent<SpriteRenderer>();
 
             // Create new Frame Animation Player
-            FrameAnimationPlayer = new FrameAnimationPlayer(sr, idleAnimation);
+            FrameAnimationPlayer.SetSpriteSheet(idleAnimation);
         }
         else
         {
             FrameAnimationPlayer.SetSpriteSheet(idleAnimation);
         }
     }
+    #endregion
 }
 
 #if UNITY_EDITOR
@@ -61,18 +58,13 @@ public class PlayerAnimationEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (PlayerAnimator)target;
+        _script.CreateFrameAnimationPlayer();
     }
 
     public override void OnInspectorGUI()
     {
         _serializedObject.Update();
         EditorGUILayout.Space();
-
-        bool hasValidPlayer = _script.FrameAnimationPlayer != null;
-        if (!hasValidPlayer && GUILayout.Button("Create Frame Animation Player"))
-        {
-            _script.CreateFrameAnimationPlayer();
-        }
 
         Darklight.UnityExt.CustomInspectorGUI.DrawEnumValue(_script.CurrentState, "Current State");
         Darklight.UnityExt.CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
