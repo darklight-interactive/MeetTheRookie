@@ -5,7 +5,7 @@ using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(PlayerInteraction), typeof(PlayerAnimationManager))]
+[RequireComponent(typeof(PlayerInteraction), typeof(PlayerAnimation))]
 public class PlayerController : MonoBehaviour
 {
     UniversalInputManager inputManager => UniversalInputManager.Instance;
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
 
         // Update the Animation
-        PlayerAnimationManager animationManager = GetComponent<PlayerAnimationManager>();
+        PlayerAnimation animationManager = GetComponent<PlayerAnimation>();
         animationManager.FlipTransform(activeMoveInput);
     }
 }
