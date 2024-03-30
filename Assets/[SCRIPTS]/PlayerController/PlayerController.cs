@@ -4,43 +4,38 @@ using UnityEngine;
 using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
 
-
-[RequireComponent(typeof(PlayerInteraction), typeof(PlayerAnimation))]
 public class PlayerController : MonoBehaviour
 {
-    UniversalInputManager inputManager => UniversalInputManager.Instance;
-    PlayerInteraction playerInteraction => GetComponent<PlayerInteraction>();
-    [SerializeField] private Vector2 activeMoveInput = Vector2.zero;
-
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
-    [Range(0.1f, 1f)] public float playerSpeed = 5f;
-    public GameObject floor;
-    public bool ignoringInputs;
+    [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
+
+
+    // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
         Invoke("StartInputListener", 1);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        HandleMovement();
+    }
+
+
+    #region ===== [ HANDLE MOVE INPUT ] ===== >>
+    Vector2 _activeMoveInput = Vector2.zero;
     void StartInputListener()
     {
         // Subscribe to Universal MoveInput
         InputAction moveInputAction = UniversalInputManager.MoveInputAction;
-        moveInputAction.performed += context => activeMoveInput = moveInputAction.ReadValue<Vector2>();
-        moveInputAction.canceled += context => activeMoveInput = Vector2.zero;
+        moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
+        moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
     }
 
-    // Update is called once per frame
-    void Update()
+    void HandleMovement()
     {
-        if (!ignoringInputs)
-        {
-            HandleMovement();
-        }
-    }
-
-    public void HandleMovement()
-    {
-        Vector2 moveDirection = activeMoveInput; // Get the base Vec2 Input value
+        Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
         moveDirection *= playerSpeed; // Scalar
         moveDirection *= Vector2.right; // Nullify the Y axis
 
@@ -50,9 +45,12 @@ public class PlayerController : MonoBehaviour
 
 
         // Update the Animation
-        PlayerAnimation animationManager = GetComponent<PlayerAnimation>();
-        animationManager.FlipTransform(activeMoveInput);
+        PlayerAnimator animationManager = GetComponent<PlayerAnimator>();
+        animationManager.FrameAnimationPlayer.FlipTransform(moveDirection);
     }
+    #endregion
+
+
 }
 
 

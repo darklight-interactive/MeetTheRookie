@@ -99,8 +99,14 @@ namespace Darklight.UnityExt
 			EditorGUILayout.LabelField(value);
 			EditorGUILayout.EndHorizontal();
 		}
-		// Helper function to create a labeled enum dropdown in the editor
-		public static void CreateEnumLabel<TEnum>(ref TEnum currentValue, string label) where TEnum : System.Enum
+
+		/// <summary>
+		/// Creates a label for an enum property with a dropdown to select the enum value.
+		/// </summary>
+		/// <typeparam name="TEnum"></typeparam>
+		/// <param name="enumProperty"></param>
+		/// <param name="label"></param>
+		public static void DrawEnumProperty<TEnum>(ref TEnum enumProperty, string label) where TEnum : System.Enum
 		{
 			EditorGUILayout.BeginVertical();
 			EditorGUILayout.BeginHorizontal();
@@ -108,7 +114,26 @@ namespace Darklight.UnityExt
 
 			GUILayout.FlexibleSpace();
 
-			currentValue = (TEnum)EditorGUILayout.EnumPopup(currentValue);
+			enumProperty = (TEnum)EditorGUILayout.EnumPopup(enumProperty);
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.EndVertical();
+		}
+
+		/// <summary>
+		/// Creates a label for an enum property with a dropdown to select the enum value.
+		/// </summary>
+		/// <typeparam name="TEnum"></typeparam>
+		/// <param name="enumProperty"></param>
+		/// <param name="label"></param>
+		public static void DrawEnumValue<TEnum>(TEnum enumProperty, string label) where TEnum : System.Enum
+		{
+			EditorGUILayout.BeginVertical();
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField(label); // Adjust the width as needed
+
+			GUILayout.FlexibleSpace();
+
+			enumProperty = (TEnum)EditorGUILayout.EnumPopup(enumProperty);
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.EndVertical();
 		}

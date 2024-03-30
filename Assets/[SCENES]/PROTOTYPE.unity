@@ -1516,7 +1516,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteTransform: {fileID: 889833718}
+  idleAnimation:
+    state: 0
+    frames: []
+    loop: 0
+  walkAnimation:
+    state: 1
+    frames:
+    - {fileID: 0}
+    loop: 0
+  interactAnimation:
+    state: 2
+    frames: []
+    loop: 0
 --- !u!43 &189867077
 Mesh:
   m_ObjectHideFlags: 0
