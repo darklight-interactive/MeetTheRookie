@@ -14,8 +14,10 @@ namespace Darklight.Game.SpriteAnimation
     public class SpriteSheet
     {
         public bool loop = true; // Should the animation loop
-        public Sprite[] frames; // Collection of sprites to animate
+        public Sprite[] frames = new Sprite[4]; // Collection of sprites to animate
         public int Length => frames.Length; // Number of frames in the animation
+
+        public SpriteSheet() { }
 
         /// <summary>
         /// Get the sprite at a specific frame index
@@ -29,20 +31,6 @@ namespace Darklight.Game.SpriteAnimation
                 return frames[index];
             }
             return null;
-        }
-    }
-
-    /// <summary>
-    /// Stores a collection of sprites for frame animation
-    /// </summary>
-    /// <typeparam name="TState">The related Enum State</typeparam>
-    [System.Serializable]
-    public class Spritesheet<TState> : SpriteSheet where TState : System.Enum
-    {
-        public TState state;
-        public Spritesheet(TState state)
-        {
-            this.state = state;
         }
     }
 }

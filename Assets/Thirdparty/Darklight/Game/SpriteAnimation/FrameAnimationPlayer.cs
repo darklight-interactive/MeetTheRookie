@@ -19,7 +19,7 @@ namespace Darklight.Game.SpriteAnimation
         private float _timer = 0f; // Timer to track when to switch to the next frame
 
         public SpriteRenderer spriteRenderer;
-        public SpriteSheet spriteSheet;
+        public SpriteSheet spriteSheet = null;
         public int currentFrame = 0;
 
         // Timer to track when to switch to the next frame
@@ -35,6 +35,12 @@ namespace Darklight.Game.SpriteAnimation
             spriteRenderer.sprite = this.spriteSheet.GetSpriteAtFrame(currentFrame);
             currentFrame = 0;
             _timer = 0f;
+        }
+
+        public void Clear()
+        {
+            spriteSheet = null;
+            spriteRenderer.sprite = null;
         }
 
         private void Start()
@@ -56,7 +62,7 @@ namespace Darklight.Game.SpriteAnimation
 
         private void Update()
         {
-            if (spriteSheet == null || spriteSheet.Length == 0) return;
+            if (spriteSheet == null) return;
             if (currentFrame + 1 == spriteSheet.Length && !spriteSheet.loop) return;
 
             _timer += Time.deltaTime; // Update Timer
