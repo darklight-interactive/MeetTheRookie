@@ -1,11 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Darklight;
 using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
 
+public enum PlayerState { IDLE, WALK, INTERACT }
+public class PlayerStateMachine : StateMachine<PlayerState>
+{
+    public PlayerStateMachine(PlayerState state) : base(state) { }
+
+    public new void OnStateChanged(PlayerState previousState, PlayerState newState)
+    {
+        base.OnStateChanged(previousState, newState);
+
+
+    }
+}
+
 public class PlayerController : MonoBehaviour
 {
+    public PlayerStateMachine StateMachine = new PlayerStateMachine(PlayerState.IDLE);
+    public PlayerState currentState;
+
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
 
@@ -14,12 +31,16 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Invoke("StartInputListener", 1);
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleMovement();
+
+        currentState = StateMachine.CurrentState;
     }
 
 

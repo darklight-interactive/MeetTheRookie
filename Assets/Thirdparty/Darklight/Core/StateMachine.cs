@@ -35,10 +35,9 @@ namespace Darklight
             CurrentState = newState;
         }
 
-        protected virtual void OnStateChanged(TState previousState, TState newState)
+        public virtual void OnStateChanged(TState previousState, TState newState)
         {
             //Console.WriteLine($"Transitioned from {previousState} to {newState}");
-            // Implement additional logic for when the state changes.
         }
     }
 }

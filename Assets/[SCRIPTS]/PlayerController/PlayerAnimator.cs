@@ -7,24 +7,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(SpriteRenderer), typeof(FrameAnimationPlayer))]
 public class PlayerAnimator : MonoBehaviour
 {
-
-    #region [[ STATE MACHINE ]] ============================================== >>
-    public enum PlayerState { IDLE, WALK, INTERACT }
-    public class PlayerStateMachine : StateMachine<PlayerState>
-    {
-        public PlayerStateMachine(PlayerState state) : base(state) { }
-    }
-    public PlayerStateMachine StateMachine { get; private set; } = new PlayerStateMachine(PlayerState.IDLE);
-    public PlayerState CurrentState => StateMachine.CurrentState;
-    #endregion
-
-    #region [[ PUBLIC INSPECTOR VALUES ]] ======================================================== >>
-    public Spritesheet<PlayerState> idleAnimation = new(PlayerState.IDLE);
-    public Spritesheet<PlayerState> walkAnimation = new(PlayerState.WALK);
-    public Spritesheet<PlayerState> interactAnimation = new Spritesheet<PlayerState>(PlayerState.INTERACT);
-    #endregion
+    public List<Spritesheet<PlayerState>> spritesheets = new List<Spritesheet<PlayerState>>();
 
     #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
     public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
@@ -36,14 +22,10 @@ public class PlayerAnimator : MonoBehaviour
             // Add the required components
             FrameAnimationPlayer = this.gameObject.AddComponent<FrameAnimationPlayer>();
             SpriteRenderer sr = this.gameObject.AddComponent<SpriteRenderer>();
+        }
 
-            // Create new Frame Animation Player
-            FrameAnimationPlayer.SetSpriteSheet(idleAnimation);
-        }
-        else
-        {
-            FrameAnimationPlayer.SetSpriteSheet(idleAnimation);
-        }
+        FrameAnimationPlayer.LoadSpriteSheet(spritesheets[0]);
+
     }
     #endregion
 }
@@ -63,13 +45,10 @@ public class PlayerAnimationEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        _serializedObject.Update();
-        EditorGUILayout.Space();
+        base.OnInspectorGUI();
 
-        Darklight.UnityExt.CustomInspectorGUI.DrawEnumValue(_script.CurrentState, "Current State");
-        Darklight.UnityExt.CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
 
-        _serializedObject.ApplyModifiedProperties();
     }
+
 }
 #endif
