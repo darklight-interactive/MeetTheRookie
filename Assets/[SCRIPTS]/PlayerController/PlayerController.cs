@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-
     }
 
 
@@ -47,11 +46,23 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPosition = transform.position + (Vector3)moveDirection;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
 
-
         // Update the Animation
         PlayerAnimator animationManager = GetComponent<PlayerAnimator>();
         animationManager.FrameAnimationPlayer.FlipTransform(moveDirection);
+
+        // Update the State Machine
+        if (moveDirection != Vector2.zero)
+        {
+            stateMachine.ChangeState(PlayerState.WALK);
+        }
+        else
+        {
+            stateMachine.ChangeState(PlayerState.IDLE);
+        }
     }
+
+
+
     #endregion
 
 

@@ -11,14 +11,20 @@ using UnityEditor;
 public class PlayerAnimator : MonoBehaviour
 {
     private PlayerController _controller => GetComponent<PlayerController>();
-    public PlayerStateMachine StateMachine => _controller.stateMachine;
+    public PlayerStateMachine stateMachine
+    {
+        get => _controller.stateMachine;
+        set => _controller.stateMachine = value;
+    }
     public PlayerState animationStateOverride = PlayerState.NONE;
-    public Dictionary<PlayerState, SpriteSheet> spritesheetDictionary = new Dictionary<PlayerState, SpriteSheet>();
+    public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
 
     #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
     public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
     public void CreateFrameAnimationPlayer()
     {
+        stateMachine = new PlayerStateMachine(PlayerState.IDLE, this);
+
         FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
         if (FrameAnimationPlayer == null)
         {
@@ -29,12 +35,25 @@ public class PlayerAnimator : MonoBehaviour
 
         FrameAnimationPlayer.Clear();
 
-        spritesheetDictionary[PlayerState.IDLE] = new SpriteSheet();
+        // Load the default sprite sheet
+        if (spriteSheets.Count > 0)
+        {
+            FrameAnimationPlayer.LoadSpriteSheet(spriteSheets[0].spriteSheet);
+        }
+    }
 
-        //FrameAnimationPlayer.LoadSpriteSheet(spritesheetDictionary[PlayerState.IDLE]);
+    public SpriteSheet GetSpriteSheetWithState(PlayerState state)
+    {
+        foreach (SpriteSheet<PlayerState> sheet in spriteSheets)
+        {
+            if (sheet.state == state)
+            {
+                return sheet.spriteSheet;
+            }
+        }
+        return null;
     }
     #endregion
-
 }
 
 #if UNITY_EDITOR
@@ -58,35 +77,15 @@ public class PlayerAnimationEditor : Editor
 
         base.OnInspectorGUI();
 
-        if (_script.spritesheetDictionary.Count > 1)
-        {
-            DrawDictionary(_script.spritesheetDictionary);
-        }
-
         if (EditorGUI.EndChangeCheck())
         {
             if (_script.animationStateOverride != PlayerState.NONE)
             {
-                _script.StateMachine.ChangeState(_script.animationStateOverride);
+                _script.stateMachine.ChangeState(_script.animationStateOverride);
             }
 
             _serializedObject.ApplyModifiedProperties();
         }
     }
-
-    public static void DrawDictionary<TKey, TValue>(Dictionary<TKey, TValue> dictionary)
-    {
-        EditorGUILayout.BeginVertical();
-        foreach (KeyValuePair<TKey, TValue> kvp in dictionary)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(kvp.Key as SerializedProperty);
-            EditorGUILayout.PropertyField(kvp.Value as SerializedProperty);
-            EditorGUILayout.EndHorizontal();
-        }
-        EditorGUILayout.EndVertical();
-    }
-
-
 }
 #endif

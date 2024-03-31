@@ -14,8 +14,8 @@ namespace Darklight.Game.SpriteAnimation
     [ExecuteAlways, RequireComponent(typeof(SpriteRenderer))]
     public class FrameAnimationPlayer : MonoBehaviour
     {
-        public static int frameRate { get; private set; } = 4; // Global frame rate for all animations
-        private float _timePerFrame; // Time each frame should be displayed
+        public int frameRate = 4; // Global frame rate for all animations
+        private float _timePerFrame => 1 / (float)frameRate; // Time each frame should be displayed
         private float _timer = 0f; // Timer to track when to switch to the next frame
 
         public SpriteRenderer spriteRenderer;
@@ -50,9 +50,6 @@ namespace Darklight.Game.SpriteAnimation
                 spriteRenderer = GetComponent<SpriteRenderer>();
             }
 
-            // Calculate how long each frame should be displayed
-            _timePerFrame = 1f / frameRate;
-
             if (spriteSheet != null && spriteSheet.Length > 0)
             {
                 // Set the initial sprite frame
@@ -80,7 +77,7 @@ namespace Darklight.Game.SpriteAnimation
 
         public void FlipTransform(Vector2 moveInput)
         {
-            spriteRenderer.flipX = moveInput.x < 0; // Flip the sprite based on the input direction
+            spriteRenderer.flipX = moveInput.x > 0; // Flip the sprite based on the input direction
 
             /*
             //how many ways can you flip a sprite?
@@ -118,8 +115,14 @@ namespace Darklight.Game.SpriteAnimation
 
         public override void OnInspectorGUI()
         {
+            _serializedObject.Update();
+
             // Ensure there's a Spritesheet and it has frames
             if (_script == null) return;
+
+            SerializedProperty frameRateProp = _serializedObject.FindProperty("frameRate");
+            EditorGUILayout.PropertyField(frameRateProp);
+            _script.frameRate = frameRateProp.intValue;
 
             Sprite currentSprite = _script.spriteSheet.GetSpriteAtFrame(_script.currentFrame);
             if (currentSprite == null) return;
@@ -131,7 +134,7 @@ namespace Darklight.Game.SpriteAnimation
             GUILayout.Label(texture);
 
             EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField($"Global Frame Rate: {FrameAnimationPlayer.frameRate.ToString()}");
+            EditorGUILayout.LabelField($"Global Frame Rate: {_script.frameRate.ToString()}");
             EditorGUILayout.LabelField($"Current Frame: {_script.currentFrame}");
             EditorGUILayout.LabelField($"Sprite: {currentSprite.name}");
             EditorGUILayout.LabelField($"Loop: {_script.spriteSheet.loop}");
@@ -139,6 +142,8 @@ namespace Darklight.Game.SpriteAnimation
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
+
+            _serializedObject.ApplyModifiedProperties();
         }
     }
 #endif

@@ -1439,7 +1439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 1
   playerSpeed: 1
 --- !u!61 &136521277
 BoxCollider2D:
@@ -1499,19 +1498,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritesheets:
-  - loop: 1
-    frames:
-    - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    state: 0
-  - loop: 1
-    frames:
-    - {fileID: 375691877, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    - {fileID: -1134593881, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    - {fileID: -617877639, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    - {fileID: -1156124006, guid: 6b167707065891e4c826ace85794e423, type: 3}
-    state: 1
+  animationStateOverride: 2
+  spriteSheets:
+  - state: 1
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  - state: 2
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: 375691877, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -1134593881, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -617877639, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -1156124006, guid: 6b167707065891e4c826ace85794e423, type: 3}
 --- !u!212 &136521279
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1578,6 +1580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frameRate: 2
   spriteRenderer: {fileID: 136521279}
   spriteSheet:
     loop: 1

@@ -33,4 +33,20 @@ namespace Darklight.Game.SpriteAnimation
             return null;
         }
     }
+
+    /// <summary>
+    /// Stores a collection of sprites for frame animation
+    /// </summary>
+    /// <typeparam name="TState"></typeparam>
+    [System.Serializable]
+    public class SpriteSheet<TState>
+    {
+        public TState state;
+        public SpriteSheet spriteSheet;
+        public SpriteSheet(TState state, SpriteSheet spriteSheet)
+        {
+            this.state = state;
+            this.spriteSheet = spriteSheet;
+        }
+    }
 }

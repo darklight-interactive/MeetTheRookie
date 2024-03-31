@@ -22,14 +22,13 @@ public class PlayerStateMachine : StateMachine<PlayerState>
 
     public override void OnStateChanged(PlayerState previousState, PlayerState newState)
     {
-        Debug.Log("Player OnStateChanged " + newState);
 
         // Load the related Spritesheet to the FrameAnimationPlayer
         if (_animator == null) return;
         if (newState == PlayerState.NONE) return;
-        _animator.FrameAnimationPlayer.LoadSpriteSheet(_animator.spritesheetDictionary[newState]);
 
-
+        Debug.Log($"Player OnStateChanged {previousState} -> {newState}");
+        _animator.FrameAnimationPlayer.LoadSpriteSheet(_animator.GetSpriteSheetWithState(newState));
 
     }
 }
