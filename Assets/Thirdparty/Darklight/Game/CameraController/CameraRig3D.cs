@@ -155,7 +155,7 @@ namespace Darklight.Game.CameraController
                 }
             }
         }
-        public void FixedUpdate()
+        public void Update()
         {
             if (!focusTarget || !_camera || !_pivotHandle)
             {
