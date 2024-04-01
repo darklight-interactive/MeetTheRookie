@@ -4,6 +4,7 @@ using UnityEngine;
 using Darklight;
 using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
+using Darklight.Game.SpriteAnimation;
 
 [RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
 
         // Update the Animation
         PlayerAnimator animationManager = GetComponent<PlayerAnimator>();
+        if (animationManager == null || animationManager.FrameAnimationPlayer == null) { Debug.Log("Player Controller has no FrameAnimationPlayer"); }
         animationManager.FrameAnimationPlayer.FlipTransform(moveDirection);
 
         // Update the State Machine
