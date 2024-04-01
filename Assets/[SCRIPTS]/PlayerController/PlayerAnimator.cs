@@ -7,7 +7,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(SpriteRenderer), typeof(FrameAnimationPlayer))]
+[RequireComponent(
+    typeof(SpriteRenderer)
+    //typeof(FrameAnimationPlayer)
+    )]
 public class PlayerAnimator : MonoBehaviour
 {
     private PlayerController _controller => GetComponent<PlayerController>();
@@ -26,6 +29,7 @@ public class PlayerAnimator : MonoBehaviour
         stateMachine = new PlayerStateMachine(PlayerState.IDLE, this);
 
         FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
+
         if (FrameAnimationPlayer == null)
         {
             // Add the required components
@@ -39,6 +43,7 @@ public class PlayerAnimator : MonoBehaviour
         if (spriteSheets.Count > 0)
         {
             FrameAnimationPlayer.LoadSpriteSheet(spriteSheets[0].spriteSheet);
+            animationStateOverride = spriteSheets[0].state;
         }
     }
 
@@ -54,6 +59,9 @@ public class PlayerAnimator : MonoBehaviour
         return null;
     }
     #endregion
+
+
+
 }
 
 #if UNITY_EDITOR
