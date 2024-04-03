@@ -60,6 +60,11 @@ public class PlayerAnimator : MonoBehaviour
     }
     #endregion
 
+    public void Awake()
+    {
+        CreateFrameAnimationPlayer();
+    }
+
 
 
 }

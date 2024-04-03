@@ -88,9 +88,6 @@ namespace Darklight.Game.SpriteAnimation
     }
 
 #if UNITY_EDITOR
-
-
-
     [CustomEditor(typeof(FrameAnimationPlayer))]
     public class FrameAnimationPlayerEditor : Editor
     {
@@ -111,6 +108,9 @@ namespace Darklight.Game.SpriteAnimation
 
         private void OnUpdate()
         {
+            // Only use this in the editor
+            if (Application.isPlaying) return;
+
             // do things
             _script.UpdateAnimation();
 
