@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
+    public Vector2 moveVector = Vector2.zero;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
         moveDirection *= playerSpeed; // Scalar
-        moveDirection *= Vector2.right; // Nullify the Y axis
+        moveDirection *= moveVector; // Nullify the Y axis { Force movement on given axis only }
 
         // Set Target Position & Apply
         Vector3 targetPosition = transform.position + (Vector3)moveDirection;
