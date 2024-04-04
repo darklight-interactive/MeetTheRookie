@@ -1,7 +1,28 @@
 using System;
 using Ink.Runtime;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+
+[UxmlElement]
+public partial class DialogueBubble : Button
+{
+    public static BindingId keyPropertyKey = nameof(key);
+
+    [UxmlAttribute]
+    public string key;
+
+    public DialogueBubble()
+    {
+        this.schedule.Execute(() =>
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                this.text = $"Inky > {key}";
+                //LocalizationManager.Instance.GetLocalizedValue(key);
+            }
+        });
+    }
+}
 
 public class InkPrototype : MonoBehaviour
 {
