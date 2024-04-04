@@ -4,25 +4,59 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [UxmlElement]
-public partial class DialogueBubble : Button
+public partial class UXML_InkyLabel : Label
 {
-    public static BindingId keyPropertyKey = nameof(key);
+    [UxmlAttribute]
+    public TextAsset inkJsonAsset { get; set; }
 
     [UxmlAttribute]
-    public string key;
+    public Texture2D bubbleTexture { get; set; }
 
-    public DialogueBubble()
+    public UXML_InkyLabel()
     {
+
+
+        // Wait for next frame
         this.schedule.Execute(() =>
         {
-            if (!string.IsNullOrEmpty(key))
+            // Assign default stylings ------------------------------ >
+            this.style.whiteSpace = WhiteSpace.Normal; // textWrap
+            this.style.unityTextAlign = TextAnchor.MiddleLeft;
+            this.style.fontSize = 60;
+
+            int padding = 100;
+            this.style.paddingBottom = padding;
+            this.style.paddingTop = padding;
+            this.style.paddingLeft = padding;
+            this.style.paddingRight = padding;
+
+            this.style.minHeight = 250;
+            this.text = "Inky Label";
+
+
+            // Set the background image if bubbleSprite is assigned
+            if (bubbleTexture != null)
             {
-                this.text = $"Inky > {key}";
-                //LocalizationManager.Instance.GetLocalizedValue(key);
+                Texture2D texture = bubbleTexture;
+                this.style.backgroundImage = new StyleBackground(texture);
+                //Debug.Log("Set background image");
+            }
+
+            // Get the Ink JSON Asset
+            if (inkJsonAsset != null)
+            {
+                Story story = new Story(inkJsonAsset.text);
+                story.Continue();
+                this.text = story.currentText;
+            }
+            else
+            {
+                this.text = "No Ink JSON Asset assigned!";
             }
         });
     }
 }
+
 
 public class InkPrototype : MonoBehaviour
 {
