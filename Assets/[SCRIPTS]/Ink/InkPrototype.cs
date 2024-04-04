@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class InkPrototype : MonoBehaviour
 {
     public static event Action<Story> OnCreateStory;
+    [SerializeField] private TextAsset inkJSONAsset = null;
+    public Story story;
 
     void Awake()
     {
@@ -40,20 +42,6 @@ public class InkPrototype : MonoBehaviour
         }
 
     }
-
-
-    [SerializeField]
-    private TextAsset inkJSONAsset = null;
-    public Story story;
-
-    [SerializeField]
-    private Canvas canvas = null;
-
-    // UI Prefabs
-    [SerializeField]
-    private Text textPrefab = null;
-    [SerializeField]
-    private Button buttonPrefab = null;
 
     void OnTriggerEnter2D(Collider2D other)
     {
