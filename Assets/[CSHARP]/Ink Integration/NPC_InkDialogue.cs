@@ -1,20 +1,20 @@
 using System;
 using Ink.Runtime;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [UxmlElement]
 public partial class UXML_InkyLabel : Label
 {
-    [UxmlAttribute]
-    public TextAsset inkJsonAsset { get; set; }
 
-    [UxmlAttribute]
+    [UxmlAttribute, CreateProperty]
     public Texture2D bubbleTexture { get; set; }
 
     public UXML_InkyLabel()
     {
-
+        AddToClassList("inky-label");
+        this.text = "Inky Label";
 
         // Wait for next frame
         this.schedule.Execute(() =>
@@ -31,8 +31,6 @@ public partial class UXML_InkyLabel : Label
             this.style.paddingRight = padding;
 
             this.style.minHeight = 250;
-            this.text = "Inky Label";
-
 
             // Set the background image if bubbleSprite is assigned
             if (bubbleTexture != null)
@@ -41,34 +39,47 @@ public partial class UXML_InkyLabel : Label
                 this.style.backgroundImage = new StyleBackground(texture);
                 //Debug.Log("Set background image");
             }
-
-            // Get the Ink JSON Asset
-            if (inkJsonAsset != null)
-            {
-                Story story = new Story(inkJsonAsset.text);
-                story.Continue();
-                this.text = story.currentText;
-            }
-            else
-            {
-                this.text = "No Ink JSON Asset assigned!";
-            }
         });
     }
 }
 
-
-public class InkPrototype : MonoBehaviour
+public class NPC_InkDialogue : MonoBehaviour
 {
     public static event Action<Story> OnCreateStory;
-    [SerializeField] private TextAsset inkJSONAsset = null;
-    public Story story;
+    public TextAsset inkJSONAsset;
+    public Texture2D bubbleTexture;
+    public RenderTexture renderTexture;
+    public string inkString = "NPC_InkDialogue";
+    Story story;
+    VisualElement root;
+    UXML_InkyLabel inkyLabel;
+
+    void OnEnable()
+    {
+        root = GetComponent<UIDocument>().rootVisualElement;
+        inkyLabel = root.Q<UXML_InkyLabel>();
+        root.Q<UXML_InkyLabel>().dataSource = this;
+
+        inkyLabel.bubbleTexture = bubbleTexture;
+        inkyLabel.text = inkString;
+    }
+
+    void OnDisable()
+    {
+    }
 
     void Awake()
     {
-        // Remove the default message
-        //RemoveChildren();
         StartStory();
+    }
+
+    void Update()
+    {
+        if (story != null)
+        {
+            inkyLabel.text = inkString;
+
+        }
     }
 
     // Creates a new Story object with the compiled story which we can then play!
@@ -76,16 +87,12 @@ public class InkPrototype : MonoBehaviour
     {
         story = new Story(inkJSONAsset.text);
         if (OnCreateStory != null) OnCreateStory(story);
+        inkString = story.Continue();
         RefreshView();
     }
 
-    // This is the main function called every time the story changes. It does a few things:
-    // Destroys all the old content and choices.
-    // Continues over all the lines of text, then displays all the choices. 
-    // If there are no choices, the story is finished!
     void RefreshView()
     {
-
         // Read all the content until we can't continue any more
         while (story.canContinue)
         {
@@ -95,7 +102,6 @@ public class InkPrototype : MonoBehaviour
             text = text.Trim();
             // Display the text on screen!
         }
-
     }
 
     void OnTriggerEnter2D(Collider2D other)

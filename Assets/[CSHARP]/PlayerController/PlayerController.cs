@@ -32,8 +32,12 @@ public class PlayerController : MonoBehaviour
     Vector2 _activeMoveInput = Vector2.zero;
     void StartInputListener()
     {
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+
         // Subscribe to Universal MoveInput
         InputAction moveInputAction = UniversalInputManager.MoveInputAction;
+        if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }
+
         moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
         moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
     }
