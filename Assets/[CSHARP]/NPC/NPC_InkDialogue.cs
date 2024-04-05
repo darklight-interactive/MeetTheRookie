@@ -7,10 +7,6 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class UXML_InkyLabel : Label
 {
-
-    [UxmlAttribute, CreateProperty]
-    public Texture2D bubbleTexture { get; set; }
-
     public UXML_InkyLabel()
     {
         AddToClassList("inky-label");
@@ -19,27 +15,13 @@ public partial class UXML_InkyLabel : Label
         // Wait for next frame
         this.schedule.Execute(() =>
         {
-            // Assign default stylings ------------------------------ >
-            this.style.whiteSpace = WhiteSpace.Normal; // textWrap
-            this.style.unityTextAlign = TextAnchor.MiddleLeft;
-            this.style.fontSize = 60;
 
-            int padding = 100;
-            this.style.paddingBottom = padding;
-            this.style.paddingTop = padding;
-            this.style.paddingLeft = padding;
-            this.style.paddingRight = padding;
-
-            this.style.minHeight = 250;
-
-            // Set the background image if bubbleSprite is assigned
-            if (bubbleTexture != null)
-            {
-                Texture2D texture = bubbleTexture;
-                this.style.backgroundImage = new StyleBackground(texture);
-                //Debug.Log("Set background image");
-            }
         });
+    }
+
+    public void UpdateText(string text)
+    {
+        this.text = text;
     }
 }
 
@@ -60,8 +42,7 @@ public class NPC_InkDialogue : MonoBehaviour
         inkyLabel = root.Q<UXML_InkyLabel>();
         root.Q<UXML_InkyLabel>().dataSource = this;
 
-        inkyLabel.bubbleTexture = bubbleTexture;
-        inkyLabel.text = inkString;
+        inkyLabel.UpdateText(inkString);
     }
 
     void OnDisable()
@@ -75,11 +56,7 @@ public class NPC_InkDialogue : MonoBehaviour
 
     void Update()
     {
-        if (story != null)
-        {
-            inkyLabel.text = inkString;
-
-        }
+        inkyLabel.UpdateText(inkString);
     }
 
     // Creates a new Story object with the compiled story which we can then play!
