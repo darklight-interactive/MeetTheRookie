@@ -726,11 +726,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[NPC] Not Mel'
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2836474797728350005, guid: c0c6680fa91feec4b93c45d8c7fbe2e4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8047210650981322983, guid: c0c6680fa91feec4b93c45d8c7fbe2e4, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 479222596861925488}
   m_SourcePrefab: {fileID: 100100000, guid: c0c6680fa91feec4b93c45d8c7fbe2e4, type: 3}
+--- !u!1 &479222596861925487 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8047210650981322983, guid: c0c6680fa91feec4b93c45d8c7fbe2e4, type: 3}
+  m_PrefabInstance: {fileID: 479222596861925486}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &479222596861925488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479222596861925487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df52898f33921543b55ccd011f296b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inkJSONAsset: {fileID: 0}
+  bubbleTexture: {fileID: 0}
+  renderTexture: {fileID: 0}
+  inkString: NPC_InkDialogue
+  grid2D:
+    coordinateSize: 0.5
+    gridParent: {fileID: 479222596861925489}
+    gridParentPositionKey: {x: 1, y: 0}
+--- !u!4 &479222596861925489 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5637496021300154754, guid: c0c6680fa91feec4b93c45d8c7fbe2e4, type: 3}
+  m_PrefabInstance: {fileID: 479222596861925486}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,6 +1,10 @@
 using System;
+
+using Darklight.UnityExt;
+using Darklight.Game.Grid2D;
+
 using Ink.Runtime;
-using Unity.Properties;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,6 +36,7 @@ public class NPC_InkDialogue : MonoBehaviour
     public Texture2D bubbleTexture;
     public RenderTexture renderTexture;
     public string inkString = "NPC_InkDialogue";
+    public Grid2D<int> grid2D = new Grid2D<int>(new Vector2Int(3, 3), 1);
     Story story;
     VisualElement root;
     UXML_InkyLabel inkyLabel;
@@ -43,6 +48,8 @@ public class NPC_InkDialogue : MonoBehaviour
         root.Q<UXML_InkyLabel>().dataSource = this;
 
         inkyLabel.UpdateText(inkString);
+
+        grid2D.gridParent = this.transform;
     }
 
     void OnDisable()
@@ -84,5 +91,21 @@ public class NPC_InkDialogue : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log($"Collided with {other.name}");
+    }
+
+    void OnDrawGizmos()
+    {
+        foreach (Vector2Int vector2Int in grid2D.GetPositionKeys())
+        {
+            int coordinateValue = grid2D.GetCoordinateValue(vector2Int);
+            Vector3 worldPosition = grid2D.GetCoordinatePositionInWorldSpace(vector2Int);
+            CustomGizmos.DrawWireSquare_withLabel(
+                $"{vector2Int} :: {coordinateValue}",
+                worldPosition,
+                grid2D.coordinateSize,
+                Vector3.forward,
+                Color.red,
+                CustomGUIStyles.RightAlignedStyle);
+        }
     }
 }

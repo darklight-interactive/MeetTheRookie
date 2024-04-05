@@ -7,6 +7,12 @@ namespace Darklight.UnityExt
 {
     public static class CustomGizmos
     {
+        public static void DrawLabel(string label, Vector3 position, GUIStyle labelStyle)
+        {
+            //labelStyle.normal = new GUIStyleState { textColor = color }; // Set the text color
+            Handles.Label(position, label, labelStyle);
+        }
+
         public static void DrawWireSquare(Vector3 position, float size, Vector3 direction, Color color)
         {
             if (color == null)
@@ -16,23 +22,14 @@ namespace Darklight.UnityExt
             else { Handles.color = color; }
             Handles.DrawSolidRectangleWithOutline(GetRectangleVertices(position, size * Vector2.one, direction), Color.clear, color);
         }
-        public static void DrawLabel(string label, Vector3 position, GUIStyle labelStyle)
-        {
-            //labelStyle.normal = new GUIStyleState { textColor = color }; // Set the text color
-            Handles.Label(position, label, labelStyle);
-        }
 
-        public static void DrawWireSquare_withLabel(string label, Vector3 position, int size, Vector3 direction, Color color, GUIStyle labelStyle)
+        public static void DrawWireSquare_withLabel(string label, Vector3 position, float size, Vector3 direction, Color color, GUIStyle labelStyle)
         {
-            if (color == null)
-            {
-                Handles.color = Color.black;
-            }
-            else { Handles.color = color; }
-            Handles.DrawWireCube(position, size * new Vector3(1, 0, 1));
+
+            DrawWireSquare(position, size, direction, color);
 
             labelStyle.normal = new GUIStyleState { textColor = color }; // Set the text color
-            Vector3 labelOffset = new Vector3(-0.5f, 0, 0.5f); // Adjust the label position as needed
+            Vector3 labelOffset = new Vector3(size / 2, size / 2, size / 2); // Adjust the label position to the center
             Vector3 labelPosition = position + (size * labelOffset);
             Handles.Label(labelPosition, label, labelStyle);
         }
