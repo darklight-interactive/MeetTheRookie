@@ -29,7 +29,6 @@ public partial class UXML_InkyLabel : Label
     }
 }
 
-[RequireComponent(typeof(OverlapGrid2D))]
 public class NPC_InkDialogue : MonoBehaviour
 {
     public static event Action<Story> OnCreateStory;
@@ -48,10 +47,7 @@ public class NPC_InkDialogue : MonoBehaviour
         root.Q<UXML_InkyLabel>().dataSource = this;
 
         inkyLabel.UpdateText(inkString);
-    }
-
-    void OnDisable()
-    {
+        Debug.Log("OnEnable");
     }
 
     void Awake()
@@ -61,12 +57,18 @@ public class NPC_InkDialogue : MonoBehaviour
 
     void Update()
     {
+        if (inkyLabel == null) return;
         inkyLabel.UpdateText(inkString);
     }
 
     // Creates a new Story object with the compiled story which we can then play!
     void StartStory()
     {
+        if (inkJSONAsset == null)
+        {
+            Debug.LogError("No ink story assigned;");
+            return;
+        }
         story = new Story(inkJSONAsset.text);
         if (OnCreateStory != null) OnCreateStory(story);
         inkString = story.Continue();
@@ -91,7 +93,6 @@ public class NPC_InkDialogue : MonoBehaviour
         Debug.Log($"Collided with {other.name}");
     }
 
-    /*
 
-        */
+
 }

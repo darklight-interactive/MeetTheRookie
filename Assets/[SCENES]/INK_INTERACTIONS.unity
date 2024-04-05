@@ -711,7 +711,7 @@ Transform:
   m_GameObject: {fileID: 7569395502084573321}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 1, z: 0}
+  m_LocalPosition: {x: -1.25, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 7569395502084573323}
   - component: {fileID: 3836845949688543463}
   - component: {fileID: 2326270571129624119}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: '[NPC] Not Mel'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -762,16 +762,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 7569395502084573321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 37df2651b73eb6745a08fd660a2c9bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   grid2D:
     gridSizeX: 3
     gridSizeY: 3
-    coordinateSize: 1
+    coordinateSize: 0.25
     gridXAxisDirection: 1
     gridYAxisDirection: 1
-    gridParentPositionKey: {x: 0, y: 0}
+    gridParentPositionKey: {x: 1, y: -2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  dialogueBubblePrefab: {fileID: 0}
+  availablePositionKeys:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

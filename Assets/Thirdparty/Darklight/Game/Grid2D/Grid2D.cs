@@ -20,15 +20,10 @@ namespace Darklight.Game.Grid2D
         /// <typeparam name="Type">The type of data stored at the coordinate.</typeparam>
         public class Coordinate
         {
-            public string label { get; set; }
+            public string label = "";
+            public Color color = Color.white;
             public Vector2Int positionKey = Vector2Int.zero;
             public Type typeValue = default;
-
-            /// <summary>
-            /// Creates a new coordinate with the specified position key and value.
-            /// </summary>
-            /// <param name="key">The position key of the coordinate.</param>
-            /// <param name="value">The value to be stored at the coordinate.</param>
             public Coordinate(Vector2Int key, Type value)
             {
                 this.positionKey = key;
@@ -51,12 +46,13 @@ namespace Darklight.Game.Grid2D
             }
         }
 
-        // << Grid Settings >>
+        #region [[ Grid Public Properties ]] =============================== >>
         [Range(2, 10)] public int gridSizeX = 3;
         [Range(2, 10)] public int gridSizeY = 3;
         [Range(0.1f, 1f)] public float coordinateSize = 1;
         [Range(-1, 1)] public int gridXAxisDirection = 1;
         [Range(-1, 1)] public int gridYAxisDirection = 1;
+        #endregion
 
         /// <summary> The parent transform of the grid. </summary>
         private Transform gridParent = null;
@@ -65,7 +61,7 @@ namespace Darklight.Game.Grid2D
         public Grid2D(Transform parent)
         {
             this.gridParent = parent;
-            InitializeGrid();
+            InitializeGridToSetValues();
         }
 
         public Grid2D(Transform parent, Vector2Int gridSize, int coordinateSize)
@@ -73,14 +69,14 @@ namespace Darklight.Game.Grid2D
             this.gridParent = parent;
             this.gridArea = gridSize;
             this.coordinateSize = coordinateSize;
-            InitializeGrid();
+            InitializeGridToSetValues();
         }
         #endregion
 
         /// <summary>
         /// Initializes the grid by creating coordinates for each position in the grid.
         /// </summary>
-        void InitializeGrid(Transform parent = null)
+        public void InitializeGridToSetValues()
         {
             grid = new Dictionary<Vector2Int, Coordinate>();
             for (int x = 0; x < gridArea.x; x++)
@@ -128,7 +124,9 @@ namespace Darklight.Game.Grid2D
         /// <returns>A list of all position keys in the grid.</returns>
         public List<Vector2Int> GetPositionKeys()
         {
-            return new List<Vector2Int>(grid.Keys);
+            if (grid != null)
+                return new List<Vector2Int>(grid.Keys);
+            return new List<Vector2Int>();
         }
 
         /// <summary>
