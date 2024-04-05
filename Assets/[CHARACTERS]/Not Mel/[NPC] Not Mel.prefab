@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5637496021300154754}
-  - component: {fileID: 2836474797728350005}
+  - component: {fileID: 914537803336558450}
+  - component: {fileID: 2754404416026470691}
   - component: {fileID: 3718211297970446473}
   - component: {fileID: 2805206744071655001}
   m_Layer: 0
@@ -34,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2836474797728350005
+--- !u!114 &914537803336558450
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,13 +44,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 8047210650981322983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab334b185b5431944bcb20cd716f6adc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4df52898f33921543b55ccd011f296b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inkJSONAsset: {fileID: 0}
   bubbleTexture: {fileID: 0}
   renderTexture: {fileID: 0}
   inkString: NPC_InkDialogue
+--- !u!114 &2754404416026470691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047210650981322983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &3718211297970446473
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1,55 +1,91 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Darklight.Game.Grid2D
 {
+    /// <summary>
+    /// A 2D Grid that can be used to store any type of data.
+    /// </summary>
+    /// <typeparam name="Type">The type of data to be stored in the grid.</typeparam>
     [System.Serializable]
     public class Grid2D<Type>
     {
+
+        #region  [[ Coordinate Class ]] =============================== >>
+        /// <summary>
+        /// Represents a coordinate in the grid.
+        /// </summary>
+        /// <typeparam name="Type">The type of data stored at the coordinate.</typeparam>
         public class Coordinate
         {
-            public Vector2Int positionKey { get; set; }
-            public Type typeValue { get; set; }
+            public string label { get; set; }
+            public Vector2Int positionKey = Vector2Int.zero;
+            public Type typeValue = default;
+
+            /// <summary>
+            /// Creates a new coordinate with the specified position key and value.
+            /// </summary>
+            /// <param name="key">The position key of the coordinate.</param>
+            /// <param name="value">The value to be stored at the coordinate.</param>
             public Coordinate(Vector2Int key, Type value)
             {
                 this.positionKey = key;
                 this.typeValue = value;
             }
         }
+        #endregion
 
-        // -- [[ Grid2D Properties ]] ------------------------------ >>
-        [SerializeField] private Dictionary<Vector2Int, Coordinate> grid = new Dictionary<Vector2Int, Coordinate>();
-        private Vector2Int gridXAxis = Vector2Int.right;
-        private Vector2Int gridYAxis = Vector2Int.up;
-        private Vector2Int gridSize = new Vector2Int(3, 3);
-
-        [Range(0.1f, 1f)]
-        public float coordinateSize = 1;
-
-        public Grid2D(Vector2Int gridSize, int cellSize)
+        #region  Constructors -------------- 
+        private Vector2Int gridXAxis => new Vector2Int(gridXAxisDirection, 0); // create x Axis Vector
+        private Vector2Int gridYAxis => new Vector2Int(0, gridYAxisDirection); // create y Axis Vector
+        private Dictionary<Vector2Int, Coordinate> grid = new Dictionary<Vector2Int, Coordinate>();
+        private Vector2Int gridArea
         {
-            this.gridSize = gridSize;
-            this.coordinateSize = cellSize;
-            InitializeGrid();
+            get => new Vector2Int((int)gridSizeX, (int)gridSizeY);
+            set
+            {
+                gridSizeX = value.x;
+                gridSizeY = value.y;
+            }
         }
 
-        public Transform gridParent = null;
+        // << Grid Settings >>
+        [Range(2, 10)] public int gridSizeX = 3;
+        [Range(2, 10)] public int gridSizeY = 3;
+        [Range(0.1f, 1f)] public float coordinateSize = 1;
+        [Range(-1, 1)] public int gridXAxisDirection = 1;
+        [Range(-1, 1)] public int gridYAxisDirection = 1;
+
+        /// <summary> The parent transform of the grid. </summary>
+        private Transform gridParent = null;
         public Vector2Int gridParentPositionKey = new Vector2Int(0, 0);
-        public Grid2D(Vector2Int gridSize, int cellSize, Transform gridParent)
+
+        public Grid2D(Transform parent)
         {
-            this.gridSize = gridSize;
-            this.coordinateSize = cellSize;
-            this.gridParent = gridParent;
+            this.gridParent = parent;
             InitializeGrid();
         }
 
-        public void InitializeGrid()
+        public Grid2D(Transform parent, Vector2Int gridSize, int coordinateSize)
+        {
+            this.gridParent = parent;
+            this.gridArea = gridSize;
+            this.coordinateSize = coordinateSize;
+            InitializeGrid();
+        }
+        #endregion
+
+        /// <summary>
+        /// Initializes the grid by creating coordinates for each position in the grid.
+        /// </summary>
+        void InitializeGrid(Transform parent = null)
         {
             grid = new Dictionary<Vector2Int, Coordinate>();
-            for (int x = 0; x < gridSize.x; x++)
+            for (int x = 0; x < gridArea.x; x++)
             {
-                for (int y = 0; y < gridSize.y; y++)
+                for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
                     Coordinate coordinate = new Coordinate(position, default);
@@ -58,29 +94,57 @@ namespace Darklight.Game.Grid2D
             }
         }
 
-        public Type GetCoordinateValue(Vector2Int position)
+        public void SetParent(Transform parent)
+        {
+            gridParent = parent;
+        }
+
+        /// <summary>
+        /// Sets the value of a coordinate in the grid.
+        /// </summary>
+        /// <param name="position">The position of the coordinate.</param>
+        /// <param name="value">The value to set.</param>
+        public void SetCoordinateValue(Vector2Int position, Type value, string label = "")
         {
             if (grid.ContainsKey(position))
             {
-                return grid[position].typeValue;
+                grid[position].typeValue = value;
+                grid[position].label = label;
+            }
+        }
+
+        public Coordinate GetCoordinate(Vector2Int position)
+        {
+            if (grid.ContainsKey(position))
+            {
+                return grid[position];
             }
             return default;
         }
 
+        /// <summary>
+        /// Gets a list of all position keys in the grid.
+        /// </summary>
+        /// <returns>A list of all position keys in the grid.</returns>
         public List<Vector2Int> GetPositionKeys()
         {
             return new List<Vector2Int>(grid.Keys);
         }
 
+        /// <summary>
+        /// Gets the world space position of the specified position key in the grid.
+        /// </summary>
+        /// <param name="positionKey">The position key in the grid.</param>
+        /// <returns>The world space position of the specified position key.</returns>
         public Vector3 GetCoordinatePositionInWorldSpace(Vector2Int positionKey)
         {
             if (this.gridParent == null) { return Vector3.zero; }
 
-            Vector2Int offsetPosition = positionKey - gridParentPositionKey; // Subtract the location of the parentPosition
-            Vector3 vec3_position = new Vector3(offsetPosition.x, offsetPosition.y, 0); // Convert to Vector3
-            vec3_position *= coordinateSize; // Scale by the coordinate size
+            Vector2Int offsetPosition = positionKey - gridParentPositionKey;
+            Vector3 vec3_position = new Vector3(offsetPosition.x, offsetPosition.y, 0);
+            vec3_position *= coordinateSize;
 
-            Vector3 worldSpacePosition = gridParent.TransformVector(gridParent.position + vec3_position); // Transform to world space
+            Vector3 worldSpacePosition = gridParent.TransformVector(gridParent.position + vec3_position);
             return worldSpacePosition;
         }
     }
