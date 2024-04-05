@@ -9,10 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 272572703850064467}
-  - component: {fileID: 665047889391856954}
+  - component: {fileID: 8341373371544015839}
   - component: {fileID: 7124221386219027832}
-  - component: {fileID: 6047660982936618457}
-  - component: {fileID: 2441927378403651168}
   m_Layer: 0
   m_Name: '[UXML] DialogBubble'
   m_TagString: Untagged
@@ -32,10 +30,11 @@ Transform:
   m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 7196613461898012838}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &665047889391856954
+--- !u!114 &8341373371544015839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,13 +43,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4280565907865160122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab334b185b5431944bcb20cd716f6adc, type: 3}
+  m_Script: {fileID: 11500000, guid: 64b37f5346ffdff4291c47fe26ec05ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJSONAsset: {fileID: 4900000, guid: cd57a83afaeeea945a02e5c99f236db5, type: 3}
-  bubbleTexture: {fileID: 2800000, guid: 60cc24bf2f88b1049bf99f35d8663133, type: 3}
-  renderTexture: {fileID: 8600000, guid: 3f98d487c303d1e4187b28d4781de8bb, type: 2}
-  inkString: NPC_InkDialogue
+  dialogueText: omg hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+  meshRenderer: {fileID: 1074440264323150340}
+  material: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
+  renderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
 --- !u!114 &7124221386219027832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,21 +66,54 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: e04c770115cfa124d82578e7646e15ee, type: 3}
   m_SortingOrder: 1
---- !u!33 &6047660982936618457
+--- !u!1 &9201305126065344355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7196613461898012838}
+  - component: {fileID: 3694024005008394153}
+  - component: {fileID: 1074440264323150340}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7196613461898012838
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201305126065344355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 272572703850064467}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3694024005008394153
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4280565907865160122}
+  m_GameObject: {fileID: 9201305126065344355}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2441927378403651168
+--- !u!23 &1074440264323150340
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4280565907865160122}
+  m_GameObject: {fileID: 9201305126065344355}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -97,7 +129,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -8,28 +8,8 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UxmlElement]
-public partial class UXML_InkyLabel : Label
-{
-    public UXML_InkyLabel()
-    {
-        AddToClassList("inky-label");
-        this.text = "Inky Label";
 
-        // Wait for next frame
-        this.schedule.Execute(() =>
-        {
-
-        });
-    }
-
-    public void UpdateText(string text)
-    {
-        this.text = text;
-    }
-}
-
-public class NPC_InkDialogue : MonoBehaviour
+public class NPC_DialogueBubble : MonoBehaviour
 {
     public static event Action<Story> OnCreateStory;
     public TextAsset inkJSONAsset;
@@ -37,28 +17,10 @@ public class NPC_InkDialogue : MonoBehaviour
     public RenderTexture renderTexture;
     public string inkString = "NPC_InkDialogue";
     Story story;
-    VisualElement root;
-    UXML_InkyLabel inkyLabel;
-
-    void OnEnable()
-    {
-        root = GetComponent<UIDocument>().rootVisualElement;
-        inkyLabel = root.Q<UXML_InkyLabel>();
-        root.Q<UXML_InkyLabel>().dataSource = this;
-
-        inkyLabel.UpdateText(inkString);
-        Debug.Log("OnEnable");
-    }
 
     void Awake()
     {
         StartStory();
-    }
-
-    void Update()
-    {
-        if (inkyLabel == null) return;
-        inkyLabel.UpdateText(inkString);
     }
 
     // Creates a new Story object with the compiled story which we can then play!

@@ -115,22 +115,29 @@ namespace Darklight.Game.Grid2D
         {
             OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
             overlapGridScript.UpdateOverlapGrid();
-            List<Vector2Int> positionKeys = overlapGridScript.grid2D.GetPositionKeys();
+
+            DisplayOverlapGrid2D(overlapGridScript);
+
+        }
+
+        public void DisplayOverlapGrid2D(OverlapGrid2D overlapGrid2D)
+        {
+            List<Vector2Int> positionKeys = overlapGrid2D.grid2D.GetPositionKeys();
             if (positionKeys != null && positionKeys.Count > 0)
             {
                 foreach (Vector2Int vector2Int in positionKeys)
                 {
-                    Coordinate coordinate = overlapGridScript.grid2D.GetCoordinate(vector2Int);
-                    Vector3 worldPosition = overlapGridScript.grid2D.GetCoordinatePositionInWorldSpace(vector2Int);
+                    Coordinate coordinate = overlapGrid2D.grid2D.GetCoordinate(vector2Int);
+                    Vector3 worldPosition = overlapGrid2D.grid2D.GetCoordinatePositionInWorldSpace(vector2Int);
                     CustomGizmos.DrawWireSquare_withLabel(
                         $"{coordinate.label}",
                         worldPosition,
-                        overlapGridScript.grid2D.coordinateSize,
+                        overlapGrid2D.grid2D.coordinateSize,
                         Vector3.forward,
                         Color.grey,
                         CustomGUIStyles.RightAlignedStyle);
 
-                    CustomGizmos.DrawButtonHandle(worldPosition, overlapGridScript.grid2D.coordinateSize * 0.75f, Vector3.forward, coordinate.color, () =>
+                    CustomGizmos.DrawButtonHandle(worldPosition, overlapGrid2D.grid2D.coordinateSize * 0.75f, Vector3.forward, coordinate.color, () =>
                     {
                         string out_string = $"Clicked on {coordinate.label}";
 
