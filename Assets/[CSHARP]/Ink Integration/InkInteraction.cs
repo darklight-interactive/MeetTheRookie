@@ -25,10 +25,25 @@ public class InkInteraction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Start a general interaction.
+    /// </summary>
+    /// <param name="onComplete">A callback to call when we're done with the present interaction.</param>
     public void Interact(KnotComplete onComplete) {
         StoryManager.Instance.Run(inkKnot, transform, onComplete);
     }
+    /// <summary>
+    /// From <see cref="PlayerController"/>, for when the player is pressing Z while we haven't relenquished control.
+    /// </summary>
     public void Interact() {
         StoryManager.Instance.Continue();
+    }
+
+    /// <summary>
+    /// If the player is pressing the move inputs during our interaction.
+    /// </summary>
+    /// <param name="move">The player's desired move.</param>
+    public void MoveInteract(Vector2 move) {
+        StoryManager.Instance.MoveUpdate(move);
     }
 }

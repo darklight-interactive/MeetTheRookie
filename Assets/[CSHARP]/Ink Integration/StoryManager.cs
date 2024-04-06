@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Singleton for managing all Ink UI.
+/// </summary>
 [System.Serializable]
 public class StoryManager
 {
@@ -26,18 +29,27 @@ public class StoryManager
         dialogPrefab = (GameObject)Resources.Load("[INKY]/DialogBubble");
     }
 
+    bool handlingChoice = false;
     public void Continue() {
+        if (handlingChoice) {
+            return;
+        }
         if (story.canContinue) {
             var storyText = story.Continue();
             text.text = storyText;
         } else {
             if (story.currentChoices.Count > 0) {
-                text.text = "CHOICE";
+                handlingChoice = true;
+                text.visible = false;
             } else {
                 inkUI.visible = false;
                 OnKnotCompleted();
             }
         }
+    }
+
+    public void MoveUpdate(Vector2 move) {
+
     }
 
     public delegate void KnotComplete();

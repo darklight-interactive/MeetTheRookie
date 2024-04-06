@@ -29,7 +29,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
+        // If we're not handling ink interactions, do movement:
+        if (canInteract == false) {
+            HandleMovement();
+        }
     }
 
     private void FixedUpdate() {
@@ -83,6 +86,9 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Interactions
+    /// <summary>
+    /// All interactions we're handling.
+    /// </summary>
     protected HashSet<InkInteraction> interactions = new HashSet<InkInteraction>();
     public void UnsubscribeInteraction(InkInteraction i) {
         interactions.Remove(i);
@@ -100,8 +106,17 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     InkInteraction activeInteraction = null;
 
+    /// <summary>
+    /// Should we be allowing movement/showing interaction popups?
+    /// </summary>
     protected bool canInteract = true;
+    /// <summary>
+    /// General update for interactions. Handles some input and looks through registered interactions.
+    /// </summary>
     void HandleInteractions() {
+        if (activeInteraction != null && _activeMoveInput != Vector2.zero) {
+            activeInteraction.MoveInteract(_activeMoveInput);
+        }
         if (!canInteract) {
             return;
         }
@@ -116,6 +131,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
+    /// </summary>
     void Interact(InputAction.CallbackContext context) {
         if (currentInteraction != null) {
             canInteract = false;
