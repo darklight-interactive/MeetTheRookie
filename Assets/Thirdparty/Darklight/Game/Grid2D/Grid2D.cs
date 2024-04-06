@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Darklight.Game.Grid2D
 {
+
     /// <summary>
     /// A 2D Grid that can be used to store any type of data.
     /// </summary>
@@ -20,16 +21,28 @@ namespace Darklight.Game.Grid2D
         /// <typeparam name="Type">The type of data stored at the coordinate.</typeparam>
         public class Coordinate
         {
+            public Grid2D<Type> parent;
             public string label = "";
             public Color color = Color.white;
             public Vector2Int positionKey = Vector2Int.zero;
             public Type typeValue = default;
-            public Coordinate(Vector2Int key, Type value)
+            public Vector3 worldPosition => parent.GetCoordinatePositionInWorldSpace(positionKey);
+
+            public Coordinate(Grid2D<Type> parent, Vector2Int key, Type value)
             {
+                this.parent = parent;
                 this.positionKey = key;
                 this.typeValue = value;
             }
         }
+        #endregion
+
+        #region [[ Public Properties ]] =============================== >>
+        [Range(1, 10)] public int gridSizeX = 3;
+        [Range(1, 10)] public int gridSizeY = 3;
+        [Range(0.1f, 1f)] public float coordinateSize = 1;
+        [Range(-1, 1)] public int gridXAxisDirection = 1;
+        [Range(-1, 1)] public int gridYAxisDirection = 1;
         #endregion
 
         #region  Constructors -------------- 
@@ -45,14 +58,6 @@ namespace Darklight.Game.Grid2D
                 gridSizeY = value.y;
             }
         }
-
-        #region [[ Grid Public Properties ]] =============================== >>
-        [Range(1, 10)] public int gridSizeX = 3;
-        [Range(1, 10)] public int gridSizeY = 3;
-        [Range(0.1f, 1f)] public float coordinateSize = 1;
-        [Range(-1, 1)] public int gridXAxisDirection = 1;
-        [Range(-1, 1)] public int gridYAxisDirection = 1;
-        #endregion
 
         /// <summary> The parent transform of the grid. </summary>
         private Transform gridParent = null;
@@ -84,7 +89,7 @@ namespace Darklight.Game.Grid2D
                 for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
-                    Coordinate coordinate = new Coordinate(position, default);
+                    Coordinate coordinate = new Coordinate(this, position, default);
                     grid.Add(position, coordinate);
                 }
             }

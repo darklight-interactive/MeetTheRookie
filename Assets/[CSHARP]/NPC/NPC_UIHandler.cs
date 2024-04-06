@@ -13,76 +13,121 @@ using UnityEditor;
 [ExecuteAlways]
 public class NPC_UIHandler : OverlapGrid2D
 {
-    private Dictionary<Vector2Int, GameObject> dialogueBubbles = new Dictionary<Vector2Int, GameObject>();
-    public GameObject dialogueBubblePrefab;
-    public List<Vector2Int> availablePositionKeys = new List<Vector2Int>();
 
-
-    public override void Awake()
+    #region [[ DialogueBubble Class ]] =============================== >>
+    [System.Serializable]
+    public class DialogueBubble
     {
-        base.Awake(); // Activate the OverlapGrid2D
+        public GameObject GameObjectInstance { get; private set; }    // reference to the dialogue bubble game object
+        public bool Active => active; // is the dialogue bubble active?
 
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (base.grid2D == null) return;
-
-        availablePositionKeys.Clear();
-
-        // Loop through the overlapped colliders and store the coordinates with zero colliders
-        Dictionary<int, List<Coordinate>> coordinateDict = GetCoordinatesByColliderCount();
-        if (coordinateDict == null || coordinateDict.Count == 0) return;
-
-        List<Coordinate> coordinatesWithZeroColliders = coordinateDict[0];
-        foreach (Coordinate coordinate in coordinatesWithZeroColliders)
+        NPC_UIHandler parent; // reference to parent
+        Coordinate gridCoordinate;
+        [SerializeField] string dialogueText = "Hello, World!";
+        [SerializeField] GameObject dialogueBubblePrefab = null;
+        [SerializeField] bool active = false;
+        public DialogueBubble(NPC_UIHandler parent, Coordinate gridCoordinate, GameObject dialogueBubblePrefab, string dialogueText)
         {
-            if (!availablePositionKeys.Contains(coordinate.positionKey))
+            this.parent = parent;
+            this.gridCoordinate = gridCoordinate;
+            this.dialogueBubblePrefab = dialogueBubblePrefab;
+            this.dialogueText = dialogueText;
+        }
+
+        public void Update()
+        {
+            if (active && GameObjectInstance == null)
             {
-                availablePositionKeys.Add(coordinate.positionKey);
+                SpawnDialogueBubble();
             }
-            else
+            else if (!active && GameObjectInstance != null)
             {
-                if (coordinate.typeValue.Length > 0)
+                if (Application.isPlaying)
                 {
-                    availablePositionKeys.Remove(coordinate.positionKey);
+                    Destroy(GameObjectInstance);
+                }
+                else
+                {
+                    DestroyImmediate(GameObjectInstance);
                 }
             }
         }
 
+        public void SetActive(bool active)
+        {
+            this.active = active;
+            Update();
+        }
 
+        public void SpawnDialogueBubble()
+        {
+            Vector3 worldPosition = this.gridCoordinate.worldPosition;
+            GameObjectInstance = Instantiate(dialogueBubblePrefab, worldPosition, Quaternion.identity);
+            GameObjectInstance.transform.SetParent(parent.transform);
+            GameObjectInstance.transform.localScale = Vector3.one * gridCoordinate.parent.coordinateSize;
+        }
+    }
+    #endregion
+
+    private Dictionary<Vector2Int, DialogueBubble> _dict = new Dictionary<Vector2Int, DialogueBubble>();
+    public GameObject dialogueBubblePrefab;
+    public List<DialogueBubble> availableBubbles = new List<DialogueBubble>();
+
+    public override void Awake()
+    {
+        this.Reset();
+        this.Update();
+    }
+
+    public override void Update()
+    {
+        base.Update(); // Get the overlapped colliders & available coordinates
+
+        // Loop through the coordinates with zero colliders and spawn dialogue bubbles
+        Dictionary<int, List<Coordinate>> coordinateDict = GetCoordinatesByColliderCount();
+        if (coordinateDict == null || coordinateDict.Count == 0 || !coordinateDict.ContainsKey(0)) return;
+
+        List<Coordinate> coordinatesWithZeroColliders = coordinateDict[0]; // << the key 0 represents zero colliders
+        foreach (Coordinate coordinate in coordinatesWithZeroColliders)
+        {
+            // If the dialogue bubble does not exist, create it
+            if (!_dict.ContainsKey(coordinate.positionKey))
+            {
+                DialogueBubble dialogueBubble = new DialogueBubble(this, coordinate, dialogueBubblePrefab, "Dialogue Text Here");
+                _dict.Add(coordinate.positionKey, dialogueBubble);
+            }
+        }
+
+        // Set the available dialogue bubbles
+        availableBubbles.Clear();
+        availableBubbles = _dict.Values.ToList();
+
+        // Loop through the available dialogue bubbles and update them
+        foreach (DialogueBubble dialogueBubble in availableBubbles)
+        {
+            dialogueBubble.Update();
+        }
     }
 
     public override void Reset()
     {
         base.Reset();
 
-        // Remove dialogue bubbles that are no longer in the available position keys
-        foreach (Vector2Int key in dialogueBubbles.Keys)
+        _dict.Clear();
+        availableBubbles.Clear();
+        foreach (DialogueBubble dialogueBubble in availableBubbles)
         {
             if (Application.isPlaying)
             {
-                Destroy(dialogueBubbles[key]);
+                Destroy(dialogueBubble.GameObjectInstance);
             }
             else
             {
-                DestroyImmediate(dialogueBubbles[key]);
+                DestroyImmediate(dialogueBubble.GameObjectInstance);
             }
         }
-        dialogueBubbles.Clear();
-    }
 
-    public void SpawnDialogueBubble(Vector2Int positionKey)
-    {
-        if (dialogueBubbles.ContainsKey(positionKey)) return;
-
-        Vector3 worldPosition = grid2D.GetCoordinatePositionInWorldSpace(positionKey);
-        GameObject dialogueBubble = Instantiate(dialogueBubblePrefab, worldPosition, Quaternion.identity);
-        dialogueBubble.transform.SetParent(transform);
-        dialogueBubble.transform.localScale = Vector3.one * grid2D.coordinateSize;
-        dialogueBubbles.Add(positionKey, dialogueBubble);
+        this.Update();
     }
 }
 
@@ -96,13 +141,9 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
 
         NPC_UIHandler npcUIHandler = (NPC_UIHandler)target;
 
-        if (GUILayout.Button("Spawn Dialogue Bubble"))
+        if (GUILayout.Button("Update"))
         {
-            if (npcUIHandler.availablePositionKeys.Count > 0)
-            {
-                int randomIndex = Random.Range(0, npcUIHandler.availablePositionKeys.Count);
-                npcUIHandler.SpawnDialogueBubble(npcUIHandler.availablePositionKeys[randomIndex]);
-            }
+            npcUIHandler.Update();
         }
 
         if (GUILayout.Button("Reset"))

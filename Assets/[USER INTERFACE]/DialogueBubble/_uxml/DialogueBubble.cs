@@ -9,35 +9,37 @@ using UnityEditor;
 [UxmlElement]
 public partial class UXML_InkyLabel : Label
 {
-    [UxmlAttribute]
-    public Sprite bubbleSprite { get; set; }
-
     public UXML_InkyLabel()
     {
         AddToClassList("inky-label");
-
-        // Wait for next frame
-        this.schedule.Execute(() =>
-        {
-
-        });
     }
 
-    public void UpdateText(string text)
+    public void SetText(string text)
     {
         this.text = text;
+    }
+
+    public void SetBubble(Sprite sprite)
+    {
+        if (sprite == null)
+            this.style.backgroundImage = null;
+        else
+            this.style.backgroundImage = new StyleBackground(sprite);
     }
 }
 
 public class DialogueBubble : MonoBehaviour
 {
-    private UIDocument uiDocument;
-    private PanelSettings panelSettings;
-    public VisualElement root;
-    public UXML_InkyLabel inkyLabel;
+    UIDocument uiDocument;
+    PanelSettings panelSettings;
+    VisualElement root;
+    UXML_InkyLabel inkyLabel;
+    VisualElement bubble;
 
     [TextArea(3, 10)]
     public string dialogueText = "Hello, World!";
+
+    public Sprite bubbleSprite;
 
     public MeshRenderer meshRenderer;
     public Material material;
@@ -49,7 +51,12 @@ public class DialogueBubble : MonoBehaviour
         root = uiDocument.rootVisualElement;
         panelSettings = uiDocument.panelSettings;
         inkyLabel = root.Q<UXML_InkyLabel>();
+        bubble = root.Q<VisualElement>("BubbleSprite");
         root.Q<UXML_InkyLabel>().dataSource = this;
+
+        //inkyLabel.SetBubble(bubbleSprite);
+
+        bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
 
         Update();
     }
@@ -59,7 +66,7 @@ public class DialogueBubble : MonoBehaviour
         // Update the text only if it has changed
         if (inkyLabel.text != dialogueText)
         {
-            inkyLabel.UpdateText(dialogueText);
+            inkyLabel.SetText(dialogueText);
             if (panelSettings.targetTexture != null)
             {
                 panelSettings.targetTexture.Release();
@@ -84,6 +91,11 @@ public class DialogueBubble : MonoBehaviour
                 meshRenderer.sharedMaterial = new Material(material);
             meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
         }
+
+
+        // Update the bubble sprite
+        //inkyLabel.SetBubble(bubbleSprite);
+
     }
 
 
