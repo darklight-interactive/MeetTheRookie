@@ -74,6 +74,7 @@ public class StoryManager
                 text.style.display = DisplayStyle.None;
                 foreach (var choice in story.currentChoices) {
                     var choiceBox = new Button();
+                    choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
                     choiceBox.text = choice.text;
                     choices.Add(choiceBox);
                 }
