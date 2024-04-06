@@ -1,4 +1,6 @@
 using Ink.Runtime;
+using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -21,26 +23,61 @@ public class StoryManager
     }
 
     protected GameObject dialogPrefab;
+
     VisualElement inkUI;
     Label speaker;
     Label text;
+    GroupBox choices;
     private StoryManager() {
         story = new Story(((TextAsset)Resources.Load("[INKY]/test")).text);
         dialogPrefab = (GameObject)Resources.Load("[INKY]/DialogBubble");
+
+        inkUI = ISceneSingleton<UIManager>.Instance.GetUIComponent("inkDialog");
+        speaker = inkUI.Query<Label>("speaker");
+        text = inkUI.Query<Label>("inkText");
+        choices = inkUI.Query<GroupBox>("choices");
     }
 
+    /// <summary>
+    /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
+    /// </summary>
+    Regex dialogReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
+
     bool handlingChoice = false;
+    int activeChoice = 0;
     public void Continue() {
         if (handlingChoice) {
-            return;
+            choices.Clear();
+            story.ChooseChoiceIndex(activeChoice);
+            text.style.display = DisplayStyle.Flex;
+            handlingChoice = false;
         }
+
         if (story.canContinue) {
             var storyText = story.Continue();
-            text.text = storyText;
+            var dialog = dialogReader.Match(storyText);
+            if (dialog.Success) {
+                if (dialog.Groups["speaker"].Success) {
+                    speaker.text = dialog.Groups["speaker"].Value;
+                    speaker.style.display = DisplayStyle.Flex;
+                } else {
+                    speaker.style.display = DisplayStyle.None;
+                }
+                text.text = dialog.Groups["dialog"].Value;
+            } else {
+                Debug.LogError("Regex match for dialog not found.");
+                text.text = storyText;
+            }
         } else {
             if (story.currentChoices.Count > 0) {
                 handlingChoice = true;
-                text.visible = false;
+                text.style.display = DisplayStyle.None;
+                foreach (var choice in story.currentChoices) {
+                    var choiceBox = new Button();
+                    choiceBox.text = choice.text;
+                    choices.Add(choiceBox);
+                }
+                UpdateActiveChoice(0);
             } else {
                 inkUI.visible = false;
                 OnKnotCompleted();
@@ -48,18 +85,32 @@ public class StoryManager
         }
     }
 
-    public void MoveUpdate(Vector2 move) {
+    void UpdateActiveChoice(int c) {
+        choices[activeChoice].style.backgroundColor = new StyleColor(StyleKeyword.Initial);
+        activeChoice = c;
+        choices[activeChoice].style.backgroundColor = new StyleColor(Color.blue);
+    }
 
+    public void MoveUpdate(Vector2 move) {
+        if (!handlingChoice) {
+            return;
+        }
+        var x = Mathf.Sign(move.x);
+        var y = -Mathf.Sign(move.y);
+
+        int choice = activeChoice;
+        if (Mathf.Abs(move.x) > 0.05f) {
+            choice = (int)Mathf.Clamp(activeChoice + x, 0, story.currentChoices.Count - 1);
+        } else if (Mathf.Abs(move.y) > 0.05f) {
+            choice = (int)Mathf.Clamp(activeChoice + y, 0, story.currentChoices.Count - 1);
+        }
+        UpdateActiveChoice(choice);
     }
 
     public delegate void KnotComplete();
     protected event KnotComplete OnKnotCompleted;
+
     public void Run(string name, Transform transformToDisplay, KnotComplete onComplete) {
-        if (inkUI == null) {
-            inkUI = ISceneSingleton<UIManager>.Instance.GetUIComponent("inkDialog");
-            speaker = inkUI.Query<Label>("speaker");
-            text = inkUI.Query<Label>("inkText");
-        }
         story.ChoosePathString(name);
         inkUI.visible = true;
         inkUI.transform.position = UIManager.WorldToScreen(transformToDisplay.position) - new Vector3(inkUI.contentRect.width/4, inkUI.contentRect.height/2);

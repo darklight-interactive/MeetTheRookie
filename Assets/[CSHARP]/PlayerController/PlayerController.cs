@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // If we're not handling ink interactions, do movement:
-        if (canInteract == false) {
+        if (canInteract) {
             HandleMovement();
         }
     }

@@ -1,7 +1,7 @@
 ﻿=== Mel ===
-I swallowed a bug.
+[Mel:] I swallowed a bug.
 
-You ever think about swallowing bugs?
+[Mel:] You ever think about swallowing bugs?
 
 * Don't tell me that.
 * Okay.
