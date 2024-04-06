@@ -47,8 +47,8 @@ namespace Darklight.Game.Grid2D
         }
 
         #region [[ Grid Public Properties ]] =============================== >>
-        [Range(2, 10)] public int gridSizeX = 3;
-        [Range(2, 10)] public int gridSizeY = 3;
+        [Range(1, 10)] public int gridSizeX = 3;
+        [Range(1, 10)] public int gridSizeY = 3;
         [Range(0.1f, 1f)] public float coordinateSize = 1;
         [Range(-1, 1)] public int gridXAxisDirection = 1;
         [Range(-1, 1)] public int gridYAxisDirection = 1;

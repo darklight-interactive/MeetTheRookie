@@ -31,7 +31,14 @@ namespace Darklight.Game.Grid2D
             UpdateOverlapGrid();
         }
 
-        public void UpdateOverlapGrid()
+        public virtual void Reset()
+        {
+            grid2D.SetParent(transform);
+            grid2D.InitializeGridToSetValues();
+            UpdateOverlapGrid();
+        }
+
+        void UpdateOverlapGrid()
         {
             foreach (Vector2Int vector2Int in grid2D.GetPositionKeys())
             {
@@ -90,34 +97,12 @@ namespace Darklight.Game.Grid2D
             overlapGridScript.Awake();
         }
 
-        public override void OnInspectorGUI()
-        {
-            EditorGUI.BeginChangeCheck();
-            DrawDefaultInspector();
-            OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
-
-            if (GUILayout.Button("Reset Grid"))
-            {
-                overlapGridScript.grid2D.SetParent(overlapGridScript.transform);
-                overlapGridScript.grid2D.InitializeGridToSetValues();
-                overlapGridScript.UpdateOverlapGrid();
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorUtility.SetDirty(target);
-                serializedObject.ApplyModifiedProperties();
-            }
-
-        }
-
         private void OnSceneGUI()
         {
             OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
-            overlapGridScript.UpdateOverlapGrid();
+            overlapGridScript.Update();
 
             DisplayOverlapGrid2D(overlapGridScript);
-
         }
 
         public void DisplayOverlapGrid2D(OverlapGrid2D overlapGrid2D)

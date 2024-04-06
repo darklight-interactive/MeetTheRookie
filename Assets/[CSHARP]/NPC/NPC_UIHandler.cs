@@ -20,7 +20,7 @@ public class NPC_UIHandler : OverlapGrid2D
 
     public override void Awake()
     {
-        base.Awake();
+        base.Awake(); // Activate the OverlapGrid2D
 
     }
 
@@ -32,6 +32,7 @@ public class NPC_UIHandler : OverlapGrid2D
 
         availablePositionKeys.Clear();
 
+        // Loop through the overlapped colliders and store the coordinates with zero colliders
         Dictionary<int, List<Coordinate>> coordinateDict = GetCoordinatesByColliderCount();
         if (coordinateDict == null || coordinateDict.Count == 0) return;
 
@@ -50,6 +51,27 @@ public class NPC_UIHandler : OverlapGrid2D
                 }
             }
         }
+
+
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+
+        // Remove dialogue bubbles that are no longer in the available position keys
+        foreach (Vector2Int key in dialogueBubbles.Keys)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(dialogueBubbles[key]);
+            }
+            else
+            {
+                DestroyImmediate(dialogueBubbles[key]);
+            }
+        }
+        dialogueBubbles.Clear();
     }
 
     public void SpawnDialogueBubble(Vector2Int positionKey)
@@ -59,6 +81,7 @@ public class NPC_UIHandler : OverlapGrid2D
         Vector3 worldPosition = grid2D.GetCoordinatePositionInWorldSpace(positionKey);
         GameObject dialogueBubble = Instantiate(dialogueBubblePrefab, worldPosition, Quaternion.identity);
         dialogueBubble.transform.SetParent(transform);
+        dialogueBubble.transform.localScale = Vector3.one * grid2D.coordinateSize;
         dialogueBubbles.Add(positionKey, dialogueBubble);
     }
 }
@@ -77,8 +100,14 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
         {
             if (npcUIHandler.availablePositionKeys.Count > 0)
             {
-                npcUIHandler.SpawnDialogueBubble(npcUIHandler.availablePositionKeys[0]);
+                int randomIndex = Random.Range(0, npcUIHandler.availablePositionKeys.Count);
+                npcUIHandler.SpawnDialogueBubble(npcUIHandler.availablePositionKeys[randomIndex]);
             }
+        }
+
+        if (GUILayout.Button("Reset"))
+        {
+            npcUIHandler.Reset();
         }
     }
 
