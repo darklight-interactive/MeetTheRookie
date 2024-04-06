@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StoryManager;
 
 [RequireComponent(typeof(Collider2D))]
 public class InkInteraction : MonoBehaviour
@@ -24,7 +25,10 @@ public class InkInteraction : MonoBehaviour
         }
     }
 
+    public void Interact(KnotComplete onComplete) {
+        StoryManager.Instance.Run(inkKnot, transform, onComplete);
+    }
     public void Interact() {
-        StoryManager.Instance.Run(inkKnot, transform);
+        StoryManager.Instance.Continue();
     }
 }

@@ -1,5 +1,6 @@
 using Ink.Runtime;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 [System.Serializable]
@@ -26,11 +27,22 @@ public class StoryManager
     }
 
     public void Continue() {
-        var storyText = story.Continue();
-        text.text = storyText;
+        if (story.canContinue) {
+            var storyText = story.Continue();
+            text.text = storyText;
+        } else {
+            if (story.currentChoices.Count > 0) {
+                text.text = "CHOICE";
+            } else {
+                inkUI.visible = false;
+                OnKnotCompleted();
+            }
+        }
     }
 
-    public void Run(string name, Transform transformToDisplay) {
+    public delegate void KnotComplete();
+    protected event KnotComplete OnKnotCompleted;
+    public void Run(string name, Transform transformToDisplay, KnotComplete onComplete) {
         if (inkUI == null) {
             inkUI = ISceneSingleton<UIManager>.Instance.GetUIComponent("inkDialog");
             speaker = inkUI.Query<Label>("speaker");
@@ -38,8 +50,9 @@ public class StoryManager
         }
         story.ChoosePathString(name);
         inkUI.visible = true;
-        inkUI.transform.position = UIManager.WorldToScreen(transformToDisplay.position);
+        inkUI.transform.position = UIManager.WorldToScreen(transformToDisplay.position) - new Vector3(inkUI.contentRect.width/4, inkUI.contentRect.height/2);
         Continue();
+        OnKnotCompleted += onComplete;
     }
 
     protected Story story;

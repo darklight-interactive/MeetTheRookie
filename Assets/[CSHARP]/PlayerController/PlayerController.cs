@@ -91,8 +91,20 @@ public class PlayerController : MonoBehaviour
         interactions.Add(i);
     }
 
+    /// <summary>
+    /// A possible interaction we could do.
+    /// </summary>
     InkInteraction currentInteraction = null;
+    /// <summary>
+    /// An interaction we're currently handling.
+    /// </summary>
+    InkInteraction activeInteraction = null;
+
+    protected bool canInteract = true;
     void HandleInteractions() {
+        if (!canInteract) {
+            return;
+        }
         // May want a better priority system, but this is fine for now:
         if (interactions.Count > 0) {
             var toInteract = interactions.First();
@@ -106,9 +118,18 @@ public class PlayerController : MonoBehaviour
 
     void Interact(InputAction.CallbackContext context) {
         if (currentInteraction != null) {
-            currentInteraction.Interact();
-            currentInteraction = null;
+            canInteract = false;
             ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(false);
+
+            activeInteraction = currentInteraction;
+            currentInteraction = null;
+
+            activeInteraction.Interact(() => {
+                canInteract = true;
+                activeInteraction = null;
+            });
+        } else if (activeInteraction != null) {
+            activeInteraction.Interact();
         }
     }
     #endregion
