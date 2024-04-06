@@ -28,7 +28,7 @@ public partial class UXML_InkyLabel : Label
     }
 }
 
-public class DialogueBubble : MonoBehaviour
+public class DialogueBubbleHandler : MonoBehaviour
 {
     UIDocument uiDocument;
     PanelSettings panelSettings;
@@ -53,8 +53,6 @@ public class DialogueBubble : MonoBehaviour
         inkyLabel = root.Q<UXML_InkyLabel>();
         bubble = root.Q<VisualElement>("BubbleSprite");
         root.Q<UXML_InkyLabel>().dataSource = this;
-
-        //inkyLabel.SetBubble(bubbleSprite);
 
         bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
 
@@ -94,7 +92,7 @@ public class DialogueBubble : MonoBehaviour
 
 
         // Update the bubble sprite
-        //inkyLabel.SetBubble(bubbleSprite);
+        bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
 
     }
 
@@ -102,12 +100,12 @@ public class DialogueBubble : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(DialogueBubble))]
+[CustomEditor(typeof(DialogueBubbleHandler))]
 public class DialogueBubbleEditor : Editor
 {
     private void OnEnable()
     {
-        DialogueBubble dialogueBubble = (DialogueBubble)target;
+        DialogueBubbleHandler dialogueBubble = (DialogueBubbleHandler)target;
         dialogueBubble.Awake();
     }
 
@@ -115,7 +113,7 @@ public class DialogueBubbleEditor : Editor
     {
         DrawDefaultInspector();
 
-        DialogueBubble dialogueBubble = (DialogueBubble)target;
+        DialogueBubbleHandler dialogueBubble = (DialogueBubbleHandler)target;
         if (GUILayout.Button("Update Text"))
         {
             dialogueBubble.Update();

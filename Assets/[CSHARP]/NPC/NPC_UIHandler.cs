@@ -24,13 +24,12 @@ public class NPC_UIHandler : OverlapGrid2D
         NPC_UIHandler parent; // reference to parent
         Coordinate gridCoordinate;
         [SerializeField] string dialogueText = "Hello, World!";
-        [SerializeField] GameObject dialogueBubblePrefab = null;
+        [SerializeField] Sprite bubbleSprite;
         [SerializeField] bool active = false;
-        public DialogueBubble(NPC_UIHandler parent, Coordinate gridCoordinate, GameObject dialogueBubblePrefab, string dialogueText)
+        public DialogueBubble(NPC_UIHandler parent, Coordinate gridCoordinate, string dialogueText)
         {
             this.parent = parent;
             this.gridCoordinate = gridCoordinate;
-            this.dialogueBubblePrefab = dialogueBubblePrefab;
             this.dialogueText = dialogueText;
         }
 
@@ -61,10 +60,18 @@ public class NPC_UIHandler : OverlapGrid2D
 
         public void SpawnDialogueBubble()
         {
+
+            // Create the dialogue bubble game object
             Vector3 worldPosition = this.gridCoordinate.worldPosition;
-            GameObjectInstance = Instantiate(dialogueBubblePrefab, worldPosition, Quaternion.identity);
+            GameObjectInstance = Instantiate(parent.dialogueBubblePrefab, worldPosition, Quaternion.identity);
             GameObjectInstance.transform.SetParent(parent.transform);
             GameObjectInstance.transform.localScale = Vector3.one * gridCoordinate.parent.coordinateSize;
+
+            // Initialize the dialogue bubble handler
+            DialogueBubbleHandler dialogueBubbleHandler = GameObjectInstance.GetComponent<DialogueBubbleHandler>();
+            dialogueBubbleHandler.dialogueText = dialogueText;
+            dialogueBubbleHandler.bubbleSprite = bubbleSprite;
+            dialogueBubbleHandler.Awake();
         }
     }
     #endregion
@@ -93,7 +100,7 @@ public class NPC_UIHandler : OverlapGrid2D
             // If the dialogue bubble does not exist, create it
             if (!_dict.ContainsKey(coordinate.positionKey))
             {
-                DialogueBubble dialogueBubble = new DialogueBubble(this, coordinate, dialogueBubblePrefab, "Dialogue Text Here");
+                DialogueBubble dialogueBubble = new DialogueBubble(this, coordinate, "Dialogue Text Here");
                 _dict.Add(coordinate.positionKey, dialogueBubble);
             }
         }
@@ -112,19 +119,11 @@ public class NPC_UIHandler : OverlapGrid2D
     public override void Reset()
     {
         base.Reset();
-
-        _dict.Clear();
         availableBubbles.Clear();
-        foreach (DialogueBubble dialogueBubble in availableBubbles)
+
+        foreach (DialogueBubble dialogueBubble in _dict.Values)
         {
-            if (Application.isPlaying)
-            {
-                Destroy(dialogueBubble.GameObjectInstance);
-            }
-            else
-            {
-                DestroyImmediate(dialogueBubble.GameObjectInstance);
-            }
+            dialogueBubble.SetActive(false);
         }
 
         this.Update();
