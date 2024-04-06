@@ -12,7 +12,11 @@ public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
         (this as ISceneSingleton<UIManager>).Initialize();
         doc = GetComponent<UIDocument>();
         root = doc.rootVisualElement;
-        interactPrompt = root.Query<VisualElement>("pressSpace");
+        interactPrompt = root.Query<VisualElement>("interactPrompt");
+    }
+
+    public VisualElement GetUIComponent(string name) {
+        return root.Query(name);
     }
 
     VisualElement interactPrompt;
@@ -22,7 +26,7 @@ public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
         hoverTransform = objectToHover;
     }
 
-    Vector3 WorldToScreen(Vector3 worldPos) {
+    public static Vector3 WorldToScreen(Vector3 worldPos) {
         var pos = Camera.main.WorldToScreenPoint(worldPos);
         // Per https://forum.unity.com/threads/forcing-a-ui-element-to-follow-a-character-in-3d-space.1010968/
         pos.y = Camera.main.pixelHeight - pos.y;
