@@ -56,7 +56,6 @@ public class DialogueBubble : MonoBehaviour
 
     public void Update()
     {
-
         // Update the text only if it has changed
         if (inkyLabel.text != dialogueText)
         {
@@ -84,7 +83,6 @@ public class DialogueBubble : MonoBehaviour
             if (meshRenderer.sharedMaterial == null)
                 meshRenderer.sharedMaterial = new Material(material);
             meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
-
         }
     }
 
