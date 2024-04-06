@@ -3,8 +3,11 @@
 
 [Mel:] You ever think about swallowing bugs?
 
-* Don't tell me that.
-* Okay.
+* Don't[.] tell me that.
+	[Mel:] Too late.
+* Okay[.], and?
+	[Mel:] I'll make you eat a bug.
++ ->
 
-- Bugs are my friends.
+- [Mel:] Bugs are my friends.
 -> DONE

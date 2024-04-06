@@ -1,5 +1,6 @@
 using Ink.Runtime;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -36,6 +37,10 @@ public class StoryManager
         speaker = inkUI.Query<Label>("speaker");
         text = inkUI.Query<Label>("inkText");
         choices = inkUI.Query<GroupBox>("choices");
+
+        story.onError += (message, type) => {
+            Debug.LogError("[Ink] " + type + " " + message);
+        };
     }
 
     /// <summary>
@@ -45,10 +50,16 @@ public class StoryManager
 
     bool handlingChoice = false;
     int activeChoice = 0;
+    /// <summary>
+    /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
+    /// </summary>
+    List<int> choiceMapping = new List<int>();
     public void Continue() {
         if (handlingChoice) {
+            story.ChooseChoiceIndex(choiceMapping[activeChoice]);
+
             choices.Clear();
-            story.ChooseChoiceIndex(activeChoice);
+            choiceMapping.Clear();
             text.style.display = DisplayStyle.Flex;
             handlingChoice = false;
         }
@@ -73,10 +84,14 @@ public class StoryManager
                 handlingChoice = true;
                 text.style.display = DisplayStyle.None;
                 foreach (var choice in story.currentChoices) {
-                    var choiceBox = new Button();
+                    var choiceBox = new Button(() => {
+                        activeChoice = choice.index;
+                        Continue();
+                    });
                     choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
                     choiceBox.text = choice.text;
                     choices.Add(choiceBox);
+                    choiceMapping.Add(choice.index);
                 }
                 UpdateActiveChoice(0);
             } else {
