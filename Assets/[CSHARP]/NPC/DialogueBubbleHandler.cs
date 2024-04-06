@@ -53,10 +53,6 @@ public class DialogueBubbleHandler : MonoBehaviour
         inkyLabel = root.Q<UXML_InkyLabel>();
         bubble = root.Q<VisualElement>("BubbleSprite");
         root.Q<UXML_InkyLabel>().dataSource = this;
-
-        bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
-
-        Update();
     }
 
     public void Update()
@@ -64,7 +60,11 @@ public class DialogueBubbleHandler : MonoBehaviour
         // Update the text only if it has changed
         if (inkyLabel.text != dialogueText)
         {
+            // Set Values
             inkyLabel.SetText(dialogueText);
+            bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
+
+            // Destroy old render texture
             if (panelSettings.targetTexture != null)
             {
                 panelSettings.targetTexture.Release();
@@ -89,11 +89,6 @@ public class DialogueBubbleHandler : MonoBehaviour
                 meshRenderer.sharedMaterial = new Material(material);
             meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
         }
-
-
-        // Update the bubble sprite
-        bubble.style.backgroundImage = new StyleBackground(bubbleSprite);
-
     }
 
 

@@ -18,13 +18,22 @@ public class NPC_UIHandler : OverlapGrid2D
     [System.Serializable]
     public class DialogueBubble
     {
-        public GameObject GameObjectInstance { get; private set; }    // reference to the dialogue bubble game object
-        public bool Active => active; // is the dialogue bubble active?
+        public bool Active
+        {
+            // is the dialogue bubble active?
+            get => active;
+            set
+            {
+                active = value;
+            }
+        }
 
         NPC_UIHandler parent; // reference to parent
-        Coordinate gridCoordinate;
+        public DialogueBubbleHandler dialogueBubbleHandler { get; private set; } // reference to the dialogue bubble handler
+        public Coordinate gridCoordinate { get; private set; } // reference to the grid coordinate;
+        public GameObject dialogueBubbleObject { get; private set; }    // reference to the dialogue bubble game object
         [SerializeField] string dialogueText = "Hello, World!";
-        [SerializeField] Sprite bubbleSprite;
+        public Sprite bubbleSprite;
         [SerializeField] bool active = false;
         public DialogueBubble(NPC_UIHandler parent, Coordinate gridCoordinate, string dialogueText)
         {
@@ -35,56 +44,48 @@ public class NPC_UIHandler : OverlapGrid2D
 
         public void Update()
         {
-            if (active && GameObjectInstance == null)
+            if (active && dialogueBubbleObject == null)
             {
+                parent.DeactivateOtherBubbles(this);
                 SpawnDialogueBubble();
             }
-            else if (!active && GameObjectInstance != null)
+            else if (!active && dialogueBubbleObject != null)
             {
                 if (Application.isPlaying)
                 {
-                    Destroy(GameObjectInstance);
+                    Destroy(dialogueBubbleObject);
                 }
                 else
                 {
-                    DestroyImmediate(GameObjectInstance);
+                    DestroyImmediate(dialogueBubbleObject);
                 }
             }
-        }
-
-        public void SetActive(bool active)
-        {
-            this.active = active;
-            Update();
         }
 
         public void SpawnDialogueBubble()
         {
+            if (dialogueBubbleObject != null) return;
 
             // Create the dialogue bubble game object
             Vector3 worldPosition = this.gridCoordinate.worldPosition;
-            GameObjectInstance = Instantiate(parent.dialogueBubblePrefab, worldPosition, Quaternion.identity);
-            GameObjectInstance.transform.SetParent(parent.transform);
-            GameObjectInstance.transform.localScale = Vector3.one * gridCoordinate.parent.coordinateSize;
+            dialogueBubbleObject = Instantiate(parent.dialogueBubblePrefab, worldPosition, Quaternion.identity);
+            dialogueBubbleObject.transform.SetParent(parent.transform);
+            dialogueBubbleObject.transform.localScale = Vector3.one * gridCoordinate.parent.coordinateSize;
 
             // Initialize the dialogue bubble handler
-            DialogueBubbleHandler dialogueBubbleHandler = GameObjectInstance.GetComponent<DialogueBubbleHandler>();
+            this.dialogueBubbleHandler = dialogueBubbleObject.GetComponent<DialogueBubbleHandler>();
             dialogueBubbleHandler.dialogueText = dialogueText;
             dialogueBubbleHandler.bubbleSprite = bubbleSprite;
+
             dialogueBubbleHandler.Awake();
+            dialogueBubbleHandler.Update();
         }
     }
     #endregion
 
-    private Dictionary<Vector2Int, DialogueBubble> _dict = new Dictionary<Vector2Int, DialogueBubble>();
+    [SerializeField] private Dictionary<Vector2Int, DialogueBubble> _dict = new Dictionary<Vector2Int, DialogueBubble>();
     public GameObject dialogueBubblePrefab;
     public List<DialogueBubble> availableBubbles = new List<DialogueBubble>();
-
-    public override void Awake()
-    {
-        this.Reset();
-        this.Update();
-    }
 
     public override void Update()
     {
@@ -103,16 +104,23 @@ public class NPC_UIHandler : OverlapGrid2D
                 DialogueBubble dialogueBubble = new DialogueBubble(this, coordinate, "Dialogue Text Here");
                 _dict.Add(coordinate.positionKey, dialogueBubble);
             }
+            else
+            {
+                _dict[coordinate.positionKey].Update();
+            }
         }
 
         // Set the available dialogue bubbles
         availableBubbles.Clear();
         availableBubbles = _dict.Values.ToList();
+    }
 
-        // Loop through the available dialogue bubbles and update them
-        foreach (DialogueBubble dialogueBubble in availableBubbles)
+    public void DeactivateOtherBubbles(DialogueBubble activeBubble)
+    {
+        foreach (DialogueBubble dialogueBubble in _dict.Values)
         {
-            dialogueBubble.Update();
+            if (dialogueBubble != activeBubble)
+                dialogueBubble.Active = false;
         }
     }
 
@@ -123,10 +131,8 @@ public class NPC_UIHandler : OverlapGrid2D
 
         foreach (DialogueBubble dialogueBubble in _dict.Values)
         {
-            dialogueBubble.SetActive(false);
+            dialogueBubble.Active = false; // deactivate the dialogue bubble
         }
-
-        this.Update();
     }
 }
 

@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5637496021300154754}
-  - component: {fileID: 914537803336558450}
-  - component: {fileID: 2754404416026470691}
+  - component: {fileID: 1011467748862636128}
   - component: {fileID: 3718211297970446473}
   - component: {fileID: 2805206744071655001}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: '[NPC] Not Mel'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,13 +28,13 @@ Transform:
   m_GameObject: {fileID: 8047210650981322983}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 1, z: 0}
+  m_LocalPosition: {x: -0.51953125, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &914537803336558450
+--- !u!114 &1011467748862636128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,25 +43,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 8047210650981322983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4df52898f33921543b55ccd011f296b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 37df2651b73eb6745a08fd660a2c9bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJSONAsset: {fileID: 0}
-  bubbleTexture: {fileID: 0}
-  renderTexture: {fileID: 0}
-  inkString: NPC_InkDialogue
---- !u!114 &2754404416026470691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8047210650981322983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  grid2D:
+    gridSizeX: 3
+    gridSizeY: 2
+    coordinateSize: 0.5
+    gridXAxisDirection: 1
+    gridYAxisDirection: 1
+    gridParentPositionKey: {x: 1, y: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 192
+  dialogueBubblePrefab: {fileID: 4280565907865160122, guid: 0206b76f2b4adc345b6970554cbd172c, type: 3}
+  availableBubbles:
+  - dialogueText: u look weird
+    bubbleSprite: {fileID: -4196291772993804712, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
+    active: 0
+  - dialogueText: man i love coffee
+    bubbleSprite: {fileID: -3514209476637312783, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
+    active: 0
+  - dialogueText: shut the fuck up
+    bubbleSprite: {fileID: 273964438189553839, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
+    active: 0
+  - dialogueText: hey im doin the dougie
+    bubbleSprite: {fileID: -5535322275217465947, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
+    active: 0
 --- !u!212 &3718211297970446473
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -161,5 +168,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.25, y: 0.5}
   m_EdgeRadius: 0
