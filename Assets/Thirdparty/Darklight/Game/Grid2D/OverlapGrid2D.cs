@@ -55,8 +55,8 @@ namespace Darklight.Game.Grid2D
                 // Assign color
                 switch (colliders.Length)
                 {
-                    case < 0:
-                        gridCoordinate.color = Color.grey;
+                    case <= 0:
+                        gridCoordinate.color = Color.white;
                         break;
                     case 1:
                         gridCoordinate.color = Color.yellow;

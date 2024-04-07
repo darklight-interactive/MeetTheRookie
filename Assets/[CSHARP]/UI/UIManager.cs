@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
 {
-    public Camera uiCamera;
     UIDocument doc;
     VisualElement root;
     private void Awake() {
