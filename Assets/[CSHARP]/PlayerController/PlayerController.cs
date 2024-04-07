@@ -5,6 +5,8 @@ using Darklight;
 using Darklight.UnityExt.Input;
 using UnityEngine.InputSystem;
 using Darklight.Game.SpriteAnimation;
+using System.Linq;
+using System;
 
 [RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
@@ -15,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero;
 
+    [Header("Interactions")]
+    public GameObject interactionPopup;
+
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
@@ -24,7 +29,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
+        // If we're not handling ink interactions, do movement:
+        if (canInteract) {
+            HandleMovement();
+        }
+    }
+
+    private void FixedUpdate() {
+        HandleInteractions();
     }
 
 
@@ -40,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
         moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
         moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
+        UniversalInputManager.PrimaryInteractAction.performed += Interact;
     }
 
     void HandleMovement()
@@ -72,6 +85,72 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Interactions
+    /// <summary>
+    /// All interactions we're handling.
+    /// </summary>
+    protected HashSet<InkInteraction> interactions = new HashSet<InkInteraction>();
+    public void UnsubscribeInteraction(InkInteraction i) {
+        interactions.Remove(i);
+    }
+    public void SubscribeInteraction(InkInteraction i) {
+        interactions.Add(i);
+    }
+
+    /// <summary>
+    /// A possible interaction we could do.
+    /// </summary>
+    InkInteraction currentInteraction = null;
+    /// <summary>
+    /// An interaction we're currently handling.
+    /// </summary>
+    InkInteraction activeInteraction = null;
+
+    /// <summary>
+    /// Should we be allowing movement/showing interaction popups?
+    /// </summary>
+    protected bool canInteract = true;
+    /// <summary>
+    /// General update for interactions. Handles some input and looks through registered interactions.
+    /// </summary>
+    void HandleInteractions() {
+        if (activeInteraction != null && _activeMoveInput != Vector2.zero) {
+            activeInteraction.MoveInteract(_activeMoveInput);
+        }
+        if (!canInteract) {
+            return;
+        }
+        // May want a better priority system, but this is fine for now:
+        if (interactions.Count > 0) {
+            var toInteract = interactions.First();
+            currentInteraction = toInteract;
+            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(true, toInteract.transform);
+        } else if (currentInteraction != null) {
+            currentInteraction = null;
+            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(false);
+        }
+    }
+
+    /// <summary>
+    /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
+    /// </summary>
+    void Interact(InputAction.CallbackContext context) {
+        if (currentInteraction != null) {
+            canInteract = false;
+            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(false);
+
+            activeInteraction = currentInteraction;
+            currentInteraction = null;
+
+            activeInteraction.Interact(() => {
+                canInteract = true;
+                activeInteraction = null;
+            });
+        } else if (activeInteraction != null) {
+            activeInteraction.Interact();
+        }
+    }
+    #endregion
 
 }
 
