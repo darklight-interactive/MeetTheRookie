@@ -13,7 +13,20 @@ using UnityEditor;
 [ExecuteAlways]
 public class NPC_UIHandler : OverlapGrid2D
 {
-    private NPC_DialogueBubble activeDialogueBubble;
+    [System.Serializable]
+    public class DialogueSpriteOverride
+    {
+        public Vector2Int positionKey;
+        public Sprite bubbleSprite;
+        public DialogueSpriteOverride(Vector2Int positionKey, Sprite bubbleSprite)
+        {
+            this.positionKey = positionKey;
+            this.bubbleSprite = bubbleSprite;
+        }
+    }
+
+    [SerializeField] private List<DialogueSpriteOverride> dialogueBubbleOverrides = new List<DialogueSpriteOverride>();
+    public NPC_DialogueBubble activeDialogueBubble { get; private set; } = null;
     public GameObject dialogueBubblePrefab;
     public NPC_DialogueBubble.Settings defaultBubbleSettings;
 
@@ -28,13 +41,7 @@ public class NPC_UIHandler : OverlapGrid2D
 
     public override void Update()
     {
-        base.Update(); // Get the overlapped colliders & available coordinates
-
-        if (activeDialogueBubble != null)
-        {
-            activeDialogueBubble.settings = defaultBubbleSettings; // << TODO: get the current ink value
-            activeDialogueBubble.Update(); // Update the dialogue bubble
-        }
+        base.Update(); // Update the grid2D
     }
 
     public override void Reset()
@@ -71,12 +78,31 @@ public class NPC_UIHandler : OverlapGrid2D
                 bubbleObject.transform.localScale = Vector3.one * coordinate.parent.coordinateSize;
 
                 // Get the dialogue bubble component
-                activeDialogueBubble = bubbleObject.GetComponent<NPC_DialogueBubble>(); ;
-                activeDialogueBubble.settings = defaultBubbleSettings; // << get the default settings from the inspector
+                activeDialogueBubble = bubbleObject.GetComponent<NPC_DialogueBubble>();
+
+                // Set Overrides
+                if (dialogueBubbleOverrides != null && dialogueBubbleOverrides.Count > 0)
+                {
+                    DialogueSpriteOverride dialogueSpriteOverride = GetDialogueSpriteOverride(coordinate.positionKey);
+                    if (dialogueSpriteOverride != null)
+                    {
+                        activeDialogueBubble.settings.bubbleSprite = dialogueSpriteOverride.bubbleSprite;
+                    }
+                }
+                else
+                {
+                    activeDialogueBubble.settings = defaultBubbleSettings;
+                }
             }
         }
 
+        activeDialogueBubble.ManualUpdate();
         return activeDialogueBubble;
+    }
+
+    public DialogueSpriteOverride GetDialogueSpriteOverride(Vector2Int positionKey)
+    {
+        return dialogueBubbleOverrides.FirstOrDefault(x => x.positionKey == positionKey);
     }
 
     public void DeleteObject(GameObject obj)
@@ -92,6 +118,7 @@ public class NPC_UIHandler : OverlapGrid2D
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(NPC_UIHandler))]
+[CanEditMultipleObjects]
 public class NPC_UIHandlerEditor : OverlapGrid2DEditor
 {
     bool showAdvancedSettings = false;
@@ -101,14 +128,14 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
         NPC_UIHandler npcUIHandler = (NPC_UIHandler)target;
 
         EditorGUI.BeginChangeCheck();
+        base.OnInspectorGUI();
 
         CustomInspectorGUI.CreateFoldout(ref showAdvancedSettings, "Advanced Settings", () =>
         {
-            base.OnInspectorGUI();
 
-            if (GUILayout.Button("Update"))
+            if (GUILayout.Button("Manual Update"))
             {
-                npcUIHandler.Update();
+                npcUIHandler.activeDialogueBubble.ManualUpdate();
             }
 
             if (GUILayout.Button("Reset"))
@@ -133,6 +160,7 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
             foreach (Vector2Int vector2Int in positionKeys)
             {
                 Coordinate coordinate = npcUIHandler.grid2D.GetCoordinate(vector2Int);
+                if (coordinate == null) continue;
 
                 CustomGizmos.DrawLabel($"{vector2Int}", coordinate.worldPosition, CustomGUIStyles.BoldStyle);
                 CustomGizmos.DrawButtonHandle(coordinate.worldPosition, npcUIHandler.grid2D.coordinateSize * 0.75f, Vector3.forward, coordinate.color, () =>

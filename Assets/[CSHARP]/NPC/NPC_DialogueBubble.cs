@@ -34,19 +34,14 @@ public partial class UXML_InkyLabel : Label
 public class NPC_DialogueBubble : MonoBehaviour
 {
     [System.Serializable]
-    public struct Settings
+    public class Settings
     {
-        [SerializeField, TextArea(3, 10)] public string dialogueText;
+        [SerializeField, TextArea(3, 10)] public string dialogueText = "Hello from the default settings on the NPC_DialogueBubble. >>";
         public Sprite bubbleSprite;
         public Material material_prefab;
         public RenderTexture renderTexture_prefab;
-        public Settings
-        (
-            string dialogueText = "",
-            Sprite bubbleSprite = null,
-            Material material_prefab = null,
-            RenderTexture renderTexture_prefab = null
-        )
+        public Settings() { }
+        public Settings(string dialogueText, Sprite bubbleSprite, Material material_prefab, RenderTexture renderTexture_prefab)
         {
             this.dialogueText = dialogueText;
             this.bubbleSprite = bubbleSprite;
@@ -56,6 +51,7 @@ public class NPC_DialogueBubble : MonoBehaviour
     }
 
     public Settings settings = new Settings();
+    NPC_UIHandler uiHandler;
     UIDocument uiDocument;
     PanelSettings panelSettings;
     VisualElement root;
@@ -77,52 +73,48 @@ public class NPC_DialogueBubble : MonoBehaviour
 
         // Quad
         meshRenderer = GetComponentInChildren<MeshRenderer>();
+
+
     }
 
-    public void Update()
+    public void ManualUpdate()
     {
-        string text = settings.dialogueText;
-        Sprite sprite = settings.bubbleSprite;
-        if (text == null || sprite == null)
+        NPC_UIHandler uiHandler = GetComponentInParent<NPC_UIHandler>();
+        settings = new Settings("Test: This is where the ink script would connect to and set the current dialogue", settings.bubbleSprite,
+            uiHandler.defaultBubbleSettings.material_prefab, uiHandler.defaultBubbleSettings.renderTexture_prefab);
+
+        inkyLabel.SetText(settings.dialogueText);
+        bubble.style.backgroundImage = new StyleBackground(settings.bubbleSprite);
+
+        // Destroy old render texture
+        if (panelSettings.targetTexture != null)
         {
-            Debug.LogError("Text or Sprite is null", this);
-            return;
-        }
+            panelSettings.targetTexture.Release();
 
-        // Set Values
-        if (inkyLabel == null) return;
-        if (bubble == null) return;
-        if (text != inkyLabel.text || bubble.style.backgroundImage != new StyleBackground(sprite))
-        {
-            inkyLabel.SetText(text);
-            bubble.style.backgroundImage = new StyleBackground(sprite);
-
-            Debug.Log("Updating Text and Bubble Sprite");
-
-            // Destroy old render texture
-            if (panelSettings.targetTexture != null)
+            // destroy the old render texture in play and edit mode
+            if (Application.isPlaying)
             {
-                panelSettings.targetTexture.Release();
-
-                // destroy the old render texture in play and edit mode
-                if (Application.isPlaying)
-                {
-                    Destroy(panelSettings.targetTexture);
-                }
-                else
-                {
-                    DestroyImmediate(panelSettings.targetTexture);
-                }
+                Destroy(panelSettings.targetTexture);
             }
-
-            // create a new render texture
-            panelSettings.targetTexture = new RenderTexture(512, 512, 24);
-
-            // assign the render texture to the material
-            if (meshRenderer.sharedMaterial == null)
-                meshRenderer.sharedMaterial = new Material(settings.material_prefab);
-            meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
+            else
+            {
+                DestroyImmediate(panelSettings.targetTexture);
+            }
         }
+
+        // create a new render texture
+        panelSettings.targetTexture = new RenderTexture(512, 512, 24);
+
+        // assign the render texture to the material
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+
+        // Set this bubble's settings to the default bubble material and texture
+        settings.material_prefab = uiHandler.defaultBubbleSettings.material_prefab;
+        settings.renderTexture_prefab = uiHandler.defaultBubbleSettings.renderTexture_prefab;
+
+        // Set the material and texture
+        meshRenderer.sharedMaterial = new Material(settings.material_prefab);
+        meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
     }
 }
 
