@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
 {
+    public Camera uiCamera;
     UIDocument doc;
     VisualElement root;
     private void Awake() {
@@ -26,8 +27,11 @@ public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
         hoverTransform = objectToHover;
     }
 
-    public static Vector3 WorldToScreen(Vector3 worldPos) {
-        var pos = Camera.main.WorldToScreenPoint(worldPos);
+    public static Vector3 WorldToScreen(Vector3 worldPos)
+    {
+        if (Camera.main == null) throw new System.Exception("No main camera found.");
+
+        Vector3 pos = Camera.main.WorldToScreenPoint(worldPos);
         // Per https://forum.unity.com/threads/forcing-a-ui-element-to-follow-a-character-in-3d-space.1010968/
         pos.y = Camera.main.pixelHeight - pos.y;
         pos.z = 0;
@@ -36,6 +40,8 @@ public class UIManager : MonoBehaviour, ISceneSingleton<UIManager>
 
     void Update() {
         if (hoverTransform != null) {
+            //Debug.Log("Hovering over " + hoverTransform.name + $" at {hoverTransform.position}");
+
             interactPrompt.transform.position = WorldToScreen(hoverTransform.position);
         }
     }

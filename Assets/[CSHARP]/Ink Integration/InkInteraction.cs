@@ -11,7 +11,7 @@ public class InkInteraction : MonoBehaviour
     PlayerController c;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        var controller = other.GetComponentInParent<PlayerController>();
+        PlayerController controller = other.GetComponentInParent<PlayerController>();
         if (controller != null) {
             controller.SubscribeInteraction(this);
             c = controller;
