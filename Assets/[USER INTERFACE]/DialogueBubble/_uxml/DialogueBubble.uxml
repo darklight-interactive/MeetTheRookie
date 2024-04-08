@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/DialogueBubble/_uxml/DialogueBubble.uss?fileID=7433441132597879392&amp;guid=099b41db94faf5c4c96ab4655ee47d0c&amp;type=3#DialogueBubble" />
-    <ui:VisualElement name="container" style="height: auto; flex-grow: 0; flex-shrink: 0; max-width: 512px; max-height: 512px;">
-        <ui:VisualElement name="bubbleSprite" class="inky-dialogue-bubble inky-bubble" style="flex-shrink: 0;">
-            <UXML_InkyLabel text="This is the default UXML_InkyLabel Text set by the DialogueBubble.uxml file. Please update me by using the UXML_InkyLabel C# class linked to this file. Have a chill day :O" name="inkyLabel" />
+    <ui:VisualElement name="container" style="flex-grow: 1; align-items: center; justify-content: center; align-self: center;">
+        <ui:VisualElement name="bubbleSprite" class="inky-bubble">
+            <UXML_InkyLabel text="This is the default UXML_InkyLabel Text set by the DialogueBubble.uxml file.  Have a chill day :O" name="inkyLabel" class="inky-label" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

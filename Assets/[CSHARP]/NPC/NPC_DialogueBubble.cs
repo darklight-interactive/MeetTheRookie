@@ -68,19 +68,18 @@ public class NPC_DialogueBubble : MonoBehaviour
 
         // INKY Label
         inkyLabel = root.Q<UXML_InkyLabel>();
-        bubble = root.Q<VisualElement>("BubbleSprite");
+        bubble = root.Q<VisualElement>("bubbleSprite");
         root.Q<UXML_InkyLabel>().dataSource = this; // set data source for binding attributes
 
         // Quad
         meshRenderer = GetComponentInChildren<MeshRenderer>();
 
-
     }
 
-    public void ManualUpdate()
+    public void ManualUpdate(string text)
     {
         NPC_UIHandler uiHandler = GetComponentInParent<NPC_UIHandler>();
-        settings = new Settings("Test: This is where the ink script would connect to and set the current dialogue", settings.bubbleSprite,
+        settings = new Settings(text, settings.bubbleSprite,
             uiHandler.defaultBubbleSettings.material_prefab, uiHandler.defaultBubbleSettings.renderTexture_prefab);
 
         inkyLabel.SetText(settings.inkyLabel);
@@ -103,7 +102,7 @@ public class NPC_DialogueBubble : MonoBehaviour
         }
 
         // create a new render texture
-        panelSettings.targetTexture = new RenderTexture(512, 512, 24);
+        panelSettings.targetTexture = new RenderTexture(1080, 1080, 24);
 
         // assign the render texture to the material
         meshRenderer = GetComponentInChildren<MeshRenderer>();

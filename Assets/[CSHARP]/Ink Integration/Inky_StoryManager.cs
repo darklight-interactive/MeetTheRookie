@@ -10,21 +10,21 @@ using UnityEngine.UIElements;
 /// Singleton for managing all Ink UI.
 /// </summary>
 [System.Serializable]
-public class Ink_StoryManager
+public class Inky_StoryManager
 {
-    private static Ink_StoryManager instance;
-    public static Ink_StoryManager Instance
+    private static Inky_StoryManager instance;
+    public static Inky_StoryManager Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = new Ink_StoryManager();
+                instance = new Inky_StoryManager();
             }
             return instance;
         }
     }
-    private Ink_StoryManager()
+    private Inky_StoryManager()
     {
         story = new Story(((TextAsset)Resources.Load("[INKY]/test")).text);
 
@@ -35,29 +35,49 @@ public class Ink_StoryManager
     }
 
     /// <summary>
-    /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
-    /// </summary>
-    Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
-
-    /// <summary>
     /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
     /// </summary>
     List<int> choiceMapping = new List<int>();
     bool handlingChoice = false;
     int activeChoice = 0;
 
+    public string currentText => story.currentText;
 
-    public struct InkDialogue
+    public class InkDialogue
     {
-        public string speakerName;
-        public string textBody;
+        public string speakerName = "[ Unknown ]";
+        public string textBody = " default text body";
+
+        /// <summary>
+        /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
+        /// </summary>
+        Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
+
+        public InkDialogue(string storyText)
+        {
+            // Get the token values from the dialogueReader
+            Match dialogueTokens = dialogueReader.Match(storyText);
+            if (dialogueTokens.Success)
+            {
+                // if speaker is found, set the speaker text
+                if (dialogueTokens.Groups["speaker"].Success)
+                {
+                    this.speakerName = dialogueTokens.Groups["speaker"].Value;
+                }
+
+                this.textBody = dialogueTokens.Groups["dialog"].Value;
+            }
+            else
+            {
+                Debug.LogError("Regex match for dialog not found.");
+                this.textBody = storyText;
+            }
+        }
     }
 
 
     public InkDialogue Continue()
     {
-        InkDialogue newDialogue = new InkDialogue();
-
         // if player is handling a choice, choose the choice and continue
         if (handlingChoice)
         {
@@ -69,27 +89,12 @@ public class Ink_StoryManager
         // continue the story text
         if (story.canContinue)
         {
-            string storyText = story.Continue();
-
-            // Get the token values from the dialogueReader
-            Match dialogueTokens = dialogueReader.Match(storyText);
-            if (dialogueTokens.Success)
-            {
-                // if speaker is found, set the speaker text
-                if (dialogueTokens.Groups["speaker"].Success)
-                {
-                    newDialogue.speakerName = dialogueTokens.Groups["speaker"].Value;
-                }
-
-                newDialogue.textBody = dialogueTokens.Groups["dialog"].Value;
-            }
-            else
-            {
-                Debug.LogError("Regex match for dialog not found.");
-                newDialogue.textBody = storyText;
-            }
+            story.Continue();
+            return new InkDialogue(story.currentText);
         }
-        return newDialogue;
+
+        return null;
+
 
 
 
@@ -155,18 +160,13 @@ public class Ink_StoryManager
     public delegate void KnotComplete();
     protected event KnotComplete OnKnotCompleted;
 
-    public void Run(string name, Ink_Interaction interactionOrigin, KnotComplete onComplete)
+    public void Run(string name, KnotComplete onComplete)
     {
         story.ChoosePathString(name);
-        InkDialogue newDialogue = Continue();
+
+        InkDialogue dialogue = Continue();
+
         OnKnotCompleted += onComplete;
-
-        UXML_InteractionUI interactionUI = ISceneSingleton<UXML_InteractionUI>.Instance;
-        if (interactionUI != null)
-            interactionUI.DisplayDialogueBubble(interactionOrigin.transform.position, newDialogue.textBody);
-        else
-            Debug.LogError("No interaction UI found.");
-
     }
 
     protected Story story;

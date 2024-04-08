@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Ink_Interaction interaction = other.GetComponent<Ink_Interaction>();
+        Inky_Interaction interaction = other.GetComponent<Inky_Interaction>();
         if (interaction != null)
         {
             SubscribeInteraction(interaction);
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Ink_Interaction interaction = other.GetComponent<Ink_Interaction>();
+        Inky_Interaction interaction = other.GetComponent<Inky_Interaction>();
         if (interaction != null)
         {
             UnsubscribeInteraction(interaction);
@@ -102,14 +102,14 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>
-    public Ink_Interaction targetInteraction;
-    public Ink_Interaction activeInkInteraction;
-    protected HashSet<Ink_Interaction> interactions = new HashSet<Ink_Interaction>();
-    public void UnsubscribeInteraction(Ink_Interaction i)
+    public Inky_Interaction targetInteraction;
+    public Inky_Interaction activeInkInteraction;
+    protected HashSet<Inky_Interaction> interactions = new HashSet<Inky_Interaction>();
+    public void UnsubscribeInteraction(Inky_Interaction i)
     {
         interactions.Remove(i);
     }
-    public void SubscribeInteraction(Ink_Interaction i)
+    public void SubscribeInteraction(Inky_Interaction i)
     {
         interactions.Add(i);
     }
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         {
             // May want a better priority system, but this is fine for now:
             this.targetInteraction = interactions.First();
-            interactionUI.DisplayInteractPrompt(this.targetInteraction.transform.position);
+            this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
         }
     }
 
@@ -153,10 +153,28 @@ public class PlayerController : MonoBehaviour
                 // reset on callback
                 canInteract = true;
                 activeInkInteraction = null;
+
             });
-
-
+            Debug.Log("Interact >> Start Ink Interaction");
         }
+        else if (activeInkInteraction != null)
+        {
+            Inky_StoryManager.InkDialogue dialogue = Inky_StoryManager.Instance.Continue();
+            if (dialogue != null)
+            {
+                Debug.Log("Interact >> Continue Ink Interaction");
+            }
+            else
+            {
+
+                // End the interaction
+                activeInkInteraction.ResetInteraction();
+                activeInkInteraction = null;
+                canInteract = true;
+                Debug.Log("Interact >> End Ink Interaction");
+            }
+        }
+
     }
     #endregion
 

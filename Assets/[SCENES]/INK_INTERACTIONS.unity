@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6247173}
   m_Layer: 0
-  m_Name: <GAMEMANAGER>
+  m_Name: < GAME MANAGER >
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,7 +166,7 @@ PrefabInstance:
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      objectReference: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -780,16 +780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37df2651b73eb6745a08fd660a2c9bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid2D:
-    gridSizeX: 3
-    gridSizeY: 2
-    coordinateSize: 0.5
-    gridXAxisDirection: 1
-    gridYAxisDirection: 1
-    gridParentPositionKey: {x: 1, y: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 192
+  inkKnot: Mel
+  interactionType: 0
   dialogueBubbleOverrides:
   - positionKey: {x: 0, y: 0}
     bubbleSprite: {fileID: -4196291772993804712, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
@@ -814,8 +806,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7527273016814130682}
-  - component: {fileID: 7527273016814130683}
   - component: {fileID: 2901200661090169880}
+  - component: {fileID: 7527273016814130683}
   - component: {fileID: 1572859457896948977}
   - component: {fileID: 46248231586957857}
   m_Layer: 7
@@ -849,10 +841,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5325288156900856991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f1f7266bc62fe4e9476336bc2ca80f, type: 3}
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkKnot: Mel
+  grid2D:
+    gridSizeX: 3
+    gridSizeY: 2
+    coordinateSize: 0.6
+    gridXAxisDirection: 1
+    gridYAxisDirection: 1
+    gridParentPositionKey: {x: 1, y: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

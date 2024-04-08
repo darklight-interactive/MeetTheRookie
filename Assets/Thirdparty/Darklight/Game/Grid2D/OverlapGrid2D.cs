@@ -13,32 +13,29 @@ using static Darklight.Game.Grid2D.Grid2D<UnityEngine.Collider2D[]>;
 
 namespace Darklight.Game.Grid2D
 {
-
     [ExecuteAlways]
     public class OverlapGrid2D : MonoBehaviour
     {
         public Grid2D<Collider2D[]> grid2D;
         public LayerMask layerMask;
 
-        public virtual void Awake()
+        public void Awake()
         {
-            grid2D.SetParent(transform);
-            grid2D.InitializeGridToSetValues();
+            Reset();
         }
 
-        public virtual void Update()
+        public void Reset()
         {
-            UpdateOverlapGrid();
+            if (grid2D != null)
+            {
+                grid2D.SetParent(this.transform);
+                grid2D.InitializeGridToSetValues();
+            }
+
+            Update();
         }
 
-        public virtual void Reset()
-        {
-            grid2D.SetParent(transform);
-            grid2D.InitializeGridToSetValues();
-            UpdateOverlapGrid();
-        }
-
-        void UpdateOverlapGrid()
+        public void Update()
         {
             foreach (Vector2Int vector2Int in grid2D.GetPositionKeys())
             {
@@ -91,18 +88,29 @@ namespace Darklight.Game.Grid2D
     [CustomEditor(typeof(OverlapGrid2D), true)]
     public class OverlapGrid2DEditor : Editor
     {
+        OverlapGrid2D overlapGridScript;
         private void OnEnable()
         {
-            OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
+            overlapGridScript = (OverlapGrid2D)target;
             overlapGridScript.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            DrawDefaultInspector();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                overlapGridScript.Reset();
+            }
         }
 
         private void OnSceneGUI()
         {
-            OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
-            overlapGridScript.Update();
-
-            DisplayOverlapGrid2D(overlapGridScript);
+            overlapGridScript = (OverlapGrid2D)target;
+            DisplayOverlapGrid2D(this.overlapGridScript);
         }
 
         public void DisplayOverlapGrid2D(OverlapGrid2D overlapGrid2D)
