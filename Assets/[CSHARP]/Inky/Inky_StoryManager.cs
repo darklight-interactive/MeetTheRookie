@@ -45,13 +45,14 @@ public class Inky_StoryManager
 
     public class InkDialogue
     {
-        public string speakerName = "[ Unknown ]";
-        public string textBody = " default text body";
-
         /// <summary>
         /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
         /// </summary>
         Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
+
+        public string speakerName = "[ Unknown ]";
+        public string textBody = " default text body";
+
 
         public InkDialogue(string storyText)
         {
