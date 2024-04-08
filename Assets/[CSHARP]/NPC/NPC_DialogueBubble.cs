@@ -36,14 +36,14 @@ public class NPC_DialogueBubble : MonoBehaviour
     [System.Serializable]
     public class Settings
     {
-        [SerializeField, TextArea(3, 10)] public string dialogueText = "Hello from the default settings on the NPC_DialogueBubble. >>";
+        [SerializeField, TextArea(3, 10)] public string inkyLabel = "Hello from the default settings on the NPC_DialogueBubble. >>";
         public Sprite bubbleSprite;
         public Material material_prefab;
         public RenderTexture renderTexture_prefab;
         public Settings() { }
         public Settings(string dialogueText, Sprite bubbleSprite, Material material_prefab, RenderTexture renderTexture_prefab)
         {
-            this.dialogueText = dialogueText;
+            this.inkyLabel = dialogueText;
             this.bubbleSprite = bubbleSprite;
             this.material_prefab = material_prefab;
             this.renderTexture_prefab = renderTexture_prefab;
@@ -83,7 +83,7 @@ public class NPC_DialogueBubble : MonoBehaviour
         settings = new Settings("Test: This is where the ink script would connect to and set the current dialogue", settings.bubbleSprite,
             uiHandler.defaultBubbleSettings.material_prefab, uiHandler.defaultBubbleSettings.renderTexture_prefab);
 
-        inkyLabel.SetText(settings.dialogueText);
+        inkyLabel.SetText(settings.inkyLabel);
         bubble.style.backgroundImage = new StyleBackground(settings.bubbleSprite);
 
         // Destroy old render texture

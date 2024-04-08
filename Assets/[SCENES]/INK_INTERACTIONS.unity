@@ -151,8 +151,8 @@ Transform:
   - {fileID: 1569741190}
   - {fileID: 709012062}
   - {fileID: 2015783347}
-  - {fileID: 1335520714}
   - {fileID: 1420547525}
+  - {fileID: 1335520714}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &709012060
@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: moveVector.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5365568965282730410, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: interactionUI
+      value: 
+      objectReference: {fileID: 1420547526}
     - target: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Name
       value: '[PLAYER] Lupe'
@@ -427,7 +431,7 @@ GameObject:
   - component: {fileID: 1420547526}
   - component: {fileID: 1420547527}
   m_Layer: 0
-  m_Name: '[UI MANAGER]'
+  m_Name: '[UXML] Interaction UI'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bdb96b3de897b4ab7836d50feac439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doc: {fileID: 1420547527}
 --- !u!114 &1420547527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +698,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -798,7 +801,7 @@ MonoBehaviour:
     bubbleSprite: {fileID: 273964438189553839, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
   dialogueBubblePrefab: {fileID: 4280565907865160122, guid: 0206b76f2b4adc345b6970554cbd172c, type: 3}
   defaultBubbleSettings:
-    dialogueText: Hello World from the Dialogue Text
+    inkyLabel: Hello from the default settings on the NPC_DialogueBubble. >>
     bubbleSprite: {fileID: -5535322275217465947, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
     material_prefab: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
     renderTexture_prefab: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}

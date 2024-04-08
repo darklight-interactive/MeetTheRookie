@@ -53,7 +53,12 @@ public class NPC_UIHandler : OverlapGrid2D
         }
     }
 
-    public NPC_DialogueBubble CreateNewDialogueBubbleAt(Vector2 positionKey)
+    public void NewDialogBubble(string text)
+    {
+        CreateNewDialogueBubbleAt(new Vector2(0, 0), text);
+    }
+
+    NPC_DialogueBubble CreateNewDialogueBubbleAt(Vector2 positionKey, string text)
     {
         // Delete the active dialogue bubble
         if (activeDialogueBubble != null) DeleteObject(activeDialogueBubble.gameObject);
@@ -86,6 +91,7 @@ public class NPC_UIHandler : OverlapGrid2D
                     DialogueSpriteOverride dialogueSpriteOverride = GetDialogueSpriteOverride(coordinate.positionKey);
                     if (dialogueSpriteOverride != null)
                     {
+                        activeDialogueBubble.settings.inkyLabel = text;
                         activeDialogueBubble.settings.bubbleSprite = dialogueSpriteOverride.bubbleSprite;
                     }
                 }
@@ -170,7 +176,7 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
                 CustomGizmos.DrawLabel($"{vector2Int}", coordinate.worldPosition, CustomGUIStyles.BoldStyle);
                 CustomGizmos.DrawButtonHandle(coordinate.worldPosition, npcUIHandler.grid2D.coordinateSize * 0.75f, Vector3.forward, coordinate.color, () =>
                 {
-                    NPC_DialogueBubble dialogueBubble = npcUIHandler.CreateNewDialogueBubbleAt(vector2Int);
+                    npcUIHandler.NewDialogBubble("Hello World!");
                 }, Handles.RectangleHandleCap);
             }
         }

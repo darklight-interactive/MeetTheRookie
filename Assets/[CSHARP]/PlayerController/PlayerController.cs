@@ -12,13 +12,11 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
+    public UXML_InteractionUI interactionUI;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero;
-
-    [Header("Interactions")]
-    public GameObject interactionPopup;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
@@ -40,7 +38,25 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    #region ===== [ HANDLE MOVE INPUT ] ===== >>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Ink_Interaction interaction = other.GetComponent<Ink_Interaction>();
+        if (interaction != null)
+        {
+            SubscribeInteraction(interaction);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Ink_Interaction interaction = other.GetComponent<Ink_Interaction>();
+        if (interaction != null)
+        {
+            UnsubscribeInteraction(interaction);
+        }
+    }
+
+    #region ===== [ HANDLE UNIVERSAL INPUTS ] ===== >>
     Vector2 _activeMoveInput = Vector2.zero;
     void StartInputListener()
     {
@@ -85,72 +101,66 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Interactions
-    /// <summary>
-    /// All interactions we're handling.
-    /// </summary>
-    protected HashSet<InkInteraction> interactions = new HashSet<InkInteraction>();
-    public void UnsubscribeInteraction(InkInteraction i) {
+    #region ===== [[ INTERACTION HANDLING ]] ===== >>
+    public Ink_Interaction targetInteraction;
+    public Ink_Interaction activeInkInteraction;
+    protected HashSet<Ink_Interaction> interactions = new HashSet<Ink_Interaction>();
+    public void UnsubscribeInteraction(Ink_Interaction i)
+    {
         interactions.Remove(i);
     }
-    public void SubscribeInteraction(InkInteraction i) {
+    public void SubscribeInteraction(Ink_Interaction i)
+    {
         interactions.Add(i);
     }
 
-    /// <summary>
-    /// A possible interaction we could do.
-    /// </summary>
-    InkInteraction currentInteraction = null;
-    /// <summary>
-    /// An interaction we're currently handling.
-    /// </summary>
-    InkInteraction activeInteraction = null;
-
-    /// <summary>
-    /// Should we be allowing movement/showing interaction popups?
-    /// </summary>
     protected bool canInteract = true;
-    /// <summary>
-    /// General update for interactions. Handles some input and looks through registered interactions.
-    /// </summary>
-    void HandleInteractions() {
-        if (activeInteraction != null && _activeMoveInput != Vector2.zero) {
-            activeInteraction.MoveInteract(_activeMoveInput);
-        }
-        if (!canInteract) {
+    void HandleInteractions()
+    {
+        if (!canInteract) return;
+
+        if (interactions.Count == 0)
+        {
+            interactionUI.HideInteractPrompt();
             return;
         }
-        // May want a better priority system, but this is fine for now:
-        if (interactions.Count > 0) {
-            var toInteract = interactions.First();
-            currentInteraction = toInteract;
-            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(toInteract.transform.position);
-        } else if (currentInteraction != null) {
-            currentInteraction = null;
-            ISceneSingleton<UIManager>.Instance.HideInteractPrompt();
+        else
+        {
+            // May want a better priority system, but this is fine for now:
+            this.targetInteraction = interactions.First();
+            interactionUI.DisplayInteractPrompt(this.targetInteraction.transform.position);
         }
     }
+
 
     /// <summary>
     /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
     /// </summary>
     void Interact(InputAction.CallbackContext context) {
-        if (currentInteraction != null) {
+        if (targetInteraction != null)
+        {
+            // Hide Interaction Prompt
             canInteract = false;
-            ISceneSingleton<UIManager>.Instance.HideInteractPrompt();
+            interactionUI.HideInteractPrompt();
 
-            activeInteraction = currentInteraction;
-            currentInteraction = null;
+            // Transfer the target interaction to the active interaction
+            activeInkInteraction = targetInteraction;
+            targetInteraction = null;
 
-            activeInteraction.Interact(() => {
+            // Start the interaction
+            activeInkInteraction.StartInteractionKnot(() =>
+            {
+                // reset on callback
                 canInteract = true;
-                activeInteraction = null;
+                activeInkInteraction = null;
             });
-        } else if (activeInteraction != null) {
-            activeInteraction.Interact();
+
+
         }
     }
     #endregion
+
+
 
 }
 

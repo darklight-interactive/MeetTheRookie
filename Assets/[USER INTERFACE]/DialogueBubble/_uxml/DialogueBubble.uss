@@ -18,11 +18,11 @@
     align-self: auto;
     flex-wrap: wrap;
     text-overflow: clip;
-    overflow: hidden;
+    overflow: visible;
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&guid=d95d61c132c648c42b6313ed97ed9cf7&type=3#LGGothic");
 }
 
-.inky-container {
+.inky-bubble {
     background-image: url("project://database/Assets/[SPRITES]/DialogueUI.png?fileID=-3514209476637312783&guid=cb0772e0a86fdf34f89e41fa59df7756&type=3#DialogueUI_1");
     flex-grow: 0;
     padding-top: 10%;
@@ -32,7 +32,7 @@
     flex-shrink: 1;
 }
 
-.inky-container:hover {
+.inky-bubble:hover {
     background-image: url("project://database/Assets/[SPRITES]/DialogueUI.png?fileID=-3514209476637312783&guid=cb0772e0a86fdf34f89e41fa59df7756&type=3#DialogueUI_1");
     flex-grow: 0;
     padding-top: 10%;
