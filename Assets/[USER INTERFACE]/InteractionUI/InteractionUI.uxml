@@ -1,10 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="DialogueBubble" src="project://database/Assets/[USER%20INTERFACE]/DialogueBubble/_uxml/DialogueBubble.uxml?fileID=9197481963319205126&amp;guid=e04c770115cfa124d82578e7646e15ee&amp;type=3#DialogueBubble" />
-    <engine:Template name="DialogBubble" src="project://database/Assets/[USER%20INTERFACE]/InteractionUI/DialogBubble.uxml?fileID=9197481963319205126&amp;guid=aa6e056040311d745bea25bd8f0b1f76&amp;type=3#DialogBubble" />
     <Style src="project://database/Assets/[USER%20INTERFACE]/DialogueBubble/_uxml/DialogueBubble.uss?fileID=7433441132597879392&amp;guid=099b41db94faf5c4c96ab4655ee47d0c&amp;type=3#DialogueBubble" />
-    <engine:VisualElement name="interactPrompt" style="position: absolute; width: 100px; height: 30px; visibility: hidden; background-color: rgba(0, 0, 0, 0.64);">
+    <engine:VisualElement name="interactPrompt" style="position: absolute; width: 100px; height: 30px; visibility: visible; background-color: rgba(0, 0, 0, 0.64); display: flex;">
         <engine:Label text="Press Z" name="Label" style="color: rgb(255, 255, 255);" />
-        <engine:Instance template="DialogueBubble" name="container" class="inky-container" style="flex-shrink: 0; height: 843px; width: 836px; position: absolute;" />
     </engine:VisualElement>
-    <engine:Instance template="DialogBubble" name="inkDialog" style="visibility: hidden;" />
+    <engine:Instance template="DialogueBubble" name="dialogueBubble" style="visibility: hidden;" />
 </engine:UXML>

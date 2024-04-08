@@ -124,10 +124,10 @@ public class PlayerController : MonoBehaviour
         if (interactions.Count > 0) {
             var toInteract = interactions.First();
             currentInteraction = toInteract;
-            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(true, toInteract.transform);
+            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(toInteract.transform.position);
         } else if (currentInteraction != null) {
             currentInteraction = null;
-            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(false);
+            ISceneSingleton<UIManager>.Instance.HideInteractPrompt();
         }
     }
 
@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context) {
         if (currentInteraction != null) {
             canInteract = false;
-            ISceneSingleton<UIManager>.Instance.DisplayInteractPrompt(false);
+            ISceneSingleton<UIManager>.Instance.HideInteractPrompt();
 
             activeInteraction = currentInteraction;
             currentInteraction = null;

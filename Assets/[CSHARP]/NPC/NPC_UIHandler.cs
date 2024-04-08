@@ -135,6 +135,11 @@ public class NPC_UIHandlerEditor : OverlapGrid2DEditor
 
             if (GUILayout.Button("Manual Update"))
             {
+                if (npcUIHandler.activeDialogueBubble != null)
+                {
+                    Debug.LogError("No active dialogue bubble found.");
+                    return;
+                }
                 npcUIHandler.activeDialogueBubble.ManualUpdate();
             }
 
