@@ -25,6 +25,11 @@ public class InkyInteraction : MonoBehaviour
         inkStoryManager.Run(inkKnot, onComplete);
     }
 
+    public virtual InkyDialogue ContinueDialogue()
+    {
+        return inkStoryManager.Continue();
+    }
+
     public virtual void ResetInteraction()
     {
         interactionUI.HideInteractPrompt();

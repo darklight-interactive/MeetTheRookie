@@ -138,9 +138,9 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         if (targetInteraction != null)
-            {
-                // Hide Interaction Prompt
-                canInteract = false;
+        {
+            // Hide Interaction Prompt
+            canInteract = false;
             UXML_InteractionUI.Instance.HideInteractPrompt();
 
             // Transfer the target interaction to the active interaction
@@ -149,32 +149,32 @@ public class PlayerController : MonoBehaviour
 
             // Start the interaction
             activeInkInteraction.StartInteractionKnot(() =>
-                {
-                    // reset on callback
-                    canInteract = true;
-                    activeInkInteraction = null;
-
-                });
-                Debug.Log("Interact >> Start Ink Interaction");
-            }
-            else if (activeInkInteraction != null)
             {
-            InkyStoryManager.InkDialogue dialogue = InkyStoryManager.Instance.Continue();
+                // reset on callback
+                canInteract = true;
+                activeInkInteraction = null;
+            });
+            Debug.Log("Interact >> Start Ink Interaction");
+        }
+        else if (activeInkInteraction != null)
+        {
+            InkyStoryManager.InkyDialogue dialogue = InkyStoryManager.Instance.Continue();
             if (dialogue != null)
             {
                 Debug.Log("Interact >> Continue Ink Interaction");
+                activeInkInteraction.ContinueDialogue();
             }
-                else
-                {
+            else
+            {
 
-                    // End the interaction
-                    if (activeInkInteraction)
-                        activeInkInteraction.ResetInteraction();
-                    activeInkInteraction = null;
-                    canInteract = true;
-                    Debug.Log("Interact >> End Ink Interaction");
-                }
+                // End the interaction
+                if (activeInkInteraction)
+                    activeInkInteraction.ResetInteraction();
+                activeInkInteraction = null;
+                canInteract = true;
+                Debug.Log("Interact >> End Ink Interaction");
             }
+        }
     }
     #endregion
 

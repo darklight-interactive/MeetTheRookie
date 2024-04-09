@@ -36,13 +36,13 @@ public class InkyStoryManager
 
 
 
-    public string currentText => story.currentText;
+    public InkyDialogue currentInkDialog { get; private set; }
 
 
     /// <summary>
     /// Ink Dialogue class to 
     /// </summary>
-    public class InkDialogue
+    public class InkyDialogue
     {
         /// <summary>
         /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
@@ -53,7 +53,7 @@ public class InkyStoryManager
         public string textBody = " default text body";
 
 
-        public InkDialogue(string storyText)
+        public InkyDialogue(string storyText)
         {
             // Get the token values from the dialogueReader
             Match dialogueTokens = dialogueReader.Match(storyText);
@@ -82,7 +82,7 @@ public class InkyStoryManager
     bool handlingChoice = false;
     int activeChoice = 0;
     List<Choice> choices = new List<Choice>();
-    public InkDialogue Continue()
+    public InkyDialogue Continue()
     {
         // if player is handling a choice, choose the choice and continue
         if (handlingChoice)
@@ -92,14 +92,16 @@ public class InkyStoryManager
             handlingChoice = false;
         }
 
-        // >> CONTINUE STORY
+        // >> CONTINUE STORY --------------------------------
         if (story.canContinue)
         {
             story.Continue();
-            return new InkDialogue(story.currentText);
+
+            currentInkDialog = new InkyDialogue(story.currentText);
+            return currentInkDialog;
         }
 
-        // >> CHECK FOR CHOICES
+        // >> CHECK FOR CHOICES -----------------------------------
         else if (story.currentChoices.Count > 0)
         {
             handlingChoice = true;
@@ -117,7 +119,10 @@ public class InkyStoryManager
             UpdateActiveChoice(0);
         }
         else
+        {
             OnKnotCompleted();
+        }
+
         return null;
     }
 
@@ -156,7 +161,7 @@ public class InkyStoryManager
     {
         story.ChoosePathString(name);
 
-        InkDialogue dialogue = Continue();
+        InkyDialogue dialogue = Continue();
 
         OnKnotCompleted += onComplete;
     }

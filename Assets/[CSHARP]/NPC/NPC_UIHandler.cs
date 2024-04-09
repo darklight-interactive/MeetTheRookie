@@ -28,35 +28,38 @@ public class NPC_UIHandler : InkyInteraction
         });
 
         Coordinate targetGridCoordinate = overlapGrid.GetCoordinatesByColliderCount()[0][2];
-        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition, InkyStoryManager.Instance.currentText);
 
-        Debug.Log($"StartInteractionKnot -> NewDialogueBubble{InkyStoryManager.Instance.currentText}");
+        InkyStoryManager.InkyDialogue currentDialogue = InkyStoryManager.Instance.currentInkDialog;
+        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition, currentDialogue.textBody);
+
+        Debug.Log($"StartInteractionKnot -> NewDialogueBubble{currentDialogue.textBody}");
     }
 
     UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, string text)
     {
-        // Delete the active dialogue bubble
-        if (activeDialogueBubble != null)
-            DeleteObject(activeDialogueBubble.gameObject);
+        if (activeDialogueBubble == null)
+        {
+            // Create a new dialogue bubble
+            this.activeDialogueBubble = GameObject.CreatePrimitive(PrimitiveType.Quad).AddComponent<UXML_WorldSpaceElement>();
+            activeDialogueBubble.transform.SetParent(this.transform);
+            activeDialogueBubble.transform.position = worldPosition;
+            activeDialogueBubble.Initialize(visualTreeAsset, panelSettings);
+        }
 
-        // Create a new dialogue bubble
-        this.activeDialogueBubble = GameObject.CreatePrimitive(PrimitiveType.Quad).AddComponent<UXML_WorldSpaceElement>();
-        activeDialogueBubble.transform.SetParent(this.transform);
-        activeDialogueBubble.transform.position = worldPosition;
-        activeDialogueBubble.ManualUpdate(visualTreeAsset, panelSettings, text);
         return activeDialogueBubble;
     }
 
     public void Update()
     {
-
+        /*
         if (activeDialogueBubble != null && visualTreeAsset != null && panelSettings != null)
         {
-            if (InkyStoryManager.Instance == null)
+            if (InkyStoryManager.Instance == null || InkyStoryManager.Instance.currentText == InkyStoryManager.Instance.currentText)
                 return;
             activeDialogueBubble.ManualUpdate(visualTreeAsset, panelSettings, InkyStoryManager.Instance.currentText);
+            Debug.Log($"npc dialogue update");
         }
-
+        */
     }
 
     public void DeleteObject(GameObject obj)

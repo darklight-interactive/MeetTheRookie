@@ -7,73 +7,48 @@ using UnityEngine.UIElements;
 public class UXML_WorldSpaceElement : MonoBehaviour
 {
     UIDocument uiDocument => GetComponent<UIDocument>();
-    VisualElement root => uiDocument.rootVisualElement;
+    VisualElement root;
     MeshRenderer meshRenderer => GetComponent<MeshRenderer>();
     MeshFilter meshFilter => GetComponent<MeshFilter>();
-    bool initialized;
+    public UXML_InkyBubble inkyBubble;
+    bool initialized = false;
 
-    UXML_InkyBubble inkyBubble;
+    public void Initialize(VisualTreeAsset asset, PanelSettings settings)
+    {
+        uiDocument.visualTreeAsset = asset;
+        uiDocument.panelSettings = settings;
+        root = uiDocument.rootVisualElement;
+        initialized = true;
+    }
 
     public void Update()
     {
+        if (initialized == false) return;
 
-        InkyStoryManager inkyStoryManager = InkyStoryManager.Instance;
-
-
-        /*
-        
-        // Update the text only if it has changed
-        if (inkyLabel.text != dialogueText)
-        {
-            inkyLabel.UpdateText(dialogueText);
-            if (panelSettings.targetTexture != null)
-            {
-                panelSettings.targetTexture.Release();
-
-                // destroy the old render texture in play and edit mode
-                if (Application.isPlaying)
-                {
-                    Destroy(panelSettings.targetTexture);
-                }
-                else
-                {
-                    DestroyImmediate(panelSettings.targetTexture);
-                }
-            }
-
-            // create a new render texture
-            panelSettings.targetTexture = new RenderTexture(512, 512, 24);
-
-            // assign the render texture to the material
-            meshRenderer = GetComponentInChildren<MeshRenderer>();
-            if (meshRenderer.sharedMaterial == null)
-                meshRenderer.sharedMaterial = new Material(material);
-            meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
-
-        }
-        */
-    }
-
-    public void ManualUpdate(VisualTreeAsset asset, PanelSettings settings, string text)
-    {
-        UIDocument uIDocument = GetComponent<UIDocument>();
-        uiDocument.visualTreeAsset = asset;
-        uiDocument.panelSettings = settings;
-
-        if (settings.targetTexture != null)
-            settings.targetTexture.Release();
-
-        // create a new render texture
-        //settings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
-        settings.targetTexture = new RenderTexture(1080, 1080, 24);
+        PanelSettings panelSettings = uiDocument.panelSettings;
+        inkyBubble = root.Q<UXML_InkyBubble>();
+        inkyBubble.SetText(InkyStoryManager.Instance.currentInkDialog.textBody);
+        inkyBubble.visible = true;
 
         // Set the material and texture
-        Material newMaterial = new Material(UXML_InteractionUI.Instance.worldSpaceMaterial);
-        newMaterial.mainTexture = settings.targetTexture;
-        meshRenderer.sharedMaterial = newMaterial;
+        Material worldSpaceMaterial = UXML_InteractionUI.Instance.worldSpaceMaterial;
+        worldSpaceMaterial.mainTexture = panelSettings.targetTexture;
+        meshRenderer.sharedMaterial = worldSpaceMaterial;
+        meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
 
-        inkyBubble = root.Q<UXML_InkyBubble>();
-        inkyBubble.SetText(text);
-        inkyBubble.visible = true;
+        ResetPanelTexture(panelSettings);
+
+        Debug.Log("world space element update");
+    }
+
+    public void ResetPanelTexture(PanelSettings panelSettings)
+    {
+        if (!initialized || panelSettings == null) return;
+        if (panelSettings.targetTexture == null)
+        {
+            panelSettings.targetTexture = new RenderTexture(1080, 1080, 24);
+        }
+
+        panelSettings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
     }
 }

@@ -20,8 +20,6 @@ public partial class UXML_InkyBubble : VisualElement
         };
         inkyLabel.AddToClassList("inky-label");
         this.Add(inkyLabel);
-
-        this.visible = false;
     }
 
     public void SetText(string text)
