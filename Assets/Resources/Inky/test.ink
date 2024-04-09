@@ -1,7 +1,8 @@
+VAR npc = "Unkown"
 
 -> Mel
 === Mel ===
-[Mel:] I swallowed a bug.
+{npc} I swallowed a bug.
 
 [Mel:] You ever think about swallowing bugs?
 

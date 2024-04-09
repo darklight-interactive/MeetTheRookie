@@ -99,19 +99,30 @@ public class InkyStoryManager
         // >> CHECK FOR CHOICES -----------------------------------
         else if (story.currentChoices.Count > 0)
         {
-            //handlingChoice = true;
+            handlingChoice = true;
+
+            // >> Get Choice Group Box
+            UXML_InteractionUI.UXML_Element choiceGroupElement = UXML_InteractionUI.Instance.GetUIElement("choiceGroup");
+            GroupBox groupBox = (GroupBox)choiceGroupElement.visualElement;
+
+            // >> Iterate through choices
             foreach (Choice choice in story.currentChoices)
             {
-                /*
+                choices.Add(choice);
+
+                // >> Create choice elements
                 Button choiceBox = new Button(() =>
                 {
                     activeChoice = choice.index;
                     Continue();
                 });
+
+                groupBox.Add(choiceBox);
+                groupBox.visible = true;
+
                 choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
                 choiceBox.text = choice.text;
                 choiceMapping.Add(choice.index);
-                */
             }
             UpdateActiveChoice(0);
         }

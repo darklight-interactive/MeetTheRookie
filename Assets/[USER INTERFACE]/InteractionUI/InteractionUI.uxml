@@ -3,5 +3,5 @@
     <engine:VisualElement name="interactPrompt" style="position: absolute; width: 100px; height: 30px; visibility: hidden; background-color: rgba(0, 0, 0, 0.64); display: flex;">
         <engine:Label text="Press Z" name="Label" style="color: rgb(255, 255, 255);" />
     </engine:VisualElement>
-    <UXML_InkyBubble name="inkyBubble" style="visibility: hidden; padding-left: 1%; padding-right: 1%;" />
+    <engine:GroupBox name="choiceGroup" style="min-width: auto; min-height: 0; max-width: 256px; max-height: 512px;" />
 </engine:UXML>

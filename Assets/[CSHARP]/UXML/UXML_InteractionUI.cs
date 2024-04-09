@@ -32,24 +32,24 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
     public class UXML_Element
     {
         public string tag;
-        public VisualElement element;
+        public VisualElement visualElement;
         public Vector2 screenPosition = Vector2.zero;
         public UXML_Element(VisualElement element, string tag)
         {
             this.tag = tag;
-            this.element = element;
-            this.element.visible = false; // << Hide it by default
+            this.visualElement = element;
+            this.visualElement.visible = false; // << Hide it by default
         }
 
         public void SetVisible(bool visible)
         {
-            element.visible = visible;
+            visualElement.visible = visible;
         }
 
         public void SetWorldToScreenPosition(Vector3 worldPosition)
         {
             screenPosition = WorldToScreen(worldPosition);
-            element.transform.position = screenPosition;
+            visualElement.transform.position = screenPosition;
         }
     }
 
@@ -61,7 +61,7 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         uiElements.Add(tag, new UXML_Element(element, tag));
     }
 
-    UXML_Element GetUIElement(string tag)
+    public UXML_Element GetUIElement(string tag)
     {
         if (!uiElements.ContainsKey(tag)) throw new System.Exception("No UI element found with tag " + tag);
         return uiElements[tag];
@@ -69,7 +69,7 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
     #endregion
 
     string interactPromptTag = "interactPrompt";
-    string dialogueBubbleTag = "inkyBubble";
+    string choiceGroupTag = "choiceGroup";
 
     UIDocument doc;
     VisualElement root;
@@ -86,9 +86,9 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         root = doc.rootVisualElement;
 
         AddUIElement(interactPromptTag);
-        AddUIElement(dialogueBubbleTag);
+        AddUIElement(choiceGroupTag);
 
-        uiElements[dialogueBubbleTag].element.visible = false;
+        uiElements[choiceGroupTag].visualElement.visible = false;
     }
 
     public void DisplayInteractPrompt(Vector3 worldPosition)
@@ -104,17 +104,5 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         uIElement.SetVisible(false);
     }
 
-    public void DisplayDialogueBubble(string text)
-    {
-        UXML_Element uIElement = GetUIElement(dialogueBubbleTag);
-        uIElement.SetVisible(true);
-
-    }
-
-    public void HideDialogueBubble()
-    {
-        UXML_Element uIElement = GetUIElement(dialogueBubbleTag);
-        uIElement.SetVisible(false);
-    }
 
 }
