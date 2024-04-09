@@ -1,0 +1,55 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../",
+          "files": [
+            "ScriptAssembly.csproj",
+            "EditorAssembly.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "namespaceLayout": "nested",
+      "globalNamespaceId": "MysticForestParkRanger"
+    }
+  ],
+  "build": {
+    "markdownEngineProperties": {
+      "markdigExtensions": [
+          "ListExtras"
+      ]
+    },
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "assets/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "MeetTheRookie",
+      "_appTitle": "MeetTheRookie",
+      "_appLogoPath": "assets/images/icon.png",
+      "_appFaviconPath": "assets/images/icon.png",
+      "_gitUrlPattern": "https://github.com/itspebbleboy/MeetTheRookie",
+      "_enableSearch": true
+    }
+  }
+}
