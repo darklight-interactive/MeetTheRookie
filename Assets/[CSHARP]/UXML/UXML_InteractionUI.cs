@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_InteractionUI>
 {
+    public static UXML_InteractionUI Instance => ISceneSingleton<UXML_InteractionUI>.Instance;
+
     /// <summary>
     /// Convert a world position to a screen position.
     /// </summary>
@@ -27,12 +29,12 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
     /// <summary>
     /// Data structure for an UXML VisualElement.
     /// </summary>
-    public class UIElement
+    public class UXML_Element
     {
         public string tag;
         public VisualElement element;
         public Vector2 screenPosition = Vector2.zero;
-        public UIElement(VisualElement element, string tag)
+        public UXML_Element(VisualElement element, string tag)
         {
             this.tag = tag;
             this.element = element;
@@ -44,7 +46,7 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
             element.visible = visible;
         }
 
-        public void SetPosition(Vector3 worldPosition)
+        public void SetWorldToScreenPosition(Vector3 worldPosition)
         {
             screenPosition = WorldToScreen(worldPosition);
             element.transform.position = screenPosition;
@@ -56,43 +58,25 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         VisualElement element = root.Query(tag);
 
         if (element == null) throw new System.Exception("No UI element found with tag " + tag);
-        uiElements.Add(tag, new UIElement(element, tag));
-        //Debug.Log("Added UI element with tag " + tag);
+        uiElements.Add(tag, new UXML_Element(element, tag));
     }
 
-    UIElement GetUIElement(string tag)
+    UXML_Element GetUIElement(string tag)
     {
         if (!uiElements.ContainsKey(tag)) throw new System.Exception("No UI element found with tag " + tag);
         return uiElements[tag];
     }
-
-    UIElement DisplayUIElementAt(string tag, Vector3 worldPosition)
-    {
-        UIElement uiElement = uiElements[tag];
-        if (uiElements == null) throw new System.Exception("No UI element found with tag " + tag);
-
-        uiElement.SetPosition(worldPosition);
-        uiElement.SetVisible(true);
-
-        return uiElement;
-    }
-
-    void HideUIElement(string tag)
-    {
-        UIElement uiElement = uiElements[tag];
-        if (uiElements == null) throw new System.Exception("No UI element found with tag " + tag);
-
-        uiElement.SetVisible(false);
-    }
     #endregion
 
     string interactPromptTag = "interactPrompt";
-    string dialogueBubbleTag = "dialogueBubble";
-    string inkyLabelTag = "inkyLabel";
+    string dialogueBubbleTag = "inkyBubble";
 
     UIDocument doc;
     VisualElement root;
-    Dictionary<string, UIElement> uiElements = new Dictionary<string, UIElement>();
+    Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
+
+    public Material worldSpaceMaterial;
+    public RenderTexture worldSpaceRenderTexture;
 
     private void Awake()
     {
@@ -103,34 +87,34 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
 
         AddUIElement(interactPromptTag);
         AddUIElement(dialogueBubbleTag);
-        AddUIElement(inkyLabelTag);
 
         uiElements[dialogueBubbleTag].element.visible = false;
     }
 
     public void DisplayInteractPrompt(Vector3 worldPosition)
     {
-        DisplayUIElementAt(interactPromptTag, worldPosition);
+        UXML_Element uIElement = GetUIElement(interactPromptTag);
+        uIElement.SetVisible(true);
+        uIElement.SetWorldToScreenPosition(worldPosition);
     }
 
     public void HideInteractPrompt()
     {
-        HideUIElement(interactPromptTag);
+        UXML_Element uIElement = GetUIElement(interactPromptTag);
+        uIElement.SetVisible(false);
     }
 
-    public void DisplayDialogueBubble(Vector3 worldPosition, string text)
+    public void DisplayDialogueBubble(string text)
     {
-        DisplayUIElementAt(dialogueBubbleTag, worldPosition);
-        UXML_InkyLabel label = uiElements[inkyLabelTag].element as UXML_InkyLabel;
-        label.visible = true;
-        label.SetText(text);
+        UXML_Element uIElement = GetUIElement(dialogueBubbleTag);
+        uIElement.SetVisible(true);
 
-        Debug.Log("Displaying dialogue bubble at " + worldPosition + " with text: " + text);
     }
 
     public void HideDialogueBubble()
     {
-        HideUIElement(dialogueBubbleTag);
+        UXML_Element uIElement = GetUIElement(dialogueBubbleTag);
+        uIElement.SetVisible(false);
     }
 
 }

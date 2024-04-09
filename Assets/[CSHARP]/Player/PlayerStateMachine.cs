@@ -4,7 +4,6 @@ using Darklight;
 using Darklight.Game.SpriteAnimation;
 using UnityEngine;
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACT }
 public class PlayerStateMachine : StateMachine<PlayerState>
 {
     private PlayerAnimator _animator;

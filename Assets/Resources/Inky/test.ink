@@ -5,5 +5,6 @@
 
 [Mel:] You ever think about swallowing bugs?
 
-- [Mel:] Bugs are my friends.
+* No[.], Bugs are my friends. -> DONE
+* Yes[.], I love munching on bugs nom nom nom nom nom nom.
 -> DONE

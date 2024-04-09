@@ -1,23 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Darklight;
-using Darklight.UnityExt.Input;
-using UnityEngine.InputSystem;
-using Darklight.Game.SpriteAnimation;
 using System.Linq;
-using System;
+
+using Darklight;
+using Darklight.Game.SpriteAnimation;
+using Darklight.UnityExt.Input;
+
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public enum PlayerState { NONE, IDLE, WALK, INTERACT }
 
 [RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
-
-    // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
-    // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
         Invoke("StartInputListener", 1);
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
         moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
         moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
-        //UniversalInputManager.PrimaryInteractAction.performed += Interact;
+        UniversalInputManager.PrimaryInteractAction.performed += Interact;
     }
 
     // Update is called once per frame
@@ -43,10 +44,15 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
     }
 
+    void FixedUpdate()
+    {
+        HandleInteractions();
+    }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Inky_Interaction interaction = other.GetComponent<Inky_Interaction>();
+        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
         if (interaction != null)
         {
             SubscribeInteraction(interaction);
@@ -55,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Inky_Interaction interaction = other.GetComponent<Inky_Interaction>();
+        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
         if (interaction != null)
         {
             UnsubscribeInteraction(interaction);
@@ -96,53 +102,53 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>
-    public Inky_Interaction targetInteraction;
-    public Inky_Interaction activeInkInteraction;
-    protected HashSet<Inky_Interaction> interactions = new HashSet<Inky_Interaction>();
-    public void UnsubscribeInteraction(Inky_Interaction i)
+    public InkyInteraction targetInteraction;
+    public InkyInteraction activeInkInteraction;
+    protected HashSet<InkyInteraction> interactions = new HashSet<InkyInteraction>();
+    public void UnsubscribeInteraction(InkyInteraction i)
     {
         interactions.Remove(i);
     }
-    public void SubscribeInteraction(Inky_Interaction i)
+    public void SubscribeInteraction(InkyInteraction i)
     {
         interactions.Add(i);
     }
 
-    /*
-        protected bool canInteract = true;
-        void HandleInteractions()
+    protected bool canInteract = true;
+    void HandleInteractions()
+    {
+        if (!canInteract) return;
+
+        if (interactions.Count == 0)
         {
-            if (!canInteract) return;
-
-            if (interactions.Count == 0)
-            {
-                interactionUI.HideInteractPrompt();
-                return;
-            }
-            else
-            {
-                // May want a better priority system, but this is fine for now:
-                this.targetInteraction = interactions.First();
-                this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
-            }
+            UXML_InteractionUI.Instance.HideInteractPrompt();
+            return;
         }
+        else
+        {
+            // May want a better priority system, but this is fine for now:
+            this.targetInteraction = interactions.First();
+            this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
+        }
+    }
 
-        /// <summary>
-        /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
-        /// </summary>
-        void Interact(InputAction.CallbackContext context) {
-            if (targetInteraction != null)
+    /// <summary>
+    /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
+    /// </summary>
+    void Interact(InputAction.CallbackContext context)
+    {
+        if (targetInteraction != null)
             {
                 // Hide Interaction Prompt
                 canInteract = false;
-                interactionUI.HideInteractPrompt();
+            UXML_InteractionUI.Instance.HideInteractPrompt();
 
-                // Transfer the target interaction to the active interaction
-                activeInkInteraction = targetInteraction;
-                targetInteraction = null;
+            // Transfer the target interaction to the active interaction
+            activeInkInteraction = targetInteraction;
+            targetInteraction = null;
 
-                // Start the interaction
-                activeInkInteraction.StartInteractionKnot(() =>
+            // Start the interaction
+            activeInkInteraction.StartInteractionKnot(() =>
                 {
                     // reset on callback
                     canInteract = true;
@@ -153,11 +159,11 @@ public class PlayerController : MonoBehaviour
             }
             else if (activeInkInteraction != null)
             {
-                Inky_StoryManager.InkDialogue dialogue = Inky_StoryManager.Instance.Continue();
-                if (dialogue != null)
-                {
-                    Debug.Log("Interact >> Continue Ink Interaction");
-                }
+            InkyStoryManager.InkDialogue dialogue = InkyStoryManager.Instance.Continue();
+            if (dialogue != null)
+            {
+                Debug.Log("Interact >> Continue Ink Interaction");
+            }
                 else
                 {
 
@@ -169,8 +175,7 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("Interact >> End Ink Interaction");
                 }
             }
-        }
-        */
+    }
     #endregion
 
 }

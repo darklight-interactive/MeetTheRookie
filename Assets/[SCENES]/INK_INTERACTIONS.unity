@@ -396,6 +396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bdb96b3de897b4ab7836d50feac439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
+  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
 --- !u!114 &1420547527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,21 +820,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inkKnot: Mel
   interactionType: 0
-  dialogueBubbleOverrides:
-  - positionKey: {x: 0, y: 0}
-    bubbleSprite: {fileID: -4196291772993804712, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
-  - positionKey: {x: 0, y: 1}
-    bubbleSprite: {fileID: -3514209476637312783, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
-  - positionKey: {x: 2, y: 1}
-    bubbleSprite: {fileID: -5535322275217465947, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
-  - positionKey: {x: 2, y: 0}
-    bubbleSprite: {fileID: 273964438189553839, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
-  dialogueBubblePrefab: {fileID: 4280565907865160122, guid: 0206b76f2b4adc345b6970554cbd172c, type: 3}
-  defaultBubbleSettings:
-    inkyLabel: Hello from the default settings on the NPC_DialogueBubble. >>
-    bubbleSprite: {fileID: -5535322275217465947, guid: cb0772e0a86fdf34f89e41fa59df7756, type: 3}
-    material_prefab: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
-    renderTexture_prefab: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+  visualTreeAsset: {fileID: 9197481963319205126, guid: e04c770115cfa124d82578e7646e15ee, type: 3}
+  panelSettings: {fileID: 11400000, guid: 3761f42fcc45f8f4e9f28e087a2a2ff2, type: 2}
 --- !u!212 &4241149438565875357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -983,12 +972,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5360866140420299757}
-  - component: {fileID: 5365568965991676918}
   - component: {fileID: 4357738810837747986}
+  - component: {fileID: 5365568965991676918}
   - component: {fileID: 2841869835195120244}
   - component: {fileID: 4241149438565875357}
   - component: {fileID: 2433721289766403094}
   - component: {fileID: 210893149289046311}
+  - component: {fileID: 6171685950103530124}
   m_Layer: 6
   m_Name: '[PLAYER] Lupe'
   m_TagString: Player
@@ -996,6 +986,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6171685950103530124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171685950103530123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider2DGrid:
+    gridSizeX: 0
+    gridSizeY: 0
+    coordinateSize: 0
+    gridXAxisDirection: 0
+    gridYAxisDirection: 0
+    gridParentPositionKey: {x: 0, y: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!4 &6944989206272510446
 Transform:
   m_ObjectHideFlags: 0
@@ -1038,10 +1050,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid2D:
+  collider2DGrid:
     gridSizeX: 3
-    gridSizeY: 2
-    coordinateSize: 0.6
+    gridSizeY: 3
+    coordinateSize: 0.589
     gridXAxisDirection: 1
     gridYAxisDirection: 1
     gridParentPositionKey: {x: 1, y: 0}

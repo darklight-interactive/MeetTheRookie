@@ -1,5 +1,5 @@
 .inky-label {
-    font-size: 72px;
+    font-size: 64px;
     -unity-font-style: normal;
     -unity-text-align: lower-left;
     padding-top: 0;
@@ -21,27 +21,17 @@
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&guid=d95d61c132c648c42b6313ed97ed9cf7&type=3#LGGothic");
     flex-grow: 0;
     flex-shrink: 0;
-    -unity-background-scale-mode: scale-to-fit;
 }
 
 .inky-bubble {
-    padding-top: 64px;
-    padding-right: 64px;
-    padding-bottom: 8px;
-    padding-left: 64px;
-    position: relative;
-    overflow: hidden;
-    flex-grow: 0;
-    flex-shrink: 0;
-    align-self: center;
-    align-items: center;
-    justify-content: center;
-    -unity-background-scale-mode: stretch-to-fill;
+    padding-top: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    padding-left: 5%;
+    justify-content: flex-start;
+    align-self: auto;
     background-image: url("project://database/Assets/[SPRITES]/DialogueUI.png?fileID=-3514209476637312783&guid=cb0772e0a86fdf34f89e41fa59df7756&type=3#DialogueUI_1");
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
+    flex-shrink: 0;
     max-width: 512px;
-    -unity-text-align: middle-left;
+    max-height: 512px;
 }

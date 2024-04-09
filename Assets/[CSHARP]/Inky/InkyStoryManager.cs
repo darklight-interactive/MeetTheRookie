@@ -10,21 +10,21 @@ using UnityEngine.UIElements;
 /// Singleton for managing all Ink UI.
 /// </summary>
 [System.Serializable]
-public class Inky_StoryManager
+public class InkyStoryManager
 {
-    private static Inky_StoryManager instance;
-    public static Inky_StoryManager Instance
+    private static InkyStoryManager instance;
+    public static InkyStoryManager Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = new Inky_StoryManager();
+                instance = new InkyStoryManager();
             }
             return instance;
         }
     }
-    private Inky_StoryManager()
+    private InkyStoryManager()
     {
         story = new Story(((TextAsset)Resources.Load("Inky/test")).text);
 
@@ -92,34 +92,32 @@ public class Inky_StoryManager
             handlingChoice = false;
         }
 
-        // continue the story text
+        // >> CONTINUE STORY
         if (story.canContinue)
         {
             story.Continue();
             return new InkDialogue(story.currentText);
         }
 
-        // << CHECK FOR CHOICES  >>
-        else
+        // >> CHECK FOR CHOICES
+        else if (story.currentChoices.Count > 0)
         {
-            if (story.currentChoices.Count > 0)
+            handlingChoice = true;
+            foreach (Choice choice in story.currentChoices)
             {
-                handlingChoice = true;
-                foreach (Choice choice in story.currentChoices)
+                Button choiceBox = new Button(() =>
                 {
-                    Button choiceBox = new Button(() =>
-                    {
-                        activeChoice = choice.index;
-                        Continue();
-                    });
-                    choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
-                    choiceBox.text = choice.text;
-                    choiceMapping.Add(choice.index);
-                }
-                UpdateActiveChoice(0);
+                    activeChoice = choice.index;
+                    Continue();
+                });
+                choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
+                choiceBox.text = choice.text;
+                choiceMapping.Add(choice.index);
             }
+            UpdateActiveChoice(0);
         }
-        OnKnotCompleted();
+        else
+            OnKnotCompleted();
         return null;
     }
 

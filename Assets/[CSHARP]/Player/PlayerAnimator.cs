@@ -7,10 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[RequireComponent(
-    typeof(SpriteRenderer)
-    //typeof(FrameAnimationPlayer)
-    )]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerAnimator : MonoBehaviour
 {
     private PlayerController _controller => GetComponent<PlayerController>();
