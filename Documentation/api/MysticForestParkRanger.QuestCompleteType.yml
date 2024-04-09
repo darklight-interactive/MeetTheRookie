@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: MysticForestParkRanger.QuestCompleteType
+  commentId: T:MysticForestParkRanger.QuestCompleteType
+  id: QuestCompleteType
+  parent: MysticForestParkRanger
+  children:
+  - MysticForestParkRanger.QuestCompleteType.NONE
+  - MysticForestParkRanger.QuestCompleteType.SEND_TO
+  langs:
+  - csharp
+  - vb
+  name: QuestCompleteType
+  nameWithType: QuestCompleteType
+  fullName: QuestCompleteType
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: QuestCompleteType
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public enum QuestCompleteType
+    content.vb: Public Enum QuestCompleteType
+- uid: MysticForestParkRanger.QuestCompleteType.NONE
+  commentId: F:MysticForestParkRanger.QuestCompleteType.NONE
+  id: NONE
+  parent: MysticForestParkRanger.QuestCompleteType
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: QuestCompleteType.NONE
+  fullName: QuestCompleteType.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: NONE = 0
+    return:
+      type: MysticForestParkRanger.QuestCompleteType
+- uid: MysticForestParkRanger.QuestCompleteType.SEND_TO
+  commentId: F:MysticForestParkRanger.QuestCompleteType.SEND_TO
+  id: SEND_TO
+  parent: MysticForestParkRanger.QuestCompleteType
+  langs:
+  - csharp
+  - vb
+  name: SEND_TO
+  nameWithType: QuestCompleteType.SEND_TO
+  fullName: QuestCompleteType.SEND_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: SEND_TO
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: SEND_TO = 1
+    return:
+      type: MysticForestParkRanger.QuestCompleteType
+references:
+- uid: MysticForestParkRanger
+- uid: MysticForestParkRanger.QuestCompleteType
+  commentId: T:MysticForestParkRanger.QuestCompleteType
+  href: QuestCompleteType.html
+  name: QuestCompleteType
+  nameWithType: QuestCompleteType
+  fullName: QuestCompleteType

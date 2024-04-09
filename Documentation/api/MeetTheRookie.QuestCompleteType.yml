@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: MeetTheRookie.QuestCompleteType
+  commentId: T:MeetTheRookie.QuestCompleteType
+  id: QuestCompleteType
+  parent: MeetTheRookie
+  children:
+  - MeetTheRookie.QuestCompleteType.NONE
+  - MeetTheRookie.QuestCompleteType.SEND_TO
+  langs:
+  - csharp
+  - vb
+  name: QuestCompleteType
+  nameWithType: QuestCompleteType
+  fullName: QuestCompleteType
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: QuestCompleteType
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: public enum QuestCompleteType
+    content.vb: Public Enum QuestCompleteType
+- uid: MeetTheRookie.QuestCompleteType.NONE
+  commentId: F:MeetTheRookie.QuestCompleteType.NONE
+  id: NONE
+  parent: MeetTheRookie.QuestCompleteType
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: QuestCompleteType.NONE
+  fullName: QuestCompleteType.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: NONE = 0
+    return:
+      type: MeetTheRookie.QuestCompleteType
+- uid: MeetTheRookie.QuestCompleteType.SEND_TO
+  commentId: F:MeetTheRookie.QuestCompleteType.SEND_TO
+  id: SEND_TO
+  parent: MeetTheRookie.QuestCompleteType
+  langs:
+  - csharp
+  - vb
+  name: SEND_TO
+  nameWithType: QuestCompleteType.SEND_TO
+  fullName: QuestCompleteType.SEND_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: SEND_TO
+    path: ../Assets/[CSHARP]/archive/QuestComplete.cs
+    startLine: 4
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: SEND_TO = 1
+    return:
+      type: MeetTheRookie.QuestCompleteType
+references:
+- uid: MeetTheRookie
+- uid: MeetTheRookie.QuestCompleteType
+  commentId: T:MeetTheRookie.QuestCompleteType
+  href: QuestCompleteType.html
+  name: QuestCompleteType
+  nameWithType: QuestCompleteType
+  fullName: QuestCompleteType

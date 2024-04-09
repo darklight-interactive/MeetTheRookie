@@ -1,0 +1,625 @@
+### YamlMime:ManagedReference
+items:
+- uid: MysticForestParkRanger.PlayerStateMachine
+  commentId: T:MysticForestParkRanger.PlayerStateMachine
+  id: PlayerStateMachine
+  parent: MysticForestParkRanger
+  children:
+  - MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState)
+  - MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState,PlayerAnimator)
+  - MysticForestParkRanger.PlayerStateMachine.ChangeState(PlayerState)
+  - MysticForestParkRanger.PlayerStateMachine.OnStateChanged(PlayerState,PlayerState)
+  langs:
+  - csharp
+  - vb
+  name: PlayerStateMachine
+  nameWithType: PlayerStateMachine
+  fullName: PlayerStateMachine
+  type: Class
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: PlayerStateMachine
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 7
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: 'public class PlayerStateMachine : StateMachine<PlayerState>'
+    content.vb: Public Class PlayerStateMachine Inherits StateMachine(Of PlayerState)
+  inheritance:
+  - System.Object
+  - Darklight.StateMachine{PlayerState}
+  inheritedMembers:
+  - Darklight.StateMachine{PlayerState}.CurrentState
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState)
+  commentId: M:MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState)
+  id: '#ctor(PlayerState)'
+  parent: MysticForestParkRanger.PlayerStateMachine
+  langs:
+  - csharp
+  - vb
+  name: PlayerStateMachine(PlayerState)
+  nameWithType: PlayerStateMachine.PlayerStateMachine(PlayerState)
+  fullName: PlayerStateMachine.PlayerStateMachine(PlayerState)
+  type: Constructor
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: .ctor
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 11
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public PlayerStateMachine(PlayerState state)
+    parameters:
+    - id: state
+      type: MysticForestParkRanger.PlayerState
+    content.vb: Public Sub New(state As PlayerState)
+  overload: MysticForestParkRanger.PlayerStateMachine.#ctor*
+  nameWithType.vb: PlayerStateMachine.New(PlayerState)
+  fullName.vb: PlayerStateMachine.New(PlayerState)
+  name.vb: New(PlayerState)
+- uid: MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState,PlayerAnimator)
+  commentId: M:MysticForestParkRanger.PlayerStateMachine.#ctor(PlayerState,PlayerAnimator)
+  id: '#ctor(PlayerState,PlayerAnimator)'
+  parent: MysticForestParkRanger.PlayerStateMachine
+  langs:
+  - csharp
+  - vb
+  name: PlayerStateMachine(PlayerState, PlayerAnimator)
+  nameWithType: PlayerStateMachine.PlayerStateMachine(PlayerState, PlayerAnimator)
+  fullName: PlayerStateMachine.PlayerStateMachine(PlayerState, PlayerAnimator)
+  type: Constructor
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: .ctor
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 12
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public PlayerStateMachine(PlayerState state, PlayerAnimator animator)
+    parameters:
+    - id: state
+      type: MysticForestParkRanger.PlayerState
+    - id: animator
+      type: MysticForestParkRanger.PlayerAnimator
+    content.vb: Public Sub New(state As PlayerState, animator As PlayerAnimator)
+  overload: MysticForestParkRanger.PlayerStateMachine.#ctor*
+  nameWithType.vb: PlayerStateMachine.New(PlayerState, PlayerAnimator)
+  fullName.vb: PlayerStateMachine.New(PlayerState, PlayerAnimator)
+  name.vb: New(PlayerState, PlayerAnimator)
+- uid: MysticForestParkRanger.PlayerStateMachine.ChangeState(PlayerState)
+  commentId: M:MysticForestParkRanger.PlayerStateMachine.ChangeState(PlayerState)
+  id: ChangeState(PlayerState)
+  parent: MysticForestParkRanger.PlayerStateMachine
+  langs:
+  - csharp
+  - vb
+  name: ChangeState(PlayerState)
+  nameWithType: PlayerStateMachine.ChangeState(PlayerState)
+  fullName: PlayerStateMachine.ChangeState(PlayerState)
+  type: Method
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: ChangeState
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 17
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  summary: Update the current state of the machine
+  example: []
+  syntax:
+    content: public override void ChangeState(PlayerState newState)
+    parameters:
+    - id: newState
+      type: MysticForestParkRanger.PlayerState
+    content.vb: Public Overrides Sub ChangeState(newState As PlayerState)
+  overridden: Darklight.StateMachine{PlayerState}.ChangeState(PlayerState)
+  overload: MysticForestParkRanger.PlayerStateMachine.ChangeState*
+- uid: MysticForestParkRanger.PlayerStateMachine.OnStateChanged(PlayerState,PlayerState)
+  commentId: M:MysticForestParkRanger.PlayerStateMachine.OnStateChanged(PlayerState,PlayerState)
+  id: OnStateChanged(PlayerState,PlayerState)
+  parent: MysticForestParkRanger.PlayerStateMachine
+  langs:
+  - csharp
+  - vb
+  name: OnStateChanged(PlayerState, PlayerState)
+  nameWithType: PlayerStateMachine.OnStateChanged(PlayerState, PlayerState)
+  fullName: PlayerStateMachine.OnStateChanged(PlayerState, PlayerState)
+  type: Method
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: OnStateChanged
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 22
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  example: []
+  syntax:
+    content: public override void OnStateChanged(PlayerState previousState, PlayerState newState)
+    parameters:
+    - id: previousState
+      type: MysticForestParkRanger.PlayerState
+    - id: newState
+      type: MysticForestParkRanger.PlayerState
+    content.vb: Public Overrides Sub OnStateChanged(previousState As PlayerState, newState As PlayerState)
+  overridden: Darklight.StateMachine{PlayerState}.OnStateChanged(PlayerState,PlayerState)
+  overload: MysticForestParkRanger.PlayerStateMachine.OnStateChanged*
+references:
+- uid: MysticForestParkRanger
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Darklight.StateMachine{PlayerState}
+  commentId: T:Darklight.StateMachine{PlayerState}
+  parent: Darklight
+  definition: Darklight.StateMachine`1
+  href: PlayerState.html
+  name: StateMachine<PlayerState>
+  nameWithType: StateMachine<PlayerState>
+  fullName: Darklight.StateMachine<PlayerState>
+  nameWithType.vb: StateMachine(Of PlayerState)
+  fullName.vb: Darklight.StateMachine(Of PlayerState)
+  name.vb: StateMachine(Of PlayerState)
+  spec.csharp:
+  - uid: Darklight.StateMachine`1
+    name: StateMachine
+  - name: <
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: '>'
+  spec.vb:
+  - uid: Darklight.StateMachine`1
+    name: StateMachine
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: )
+- uid: Darklight.StateMachine{PlayerState}.CurrentState
+  commentId: P:Darklight.StateMachine{PlayerState}.CurrentState
+  parent: Darklight.StateMachine{PlayerState}
+  definition: Darklight.StateMachine`1.CurrentState
+  name: CurrentState
+  nameWithType: StateMachine<PlayerState>.CurrentState
+  fullName: Darklight.StateMachine<PlayerState>.CurrentState
+  nameWithType.vb: StateMachine(Of PlayerState).CurrentState
+  fullName.vb: Darklight.StateMachine(Of PlayerState).CurrentState
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Darklight.StateMachine`1
+  commentId: T:Darklight.StateMachine`1
+  name: StateMachine<TState>
+  nameWithType: StateMachine<TState>
+  fullName: Darklight.StateMachine<TState>
+  nameWithType.vb: StateMachine(Of TState)
+  fullName.vb: Darklight.StateMachine(Of TState)
+  name.vb: StateMachine(Of TState)
+  spec.csharp:
+  - uid: Darklight.StateMachine`1
+    name: StateMachine
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: Darklight.StateMachine`1
+    name: StateMachine
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: Darklight
+  commentId: N:Darklight
+  name: Darklight
+  nameWithType: Darklight
+  fullName: Darklight
+- uid: Darklight.StateMachine`1.CurrentState
+  commentId: P:Darklight.StateMachine`1.CurrentState
+  name: CurrentState
+  nameWithType: StateMachine<TState>.CurrentState
+  fullName: Darklight.StateMachine<TState>.CurrentState
+  nameWithType.vb: StateMachine(Of TState).CurrentState
+  fullName.vb: Darklight.StateMachine(Of TState).CurrentState
+- uid: MysticForestParkRanger.PlayerStateMachine.#ctor*
+  commentId: Overload:MysticForestParkRanger.PlayerStateMachine.#ctor
+  href: MysticForestParkRanger.PlayerStateMachine.html#PlayerStateMachine__ctor_PlayerState_
+  name: PlayerStateMachine
+  nameWithType: PlayerStateMachine.PlayerStateMachine
+  fullName: PlayerStateMachine.PlayerStateMachine
+  nameWithType.vb: PlayerStateMachine.New
+  fullName.vb: PlayerStateMachine.New
+  name.vb: New
+- uid: MysticForestParkRanger.PlayerState
+  commentId: T:MysticForestParkRanger.PlayerState
+  href: PlayerState.html
+  name: PlayerState
+  nameWithType: PlayerState
+  fullName: PlayerState
+- uid: MysticForestParkRanger.PlayerAnimator
+  commentId: T:MysticForestParkRanger.PlayerAnimator
+  href: PlayerAnimator.html
+  name: PlayerAnimator
+  nameWithType: PlayerAnimator
+  fullName: PlayerAnimator
+- uid: Darklight.StateMachine{PlayerState}.ChangeState(PlayerState)
+  commentId: M:Darklight.StateMachine{PlayerState}.ChangeState(PlayerState)
+  parent: Darklight.StateMachine{PlayerState}
+  definition: Darklight.StateMachine`1.ChangeState(`0)
+  href: PlayerState.html
+  name: ChangeState(PlayerState)
+  nameWithType: StateMachine<PlayerState>.ChangeState(PlayerState)
+  fullName: Darklight.StateMachine<PlayerState>.ChangeState(PlayerState)
+  nameWithType.vb: StateMachine(Of PlayerState).ChangeState(PlayerState)
+  fullName.vb: Darklight.StateMachine(Of PlayerState).ChangeState(PlayerState)
+  spec.csharp:
+  - uid: Darklight.StateMachine{PlayerState}.ChangeState(PlayerState)
+    name: ChangeState
+  - name: (
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: )
+  spec.vb:
+  - uid: Darklight.StateMachine{PlayerState}.ChangeState(PlayerState)
+    name: ChangeState
+  - name: (
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: )
+- uid: MysticForestParkRanger.PlayerStateMachine.ChangeState*
+  commentId: Overload:MysticForestParkRanger.PlayerStateMachine.ChangeState
+  href: MysticForestParkRanger.PlayerStateMachine.html#PlayerStateMachine_ChangeState_PlayerState_
+  name: ChangeState
+  nameWithType: PlayerStateMachine.ChangeState
+  fullName: PlayerStateMachine.ChangeState
+- uid: Darklight.StateMachine`1.ChangeState(`0)
+  commentId: M:Darklight.StateMachine`1.ChangeState(`0)
+  name: ChangeState(TState)
+  nameWithType: StateMachine<TState>.ChangeState(TState)
+  fullName: Darklight.StateMachine<TState>.ChangeState(TState)
+  nameWithType.vb: StateMachine(Of TState).ChangeState(TState)
+  fullName.vb: Darklight.StateMachine(Of TState).ChangeState(TState)
+  spec.csharp:
+  - uid: Darklight.StateMachine`1.ChangeState(`0)
+    name: ChangeState
+  - name: (
+  - name: TState
+  - name: )
+  spec.vb:
+  - uid: Darklight.StateMachine`1.ChangeState(`0)
+    name: ChangeState
+  - name: (
+  - name: TState
+  - name: )
+- uid: Darklight.StateMachine{PlayerState}.OnStateChanged(PlayerState,PlayerState)
+  commentId: M:Darklight.StateMachine{PlayerState}.OnStateChanged(PlayerState,PlayerState)
+  parent: Darklight.StateMachine{PlayerState}
+  definition: Darklight.StateMachine`1.OnStateChanged(`0,`0)
+  href: PlayerState.html
+  name: OnStateChanged(PlayerState, PlayerState)
+  nameWithType: StateMachine<PlayerState>.OnStateChanged(PlayerState, PlayerState)
+  fullName: Darklight.StateMachine<PlayerState>.OnStateChanged(PlayerState, PlayerState)
+  nameWithType.vb: StateMachine(Of PlayerState).OnStateChanged(PlayerState, PlayerState)
+  fullName.vb: Darklight.StateMachine(Of PlayerState).OnStateChanged(PlayerState, PlayerState)
+  spec.csharp:
+  - uid: Darklight.StateMachine{PlayerState}.OnStateChanged(PlayerState,PlayerState)
+    name: OnStateChanged
+  - name: (
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: ','
+  - name: " "
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: )
+  spec.vb:
+  - uid: Darklight.StateMachine{PlayerState}.OnStateChanged(PlayerState,PlayerState)
+    name: OnStateChanged
+  - name: (
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: ','
+  - name: " "
+  - uid: MysticForestParkRanger.PlayerState
+    name: PlayerState
+    href: PlayerState.html
+  - name: )
+- uid: MysticForestParkRanger.PlayerStateMachine.OnStateChanged*
+  commentId: Overload:MysticForestParkRanger.PlayerStateMachine.OnStateChanged
+  href: MysticForestParkRanger.PlayerStateMachine.html#PlayerStateMachine_OnStateChanged_PlayerState_PlayerState_
+  name: OnStateChanged
+  nameWithType: PlayerStateMachine.OnStateChanged
+  fullName: PlayerStateMachine.OnStateChanged
+- uid: Darklight.StateMachine`1.OnStateChanged(`0,`0)
+  commentId: M:Darklight.StateMachine`1.OnStateChanged(`0,`0)
+  name: OnStateChanged(TState, TState)
+  nameWithType: StateMachine<TState>.OnStateChanged(TState, TState)
+  fullName: Darklight.StateMachine<TState>.OnStateChanged(TState, TState)
+  nameWithType.vb: StateMachine(Of TState).OnStateChanged(TState, TState)
+  fullName.vb: Darklight.StateMachine(Of TState).OnStateChanged(TState, TState)
+  spec.csharp:
+  - uid: Darklight.StateMachine`1.OnStateChanged(`0,`0)
+    name: OnStateChanged
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  spec.vb:
+  - uid: Darklight.StateMachine`1.OnStateChanged(`0,`0)
+    name: OnStateChanged
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
