@@ -175,4 +175,8 @@ public class InkyStoryManager
     }
 
     protected Story story;
+
+    public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false) {
+        story.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+    }
 }
