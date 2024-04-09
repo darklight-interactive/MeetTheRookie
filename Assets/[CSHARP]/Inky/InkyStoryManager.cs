@@ -34,8 +34,6 @@ public class InkyStoryManager
         };
     }
 
-
-
     public InkyDialogue currentInkDialog { get; private set; }
 
 
@@ -51,7 +49,6 @@ public class InkyStoryManager
 
         public string speakerName = "[ Unknown ]";
         public string textBody = " default text body";
-
 
         public InkyDialogue(string storyText)
         {
@@ -95,18 +92,17 @@ public class InkyStoryManager
         // >> CONTINUE STORY --------------------------------
         if (story.canContinue)
         {
-            story.Continue();
-
-            currentInkDialog = new InkyDialogue(story.currentText);
+            currentInkDialog = new InkyDialogue(story.Continue());
             return currentInkDialog;
         }
 
         // >> CHECK FOR CHOICES -----------------------------------
         else if (story.currentChoices.Count > 0)
         {
-            handlingChoice = true;
+            //handlingChoice = true;
             foreach (Choice choice in story.currentChoices)
             {
+                /*
                 Button choiceBox = new Button(() =>
                 {
                     activeChoice = choice.index;
@@ -115,6 +111,7 @@ public class InkyStoryManager
                 choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
                 choiceBox.text = choice.text;
                 choiceMapping.Add(choice.index);
+                */
             }
             UpdateActiveChoice(0);
         }

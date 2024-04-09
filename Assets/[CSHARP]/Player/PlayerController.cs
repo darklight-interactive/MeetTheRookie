@@ -150,9 +150,7 @@ public class PlayerController : MonoBehaviour
             // Start the interaction
             activeInkInteraction.StartInteractionKnot(() =>
             {
-                // reset on callback
-                canInteract = true;
-                activeInkInteraction = null;
+
             });
             Debug.Log("Interact >> Start Ink Interaction");
         }

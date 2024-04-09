@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(UIDocument), typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(UIDocument))]
 public class UXML_WorldSpaceElement : MonoBehaviour
 {
     UIDocument uiDocument => GetComponent<UIDocument>();
     VisualElement root;
-    MeshRenderer meshRenderer => GetComponent<MeshRenderer>();
-    MeshFilter meshFilter => GetComponent<MeshFilter>();
+    MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
     public UXML_InkyBubble inkyBubble;
     bool initialized = false;
 
@@ -18,6 +17,19 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         uiDocument.visualTreeAsset = asset;
         uiDocument.panelSettings = settings;
         root = uiDocument.rootVisualElement;
+
+        GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        meshChild.transform.SetParent(this.transform);
+        meshChild.transform.localPosition = Vector3.zero;
+        meshRenderer.enabled = false;
+
+        // Set the material and texture
+        Material worldSpaceMaterial = UXML_InteractionUI.Instance.worldSpaceMaterial;
+        meshRenderer.sharedMaterial = worldSpaceMaterial;
+
+        uiDocument.panelSettings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
+        meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
+
         initialized = true;
     }
 
@@ -26,29 +38,18 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         if (initialized == false) return;
 
         PanelSettings panelSettings = uiDocument.panelSettings;
+        if (panelSettings == null) return;
+
         inkyBubble = root.Q<UXML_InkyBubble>();
         inkyBubble.SetText(InkyStoryManager.Instance.currentInkDialog.textBody);
         inkyBubble.visible = true;
 
-        // Set the material and texture
-        Material worldSpaceMaterial = UXML_InteractionUI.Instance.worldSpaceMaterial;
-        worldSpaceMaterial.mainTexture = panelSettings.targetTexture;
-        meshRenderer.sharedMaterial = worldSpaceMaterial;
+        // << #1 -> Reset Material
         meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
 
-        ResetPanelTexture(panelSettings);
-
-        Debug.Log("world space element update");
-    }
-
-    public void ResetPanelTexture(PanelSettings panelSettings)
-    {
-        if (!initialized || panelSettings == null) return;
-        if (panelSettings.targetTexture == null)
-        {
-            panelSettings.targetTexture = new RenderTexture(1080, 1080, 24);
-        }
-
+        // << #2 -> Reset Texture
         panelSettings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
+
+        meshRenderer.enabled = true;
     }
 }
