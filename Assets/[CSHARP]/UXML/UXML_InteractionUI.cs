@@ -57,7 +57,7 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
 
         if (element == null) throw new System.Exception("No UI element found with tag " + tag);
         uiElements.Add(tag, new UIElement(element, tag));
-        Debug.Log("Added UI element with tag " + tag);
+        //Debug.Log("Added UI element with tag " + tag);
     }
 
     UIElement GetUIElement(string tag)

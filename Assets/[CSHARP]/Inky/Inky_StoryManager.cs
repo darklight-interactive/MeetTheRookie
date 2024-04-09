@@ -26,7 +26,7 @@ public class Inky_StoryManager
     }
     private Inky_StoryManager()
     {
-        story = new Story(((TextAsset)Resources.Load("[INKY]/test")).text);
+        story = new Story(((TextAsset)Resources.Load("Inky/test")).text);
 
         story.onError += (message, type) =>
         {
@@ -34,15 +34,14 @@ public class Inky_StoryManager
         };
     }
 
-    /// <summary>
-    /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
-    /// </summary>
-    List<int> choiceMapping = new List<int>();
-    bool handlingChoice = false;
-    int activeChoice = 0;
+
 
     public string currentText => story.currentText;
 
+
+    /// <summary>
+    /// Ink Dialogue class to 
+    /// </summary>
     public class InkDialogue
     {
         /// <summary>
@@ -76,7 +75,13 @@ public class Inky_StoryManager
         }
     }
 
-
+    /// <summary>
+    /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
+    /// </summary>
+    List<int> choiceMapping = new List<int>();
+    bool handlingChoice = false;
+    int activeChoice = 0;
+    List<Choice> choices = new List<Choice>();
     public InkDialogue Continue()
     {
         // if player is handling a choice, choose the choice and continue
@@ -94,20 +99,13 @@ public class Inky_StoryManager
             return new InkDialogue(story.currentText);
         }
 
-        return null;
-
-
-
-
-        /*
-
         // << CHECK FOR CHOICES  >>
         else
         {
             if (story.currentChoices.Count > 0)
             {
                 handlingChoice = true;
-                foreach (var choice in story.currentChoices)
+                foreach (Choice choice in story.currentChoices)
                 {
                     Button choiceBox = new Button(() =>
                     {
@@ -116,18 +114,13 @@ public class Inky_StoryManager
                     });
                     choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
                     choiceBox.text = choice.text;
-                    choices.Add(choiceBox);
                     choiceMapping.Add(choice.index);
                 }
                 UpdateActiveChoice(0);
             }
-            else
-            {
-                inkUI.visible = false;
-                OnKnotCompleted();
-            }
         }
-        */
+        OnKnotCompleted();
+        return null;
     }
 
     void UpdateActiveChoice(int c)

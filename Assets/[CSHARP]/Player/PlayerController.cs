@@ -12,11 +12,10 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
-    public UXML_InteractionUI interactionUI;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
-    public Vector2 moveVector = Vector2.zero;
+    public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
@@ -24,17 +23,24 @@ public class PlayerController : MonoBehaviour
         Invoke("StartInputListener", 1);
     }
 
+    Vector2 _activeMoveInput = Vector2.zero;
+    void StartInputListener()
+    {
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+
+        // Subscribe to Universal MoveInput
+        InputAction moveInputAction = UniversalInputManager.MoveInputAction;
+        if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }
+
+        moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
+        moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
+        //UniversalInputManager.PrimaryInteractAction.performed += Interact;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        // If we're not handling ink interactions, do movement:
-        if (canInteract) {
-            HandleMovement();
-        }
-    }
-
-    private void FixedUpdate() {
-        HandleInteractions();
+        HandleMovement();
     }
 
 
@@ -56,20 +62,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #region ===== [ HANDLE UNIVERSAL INPUTS ] ===== >>
-    Vector2 _activeMoveInput = Vector2.zero;
-    void StartInputListener()
-    {
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+    #region ===== [ MOVEMENT HANDLING ] ===== >>
 
-        // Subscribe to Universal MoveInput
-        InputAction moveInputAction = UniversalInputManager.MoveInputAction;
-        if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }
-
-        moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
-        moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.PrimaryInteractAction.performed += Interact;
-    }
 
     void HandleMovement()
     {
@@ -114,71 +108,70 @@ public class PlayerController : MonoBehaviour
         interactions.Add(i);
     }
 
-    protected bool canInteract = true;
-    void HandleInteractions()
-    {
-        if (!canInteract) return;
-
-        if (interactions.Count == 0)
+    /*
+        protected bool canInteract = true;
+        void HandleInteractions()
         {
-            interactionUI.HideInteractPrompt();
-            return;
-        }
-        else
-        {
-            // May want a better priority system, but this is fine for now:
-            this.targetInteraction = interactions.First();
-            this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
-        }
-    }
+            if (!canInteract) return;
 
-
-    /// <summary>
-    /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
-    /// </summary>
-    void Interact(InputAction.CallbackContext context) {
-        if (targetInteraction != null)
-        {
-            // Hide Interaction Prompt
-            canInteract = false;
-            interactionUI.HideInteractPrompt();
-
-            // Transfer the target interaction to the active interaction
-            activeInkInteraction = targetInteraction;
-            targetInteraction = null;
-
-            // Start the interaction
-            activeInkInteraction.StartInteractionKnot(() =>
+            if (interactions.Count == 0)
             {
-                // reset on callback
-                canInteract = true;
-                activeInkInteraction = null;
-
-            });
-            Debug.Log("Interact >> Start Ink Interaction");
-        }
-        else if (activeInkInteraction != null)
-        {
-            Inky_StoryManager.InkDialogue dialogue = Inky_StoryManager.Instance.Continue();
-            if (dialogue != null)
-            {
-                Debug.Log("Interact >> Continue Ink Interaction");
+                interactionUI.HideInteractPrompt();
+                return;
             }
             else
             {
-
-                // End the interaction
-                activeInkInteraction.ResetInteraction();
-                activeInkInteraction = null;
-                canInteract = true;
-                Debug.Log("Interact >> End Ink Interaction");
+                // May want a better priority system, but this is fine for now:
+                this.targetInteraction = interactions.First();
+                this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
             }
         }
 
-    }
+        /// <summary>
+        /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
+        /// </summary>
+        void Interact(InputAction.CallbackContext context) {
+            if (targetInteraction != null)
+            {
+                // Hide Interaction Prompt
+                canInteract = false;
+                interactionUI.HideInteractPrompt();
+
+                // Transfer the target interaction to the active interaction
+                activeInkInteraction = targetInteraction;
+                targetInteraction = null;
+
+                // Start the interaction
+                activeInkInteraction.StartInteractionKnot(() =>
+                {
+                    // reset on callback
+                    canInteract = true;
+                    activeInkInteraction = null;
+
+                });
+                Debug.Log("Interact >> Start Ink Interaction");
+            }
+            else if (activeInkInteraction != null)
+            {
+                Inky_StoryManager.InkDialogue dialogue = Inky_StoryManager.Instance.Continue();
+                if (dialogue != null)
+                {
+                    Debug.Log("Interact >> Continue Ink Interaction");
+                }
+                else
+                {
+
+                    // End the interaction
+                    if (activeInkInteraction)
+                        activeInkInteraction.ResetInteraction();
+                    activeInkInteraction = null;
+                    canInteract = true;
+                    Debug.Log("Interact >> End Ink Interaction");
+                }
+            }
+        }
+        */
     #endregion
-
-
 
 }
 

@@ -29,6 +29,5 @@ public class PlayerStateMachine : StateMachine<PlayerState>
 
         Debug.Log($"Player OnStateChanged {previousState} -> {newState}");
         _animator.FrameAnimationPlayer.LoadSpriteSheet(_animator.GetSpriteSheetWithState(newState));
-
     }
 }
