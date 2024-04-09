@@ -1,0 +1,58 @@
+name: Unity Build and Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Assets/**/*'
+      - 'Packages/**/*'
+      - 'ProjectSettings/**/*'
+      - .github/workflows/main.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+      
+permissions:
+  actions: read
+  pull-requests: write
+  checks: write
+  id-token: write
+  contents: write
+
+jobs:
+  build:
+    name: Build MeetTheRookie
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - run: git submodule update --init --recursive
+
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          buildName: MysticForestParkRanger
+      # Output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build
