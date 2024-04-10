@@ -27,7 +27,6 @@ public class InkyStoryManager
     private InkyStoryManager()
     {
         story = new Story(((TextAsset)Resources.Load("Inky/test")).text);
-
         story.onError += (message, type) =>
         {
             Debug.LogError("[Ink] " + type + " " + message);
@@ -35,42 +34,6 @@ public class InkyStoryManager
     }
 
     public InkyDialogue currentInkDialog { get; private set; }
-
-
-    /// <summary>
-    /// Ink Dialogue class to 
-    /// </summary>
-    public class InkyDialogue
-    {
-        /// <summary>
-        /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
-        /// </summary>
-        Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
-
-        public string speakerName = "[ Unknown ]";
-        public string textBody = " default text body";
-
-        public InkyDialogue(string storyText)
-        {
-            // Get the token values from the dialogueReader
-            Match dialogueTokens = dialogueReader.Match(storyText);
-            if (dialogueTokens.Success)
-            {
-                // if speaker is found, set the speaker text
-                if (dialogueTokens.Groups["speaker"].Success)
-                {
-                    this.speakerName = dialogueTokens.Groups["speaker"].Value;
-                }
-
-                this.textBody = dialogueTokens.Groups["dialog"].Value;
-            }
-            else
-            {
-                Debug.LogError("Regex match for dialog not found.");
-                this.textBody = storyText;
-            }
-        }
-    }
 
     /// <summary>
     /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
@@ -175,4 +138,44 @@ public class InkyStoryManager
     }
 
     protected Story story;
+}
+
+/// <summary>
+/// Ink Dialogue class to 
+/// </summary>
+public class InkyDialogue
+{
+    /// <summary>
+    /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
+    /// </summary>
+    Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
+
+    public string speakerName = "[ Unknown ]";
+    public string textBody = " default text body";
+
+    public InkyDialogue(string storyText)
+    {
+        // Get the token values from the dialogueReader
+        Match dialogueTokens = dialogueReader.Match(storyText);
+        if (dialogueTokens.Success)
+        {
+            // if speaker is found, set the speaker text
+            if (dialogueTokens.Groups["speaker"].Success)
+            {
+                this.speakerName = dialogueTokens.Groups["speaker"].Value;
+            }
+
+            this.textBody = dialogueTokens.Groups["dialog"].Value;
+        }
+        else
+        {
+            Debug.LogError("Regex match for dialog not found.");
+            this.textBody = storyText;
+        }
+    }
+}
+
+public class StoryChoice
+{
+
 }

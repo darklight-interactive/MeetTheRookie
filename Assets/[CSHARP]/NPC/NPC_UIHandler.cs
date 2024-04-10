@@ -29,7 +29,7 @@ public class NPC_UIHandler : InkyInteraction
 
         Coordinate targetGridCoordinate = overlapGrid.GetCoordinatesByColliderCount()[0][1];
 
-        InkyStoryManager.InkyDialogue currentDialogue = InkyStoryManager.Instance.currentInkDialog;
+        InkyDialogue currentDialogue = InkyStoryManager.Instance.currentInkDialog;
         CreateDialogueBubbleAt(targetGridCoordinate.worldPosition, currentDialogue.textBody);
 
         Debug.Log($"StartInteractionKnot -> NewDialogueBubble{currentDialogue.textBody}");

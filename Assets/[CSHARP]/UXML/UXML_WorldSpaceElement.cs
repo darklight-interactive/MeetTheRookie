@@ -41,7 +41,10 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         if (panelSettings == null) return;
 
         inkyBubble = root.Q<UXML_InkyBubble>();
-        inkyBubble.SetText(InkyStoryManager.Instance.currentInkDialog.textBody);
+
+        string currentText = InkyStoryManager.Instance.currentInkDialog.textBody;
+
+        inkyBubble.SetText(currentText);
         inkyBubble.visible = true;
 
         // << #1 -> Reset Material

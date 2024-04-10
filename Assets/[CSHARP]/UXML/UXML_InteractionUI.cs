@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+
+
+/// <summary>
+/// <<<
+/// </summary>
 [RequireComponent(typeof(UIDocument))]
 public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_InteractionUI>
 {

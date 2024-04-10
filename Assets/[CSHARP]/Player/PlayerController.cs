@@ -10,7 +10,7 @@ using Darklight.UnityExt.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACT }
+public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
 
 [RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Invoke("StartInputListener", 1);
+        Invoke("StartInputListener", 0.1f);
     }
 
     Vector2 _activeMoveInput = Vector2.zero;
@@ -41,7 +41,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMovement();
+        if (stateMachine.CurrentState != PlayerState.INTERACTION)
+        {
+            HandleMovement();
+        }
     }
 
     void FixedUpdate()
@@ -50,26 +53,9 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
-        if (interaction != null)
-        {
-            SubscribeInteraction(interaction);
-        }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
-        if (interaction != null)
-        {
-            UnsubscribeInteraction(interaction);
-        }
-    }
 
     #region ===== [ MOVEMENT HANDLING ] ===== >>
-
 
     void HandleMovement()
     {
@@ -105,6 +91,24 @@ public class PlayerController : MonoBehaviour
     public InkyInteraction targetInteraction;
     public InkyInteraction activeInkInteraction;
     protected HashSet<InkyInteraction> interactions = new HashSet<InkyInteraction>();
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
+        if (interaction != null)
+        {
+            SubscribeInteraction(interaction);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
+        if (interaction != null)
+        {
+            UnsubscribeInteraction(interaction);
+        }
+    }
+
     public void UnsubscribeInteraction(InkyInteraction i)
     {
         interactions.Remove(i);
@@ -114,11 +118,8 @@ public class PlayerController : MonoBehaviour
         interactions.Add(i);
     }
 
-    protected bool canInteract = true;
     void HandleInteractions()
     {
-        if (!canInteract) return;
-
         if (interactions.Count == 0)
         {
             UXML_InteractionUI.Instance.HideInteractPrompt();
@@ -140,7 +141,6 @@ public class PlayerController : MonoBehaviour
         if (targetInteraction != null)
         {
             // Hide Interaction Prompt
-            canInteract = false;
             UXML_InteractionUI.Instance.HideInteractPrompt();
 
             // Transfer the target interaction to the active interaction
@@ -148,15 +148,16 @@ public class PlayerController : MonoBehaviour
             targetInteraction = null;
 
             // Start the interaction
-            activeInkInteraction.StartInteractionKnot(() =>
-            {
+            activeInkInteraction.StartInteractionKnot(() => { });
 
-            });
+            // Change the player state
+            stateMachine.ChangeState(PlayerState.INTERACTION);
+
             Debug.Log("Interact >> Start Ink Interaction");
         }
         else if (activeInkInteraction != null)
         {
-            InkyStoryManager.InkyDialogue dialogue = InkyStoryManager.Instance.Continue();
+            InkyDialogue dialogue = InkyStoryManager.Instance.Continue();
             if (dialogue != null)
             {
                 Debug.Log("Interact >> Continue Ink Interaction");
@@ -169,7 +170,9 @@ public class PlayerController : MonoBehaviour
                 if (activeInkInteraction)
                     activeInkInteraction.ResetInteraction();
                 activeInkInteraction = null;
-                canInteract = true;
+
+                stateMachine.ChangeState(PlayerState.IDLE);
+
                 Debug.Log("Interact >> End Ink Interaction");
             }
         }

@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6247173}
   - component: {fileID: 6247174}
+  - component: {fileID: 6247175}
   m_Layer: 0
   m_Name: <SINGLETON> GameManager
   m_TagString: Untagged
@@ -149,7 +150,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1569741190}
   - {fileID: 1420547525}
   - {fileID: 1335520714}
   m_Father: {fileID: 0}
@@ -166,6 +166,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04eafa7f7e814847b6fb7eb2a7f019e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6247175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f79ec6d444ee6b46b38cb264e750d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultUniversalInputActions: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
 --- !u!1 &1266665504
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,68 +427,6 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 4571fddec28a539468d56a7a8d2b57e6, type: 3}
   m_SortingOrder: 0
---- !u!1001 &1569741189
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6247173}
-    m_Modifications:
-    - target: {fileID: 4193643941520711692, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_Name
-      value: '[UNIVERSAL INPUT]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
---- !u!4 &1569741190 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7222453873463937869, guid: 990d9f0a654ac3e43ba948099eadf123, type: 3}
-  m_PrefabInstance: {fileID: 1569741189}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2015783346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationStateOverride: 1
+  animationStateOverride: 3
   spriteSheets:
   - state: 1
     spriteSheet:
@@ -806,6 +757,12 @@ MonoBehaviour:
       - {fileID: -1134593881, guid: 6b167707065891e4c826ace85794e423, type: 3}
       - {fileID: -617877639, guid: 6b167707065891e4c826ace85794e423, type: 3}
       - {fileID: -1156124006, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  - state: 3
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
 --- !u!114 &2901200661090169880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,11 +931,12 @@ GameObject:
   - component: {fileID: 5360866140420299757}
   - component: {fileID: 4357738810837747986}
   - component: {fileID: 5365568965991676918}
+  - component: {fileID: 6171685950103530124}
   - component: {fileID: 2841869835195120244}
+  - component: {fileID: 6171685950103530125}
   - component: {fileID: 4241149438565875357}
   - component: {fileID: 2433721289766403094}
   - component: {fileID: 210893149289046311}
-  - component: {fileID: 6171685950103530124}
   m_Layer: 6
   m_Name: '[PLAYER] Lupe'
   m_TagString: Player
@@ -995,16 +953,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6171685950103530123}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89d4359ffcf920d4186e2f0bbbdba0a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6171685950103530125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171685950103530123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collider2DGrid:
-    gridSizeX: 0
-    gridSizeY: 0
-    coordinateSize: 0
-    gridXAxisDirection: 0
-    gridYAxisDirection: 0
-    gridParentPositionKey: {x: 0, y: 0}
+    gridSizeX: 3
+    gridSizeY: 2
+    coordinateSize: 0.5
+    gridXAxisDirection: 1
+    gridYAxisDirection: 1
+    gridParentPositionKey: {x: 1, y: -1}
   layerMask:
     serializedVersion: 2
     m_Bits: 128
