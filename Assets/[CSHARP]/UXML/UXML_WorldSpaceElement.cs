@@ -42,7 +42,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
 
         inkyBubble = root.Q<UXML_InkyBubble>();
 
-        string currentText = InkyStoryContainer.Instance.currentInkDialog.textBody;
+        string currentText = InkyKnotThreader.Instance.currentText;
 
         inkyBubble.SetText(currentText);
         inkyBubble.visible = true;

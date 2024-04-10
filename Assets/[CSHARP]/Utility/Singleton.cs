@@ -14,13 +14,27 @@ public interface ISingleton<T>
     {
         get
         {
-            ConstructorInfo constructor = typeof(T).GetConstructor(System.Type.EmptyTypes);
-            if (constructor != null)
+            if (instance == null)
             {
-                instance = (T)constructor.Invoke(null);
+                ConstructorInfo constructor = typeof(T).GetConstructor(System.Type.EmptyTypes);
+                if (constructor != null)
+                {
+                    instance = (T)constructor.Invoke(null);
+                }
+                else { instance = default(T); }
             }
-            else { instance = default(T); }
             return instance;
+        }
+        set
+        {
+            if (instance == null)
+            {
+                instance = value;
+            }
+            else
+            {
+                Debug.LogWarning("Singleton " + typeof(T).Name + " already exists.");
+            }
         }
     }
     public static string Prefix => $"ISingleton<{typeof(T).Name}>";

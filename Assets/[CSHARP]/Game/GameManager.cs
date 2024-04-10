@@ -20,8 +20,9 @@ public class GameManager : MonoBehaviour, IGameSingleton<GameManager>
     {
         (this as IGameSingleton<GameManager>).Initialize();
 
-        InkyStoryThreader threader = InkyStoryThreader.Instance;
-        threader.StartThread();
+        InkyKnotThreader threader = new InkyKnotThreader(ThreadState.INIT);
+        ISingleton<InkyKnotThreader>.Instance = threader;
+        threader.LoadNewStory();
     }
 }
 

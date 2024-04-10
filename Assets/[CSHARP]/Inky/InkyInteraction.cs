@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static InkyStoryContainer;
 
 public enum InteractionType
 {
@@ -19,17 +18,16 @@ public class InkyInteraction : MonoBehaviour
         interactionUI.DisplayInteractPrompt(worldPosition);
     }
 
-    public virtual void StartInteractionKnot(KnotComplete onComplete)
+    public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
     {
-        //inkStoryManager.Run(inkKnot, onComplete);
+        InkyKnotThreader.Instance.GoToKnotAt(inkKnot);
+        InkyKnotThreader.Instance.ContinueStory();
     }
 
-    /*
-    public virtual InkyDialogue ContinueDialogue()
+    public virtual void ContinueDialogue()
     {
-        return inkStoryManager.Continue();
+        InkyKnotThreader.Instance.ContinueStory();
     }
-    */
 
     public virtual void ResetInteraction()
     {

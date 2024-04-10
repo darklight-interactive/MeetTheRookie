@@ -108,6 +108,27 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         UXML_Element uIElement = GetUIElement(interactPromptTag);
         uIElement.SetVisible(false);
     }
+    /*
+        public void MoveUpdate(Vector2 move)
+        {
+            if (!handlingChoice)
+            {
+                return;
+            }
+            float x = Mathf.Sign(move.x);
+            float y = -Mathf.Sign(move.y);
 
+            int choice = activeChoice;
+            if (Mathf.Abs(move.x) > 0.05f)
+            {
+                choice = (int)Mathf.Clamp(activeChoice + x, 0, story.currentChoices.Count - 1);
+            }
+            else if (Mathf.Abs(move.y) > 0.05f)
+            {
+                choice = (int)Mathf.Clamp(activeChoice + y, 0, story.currentChoices.Count - 1);
+            }
+            UpdateActiveChoice(choice);
+        }
+    */
 
 }
