@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+  m_Sprite: {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,9 +103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   npcSpeed: 0.2
-  moveVector: {x: 0, y: 0}
   leftBound: -5
   rightBound: 5
+  followDistance: 1
   idleMaxDuration: 0
   walkMaxDuration: 0
 --- !u!114 &3412433257022094393
@@ -142,6 +142,12 @@ MonoBehaviour:
       frames:
       - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
       - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+  - state: 4
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
 --- !u!114 &8741917591864611154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,4 +166,4 @@ MonoBehaviour:
     frames:
     - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
     - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
-  currentFrame: 1
+  currentFrame: 0

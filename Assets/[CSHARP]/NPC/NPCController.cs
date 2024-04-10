@@ -12,29 +12,36 @@ using UnityEngine.InputSystem;
 using Darklight.Game.SpriteAnimation;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 
 [RequireComponent(typeof(NPCAnimator))]
 public class NPCController : MonoBehaviour
 {
     public NPCStateMachine stateMachine = new NPCStateMachine(NPCState.IDLE);
+    private NPCAnimator animationManager;
     private int walkDirection;
+    private bool movingInFollowState = false;
+    private float currentFollowDistance = 0;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
-    public Vector2 moveVector = Vector2.zero;
+    [Range(0.1f, 1f)] public float followSpeed = .5f;
     public float leftBound;
     public float rightBound;
+    public float followDistance = 1;
     [Range(0f, 10f)] public float idleMaxDuration;
     [Range(0f, 10f)] public float walkMaxDuration;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
+        animationManager = GetComponent<NPCAnimator>();
+
         // NPC starts walking in a random direction at the start
         walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        GoToState(NPCState.IDLE);
+        GoToState(NPCState.FOLLOW);
     }
 
     // Update is called once per frame
@@ -56,13 +63,13 @@ public class NPCController : MonoBehaviour
     #region ================== [ HANDLE STATE UPDATES ] ==================
     private void HandleState()
     {
-        // When Idle, the npc doesnt move, so we'll just return
-        if (stateMachine.CurrentState == NPCState.IDLE)
+        if (stateMachine.CurrentState == NPCState.IDLE)             // IDLE UPDATE
         {
+            // When Idle, the npc doesnt move, so we'll just return
             return;
         }
         // When Moving
-        else if (stateMachine.CurrentState == NPCState.WALK)
+        else if (stateMachine.CurrentState == NPCState.WALK)        // WALK UPDATE
         {
             float movement = walkDirection * npcSpeed;
             float targetX = transform.position.x + movement;
@@ -75,19 +82,68 @@ public class NPCController : MonoBehaviour
                 targetX = transform.position.x + movement;
             }
 
+            // If we are already out of bounds, we want to walk back in bounds
+            if (transform.position.x <= leftBound)
+            {
+                walkDirection = 1;
+                movement = walkDirection * npcSpeed;
+                targetX = transform.position.x + movement;
+            }
+            if (transform.position.x >= rightBound)
+            {
+                walkDirection = -1;
+                movement = walkDirection * npcSpeed;
+                targetX = transform.position.x + movement;
+            }
+
             // move the character
             transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
 
             // Update the Animation
-            NPCAnimator animationManager = GetComponent<NPCAnimator>();
             if (animationManager == null || animationManager.FrameAnimationPlayer == null) { Debug.Log("Player Controller has no FrameAnimationPlayer"); }
             animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-walkDirection, 0));
         }
-        else if (stateMachine.CurrentState == NPCState.SPEAK)
+        else if (stateMachine.CurrentState == NPCState.SPEAK)       // SPEAK UPDATE
         {
             // Set NPC to face player when speaking
-            NPCAnimator animationManager = GetComponent<NPCAnimator>();
             animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(player.transform.position.x > transform.position.x ? -1 : 1, 0));
+        }
+        else if (stateMachine.CurrentState == NPCState.FOLLOW)       // FOLLOW UPDATE
+        {
+            if (movingInFollowState)
+            {
+                int followDirection = (currentFollowDistance < 0) ? -1 : 1;
+
+                float movement = followDirection * followSpeed;
+                float targetX = transform.position.x + movement;
+
+                // move the character
+                transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
+                animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-followDirection, 0));
+            }
+        }
+    }
+
+    private IEnumerator FollowCheck()
+    {
+        for (;;)
+        {
+            // check 20 times per second
+            yield return new WaitForSeconds(1 / 20);
+
+            // If NPC is moving and they're within distance, stop
+            // If NPC not moving and they're outside distance, start
+            currentFollowDistance = player.transform.position.x - transform.position.x;
+            bool beyondFollowDistance = Mathf.Abs(currentFollowDistance) > followDistance;
+            if (!movingInFollowState && beyondFollowDistance)
+            {
+                movingInFollowState = true;
+                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.WALK));
+            } else if (movingInFollowState && !beyondFollowDistance)
+            {
+                movingInFollowState = false;
+                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.IDLE));
+            }
         }
     }
 
@@ -113,6 +169,10 @@ public class NPCController : MonoBehaviour
         {
             // N/A
         }
+        else if (stateMachine.CurrentState == NPCState.FOLLOW)  // FOLLOW EXIT
+        {
+            StopCoroutine(FollowCheck());
+        }
 
         // Change the state
         stateMachine.ChangeState(state);
@@ -132,6 +192,11 @@ public class NPCController : MonoBehaviour
         }
         else if (stateMachine.CurrentState == NPCState.SPEAK)   // SPEAK ENTER
         {
+            // N/A
+        }
+        else if (stateMachine.CurrentState == NPCState.FOLLOW)  // FOLLOW ENTER
+        {
+            StartCoroutine(FollowCheck());
         }
     }
 
@@ -143,9 +208,7 @@ public class NPCController : MonoBehaviour
 
     private IEnumerator WalkTimer()
     {
-        Debug.Log("WALK STATE START");
         yield return new WaitForSeconds(Random.Range(0, walkMaxDuration));
-        Debug.Log("WALK STATE END");
         GoToState(NPCState.IDLE);
     }
 
