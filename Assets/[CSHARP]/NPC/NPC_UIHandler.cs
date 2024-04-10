@@ -20,7 +20,7 @@ public class NPC_UIHandler : InkyInteraction
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings panelSettings;
 
-    public override void StartInteractionKnot(InkyStoryManager.KnotComplete onComplete)
+    public override void StartInteractionKnot(InkyStoryContainer.KnotComplete onComplete)
     {
         base.StartInteractionKnot(() =>
         {
@@ -29,7 +29,7 @@ public class NPC_UIHandler : InkyInteraction
 
         Coordinate targetGridCoordinate = overlapGrid.GetCoordinatesByColliderCount()[0][1];
 
-        InkyDialogue currentDialogue = InkyStoryManager.Instance.currentInkDialog;
+        InkyDialogueLine currentDialogue =
         CreateDialogueBubbleAt(targetGridCoordinate.worldPosition, currentDialogue.textBody);
 
         Debug.Log($"StartInteractionKnot -> NewDialogueBubble{currentDialogue.textBody}");
@@ -61,7 +61,9 @@ public class NPC_UIHandler : InkyInteraction
         if (Application.isPlaying)
             Destroy(obj);
         else
+#if UNITY_EDITOR
             DestroyImmediate(obj);
+#endif
     }
 }
 

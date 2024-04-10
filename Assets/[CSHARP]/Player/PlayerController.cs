@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (activeInkInteraction != null)
         {
-            InkyDialogue dialogue = InkyStoryManager.Instance.Continue();
+            InkyDialogueLine dialogue = InkyStoryContainer.Instance.Continue();
             if (dialogue != null)
             {
                 Debug.Log("Interact >> Continue Ink Interaction");

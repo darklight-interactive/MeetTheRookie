@@ -7,33 +7,12 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 /// <summary>
-/// Singleton for managing all Ink UI.
+/// Main class for handling Ink stories.
 /// </summary>
 [System.Serializable]
-public class InkyStoryManager
+public class InkyStoryContainer
 {
-    private static InkyStoryManager instance;
-    public static InkyStoryManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new InkyStoryManager();
-            }
-            return instance;
-        }
-    }
-    private InkyStoryManager()
-    {
-        story = new Story(((TextAsset)Resources.Load("Inky/test")).text);
-        story.onError += (message, type) =>
-        {
-            Debug.LogError("[Ink] " + type + " " + message);
-        };
-    }
-
-    public InkyDialogue currentInkDialog { get; private set; }
+    public InkyDialogueLine currentInkDialog { get; private set; }
 
     /// <summary>
     /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
@@ -42,7 +21,7 @@ public class InkyStoryManager
     bool handlingChoice = false;
     int activeChoice = 0;
     List<Choice> choices = new List<Choice>();
-    public InkyDialogue Continue()
+    public InkyDialogueLine Continue()
     {
         // if player is handling a choice, choose the choice and continue
         if (handlingChoice)
@@ -55,7 +34,7 @@ public class InkyStoryManager
         // >> CONTINUE STORY --------------------------------
         if (story.canContinue)
         {
-            currentInkDialog = new InkyDialogue(story.Continue());
+            currentInkDialog = new InkyDialogueLine(story.Continue());
             return currentInkDialog;
         }
 
@@ -104,6 +83,7 @@ public class InkyStoryManager
         //choices[activeChoice].style.backgroundColor = new StyleColor(Color.blue);
     }
 
+    /*
     public void MoveUpdate(Vector2 move)
     {
         if (!handlingChoice)
@@ -124,6 +104,7 @@ public class InkyStoryManager
         }
         UpdateActiveChoice(choice);
     }
+*/
 
     public delegate void KnotComplete();
     protected event KnotComplete OnKnotCompleted;
@@ -132,7 +113,7 @@ public class InkyStoryManager
     {
         story.ChoosePathString(name);
 
-        InkyDialogue dialogue = Continue();
+        InkyDialogueLine dialogue = Continue();
 
         OnKnotCompleted += onComplete;
     }
@@ -143,7 +124,7 @@ public class InkyStoryManager
 /// <summary>
 /// Ink Dialogue class to 
 /// </summary>
-public class InkyDialogue
+public class InkyDialogueLine
 {
     /// <summary>
     /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
@@ -153,7 +134,7 @@ public class InkyDialogue
     public string speakerName = "[ Unknown ]";
     public string textBody = " default text body";
 
-    public InkyDialogue(string storyText)
+    public InkyDialogueLine(string storyText)
     {
         // Get the token values from the dialogueReader
         Match dialogueTokens = dialogueReader.Match(storyText);
@@ -173,9 +154,4 @@ public class InkyDialogue
             this.textBody = storyText;
         }
     }
-}
-
-public class StoryChoice
-{
-
 }

@@ -1,12 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
-/// Singleton Interface for MonoBehaviour. Meant to be a singleton that only exists for the length of a scene.
+/// Singleton Interface for non-MonoBehaviour classes.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public interface ISceneSingleton<T> where T : MonoBehaviour {
+public interface ISingleton<T>
+{
+    private static T instance;
+    public static T Instance
+    {
+        get
+        {
+            ConstructorInfo constructor = typeof(T).GetConstructor(System.Type.EmptyTypes);
+            if (constructor != null)
+            {
+                instance = (T)constructor.Invoke(null);
+            }
+            else { instance = default(T); }
+            return instance;
+        }
+    }
+    public static string Prefix => $"ISingleton<{typeof(T).Name}>";
+}
+
+/// <summary>
+/// Singleton Interface for MonoBehaviour. 
+/// Meant to be a singleton that only exists for the length of a scene.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ISceneSingleton<T> where T : MonoBehaviour
+{
     public static T Instance { get; protected set; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

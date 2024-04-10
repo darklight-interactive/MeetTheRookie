@@ -14,12 +14,14 @@ public class GameManager : MonoBehaviour, IGameSingleton<GameManager>
     public static GameManager Instance = IGameSingleton<GameManager>.Instance;
     public static UXML_InteractionUI InteractionUI => ISceneSingleton<UXML_InteractionUI>.Instance;
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static InkyStoryManager InkyStoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
     void Awake()
     {
         (this as IGameSingleton<GameManager>).Initialize();
+
+        InkyStoryThreader threader = InkyStoryThreader.Instance;
+        threader.StartThread();
     }
 }
 
