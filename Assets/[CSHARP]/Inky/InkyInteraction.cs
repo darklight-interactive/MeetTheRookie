@@ -11,8 +11,6 @@ public class InkyInteraction : I_Interaction
 {
     UXML_InteractionUI interactionUI => ISceneSingleton<UXML_InteractionUI>.Instance;
     [SerializeField] private string inkyKnot;
-
-
     public override void Interact()
     {
         UXML_InteractionUI.Instance.HideInteractPrompt();

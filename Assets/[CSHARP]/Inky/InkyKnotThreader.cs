@@ -21,7 +21,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
     private const string SPEAKER_TAG = "speaker";
     public static string Prefix => ISingleton<InkyKnotThreader>.Prefix;
     public static InkyKnotThreader Instance => ISingleton<InkyKnotThreader>.Instance;
-    public static Darklight.Console drk_Console = new Darklight.Console();
+    public static Darklight.Console Console = new Darklight.Console();
 
 
     // ========================  [[ STATE MACHINE ]]  ========================
@@ -39,13 +39,13 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
     public State currentState => stateMachine.CurrentState;
     public Story currentStory { get; private set; }
     public InkyGlobalVariables currentVariables { get; private set; }
-    InkyKnot currentKnot;
     public string currentText => currentStory.currentText;
+    public InkyKnot currentKnot { get; private set; }
 
     public bool LoadStory(string storyName)
     {
         stateMachine.ChangeState(State.LOAD);
-        drk_Console.Log($"{Prefix} Loading Story: {storyName}");
+        Console.Log($"{Prefix} Loading Story: {storyName}");
 
         try
         {
@@ -73,7 +73,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
             {
                 foreach (string tag in tags)
                 {
-                    drk_Console.Log($"{Prefix} Found Tag: {tag}", 3);
+                    Console.Log($"{Prefix} Found Tag: {tag}", 3);
                 }
             }
 

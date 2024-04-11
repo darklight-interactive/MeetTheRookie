@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
@@ -9,6 +10,7 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
+    public PlayerUIHandler playerUIHandler => GetComponent<PlayerUIHandler>();
     protected HashSet<InkyInteraction> interactions = new HashSet<InkyInteraction>();
     [ShowOnly] InkyInteraction targetInteraction;
     [ShowOnly] InkyInteraction activeInteraction;
@@ -31,10 +33,11 @@ public class PlayerInteractor : MonoBehaviour
         }
         else if (activeInteraction != null)
         {
-            if (InkyKnotThreader.Instance.currentStory.canContinue)
-            {
-                activeInteraction.Interact();
-            }
+
+            // Start the interaction
+            activeInteraction.Interact();
+
+            /*
             else
             {
                 // End the interaction
@@ -44,6 +47,7 @@ public class PlayerInteractor : MonoBehaviour
 
                 playerController.stateMachine.ChangeState(PlayerState.IDLE);
             }
+            */
         }
     }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Darklight.Game.Grid2D;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Ink.Runtime;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -41,9 +43,25 @@ public class PlayerUIHandler : MonoBehaviour
         CreateDialogueBubbleAt(worldPosition);
     }
 
+    public void CreateChoiceBubbleAtBestPosition(Choice choice)
+    {
+        // Create a dialogue bubble at the best position
+        OverlapGrid2D.OverlapData data = overlapGrid.GetDataWithLowestWeightData();
+        Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(data.positionKey);
+        UXML_InteractionUI uXML_InteractionUI = UXML_InteractionUI.Instance;
+        uXML_InteractionUI.CreateChoiceBubble(worldPosition, choice);
+    }
+
     public void CreateChoices()
     {
-
+        if (InkyKnotThreader.Instance.currentStory.currentChoices.Count > 0)
+        {
+            foreach (Choice choice in InkyKnotThreader.Instance.currentStory.currentChoices)
+            {
+                Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(overlapGrid.GetDataWithLowestWeightData().positionKey);
+                UXML_WorldSpaceElement choiceElement = CreateDialogueBubbleAt(worldPosition, 5f);
+            }
+        }
     }
 
 #if UNITY_EDITOR

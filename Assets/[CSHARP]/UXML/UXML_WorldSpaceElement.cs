@@ -33,7 +33,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         initialized = true;
 
         // This is to replace the Update() method with a slower version
-        InvokeRepeating("ManualUpdate", 0, 0.5f);
+        InvokeRepeating("ManualUpdate", 0, 0.1f);
     }
 
     void ManualUpdate()

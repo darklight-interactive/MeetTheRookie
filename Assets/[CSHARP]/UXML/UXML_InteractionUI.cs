@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -108,6 +109,21 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         UXML_Element uIElement = GetUIElement(interactPromptTag);
         uIElement.SetVisible(false);
     }
+
+    public void CreateChoiceBubble(Vector3 worldPosition, Choice choice)
+    {
+        UXML_Element groupElement = GetUIElement(choiceGroupTag);
+        groupElement.SetVisible(true);
+        groupElement.SetWorldToScreenPosition(worldPosition);
+
+        Label newLabel = new Label(choice.text);
+        newLabel.AddToClassList("inky-label");
+        newLabel.AddToClassList("inky-choice__unselected");
+        newLabel.visible = true;
+        groupElement.visualElement.Add(newLabel);
+
+    }
+
     /*
         public void MoveUpdate(Vector2 move)
         {
