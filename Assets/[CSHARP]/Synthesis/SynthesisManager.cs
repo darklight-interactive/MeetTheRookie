@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InventoryManager : MonoBehaviour, IGameSingleton<InventoryManager>
+public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 {
     [SerializeField]
     protected UIDocument inventoryUI;
@@ -11,7 +11,7 @@ public class InventoryManager : MonoBehaviour, IGameSingleton<InventoryManager>
     protected HashSet<string> inventoryItems;
 
     void Awake() {
-        (this as IGameSingleton<InventoryManager>).Initialize();
+        (this as IGameSingleton<SynthesisManager>).Initialize();
 
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);

@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InventoryDraggable : PointerManipulator
+public class SynthesisDraggable : PointerManipulator
 {
+    public SynthesisDraggable(VisualElement target) {
+        this.target = target;
+    }
+
     protected override void RegisterCallbacksOnTarget() {
         target.RegisterCallback<PointerDownEvent>(PointerDown);
         target.RegisterCallback<PointerMoveEvent>(PointerMove);
