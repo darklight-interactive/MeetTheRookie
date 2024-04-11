@@ -6,13 +6,13 @@ using UnityEngine.UIElements;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-public class PlayerUIHandler : OverlapGrid2D
+[RequireComponent(typeof(OverlapGrid2D))]
+public class PlayerUIHandler : MonoBehaviour
 {
+    public OverlapGrid2D overlapGrid => GetComponent<OverlapGrid2D>();
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings panelSettings;
-
-
 
     UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
     {
@@ -36,8 +36,8 @@ public class PlayerUIHandler : OverlapGrid2D
     public void CreateBubbleAtBestPosition()
     {
         // Create a dialogue bubble at the best position
-        OverlapData data = GetOverlapDataWithLowestWeightValue();
-        Vector3 worldPosition = dataGrid.GetWorldSpacePosition(data.positionKey);
+        OverlapGrid2D.OverlapData data = overlapGrid.GetDataWithLowestWeightData();
+        Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(data.positionKey);
         CreateDialogueBubbleAt(worldPosition);
     }
 
@@ -46,41 +46,24 @@ public class PlayerUIHandler : OverlapGrid2D
 
     }
 
-# if UNITY_EDITOR
+#if UNITY_EDITOR
     [CustomEditor(typeof(PlayerUIHandler))]
-    public class PlayerUIHandlerEditor : OverlapGrid2DEditor
+    public class PlayerUIHandlerEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
-            base.OnInspectorGUI();
-            //DrawDefaultInspector();
-
+            DrawDefaultInspector();
             PlayerUIHandler playerUIHandler = (PlayerUIHandler)target;
-
-            if (GUILayout.Button("Set To Default Values"))
-            {
-                overlapGridScript.Initialize();
-            }
-
-            if (GUILayout.Button("Create Bubble"))
+            if (GUILayout.Button("Create Bubble At Best Position"))
             {
                 playerUIHandler.CreateBubbleAtBestPosition();
             }
-        }
-
-        private void OnSceneGUI()
-        {
-            PlayerUIHandler playerUIHandler = (PlayerUIHandler)target;
-            if (playerUIHandler.activeDialogueBubble != null)
+            if (GUILayout.Button("Create Choices"))
             {
-                Handles.Label(playerUIHandler.activeDialogueBubble.transform.position, "Active Dialogue Bubble");
+                playerUIHandler.CreateChoices();
             }
-
-            OverlapGrid2D overlapGridScript = (OverlapGrid2D)target;
-            overlapGridScript.Update();
-            DisplayGrid2D(overlapGridScript.dataGrid);
         }
     }
-}
 #endif
+
+}

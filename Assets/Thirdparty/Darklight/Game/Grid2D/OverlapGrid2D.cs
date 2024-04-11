@@ -12,6 +12,7 @@ using UnityEngine;
 namespace Darklight.Game.Grid2D
 {
     using OverlapData = OverlapGrid2D.OverlapData;
+    [ExecuteAlways]
     public class OverlapGrid2D : MonoBehaviour
     {
         #region ============== [[ DATA CLASS ]] =============================== >>
@@ -26,8 +27,9 @@ namespace Darklight.Game.Grid2D
             public Vector3 worldPosition;
             public Collider2D[] colliders = new Collider2D[0];
             public int colliderCount => colliders.Length;
-            public string label => $"weight: {weightData}";
-            [SerializeField, Range(0, 5)] private float weightValue = 1;
+            public string label => $"weight:\n\t value {weightValue} \n\t data {weightData}";
+            [Range(0, 5)] public float weightValue;
+            public Color debugColor => GetColor();
 
             /// <summary>
             ///  This is intended to be used as a way to grade the availability of the overlap boxes;
@@ -55,37 +57,40 @@ namespace Darklight.Game.Grid2D
                 }
             }
 
-            public Color GetColor()
+            Color GetColor()
             {
                 if (!active)
                     return Color.black;
-                if (colliderCount == 0)
+                else if (weightData == 0)
                     return Color.green;
-                else if (colliderCount > 0)
-                    return Color.Lerp(Color.green, Color.red, Mathf.InverseLerp(0, 3, weightData));
-
-                return Color.black;
+                else if (weightData == 1)
+                    return Color.yellow;
+                else if (weightData >= 2)
+                    return Color.red;
+                return Color.white;
             }
 
-            public OverlapData(Vector2Int positionKey)
+            public OverlapData(Vector2Int positionKey, int weight = 1)
             {
                 this.positionKey = positionKey;
+                this.weightValue = weight;
             }
         }
         #endregion
 
-        [SerializeField] public Grid2D<OverlapData> dataGrid;
+        public Grid2D<OverlapData> dataGrid;
+        public List<Vector2Int> activePositions = new List<Vector2Int>();
         public LayerMask layerMask;
 
         public void Awake()
         {
-            Initialize();
+            dataGrid.SetParent(this.transform);
+            dataGrid.Initialize();
         }
 
         public void Initialize()
         {
-            dataGrid = new Grid2D<OverlapData>(this.transform);
-            dataGrid.SetParent(this.transform);
+
         }
 
         public void Update()
@@ -106,33 +111,32 @@ namespace Darklight.Game.Grid2D
 
         void UpdateOverlapData()
         {
-            if (dataGrid == null)
-            {
-                return;
-            }
+            List<Vector2Int> positionKeys = dataGrid.GetPositionKeys();
+            List<OverlapData> dataValues = dataGrid.GetDataValues();
 
             // Loop through all the active overlap data objects
-            foreach (Vector2Int vector2Int in dataGrid.GetPositionKeys())
+            foreach (Vector2Int vector2Int in positionKeys)
             {
-                OverlapData activeData = dataGrid.GetData(vector2Int);
-                if (activeData == null)
+                Vector3 worldPosition = dataGrid.GetWorldSpacePosition(vector2Int);
+
+                if (dataGrid.GetData(vector2Int) == null)
                 {
-                    // Create a new overlap data object
-                    OverlapData overlapData = new OverlapData(vector2Int);
-                    dataGrid.SetCoordinateValue(vector2Int, overlapData);
-                    continue;
+                    dataGrid.SetCoordinateValue(vector2Int, new OverlapData(vector2Int));
                 }
-                else if (activeData != null && activeData.active)
+
+                OverlapData newData = dataGrid.GetData(vector2Int);
+                newData.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * dataGrid.coordinateSize, 0, layerMask);
+                newData.worldPosition = worldPosition;
+                newData.active = activePositions.Contains(vector2Int);
+                dataGrid.SetCoordinateValue(vector2Int, newData);
+            }
+
+            // remove any overlap data that is not in the position keys
+            foreach (OverlapData overlapData in dataValues)
+            {
+                if (!positionKeys.Contains(overlapData.positionKey))
                 {
-                    // Update the active data object
-
-                    // Get the world position of the coordinate
-                    Vector3 worldPosition = dataGrid.GetWorldSpacePosition(vector2Int);
-                    activeData.worldPosition = worldPosition;
-
-                    // Create an overlap box at the world position
-                    activeData.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * dataGrid.coordinateSize, 0, layerMask);
-                    continue;
+                    dataGrid.RemoveCoordinate(overlapData.positionKey);
                 }
             }
         }
@@ -153,10 +157,9 @@ namespace Darklight.Game.Grid2D
             return output;
         }
 
-        public OverlapData GetOverlapDataWithLowestWeightValue()
+        public OverlapData GetDataWithLowestWeightData()
         {
-            OverlapData lowestWeightData = null;
-            float lowestWeightValue = float.MaxValue;
+            float lowestValue = float.MaxValue;
             List<OverlapData> activeOverlapData = GetActiveOverlapData();
             if (activeOverlapData == null || activeOverlapData.Count == 0)
             {
@@ -164,15 +167,16 @@ namespace Darklight.Game.Grid2D
                 return null;
             }
 
+            OverlapData outData = null;
             foreach (OverlapData overlapData in activeOverlapData)
             {
-                if (overlapData.weightData < lowestWeightValue)
+                if (overlapData.weightData < lowestValue)
                 {
-                    lowestWeightData = overlapData;
-                    lowestWeightValue = overlapData.weightData;
+                    lowestValue = overlapData.weightData;
+                    outData = overlapData;
                 }
             }
-            return lowestWeightData;
+            return outData;
         }
     }
 
@@ -184,19 +188,24 @@ namespace Darklight.Game.Grid2D
         private void OnEnable()
         {
             overlapGridScript = (OverlapGrid2D)target;
+            overlapGridScript.Awake();
         }
 
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginChangeCheck();
-
             DrawDefaultInspector();
-
-
-
+            overlapGridScript = (OverlapGrid2D)target;
+            if (GUILayout.Button("Initialize"))
+            {
+                overlapGridScript.dataGrid.Initialize();
+            }
             if (EditorGUI.EndChangeCheck())
             {
+                overlapGridScript.Update();
+                serializedObject.ApplyModifiedProperties();
             }
+
         }
 
         private void OnSceneGUI()
@@ -214,11 +223,9 @@ namespace Darklight.Game.Grid2D
                 foreach (Vector2Int vector2Int in positionKeys)
                 {
                     OverlapData overlapData = grid2D.GetData(vector2Int);
-                    if (overlapData == null) continue;
-
                     Vector3 worldPosition = grid2D.GetWorldSpacePosition(vector2Int);
-                    Color color = overlapData.GetColor();
-                    float weightValue = overlapData.weightData;
+                    Color color = overlapData.debugColor;
+                    float weightValue = overlapData.weightValue;
                     float size = grid2D.coordinateSize;
                     Vector3 direction = Vector3.forward;
 

@@ -820,7 +820,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -849,7 +849,7 @@ MonoBehaviour:
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 0
+  currentFrame: 1
 --- !u!1 &5325288156900856991
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ Transform:
   m_GameObject: {fileID: 6171685950103530123}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -928,6 +928,7 @@ GameObject:
   - component: {fileID: 4357738810837747986}
   - component: {fileID: 5365568965991676918}
   - component: {fileID: 6171685950103530124}
+  - component: {fileID: 6171685950103530126}
   - component: {fileID: 2841869835195120244}
   - component: {fileID: 6171685950103530125}
   - component: {fileID: 4241149438565875357}
@@ -952,16 +953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d4359ffcf920d4186e2f0bbbdba0a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataGrid:
-    gridSizeX: 3
-    gridSizeY: 3
-    coordinateSize: 0.325
-    originKeyX: 1
-    originKeyY: -1
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 192
-  activeOverlapData: []
   visualTreeAsset: {fileID: 9197481963319205126, guid: e04c770115cfa124d82578e7646e15ee, type: 3}
   panelSettings: {fileID: 11400000, guid: 3761f42fcc45f8f4e9f28e087a2a2ff2, type: 2}
 --- !u!114 &6171685950103530125
@@ -976,6 +967,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6171685950103530126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171685950103530123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataGrid:
+    gridSizeX: 3
+    gridSizeY: 2
+    coordinateSize: 0.417
+    originKeyX: 1
+    originKeyY: -1
+  activePositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!4 &6944989206272510446
 Transform:
   m_ObjectHideFlags: 0
@@ -1019,15 +1034,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataGrid:
-    gridSizeX: 0
-    gridSizeY: 0
-    coordinateSize: 0
-    originKeyX: 0
+    gridSizeX: 3
+    gridSizeY: 2
+    coordinateSize: 0.35
+    originKeyX: 1
     originKeyY: 0
+  activePositions:
+  - {x: 0, y: 1}
+  - {x: 2, y: 1}
   layerMask:
     serializedVersion: 2
     m_Bits: 192
-  activeOverlapData: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

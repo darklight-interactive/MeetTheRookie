@@ -28,7 +28,7 @@ public class NPC_UIHandler : InkyInteraction
         });
 
         // Create a dialogue bubble at the best position
-        Vector2Int bestPosition = overlapGrid.GetOverlapDataWithLowestWeightValue().positionKey;
+        Vector2Int bestPosition = overlapGrid.GetDataWithLowestWeightData().positionKey;
         Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(bestPosition);
         CreateDialogueBubbleAt(worldPosition);
     }
