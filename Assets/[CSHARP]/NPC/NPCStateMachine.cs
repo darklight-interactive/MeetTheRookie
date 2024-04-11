@@ -4,7 +4,7 @@ using Darklight;
 using Darklight.Game.SpriteAnimation;
 using UnityEngine;
 
-public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW }
+public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE }
 
 public class NPCStateMachine : StateMachine<NPCState>
 {

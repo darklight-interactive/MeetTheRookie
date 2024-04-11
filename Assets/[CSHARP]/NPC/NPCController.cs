@@ -1,6 +1,6 @@
 /*
  * Last Edited by Garrett Blake
- * 4/9/2024
+ * 4/10/2024
  */
 
 using System.Collections;
@@ -20,14 +20,26 @@ public class NPCController : MonoBehaviour
 {
     public NPCStateMachine stateMachine = new NPCStateMachine(NPCState.IDLE);
     private NPCAnimator animationManager;
+
+    // Walk State
     private int walkDirection;
+
+    // Follow State
     private bool movingInFollowState = false;
     private float currentFollowDistance = 0;
+
+    // Hide State
+    private NPC_Hideable_Object[] hideableObjects;
+    private GameObject closestHideableObject;
+    private bool areThereHideableObjects = false;
+    private bool movingInHideState = false;
+    private float validHideDistance = 0.01f;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
     [Range(0.1f, 1f)] public float followSpeed = .5f;
+    [Range(0.1f, 1f)] public float hideSpeed = .5f;
     public float leftBound;
     public float rightBound;
     public float followDistance = 1;
@@ -41,7 +53,7 @@ public class NPCController : MonoBehaviour
 
         // NPC starts walking in a random direction at the start
         walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        GoToState(NPCState.FOLLOW);
+        GoToState(NPCState.HIDE);
     }
 
     // Update is called once per frame
@@ -122,27 +134,19 @@ public class NPCController : MonoBehaviour
                 animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-followDirection, 0));
             }
         }
-    }
-
-    private IEnumerator FollowCheck()
-    {
-        for (;;)
+        else if (stateMachine.CurrentState == NPCState.HIDE)        // HIDE UPDATE
         {
-            // check 20 times per second
-            yield return new WaitForSeconds(1 / 20);
+            if (movingInHideState)
+            {
+                float currentHideDistance = closestHideableObject.transform.position.x - transform.position.x;
+                int hideDirection = (currentHideDistance < 0) ? -1 : 1;
 
-            // If NPC is moving and they're within distance, stop
-            // If NPC not moving and they're outside distance, start
-            currentFollowDistance = player.transform.position.x - transform.position.x;
-            bool beyondFollowDistance = Mathf.Abs(currentFollowDistance) > followDistance;
-            if (!movingInFollowState && beyondFollowDistance)
-            {
-                movingInFollowState = true;
-                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.WALK));
-            } else if (movingInFollowState && !beyondFollowDistance)
-            {
-                movingInFollowState = false;
-                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.IDLE));
+                float movement = hideDirection * hideSpeed;
+                float targetX = transform.position.x + movement;
+
+                // move the character
+                transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
+                animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-hideDirection, 0));
             }
         }
     }
@@ -173,6 +177,10 @@ public class NPCController : MonoBehaviour
         {
             StopCoroutine(FollowCheck());
         }
+        else if (stateMachine.CurrentState == NPCState.HIDE)    // HIDE EXIT
+        {
+            StopCoroutine(HideCheck());
+        }
 
         // Change the state
         stateMachine.ChangeState(state);
@@ -198,7 +206,15 @@ public class NPCController : MonoBehaviour
         {
             StartCoroutine(FollowCheck());
         }
+        else if (stateMachine.CurrentState == NPCState.HIDE)    // HIDE EXIT
+        {
+            StartCoroutine(HideCheck());
+        }
     }
+
+    #endregion
+
+    #region ================== [ STATE HELPER FUNCTIONS ] ==================
 
     private IEnumerator IdleTimer()
     {
@@ -212,7 +228,92 @@ public class NPCController : MonoBehaviour
         GoToState(NPCState.IDLE);
     }
 
-    #endregion 
+    private IEnumerator FollowCheck()
+    {
+        for (; ; )
+        {
+            // check 20 times per second
+            yield return new WaitForSeconds(1 / 20);
+
+            // If NPC is moving and they're within distance, stop
+            // If NPC not moving and they're outside distance, start
+            currentFollowDistance = player.transform.position.x - transform.position.x;
+            bool beyondFollowDistance = Mathf.Abs(currentFollowDistance) > followDistance;
+            if (!movingInFollowState && beyondFollowDistance)
+            {
+                movingInFollowState = true;
+                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.WALK));
+            }
+            else if (movingInFollowState && !beyondFollowDistance)
+            {
+                movingInFollowState = false;
+                animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.IDLE));
+            }
+        }
+    }
+
+    private IEnumerator HideCheck()
+    {
+        int hideCheckCount = 0;
+        for (; ; )
+        {
+            hideableObjects = FindObjectsByType<NPC_Hideable_Object>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+            // find the closest hideable object, only if there are any
+            if (hideableObjects != null && hideableObjects.Length > 0)
+            {
+                areThereHideableObjects = true;
+
+                GameObject currentClosest = hideableObjects[0].gameObject;
+                float currentPos = this.transform.position.x;
+                float currentClosestDistance = Mathf.Abs(currentPos - currentClosest.transform.position.x);
+
+                for (int i = 1; i < hideableObjects.Length; i++)
+                {
+                    float newDistance = Mathf.Abs(currentPos - hideableObjects[i].transform.position.x);
+
+                    if (newDistance < currentClosestDistance)
+                    {
+                        currentClosest = hideableObjects[i].gameObject;
+                        currentClosestDistance = newDistance;
+                    }
+                }
+
+                // set the closest hideAbleObject
+                closestHideableObject = currentClosest;
+
+                // Setup animation states
+                bool beyondValidHideDistance = currentClosestDistance > validHideDistance;
+                // we are out of range, need to start moving
+                if (beyondValidHideDistance && !movingInHideState)
+                {
+                    movingInHideState = true;
+                    animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.WALK));
+                }
+                // We just got in range, and need to stop moving
+                else if (!beyondValidHideDistance && movingInHideState)
+                {
+                    movingInHideState = false;
+                    animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.HIDE));
+                }
+            }
+            else
+            // if there are no hideable objects, then we need to just play the idle anim
+            // but only if there used to be hideable objects or this is the first check
+            {
+                if (areThereHideableObjects || hideCheckCount == 0)
+                {
+                    animationManager.FrameAnimationPlayer.LoadSpriteSheet(animationManager.GetSpriteSheetWithState(NPCState.IDLE));
+                    areThereHideableObjects = false;
+                    movingInHideState = false;
+                }
+            }
+
+            // time between checks
+            yield return new WaitForSeconds(1 / 20);
+            hideCheckCount++;
+        }
+    }
+
+    #endregion
 }
-
-
