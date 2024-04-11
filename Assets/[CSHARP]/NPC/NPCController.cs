@@ -55,7 +55,7 @@ public class NPCController : MonoBehaviour
 
         // NPC starts walking in a random direction at the start
         walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        GoToState(NPCState.CHASE);
+        GoToState(NPCState.IDLE);
     }
 
     // Update is called once per frame
