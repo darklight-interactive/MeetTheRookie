@@ -1,69 +1,89 @@
-using Darklight;
-using Ink.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+
+using Darklight;
+
+using Ink.Runtime;
+
 using UnityEngine;
-using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 
-public enum ThreadState { INIT, LOAD, DIALOGUE, CHOICE, END }
 /// <summary>
-///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable data. 
+///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
-public class InkyKnotThreader : StateMachine<ThreadState>, ISingleton<InkyKnotThreader>
+public class InkyKnotThreader : ISingleton<InkyKnotThreader>
 {
     private const string PATH = "Inky/";
     private const string SPEAKER_TAG = "speaker";
-
-    #region == [[ STATIC METHODS ]] ===================== >>
     public static string Prefix => ISingleton<InkyKnotThreader>.Prefix;
     public static InkyKnotThreader Instance => ISingleton<InkyKnotThreader>.Instance;
-    public static Story LoadStory(string storyName)
+    public static Darklight.Console Console = new Darklight.Console();
+
+
+    // ========================  [[ STATE MACHINE ]]  ========================
+    public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
+    public class StateMachine : StateMachine<State>
     {
-        TextAsset storyAsset = (TextAsset)Resources.Load(PATH + storyName);
-        Story story = new Story(storyAsset.text);
-        story.onError += (message, type) =>
-        {
-            Debug.LogError("[Ink] " + type + " " + message);
-        };
-        return story;
+        public StateMachine(State initialState = State.INIT) : base(initialState) { }
     }
-    #endregion
 
-    #region == [[ CONSTRUCTORS ]] ===================== >>
-    public InkyKnotThreader(ThreadState initialState = ThreadState.INIT) : base(initialState) { }
-    #endregion
-
-    Queue<InkyKnot> inkKnotThread = new Queue<InkyKnot>();
+    // ========================  [[ INKY KNOT THREADER ]]  ========================
+    StateMachine stateMachine = new StateMachine(State.INIT);
+    Queue<InkyKnot> mainKnotThread = new Queue<InkyKnot>();
     Dictionary<string, InkyKnot> knotDictionary = new Dictionary<string, InkyKnot>();
 
+    public State currentState => stateMachine.CurrentState;
     public Story currentStory { get; private set; }
+    public InkyVariables currentVariables { get; private set; }
     InkyKnot currentKnot;
     public string currentText => currentStory.currentText;
-    public void LoadNewStory(string storyName = "npc_prototype")
+
+    public bool LoadStory(string storyName)
     {
-        ChangeState(ThreadState.LOAD);
-        currentStory = LoadStory(storyName);
+        stateMachine.ChangeState(State.LOAD);
+        try
+        {
+            TextAsset storyAsset = (TextAsset)Resources.Load(PATH + storyName);
+            currentStory = new Story(storyAsset.text);
+            currentStory.onError += (message, type) =>
+            {
+                Debug.LogError("[Ink] " + type + " " + message);
+            };
+
+            // Get Variables
+            InkyVariables variables = new InkyVariables(currentStory);
+
+            // Get Tags
+            List<string> tags = currentStory.globalTags.ToList();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
+            return false;
+        }
+        return true;
     }
 
     public void GoToKnotAt(string pathString)
     {
-        ChangeState(ThreadState.LOAD);
+        stateMachine.ChangeState(State.LOAD);
         currentKnot = new InkyKnot(currentStory, pathString);
     }
 
     public void ContinueStory()
     {
+        stateMachine.ChangeState(State.LOAD);
         if (currentKnot != null)
         {
             currentKnot.ContinueStory();
         }
     }
-
-
-
 }
+
+
 
 

@@ -741,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationStateOverride: 3
+  animationStateOverride: 1
   spriteSheets:
   - state: 1
     spriteSheet:
@@ -775,7 +775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37df2651b73eb6745a08fd660a2c9bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkKnot: NPC_Test
+  inkKnot: employee
   interactionType: 0
   visualTreeAsset: {fileID: 9197481963319205126, guid: e04c770115cfa124d82578e7646e15ee, type: 3}
   panelSettings: {fileID: 11400000, guid: 3761f42fcc45f8f4e9f28e087a2a2ff2, type: 2}
@@ -822,7 +822,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -845,13 +845,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
+  frameRate: 2
   spriteSheet:
     loop: 1
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!1 &5325288156900856991
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 1572859457896948977}
   - component: {fileID: 46248231586957857}
   m_Layer: 7
-  m_Name: '[NPC] Not Mel'
+  m_Name: '[NPC] MelOMart Employee'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Singleton Interface for non-MonoBehaviour classes.
+/// This only works for classes with a default constructor.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface ISingleton<T>
@@ -16,25 +17,16 @@ public interface ISingleton<T>
         {
             if (instance == null)
             {
+                // Get the default constructor for the type
                 ConstructorInfo constructor = typeof(T).GetConstructor(System.Type.EmptyTypes);
                 if (constructor != null)
                 {
+                    // Invoke the constructor and return the instance
                     instance = (T)constructor.Invoke(null);
                 }
                 else { instance = default(T); }
             }
             return instance;
-        }
-        set
-        {
-            if (instance == null)
-            {
-                instance = value;
-            }
-            else
-            {
-                Debug.LogWarning("Singleton " + typeof(T).Name + " already exists.");
-            }
         }
     }
     public static string Prefix => $"ISingleton<{typeof(T).Name}>";

@@ -1,11 +1,31 @@
-//EXTERNAL goto(location)
-//EXTERNAL characterAnimation(character, animation)
 VAR paid_for_gas = false
 VAR tree_fell = false
 VAR knows_gas_is_broken = false
 VAR knows_cash_is_broken = false
 VAR knows_how_to_fix_cash = false
--> employee
+
+
+*employee -> employee
+*gas_pump -> gas_pump
+
+== employee ==
+{ 
+- paid_for_gas: 
+    thanks for fixing this again. -> DONE
+- knows_how_to_fix_cash: 
+    your boss said all you have to do is wack it. #lupe
+    ...um... ok i guess i'll do that.
+    
+- else: 
+    sorry you can't pay right now since the register is broken you'll have to wait for my boss to get back #employee
+    
+    not an option #lupe
+    
+    well i guess you can ask them how to fix it, idk i don't really care? #employee
+    
+    <thought> oh my god #lupe -> DONE
+}
+--> END
 
 == gas_pump ==
 
@@ -40,18 +60,3 @@ VAR knows_how_to_fix_cash = false
         -> DONE
 }
 
-== employee ==
-{ 
-- paid_for_gas: 
-    thanks for fixing this again. -> DONE
-- knows_how_to_fix_cash: 
-    your boss said all you have to do is wack it. #lupe
-    ...um... ok i guess i'll do that. //{animation("gas_employee", "wackRegister")}
-    
-- else: 
-    sorry you can't pay for gas right now since the register is broken you'll have to wait for my boss to get back #employee
-    not an option #lupe
-    well i guess you can ask them how to fix it, idk i don't really care? #employee
-    <thought> oh my god #lupe -> DONE
-}
---> END
