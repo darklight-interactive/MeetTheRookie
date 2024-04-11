@@ -12,10 +12,8 @@ using UnityEngine;
 namespace Darklight.Game.Grid2D
 {
     using OverlapData = OverlapGrid2D.OverlapData;
-    [ExecuteAlways]
     public class OverlapGrid2D : MonoBehaviour
     {
-
         #region ============== [[ DATA CLASS ]] =============================== >>
         /// <summary>
         /// OverlapData class to store the collider data and manage the overlap box data.
@@ -35,6 +33,12 @@ namespace Darklight.Game.Grid2D
             ///  This is intended to be used as a way to grade the availability of the overlap boxes;
             /// </summary>
             public float weightData => weightValue * colliderCount;
+
+            public void SetToDefaultValues()
+            {
+                weightValue = 1;
+                active = true;
+            }
 
             public void CycleWeightValue()
             {
@@ -70,30 +74,18 @@ namespace Darklight.Game.Grid2D
         }
         #endregion
 
-        public Grid2D<OverlapData> dataGrid;
+        [SerializeField] public Grid2D<OverlapData> dataGrid;
         public LayerMask layerMask;
-        public List<OverlapData> ActiveOverlapData
-        {
-            get
-            {
-                if (dataGrid == null) return null;
-                List<OverlapData> overlapDataList = dataGrid.GetDataValues();
-                if (overlapDataList == null || overlapDataList.Count == 0) return null;
-                return overlapDataList.Where(x => x.active).ToList();
-            }
-        }
+
         public void Awake()
         {
-            Reset();
+            Initialize();
         }
 
-        public void Reset()
+        public void Initialize()
         {
-            if (dataGrid != null)
-            {
-                dataGrid.SetParent(this.transform);
-                dataGrid.InitializeGridToSetValues();
-            }
+            dataGrid = new Grid2D<OverlapData>(this.transform);
+            dataGrid.SetParent(this.transform);
         }
 
         public void Update()
@@ -101,18 +93,25 @@ namespace Darklight.Game.Grid2D
             UpdateOverlapData();
         }
 
-        public OverlapData GetOverlapDataWithLowestWeightValue()
+        public void SetToDefaultValues()
         {
-            if (dataGrid == null) return null;
-            List<OverlapData> overlapDataList = ActiveOverlapData;
-            if (overlapDataList == null || overlapDataList.Count == 0) return null;
-            OverlapData lowestWeightData = overlapDataList.OrderBy(x => x.weightData).FirstOrDefault();
-            return lowestWeightData;
+            List<Vector2Int> positionKeys = dataGrid.GetPositionKeys();
+            foreach (Vector2Int vector2Int in positionKeys)
+            {
+                OverlapData overlapData = dataGrid.GetData(vector2Int);
+                if (overlapData == null) continue;
+                overlapData.SetToDefaultValues();
+            }
         }
 
         void UpdateOverlapData()
         {
-            if (dataGrid == null) return;
+            if (dataGrid == null)
+            {
+                return;
+            }
+
+            // Loop through all the active overlap data objects
             foreach (Vector2Int vector2Int in dataGrid.GetPositionKeys())
             {
                 OverlapData activeData = dataGrid.GetData(vector2Int);
@@ -137,6 +136,44 @@ namespace Darklight.Game.Grid2D
                 }
             }
         }
+
+        public List<OverlapData> GetActiveOverlapData()
+        {
+            List<OverlapData> output = new List<OverlapData>();
+            List<Vector2Int> positionKeys = dataGrid.GetPositionKeys();
+            foreach (Vector2Int vector2Int in positionKeys)
+            {
+                OverlapData overlapData = dataGrid.GetData(vector2Int);
+                if (overlapData == null) continue;
+                if (overlapData.active)
+                {
+                    output.Add(overlapData);
+                }
+            }
+            return output;
+        }
+
+        public OverlapData GetOverlapDataWithLowestWeightValue()
+        {
+            OverlapData lowestWeightData = null;
+            float lowestWeightValue = float.MaxValue;
+            List<OverlapData> activeOverlapData = GetActiveOverlapData();
+            if (activeOverlapData == null || activeOverlapData.Count == 0)
+            {
+                Debug.Log("No active overlap data found.");
+                return null;
+            }
+
+            foreach (OverlapData overlapData in activeOverlapData)
+            {
+                if (overlapData.weightData < lowestWeightValue)
+                {
+                    lowestWeightData = overlapData;
+                    lowestWeightValue = overlapData.weightData;
+                }
+            }
+            return lowestWeightData;
+        }
     }
 
 #if UNITY_EDITOR
@@ -147,7 +184,6 @@ namespace Darklight.Game.Grid2D
         private void OnEnable()
         {
             overlapGridScript = (OverlapGrid2D)target;
-            overlapGridScript.Awake();
         }
 
         public override void OnInspectorGUI()
@@ -156,15 +192,17 @@ namespace Darklight.Game.Grid2D
 
             DrawDefaultInspector();
 
+
+
             if (EditorGUI.EndChangeCheck())
             {
-                overlapGridScript.Reset();
             }
         }
 
         private void OnSceneGUI()
         {
             overlapGridScript = (OverlapGrid2D)target;
+            overlapGridScript.Update();
             DisplayGrid2D(this.overlapGridScript.dataGrid);
         }
 

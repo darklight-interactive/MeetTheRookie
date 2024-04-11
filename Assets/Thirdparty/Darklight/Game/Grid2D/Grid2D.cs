@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Darklight.Game.Grid2D
 {
-
     /// <summary>
     /// A 2D Grid that can be used to store any type of data.
     /// </summary>
@@ -30,20 +29,19 @@ namespace Darklight.Game.Grid2D
         }
         #endregion
 
-        #region [[ Public Properties ]] =============================== >>
+        #region [[ Properties ]] =============================== >>
         const int MIN = 1;
         const int MAX = 10;
-        [SerializeField, Range(MIN, MAX)] public int gridSizeX = 3;
-        [SerializeField, Range(MIN, MAX)] public int gridSizeY = 3;
+        [SerializeField, Range(MIN, MAX)] private int gridSizeX = 3;
+        [SerializeField, Range(MIN, MAX)] private int gridSizeY = 3;
         [SerializeField, Range(0.1f, 1f)] public float coordinateSize = 1;
-        [SerializeField, Range(-MAX, MAX)] public int originKeyX = 0;
-        [SerializeField, Range(-MAX, MAX)] public int originKeyY = 0;
+        [SerializeField, Range(-MAX, MAX)] private int originKeyX = 0;
+        [SerializeField, Range(-MAX, MAX)] private int originKeyY = 0;
         #endregion
 
-        #region  Constructors -------------- 
+        private Dictionary<Vector2Int, Coordinate> coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
         private Vector2Int gridXAxis => new Vector2Int(1, 0); // create x Axis Vector
         private Vector2Int gridYAxis => new Vector2Int(0, 1); // create y Axis Vector
-        private Dictionary<Vector2Int, Coordinate> coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
         private Vector2Int gridArea
         {
             get => new Vector2Int((int)gridSizeX, (int)gridSizeY);
@@ -53,14 +51,12 @@ namespace Darklight.Game.Grid2D
                 gridSizeY = value.y;
             }
         }
-
-        /// <summary> The parent transform of the grid. </summary>
         private Transform gridParent = null;
         private Vector2Int gridParentPositionKey => new Vector2Int(originKeyX, originKeyY);
         public Grid2D(Transform parent)
         {
             this.gridParent = parent;
-            InitializeGridToSetValues();
+            CreateNewGrid();
         }
 
         public Grid2D(Transform parent, Vector2Int gridSize, int coordinateSize)
@@ -68,15 +64,14 @@ namespace Darklight.Game.Grid2D
             this.gridParent = parent;
             this.gridArea = gridSize;
             this.coordinateSize = coordinateSize;
-            InitializeGridToSetValues();
+            CreateNewGrid();
         }
-        #endregion
 
         #region [[ Public Methods ]] =============================== >>
         /// <summary>
         /// Initializes the grid by creating coordinates for each position in the grid.
         /// </summary>
-        public void InitializeGridToSetValues()
+        public void CreateNewGrid()
         {
             coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
             for (int x = 0; x < gridArea.x; x++)
