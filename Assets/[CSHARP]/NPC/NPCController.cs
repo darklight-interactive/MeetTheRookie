@@ -40,9 +40,11 @@ public class NPCController : MonoBehaviour
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
     [Range(0.1f, 1f)] public float followSpeed = .5f;
     [Range(0.1f, 1f)] public float hideSpeed = .5f;
+    [Range(0.1f, 1f)] public float chaseSpeed = .5f;
     public float leftBound;
     public float rightBound;
     public float followDistance = 1;
+    public float chaseSpeakDistance = .75f;
     [Range(0f, 10f)] public float idleMaxDuration;
     [Range(0f, 10f)] public float walkMaxDuration;
 
@@ -53,7 +55,7 @@ public class NPCController : MonoBehaviour
 
         // NPC starts walking in a random direction at the start
         walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        GoToState(NPCState.HIDE);
+        GoToState(NPCState.CHASE);
     }
 
     // Update is called once per frame
@@ -115,7 +117,7 @@ public class NPCController : MonoBehaviour
             if (animationManager == null || animationManager.FrameAnimationPlayer == null) { Debug.Log("Player Controller has no FrameAnimationPlayer"); }
             animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-walkDirection, 0));
         }
-        else if (stateMachine.CurrentState == NPCState.SPEAK)       // SPEAK UPDATE
+        else if (stateMachine.CurrentState == NPCState.SPEAK)        // SPEAK UPDATE
         {
             // Set NPC to face player when speaking
             animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(player.transform.position.x > transform.position.x ? -1 : 1, 0));
@@ -149,6 +151,25 @@ public class NPCController : MonoBehaviour
                 animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-hideDirection, 0));
             }
         }
+        else if (stateMachine.CurrentState == NPCState.CHASE)       // CHASE UPDATE
+        {
+            float currentChaseDistance = player.transform.position.x - transform.position.x;
+
+            if (currentChaseDistance <= chaseSpeakDistance)
+            {
+                GoToState(NPCState.SPEAK);
+                return;
+            }
+
+            int chaseDirection = (currentChaseDistance < 0) ? -1 : 1;
+
+            float movement = chaseDirection * chaseSpeed;
+            float targetX = transform.position.x + movement;
+
+            // move the character
+            transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
+            animationManager.FrameAnimationPlayer.FlipTransform(new Vector2(-chaseDirection, 0));
+        }
     }
 
     #endregion
@@ -181,6 +202,9 @@ public class NPCController : MonoBehaviour
         {
             StopCoroutine(HideCheck());
         }
+        else if (stateMachine.CurrentState == NPCState.CHASE)   // CHASE EXIT
+        {
+        }
 
         // Change the state
         stateMachine.ChangeState(state);
@@ -206,9 +230,12 @@ public class NPCController : MonoBehaviour
         {
             StartCoroutine(FollowCheck());
         }
-        else if (stateMachine.CurrentState == NPCState.HIDE)    // HIDE EXIT
+        else if (stateMachine.CurrentState == NPCState.HIDE)    // HIDE ENTER
         {
             StartCoroutine(HideCheck());
+        }
+        else if (stateMachine.CurrentState == NPCState.CHASE)   // CHASE ENTER
+        {
         }
     }
 

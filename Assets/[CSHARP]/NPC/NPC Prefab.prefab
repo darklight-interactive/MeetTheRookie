@@ -104,9 +104,12 @@ MonoBehaviour:
   player: {fileID: 0}
   npcSpeed: 0.2
   followSpeed: 0.5
+  hideSpeed: 0.5
+  chaseSpeed: 0.5
   leftBound: -5
   rightBound: 5
   followDistance: 1
+  chaseSpeakDistance: 1
   idleMaxDuration: 0
   walkMaxDuration: 0
 --- !u!114 &3412433257022094393
@@ -155,6 +158,14 @@ MonoBehaviour:
       frames:
       - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
       - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+  - state: 6
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: -2556916416602114176, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      - {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      - {fileID: 1732469636954548053, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      - {fileID: 7151748471517913395, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
 --- !u!114 &8741917591864611154
 MonoBehaviour:
   m_ObjectHideFlags: 0
