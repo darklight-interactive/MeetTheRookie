@@ -31,17 +31,19 @@ namespace Darklight.Game.Grid2D
         #endregion
 
         #region [[ Public Properties ]] =============================== >>
-        [SerializeField, Range(1, 10)] public int gridSizeX = 3;
-        [SerializeField, Range(1, 10)] public int gridSizeY = 3;
+        const int MIN = 1;
+        const int MAX = 10;
+        [SerializeField, Range(MIN, MAX)] public int gridSizeX = 3;
+        [SerializeField, Range(MIN, MAX)] public int gridSizeY = 3;
         [SerializeField, Range(0.1f, 1f)] public float coordinateSize = 1;
-        [SerializeField, Range(-1, 1)] public int gridXAxisDirection = 1;
-        [SerializeField, Range(-1, 1)] public int gridYAxisDirection = 1;
+        [SerializeField, Range(-MAX, MAX)] public int originKeyX = 0;
+        [SerializeField, Range(-MAX, MAX)] public int originKeyY = 0;
         #endregion
 
         #region  Constructors -------------- 
-        private Vector2Int gridXAxis => new Vector2Int(gridXAxisDirection, 0); // create x Axis Vector
-        private Vector2Int gridYAxis => new Vector2Int(0, gridYAxisDirection); // create y Axis Vector
-        private Dictionary<Vector2Int, Coordinate> grid = new Dictionary<Vector2Int, Coordinate>();
+        private Vector2Int gridXAxis => new Vector2Int(1, 0); // create x Axis Vector
+        private Vector2Int gridYAxis => new Vector2Int(0, 1); // create y Axis Vector
+        private Dictionary<Vector2Int, Coordinate> coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
         private Vector2Int gridArea
         {
             get => new Vector2Int((int)gridSizeX, (int)gridSizeY);
@@ -54,8 +56,7 @@ namespace Darklight.Game.Grid2D
 
         /// <summary> The parent transform of the grid. </summary>
         private Transform gridParent = null;
-        public Vector2Int gridParentPositionKey = new Vector2Int(0, 0);
-
+        private Vector2Int gridParentPositionKey => new Vector2Int(originKeyX, originKeyY);
         public Grid2D(Transform parent)
         {
             this.gridParent = parent;
@@ -77,14 +78,14 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         public void InitializeGridToSetValues()
         {
-            grid = new Dictionary<Vector2Int, Coordinate>();
+            coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
             for (int x = 0; x < gridArea.x; x++)
             {
                 for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
                     Coordinate coordinate = new Coordinate(position, default);
-                    grid.Add(position, coordinate);
+                    coordinateGrid.Add(position, coordinate);
                 }
             }
         }
@@ -105,9 +106,9 @@ namespace Darklight.Game.Grid2D
         /// <param name="value">The value to set.</param>
         public void SetCoordinateValue(Vector2Int position, Data value)
         {
-            if (grid.ContainsKey(position))
+            if (coordinateGrid.ContainsKey(position))
             {
-                grid[position].dataValue = value;
+                coordinateGrid[position].dataValue = value;
             }
         }
 
@@ -118,9 +119,9 @@ namespace Darklight.Game.Grid2D
         /// <returns></returns>
         public Data GetData(Vector2Int position)
         {
-            if (grid.ContainsKey(position))
+            if (coordinateGrid.ContainsKey(position))
             {
-                return grid[position].dataValue;
+                return coordinateGrid[position].dataValue;
             }
             return default;
         }
@@ -131,9 +132,20 @@ namespace Darklight.Game.Grid2D
         /// <returns>A list of all position keys in the grid.</returns>
         public List<Vector2Int> GetPositionKeys()
         {
-            if (grid != null)
-                return new List<Vector2Int>(grid.Keys);
+            if (coordinateGrid != null)
+                return new List<Vector2Int>(coordinateGrid.Keys);
             return new List<Vector2Int>();
+        }
+
+        public List<Data> GetDataValues()
+        {
+            List<Data> values = new List<Data>();
+            if (values == null || values.Count == 0) return values;
+            foreach (Coordinate coordinate in coordinateGrid.Values)
+            {
+                values.Add(coordinate.dataValue);
+            }
+            return values;
         }
 
         /// <summary>
