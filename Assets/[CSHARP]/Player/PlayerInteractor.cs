@@ -27,13 +27,13 @@ public class PlayerInteractor : MonoBehaviour
             targetInteraction = null;
 
             // Start the interaction
-            activeInteraction.StartInteractionKnot(() => { });
+            activeInteraction.Interact();
         }
         else if (activeInteraction != null)
         {
             if (InkyKnotThreader.Instance.currentStory.canContinue)
             {
-                //activeInteraction.ContinueDialogue();
+                activeInteraction.Interact();
             }
             else
             {
@@ -78,7 +78,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             // May want a better priority system, but this is fine for now:
             this.targetInteraction = interactions.First();
-            //this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
+            UXML_InteractionUI.Instance.DisplayInteractPrompt(targetInteraction.transform.position);
         }
     }
     #endregion
