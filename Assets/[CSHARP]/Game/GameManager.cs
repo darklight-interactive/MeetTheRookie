@@ -16,11 +16,16 @@ public class GameManager : MonoBehaviour, IGameSingleton<GameManager>
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
     public static InkyKnotThreader InkyKnotThreader = ISingleton<InkyKnotThreader>.Instance;
+    public string initialStoryPath = "scene1";
 
     void Awake()
     {
         (this as IGameSingleton<GameManager>).Initialize();
-        InkyKnotThreader.LoadStory("1.1_MelOMart");
+    }
+
+    void Start()
+    {
+        InkyKnotThreader.LoadStory(initialStoryPath);
     }
 }
 
@@ -28,8 +33,9 @@ public class GameManager : MonoBehaviour, IGameSingleton<GameManager>
 [CustomEditor(typeof(GameManager))]
 public class GameManagerEditor : Editor
 {
-    InkyKnotThreader threader;
 
+    bool showThreader = true;
+    InkyKnotThreader threader;
     public override void OnInspectorGUI()
     {
         GameManager gameManager = (GameManager)target;
@@ -38,12 +44,17 @@ public class GameManagerEditor : Editor
         GameState gameState = GameManager.StateMachine.CurrentState;
         CustomInspectorGUI.DrawEnumProperty(ref gameState, $"Game State");
 
-        InkyKnotThreader.State threadState = GameManager.InkyKnotThreader.currentState;
-        CustomInspectorGUI.DrawEnumProperty(ref threadState, $"InkyKnotThreader State");
-        InkyKnotThreader.Console.DrawInEditor();
+        CustomInspectorGUI.CreateFoldout(ref showThreader, "InkyKnotThreader", ShowThreader);
 
         CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(this.serializedObject);
 
+    }
+
+    void ShowThreader()
+    {
+        InkyKnotThreader.State threadState = GameManager.InkyKnotThreader.currentState;
+        CustomInspectorGUI.DrawEnumProperty(ref threadState, $"InkyKnotThreader State");
+        InkyKnotThreader.Console.DrawInEditor();
     }
 }
 

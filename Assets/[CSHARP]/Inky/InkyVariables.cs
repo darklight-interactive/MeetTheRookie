@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
 
-public class InkyVariables
+public class InkyGlobalVariables
 {
     public Dictionary<string, Ink.Runtime.Object> variables { get; private set; }
     private Story story;
     private const string saveVariablesKey = "INK_VARIABLES";
 
-    public InkyVariables(Story story)
+    public InkyGlobalVariables(Story story)
     {
         // create the story
         this.story = story;
@@ -26,7 +26,8 @@ public class InkyVariables
         {
             Ink.Runtime.Object value = this.story.variablesState.GetVariableWithName(name);
             variables.Add(name, value);
-            Debug.Log("Initialized global dialogue variable: " + name + " = " + value);
+
+            InkyKnotThreader.Console.Log($"{InkyKnotThreader.Prefix} Initialized global dialogue variable: {name} = {value}", 1);
         }
     }
 

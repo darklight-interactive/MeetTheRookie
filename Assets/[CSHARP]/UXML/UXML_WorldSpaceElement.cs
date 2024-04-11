@@ -31,9 +31,12 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
 
         initialized = true;
+
+        // This is to replace the Update() method with a slower version
+        InvokeRepeating("ManualUpdate", 0, 0.5f);
     }
 
-    public void Update()
+    void ManualUpdate()
     {
         if (initialized == false) return;
 
@@ -43,7 +46,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         inkyBubble = root.Q<UXML_InkyBubble>();
 
         string currentText = InkyKnotThreader.Instance.currentText;
-
+        if (currentText == null || currentText == "") currentText = "TEXT NOT FOUND";
         inkyBubble.SetText(currentText);
         inkyBubble.visible = true;
 

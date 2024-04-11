@@ -46,12 +46,12 @@ namespace Darklight.Bot
 			}
 			catch (OperationCanceledException operation)
 			{
-				taskQueen.TaskBotConsole.Log($"{Name}: Operation canceled.", 0, Darklight.Console.LogEntry.Severity.Warning);
+				taskQueen.TaskBotConsole.Log($"{Name}: Operation canceled.", 0, LogSeverity.Warning);
 				Debug.LogWarning($"{Name} || {GuidId} => Operation Canceled: {operation.Message}", taskQueen);
 			}
 			catch (Exception ex)
 			{
-				taskQueen.TaskBotConsole.Log($"{Name}: Error encountered. See Unity Console for details.", 0, Darklight.Console.LogEntry.Severity.Error);
+				taskQueen.TaskBotConsole.Log($"{Name}: Error encountered. See Unity Console for details.", 0, LogSeverity.Error);
 				Debug.LogError($"{Name} || {GuidId} => Exception: {ex.Message}\n" + ex.StackTrace, taskQueen);
 			}
 			finally

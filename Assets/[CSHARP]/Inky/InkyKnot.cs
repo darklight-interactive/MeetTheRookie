@@ -4,17 +4,15 @@ using Darklight;
 using Ink.Runtime;
 using UnityEngine;
 
-public enum KnotState { NULL, START, DIALOGUE, CHOICE, END }
-public class InkyKnot : StateMachine<KnotState>
+public class InkyKnot : StateMachine<InkyKnot.State>
 {
+    public enum State { NULL, START, DIALOGUE, CHOICE, END }
     string Prefix => "[InkyKnot] >> ";
     Story story;
     string knotName;
     Dictionary<Choice, int> choiceMap = new Dictionary<Choice, int>();
     List<string> tags;
-
-    public string currentText => story.currentText;
-    public InkyKnot(Story storyParent, string knotName, KnotState initialState = KnotState.NULL) : base(initialState)
+    public InkyKnot(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
     {
         this.story = storyParent;
         this.knotName = knotName;
@@ -25,33 +23,39 @@ public class InkyKnot : StateMachine<KnotState>
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"{Prefix} Error: {e.Message}");
+            InkyKnotThreader.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
+        }
+        finally
+        {
+            InkyKnotThreader.Console.Log($"{Prefix} Created Knot: {knotName}", 1);
         }
     }
 
-    public void ContinueStory()
+    public void ContinueKnot()
     {
         if (story.canContinue)
         {
-            ChangeState(KnotState.DIALOGUE);
+            ChangeState(State.DIALOGUE);
 
             string text = story.Continue();
-            Debug.Log($"{Prefix} Continue: {text}");
+            HandleTags();
+
+            InkyKnotThreader.Console.Log($"{Prefix} Continue Dialogue: {text}", 1);
         }
         else if (story.currentChoices.Count > 0)
         {
-            ChangeState(KnotState.CHOICE);
-            Debug.Log($"{Prefix} Choices: {story.currentChoices.Count}");
+            ChangeState(State.CHOICE);
+            InkyKnotThreader.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
             foreach (Choice choice in story.currentChoices)
             {
                 choiceMap.Add(choice, choice.index);
-                Debug.Log($"{Prefix} Choice: {choice.text}");
+                InkyKnotThreader.Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
         else
         {
-            ChangeState(KnotState.END);
+            ChangeState(State.END);
 
             OnKnotCompleted.Invoke();
 
@@ -64,7 +68,7 @@ public class InkyKnot : StateMachine<KnotState>
         Choice choice = story.currentChoices[choiceIndex];
         story.ChooseChoiceIndex(choice.index);
         choiceMap.Clear();
-        ContinueStory();
+        ContinueKnot();
     }
 
     public delegate void KnotComplete();
@@ -88,18 +92,22 @@ public class InkyKnot : StateMachine<KnotState>
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
-                Debug.LogError("Tag could not be appropriately parsed: " + tag);
+                InkyKnotThreader.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
             }
-            string tagKey = splitTag[0].Trim();
-            string tagValue = splitTag[1].Trim();
-
-            // handle the tag
-            switch (tagKey)
+            else
             {
-                default:
-                    Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
-                    break;
+                string tagKey = splitTag[0].Trim();
+                string tagValue = splitTag[1].Trim();
+
+                // handle the tag
+                switch (tagKey)
+                {
+                    default:
+                        InkyKnotThreader.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
+                        break;
+                }
             }
+
         }
     }
 }

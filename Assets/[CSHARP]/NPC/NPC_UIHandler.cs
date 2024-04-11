@@ -28,11 +28,7 @@ public class NPC_UIHandler : InkyInteraction
         });
 
         Coordinate targetGridCoordinate = overlapGrid.GetCoordinatesByColliderCount()[0][1];
-
-        InkyDecryptor currentDialogue = new InkyDecryptor(InkyKnotThreader.Instance.currentText);
-        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition, currentDialogue.textBody);
-
-        Debug.Log($"StartInteractionKnot -> NewDialogueBubble{currentDialogue.textBody}");
+        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition);
     }
 
     public override void ResetInteraction()
@@ -42,7 +38,7 @@ public class NPC_UIHandler : InkyInteraction
         DeleteObject(this.activeDialogueBubble.gameObject);
     }
 
-    UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, string text)
+    UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition)
     {
         if (activeDialogueBubble == null)
         {

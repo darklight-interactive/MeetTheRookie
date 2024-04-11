@@ -5,6 +5,7 @@ namespace Darklight
 	using System.Collections.Generic;
 	using UnityEditor;
 	using UnityEngine;
+	public enum LogSeverity { Info, Warning, Error }
 
 	public class Console
 	{
@@ -12,10 +13,8 @@ namespace Darklight
 		private bool autoScroll = true; // Default to true to enable auto-scrolling.
 		public class LogEntry
 		{
-			public enum Severity { Info, Warning, Error }
-
 			DateTime _timeStamp = DateTime.Now;
-			Severity _severity = Severity.Info;
+			LogSeverity _severity = LogSeverity.Info;
 			string _message = string.Empty;
 			int _indentLevel = 0;
 
@@ -28,10 +27,10 @@ namespace Darklight
 					Color textColor = Color.white; // Default to white
 					switch (_severity)
 					{
-						case Severity.Warning:
+						case LogSeverity.Warning:
 							textColor = Color.yellow;
 							break;
-						case Severity.Error:
+						case LogSeverity.Error:
 							textColor = Color.red;
 							break;
 					}
@@ -43,7 +42,7 @@ namespace Darklight
 					};
 				}
 			}
-			public LogEntry(int indentLevel, string message, Severity severity = Severity.Info)
+			public LogEntry(int indentLevel, string message, LogSeverity severity = LogSeverity.Info)
 			{
 				_indentLevel = indentLevel;
 				_message = message;
@@ -54,7 +53,7 @@ namespace Darklight
 
 		public List<LogEntry> AllLogEntries { get; private set; } = new List<LogEntry>();
 
-		public void Log(string message, int indent = 0, LogEntry.Severity severity = LogEntry.Severity.Info)
+		public void Log(string message, int indent = 0, LogSeverity severity = LogSeverity.Info)
 		{
 			LogEntry newLog = new LogEntry(indent, message, severity);
 			AllLogEntries.Add(newLog);

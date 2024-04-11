@@ -38,32 +38,45 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
 
     public State currentState => stateMachine.CurrentState;
     public Story currentStory { get; private set; }
-    public InkyVariables currentVariables { get; private set; }
+    public InkyGlobalVariables currentVariables { get; private set; }
     InkyKnot currentKnot;
     public string currentText => currentStory.currentText;
 
     public bool LoadStory(string storyName)
     {
         stateMachine.ChangeState(State.LOAD);
+        Console.Log($"{Prefix} Loading Story: {storyName}");
+
         try
         {
             TextAsset storyAsset = (TextAsset)Resources.Load(PATH + storyName);
             currentStory = new Story(storyAsset.text);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
+            return false;
+        }
+        finally
+        {
             currentStory.onError += (message, type) =>
             {
                 Debug.LogError("[Ink] " + type + " " + message);
             };
 
             // Get Variables
-            InkyVariables variables = new InkyVariables(currentStory);
+            InkyGlobalVariables variables = new InkyGlobalVariables(currentStory);
 
             // Get Tags
-            List<string> tags = currentStory.globalTags.ToList();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
-            return false;
+            List<string> tags = currentStory.globalTags;
+            if (tags != null && tags.Count > 0)
+            {
+                foreach (string tag in tags)
+                {
+                    Console.Log($"{Prefix} Found Tag: {tag}", 3);
+                }
+            }
+
         }
         return true;
     }
@@ -79,7 +92,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
         stateMachine.ChangeState(State.LOAD);
         if (currentKnot != null)
         {
-            currentKnot.ContinueStory();
+            currentKnot.ContinueKnot();
         }
     }
 }
