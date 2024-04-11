@@ -23,11 +23,11 @@ public class InkyKnot : StateMachine<InkyKnot.State>
         }
         catch (System.Exception e)
         {
-            InkyKnotThreader.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
+            InkyKnotThreader.drk_Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
         }
         finally
         {
-            InkyKnotThreader.Console.Log($"{Prefix} Created Knot: {knotName}", 1);
+            InkyKnotThreader.drk_Console.Log($"{Prefix} Created Knot: {knotName}", 1);
         }
     }
 
@@ -40,17 +40,17 @@ public class InkyKnot : StateMachine<InkyKnot.State>
             string text = story.Continue();
             HandleTags();
 
-            InkyKnotThreader.Console.Log($"{Prefix} Continue Dialogue: {text}", 1);
+            InkyKnotThreader.drk_Console.Log($"{Prefix} Continue Dialogue: {text}", 1);
         }
         else if (story.currentChoices.Count > 0)
         {
             ChangeState(State.CHOICE);
-            InkyKnotThreader.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
+            InkyKnotThreader.drk_Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
             foreach (Choice choice in story.currentChoices)
             {
                 choiceMap.Add(choice, choice.index);
-                InkyKnotThreader.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                InkyKnotThreader.drk_Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
         else
@@ -92,7 +92,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
-                InkyKnotThreader.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
+                InkyKnotThreader.drk_Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
             }
             else
             {
@@ -103,7 +103,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
                 switch (tagKey)
                 {
                     default:
-                        InkyKnotThreader.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
+                        InkyKnotThreader.drk_Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
                         break;
                 }
             }

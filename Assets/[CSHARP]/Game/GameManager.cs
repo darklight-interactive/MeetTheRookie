@@ -54,7 +54,7 @@ public class GameManagerEditor : Editor
     {
         InkyKnotThreader.State threadState = GameManager.InkyKnotThreader.currentState;
         CustomInspectorGUI.DrawEnumProperty(ref threadState, $"InkyKnotThreader State");
-        InkyKnotThreader.Console.DrawInEditor();
+        InkyKnotThreader.drk_Console.DrawInEditor();
     }
 }
 

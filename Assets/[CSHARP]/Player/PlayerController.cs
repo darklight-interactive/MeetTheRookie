@@ -12,9 +12,10 @@ using UnityEngine.InputSystem;
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
 
-[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
 {
+    PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
@@ -47,16 +48,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        HandleInteractions();
-    }
-
-
-
-
-    #region ===== [ MOVEMENT HANDLING ] ===== >>
-
     void HandleMovement()
     {
         Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
@@ -83,99 +74,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
-    #endregion
-
-    #region ===== [[ INTERACTION HANDLING ]] ===== >>
-    public InkyInteraction targetInteraction;
-    public InkyInteraction activeInkInteraction;
-    protected HashSet<InkyInteraction> interactions = new HashSet<InkyInteraction>();
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
-        if (interaction != null)
-        {
-            SubscribeInteraction(interaction);
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
-        if (interaction != null)
-        {
-            UnsubscribeInteraction(interaction);
-        }
-    }
-
-    public void UnsubscribeInteraction(InkyInteraction i)
-    {
-        interactions.Remove(i);
-    }
-    public void SubscribeInteraction(InkyInteraction i)
-    {
-        interactions.Add(i);
-    }
-
-    void HandleInteractions()
-    {
-        if (interactions.Count == 0)
-        {
-            UXML_InteractionUI.Instance.HideInteractPrompt();
-            return;
-        }
-        else
-        {
-            // May want a better priority system, but this is fine for now:
-            this.targetInteraction = interactions.First();
-            this.targetInteraction.DisplayInteractionPrompt(this.targetInteraction.transform.position);
-        }
-    }
-
     /// <summary>
-    /// Z (or interaction equivalent) has been pressed, pass things off for our interactable to handle.
+    /// Interaction Input has been pressed
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        if (targetInteraction != null)
-        {
-            // Hide Interaction Prompt
-            UXML_InteractionUI.Instance.HideInteractPrompt();
-
-            // Transfer the target interaction to the active interaction
-            activeInkInteraction = targetInteraction;
-            targetInteraction = null;
-
-            // Start the interaction
-            activeInkInteraction.StartInteractionKnot(() => { });
-
-            // Change the player state
-            stateMachine.ChangeState(PlayerState.INTERACTION);
-
-            Debug.Log("Interact >> Start Ink Interaction");
-        }
-        else if (activeInkInteraction != null)
-        {
-            if (InkyKnotThreader.Instance.currentStory.canContinue)
-            {
-                Debug.Log("Interact >> Continue Ink Interaction");
-                activeInkInteraction.ContinueDialogue();
-            }
-            else
-            {
-                // End the interaction
-                if (activeInkInteraction)
-                    activeInkInteraction.ResetInteraction();
-                activeInkInteraction = null;
-
-                stateMachine.ChangeState(PlayerState.IDLE);
-
-                Debug.Log("Interact >> End Ink Interaction");
-            }
-        }
+        stateMachine.ChangeState(PlayerState.INTERACTION);
+        UXML_InteractionUI.Instance.HideInteractPrompt();
+        playerInteractor.StartInteraction();
     }
-    #endregion
 
 }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Ladder : MonoBehaviour, IInteractable
+public class Ladder : MonoBehaviour
 {
     private SpriteRenderer sr;
     GameObject player;

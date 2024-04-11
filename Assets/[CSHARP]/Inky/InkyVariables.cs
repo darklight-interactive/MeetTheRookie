@@ -27,7 +27,7 @@ public class InkyGlobalVariables
             Ink.Runtime.Object value = this.story.variablesState.GetVariableWithName(name);
             variables.Add(name, value);
 
-            InkyKnotThreader.Console.Log($"{InkyKnotThreader.Prefix} Initialized global dialogue variable: {name} = {value}", 1);
+            InkyKnotThreader.drk_Console.Log($"{InkyKnotThreader.Prefix} Initialized global dialogue variable: {name} = {value}", 1);
         }
     }
 

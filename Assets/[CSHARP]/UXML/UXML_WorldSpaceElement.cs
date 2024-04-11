@@ -39,6 +39,8 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     void ManualUpdate()
     {
         if (initialized == false) return;
+        if (Application.isPlaying == false)
+            DestroyImmediate(this.gameObject);
 
         PanelSettings panelSettings = uiDocument.panelSettings;
         if (panelSettings == null) return;
@@ -59,3 +61,4 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         meshRenderer.enabled = true;
     }
 }
+

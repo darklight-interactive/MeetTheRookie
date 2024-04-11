@@ -9,40 +9,33 @@ namespace Darklight.Game.Grid2D
     /// <summary>
     /// A 2D Grid that can be used to store any type of data.
     /// </summary>
-    /// <typeparam name="Type">The type of data to be stored in the grid.</typeparam>
+    /// <typeparam name="Data">The type of data to be stored in the grid.</typeparam>
     [System.Serializable]
-    public class Grid2D<Type>
+    public class Grid2D<Data>
     {
-
         #region  [[ Coordinate Class ]] =============================== >>
         /// <summary>
         /// Represents a coordinate in the grid.
         /// </summary>
-        /// <typeparam name="Type">The type of data stored at the coordinate.</typeparam>
-        public class Coordinate
+        class Coordinate
         {
-            public Grid2D<Type> parent;
-            public string label = "";
-            public Color color = Color.white;
+            public bool active = true;
             public Vector2Int positionKey = Vector2Int.zero;
-            public Type typeValue = default;
-            public Vector3 worldPosition => parent.GetCoordinatePositionInWorldSpace(positionKey);
-
-            public Coordinate(Grid2D<Type> parent, Vector2Int key, Type value)
+            public Data dataValue = default;
+            public Coordinate(Vector2Int key, Data value)
             {
-                this.parent = parent;
                 this.positionKey = key;
-                this.typeValue = value;
+                this.dataValue = value;
             }
         }
         #endregion
 
         #region [[ Public Properties ]] =============================== >>
-        [Range(1, 10)] public int gridSizeX = 3;
-        [Range(1, 10)] public int gridSizeY = 3;
-        [Range(0.1f, 1f)] public float coordinateSize = 1;
-        [Range(-1, 1)] public int gridXAxisDirection = 1;
-        [Range(-1, 1)] public int gridYAxisDirection = 1;
+        [SerializeField, Range(1, 10)] public int gridSizeX = 3;
+        [SerializeField, Range(1, 10)] public int gridSizeY = 3;
+        [SerializeField, Range(0.1f, 1f)] public float coordinateSize = 1;
+        [SerializeField, Range(-1, 1)] public int gridXAxisDirection = 1;
+        [SerializeField, Range(-1, 1)] public int gridYAxisDirection = 1;
         #endregion
 
         #region  Constructors -------------- 
@@ -78,6 +71,7 @@ namespace Darklight.Game.Grid2D
         }
         #endregion
 
+        #region [[ Public Methods ]] =============================== >>
         /// <summary>
         /// Initializes the grid by creating coordinates for each position in the grid.
         /// </summary>
@@ -89,12 +83,16 @@ namespace Darklight.Game.Grid2D
                 for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
-                    Coordinate coordinate = new Coordinate(this, position, default);
+                    Coordinate coordinate = new Coordinate(position, default);
                     grid.Add(position, coordinate);
                 }
             }
         }
 
+        /// <summary>
+        /// Sets the parent transform of the grid.
+        /// </summary>
+        /// <param name="parent"></param>
         public void SetParent(Transform parent)
         {
             gridParent = parent;
@@ -105,20 +103,24 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         /// <param name="position">The position of the coordinate.</param>
         /// <param name="value">The value to set.</param>
-        public void SetCoordinateValue(Vector2Int position, Type value, string label = "")
+        public void SetCoordinateValue(Vector2Int position, Data value)
         {
             if (grid.ContainsKey(position))
             {
-                grid[position].typeValue = value;
-                grid[position].label = label;
+                grid[position].dataValue = value;
             }
         }
 
-        public Coordinate GetCoordinate(Vector2Int position)
+        /// <summary>
+        /// Gets the dataValue of a coordinate in the grid.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public Data GetData(Vector2Int position)
         {
             if (grid.ContainsKey(position))
             {
-                return grid[position];
+                return grid[position].dataValue;
             }
             return default;
         }
@@ -139,7 +141,7 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         /// <param name="positionKey">The position key in the grid.</param>
         /// <returns>The world space position of the specified position key.</returns>
-        public Vector3 GetCoordinatePositionInWorldSpace(Vector2Int positionKey)
+        public Vector3 GetWorldSpacePosition(Vector2Int positionKey)
         {
             if (this.gridParent == null) { return Vector3.zero; }
 
@@ -150,5 +152,6 @@ namespace Darklight.Game.Grid2D
             Vector3 worldSpacePosition = gridParent.TransformVector(gridParent.position + vec3_position);
             return worldSpacePosition;
         }
+        #endregion
     }
 }

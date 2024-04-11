@@ -27,8 +27,10 @@ public class NPC_UIHandler : InkyInteraction
             onComplete?.Invoke();
         });
 
-        Coordinate targetGridCoordinate = overlapGrid.GetCoordinatesByColliderCount()[0][1];
-        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition);
+        // Create a dialogue bubble at the best position
+        Vector2Int bestPosition = overlapGrid.GetOverlapDataWithLowestWeightValue().positionKey;
+        Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(bestPosition);
+        CreateDialogueBubbleAt(worldPosition);
     }
 
     public override void ResetInteraction()

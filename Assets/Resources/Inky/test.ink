@@ -1,10 +1,14 @@
-VAR npc = "Unkown"
+VAR npc_name = "NPC"
+Welcome to the test environment.
+-> main
 
--> Mel
-=== Mel ===
-{npc} I swallowed a bug.
+=== main ===
+* [Go Talk to The Employee]
+    -> Not_Mel
 
-[Mel:] You ever think about swallowing bugs?
+=== Not_Mel ===
+I swallowed a bug.
+You ever think about swallowing bugs?
 
 * No[.], Bugs are my friends. -> DONE
 * Yes[.], I love munching on bugs nom nom nom nom nom nom.

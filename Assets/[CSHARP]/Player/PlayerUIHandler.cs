@@ -5,21 +5,22 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static Darklight.Game.Grid2D.Grid2D<UnityEngine.Collider2D[]>;
 
-[RequireComponent(typeof(OverlapGrid2D))]
-public class PlayerUIHandler : MonoBehaviour
+public class PlayerUIHandler : OverlapGrid2D
 {
-    OverlapGrid2D overlapGrid2D => GetComponent<OverlapGrid2D>();
+    OverlapGrid2D overlapGrid => GetComponent<OverlapGrid2D>();
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings panelSettings;
 
     void Start()
     {
-        Coordinate targetGridCoordinate = overlapGrid2D.GetCoordinatesByColliderCount()[0][1];
-        CreateDialogueBubbleAt(targetGridCoordinate.worldPosition);
+        // Create a dialogue bubble at the best position
+        Vector2Int bestPosition = overlapGrid.GetOverlapDataWithLowestWeightValue().positionKey;
+        Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(bestPosition);
+        CreateDialogueBubbleAt(worldPosition);
     }
 
-    UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition)
+    UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
     {
         if (activeDialogueBubble == null)
         {
@@ -28,6 +29,11 @@ public class PlayerUIHandler : MonoBehaviour
             activeDialogueBubble.transform.SetParent(this.transform);
             activeDialogueBubble.transform.position = worldPosition;
             activeDialogueBubble.Initialize(visualTreeAsset, panelSettings);
+        }
+
+        if (destroy_after >= 0)
+        {
+            Destroy(activeDialogueBubble.gameObject, destroy_after);
         }
 
         return activeDialogueBubble;

@@ -1,22 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Grid2D;
 using Darklight.UnityExt;
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 using UnityEngine;
-using static Darklight.Game.Grid2D.Grid2D<UnityEngine.Collider2D[]>;
 
 namespace Darklight.Game.Grid2D
 {
+    using OverlapData = OverlapGrid2D.OverlapData;
     [ExecuteAlways]
     public class OverlapGrid2D : MonoBehaviour
     {
-        public Grid2D<Collider2D[]> collider2DGrid;
+
+        /// <summary>
+        /// OverlapData class to store the collider data and manage the overlap box data.
+        /// </summary>
+        [System.Serializable]
+        public class OverlapData
+        {
+            public bool active;
+            public Vector2Int positionKey;
+            public Collider2D[] colliders;
+            public int colliderCount => colliders.Length;
+            public string label => $"{positionKey} :: {colliders.Length} colliders";
+
+
+            /// <summary>
+            /// -1 < 0 < 1
+            /// The weight value is set to 0 by default.
+            /// </summary>
+            [SerializeField, Range(-1, 1)] private float weightValue = 0;
+
+            /// <summary>
+            ///  This is intended to be used as a way to grade the availability of the overlap boxes;
+            /// </summary>
+            public float weightData
+            {
+                get
+                {
+                    return weightValue * colliderCount;
+                }
+            }
+
+            public Color debugColor
+            {
+                get
+                {
+                    if (!active) return Color.clear;
+                    Color lerpColor = Color.Lerp(Color.green, Color.red, Mathf.InverseLerp(0, 10, weightData));
+                    return lerpColor;
+                }
+            }
+
+            public OverlapData(Vector2Int positionKey, Collider2D[] colliders)
+            {
+                this.positionKey = positionKey;
+                this.colliders = colliders;
+            }
+        }
+
+        public Grid2D<OverlapData> dataGrid;
         public LayerMask layerMask;
 
         public void Awake()
@@ -26,69 +72,60 @@ namespace Darklight.Game.Grid2D
 
         public void Reset()
         {
-            if (collider2DGrid != null)
+            if (dataGrid != null)
             {
-                collider2DGrid.SetParent(this.transform);
-                collider2DGrid.InitializeGridToSetValues();
+                dataGrid.SetParent(this.transform);
+                dataGrid.InitializeGridToSetValues();
             }
-
-            Update();
         }
 
         public void Update()
         {
-            foreach (Vector2Int vector2Int in collider2DGrid.GetPositionKeys())
+            UpdateOverlapData();
+        }
+
+        public OverlapData GetOverlapDataWithLowestWeightValue()
+        {
+            List<Vector2Int> positionKeys = GetCoordinatesByWeightValue();
+            if (positionKeys.Count > 0)
+            {
+                return dataGrid.GetData(positionKeys[0]);
+            }
+            return null;
+        }
+
+        #region [[ Private Methods ]] =============================== >>
+        void UpdateOverlapData()
+        {
+            if (dataGrid == null) return;
+            foreach (Vector2Int vector2Int in dataGrid.GetPositionKeys())
             {
                 // Get the world position of the coordinate
-                Vector3 worldPosition = collider2DGrid.GetCoordinatePositionInWorldSpace(vector2Int);
+                Vector3 worldPosition = dataGrid.GetWorldSpacePosition(vector2Int);
 
                 // Create an overlap box at the world position
-                Collider2D[] colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * collider2DGrid.coordinateSize, 0, layerMask);
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * dataGrid.coordinateSize, 0, layerMask);
 
-                // Store the list in the grid
-                collider2DGrid.SetCoordinateValue(vector2Int, colliders, $"{vector2Int} :: {colliders.Length} colliders");
+                // Create a new OverlapGrid2DData object
+                OverlapData overlapData = new OverlapData(vector2Int, colliders);
 
-                Coordinate gridCoordinate = collider2DGrid.GetCoordinate(vector2Int);
-                // Assign color
-                switch (colliders.Length)
-                {
-                    case <= 0:
-                        gridCoordinate.color = Color.white;
-                        break;
-                    case 1:
-                        gridCoordinate.color = Color.yellow;
-                        break;
-                    case >= 2:
-                        gridCoordinate.color = Color.red;
-                        break;
-                }
+                // Store the data in the grid
+                dataGrid.SetCoordinateValue(vector2Int, overlapData);
             }
         }
 
-        public Coordinate GetCoordinate(Vector2Int positionKey)
+        List<Vector2Int> GetCoordinatesByWeightValue()
         {
-            if (!collider2DGrid.GetPositionKeys().Contains(positionKey)) return null;
-
-            return collider2DGrid.GetCoordinate(positionKey);
-        }
-
-        public Dictionary<int, List<Coordinate>> GetCoordinatesByColliderCount()
-        {
-            Dictionary<int, List<Coordinate>> coordinatesByColliderCount = new Dictionary<int, List<Coordinate>>();
-            foreach (Vector2Int vector2Int in collider2DGrid.GetPositionKeys())
+            List<Vector2Int> positionKeys = dataGrid.GetPositionKeys();
+            positionKeys.Sort((Vector2Int a, Vector2Int b) =>
             {
-                Coordinate coordinate = collider2DGrid.GetCoordinate(vector2Int);
-                if (coordinatesByColliderCount.ContainsKey(coordinate.typeValue.Length))
-                {
-                    coordinatesByColliderCount[coordinate.typeValue.Length].Add(coordinate);
-                }
-                else
-                {
-                    coordinatesByColliderCount.Add(coordinate.typeValue.Length, new List<Coordinate> { coordinate });
-                }
-            }
-            return coordinatesByColliderCount;
+                OverlapData dataA = dataGrid.GetData(a);
+                OverlapData dataB = dataGrid.GetData(b);
+                return dataB.weightData.CompareTo(dataA.weightData);
+            });
+            return positionKeys;
         }
+        #endregion
     }
 
 #if UNITY_EDITOR
@@ -117,37 +154,30 @@ namespace Darklight.Game.Grid2D
         private void OnSceneGUI()
         {
             overlapGridScript = (OverlapGrid2D)target;
-            DisplayGrid2D(this.overlapGridScript.collider2DGrid);
+            DisplayGrid2D(this.overlapGridScript.dataGrid);
         }
 
-        public void DisplayGrid2D(Grid2D.Grid2D<Collider2D[]> grid2D)
+        public void DisplayGrid2D(Grid2D<OverlapData> grid2D)
         {
             List<Vector2Int> positionKeys = grid2D.GetPositionKeys();
             if (positionKeys != null && positionKeys.Count > 0)
             {
                 foreach (Vector2Int vector2Int in positionKeys)
                 {
-                    Coordinate coordinate = grid2D.GetCoordinate(vector2Int);
-                    Vector3 worldPosition = grid2D.GetCoordinatePositionInWorldSpace(vector2Int);
+                    OverlapData overlapData = grid2D.GetData(vector2Int);
+                    Vector3 worldPosition = grid2D.GetWorldSpacePosition(vector2Int);
                     CustomGizmos.DrawWireSquare_withLabel(
-                        $"{coordinate.label}",
+                        $"{overlapData.label}",
                         worldPosition,
                         grid2D.coordinateSize,
                         Vector3.forward,
                         Color.grey,
                         CustomGUIStyles.RightAlignedStyle);
 
-                    CustomGizmos.DrawButtonHandle(worldPosition, grid2D.coordinateSize * 0.75f, Vector3.forward, coordinate.color, () =>
+                    CustomGizmos.DrawButtonHandle(worldPosition, grid2D.coordinateSize * 0.75f, Vector3.forward, overlapData.debugColor, () =>
                     {
-                        string out_string = $"Clicked on {coordinate.label}";
-
-                        Collider2D[] colliders = coordinate.typeValue;
-                        foreach (Collider2D collider in colliders)
-                        {
-                            out_string += $"\n--->> Collider: {collider.name}";
-                        }
-
-                        Debug.Log(out_string);
+                        overlapData.active = !overlapData.active;
+                        Debug.Log($"Toggle {overlapData.positionKey} active ({overlapData.active}.");
                     }, Handles.RectangleHandleCap);
                 }
             }

@@ -7,31 +7,18 @@ public enum InteractionType
     DIALOGUE
 }
 
-public class InkyInteraction : MonoBehaviour
+public class InkyInteraction : I_Interaction
 {
-    UXML_InteractionUI interactionUI => ISceneSingleton<UXML_InteractionUI>.Instance;
-    [SerializeField] private string inkKnot;
-    [SerializeField] private InteractionType interactionType = InteractionType.DIALOGUE;
-
-    public virtual void DisplayInteractionPrompt(Vector3 worldPosition)
-    {
-        interactionUI.DisplayInteractPrompt(worldPosition);
-    }
-
+    [SerializeField] private string inkyKnot;
     public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
     {
-        InkyKnotThreader.Instance.GoToKnotAt(inkKnot);
-        InkyKnotThreader.Instance.ContinueStory();
-    }
-
-    public virtual void ContinueDialogue()
-    {
+        InkyKnotThreader.Instance.GoToKnotAt(inkyKnot);
         InkyKnotThreader.Instance.ContinueStory();
     }
 
     public virtual void ResetInteraction()
     {
-        interactionUI.HideInteractPrompt();
+        //interactionUI.HideInteractPrompt();
     }
 
     public void MoveInteract(Vector2 move)
