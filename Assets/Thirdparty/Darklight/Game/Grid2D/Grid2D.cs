@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Darklight.Game.Grid2D
@@ -73,11 +74,6 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         public void Initialize()
         {
-            // Get the positions of the grid
-            HashSet<Vector2Int> positions = new();
-
-            if (coordinateGrid != null) return;
-
             // Create the grid
             coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
             for (int x = 0; x < gridArea.x; x++)
@@ -85,9 +81,7 @@ namespace Darklight.Game.Grid2D
                 for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
-                    positions.Add(position);
-                    Coordinate coordinate = new Coordinate(position, default);
-                    coordinateGrid[position] = coordinate;
+                    coordinateGrid.Add(position, new Coordinate(position, default));
                 }
             }
         }
@@ -155,10 +149,12 @@ namespace Darklight.Game.Grid2D
         public List<Data> GetDataValues()
         {
             List<Data> values = new List<Data>();
-            if (values == null || values.Count == 0) return values;
-            foreach (Coordinate coordinate in coordinateGrid.Values)
+            if (coordinateGrid != null && coordinateGrid.Count > 0)
             {
-                values.Add(coordinate.dataValue);
+                foreach (Coordinate coordinate in coordinateGrid.Values)
+                {
+                    values.Add(coordinate.dataValue);
+                }
             }
             return values;
         }

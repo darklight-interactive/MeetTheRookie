@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Darklight;
 using UnityEngine;
-public class I_Interaction : MonoBehaviour
+public abstract class I_Interaction : MonoBehaviour
 {
     public string title = "Interaction";
     public string description = "This is an interaction";

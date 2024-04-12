@@ -16,6 +16,12 @@ public class PlayerUIHandler : MonoBehaviour
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings panelSettings;
 
+    /// <summary>
+    /// Create a dialogue bubble gameobject in the world space at the given position.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <param name="destroy_after"></param>
+    /// <returns></returns>
     UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
     {
         if (activeDialogueBubble == null)
@@ -48,8 +54,7 @@ public class PlayerUIHandler : MonoBehaviour
         // Create a dialogue bubble at the best position
         OverlapGrid2D.OverlapData data = overlapGrid.GetDataWithLowestWeightData();
         Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(data.positionKey);
-        UXML_InteractionUI uXML_InteractionUI = UXML_InteractionUI.Instance;
-        uXML_InteractionUI.CreateChoiceBubble(worldPosition, choice);
+        UXML_InteractionUI.Instance.CreateChoiceBubble(worldPosition, choice);
     }
 
     public void CreateChoices()

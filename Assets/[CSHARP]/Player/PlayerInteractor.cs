@@ -36,18 +36,6 @@ public class PlayerInteractor : MonoBehaviour
 
             // Start the interaction
             activeInteraction.Interact();
-
-            /*
-            else
-            {
-                // End the interaction
-                if (activeInteraction)
-                    activeInteraction.ResetInteraction();
-                activeInteraction = null;
-
-                playerController.stateMachine.ChangeState(PlayerState.IDLE);
-            }
-            */
         }
     }
 

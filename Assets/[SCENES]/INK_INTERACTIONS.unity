@@ -710,7 +710,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -724,7 +724,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.25, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2841869835195120244
 MonoBehaviour:
@@ -820,7 +820,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -849,7 +849,7 @@ MonoBehaviour:
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!1 &5325288156900856991
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ Transform:
   m_GameObject: {fileID: 6171685950103530123}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -985,9 +985,6 @@ MonoBehaviour:
     coordinateSize: 0.417
     originKeyX: 1
     originKeyY: -1
-  activePositions:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
   layerMask:
     serializedVersion: 2
     m_Bits: 192
@@ -1039,9 +1036,6 @@ MonoBehaviour:
     coordinateSize: 0.35
     originKeyX: 1
     originKeyY: 0
-  activePositions:
-  - {x: 0, y: 1}
-  - {x: 2, y: 1}
   layerMask:
     serializedVersion: 2
     m_Bits: 192
