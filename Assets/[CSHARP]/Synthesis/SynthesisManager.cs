@@ -10,7 +10,7 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
     [SerializeField]
     protected UIDocument synthesisUI;
 
-    protected Dictionary<string, SynthesisObject> synthesisItems;
+    protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
 
     void Awake() {
         (this as IGameSingleton<SynthesisManager>).Initialize();
