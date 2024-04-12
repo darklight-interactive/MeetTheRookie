@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
         moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
         UniversalInputManager.PrimaryInteractAction.performed += Interact;
+        UniversalInputManager.SecondaryInteractAction.performed += ToggleSynthesis;
     }
 
     // Update is called once per frame
@@ -176,6 +177,13 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Synthesis Management
+    bool synthesisEnabled = false;
+    void ToggleSynthesis(InputAction.CallbackContext context) {
+        synthesisEnabled = !synthesisEnabled;
+        IGameSingleton<SynthesisManager>.Instance.Show(synthesisEnabled);
+    }
+    #endregion
 }
 
 
