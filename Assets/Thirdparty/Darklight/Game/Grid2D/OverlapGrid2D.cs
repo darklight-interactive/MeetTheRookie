@@ -22,15 +22,7 @@ namespace Darklight.Game.Grid2D
         [System.Serializable]
         public class OverlapData
         {
-            public bool active
-            {
-                get
-                {
-                    if (colliderCount > 0) return false;
-                    if (weight == 0) return false;
-                    return true;
-                }
-            }
+            public bool active;
             public Vector2Int positionKey;
             public Vector3 worldPosition;
             public Collider2D[] colliders = new Collider2D[0];
@@ -56,6 +48,11 @@ namespace Darklight.Game.Grid2D
                 if (weight > 2)
                 {
                     weight = 0;
+                    active = false;
+                }
+                else
+                {
+                    active = true;
                 }
             }
 
@@ -80,9 +77,9 @@ namespace Darklight.Game.Grid2D
         #endregion
 
         public Grid2D<OverlapData> dataGrid;
-        private List<Vector2Int> _activeMap = new List<Vector2Int>();
         private List<Vector2Int> _positionKeys = new List<Vector2Int>();
         private List<OverlapData> _dataValues = new List<OverlapData>();
+        private Dictionary<Vector2Int, bool> _activeMap = new Dictionary<Vector2Int, bool>();
         public LayerMask layerMask;
         public void Awake()
         {
@@ -104,7 +101,6 @@ namespace Darklight.Game.Grid2D
         {
             _positionKeys = dataGrid.GetPositionKeys();
             _dataValues = dataGrid.GetDataValues();
-            _activeMap.Clear();
 
             foreach (Vector2Int positionKey in _positionKeys)
             {
@@ -115,13 +111,9 @@ namespace Darklight.Game.Grid2D
                     dataGrid.SetCoordinateValue(positionKey, data);
                 }
                 data.worldPosition = dataGrid.GetWorldSpacePosition(positionKey);
-                if (data.active)
+                if (!_activeMap.Keys.Contains(data.positionKey))
                 {
-                    _activeMap.Add(data.positionKey);
-                }
-                else
-                {
-                    _activeMap.Remove(data.positionKey);
+                    _activeMap[data.positionKey] = data.active;
                 }
 
                 Vector3 worldPosition = dataGrid.GetWorldSpacePosition(positionKey);

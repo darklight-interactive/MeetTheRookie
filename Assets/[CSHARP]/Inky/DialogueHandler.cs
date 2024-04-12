@@ -9,7 +9,7 @@ using Ink.Runtime;
 using UnityEditor;
 #endif
 [RequireComponent(typeof(OverlapGrid2D))]
-public class PlayerUIHandler : MonoBehaviour
+public class DialogueHandler : MonoBehaviour
 {
     public OverlapGrid2D overlapGrid => GetComponent<OverlapGrid2D>();
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
@@ -68,25 +68,4 @@ public class PlayerUIHandler : MonoBehaviour
             }
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(PlayerUIHandler))]
-    public class PlayerUIHandlerEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawDefaultInspector();
-            PlayerUIHandler playerUIHandler = (PlayerUIHandler)target;
-            if (GUILayout.Button("Create Bubble At Best Position"))
-            {
-                playerUIHandler.CreateBubbleAtBestPosition();
-            }
-            if (GUILayout.Button("Create Choices"))
-            {
-                playerUIHandler.CreateChoices();
-            }
-        }
-    }
-#endif
-
 }

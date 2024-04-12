@@ -97,11 +97,13 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         uiElements[choiceGroupTag].visualElement.visible = false;
     }
 
-    public void DisplayInteractPrompt(Vector3 worldPosition)
+    public void DisplayInteractPrompt(IInteract interactable)
     {
+        Vector3 pos = interactable.world_position;
         UXML_Element uIElement = GetUIElement(interactPromptTag);
         uIElement.SetVisible(true);
-        uIElement.SetWorldToScreenPosition(worldPosition);
+        uIElement.SetWorldToScreenPosition(pos);
+
     }
 
     public void HideInteractPrompt()

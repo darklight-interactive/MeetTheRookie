@@ -10,10 +10,9 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
-    public PlayerUIHandler playerUIHandler => GetComponent<PlayerUIHandler>();
-    protected HashSet<InkyInteraction> interactions = new HashSet<InkyInteraction>();
-    [ShowOnly] InkyInteraction targetInteraction;
-    [ShowOnly] InkyInteraction activeInteraction;
+    protected HashSet<IInteract> interactions = new HashSet<IInteract>();
+    [ShowOnly] IInteract targetInteraction;
+    [ShowOnly] IInteract activeInteraction;
 
     void FixedUpdate()
     {
@@ -43,7 +42,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
+        IInteract interaction = other.GetComponent<IInteract>();
         if (interaction != null)
         {
             interactions.Add(interaction);
@@ -52,7 +51,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        InkyInteraction interaction = other.GetComponent<InkyInteraction>();
+        IInteract interaction = other.GetComponent<IInteract>();
         if (interaction != null)
         {
             interactions.Remove(interaction);
@@ -70,7 +69,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             // May want a better priority system, but this is fine for now:
             this.targetInteraction = interactions.First();
-            UXML_InteractionUI.Instance.DisplayInteractPrompt(targetInteraction.transform.position);
+            UXML_InteractionUI.Instance.DisplayInteractPrompt(targetInteraction);
         }
     }
     #endregion
