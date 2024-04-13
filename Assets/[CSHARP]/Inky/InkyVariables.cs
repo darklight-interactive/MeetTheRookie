@@ -31,6 +31,7 @@ public class InkyGlobalVariables
         }
     }
 
+
     public void SaveVariables()
     {
         if (story != null)
@@ -53,6 +54,7 @@ public class InkyGlobalVariables
     public void StopListening(Story story)
     {
         story.variablesState.variableChangedEvent -= VariableChanged;
+
     }
 
     private void VariableChanged(string name, Ink.Runtime.Object value)
