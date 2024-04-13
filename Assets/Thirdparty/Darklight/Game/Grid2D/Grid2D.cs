@@ -6,65 +6,40 @@ using UnityEngine;
 
 namespace Darklight.Game.Grid2D
 {
+    public interface IGrid2DData
+    {
+        bool active { get; }
+        Color activeColor { get; }
+        Vector2Int positionKey { get; set; }
+        Vector3 worldPosition { get; set; }
+        string label { get; }
+    }
+
     /// <summary>
     /// A 2D Grid that can be used to store any type of data.
     /// </summary>
-    /// <typeparam name="Data">The type of data to be stored in the grid.</typeparam>
-    [System.Serializable]
-    public class Grid2D<Data>
+    /// <typeparam name="IGrid2DData">The type of data to be stored in the grid.</typeparam>
+    public class Grid2D<T> where T : IGrid2DData
     {
-        #region  [[ Coordinate Class ]] =============================== >>
-        /// <summary>
-        /// Represents a coordinate in the grid.
-        /// </summary>
-        class Coordinate
-        {
-            public bool active = true;
-            public Vector2Int positionKey = Vector2Int.zero;
-            public Data dataValue = default;
-            public Coordinate(Vector2Int key, Data value)
-            {
-                this.positionKey = key;
-                this.dataValue = value;
-            }
-        }
-        #endregion
-
-        #region [[ Properties ]] =============================== >>
-        const int MIN = 1;
-        const int MAX = 10;
-        [Range(MIN, MAX)] public int gridSizeX = 3;
-        [Range(MIN, MAX)] public int gridSizeY = 3;
-        [Range(0.1f, 1f)] public float coordinateSize = 1;
-        [Range(-MAX, MAX)] public int originKeyX = 1;
-        [Range(-MAX, MAX)] public int originKeyY = 1;
-        #endregion
-
-        private Dictionary<Vector2Int, Coordinate> coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
+        public SO_Grid2DSettings settings;
+        #region [[ Private Properties ]] =============================== >>
+        private int gridSizeX => settings.gridSizeX;
+        private int gridSizeY => settings.gridSizeY;
+        private float coordinateSize => settings.coordinateSize;
+        private int originKeyX => settings.originKeyX;
+        private int originKeyY => settings.originKeyY;
+        private Dictionary<Vector2Int, IGrid2DData> dataMap = new Dictionary<Vector2Int, IGrid2DData>();
         private Vector2Int gridXAxis => new Vector2Int(1, 0); // create x Axis Vector
         private Vector2Int gridYAxis => new Vector2Int(0, 1); // create y Axis Vector
-        private Vector2Int gridArea
-        {
-            get => new Vector2Int((int)gridSizeX, (int)gridSizeY);
-            set
-            {
-                gridSizeX = value.x;
-                gridSizeY = value.y;
-            }
-        }
+        private Vector2Int gridArea => new Vector2Int(gridSizeX, gridSizeY);
         private Transform gridParent = null;
         private Vector2Int gridParentPositionKey => new Vector2Int(originKeyX, originKeyY);
-        public Grid2D(Transform parent)
-        {
-            this.gridParent = parent;
-            Initialize();
-        }
+        #endregion
 
-        public Grid2D(Transform parent, Vector2Int gridSize, int coordinateSize)
+        public Grid2D(Transform parent, SO_Grid2DSettings settings)
         {
             this.gridParent = parent;
-            this.gridArea = gridSize;
-            this.coordinateSize = coordinateSize;
+            this.settings = settings;
             Initialize();
         }
 
@@ -74,50 +49,47 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         public void Initialize()
         {
+            if (settings == null)
+            {
+                Debug.LogError("Grid2D settings is null. Please assign a Grid2DSettings asset to the settings property of this Grid2D.",
+                    this.gridParent.gameObject);
+                return;
+            }
+
             // Create the grid
-            coordinateGrid = new Dictionary<Vector2Int, Coordinate>();
+            dataMap = new Dictionary<Vector2Int, IGrid2DData>();
             for (int x = 0; x < gridArea.x; x++)
             {
                 for (int y = 0; y < gridArea.y; y++)
                 {
                     Vector2Int position = gridXAxis * x + gridYAxis * y;
-                    coordinateGrid.Add(position, new Coordinate(position, default));
+                    dataMap.Add(position, default);
                 }
             }
-        }
-
-        /// <summary>
-        /// Sets the parent transform of the grid.
-        /// </summary>
-        /// <param name="parent"></param>
-        public void SetParent(Transform parent)
-        {
-            gridParent = parent;
         }
 
         /// <summary>
         /// Sets the value of a coordinate in the grid.
         /// </summary>
         /// <param name="position">The position of the coordinate.</param>
-        /// <param name="value">The value to set.</param>
-        public void SetCoordinateValue(Vector2Int position, Data value)
+        /// <param name="data">The value to set.</param>
+        public void SetData(Vector2Int position, IGrid2DData data)
         {
-            if (coordinateGrid.ContainsKey(position))
+            // if the position is in the grid, set the data
+            if (dataMap.ContainsKey(position))
             {
-                coordinateGrid[position].dataValue = value;
+                dataMap[position] = data;
+                return;
             }
-            else
-            {
-                Coordinate coordinate = new Coordinate(position, value);
-                coordinateGrid[position] = coordinate;
-            }
+            Debug.LogError("The position " + position + " is not in the grid.", this.gridParent.gameObject);
         }
 
-        public void RemoveCoordinate(Vector2Int position)
+
+        public void RemoveData(Vector2Int position)
         {
-            if (coordinateGrid.ContainsKey(position))
+            if (dataMap.ContainsKey(position))
             {
-                coordinateGrid.Remove(position);
+                dataMap.Remove(position);
             }
         }
 
@@ -126,11 +98,11 @@ namespace Darklight.Game.Grid2D
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public Data GetData(Vector2Int position)
+        public IGrid2DData GetData(Vector2Int position)
         {
-            if (coordinateGrid.ContainsKey(position))
+            if (dataMap.ContainsKey(position))
             {
-                return coordinateGrid[position].dataValue;
+                return dataMap[position];
             }
             return default;
         }
@@ -141,19 +113,19 @@ namespace Darklight.Game.Grid2D
         /// <returns>A list of all position keys in the grid.</returns>
         public List<Vector2Int> GetPositionKeys()
         {
-            if (coordinateGrid != null)
-                return new List<Vector2Int>(coordinateGrid.Keys);
+            if (dataMap != null)
+                return new List<Vector2Int>(dataMap.Keys);
             return new List<Vector2Int>();
         }
 
-        public List<Data> GetDataValues()
+        public List<IGrid2DData> GetAllData()
         {
-            List<Data> values = new List<Data>();
-            if (coordinateGrid != null && coordinateGrid.Count > 0)
+            List<IGrid2DData> values = new List<IGrid2DData>();
+            if (dataMap != null && dataMap.Count > 0)
             {
-                foreach (Coordinate coordinate in coordinateGrid.Values)
+                foreach (IGrid2DData data in dataMap.Values)
                 {
-                    values.Add(coordinate.dataValue);
+                    values.Add(data);
                 }
             }
             return values;
