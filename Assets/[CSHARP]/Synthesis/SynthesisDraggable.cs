@@ -5,8 +5,10 @@ using UnityEngine.UIElements;
 
 public class SynthesisDraggable : PointerManipulator
 {
+    Rect globalStart;
     public SynthesisDraggable(VisualElement target) {
         this.target = target;
+        globalStart = target.worldBound;
     }
 
     protected override void RegisterCallbacksOnTarget() {
@@ -24,14 +26,12 @@ public class SynthesisDraggable : PointerManipulator
     bool isDragging = false;
     Vector3 start;
     Vector2 targetStart;
-    Rect globalStart;
 
 
     void PointerDown(PointerDownEvent evt) {
         target.CapturePointer(evt.pointerId);
         start = evt.position;
         targetStart = target.transform.position;
-        globalStart = target.worldBound;
         isDragging = true;
     }
 

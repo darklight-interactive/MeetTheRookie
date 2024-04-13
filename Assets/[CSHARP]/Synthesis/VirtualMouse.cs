@@ -5,28 +5,29 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
+using UnityEngine.UIElements;
 
-public class VirtualMouse : PointerInputModule, ISceneSingleton<VirtualMouse>
+public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>
 {
-    public Vector2 position { get; private set; }
+    public Vector2 position { get; protected set; }
 
-    protected override void Awake() {
-        base.Awake();
+    protected void Awake() {
         (this as ISceneSingleton<VirtualMouse>).Initialize();
 
         position = Vector2.zero;
     }
 
-    protected override void Start() {
-        base.Start();
+    protected void Start() {
         Invoke("Initialize", 0.1f);
-
     }
 
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogError("UniversalInputManager is not initialized"); return; }
         UniversalInputManager.MoveInputAction.performed += MoveCursor;
         UniversalInputManager.MoveInputAction.canceled += StopMoveCursor;
+        UniversalInputManager.PrimaryInteractAction.performed += Click;
+        UniversalInputManager.PrimaryInteractAction.canceled += StopClick;
+
     }
 
     Vector2 intendedMoveDir;
@@ -39,11 +40,68 @@ public class VirtualMouse : PointerInputModule, ISceneSingleton<VirtualMouse>
         intendedMoveDir = Vector2.zero;
     }
 
-    public override void Process() {
-        position += intendedMoveDir;
+    /// <summary>
+    /// We need to send events during the event tick.
+    /// </summary>
+    bool sendDown = false;
+    void Click(InputAction.CallbackContext context) {
+        sendDown = true;
     }
 
+    /// <summary>
+    /// Same with up events.
+    /// </summary>
+    bool sendUp = false;
+    void StopClick(InputAction.CallbackContext context) {
+        sendUp = true;
+    }
+
+    VisualElement activeHook;
     void Update() {
-        Process();
+        if (intendedMoveDir != Vector2.zero) {
+            position += intendedMoveDir;
+
+            var e = new Event();
+            e.type = EventType.MouseMove;
+            e.mousePosition = position;
+            e.delta = intendedMoveDir;
+
+            var moveEvent = PointerMoveEvent.GetPooled(e);
+
+            if (activeHook != null) {
+                activeHook.SendEvent(moveEvent);
+            }
+        }
+        if (sendDown) {
+            var e = new Event();
+            e.type = EventType.MouseDown;
+            e.mousePosition = position;
+            e.button = 0;
+            e.delta = Vector2.zero;
+
+            var mouseEvent = PointerDownEvent.GetPooled(e);
+            if (activeHook != null) {
+                activeHook.SendEvent(mouseEvent);
+            }
+            sendDown = false;
+        }
+
+        if (sendUp) {
+            var e = new Event();
+            e.type = EventType.MouseUp;
+            e.mousePosition = position;
+            e.delta = Vector2.zero;
+            e.button = 0;
+
+            var mouseEvent = PointerUpEvent.GetPooled(e);
+            if (activeHook != null) {
+                activeHook.SendEvent(mouseEvent);
+            }
+            sendUp = false;
+        }
+    }
+
+    public void HookTo(VisualElement toHook) {
+        activeHook = toHook;
     }
 }

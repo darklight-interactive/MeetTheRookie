@@ -25,7 +25,10 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
         cursor = synthesisUI.rootVisualElement.Q("cursor");
+    }
 
+    void Start() {
+        ISceneSingleton<VirtualMouse>.Instance.HookTo(synthesisUI.rootVisualElement);
         AddItem(new[] { "Test" });
     }
 
@@ -42,6 +45,7 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
         var newObj = new SynthesisObject();
         newObj.noteHeader.text = name;
         objects.Add(newObj);
+        //ISceneSingleton<VirtualMouse>.Instance.HookTo(newObj);
         return synthesisItems.TryAdd(name, newObj);
     }
 
