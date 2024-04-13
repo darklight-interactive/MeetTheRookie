@@ -6,14 +6,7 @@ using UnityEngine;
 
 namespace Darklight.Game.Grid2D
 {
-    public interface IGrid2DData
-    {
-        bool active { get; }
-        Color activeColor { get; }
-        Vector2Int positionKey { get; set; }
-        Vector3 worldPosition { get; set; }
-        string label { get; }
-    }
+
 
     /// <summary>
     /// A 2D Grid that can be used to store any type of data.

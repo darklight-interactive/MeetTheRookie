@@ -43,11 +43,11 @@ public class SO_Grid2DSettings : ScriptableObject
                 Vector3 direction = Vector3.forward;
 
 
-                CustomGizmos.DrawLabel(data.label, data.worldPosition, CustomGUIStyles.BoldStyle);
+                //CustomGizmos.DrawLabel(data.label, data.worldPosition, CustomGUIStyles.BoldStyle);
                 CustomGizmos.DrawWireSquare(data.worldPosition, size, direction, data.activeColor);
                 CustomGizmos.DrawButtonHandle(data.worldPosition, size * 0.75f, direction, data.activeColor, () =>
                 {
-
+                    data.SetActive(!data.active);
                 }, Handles.RectangleHandleCap);
             }
         }

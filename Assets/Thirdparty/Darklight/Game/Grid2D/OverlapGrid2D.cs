@@ -14,56 +14,16 @@ namespace Darklight.Game.Grid2D
     [ExecuteAlways]
     public class OverlapGrid2D : MonoBehaviour
     {
-        #region ============== [[ DATA CLASS ]] =============================== >>
-        /// <summary>
-        /// OverlapData class to store the collider data and manage the overlap box data.
-        /// </summary>
-        [System.Serializable]
-        public class OverlapData : IGrid2DData
-        {
-            public bool active
-            {
-                get
-                {
-                    bool isEmpty = colliderCount == 0;
-                    return isEmpty;
-                }
-            }
-            public Color activeColor => active ? Color.green : Color.black;
-            public Vector2Int positionKey { get; set; }
-            public Vector3 worldPosition { get; set; }
-            public Collider2D[] colliders = new Collider2D[0];
-            public int colliderCount => colliders.Length;
-            public string label
-            {
-                get
-                {
-                    string outString = "";
-                    outString += $"active >> {active}";
-                    outString += $"\npos >> {positionKey}";
-                    outString += $"\ncolliders >> {colliderCount}";
-                    return outString;
-                }
-            }
-            public OverlapData(Vector2Int positionKey)
-            {
-                this.positionKey = positionKey;
-            }
-        }
-        #endregion
-
         public SO_Grid2DSettings grid2DSettings;
+        public LayerMask layerMask;
         public Grid2D<IGrid2DData> dataGrid { get; private set; }
         private List<Vector2Int> _positionKeys = new List<Vector2Int>();
         private List<IGrid2DData> _dataValues = new List<IGrid2DData>();
         private Dictionary<Vector2Int, bool> _activeMap = new Dictionary<Vector2Int, bool>();
 
-        [Tooltip("The layer mask to use for the overlap box. This will determine which coordinates are active based on how many colliders of this layer mask are found at each overlap coordinate.")]
-        public LayerMask layerMask;
         public void Awake()
         {
             dataGrid = new Grid2D<IGrid2DData>(transform, grid2DSettings);
-            Debug.Log("OverlapGrid2D Awake", this);
         }
 
         public void Update()
@@ -84,19 +44,34 @@ namespace Darklight.Game.Grid2D
                 if (data == null)
                 {
                     // Create a new overlap data object if it doesn't exist
-                    data = new OverlapData(positionKey);
+                    data = new OverlapGrid2DData(dataGrid, positionKey, layerMask);
                     dataGrid.SetData(positionKey, data);
+
+                    if (_activeMap.ContainsKey(positionKey))
+                    {
+                        data.SetActive(_activeMap[positionKey]);
+                    }
+                    else
+                    {
+                        data.SetActive(false);
+                    }
                 }
 
-                // set the world position of the overlap data
-                data.worldPosition = dataGrid.GetWorldSpacePosition(positionKey);
-                if (!_activeMap.Keys.Contains(data.positionKey))
-                {
-                    _activeMap[data.positionKey] = data.active;
-                }
+                data.UpdateData();
+                UpdateActiveMap(positionKey, data.active);
+            }
+        }
 
-                Vector3 worldPosition = dataGrid.GetWorldSpacePosition(positionKey);
-                (data as OverlapData).colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * dataGrid.settings.coordinateSize, 0, layerMask);
+        public void UpdateActiveMap(Vector2Int positionKey, bool active)
+        {
+            if (_activeMap.ContainsKey(positionKey))
+            {
+                _activeMap[positionKey] = active;
+                dataGrid.GetData(positionKey).SetActive(active);
+            }
+            else
+            {
+                _activeMap.Add(positionKey, active);
             }
         }
 
