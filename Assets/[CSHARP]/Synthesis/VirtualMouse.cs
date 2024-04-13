@@ -59,12 +59,14 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>
     VisualElement activeHook;
     void Update() {
         if (intendedMoveDir != Vector2.zero) {
+            Vector2 oldPos = position;
             position += intendedMoveDir;
+            position = new Vector2(Mathf.Clamp(position.x, 0, Screen.width), Mathf.Clamp(position.y, 0, Screen.height));
 
             var e = new Event();
             e.type = EventType.MouseMove;
             e.mousePosition = position;
-            e.delta = intendedMoveDir;
+            e.delta = position - oldPos;
 
             var moveEvent = PointerMoveEvent.GetPooled(e);
 

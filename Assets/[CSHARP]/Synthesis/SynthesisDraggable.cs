@@ -6,9 +6,14 @@ using UnityEngine.UIElements;
 public class SynthesisDraggable : PointerManipulator
 {
     Rect globalStart;
+    /// <summary>
+    /// Because we don't want to mess with other items without relativePosition,
+    /// we use some hacks to get a position on the first drag.
+    /// </summary>
+    /// 
+    bool globalStartInit = false;
     public SynthesisDraggable(VisualElement target) {
         this.target = target;
-        globalStart = target.worldBound;
     }
 
     protected override void RegisterCallbacksOnTarget() {
@@ -33,6 +38,10 @@ public class SynthesisDraggable : PointerManipulator
         start = evt.position;
         targetStart = target.transform.position;
         isDragging = true;
+        if (!globalStartInit) {
+            globalStart = target.worldBound;
+            globalStartInit = true;
+        }
     }
 
     void PointerMove(PointerMoveEvent evt) {
