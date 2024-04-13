@@ -24,12 +24,14 @@ public class SynthesisDraggable : PointerManipulator
     bool isDragging = false;
     Vector3 start;
     Vector2 targetStart;
+    Rect globalStart;
 
 
     void PointerDown(PointerDownEvent evt) {
         target.CapturePointer(evt.pointerId);
         start = evt.position;
         targetStart = target.transform.position;
+        globalStart = target.worldBound;
         isDragging = true;
     }
 
@@ -39,8 +41,8 @@ public class SynthesisDraggable : PointerManipulator
 
             var bounds = target.panel.visualTree.worldBound;
             target.transform.position = new Vector2(
-                Mathf.Clamp(targetStart.x + delta.x, -bounds.width/2, bounds.width/2),
-                Mathf.Clamp(targetStart.y + delta.y, -bounds.height/2, bounds.height/2));
+                Mathf.Clamp(targetStart.x + delta.x, -globalStart.x, bounds.width - globalStart.x - globalStart.width),
+                Mathf.Clamp(targetStart.y + delta.y, -globalStart.y, bounds.height - globalStart.y - globalStart.height));
         }
     }
 
