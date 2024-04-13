@@ -13,6 +13,7 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
 
     VisualElement objects;
+    VisualElement cursor;
 
     void Awake() {
         (this as IGameSingleton<SynthesisManager>).Initialize();
@@ -23,6 +24,13 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
+        cursor = synthesisUI.rootVisualElement.Q("cursor");
+
+        AddItem(new[] { "Test" });
+    }
+
+    void Update() {
+        cursor.transform.position = ISceneSingleton<VirtualMouse>.Instance.position;
     }
 
     public void Show(bool visible) {
