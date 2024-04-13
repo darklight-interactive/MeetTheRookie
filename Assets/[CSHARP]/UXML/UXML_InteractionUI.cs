@@ -14,23 +14,6 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
 {
     public static UXML_InteractionUI Instance => ISceneSingleton<UXML_InteractionUI>.Instance;
 
-    /// <summary>
-    /// Convert a world position to a screen position.
-    /// </summary>
-    /// <param name="worldPos"></param>
-    /// <returns></returns>
-    /// <exception cref="System.Exception"></exception>
-    public static Vector3 WorldToScreen(Vector3 worldPos)
-    {
-        if (Camera.main == null) throw new System.Exception("No main camera found.");
-
-        // Per https://forum.unity.com/threads/forcing-a-ui-element-to-follow-a-character-in-3d-space.1010968/
-        Vector3 pos = Camera.main.WorldToScreenPoint(worldPos);
-        pos.y = Camera.main.pixelHeight - pos.y;
-        pos.z = 0;
-        return pos;
-    }
-
     #region ===== [ UI ELEMENT CLASS ] ==================================================== >>
     /// <summary>
     /// Data structure for an UXML VisualElement.
@@ -39,23 +22,34 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
     {
         public string tag;
         public VisualElement visualElement;
-        public Vector2 screenPosition = Vector2.zero;
         public UXML_Element(VisualElement element, string tag)
         {
             this.tag = tag;
             this.visualElement = element;
-            this.visualElement.visible = false; // << Hide it by default
+            //this.visualElement.visible = false; // << Hide it by default
         }
 
         public void SetVisible(bool visible)
         {
-            visualElement.visible = visible;
+            //visualElement.visible = visible;
         }
 
         public void SetWorldToScreenPosition(Vector3 worldPosition)
         {
-            screenPosition = WorldToScreen(worldPosition);
-            visualElement.transform.position = screenPosition;
+            Camera cam = Camera.main;
+            if (cam == null) throw new System.Exception("No main camera found.");
+
+            Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
+            screenPosition.y = cam.pixelHeight - screenPosition.y;
+            screenPosition.z = 0;
+
+            // Convert from screen position to a coordinate appropriate for UI Toolkit
+            // UI Toolkit origin is top-left, so invert the y-coordinate
+            float correctY = cam.pixelHeight + screenPosition.y;
+
+            // Set positions using left and top in style
+            visualElement.style.left = screenPosition.x;
+            visualElement.style.top = screenPosition.y;
         }
     }
 
@@ -91,16 +85,14 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
         AddUIElement(interactPromptTag);
         AddUIElement(choiceGroupTag);
 
-        uiElements[choiceGroupTag].visualElement.visible = false;
+        //uiElements[choiceGroupTag].visualElement.visible = false;
     }
 
-    public void DisplayInteractPrompt(IInteract interactable)
+    public void DisplayInteractPrompt(Vector3 worldPosition)
     {
-        Vector3 pos = interactable.world_position;
         UXML_Element uIElement = GetUIElement(interactPromptTag);
+        uIElement.SetWorldToScreenPosition(worldPosition);
         uIElement.SetVisible(true);
-        uIElement.SetWorldToScreenPosition(pos);
-
     }
 
     public void HideInteractPrompt()

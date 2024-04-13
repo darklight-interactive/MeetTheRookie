@@ -24,7 +24,7 @@ namespace Darklight.Game.Grid2D
             dataGrid = new Grid2D<IGrid2DData>(transform, grid2DSettings);
         }
 
-        public void Update()
+        public virtual void Update()
         {
             UpdateOverlapData();
         }
@@ -63,43 +63,69 @@ namespace Darklight.Game.Grid2D
             }
         }
 
-        public Vector2Int? GetBestPosition()
+        public Vector2Int? GetBestPositionKey()
         {
-            if (dataGrid == null)
+            Dictionary<Vector2Int, (bool, int)> spawnWeightMap = grid2DSettings.spawnWeightMap;
+            Vector2Int? bestPositionKey = null;
+            int bestWeight = 0;
+            if (spawnWeightMap == null || spawnWeightMap.Count == 0)
             {
-                Awake();
+                Debug.Log("No spawn weight map found.");
+                return null;
             }
 
-            // Get the best position key
-            Vector2Int? bestPositionKey = null;
-            float bestWeight = 0;
+            if (_positionKeys == null || _positionKeys.Count == 0)
+            {
+                Debug.Log("No position keys found.");
+                return null;
+            }
 
             foreach (Vector2Int positionKey in _positionKeys)
             {
-                IGrid2DData data = dataGrid.GetData(positionKey);
-                if (data == null) continue;
+                if (dataGrid.GetData(positionKey) == null) continue;
+                if (dataGrid.GetData(positionKey).active == false) continue;
 
-                if (data.active)
+                (bool active, int weight) = spawnWeightMap[positionKey];
+                //Debug.Log($"Position: {positionKey} Active: {active} Weight: {weight}");
+
+                if (!active) continue;
+
+                if (weight > bestWeight || bestPositionKey == null)
                 {
-                    // if best key is null, set it to the current key
-                    if (bestPositionKey == null)
-                    {
-                        bestPositionKey = positionKey;
-                        bestWeight = data.weight;
-                    }
-                    // if the current key has a higher weight, set it as the best key
-                    else if (data.weight > bestWeight)
-                    {
-                        bestPositionKey = positionKey;
-                        bestWeight = data.weight;
-                    }
+                    bestWeight = weight;
+                    bestPositionKey = positionKey;
                 }
             }
 
-            Debug.Log($"Best Position: {bestPositionKey} Weight: {bestWeight}");
+            //Debug.Log($"Best Position: {bestPositionKey} Weight: {bestWeight}");
             return bestPositionKey;
         }
     }
 
+#if UNITY_EDITOR
+    [CustomEditor(typeof(OverlapGrid2D), true)]
+    public class OverlapGrid2DEditor : Editor
+    {
+        OverlapGrid2D overlapGrid2D;
+        private void OnEnable()
+        {
+            OverlapGrid2D overlapGrid2D = (OverlapGrid2D)target;
+            overlapGrid2D.Awake();
+        }
 
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+        }
+
+        private void OnSceneGUI()
+        {
+            OverlapGrid2D overlapGrid2D = (OverlapGrid2D)target;
+            if (overlapGrid2D.dataGrid == null) return;
+
+            // Draw the overlap grid
+            SO_Grid2DSettings.DisplayGrid2D(overlapGrid2D.dataGrid);
+        }
+    }
+#endif
 }

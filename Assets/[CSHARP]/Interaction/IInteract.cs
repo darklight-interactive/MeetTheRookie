@@ -8,6 +8,8 @@ public interface IInteract
     Vector3 world_position { get; }
     public Darklight.Console console => new Darklight.Console();
     public int counter { get; set; }
+
+    public virtual void Target() { }
     public virtual void Interact()
     {
         counter++;

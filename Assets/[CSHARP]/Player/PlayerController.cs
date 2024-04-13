@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         stateMachine.ChangeState(PlayerState.INTERACTION);
-        UXML_InteractionUI.Instance.HideInteractPrompt();
         playerInteractor.StartInteraction();
     }
 

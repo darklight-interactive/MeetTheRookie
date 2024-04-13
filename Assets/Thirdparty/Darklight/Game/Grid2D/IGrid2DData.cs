@@ -29,25 +29,23 @@ public class OverlapGrid2DData : IGrid2DData
     {
         get
         {
+            if (!active) return Color.grey;
+
             Color color = Color.white;
-            if (active)
+            switch (weight)
             {
-                switch (weight)
-                {
-                    case 0:
-                        color = Color.red;
-                        break;
-                    case 1:
-                        color = Color.yellow;
-                        break;
-                    case 2:
-                        color = Color.green;
-                        break;
-                }
-            }
-            else
-            {
-                color = Color.gray;
+                case 0:
+                    color = Color.black;
+                    break;
+                case 1:
+                    color = Color.red;
+                    break;
+                case 2:
+                    color = Color.yellow;
+                    break;
+                case 3:
+                    color = Color.green;
+                    break;
             }
             return color;
         }
@@ -74,9 +72,7 @@ public class OverlapGrid2DData : IGrid2DData
     }
     #endregion
 
-    private bool forceDisable = false;
     public LayerMask layerMask;
-
     public Collider2D[] colliders = new Collider2D[0];
     public int colliderCount => colliders.Length;
 
@@ -91,21 +87,17 @@ public class OverlapGrid2DData : IGrid2DData
 
     public void CycleDataState()
     {
-        if (active)
+        if (colliderCount > 0) { return; }
+
+        if (weight < 3)
         {
-            if (weight < 2)
-            {
-                weight++;
-            }
-            else
-            {
-                active = false;
-                weight = 0;
-            }
+            weight++;
+            active = true;
         }
         else
         {
-            active = true;
+            weight = 0;
+            active = false;
         }
 
         // Update the spawn weight map
@@ -115,7 +107,7 @@ public class OverlapGrid2DData : IGrid2DData
     public void UpdateData()
     {
         // Update the collider data
-        this.colliders = Physics2D.OverlapBoxAll(
-            worldPosition, Vector2.one * coordinateSize, 0, layerMask);
+        this.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * coordinateSize, 0, layerMask);
+        this.active = colliders.Length == 0;
     }
 }

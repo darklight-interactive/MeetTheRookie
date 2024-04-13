@@ -11,12 +11,15 @@ public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
     protected HashSet<IInteract> interactions = new HashSet<IInteract>();
+    [ShowOnly] int interactionCount;
     [ShowOnly] IInteract targetInteraction;
     [ShowOnly] IInteract activeInteraction;
 
-    void FixedUpdate()
+    void Update()
     {
         HandleInteractions();
+
+        interactionCount = interactions.Count;
     }
 
     public void StartInteraction()
@@ -42,12 +45,18 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        IInteract interaction = other.GetComponent<IInteract>();
-        if (interaction != null)
+        IInteract interactable = other.GetComponent<IInteract>();
+        if (interactable != null)
         {
-            interactions.Add(interaction);
+            Debug.Log("Interactable found: " + other.name);
+            interactions.Add(interactable);
+        }
+        else
+        {
+            Debug.Log("No interactable component found on: " + other.name);
         }
     }
+
 
     void OnTriggerExit2D(Collider2D other)
     {
@@ -58,18 +67,15 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
+
+
     void HandleInteractions()
     {
-        if (interactions.Count == 0)
-        {
-            UXML_InteractionUI.Instance.HideInteractPrompt();
-            return;
-        }
-        else
+        if (interactions.Count > 0)
         {
             // May want a better priority system, but this is fine for now:
             this.targetInteraction = interactions.First();
-            UXML_InteractionUI.Instance.DisplayInteractPrompt(targetInteraction);
+            this.targetInteraction.Target();
         }
     }
     #endregion

@@ -36,21 +36,24 @@ public class SO_Grid2DSettings : ScriptableObject
         public int weight;
     }
 
-    const string saveKey = "Grid2DSettings";
     public List<SerializableSpawnWeight> serializableSpawnWeights = new List<SerializableSpawnWeight>();
+    [ShowOnly] public string uniqueID;
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        if (uniqueID == "")
+        {
+            uniqueID = GUID.Generate().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
+    }
 
     // File path for JSON storage
-    private string FilePath => $"{Application.persistentDataPath}/grid2DSettings.json";
+    private string FilePath => $"{Application.persistentDataPath}/grid2Dsettings_{uniqueID}.json";
 
-    public void OnEnable()
-    {
-        LoadSpawnWeightMap();
-    }
-
-    public void OnDisable()
-    {
-        SaveSpawnWeightMap();
-    }
+    private void OnEnable() => LoadSpawnWeightMap();
+    private void OnDisable() => SaveSpawnWeightMap();
 
     public void SetSpawnWeight(Vector2Int positionKey, bool active, int weight)
     {
@@ -66,53 +69,54 @@ public class SO_Grid2DSettings : ScriptableObject
 
     public void SaveSpawnWeightMap()
     {
-        // Convert dictionary to serializable list
+        ConvertDictionaryToList();
+        string jsonState = JsonUtility.ToJson(this, true);
+
+        try
+        {
+            File.WriteAllText(FilePath, jsonState);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to save settings for {uniqueID}: {ex.Message}");
+        }
+    }
+
+    public void LoadSpawnWeightMap()
+    {
+        if (File.Exists(FilePath))
+        {
+            try
+            {
+                string jsonState = File.ReadAllText(FilePath);
+                JsonUtility.FromJsonOverwrite(jsonState, this);
+                ConvertListToDictionary();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load settings for {uniqueID}: {ex.Message}");
+            }
+        }
+    }
+
+    private void ConvertDictionaryToList()
+    {
         serializableSpawnWeights.Clear();
         foreach (KeyValuePair<Vector2Int, (bool, int)> item in spawnWeightMap)
         {
             serializableSpawnWeights.Add(new SerializableSpawnWeight { positionKey = item.Key, active = item.Value.Item1, weight = item.Value.Item2 });
         }
-
-        // Save to PlayerPrefs
-        string jsonState = JsonUtility.ToJson(this, true);
-        PlayerPrefs.SetString(saveKey, jsonState);
-        PlayerPrefs.Save();
-
-        // Save to JSON file
-        File.WriteAllText(FilePath, jsonState);
     }
 
-    public void LoadSpawnWeightMap()
+    private void ConvertListToDictionary()
     {
-        // Load from PlayerPrefs
-        if (PlayerPrefs.HasKey(saveKey))
+        spawnWeightMap.Clear();
+        foreach (var item in serializableSpawnWeights)
         {
-            string jsonState = PlayerPrefs.GetString(saveKey);
-            JsonUtility.FromJsonOverwrite(jsonState, this);
-
-            // Convert list back to dictionary
-            spawnWeightMap.Clear();
-            foreach (SerializableSpawnWeight item in serializableSpawnWeights)
-            {
-                spawnWeightMap[item.positionKey] = (item.active, item.weight);
-            }
-        }
-        else // Optional: Load from JSON file if PlayerPrefs does not exist
-        {
-            if (File.Exists(FilePath))
-            {
-                string jsonState = File.ReadAllText(FilePath);
-                JsonUtility.FromJsonOverwrite(jsonState, this);
-
-                // Convert list back to dictionary
-                spawnWeightMap.Clear();
-                foreach (SerializableSpawnWeight item in serializableSpawnWeights)
-                {
-                    spawnWeightMap[item.positionKey] = (item.active, item.weight);
-                }
-            }
+            spawnWeightMap[item.positionKey] = (item.active, item.weight);
         }
     }
+
     public static void DisplayGrid2D(Grid2D<IGrid2DData> grid2D)
     {
         if (grid2D == null)

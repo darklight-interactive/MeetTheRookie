@@ -2,22 +2,40 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Darklight;
+using Darklight.Game.Grid2D;
 using UnityEngine;
 
-
-
-public class InteractionObject : MonoBehaviour, IInteract
+[RequireComponent(typeof(BoxCollider2D))]
+public class InteractionObject : OverlapGrid2D, IInteract
 {
-    public string ink_knot { get; set; }
+    [SerializeField] private string _ink_knot;
+    public string ink_knot { get => _ink_knot; set => _ink_knot = value; }
     public Vector3 world_position => transform.position;
     public Darklight.Console console => new Darklight.Console();
     public int counter { get; set; }
+
+    public void Target()
+    {
+        Vector3? worldPostion = GetBestWorldPosition();
+        if (worldPostion == null) worldPostion = transform.position;
+        UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
+    }
+
+    public Vector3? GetBestWorldPosition()
+    {
+        Vector2Int? bestPosition = GetBestPositionKey();
+        Debug.Log($"GetBestWorldPosition >> {bestPosition}");
+        if (bestPosition == null) return null;
+
+        IGrid2DData data = dataGrid.GetData((Vector2Int)bestPosition);
+        return data.worldPosition;
+    }
+
     public virtual void Interact()
     {
         counter++;
         Debug.Log($"Interact >> {counter}");
     }
-
     public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
     {
         InkyKnotThreader.Instance.GoToKnotAt(ink_knot);
@@ -26,6 +44,11 @@ public class InteractionObject : MonoBehaviour, IInteract
 
     public virtual void ResetInteraction()
     {
-        //interactionUI.HideInteractPrompt();
+        UXML_InteractionUI.Instance.HideInteractPrompt();
+    }
+
+    public override void Update()
+    {
+        base.Update();
     }
 }
