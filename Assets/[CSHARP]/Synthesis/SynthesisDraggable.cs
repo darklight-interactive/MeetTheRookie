@@ -36,9 +36,11 @@ public class SynthesisDraggable : PointerManipulator
     void PointerMove(PointerMoveEvent evt) {
         if (isDragging && target.HasPointerCapture(evt.pointerId)) {
             Vector3 delta = evt.position - start;
+
+            var bounds = target.panel.visualTree.worldBound;
             target.transform.position = new Vector2(
-                Mathf.Clamp(targetStart.x + delta.x, 0, target.panel.visualTree.worldBound.width),
-                Mathf.Clamp(targetStart.y + delta.y, 0, target.panel.visualTree.worldBound.height));
+                Mathf.Clamp(targetStart.x + delta.x, -bounds.width/2, bounds.width/2),
+                Mathf.Clamp(targetStart.y + delta.y, -bounds.height/2, bounds.height/2));
         }
     }
 

@@ -12,6 +12,8 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
 
+    VisualElement objects;
+
     void Awake() {
         (this as IGameSingleton<SynthesisManager>).Initialize();
 
@@ -20,6 +22,7 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
 
         synthesisUI.rootVisualElement.visible = false;
+        objects = synthesisUI.rootVisualElement.Q("objects");
     }
 
     public void Show(bool visible) {
@@ -30,12 +33,14 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
         string name = (string)args[0];
         var newObj = new SynthesisObject();
         newObj.noteHeader.text = name;
-        synthesisUI.rootVisualElement.Add(newObj);
+        objects.Add(newObj);
         return synthesisItems.TryAdd(name, newObj);
     }
 
     public object RemoveItem(object[] args) {
-        return synthesisItems.Remove((string)args[0]);
+        var name = (string)args[0];
+        objects.Remove(synthesisItems[name]);
+        return synthesisItems.Remove(name);
     }
 
     public object HasItem(object[] args) {
