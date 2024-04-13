@@ -39,7 +39,6 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
     public State currentState => stateMachine.CurrentState;
     public Story currentStory { get; private set; }
     public InkyGlobalVariables currentVariables { get; private set; }
-    public string currentText => currentStory.currentText;
     public InkyKnot currentKnot { get; private set; }
 
     public bool LoadStory(string storyName)

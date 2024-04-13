@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [RequireComponent(typeof(UIDocument))]
 public class UXML_WorldSpaceElement : MonoBehaviour
 {
@@ -12,7 +16,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     public UXML_InkyBubble inkyBubble;
     bool initialized = false;
 
-    public void Initialize(VisualTreeAsset asset, PanelSettings settings)
+    public void Initialize(VisualTreeAsset asset, PanelSettings settings, Material material, RenderTexture renderTexture)
     {
         uiDocument.visualTreeAsset = asset;
         uiDocument.panelSettings = settings;
@@ -24,10 +28,9 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         meshRenderer.enabled = false;
 
         // Set the material and texture
-        Material worldSpaceMaterial = UXML_InteractionUI.Instance.worldSpaceMaterial;
-        meshRenderer.sharedMaterial = worldSpaceMaterial;
+        meshRenderer.sharedMaterial = material;
 
-        uiDocument.panelSettings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
+        uiDocument.panelSettings.targetTexture = new RenderTexture(renderTexture);
         meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
 
         initialized = true;
@@ -39,15 +42,20 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     void ManualUpdate()
     {
         if (initialized == false) return;
-        if (Application.isPlaying == false)
-            DestroyImmediate(this.gameObject);
+        if (uiDocument.panelSettings == null || uiDocument.panelSettings.targetTexture == null) return;
+
 
         PanelSettings panelSettings = uiDocument.panelSettings;
         if (panelSettings == null) return;
 
         inkyBubble = root.Q<UXML_InkyBubble>();
 
-        string currentText = InkyKnotThreader.Instance.currentText;
+        string currentText = "";
+        if (InkyKnotThreader.Instance.currentKnot != null)
+        {
+            currentText = InkyKnotThreader.Instance.currentStory.currentText;
+        }
+
         if (currentText == null || currentText == "") currentText = "TEXT NOT FOUND";
         inkyBubble.SetText(currentText);
         inkyBubble.visible = true;
@@ -56,9 +64,32 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
 
         // << #2 -> Reset Texture
-        panelSettings.targetTexture = new RenderTexture(UXML_InteractionUI.Instance.worldSpaceRenderTexture);
+        panelSettings.targetTexture = new RenderTexture(panelSettings.targetTexture);
 
         meshRenderer.enabled = true;
     }
+
+    void OnDestroy()
+    {
+        CancelInvoke("ManualUpdate");
+    }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(UXML_WorldSpaceElement))]
+    public class UXML_WorldSpaceElementEditor : Editor
+    {
+
+
+        void OnDisable()
+        {
+            UXML_WorldSpaceElement element = (UXML_WorldSpaceElement)target;
+            element.OnDestroy();
+            DestroyImmediate(element.gameObject);
+        }
+    }
+#endif
+
+
+
 }
 

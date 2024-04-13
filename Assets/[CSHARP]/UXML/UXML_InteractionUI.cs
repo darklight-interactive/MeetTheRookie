@@ -81,9 +81,6 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
     VisualElement root;
     Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
 
-    public Material worldSpaceMaterial;
-    public RenderTexture worldSpaceRenderTexture;
-
     private void Awake()
     {
         (this as ISceneSingleton<UXML_InteractionUI>).Initialize();

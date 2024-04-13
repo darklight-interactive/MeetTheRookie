@@ -19,12 +19,6 @@ namespace Darklight.Game.Grid2D
         public Grid2D<IGrid2DData> dataGrid { get; private set; }
         private List<Vector2Int> _positionKeys = new List<Vector2Int>();
 
-
-        /// <summary>
-        /// A map of the state of the overlap data at each position key. The Value Tuple contains the active state and the weight value of the data.
-        /// </summary>
-        [SerializeField] private Dictionary<Vector2Int, (bool, int)> _spawnWeightMap = new Dictionary<Vector2Int, (bool, int)>();
-
         public void Awake()
         {
             dataGrid = new Grid2D<IGrid2DData>(transform, grid2DSettings);
@@ -69,23 +63,42 @@ namespace Darklight.Game.Grid2D
             }
         }
 
-        /*
-        public OverlapData GetDataWithLowestWeightData()
+        public Vector2Int? GetBestPosition()
         {
-            float lowestValue = float.MaxValue;
-            // Find the overlap data with the lowest weight value
-            OverlapData outData = null;
-            foreach (OverlapData overlapData in _dataValues)
+            if (dataGrid == null)
             {
-                if (overlapData.weight < lowestValue)
+                Awake();
+            }
+
+            // Get the best position key
+            Vector2Int? bestPositionKey = null;
+            float bestWeight = 0;
+
+            foreach (Vector2Int positionKey in _positionKeys)
+            {
+                IGrid2DData data = dataGrid.GetData(positionKey);
+                if (data == null) continue;
+
+                if (data.active)
                 {
-                    lowestValue = overlapData.weight;
-                    outData = overlapData;
+                    // if best key is null, set it to the current key
+                    if (bestPositionKey == null)
+                    {
+                        bestPositionKey = positionKey;
+                        bestWeight = data.weight;
+                    }
+                    // if the current key has a higher weight, set it as the best key
+                    else if (data.weight > bestWeight)
+                    {
+                        bestPositionKey = positionKey;
+                        bestWeight = data.weight;
+                    }
                 }
             }
-            return outData;
+
+            Debug.Log($"Best Position: {bestPositionKey} Weight: {bestWeight}");
+            return bestPositionKey;
         }
-        */
     }
 
 

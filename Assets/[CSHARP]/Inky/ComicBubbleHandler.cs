@@ -15,7 +15,8 @@ public class ComicBubbleHandler : OverlapGrid2D
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings panelSettings;
-
+    public Material worldSpaceMaterial;
+    public RenderTexture worldSpaceRenderTexture;
     public List<SO_ComicBubble> comicBubbles = new List<SO_ComicBubble>();
 
     /// <summary>
@@ -24,16 +25,21 @@ public class ComicBubbleHandler : OverlapGrid2D
     /// <param name="worldPosition"></param>
     /// <param name="destroy_after"></param>
     /// <returns></returns>
-    UXML_WorldSpaceElement CreateDialogueBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
+    private UXML_WorldSpaceElement CreateComicBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
     {
-        if (activeDialogueBubble == null)
+        if (activeDialogueBubble != null)
         {
-            // Create a new dialogue bubble
-            this.activeDialogueBubble = new GameObject("DialogueBubble").AddComponent<UXML_WorldSpaceElement>();
-            activeDialogueBubble.transform.SetParent(this.transform);
-            activeDialogueBubble.transform.position = worldPosition;
-            activeDialogueBubble.Initialize(visualTreeAsset, panelSettings);
+            if (Application.isPlaying)
+                Destroy(activeDialogueBubble.gameObject);
+            else
+                DestroyImmediate(activeDialogueBubble.gameObject);
         }
+
+        // Create a new dialogue bubble
+        this.activeDialogueBubble = new GameObject("DialogueBubble").AddComponent<UXML_WorldSpaceElement>();
+        activeDialogueBubble.transform.SetParent(this.transform);
+        activeDialogueBubble.transform.position = worldPosition;
+        activeDialogueBubble.Initialize(visualTreeAsset, panelSettings, worldSpaceMaterial, worldSpaceRenderTexture);
 
         if (destroy_after >= 0)
         {
@@ -44,35 +50,30 @@ public class ComicBubbleHandler : OverlapGrid2D
     }
 
 
-    /*
-        public void CreateBubbleAtBestPosition()
+    public void CreateBubbleAtBestPosition()
+    {
+        // Create a dialogue bubble at the best position
+        Vector2Int? bestPosition = GetBestPosition();
+        if (bestPosition == null)
         {
-            // Create a dialogue bubble at the best position
-            IGrid2DData data = overlapGrid.dataGrid.GetData(Vector2Int.zero);
-            Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(data.positionKey);
-            CreateDialogueBubbleAt(worldPosition);
+            Debug.LogError("No best position found. Cant create bubble.");
+            return;
         }
+        IGrid2DData data = dataGrid.GetData((Vector2Int)bestPosition);
+        CreateComicBubbleAt(data.worldPosition);
+    }
 
-        public void CreateChoiceBubbleAtBestPosition(Choice choice)
+    public void CreateChoices()
+    {
+        if (InkyKnotThreader.Instance.currentStory.currentChoices.Count > 0)
         {
-            // Create a dialogue bubble at the best position
-            IGrid2DData data = overlapGrid.dataGrid.GetData(Vector2Int.zero);
-            Vector3 worldPosition = overlapGrid.dataGrid.GetWorldSpacePosition(data.positionKey);
-            UXML_InteractionUI.Instance.CreateChoiceBubble(worldPosition, choice);
-        }
-
-        public void CreateChoices()
-        {
-            if (InkyKnotThreader.Instance.currentStory.currentChoices.Count > 0)
+            foreach (Choice choice in InkyKnotThreader.Instance.currentStory.currentChoices)
             {
-                foreach (Choice choice in InkyKnotThreader.Instance.currentStory.currentChoices)
-                {
-                    IGrid2DData data = overlapGrid.dataGrid.GetData(Vector2Int.zero);
-                    UXML_WorldSpaceElement choiceElement = CreateDialogueBubbleAt(data.worldPosition, 5f);
-                }
+                IGrid2DData data = dataGrid.GetData(Vector2Int.zero);
+                UXML_WorldSpaceElement choiceElement = CreateComicBubbleAt(data.worldPosition, 5f);
             }
         }
-        */
+    }
 
 
 #if UNITY_EDITOR
@@ -84,6 +85,19 @@ public class ComicBubbleHandler : OverlapGrid2D
             ComicBubbleHandler comicBubbleHandler = (ComicBubbleHandler)target;
             if (comicBubbleHandler == null) return;
             comicBubbleHandler.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            ComicBubbleHandler comicBubbleHandler = (ComicBubbleHandler)target;
+            if (comicBubbleHandler == null) return;
+
+            base.OnInspectorGUI();
+
+            if (GUILayout.Button("Create Bubble"))
+            {
+                comicBubbleHandler.CreateBubbleAtBestPosition();
+            }
         }
 
         private void OnSceneGUI()
