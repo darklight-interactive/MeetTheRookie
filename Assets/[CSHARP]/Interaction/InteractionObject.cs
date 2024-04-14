@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Darklight.Console;
-using Darklight.Game.Grid2D;
+using Darklight.Game.Grid;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class InteractionObject : OverlapGrid2D, IInteract
+public class InteractionObject : Grid2D_OverlapGrid, IInteract
 {
     [SerializeField] private string _ink_knot;
     public string ink_knot { get => _ink_knot; set => _ink_knot = value; }

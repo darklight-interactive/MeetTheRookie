@@ -1,69 +1,126 @@
 using System;
-using Darklight.Game.Grid2D;
+using Darklight.Game.Grid;
 using UnityEngine;
 
-public interface IGrid2DData
-{
-    /// <summary>
-    /// This is to be used to cycle the data between multiple states. This is useful for debugging and testing.
-    /// </summary>
-    void CycleDataState();
-
-    /// <summary>
-    /// The main update method for the data. This method should be called by a MonoBehaviour script to update the data.
-    /// </summary>
-    void UpdateData(Grid2D grid2D);
-
-    void ClearData();
-}
 
 
 /// <summary>
-/// Definition of the Grid2DData class. This class is used by the Grid2D class to store the data for each grid cell.
+/// Interface for the Grid2DData class. This interface is used to define the methods and properties that the Grid2DData class should have.
 /// </summary>
-public class Grid2DData : IGrid2DData
+public interface IGrid2DData
 {
+    /// <summary>
+    /// Has the data been initialized?
+    /// </summary>
+    bool initialized { get; }
+
     /// <summary>
     /// The position key set by the related Grid2D class.
     /// </summary>
-    public Vector2Int positionKey { get; private set; }
+    public Vector2Int positionKey { get; }
 
     /// <summary>
     /// Whether or not the data should be used.
     /// </summary>
-    public bool disabled { get; private set; }
+    public bool disabled { get; }
 
     /// <summary>
     /// The assigned weight value. This value is used to determine spawn rates and other values.
     /// </summary>
-    public int weight { get; private set; }
-    const int MIN_WEIGHT = 0;
-    const int MAX_WEIGHT = 3;
+    public int weight { get; }
 
     /// <summary>
-    /// Where the world position of each Grid2DCoordinate is located in the scene.
+    /// The world position of the data.
     /// </summary>
-    public Vector3 worldPosition { get; private set; }
+    public Vector3 worldPosition { get; }
 
     /// <summary>
-    /// The size multiplier of the coordinate in the scene.
+    /// The size of the coordinate in the grid.
     /// </summary>
-    public float coordinateSize { get; private set; }
+    public float coordinateSize { get; }
 
     /// <summary>
     /// Event to notify listeners of a data state change.
     /// </summary>
     public event Action<Grid2DData> OnDataStateChanged;
 
+    /// <summary>
+    /// Initializes the data with the given values.
+    /// </summary>
+    /// <param name="positionKey"></param>
+    /// <param name="disabled"></param>
+    /// <param name="weight"></param>
+    /// <param name="worldPosition"></param>
+    /// <param name="coordinateSize"></param>
+    public abstract void Initialize(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize);
+
+    /// <summary>
+    /// This is to be used to cycle the data between multiple states. This is useful for debugging and testing.
+    /// </summary>
+    public abstract void CycleDataState();
+
+    /// <summary>
+    /// The main update method for the data. This method should be called by a MonoBehaviour script to update the data.
+    /// </summary>
+    public abstract void UpdateData();
+
+    /// <summary>
+    /// Clears the data and any events that are attached to it.
+    /// </summary>
+    public abstract void ClearData();
+}
+
+// -------------------------------------------------------------------------------- >>
+
+/// <summary>
+/// Definition of the Grid2DData class. This class is used by the Grid2D class to store the data for each grid cell.
+/// </summary>
+public class Grid2DData : IGrid2DData
+{
+    public bool initialized { get; protected set; } = false;
+    public Vector2Int positionKey { get; protected set; }
+    public bool disabled { get; protected set; }
+
+    public int weight { get; protected set; }
+    public Vector3 worldPosition { get; protected set; }
+    public float coordinateSize { get; protected set; }
+
+    /// <summary>
+    /// Event to notify listeners of a data state change.
+    /// </summary>
+    public event Action<Grid2DData> OnDataStateChanged;
+
+    public Grid2DData()
+    {
+        this.positionKey = Vector2Int.zero;
+        this.disabled = false;
+        this.weight = 0;
+        this.worldPosition = Vector3.zero;
+        this.coordinateSize = 1;
+    }
+
     public Grid2DData(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
+    {
+        Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
+    }
+
+    // ------------------------------------------------------------------------------- >>
+
+
+    public virtual void Initialize(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
     {
         this.positionKey = positionKey;
         this.disabled = disabled;
         this.weight = weight;
         this.worldPosition = worldPosition;
         this.coordinateSize = coordinateSize;
+
+        initialized = true;
     }
 
+
+    const int MIN_WEIGHT = 0;
+    const int MAX_WEIGHT = 3;
     public virtual void CycleDataState()
     {
         // << CYCLE THE WEIGHT VALUE >>
@@ -82,11 +139,7 @@ public class Grid2DData : IGrid2DData
         OnDataStateChanged?.Invoke(this);
     }
 
-    public virtual void UpdateData(Grid2D grid2D)
-    {
-        this.worldPosition = grid2D.GetWorldSpacePosition(positionKey);
-        this.coordinateSize = grid2D.preset.coordinateSize;
-    }
+    public virtual void UpdateData() { }
 
     public virtual void ClearData()
     {
@@ -125,62 +178,33 @@ public class Grid2DData : IGrid2DData
 }
 
 [System.Serializable]
-public class Serialized_Grid2DData : Grid2DData
+/// <summary>
+/// Serialized version of the Grid2DData class. This class is used to store the data in a serialized format.
+/// </summary>
+public class Serialized_Grid2DData : Grid2DData, IGrid2DData
 {
     [SerializeField] private Vector2Int _positionKey;
     [SerializeField] private bool _disabled;
     [SerializeField] private int _weight;
 
-    public Serialized_Grid2DData(Grid2DData data) : base(data.positionKey, data.disabled, data.weight, data.worldPosition, data.coordinateSize)
+    public override void Initialize(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
     {
-        this._positionKey = data.positionKey;
-        this._disabled = data.disabled;
-        this._weight = data.weight;
-    }
-
-    public Serialized_Grid2DData(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
-        : base(positionKey, disabled, weight, worldPosition, coordinateSize)
-    {
+        base.Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
         this._positionKey = positionKey;
         this._disabled = disabled;
         this._weight = weight;
     }
 
-    public override void UpdateData(Grid2D grid2D)
-    {
-        base.UpdateData(grid2D);
-        this._positionKey = positionKey;
-        this._disabled = disabled;
-        this._weight = weight;
-    }
-
+    /// <summary>
+    /// Converts the Serialized_Grid2DData to a Grid2DData object from the stored data.
+    /// </summary>
+    /// <returns></returns>
     public Grid2DData ToGrid2DData()
     {
-        return new Grid2DData(_positionKey, _disabled, _weight, worldPosition, coordinateSize);
+        Grid2DData grid2DData = new Grid2DData();
+        grid2DData.Initialize(_positionKey, _disabled, _weight, worldPosition, coordinateSize);
+        return grid2DData;
     }
 }
 
-/// <summary>
-/// Create and stores the data from a Physics2D.OverlapBoxAll call at the world position of the Grid2DData. 
-/// </summary>
-public class Overlap_Grid2DData : Grid2DData
-{
-    public Overlap_Grid2DData(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
-        : base(positionKey, disabled, weight, worldPosition, coordinateSize) { }
 
-    public LayerMask layerMask; // The layer mask to use for the OverlapBoxAll called
-    public Collider2D[] colliders = new Collider2D[0]; /// The colliders found by the OverlapBoxAll call
-
-    public override void CycleDataState()
-    {
-        base.CycleDataState();
-    }
-
-    public override void UpdateData(Grid2D grid2D)
-    {
-        base.UpdateData(grid2D);
-
-        // Update the collider data
-        this.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * coordinateSize, 0, layerMask);
-    }
-}

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Darklight.Game.Grid2D;
+using Darklight.Game.Grid;
 using Darklight.UnityExt;
 using UnityEngine;
 using System.IO;
@@ -65,7 +65,9 @@ public class Grid2DPreset : ScriptableObject
     /// </summary>
     public void SaveData(Grid2DData data)
     {
-        Serialized_Grid2DData serializedData = new Serialized_Grid2DData(data);
+        Serialized_Grid2DData serializedData = new Serialized_Grid2DData();
+        serializedData.Initialize(data.positionKey, data.disabled, data.weight, data.worldPosition, data.coordinateSize);
+
         if (dataMap.ContainsKey(serializedData.positionKey))
         {
             dataMap[serializedData.positionKey] = serializedData;
@@ -88,25 +90,6 @@ public class Grid2DPreset : ScriptableObject
             return dataMap[position];
         }
         return null;
-    }
-
-    public Grid2DData CreateNewData(Grid2D grid, Vector2Int positionKey)
-    {
-        Serialized_Grid2DData presetData = GetData(positionKey);
-        if (presetData != null)
-        {
-            Debug.Log("Found preset data for " + positionKey);
-            Grid2DData data = presetData.ToGrid2DData();
-            SaveData(data);
-            return data;
-        }
-        else
-        {
-            Debug.Log("Creating new data for " + positionKey);
-            Grid2DData data = new Grid2DData(positionKey, false, 0, grid.GetWorldSpacePosition(positionKey), coordinateSize);
-            SaveData(data);
-            return data;
-        }
     }
 
     private void MarkAsDirty()

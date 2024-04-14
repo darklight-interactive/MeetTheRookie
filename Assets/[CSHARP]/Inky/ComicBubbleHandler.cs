@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Grid2D;
+using Darklight.Game.Grid;
 using Darklight.Console;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,7 +11,7 @@ using UnityEditor;
 #endif
 
 [ExecuteAlways]
-public class ComicBubbleHandler : OverlapGrid2D
+public class ComicBubbleHandler : Grid2D_OverlapGrid
 {
     public string ink_knot { get; set; }
     public ConsoleGUI console => new ConsoleGUI();
