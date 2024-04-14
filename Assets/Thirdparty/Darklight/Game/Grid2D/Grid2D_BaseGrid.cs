@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt;
 using Darklight.Game.Grid;
+using Unity.Android.Gradle.Manifest;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,7 +18,7 @@ namespace Darklight.Game.Grid
     /// <summary>
     /// The most basic implementation of a Grid2D class. This class is used to store Grid2DData objects in a 2D grid.
     /// </summary>
-    public class Grid2D_Base : Grid2D_Abstract<Grid2DData>
+    public class Grid2D_BaseGrid : Grid2D_AbstractGrid<Grid2D_Data>
     {
         public override void Awake()
         {
@@ -37,29 +39,47 @@ namespace Darklight.Game.Grid
             {
                 for (int y = 0; y < preset.gridSizeY; y++)
                 {
-                    Vector2Int position = new Vector2Int(x, y);
-                    Vector3 worldPosition = GetWorldSpacePosition(position);
-                    Grid2DData data = new Grid2DData();
-                    data.Initialize(position, false, 0, worldPosition, preset.coordinateSize);
-                    DataMap.Add(position, data);
+                    Vector2Int positionKey = new Vector2Int(x, y);
+                    Vector3 worldPosition = GetWorldSpacePosition(positionKey);
+
+                    // Create the data object
+                    Grid2D_Data newData = new Grid2D_Data();
+                    Grid2D_SerializedData existingData = preset.LoadData(positionKey);
+                    if (existingData != null)
+                    {
+                        // Initialize the data with the existing data values
+                        newData.Initialize(existingData, worldPosition, preset.coordinateSize);
+                    }
+                    else
+                    {
+                        // Initialize the data with default values
+                        newData.Initialize(positionKey, false, 1, worldPosition, preset.coordinateSize);
+                    }
+
+                    // Set the data in the map
+                    if (DataMap.ContainsKey(positionKey))
+                        DataMap[positionKey] = newData;
+                    else
+                        DataMap.Add(positionKey, newData);
                 }
             }
         }
 
-        protected override void OnDataChanged(Vector2Int position, Grid2DData data)
+        protected override void OnDataChanged(Vector2Int position, Grid2D_Data data)
         {
             throw new NotImplementedException();
         }
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Grid2D_Abstract<Grid2DData>), true)]
-    public class Grid2DEditor : Editor
+    [CustomEditor(typeof(Grid2D_BaseGrid), true)]
+    public class Grid2D_BaseGridEditor : Editor
     {
-        Grid2D_Base grid2D;
+
+        private Grid2D_BaseGrid grid2D;
         private void OnEnable()
         {
-            grid2D = (Grid2D_Base)target;
+            grid2D = target as Grid2D_BaseGrid;
             grid2D.Awake();
         }
 
@@ -75,7 +95,7 @@ namespace Darklight.Game.Grid
 
             foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
             {
-                Grid2DData data = grid2D.GetData(positionKey);
+                Grid2D_Data data = grid2D.GetData(positionKey);
                 Vector3 worldPosition = data.worldPosition;
                 float size = data.coordinateSize;
 

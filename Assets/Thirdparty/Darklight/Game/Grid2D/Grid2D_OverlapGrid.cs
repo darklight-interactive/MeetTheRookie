@@ -14,25 +14,24 @@ namespace Darklight.Game.Grid
     /// <summary>
     /// Create and stores the data from a Physics2D.OverlapBoxAll call at the world position of the Grid2DData. 
     /// </summary>
-    public class Grid2D_OverlapData : Grid2DData
+    public class Grid2D_OverlapData : Grid2D_Data
     {
         public LayerMask layerMask; // The layer mask to use for the OverlapBoxAll called
         public Collider2D[] colliders = new Collider2D[0]; /// The colliders found by the OverlapBoxAll call
         public Grid2D_OverlapData() { }
         // Initialization method to set properties
-        public void Initialize(Vector2Int positionKey, Vector3 worldPosition, float coordinateSize, LayerMask mask)
+
+        public void Initialize(Vector2Int positionKey, Vector3 worldPosition, float coordinateSize, LayerMask layerMask)
         {
-            this.positionKey = positionKey;
-            this.worldPosition = worldPosition;
-            this.coordinateSize = coordinateSize;
-            this.layerMask = mask;
-            UpdateData(); // Ensure the colliders are updated immediately upon initialization
+            base.Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
+            this.layerMask = layerMask;
         }
 
         public override void UpdateData()
         {
             // Update the collider data
             this.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * coordinateSize, 0, layerMask);
+            this.SetDisabled(colliders.Length > 0);
         }
     }
 
@@ -40,10 +39,16 @@ namespace Darklight.Game.Grid
     /// <summary>
     /// A 2D Grid that stores Overlap_Grid2DData objects. 
     /// </summary>
-    public class Grid2D_OverlapGrid : Grid2D_Abstract<Grid2D_OverlapData>
+    [ExecuteAlways]
+    public class Grid2D_OverlapGrid : Grid2D_AbstractGrid<Grid2D_OverlapData>
     {
-        [SerializeField]
-        private LayerMask layerMask;
+        [SerializeField] protected LayerMask layerMask;
+
+        public override void Awake()
+        {
+            base.Awake();
+            InitializeDataMap();
+        }
 
         protected override void InitializeDataMap()
         {
@@ -58,12 +63,27 @@ namespace Darklight.Game.Grid
             {
                 for (int y = 0; y < GridArea.y; y++)
                 {
-                    Vector2Int positionKey = new Vector2Int(x, y) + OriginKey;
-                    Grid2D_OverlapData dataObject = new Grid2D_OverlapData();
+                    Vector2Int positionKey = new Vector2Int(x, y);
                     Vector3 worldPosition = GetWorldSpacePosition(positionKey);
 
-                    dataObject.Initialize(positionKey, worldPosition, preset.coordinateSize, layerMask);
-                    DataMap[positionKey] = dataObject;
+                    Grid2D_OverlapData newData = new Grid2D_OverlapData();
+                    Grid2D_SerializedData existingData = preset.LoadData(positionKey);
+                    if (existingData != null)
+                    {
+                        newData.Initialize(existingData, worldPosition, preset.coordinateSize);
+                        newData.layerMask = layerMask;
+
+                    }
+                    else
+                    {
+                        newData.Initialize(positionKey, worldPosition, preset.coordinateSize, layerMask);
+                    }
+
+                    // Set the data in the map
+                    if (DataMap.ContainsKey(positionKey))
+                        DataMap[positionKey] = newData;
+                    else
+                        DataMap.Add(positionKey, newData);
                 }
             }
         }
@@ -72,6 +92,9 @@ namespace Darklight.Game.Grid
         {
             foreach (Grid2D_OverlapData data in DataMap.Values)
             {
+                Vector3 worldPosition = GetWorldSpacePosition(data.positionKey);
+                data.worldPosition = worldPosition;
+
                 data.UpdateData();
             }
         }
@@ -81,5 +104,50 @@ namespace Darklight.Game.Grid
             throw new System.NotImplementedException();
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Grid2D_OverlapGrid), true)]
+    public class Grid2D_OverlapGridEditor : Editor
+    {
+        private Grid2D_OverlapGrid grid2D;
+        private void OnEnable()
+        {
+            grid2D = (Grid2D_OverlapGrid)target;
+            grid2D.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+
+            base.OnInspectorGUI();
+
+        }
+
+        private void OnSceneGUI()
+        {
+            if (grid2D == null) return;
+            DrawGrid();
+        }
+
+        public void DrawGrid()
+        {
+            if (grid2D == null) return;
+
+            foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
+            {
+                Grid2D_Data data = grid2D.GetData(positionKey);
+                Vector3 worldPosition = data.worldPosition;
+                float size = data.coordinateSize;
+
+                CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
+                CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
+                CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
+                {
+                    data.CycleDataState();
+                }, Handles.RectangleHandleCap);
+            }
+        }
+    }
+#endif
 
 }

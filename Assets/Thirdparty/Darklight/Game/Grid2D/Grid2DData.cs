@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Interface for the Grid2DData class. This interface is used to define the methods and properties that the Grid2DData class should have.
 /// </summary>
-public interface IGrid2DData
+public interface IGrid2D_Data
 {
     /// <summary>
     /// Has the data been initialized?
@@ -32,7 +32,7 @@ public interface IGrid2DData
     /// <summary>
     /// The world position of the data.
     /// </summary>
-    public Vector3 worldPosition { get; }
+    public Vector3 worldPosition { get; set; }
 
     /// <summary>
     /// The size of the coordinate in the grid.
@@ -42,7 +42,7 @@ public interface IGrid2DData
     /// <summary>
     /// Event to notify listeners of a data state change.
     /// </summary>
-    public event Action<Grid2DData> OnDataStateChanged;
+    public event Action<Grid2D_Data> OnDataStateChanged;
 
     /// <summary>
     /// Initializes the data with the given values.
@@ -75,22 +75,21 @@ public interface IGrid2DData
 /// <summary>
 /// Definition of the Grid2DData class. This class is used by the Grid2D class to store the data for each grid cell.
 /// </summary>
-public class Grid2DData : IGrid2DData
+public class Grid2D_Data : IGrid2D_Data
 {
-    public bool initialized { get; protected set; } = false;
-    public Vector2Int positionKey { get; protected set; }
-    public bool disabled { get; protected set; }
-
-    public int weight { get; protected set; }
-    public Vector3 worldPosition { get; protected set; }
-    public float coordinateSize { get; protected set; }
+    public bool initialized { get; private set; }
+    public Vector2Int positionKey { get; private set; }
+    public bool disabled { get; private set; }
+    public int weight { get; private set; }
+    public Vector3 worldPosition { get; set; }
+    public float coordinateSize { get; private set; }
 
     /// <summary>
     /// Event to notify listeners of a data state change.
     /// </summary>
-    public event Action<Grid2DData> OnDataStateChanged;
+    public event Action<Grid2D_Data> OnDataStateChanged;
 
-    public Grid2DData()
+    public Grid2D_Data()
     {
         this.positionKey = Vector2Int.zero;
         this.disabled = false;
@@ -99,13 +98,24 @@ public class Grid2DData : IGrid2DData
         this.coordinateSize = 1;
     }
 
-    public Grid2DData(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
+    public Grid2D_Data(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
     {
         Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
     }
 
     // ------------------------------------------------------------------------------- >>
 
+    public virtual void Initialize(Grid2D_Data data)
+    {
+        Initialize(data.positionKey, data.disabled, data.weight, data.worldPosition, data.coordinateSize);
+    }
+
+    public virtual void Initialize(Grid2D_SerializedData serializedData, Vector3 worldPosition, float coordinateSize)
+    {
+        Initialize(serializedData.ToData()); // Load the data from the serialized data object
+        this.worldPosition = worldPosition; // Set the world position
+        this.coordinateSize = coordinateSize; // Set the coordinate size
+    }
 
     public virtual void Initialize(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
     {
@@ -114,7 +124,6 @@ public class Grid2DData : IGrid2DData
         this.weight = weight;
         this.worldPosition = worldPosition;
         this.coordinateSize = coordinateSize;
-
         initialized = true;
     }
 
@@ -175,36 +184,14 @@ public class Grid2DData : IGrid2DData
 
         return color;
     }
-}
 
-[System.Serializable]
-/// <summary>
-/// Serialized version of the Grid2DData class. This class is used to store the data in a serialized format.
-/// </summary>
-public class Serialized_Grid2DData : Grid2DData, IGrid2DData
-{
-    [SerializeField] private Vector2Int _positionKey;
-    [SerializeField] private bool _disabled;
-    [SerializeField] private int _weight;
-
-    public override void Initialize(Vector2Int positionKey, bool disabled, int weight, Vector3 worldPosition, float coordinateSize)
+    public void SetDisabled(bool value)
     {
-        base.Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
-        this._positionKey = positionKey;
-        this._disabled = disabled;
-        this._weight = weight;
-    }
-
-    /// <summary>
-    /// Converts the Serialized_Grid2DData to a Grid2DData object from the stored data.
-    /// </summary>
-    /// <returns></returns>
-    public Grid2DData ToGrid2DData()
-    {
-        Grid2DData grid2DData = new Grid2DData();
-        grid2DData.Initialize(_positionKey, _disabled, _weight, worldPosition, coordinateSize);
-        return grid2DData;
+        disabled = value;
+        OnDataStateChanged?.Invoke(this);
     }
 }
+
+
 
 

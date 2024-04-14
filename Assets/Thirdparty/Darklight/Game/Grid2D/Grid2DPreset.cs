@@ -43,12 +43,13 @@ public class Grid2DPreset : ScriptableObject
     [Range(-MAX, MAX)] public int originKeyY = 1;
     #endregion
 
+
     // For serialization
     [SerializeField] private List<Vector2Int> keys = new List<Vector2Int>();
-    [SerializeField] private List<Serialized_Grid2DData> values = new List<Serialized_Grid2DData>();
+    [SerializeField] private List<Grid2D_SerializedData> values = new List<Grid2D_SerializedData>();
 
     // Not serialized, rebuilt on load
-    private Dictionary<Vector2Int, Serialized_Grid2DData> dataMap = new Dictionary<Vector2Int, Serialized_Grid2DData>();
+    private Dictionary<Vector2Int, Grid2D_SerializedData> dataMap = new Dictionary<Vector2Int, Grid2D_SerializedData>();
 
     private void OnEnable()
     {
@@ -63,31 +64,31 @@ public class Grid2DPreset : ScriptableObject
     /// <summary>
     /// Save the data to the dictionary and serialized lists
     /// </summary>
-    public void SaveData(Grid2DData data)
+    public void SaveData(Grid2D_Data data)
     {
-        Serialized_Grid2DData serializedData = new Serialized_Grid2DData();
-        serializedData.Initialize(data.positionKey, data.disabled, data.weight, data.worldPosition, data.coordinateSize);
+        Vector2Int positionKey = data.positionKey;
+        Grid2D_SerializedData serializedData = new Grid2D_SerializedData(data);
 
-        if (dataMap.ContainsKey(serializedData.positionKey))
+        if (dataMap.ContainsKey(positionKey))
         {
-            dataMap[serializedData.positionKey] = serializedData;
-            int index = keys.IndexOf(serializedData.positionKey);
+            dataMap[positionKey] = serializedData;
+            int index = keys.IndexOf(positionKey);
             values[index] = serializedData;
         }
         else
         {
-            dataMap.Add(serializedData.positionKey, serializedData);
-            keys.Add(serializedData.positionKey);
+            dataMap.Add(positionKey, serializedData);
+            keys.Add(positionKey);
             values.Add(serializedData);
         }
         MarkAsDirty();
     }
 
-    public Serialized_Grid2DData GetData(Vector2Int position)
+    public Grid2D_SerializedData LoadData(Vector2Int positionKey)
     {
-        if (dataMap.ContainsKey(position))
+        if (dataMap.ContainsKey(positionKey))
         {
-            return dataMap[position];
+            return dataMap[positionKey];
         }
         return null;
     }
@@ -98,5 +99,28 @@ public class Grid2DPreset : ScriptableObject
         EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssets();
 #endif
+    }
+}
+
+/// <summary>
+/// Serialized version of the Grid2DData class. This class is used to store the data in a serialized format.
+/// </summary>
+[System.Serializable]
+public class Grid2D_SerializedData
+{
+    [SerializeField] private Vector2Int _positionKey;
+    [SerializeField] private bool _disabled;
+    [SerializeField] private int _weight;
+
+    public Grid2D_SerializedData(Grid2D_Data input_data)
+    {
+        _positionKey = input_data.positionKey;
+        _disabled = input_data.disabled;
+        _weight = input_data.weight;
+    }
+
+    public Grid2D_Data ToData()
+    {
+        return new Grid2D_Data(_positionKey, _disabled, _weight, Vector3.zero, 1);
     }
 }
