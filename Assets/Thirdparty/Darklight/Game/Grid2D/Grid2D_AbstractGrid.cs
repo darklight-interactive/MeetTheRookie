@@ -16,7 +16,7 @@ namespace Darklight.Game.Grid
     /// </summary>
     public abstract class Grid2D_AbstractGrid<Data> : MonoBehaviour where Data : IGrid2D_Data, new()
     {
-        [SerializeField] protected Grid2DPreset preset; // The settings for the grid
+        [SerializeField] protected Grid2D_Preset preset; // The settings for the grid
         protected Dictionary<Vector2Int, Data> DataMap { get; private set; } = new Dictionary<Vector2Int, Data>();
         protected Vector2Int GridArea => new Vector2Int(preset.gridSizeX, preset.gridSizeY);
         protected Vector2Int OriginKey => new Vector2Int(preset.originKeyX, preset.originKeyY);

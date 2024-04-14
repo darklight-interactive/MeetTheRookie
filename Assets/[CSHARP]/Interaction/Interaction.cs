@@ -5,34 +5,32 @@ using Darklight.Console;
 using Darklight.Game.Grid;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-public class InteractionObject : Grid2D_OverlapGrid, IInteract
+public interface IInteraction
 {
-    [SerializeField] private string _ink_knot;
-    public string ink_knot { get => _ink_knot; set => _ink_knot = value; }
-    public ConsoleGUI console => new ConsoleGUI();
+    public string ink_knot { get; }
     public int counter { get; set; }
-
-    public void Target()
+    public abstract void Target();
+    public virtual void Interact()
     {
-        //Vector3? worldPostion = GetBestWorldPosition();
+        counter++;
+    }
+    public virtual void Reset()
+    {
+        counter = 0;
+    }
+}
 
+[RequireComponent(typeof(BoxCollider2D))]
+public class Interaction : Grid2D_OverlapGrid, IInteraction
+{
+    public string ink_knot { get; private set; } = "default";
+    public int counter { get; set; }
+    public virtual void Target()
+    {
         Vector3? worldPostion = null;
         if (worldPostion == null) worldPostion = transform.position;
         UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
     }
-
-    /*
-        public Vector3? GetBestWorldPosition()
-        {
-            Vector2Int? bestPosition = GetBestPositionKey();
-            Debug.Log($"GetBestWorldPosition >> {bestPosition}");
-            if (bestPosition == null) return null;
-
-            IGrid2DData data = dataGrid.GetData((Vector2Int)bestPosition);
-            return data.worldPosition;
-        }
-        */
 
     public virtual void Interact()
     {

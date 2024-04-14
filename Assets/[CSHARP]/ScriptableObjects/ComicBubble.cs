@@ -1,14 +1,14 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "MeetTheRookie/ComicBubble")]
-public class SO_ComicBubble : ScriptableObject
+public class ComicBubble : ScriptableObject
 {
     public string text;
     public Sprite sprite;
     public float duration = -1;
     public bool isActive = true;
     public int weight = 1;
-    public SO_ComicBubble(string text, Sprite sprite, float duration, bool isActive, int weight)
+    public ComicBubble(string text, Sprite sprite, float duration, bool isActive, int weight)
     {
         this.text = text;
         this.sprite = sprite;

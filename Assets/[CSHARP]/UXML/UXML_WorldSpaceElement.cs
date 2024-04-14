@@ -7,11 +7,12 @@ using UnityEngine.UIElements;
 using UnityEditor;
 #endif
 
+[ExecuteAlways]
 [RequireComponent(typeof(UIDocument))]
 public class UXML_WorldSpaceElement : MonoBehaviour
 {
     UIDocument uiDocument => GetComponent<UIDocument>();
-    VisualElement root;
+    VisualElement root => uiDocument.rootVisualElement;
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
     public UXML_InkyBubble inkyBubble;
     bool initialized = false;
@@ -20,26 +21,24 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     {
         uiDocument.visualTreeAsset = asset;
         uiDocument.panelSettings = settings;
-        root = uiDocument.rootVisualElement;
 
+        // Create a quad mesh child
         GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
         meshChild.transform.SetParent(this.transform);
         meshChild.transform.localPosition = Vector3.zero;
         meshRenderer.enabled = false;
 
         // Set the material and texture
-        meshRenderer.sharedMaterial = material;
-
-        uiDocument.panelSettings.targetTexture = new RenderTexture(renderTexture);
+        meshRenderer.sharedMaterial = new Material(material);
+        uiDocument.panelSettings.targetTexture = new RenderTexture(1024, 1024, 24);
         meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
 
         initialized = true;
 
-        // This is to replace the Update() method with a slower version
-        InvokeRepeating("ManualUpdate", 0, 0.1f);
+        InvokeRepeating("ManualUpdate", 0.1f, 0.1f);
     }
 
-    void ManualUpdate()
+    public void ManualUpdate()
     {
         if (initialized == false) return;
         if (uiDocument.panelSettings == null || uiDocument.panelSettings.targetTexture == null) return;
@@ -69,27 +68,27 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         meshRenderer.enabled = true;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         CancelInvoke("ManualUpdate");
     }
+}
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(UXML_WorldSpaceElement))]
-    public class UXML_WorldSpaceElementEditor : Editor
+[CustomEditor(typeof(UXML_WorldSpaceElement))]
+public class UXML_WorldSpaceElementEditor : Editor
+{
+    public override void OnInspectorGUI()
     {
+        base.OnInspectorGUI();
 
+        UXML_WorldSpaceElement element = target as UXML_WorldSpaceElement;
 
-        void OnDisable()
+        if (GUILayout.Button("Manual Update"))
         {
-            UXML_WorldSpaceElement element = (UXML_WorldSpaceElement)target;
-            element.OnDestroy();
-            DestroyImmediate(element.gameObject);
+            element.ManualUpdate();
         }
     }
-#endif
-
-
-
 }
+#endif
 

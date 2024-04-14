@@ -13,7 +13,7 @@ using UnityEditor;
 /// <summary>
 /// A scriptable object that contains the preset settings for a Grid2D instance.
 /// </summary>
-public class Grid2DPreset : ScriptableObject
+public class Grid2D_Preset : ScriptableObject
 {
 
     #region << Create Unique ID >> ------------------------------------ >>
@@ -43,8 +43,7 @@ public class Grid2DPreset : ScriptableObject
     [Range(-MAX, MAX)] public int originKeyY = 1;
     #endregion
 
-
-    // For serialization
+    [Header("Serialized Data Values")]
     [SerializeField] private List<Vector2Int> keys = new List<Vector2Int>();
     [SerializeField] private List<Grid2D_SerializedData> values = new List<Grid2D_SerializedData>();
 

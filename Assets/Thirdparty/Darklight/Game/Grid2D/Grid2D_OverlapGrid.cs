@@ -118,9 +118,14 @@ namespace Darklight.Game.Grid
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
 
+            EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
-
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
         private void OnSceneGUI()
