@@ -99,7 +99,7 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
 
         Vector3 oldPos = position;
         if (intendedMoveDir != Vector2.zero) {
-            position += new Vector3(intendedMoveDir.x, intendedMoveDir.y, 0);
+            position += deltaTime * 100 * new Vector3(intendedMoveDir.x, intendedMoveDir.y, 0);
             position = new Vector3(Mathf.Clamp(position.x, 0, Screen.width), Mathf.Clamp(position.y, 0, Screen.height));
         }
         deltaPosition = position - oldPos;
@@ -107,17 +107,24 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
         if (activeHook != null) {
             if (sendUp) {
                 downSent = false;
-                activeHook.SendEvent(PointerUpEvent.GetPooled(this));
                 sendUp = false;
+                // To dispose when we're done:
+                using (PointerUpEvent eUp = PointerUpEvent.GetPooled(this)) {
+                    activeHook.SendEvent(eUp);
+                }
             } else if (downSent) {
                 // TODO: Why does this only work when moving left or up?
-                activeHook.SendEvent(PointerMoveEvent.GetPooled(this));
+                using (PointerMoveEvent eMove = PointerMoveEvent.GetPooled(this)) {
+                    activeHook.SendEvent(eMove);
+                }
             }
 
             if (sendDown) {
-                activeHook.SendEvent(PointerDownEvent.GetPooled(this));
                 downSent = true;
                 sendDown = false;
+                using (PointerDownEvent eDown = PointerDownEvent.GetPooled(this)) {
+                    activeHook.SendEvent(eDown);
+                }
             }
         }
     }
