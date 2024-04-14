@@ -14,7 +14,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     UIDocument uiDocument => GetComponent<UIDocument>();
     VisualElement root => uiDocument.rootVisualElement;
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
-    public UXML_InkyBubble inkyBubble;
+    public UXMLElement_ComicBubble inkyBubble;
     bool initialized = false;
 
     public void Initialize(VisualTreeAsset asset, PanelSettings settings, Material material, RenderTexture renderTexture)
@@ -30,7 +30,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour
 
         // Set the material and texture
         meshRenderer.sharedMaterial = new Material(material);
-        uiDocument.panelSettings.targetTexture = new RenderTexture(1024, 1024, 24);
+        uiDocument.panelSettings.targetTexture = new RenderTexture(renderTexture);
         meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
 
         initialized = true;
@@ -43,11 +43,10 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         if (initialized == false) return;
         if (uiDocument.panelSettings == null || uiDocument.panelSettings.targetTexture == null) return;
 
-
         PanelSettings panelSettings = uiDocument.panelSettings;
         if (panelSettings == null) return;
 
-        inkyBubble = root.Q<UXML_InkyBubble>();
+        inkyBubble = root.Q<UXMLElement_ComicBubble>();
 
         string currentText = "";
         if (InkyKnotThreader.Instance.currentKnot != null)
@@ -66,6 +65,11 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         panelSettings.targetTexture = new RenderTexture(panelSettings.targetTexture);
 
         meshRenderer.enabled = true;
+    }
+
+    public void SetLocalScale(float scale)
+    {
+        this.transform.localScale = new Vector3(scale, scale, scale);
     }
 
     private void OnDestroy()

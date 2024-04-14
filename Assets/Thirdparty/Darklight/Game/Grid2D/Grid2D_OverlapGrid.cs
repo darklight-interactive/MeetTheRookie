@@ -103,6 +103,22 @@ namespace Darklight.Game.Grid
         {
             throw new System.NotImplementedException();
         }
+
+        public Grid2D_OverlapData GetBestData()
+        {
+            Grid2D_OverlapData bestData = null;
+
+            foreach (Grid2D_OverlapData data in DataMap.Values)
+            {
+                if (data.disabled) continue; // Skip disabled data
+                if (data.colliders.Length > 0) continue; // Skip data with colliders
+                if (bestData == null || data.weight > bestData.weight)
+                {
+                    bestData = data;
+                }
+            }
+            return bestData;
+        }
     }
 
 #if UNITY_EDITOR

@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Darklight.Console;
 using Darklight.Game.Grid;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public interface IInteraction
 {
@@ -47,5 +47,38 @@ public class Interaction : Grid2D_OverlapGrid, IInteraction
     {
         UXML_InteractionUI.Instance.HideInteractPrompt();
     }
-
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Interaction))]
+public class InteractionEditor : Grid2D_OverlapGridEditor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        Interaction interaction = (Interaction)target;
+
+        if (GUILayout.Button("SpawnBubble"))
+        {
+            Grid2D_OverlapData data = interaction.GetBestData();
+            if (data == null)
+            {
+                Debug.LogWarning("No data found to spawn bubble at");
+                return;
+            }
+
+            UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
+            element.SetLocalScale(data.coordinateSize);
+
+        }
+    }
+
+    private void OnSceneGUI()
+    {
+        Interaction interaction = (Interaction)target;
+        Grid2D_OverlapData data = interaction.GetBestData();
+
+        DrawGrid();
+    }
+}
+#endif

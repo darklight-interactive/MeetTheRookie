@@ -12,15 +12,15 @@ using UnityEditor;
 public class UXML_WorldSpaceUI : MonoBehaviour, ISceneSingleton<UXML_WorldSpaceUI>
 {
     public static UXML_WorldSpaceUI Instance => ISceneSingleton<UXML_WorldSpaceUI>.Instance;
-    public static void CreateComicBubbleAt(Vector3 worldPosition, string text, float destroy_after = -1f)
-    {
-        Instance.CreateComicBubbleAt(worldPosition, destroy_after);
-    }
-
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings worldSpacePanelSettings;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
+
+    void Awake()
+    {
+        (this as ISceneSingleton<UXML_WorldSpaceUI>).Initialize();
+    }
 
     /// <summary>
     /// Create a dialogue bubble gameobject in the world space at the given position.

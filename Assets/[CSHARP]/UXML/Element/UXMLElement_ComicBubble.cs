@@ -5,26 +5,29 @@ using UnityEngine.UIElements;
 
 
 [UxmlElement]
-public partial class UXML_InkyBubble : VisualElement
+public partial class UXMLElement_ComicBubble : VisualElement
 {
-    Label inkyLabel;
+    const string label_class = "comic-label";
+    const string bubble_class = "comic-bubble";
 
-    public UXML_InkyBubble()
+    Label label;
+
+    public UXMLElement_ComicBubble()
     {
-        AddToClassList("inky-bubble");
+        AddToClassList(bubble_class);
 
         // Create label
-        inkyLabel = new Label
+        label = new Label
         {
-            text = "UXML_InkyBubble.cs"
+            text = "New UXMLElement_ComicBubble Label"
         };
-        inkyLabel.AddToClassList("inky-label");
-        this.Add(inkyLabel);
+        label.AddToClassList(label_class);
+        this.Add(label);
     }
 
     public void SetText(string text)
     {
-        inkyLabel.text = text;
+        label.text = text;
     }
 
     public void SetBackgroundSprite(Sprite sprite)
