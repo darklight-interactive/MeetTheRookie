@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Handle the UI and <see cref="SynthesisObject"/>s.
+/// </summary>
 public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 {
     [SerializeField]
@@ -12,7 +15,13 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
 
+    /// <summary>
+    /// Our group for showing the objects visually.
+    /// </summary>
     VisualElement objects;
+    /// <summary>
+    /// The <see cref="VirtualMouse"/> image we move around.
+    /// </summary>
     VisualElement cursor;
 
     void Awake() {
@@ -28,7 +37,6 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
     }
 
     void Start() {
-        ISceneSingleton<VirtualMouse>.Instance.HookTo(synthesisUI.rootVisualElement);
         AddItem(new[] { "Test" });
     }
 
@@ -38,6 +46,9 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
 
     public void Show(bool visible) {
         synthesisUI.rootVisualElement.visible = visible;
+
+        // Unhook when we're not visible.
+        ISceneSingleton<VirtualMouse>.Instance.HookTo(visible ? synthesisUI.rootVisualElement : null);
     }
 
     public object AddItem(object[] args) {

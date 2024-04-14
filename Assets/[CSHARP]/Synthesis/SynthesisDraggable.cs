@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Quick and dirty class for dragging synthesis items across a scene.
+/// </summary>
 public class SynthesisDraggable : PointerManipulator
 {
     Rect globalStart;

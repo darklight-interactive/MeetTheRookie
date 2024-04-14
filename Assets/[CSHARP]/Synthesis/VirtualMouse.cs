@@ -7,8 +7,20 @@ using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Hacky system to work with Unity's UI using events.
+/// </summary>
+/// <remarks>
+/// FIXME: This only works for UXML objects when the cursor is moving to the left or up. For whatever reason.
+/// Some hypotheses: Maybe it's just the nature of the function I'm using to call it?
+/// Maybe it's something to do with the <see cref="position"/> and <see cref="deltaPosition"/> variables?
+/// Maybe it's the call order of the events?
+/// I tried to revise these to be PointerDown, then PointerMove, then PointerUp (per the documentation), but maybe that's wrong.
+/// Maybe I just need to follow this tutorial? https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-Events-Synthesizing.html
+/// </remarks>
 public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPointerEvent
 {
+    #region Interface Stuff We Need
     public Vector3 position { get; protected set; }
 
     public int pointerId => 2;
@@ -21,8 +33,6 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
 
     public int pressedButtons => 0;
 
-    Vector3 IPointerEvent.position => position;
-
     public Vector3 localPosition => position;
 
     public Vector3 deltaPosition {get; protected set; }
@@ -30,6 +40,7 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
     public float deltaTime { get; protected set; }
 
     public int clickCount => 0;
+    #endregion
 
     protected void Awake() {
         (this as ISceneSingleton<VirtualMouse>).Initialize();
@@ -93,22 +104,28 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
         }
         deltaPosition = position - oldPos;
 
-        if (sendUp) {
-            downSent = false;
-            activeHook.SendEvent(PointerUpEvent.GetPooled(this));
-            sendUp = false;
-        } else if (downSent) {
-            // TODO: Why does this only work when moving left or up?
-            activeHook.SendEvent(PointerMoveEvent.GetPooled(this));
-        }
+        if (activeHook != null) {
+            if (sendUp) {
+                downSent = false;
+                activeHook.SendEvent(PointerUpEvent.GetPooled(this));
+                sendUp = false;
+            } else if (downSent) {
+                // TODO: Why does this only work when moving left or up?
+                activeHook.SendEvent(PointerMoveEvent.GetPooled(this));
+            }
 
-        if (sendDown) {
-            activeHook.SendEvent(PointerDownEvent.GetPooled(this));
-            downSent = true;
-            sendDown = false;
+            if (sendDown) {
+                activeHook.SendEvent(PointerDownEvent.GetPooled(this));
+                downSent = true;
+                sendDown = false;
+            }
         }
     }
 
+    /// <summary>
+    /// Set a thing we're gonna call events on.
+    /// </summary>
+    /// <param name="toHook">The thing to call events on.</param>
     public void HookTo(VisualElement toHook) {
         activeHook = toHook;
     }
