@@ -13,7 +13,6 @@ using UnityEditor;
 public class ComicBubbleHandler : OverlapGrid2D
 {
     public string ink_knot { get; set; }
-    public Vector3 world_position => transform.position;
     public Darklight.Console console => new Darklight.Console();
     public int counter { get; set; }
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
@@ -25,7 +24,8 @@ public class ComicBubbleHandler : OverlapGrid2D
 
     public void Target()
     {
-        Vector3? worldPostion = GetBestWorldPosition();
+        //Vector3? worldPostion = GetBestWorldPosition();
+        Vector3? worldPostion = null;
         if (worldPostion == null) worldPostion = transform.position;
         UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
     }
@@ -59,41 +59,4 @@ public class ComicBubbleHandler : OverlapGrid2D
 
         return activeDialogueBubble;
     }
-
-
-    public void CreateBubble()
-    {
-        Vector3? worldPosition = GetBestWorldPosition();
-        if (worldPosition == null)
-        {
-            Debug.LogError("No best position found. Cant create bubble.");
-            return;
-        }
-        CreateComicBubbleAt((Vector3)worldPosition);
-    }
-
-    public Vector3? GetBestWorldPosition()
-    {
-        Vector2Int? bestPosition = GetBestPositionKey();
-        Debug.Log($"GetBestWorldPosition >> {bestPosition}");
-        if (bestPosition == null) return null;
-
-        IGrid2DData data = dataGrid.GetData((Vector2Int)bestPosition);
-        return data.worldPosition;
-    }
-
-    public void CreateChoices()
-    {
-        if (InkyKnotThreader.Instance.currentStory.currentChoices.Count > 0)
-        {
-            foreach (Choice choice in InkyKnotThreader.Instance.currentStory.currentChoices)
-            {
-                IGrid2DData data = dataGrid.GetData(Vector2Int.zero);
-                UXML_WorldSpaceElement choiceElement = CreateComicBubbleAt(data.worldPosition, 5f);
-            }
-        }
-    }
-
-
-
 }
