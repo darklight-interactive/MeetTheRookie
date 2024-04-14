@@ -153,6 +153,11 @@ public class Serialized_Grid2DData : Grid2DData
         this._disabled = disabled;
         this._weight = weight;
     }
+
+    public Grid2DData ToGrid2DData()
+    {
+        return new Grid2DData(_positionKey, _disabled, _weight, worldPosition, coordinateSize);
+    }
 }
 
 /// <summary>
