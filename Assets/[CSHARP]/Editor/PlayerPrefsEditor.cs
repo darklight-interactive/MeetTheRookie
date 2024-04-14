@@ -1,6 +1,8 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections;
+
+#if UNITY_EDITOR
+using UnityEditor;
 
 public class PlayerPrefsEditor : EditorWindow
 {
@@ -126,5 +128,5 @@ public class PlayerPrefsEditor : EditorWindow
         }
 
     }
-
 }
+#endif

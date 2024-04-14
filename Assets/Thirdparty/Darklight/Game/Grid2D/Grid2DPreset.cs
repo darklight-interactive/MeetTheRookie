@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Darklight.Game.Grid2D;
 using Darklight.UnityExt;
 using UnityEngine;
-using static Darklight.UnityExt.CustomInspectorGUI;
 using System.IO;
 
 #if UNITY_EDITOR
@@ -18,17 +17,16 @@ public class Grid2DPreset : ScriptableObject
 {
 
     #region << Create Unique ID >> ------------------------------------ >>
-    [ShowOnly] public string uniqueID;
+    [CustomInspectorGUI.ShowOnly] public string uniqueID;
     private void OnValidate()
     {
-        EditorUtility.SetDirty(this);
 
 #if UNITY_EDITOR
         if (uniqueID == "")
         {
             uniqueID = GUID.Generate().ToString();
-            UnityEditor.EditorUtility.SetDirty(this);
         }
+        EditorUtility.SetDirty(this);
 #endif
     }
     #endregion
@@ -45,33 +43,12 @@ public class Grid2DPreset : ScriptableObject
     [Range(-MAX, MAX)] public int originKeyY = 1;
     #endregion
 
-    [Serializable]
-    public class S_CoordinatePresetData
-    {
-        public Vector2Int positionKey;
-        public bool disabled;
-        public int weight;
-        public S_CoordinatePresetData(Vector2Int vector2Int, bool active, int weight)
-        {
-            this.positionKey = vector2Int;
-            this.disabled = active;
-            this.weight = weight;
-        }
-
-        public S_CoordinatePresetData(Grid2DData grid2DData)
-        {
-            this.positionKey = grid2DData.positionKey;
-            this.disabled = grid2DData.disabled;
-            this.weight = grid2DData.weight;
-        }
-    }
-
     // For serialization
     [SerializeField] private List<Vector2Int> keys = new List<Vector2Int>();
-    [SerializeField] private List<S_CoordinatePresetData> values = new List<S_CoordinatePresetData>();
+    [SerializeField] private List<Serialized_Grid2DData> values = new List<Serialized_Grid2DData>();
 
     // Not serialized, rebuilt on load
-    private Dictionary<Vector2Int, S_CoordinatePresetData> dataMap = new Dictionary<Vector2Int, S_CoordinatePresetData>();
+    private Dictionary<Vector2Int, Serialized_Grid2DData> dataMap = new Dictionary<Vector2Int, Serialized_Grid2DData>();
 
     private void OnEnable()
     {
@@ -83,86 +60,58 @@ public class Grid2DPreset : ScriptableObject
         }
     }
 
-    public void SaveData(S_CoordinatePresetData data)
+    /// <summary>
+    /// Save the data to the dictionary and serialized lists
+    /// </summary>
+    public void SaveData(Grid2DData data)
     {
-        if (dataMap.ContainsKey(data.positionKey))
+        Serialized_Grid2DData serializedData = new Serialized_Grid2DData(data);
+        if (dataMap.ContainsKey(serializedData.positionKey))
         {
-            dataMap[data.positionKey] = data;
-            int index = keys.IndexOf(data.positionKey);
-            values[index] = data;
+            dataMap[serializedData.positionKey] = serializedData;
+            int index = keys.IndexOf(serializedData.positionKey);
+            values[index] = serializedData;
         }
         else
         {
-            dataMap.Add(data.positionKey, data);
-            keys.Add(data.positionKey);
-            values.Add(data);
+            dataMap.Add(serializedData.positionKey, serializedData);
+            keys.Add(serializedData.positionKey);
+            values.Add(serializedData);
         }
         MarkAsDirty();
     }
 
-    public void SaveData(Grid2DData data)
+    public Grid2DData GetData(Vector2Int position)
     {
-        SaveData(new S_CoordinatePresetData(data));
+        if (dataMap.ContainsKey(position))
+        {
+            return dataMap[position];
+        }
+        return null;
+    }
+
+    public Grid2DData CreateNewData(Grid2D grid, Vector2Int positionKey)
+    {
+        Grid2DData presetData = GetData(positionKey);
+        if (presetData != null)
+        {
+            Grid2DData data = new Grid2DData(positionKey, presetData.disabled, presetData.weight, grid.GetWorldSpacePosition(positionKey), coordinateSize);
+            SaveData(data);
+            return data;
+        }
+        else
+        {
+            Grid2DData data = new Grid2DData(positionKey, false, 0, grid.GetWorldSpacePosition(positionKey), coordinateSize);
+            SaveData(data);
+            return data;
+        }
     }
 
     private void MarkAsDirty()
     {
-        EditorUtility.SetDirty(this);
 #if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssets();
 #endif
     }
-
-    /*
-        public void DisplayGrid2DSettings()
-        {
-            foreach (Vector2Int vector2Int in dataMap.Keys)
-            {
-                IGrid2DData data = dataMap[vector2Int];
-                bool active = data.active;
-                Vector3 worldPosition = data.worldPosition;
-                float size = data.coordinateSize;
-                Vector3 direction = Vector3.forward;
-                Color color = data.debugColor;
-
-                CustomGizmos.DrawLabel($"{active}", worldPosition, CustomGUIStyles.CenteredStyle);
-                CustomGizmos.DrawWireSquare(worldPosition, size, direction, color);
-                CustomGizmos.DrawButtonHandle(data.worldPosition, size * 0.75f, direction, data.debugColor, () =>
-                {
-                    data.CycleDataState();
-                    EditorUtility.SetDirty(this);
-
-                }, Handles.RectangleHandleCap);
-            }
-        }
-    */
-
-
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Grid2DPreset))]
-public class Grid2DPresetEditor : Editor
-{
-
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        Grid2DPreset gridPreset = (Grid2DPreset)target;
-    }
-
-    private void OnSceneGUI()
-    {
-        Grid2DPreset gridPreset = (Grid2DPreset)target;
-
-        // Ensures the inspector updates and reflects changes when manipulating handles
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(target);
-        }
-    }
-
-
-}
-#endif

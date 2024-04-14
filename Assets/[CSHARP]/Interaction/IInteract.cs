@@ -5,7 +5,6 @@ using UnityEngine;
 public interface IInteract
 {
     string ink_knot { get; set; }
-    public Darklight.Console console => new Darklight.Console();
     public int counter { get; set; }
 
     public virtual void Target() { }

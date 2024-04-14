@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight.Game.Grid2D;
+using Darklight.Console;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Ink.Runtime;
@@ -13,7 +14,7 @@ using UnityEditor;
 public class ComicBubbleHandler : OverlapGrid2D
 {
     public string ink_knot { get; set; }
-    public Darklight.Console console => new Darklight.Console();
+    public ConsoleGUI console => new ConsoleGUI();
     public int counter { get; set; }
     public UXML_WorldSpaceElement activeDialogueBubble { get; private set; } = null;
     public VisualTreeAsset visualTreeAsset;

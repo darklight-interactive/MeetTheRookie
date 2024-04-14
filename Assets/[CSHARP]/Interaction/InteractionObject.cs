@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Darklight;
+using Darklight.Console;
 using Darklight.Game.Grid2D;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class InteractionObject : OverlapGrid2D, IInteract
 {
     [SerializeField] private string _ink_knot;
     public string ink_knot { get => _ink_knot; set => _ink_knot = value; }
-    public Darklight.Console console => new Darklight.Console();
+    public ConsoleGUI console => new ConsoleGUI();
     public int counter { get; set; }
 
     public void Target()

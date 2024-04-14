@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Darklight;
+using Darklight.Game;
+using Darklight.Console;
 
 using Ink.Runtime;
 
@@ -21,7 +22,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
     private const string SPEAKER_TAG = "speaker";
     public static string Prefix => ISingleton<InkyKnotThreader>.Prefix;
     public static InkyKnotThreader Instance => ISingleton<InkyKnotThreader>.Instance;
-    public static Darklight.Console Console = new Darklight.Console();
+    public static ConsoleGUI Console = new ConsoleGUI();
 
 
     // ========================  [[ STATE MACHINE ]]  ========================

@@ -1,13 +1,18 @@
-namespace Darklight
+using System;
+using System.Collections.Generic;
+
+using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+
+#endif
+
+namespace Darklight.Console
 {
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEditor;
-	using UnityEngine;
 	public enum LogSeverity { Info, Warning, Error }
 
-	public class Console
+	public class ConsoleGUI
 	{
 		private Vector2 scrollPosition;
 		private bool autoScroll = true; // Default to true to enable auto-scrolling.
@@ -71,6 +76,7 @@ namespace Darklight
 			AllLogEntries.Clear();
 		}
 
+#if UNITY_EDITOR
 		public void DrawInEditor()
 		{
 			// Toggle for enabling/disabling auto-scroll
@@ -108,5 +114,7 @@ namespace Darklight
 			}
 			EditorGUILayout.EndScrollView();
 		}
+#endif
+
 	}
 }

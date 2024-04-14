@@ -1,8 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
+using Darklight.UnityExt;
+using UnityEngine.XR;
+
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Darklight.Game.Grid2D
 {
@@ -11,43 +18,62 @@ namespace Darklight.Game.Grid2D
     /// </summary>
     public class Grid2D : MonoBehaviour
     {
+        public Grid2DPreset preset; // The settings for the grid
+
         #region [[ Private Properties ]] =============================== >>
+        private Dictionary<Vector2Int, Grid2DData> dataMap = new(); // The data map for the grid
         private int gridSizeX => preset.gridSizeX;
         private int gridSizeY => preset.gridSizeY;
         private float coordinateSize => preset.coordinateSize;
-        private int originKeyX => preset.originKeyX;
-        private int originKeyY => preset.originKeyY;
         private Vector2Int gridXAxis => new Vector2Int(1, 0); // create x Axis Vector
         private Vector2Int gridYAxis => new Vector2Int(0, 1); // create y Axis Vector
-        private Vector2Int gridArea => new Vector2Int(gridSizeX, gridSizeY);
-        private Transform gridParent => this.transform;
-        private Vector2Int gridParentPositionKey => new Vector2Int(originKeyX, originKeyY);
+        private Vector2Int gridArea => new Vector2Int(gridSizeX, gridSizeY); // used for grid creation
+        private Vector2Int originKey => new Vector2Int(preset.originKeyX, preset.originKeyY); // used to set the origin coordinate of the grid
         #endregion
 
-        public Grid2DPreset preset; // The settings for the grid
-        public Dictionary<Vector2Int, Grid2DData> data2DMap { get; private set; } // The data map for the grid
+        public void Awake()
+        {
+            InitializeDataMap();
+        }
+
+        public void Update()
+        {
+            foreach (Grid2DData data in GetAllData())
+            {
+                data.UpdateData(this);
+            }
+        }
 
         #region [[ Public Methods ]] =============================== >>
-        /// <summary>
-        /// Initializes the grid by creating coordinates for each position in the grid.
-        /// </summary>
-        public void Initialize()
+
+        public void InitializeDataMap()
         {
             if (preset == null)
             {
-                Debug.LogError("Grid2D settings is null. Please assign a Grid2DSettings asset to the settings property of this Grid2D.",
-                    this.gridParent.gameObject);
+                Debug.LogError("The Grid2D preset is not set.", this);
                 return;
             }
 
             // Create the grid
-            data2DMap = new Dictionary<Vector2Int, Grid2DData>();
+            dataMap = new Dictionary<Vector2Int, Grid2DData>();
             for (int x = 0; x < gridArea.x; x++)
             {
                 for (int y = 0; y < gridArea.y; y++)
                 {
-                    Vector2Int position = gridXAxis * x + gridYAxis * y;
-                    data2DMap.Add(position, default);
+                    Vector2Int positionKey = gridXAxis * x + gridYAxis * y;
+
+                    Grid2DData dataObject = preset.CreateNewData(this, positionKey);
+
+                    // Subscribe to the data state change event
+                    dataObject.OnDataStateChanged += (Grid2DData data) =>
+                    {
+                        SetData(positionKey, data);
+                    };
+
+                    dataObject.UpdateData(this);
+
+                    // Add the data object to the map
+                    dataMap[positionKey] = dataObject;
                 }
             }
         }
@@ -60,12 +86,14 @@ namespace Darklight.Game.Grid2D
         public void SetData(Vector2Int position, Grid2DData data)
         {
             // if the position is in the grid, set the data
-            if (data2DMap.ContainsKey(position))
+            if (dataMap.ContainsKey(position))
             {
-                data2DMap[position] = data;
+                //Debug.Log("Setting data at position " + position + $" with weight: {data.weight}");
+                dataMap[position] = data;
+                preset.SaveData(data);
                 return;
             }
-            Debug.LogError("The position " + position + " is not in the grid.", this.gridParent.gameObject);
+            Debug.LogError("The position " + position + " is not in the grid.", this);
         }
 
         /// <summary>
@@ -74,9 +102,9 @@ namespace Darklight.Game.Grid2D
         /// <param name="position"></param>
         public void RemoveData(Vector2Int position)
         {
-            if (data2DMap.ContainsKey(position))
+            if (dataMap.ContainsKey(position))
             {
-                data2DMap.Remove(position);
+                dataMap.Remove(position);
             }
         }
 
@@ -87,9 +115,9 @@ namespace Darklight.Game.Grid2D
         /// <returns></returns>
         public Grid2DData GetData(Vector2Int position)
         {
-            if (data2DMap.ContainsKey(position))
+            if (dataMap.ContainsKey(position))
             {
-                return data2DMap[position];
+                return dataMap[position];
             }
             return default;
         }
@@ -100,8 +128,8 @@ namespace Darklight.Game.Grid2D
         /// <returns>A list of all position keys in the grid.</returns>
         public List<Vector2Int> GetPositionKeys()
         {
-            if (data2DMap != null)
-                return new List<Vector2Int>(data2DMap.Keys);
+            if (dataMap != null)
+                return new List<Vector2Int>(dataMap.Keys);
             return new List<Vector2Int>();
         }
 
@@ -112,9 +140,9 @@ namespace Darklight.Game.Grid2D
         public List<Grid2DData> GetAllData()
         {
             List<Grid2DData> values = new List<Grid2DData>();
-            if (data2DMap != null && data2DMap.Count > 0)
+            if (dataMap != null && dataMap.Count > 0)
             {
-                foreach (Grid2DData data in data2DMap.Values)
+                foreach (Grid2DData data in dataMap.Values)
                 {
                     values.Add(data);
                 }
@@ -129,15 +157,57 @@ namespace Darklight.Game.Grid2D
         /// <returns>The world space position of the specified position key.</returns>
         public Vector3 GetWorldSpacePosition(Vector2Int positionKey)
         {
-            if (this.gridParent == null) { return Vector3.zero; }
+            // Calculate the local position key offset from the origin in world space
+            Vector2Int offsetPosition = positionKey - originKey;
 
-            Vector2Int offsetPosition = positionKey - gridParentPositionKey;
-            Vector3 vec3_position = new Vector3(offsetPosition.x, offsetPosition.y, 0);
-            vec3_position *= coordinateSize;
+            // Calculate the offset position in world space multiplied by the coordinate size
+            Vector3 vec3_offset_position = new Vector3(offsetPosition.x, offsetPosition.y, 0);
+            vec3_offset_position *= coordinateSize;
 
-            Vector3 worldSpacePosition = gridParent.TransformVector(gridParent.position + vec3_position);
+            // Calculate the world space position
+            Vector3 worldSpacePosition = transform.TransformVector(transform.position + vec3_offset_position);
             return worldSpacePosition;
         }
         #endregion
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Grid2D))]
+    public class Grid2DEditor : Editor
+    {
+        Grid2D grid2D;
+        private void OnEnable()
+        {
+            grid2D = (Grid2D)target;
+            grid2D.Awake();
+        }
+
+        private void OnSceneGUI()
+        {
+            if (grid2D == null) return;
+            DrawGrid();
+        }
+
+        public void DrawGrid()
+        {
+            if (grid2D == null) return;
+
+            foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
+            {
+                Grid2DData data = grid2D.GetData(positionKey);
+                Vector3 worldPosition = data.worldPosition;
+                float size = data.coordinateSize;
+
+
+
+                CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
+                CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
+                CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
+                {
+                    data.CycleDataState();
+                }, Handles.RectangleHandleCap);
+            }
+        }
+    }
+#endif
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight;
+using Darklight.Console;
+using Darklight.Game;
 using Ink.Runtime;
 using UnityEngine;
 
