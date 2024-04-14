@@ -179,4 +179,13 @@ public class InkyStoryManager
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false) {
         story.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
     }
+
+    public object RunExternalFunction(string func, object[] args) {
+        if (story.HasFunction(func)) {
+            return story.EvaluateFunction(func, args);
+        } else {
+            Debug.LogError("Could not find function: " + func);
+            return null;
+        }
+    }
 }

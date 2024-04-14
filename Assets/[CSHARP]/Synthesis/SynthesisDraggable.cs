@@ -36,6 +36,7 @@ public class SynthesisDraggable : PointerManipulator
     Vector2 targetStart;
 
 
+    SynthesisObject wantToCombine;
     void PointerDown(PointerDownEvent evt) {
         target.CapturePointer(evt.pointerId);
         start = evt.position;
@@ -52,9 +53,26 @@ public class SynthesisDraggable : PointerManipulator
             Vector3 delta = evt.position - start;
 
             var bounds = target.panel.visualTree.worldBound;
-            target.transform.position = new Vector2(
+            var pos = new Vector2(
                 Mathf.Clamp(targetStart.x + delta.x, -globalStart.x, bounds.width - globalStart.x - globalStart.width),
                 Mathf.Clamp(targetStart.y + delta.y, -globalStart.y, bounds.height - globalStart.y - globalStart.height));
+            target.transform.position = pos;
+
+            var toCombine = IGameSingleton<SynthesisManager>.Instance.OverlappingObject(target);
+            if (toCombine != wantToCombine) {
+                if (wantToCombine == null) {
+                    target.AddToClassList("combine-target");
+                } else {
+                    wantToCombine.RemoveFromClassList("combine-target");
+                }
+
+                if (toCombine == null) {
+                    target.RemoveFromClassList("combine-target");
+                } else {
+                    toCombine.AddToClassList("combine-target");
+                }
+            }
+            wantToCombine = toCombine;
         }
     }
 
@@ -62,6 +80,11 @@ public class SynthesisDraggable : PointerManipulator
         if (isDragging && target.HasPointerCapture(evt.pointerId)) {
             isDragging = false;
             target.ReleasePointer(evt.pointerId);
+            if (wantToCombine != null) {
+                IGameSingleton<SynthesisManager>.Instance.CombineItems(new[] { target.name, wantToCombine.name });
+                wantToCombine.RemoveFromClassList("combine-target");
+                target.RemoveFromClassList("combine-target");
+            }
         }
     }
 }
