@@ -29,7 +29,7 @@ public class Interaction : Grid2D_OverlapGrid, IInteraction
     {
         Vector3? worldPostion = null;
         if (worldPostion == null) worldPostion = transform.position;
-        UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
+        //UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
     }
 
     public virtual void Interact()
@@ -39,13 +39,13 @@ public class Interaction : Grid2D_OverlapGrid, IInteraction
     }
     public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
     {
-        InkyKnotThreader.Instance.GoToKnotAt(ink_knot);
-        InkyKnotThreader.Instance.ContinueStory();
+        //InkyKnotThreader.Instance.GoToKnotAt(ink_knot);
+        //InkyKnotThreader.Instance.ContinueStory();
     }
 
     public virtual void ResetInteraction()
     {
-        UXML_InteractionUI.Instance.HideInteractPrompt();
+        //UXML_InteractionUI.Instance.HideInteractPrompt();
     }
 }
 
@@ -67,9 +67,8 @@ public class InteractionEditor : Grid2D_OverlapGridEditor
                 return;
             }
 
-            UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
-            element.SetLocalScale(data.coordinateSize);
-
+            //UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
+            //element.SetLocalScale(data.coordinateSize);
         }
     }
 

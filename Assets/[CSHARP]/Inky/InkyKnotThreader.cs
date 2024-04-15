@@ -8,6 +8,8 @@ using Darklight.Console;
 using Ink.Runtime;
 
 using UnityEngine;
+using Darklight.Game.Utility;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,12 +18,10 @@ using UnityEditor;
 /// <summary>
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
-public class InkyKnotThreader : ISingleton<InkyKnotThreader>
+public class InkyKnotThreader : MonoBehaviour
 {
     private const string PATH = "Inky/";
     private const string SPEAKER_TAG = "speaker";
-    public static string Prefix => ISingleton<InkyKnotThreader>.Prefix;
-    public static InkyKnotThreader Instance => ISingleton<InkyKnotThreader>.Instance;
     public static ConsoleGUI Console = new ConsoleGUI();
 
 
@@ -45,7 +45,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
     public bool LoadStory(string storyName)
     {
         stateMachine.ChangeState(State.LOAD);
-        Console.Log($"{Prefix} Loading Story: {storyName}");
+        //Console.Log($"{Prefix} Loading Story: {storyName}");
 
         try
         {
@@ -54,7 +54,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
         }
         catch (Exception e)
         {
-            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
+            //Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
             return false;
         }
         finally
@@ -73,7 +73,7 @@ public class InkyKnotThreader : ISingleton<InkyKnotThreader>
             {
                 foreach (string tag in tags)
                 {
-                    Console.Log($"{Prefix} Found Tag: {tag}", 3);
+                    //Console.Log($"{Prefix} Found Tag: {tag}", 3);
                 }
             }
 

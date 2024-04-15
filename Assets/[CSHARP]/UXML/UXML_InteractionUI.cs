@@ -10,9 +10,8 @@ using UnityEngine.UIElements;
 /// <<<
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_InteractionUI>
+public class UXML_InteractionUI : MonoBehaviour
 {
-    public static UXML_InteractionUI Instance => ISceneSingleton<UXML_InteractionUI>.Instance;
 
     #region ===== [ UI ELEMENT CLASS ] ==================================================== >>
     /// <summary>
@@ -77,7 +76,7 @@ public class UXML_InteractionUI : MonoBehaviour, ISceneSingleton<UXML_Interactio
 
     private void Awake()
     {
-        (this as ISceneSingleton<UXML_InteractionUI>).Initialize();
+        //(this as ISceneSingleton<UXML_InteractionUI>).Initialize();
 
         doc = GetComponent<UIDocument>();
         root = doc.rootVisualElement;

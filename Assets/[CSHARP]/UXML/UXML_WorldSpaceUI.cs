@@ -4,24 +4,21 @@ using Darklight.Game.Grid;
 using Darklight.Console;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.Game.Utility;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class UXML_WorldSpaceUI : MonoBehaviour, ISceneSingleton<UXML_WorldSpaceUI>
+public class UXML_WorldSpaceUI
 {
-    public static UXML_WorldSpaceUI Instance => ISceneSingleton<UXML_WorldSpaceUI>.Instance;
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings worldSpacePanelSettings;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
 
-    void Awake()
-    {
-        (this as ISceneSingleton<UXML_WorldSpaceUI>).Initialize();
-    }
-
+    /*
     /// <summary>
     /// Create a dialogue bubble gameobject in the world space at the given position.
     /// </summary>
@@ -43,4 +40,25 @@ public class UXML_WorldSpaceUI : MonoBehaviour, ISceneSingleton<UXML_WorldSpaceU
 
         return bubble;
     }
+    */
 }
+
+/*
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(UXML_WorldSpaceUI))]
+public class UXML_WorldSpaceUIEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        UXML_WorldSpaceUI worldSpaceUI = (UXML_WorldSpaceUI)target;
+
+        if (GUILayout.Button("Create Comic Bubble"))
+        {
+            worldSpaceUI.CreateComicBubbleAt(worldSpaceUI.transform.position);
+        }
+    }
+}
+#endif
+*/

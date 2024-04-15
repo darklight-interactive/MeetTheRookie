@@ -5,6 +5,8 @@ using Darklight.UnityExt;
 using Darklight;
 using Darklight.UnityExt.Input;
 using Darklight.Game;
+using Darklight.Game.Utility;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -24,26 +26,18 @@ public class GameStateMachine : StateMachine<GameState>
     }
 }
 
-public class GameManager : MonoBehaviour, IGameSingleton<GameManager>
+public class GameManager : MonoBehaviourSingleton<GameManager>
 {
-    public static GameManager Instance = IGameSingleton<GameManager>.Instance;
-    public static UXML_InteractionUI InteractionUI => ISceneSingleton<UXML_InteractionUI>.Instance;
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
-    public static InkyKnotThreader InkyKnotThreader = ISingleton<InkyKnotThreader>.Instance;
+
+
+    //public static InkyKnotThreader InkyKnotThreader = InkyKnotThreader.Instance;
     public string initialStoryPath = "scene1";
 
-    void Awake()
-    {
-        (this as IGameSingleton<GameManager>).Initialize();
-    }
-
-    void Start()
-    {
-        InkyKnotThreader.LoadStory(initialStoryPath);
-    }
 }
 
+/*
 #if UNITY_EDITOR
 [CustomEditor(typeof(GameManager))]
 public class GameManagerEditor : Editor
@@ -73,4 +67,4 @@ public class GameManagerEditor : Editor
     }
 }
 
-#endif
+#endif*/

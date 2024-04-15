@@ -49,10 +49,12 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         inkyBubble = root.Q<UXMLElement_ComicBubble>();
 
         string currentText = "";
+        /*
         if (InkyKnotThreader.Instance.currentKnot != null)
         {
             currentText = InkyKnotThreader.Instance.currentStory.currentText;
         }
+        */
 
         if (currentText == null || currentText == "") currentText = "TEXT NOT FOUND";
         inkyBubble.SetText(currentText);
