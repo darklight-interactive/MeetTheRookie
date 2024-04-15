@@ -58,7 +58,7 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
         uIElement.SetVisible(false);
     }
 
-    public void CreateChoiceBubble(Vector3 worldPosition, InkyData_Choice choice)
+    public void CreateChoiceBubble(Vector3 worldPosition, Choice choice)
     {
         UXML_Element groupElement = GetUIElement(choiceGroupTag);
         groupElement.SetVisible(true);

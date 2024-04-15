@@ -5,17 +5,17 @@ using Darklight.Game;
 using Ink.Runtime;
 using UnityEngine;
 
-public class InkyKnot : StateMachine<InkyKnot.State>
+public class INKY_KnotIterator : StateMachine<INKY_KnotIterator.State>
 {
     public enum State { NULL, START, DIALOGUE, CHOICE, END }
     string Prefix => "[InkyKnot] >> ";
     Story story;
     string knotName;
-    Dictionary<Choice, int> choiceMap = new Dictionary<Choice, int>();
+    Dictionary<Ink.Runtime.Choice, int> choiceMap = new Dictionary<Ink.Runtime.Choice, int>();
     List<string> tags;
 
-    List<Choice> Choices => story.currentChoices;
-    public InkyKnot(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
+    List<Ink.Runtime.Choice> Choices => story.currentChoices;
+    public INKY_KnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
     {
         this.story = storyParent;
         this.knotName = knotName;
@@ -26,12 +26,12 @@ public class InkyKnot : StateMachine<InkyKnot.State>
         }
         catch (System.Exception e)
         {
-            InkyThreader.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
+            InkyStoryWeaver.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: {e.Message}");
         }
         finally
         {
-            InkyThreader.Console.Log($"{Prefix} Created Knot: {knotName}");
+            InkyStoryWeaver.Console.Log($"{Prefix} Moved to Knot: {knotName}");
         }
     }
 
@@ -39,7 +39,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
     {
         if (story == null)
         {
-            InkyThreader.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
+            InkyStoryWeaver.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: Story is null");
             return;
         }
@@ -51,17 +51,17 @@ public class InkyKnot : StateMachine<InkyKnot.State>
             string text = story.Continue();
             HandleTags();
 
-            InkyThreader.Console.Log($"{Prefix} Continue Dialogue: {text}");
+            InkyStoryWeaver.Console.Log($"{Prefix} Continue Dialogue: {text}");
         }
         else if (story.currentChoices.Count > 0)
         {
             ChangeState(State.CHOICE);
-            InkyThreader.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
+            InkyStoryWeaver.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
-            foreach (Choice choice in story.currentChoices)
+            foreach (Ink.Runtime.Choice choice in story.currentChoices)
             {
                 choiceMap.Add(choice, choice.index);
-                InkyThreader.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                InkyStoryWeaver.Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
         else
@@ -76,7 +76,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
 
     public void ChooseChoice(int choiceIndex)
     {
-        Choice choice = story.currentChoices[choiceIndex];
+        Ink.Runtime.Choice choice = story.currentChoices[choiceIndex];
         story.ChooseChoiceIndex(choice.index);
         choiceMap.Clear();
         ContinueKnot();
@@ -103,7 +103,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
-                InkyThreader.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
+                InkyStoryWeaver.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
             }
             else
             {
@@ -114,7 +114,7 @@ public class InkyKnot : StateMachine<InkyKnot.State>
                 switch (tagKey)
                 {
                     default:
-                        InkyThreader.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
+                        InkyStoryWeaver.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
                         break;
                 }
             }

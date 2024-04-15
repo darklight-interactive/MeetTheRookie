@@ -5,63 +5,50 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public interface IInteractable
+public interface IInteract
 {
-    int counter { get; set; }
-    public abstract void Target();
-    public virtual void Interact()
-    {
-        counter++;
-    }
-    public virtual void Reset()
-    {
-        counter = 0;
-    }
+    /// <summary>
+    /// Initialize the interactable object with any necessary data.
+    /// </summary>
+    void Initialize();
+
+    /// <summary>
+    /// Called when the player is targeting the interactable object.
+    /// </summary>
+    void Target();
+
+    /// <summary>
+    /// Called when the player interacts with the object.
+    /// </summary>
+    void Interact();
+
+    /// <summary>
+    /// Called to disable the interactable object and hide any prompts.
+    /// </summary>
+    void Disable();
+
+    /// <summary>
+    /// Reset the interactable object to its default state.
+    /// </summary>
+    void Reset();
 }
 
-public abstract class Interactable : MonoBehaviour, IInteractable
+public abstract class Interactable : MonoBehaviour, IInteract
 {
-    [SerializeField] protected string inkKnotName = "default";
-    [SerializeField] protected Transform promptUITarget;
+    [SerializeField] private Transform promptIconTarget;
 
-    public string inkKnot => inkKnotName;
-    public int counter { get; set; }
-
+    public abstract void Initialize();
     public virtual void Target()
     {
-        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptUITarget.position);
+        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptIconTarget.position);
     }
+
+    public abstract void Interact();
 
     public virtual void Disable()
     {
         UXML_InteractionUI.Instance.HideInteractPrompt();
     }
 
-    public virtual void Interact()
-    {
-        counter++;
-        if (counter == 1)
-        {
-            StartInteractionKnot(OnInteractionComplete);
-        }
-        else
-        {
-            ContinueInteraction();
-        }
-    }
-    public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
-    {
-        InkyThreader.Instance.GoToKnotAt(inkKnot);
-    }
-
-    public virtual void ContinueInteraction()
-    {
-        InkyThreader.Instance.ContinueStory();
-    }
-
-    public virtual void OnInteractionComplete()
-    {
-        // Reset the interaction counter
-        counter = 0;
-    }
+    public abstract void Reset();
 }

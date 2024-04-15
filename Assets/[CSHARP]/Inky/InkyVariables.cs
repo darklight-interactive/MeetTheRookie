@@ -2,77 +2,85 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
 
-public class InkyGlobalVariables
+public interface IInkyVariable
 {
-    public Dictionary<string, Ink.Runtime.Object> variables { get; private set; }
+    string name { get; }
+    string ToString();
+}
+
+public abstract class InkyVariable<T> : IInkyVariable
+{
+    public string name { get; private set; }
+    public T value { get; private set; }
+
+    public InkyVariable(string name, T value)
+    {
+        this.name = name;
+        this.value = value;
+    }
+
+    public override string ToString()
+    {
+        return $"{name} = {value}";
+    }
+}
+
+public class InkyVariableList : InkyVariable<InkList>, IInkyVariable
+{
+    public InkyVariableList(string name, InkList value) : base(name, value) { }
+    public override string ToString()
+    {
+        return value.ToString();
+    }
+}
+
+public class InkyVariableObject : InkyVariable<Ink.Runtime.Object>, IInkyVariable
+{
+    public InkyVariableObject(string name, Ink.Runtime.Object value) : base(name, value) { }
+}
+
+public class InkyVariableHandler
+{
+    public Dictionary<string, IInkyVariable> variables { get; private set; } = new Dictionary<string, IInkyVariable>();
     private Story story;
     private const string saveVariablesKey = "INK_VARIABLES";
 
-    public InkyGlobalVariables(Story story)
+    public InkyVariableHandler(Story story)
     {
         // create the story
         this.story = story;
 
-        // if we have saved data, load it
-        // if (PlayerPrefs.HasKey(saveVariablesKey))
-        // {
-        //     string jsonState = PlayerPrefs.GetString(saveVariablesKey);
-        //     globalVariablesStory.state.LoadJson(jsonState);
-        // }
-
         // initialize the dictionary
+        variables.Clear();
+        foreach (string variableName in story.variablesState)
+        {
+            object inkValue = story.variablesState[variableName];
+            if (inkValue is InkList)
+            {
+                InkyVariableList inkList = new InkyVariableList(variableName, inkValue as InkList);
+                variables.Add(variableName, inkList);
+                Debug.Log($"{InkyStoryWeaver.Prefix} Initialized global dialogue variable: {variableName} = {inkValue.ToString()}");
+            }
+            else if (inkValue is Ink.Runtime.Object)
+            {
+                InkyVariableObject inkObject = new InkyVariableObject(variableName, inkValue as Ink.Runtime.Object);
+                variables.Add(variableName, inkObject);
+            }
+            else
+            {
+                InkyStoryWeaver.Console.Log($"{InkyStoryWeaver.Prefix} Error: Unhandled variable type: {inkValue.GetType()}", 0);
+            }
+        }
+
+        /*
         variables = new Dictionary<string, Ink.Runtime.Object>();
         foreach (string name in this.story.variablesState)
         {
             Ink.Runtime.Object value = this.story.variablesState.GetVariableWithName(name);
             variables.Add(name, value);
 
-            //InkyKnotThreader.Console.Log($"{InkyKnotThreader.Prefix} Initialized global dialogue variable: {name} = {value}", 1);
+            InkyStoryWeaver.Console.Log($"{InkyStoryWeaver.Prefix} Initialized global dialogue variable: {name} = {value}", 1);
         }
+        */
     }
-
-
-    public void SaveVariables()
-    {
-        if (story != null)
-        {
-            // Load the current state of all of our variables to the globals story
-            VariablesToStory(story);
-            // NOTE: eventually, you'd want to replace this with an actual save/load method
-            // rather than using PlayerPrefs.
-            PlayerPrefs.SetString(saveVariablesKey, story.state.ToJson());
-        }
-    }
-
-    public void StartListening(Story story)
-    {
-        // it's important that VariablesToStory is before assigning the listener!
-        VariablesToStory(story);
-        story.variablesState.variableChangedEvent += VariableChanged;
-    }
-
-    public void StopListening(Story story)
-    {
-        story.variablesState.variableChangedEvent -= VariableChanged;
-
-    }
-
-    private void VariableChanged(string name, Ink.Runtime.Object value)
-    {
-        // only maintain variables that were initialized from the globals ink file
-        if (variables.ContainsKey(name))
-        {
-            variables.Remove(name);
-            variables.Add(name, value);
-        }
-    }
-
-    private void VariablesToStory(Story story)
-    {
-        foreach (KeyValuePair<string, Ink.Runtime.Object> variable in variables)
-        {
-            story.variablesState.SetGlobal(variable.Key, variable.Value);
-        }
-    }
-
 }

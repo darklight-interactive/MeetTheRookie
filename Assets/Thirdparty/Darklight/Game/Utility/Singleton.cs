@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Darklight.Console;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,6 +29,7 @@ namespace Darklight.Game.Utility
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         public static string Prefix => $"[{typeof(T).Name}]";
+        public static ConsoleGUI Console = new ConsoleGUI();
         private static T _instance;
         public static T Instance
         {
@@ -46,6 +49,7 @@ namespace Darklight.Game.Utility
                 return _instance;
             }
         }
+
 
         /// <summary>
         /// Destroy the singleton instance and the GameObject it is attached to.
