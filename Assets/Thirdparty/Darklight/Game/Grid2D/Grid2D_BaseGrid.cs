@@ -56,18 +56,20 @@ namespace Darklight.Game.Grid
                         newData.Initialize(positionKey, false, 1, worldPosition, preset.coordinateSize);
                     }
 
-                    // Set the data in the map
+                    // Set the data in the map ------------- >>
                     if (DataMap.ContainsKey(positionKey))
                         DataMap[positionKey] = newData;
                     else
                         DataMap.Add(positionKey, newData);
+
+                    // Notify listeners of the data change
+                    newData.OnDataStateChanged += (data) =>
+                    {
+                        // Save the data when the data state changes
+                        preset.SaveData(data);
+                    };
                 }
             }
-        }
-
-        protected override void OnDataChanged(Vector2Int position, Grid2D_Data data)
-        {
-            throw new NotImplementedException();
         }
     }
 

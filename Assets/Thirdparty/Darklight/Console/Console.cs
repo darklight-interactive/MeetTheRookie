@@ -96,11 +96,8 @@ namespace Darklight.Console
 			{
 				EditorGUILayout.BeginHorizontal(); // Start a horizontal group for inline elements
 
-				// Log Prefix
-				EditorGUILayout.LabelField($"[{log.Timestamp}] || {logCount}", UnityExt.CustomGUIStyles.SmallTextStyle, GUILayout.Width(100));
-
-				// Main Message
-				EditorGUILayout.LabelField(log.Message, UnityExt.CustomGUIStyles.NormalTextStyle, GUILayout.ExpandWidth(true));
+				string message = $"[{log.Timestamp}] || {logCount} || {log.Message}";
+				EditorGUILayout.LabelField(message, UnityExt.CustomGUIStyles.SmallTextStyle, GUILayout.ExpandWidth(true));
 				EditorGUILayout.EndHorizontal();
 
 				/*

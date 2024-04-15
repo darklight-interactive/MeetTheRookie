@@ -44,6 +44,8 @@ public interface IGrid2D_Data
     /// </summary>
     public event Action<Grid2D_Data> OnDataStateChanged;
 
+    public void Initialize(Grid2D_Data data);
+
     /// <summary>
     /// Initializes the data with the given values.
     /// </summary>
@@ -79,8 +81,8 @@ public class Grid2D_Data : IGrid2D_Data
 {
     public bool initialized { get; private set; }
     public Vector2Int positionKey { get; private set; }
-    public bool disabled { get; private set; }
-    public int weight { get; private set; }
+    public bool disabled { get; protected set; }
+    public int weight { get; protected set; }
     public Vector3 worldPosition { get; set; }
     public float coordinateSize { get; private set; }
 
@@ -128,7 +130,7 @@ public class Grid2D_Data : IGrid2D_Data
     }
 
 
-    const int MIN_WEIGHT = 0;
+    const int MIN_WEIGHT = 1;
     const int MAX_WEIGHT = 3;
     public virtual void CycleDataState()
     {
@@ -143,6 +145,8 @@ public class Grid2D_Data : IGrid2D_Data
             weight = MIN_WEIGHT;
             disabled = true;
         }
+
+        Debug.Log("Data state changed: " + weight);
 
         // Notify listeners that the data state has changed
         OnDataStateChanged?.Invoke(this);
@@ -166,11 +170,9 @@ public class Grid2D_Data : IGrid2D_Data
         Color color = Color.black;
         if (disabled) return color;
 
+
         switch (weight)
         {
-            case 0:
-                color = Color.white;
-                break;
             case 1:
                 color = Color.red;
                 break;
@@ -183,12 +185,6 @@ public class Grid2D_Data : IGrid2D_Data
         }
 
         return color;
-    }
-
-    public void SetDisabled(bool value)
-    {
-        disabled = value;
-        OnDataStateChanged?.Invoke(this);
     }
 }
 

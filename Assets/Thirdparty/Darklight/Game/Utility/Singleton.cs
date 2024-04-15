@@ -26,7 +26,7 @@ namespace Darklight.Game.Utility
     /// <typeparam name="T"></typeparam>
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static string Prefix => $"[{typeof(T).Name}]";
+        public static string Prefix => $"[{typeof(T).Name}]";
         private static T _instance;
         public static T Instance
         {

@@ -16,8 +16,10 @@ namespace Darklight.Game.Grid
     /// </summary>
     public class Grid2D_OverlapData : Grid2D_Data
     {
+        private bool disabledInitially = false;
         public LayerMask layerMask; // The layer mask to use for the OverlapBoxAll called
         public Collider2D[] colliders = new Collider2D[0]; /// The colliders found by the OverlapBoxAll call
+
         public Grid2D_OverlapData() { }
         // Initialization method to set properties
 
@@ -25,13 +27,23 @@ namespace Darklight.Game.Grid
         {
             base.Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
             this.layerMask = layerMask;
+            this.disabledInitially = disabled; // << set equal to initial value
+        }
+
+        public override void CycleDataState()
+        {
+            base.CycleDataState();
+            this.disabledInitially = disabled; // << set to match the new state
         }
 
         public override void UpdateData()
         {
             // Update the collider data
             this.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * coordinateSize, 0, layerMask);
-            this.SetDisabled(colliders.Length > 0);
+            if (!disabledInitially)
+            {
+                this.disabled = colliders.Length > 0;
+            }
         }
     }
 
@@ -84,6 +96,12 @@ namespace Darklight.Game.Grid
                         DataMap[positionKey] = newData;
                     else
                         DataMap.Add(positionKey, newData);
+
+                    // Notify listeners of the data change
+                    newData.OnDataStateChanged += (data) =>
+                    {
+                        preset.SaveData(data);
+                    };
                 }
             }
         }
@@ -97,11 +115,6 @@ namespace Darklight.Game.Grid
 
                 data.UpdateData();
             }
-        }
-
-        protected override void OnDataChanged(Vector2Int position, Grid2D_OverlapData data)
-        {
-            throw new System.NotImplementedException();
         }
 
         public Grid2D_OverlapData GetBestData()
@@ -157,6 +170,8 @@ namespace Darklight.Game.Grid
             foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
             {
                 Grid2D_Data data = grid2D.GetData(positionKey);
+                if (data.initialized == false) continue; // Skip uninitialized data
+
                 Vector3 worldPosition = data.worldPosition;
                 float size = data.coordinateSize;
 

@@ -50,24 +50,6 @@ namespace Darklight.Game.Grid
         }
 
         /// <summary>
-        /// Sets the data at a given position in the grid.
-        /// </summary>
-        /// <param name="position">The grid position.</param>
-        /// <param name="data">The data to set at the position.</param>
-        public virtual void SetData(Vector2Int position, Data data)
-        {
-            if (DataMap.ContainsKey(position))
-            {
-                DataMap[position] = data;
-                OnDataChanged(position, data); // Notify change
-                return;
-            }
-            Debug.LogError($"The position {position} is not in the grid.", this);
-        }
-
-        protected abstract void OnDataChanged(Vector2Int position, Data data);
-
-        /// <summary>
         /// Retrieves the data at a given position in the grid.
         /// </summary>
         /// <param name="position"></param>

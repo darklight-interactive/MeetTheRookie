@@ -7,7 +7,7 @@ using UnityEditor;
 
 public interface IInteraction
 {
-    public string ink_knot { get; }
+    public string inkKnot { get; }
     public int counter { get; set; }
     public abstract void Target();
     public virtual void Interact()
@@ -21,63 +21,49 @@ public interface IInteraction
 }
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class Interaction : Grid2D_OverlapGrid, IInteraction
+public class Interaction : MonoBehaviour, IInteraction
 {
-    public string ink_knot { get; private set; } = "default";
+    [SerializeField] protected string inkKnotName = "default";
+    [SerializeField] protected Transform promptUITarget;
+
+    public string inkKnot => inkKnotName;
     public int counter { get; set; }
+
     public virtual void Target()
     {
-        Vector3? worldPostion = null;
-        if (worldPostion == null) worldPostion = transform.position;
-        //UXML_InteractionUI.Instance.DisplayInteractPrompt((Vector3)worldPostion);
+        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptUITarget.position);
+    }
+
+    public virtual void Disable()
+    {
+        UXML_InteractionUI.Instance.HideInteractPrompt();
     }
 
     public virtual void Interact()
     {
         counter++;
-        Debug.Log($"Interact >> {counter}");
+        if (counter == 1)
+        {
+            StartInteractionKnot(OnInteractionComplete);
+        }
+        else
+        {
+            ContinueInteraction();
+        }
     }
     public virtual void StartInteractionKnot(InkyKnot.KnotComplete onComplete)
     {
-        //InkyKnotThreader.Instance.GoToKnotAt(ink_knot);
-        //InkyKnotThreader.Instance.ContinueStory();
+        InkyThreader.Instance.GoToKnotAt(inkKnot);
     }
 
-    public virtual void ResetInteraction()
+    public virtual void ContinueInteraction()
     {
-        //UXML_InteractionUI.Instance.HideInteractPrompt();
+        InkyThreader.Instance.ContinueStory();
+    }
+
+    public virtual void OnInteractionComplete()
+    {
+        // Reset the interaction counter
+        counter = 0;
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Interaction))]
-public class InteractionEditor : Grid2D_OverlapGridEditor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        Interaction interaction = (Interaction)target;
-
-        if (GUILayout.Button("SpawnBubble"))
-        {
-            Grid2D_OverlapData data = interaction.GetBestData();
-            if (data == null)
-            {
-                Debug.LogWarning("No data found to spawn bubble at");
-                return;
-            }
-
-            UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
-            element.SetLocalScale(data.coordinateSize);
-        }
-    }
-
-    private void OnSceneGUI()
-    {
-        Interaction interaction = (Interaction)target;
-        Grid2D_OverlapData data = interaction.GetBestData();
-
-        DrawGrid();
-    }
-}
-#endif

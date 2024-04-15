@@ -1,5 +1,5 @@
 VAR npc_name = "NPC"
-Welcome to the test environment.
+Hello.Welcome to the test environment.This environment is only for the coolest of people.If you are not cool then you will burn if you continue
 -> main
 
 === main ===

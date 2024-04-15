@@ -64,6 +64,7 @@ public class PlayerInteractor : MonoBehaviour
         if (interaction != null)
         {
             interactions.Remove(interaction);
+            UXML_InteractionUI.Instance.HideInteractPrompt();
         }
     }
 
