@@ -11,14 +11,13 @@ using Darklight.Game.Utility;
 using UnityEditor;
 #endif
 
-public class UXML_WorldSpaceUI
+public class UXML_WorldSpaceUI : MonoBehaviourSingleton<UXML_WorldSpaceUI>
 {
     public VisualTreeAsset visualTreeAsset;
     public PanelSettings worldSpacePanelSettings;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
 
-    /*
     /// <summary>
     /// Create a dialogue bubble gameobject in the world space at the given position.
     /// </summary>
@@ -40,10 +39,8 @@ public class UXML_WorldSpaceUI
 
         return bubble;
     }
-    */
 }
 
-/*
 #if UNITY_EDITOR
 
 [CustomEditor(typeof(UXML_WorldSpaceUI))]
@@ -61,4 +58,3 @@ public class UXML_WorldSpaceUIEditor : Editor
     }
 }
 #endif
-*/

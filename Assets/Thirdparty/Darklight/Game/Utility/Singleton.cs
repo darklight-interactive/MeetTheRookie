@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Darklight.Game.Utility
 {
     /// <summary>
@@ -43,17 +47,36 @@ namespace Darklight.Game.Utility
             }
         }
 
+        /// <summary>
+        /// Destroy the singleton instance and the GameObject it is attached to.
+        /// </summary>
+        public static void DestroySingleton()
+        {
+            if (_instance != null)
+            {
+                Destroy(_instance.gameObject);
+                _instance = null;
+            }
+        }
+
         protected virtual void Awake()
         {
+            // If an instance does not exist, set it to this object
             if (_instance == null)
             {
                 _instance = this as T;
                 Debug.Log($"{Prefix} Awake: Setting instance to {name}.");
             }
+
+            // If an instance already exists, destroy this object
             else if (_instance != this)
             {
                 Destroy(gameObject);
+                Debug.Log($"{Prefix} Awake: Destroying duplicate instance.");
             }
+
+            // Initialize the singletonObject
+            DontDestroyOnLoad(this.gameObject);
         }
 
         protected virtual void OnDestroy()
@@ -64,12 +87,6 @@ namespace Darklight.Game.Utility
                 _instance = null;
             }
         }
-    }
-
-    public class SceneSingleton<T> : MonoBehaviourSingleton<T> where T : MonoBehaviour
-    {
-        protected SceneSingleton() { }
-
     }
 }
 

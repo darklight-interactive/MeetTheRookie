@@ -11,6 +11,20 @@ using Darklight.Game.Utility;
 using UnityEditor;
 #endif
 
+
+public class GameManager : MonoBehaviourSingleton<GameManager>
+{
+    public static UniversalInputManager InputManager => UniversalInputManager.Instance;
+    public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
+
+
+    //public static InkyKnotThreader InkyKnotThreader = InkyKnotThreader.Instance;
+    public string initialStoryPath = "scene1";
+
+}
+
+// ================================================================================================= //
+// ------------ [[ GameStateMachine ]] ------------ //
 public enum GameState { NULL, MAIN_MENU, LOADING_SCENE }
 public class GameStateMachine : StateMachine<GameState>
 {
@@ -24,17 +38,6 @@ public class GameStateMachine : StateMachine<GameState>
     {
         base.OnStateChanged(previousState, newState);
     }
-}
-
-public class GameManager : MonoBehaviourSingleton<GameManager>
-{
-    public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
-
-
-    //public static InkyKnotThreader InkyKnotThreader = InkyKnotThreader.Instance;
-    public string initialStoryPath = "scene1";
-
 }
 
 /*

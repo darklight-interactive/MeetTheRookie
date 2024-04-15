@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Darklight.Game.Utility;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,47 +11,14 @@ using UnityEngine.UIElements;
 /// <<<
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class UXML_InteractionUI : MonoBehaviour
+public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
 {
+    string interactPromptTag = "interactPrompt";
+    string choiceGroupTag = "choiceGroup";
 
-    #region ===== [ UI ELEMENT CLASS ] ==================================================== >>
-    /// <summary>
-    /// Data structure for an UXML VisualElement.
-    /// </summary>
-    public class UXML_Element
-    {
-        public string tag;
-        public VisualElement visualElement;
-        public UXML_Element(VisualElement element, string tag)
-        {
-            this.tag = tag;
-            this.visualElement = element;
-            //this.visualElement.visible = false; // << Hide it by default
-        }
-
-        public void SetVisible(bool visible)
-        {
-            //visualElement.visible = visible;
-        }
-
-        public void SetWorldToScreenPosition(Vector3 worldPosition)
-        {
-            Camera cam = Camera.main;
-            if (cam == null) throw new System.Exception("No main camera found.");
-
-            Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
-            screenPosition.y = cam.pixelHeight - screenPosition.y;
-            screenPosition.z = 0;
-
-            // Convert from screen position to a coordinate appropriate for UI Toolkit
-            // UI Toolkit origin is top-left, so invert the y-coordinate
-            float correctY = cam.pixelHeight + screenPosition.y;
-
-            // Set positions using left and top in style
-            visualElement.style.left = screenPosition.x;
-            visualElement.style.top = screenPosition.y;
-        }
-    }
+    UIDocument doc;
+    VisualElement root;
+    Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
 
     void AddUIElement(string tag)
     {
@@ -65,19 +33,9 @@ public class UXML_InteractionUI : MonoBehaviour
         if (!uiElements.ContainsKey(tag)) throw new System.Exception("No UI element found with tag " + tag);
         return uiElements[tag];
     }
-    #endregion
 
-    string interactPromptTag = "interactPrompt";
-    string choiceGroupTag = "choiceGroup";
-
-    UIDocument doc;
-    VisualElement root;
-    Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
-
-    private void Awake()
+    private void Start()
     {
-        //(this as ISceneSingleton<UXML_InteractionUI>).Initialize();
-
         doc = GetComponent<UIDocument>();
         root = doc.rootVisualElement;
 

@@ -67,8 +67,8 @@ public class InteractionEditor : Grid2D_OverlapGridEditor
                 return;
             }
 
-            //UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
-            //element.SetLocalScale(data.coordinateSize);
+            UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(data.worldPosition);
+            element.SetLocalScale(data.coordinateSize);
         }
     }
 
