@@ -16,7 +16,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
     UIDocument uiDocument => GetComponent<UIDocument>();
     VisualElement root => uiDocument.rootVisualElement;
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
-    public UXMLElement_ComicBubble inkyBubble;
+    public UXMLElement_ComicBubble comicBubble;
     private Material _material;
     private RenderTexture _renderTexture;
 
@@ -37,7 +37,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
 
     public void ManualUpdate()
     {
-        inkyBubble = root.Q<UXMLElement_ComicBubble>();
+        comicBubble = root.Q<UXMLElement_ComicBubble>();
 
         string currentText = "";
         /*
@@ -54,14 +54,14 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
         }
 
         // << CHECK IF TEXT IS THE SAME >>
-        if (inkyBubble.Text == currentText)
+        if (comicBubble.Text == currentText)
         {
             return;
         }
 
         // Update the bubble
-        inkyBubble.Text = currentText;
-        inkyBubble.visible = true;
+        comicBubble.Text = currentText;
+        comicBubble.visible = true;
 
         // Set the material and texture
         meshRenderer.sharedMaterial = new Material(_material); // << clone the material

@@ -10,10 +10,10 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
-    protected HashSet<IInteraction> interactions = new HashSet<IInteraction>();
+    protected HashSet<IInteractable> interactions = new HashSet<IInteractable>();
     [ShowOnly] int interactionCount;
-    [ShowOnly] IInteraction targetInteraction;
-    [ShowOnly] IInteraction activeInteraction;
+    [ShowOnly] IInteractable targetInteraction;
+    [ShowOnly] IInteractable activeInteraction;
 
     void Update()
     {
@@ -45,7 +45,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        IInteraction interactable = other.GetComponent<IInteraction>();
+        IInteractable interactable = other.GetComponent<IInteractable>();
         if (interactable != null)
         {
             Debug.Log("Interactable found: " + other.name);
@@ -60,7 +60,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        IInteraction interaction = other.GetComponent<IInteraction>();
+        IInteractable interaction = other.GetComponent<IInteractable>();
         if (interaction != null)
         {
             interactions.Remove(interaction);

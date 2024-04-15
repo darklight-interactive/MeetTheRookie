@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public interface IInteraction
+public interface IInteractable
 {
-    public string inkKnot { get; }
-    public int counter { get; set; }
+    int counter { get; set; }
     public abstract void Target();
     public virtual void Interact()
     {
@@ -20,8 +19,7 @@ public interface IInteraction
     }
 }
 
-[RequireComponent(typeof(BoxCollider2D))]
-public class Interaction : MonoBehaviour, IInteraction
+public abstract class Interactable : MonoBehaviour, IInteractable
 {
     [SerializeField] protected string inkKnotName = "default";
     [SerializeField] protected Transform promptUITarget;
