@@ -1,0 +1,13 @@
+.label {
+}
+
+.visualelement:disabled {
+    transition-duration: 2s;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.visualelement:enabled {
+    background-color: rgb(0, 0, 0);
+    transition-duration: 2s;
+    transition-timing-function: ease-in-out;
+}

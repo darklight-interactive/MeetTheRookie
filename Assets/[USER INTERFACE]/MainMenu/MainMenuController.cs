@@ -10,10 +10,12 @@ public class MainMenuController : MonoBehaviour
     public Button playButton;
     public Button optionsButton;
     public Button quitButton;
+    SceneChange scenechanger;
 
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
+        scenechanger = FindFirstObjectByType<SceneChange>();
     }
 
     private void OnEnable()
@@ -29,6 +31,9 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonClicked()
     {
+        this.gameObject.SetActive(false);
+        scenechanger.newSceneName = "MelOMart Blockout";
+        scenechanger.condition = true;
         Debug.Log("Play Button Clicked");
     }
 
