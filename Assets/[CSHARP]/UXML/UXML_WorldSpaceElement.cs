@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,43 +11,32 @@ using UnityEditor;
 
 [ExecuteAlways]
 [RequireComponent(typeof(UIDocument))]
-public class UXML_WorldSpaceElement : MonoBehaviour
+public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
 {
     UIDocument uiDocument => GetComponent<UIDocument>();
     VisualElement root => uiDocument.rootVisualElement;
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
     public UXMLElement_ComicBubble inkyBubble;
-    bool initialized = false;
+    private Material _material;
+    private RenderTexture _renderTexture;
 
     public void Initialize(VisualTreeAsset asset, PanelSettings settings, Material material, RenderTexture renderTexture)
     {
         uiDocument.visualTreeAsset = asset;
         uiDocument.panelSettings = settings;
+        _material = material;
+        _renderTexture = renderTexture;
 
         // Create a quad mesh child
         GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
         meshChild.transform.SetParent(this.transform);
         meshChild.transform.localPosition = Vector3.zero;
-        meshRenderer.enabled = false;
-
-        // Set the material and texture
-        meshRenderer.sharedMaterial = new Material(material);
-        uiDocument.panelSettings.targetTexture = new RenderTexture(renderTexture);
-        meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture;
-
-        initialized = true;
 
         InvokeRepeating("ManualUpdate", 0.1f, 0.1f);
     }
 
     public void ManualUpdate()
     {
-        if (initialized == false) return;
-        if (uiDocument.panelSettings == null || uiDocument.panelSettings.targetTexture == null) return;
-
-        PanelSettings panelSettings = uiDocument.panelSettings;
-        if (panelSettings == null) return;
-
         inkyBubble = root.Q<UXMLElement_ComicBubble>();
 
         string currentText = "";
@@ -56,16 +47,26 @@ public class UXML_WorldSpaceElement : MonoBehaviour
         }
         */
 
-        if (currentText == null || currentText == "") currentText = "TEXT NOT FOUND";
-        inkyBubble.SetText(currentText);
+
+        if (currentText == null || currentText == "")
+        {
+            currentText = "TEXT NOT FOUND";
+        }
+
+        // << CHECK IF TEXT IS THE SAME >>
+        if (inkyBubble.Text == currentText)
+        {
+            return;
+        }
+
+        // Update the bubble
+        inkyBubble.Text = currentText;
         inkyBubble.visible = true;
 
-        // << #1 -> Reset Material
-        meshRenderer.sharedMaterial.mainTexture = panelSettings.targetTexture;
-
-        // << #2 -> Reset Texture
-        panelSettings.targetTexture = new RenderTexture(panelSettings.targetTexture);
-
+        // Set the material and texture
+        meshRenderer.sharedMaterial = new Material(_material); // << clone the material
+        uiDocument.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
+        meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture; // << set the material texture
         meshRenderer.enabled = true;
     }
 
@@ -77,6 +78,15 @@ public class UXML_WorldSpaceElement : MonoBehaviour
     private void OnDestroy()
     {
         CancelInvoke("ManualUpdate");
+    }
+
+    /// <summary>
+    /// Called when the editor is reloaded from a script compilation event. Uses the IUnityEditorListener interface.
+    /// </summary>
+    public void OnEditorReloaded()
+    {
+        OnDestroy();
+        DestroyImmediate(this.gameObject);
     }
 }
 

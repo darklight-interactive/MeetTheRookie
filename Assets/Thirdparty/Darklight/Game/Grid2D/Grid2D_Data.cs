@@ -2,7 +2,7 @@ using System;
 using Darklight.Game.Grid;
 using UnityEngine;
 
-
+#region IGrid2D_Data : Interface
 
 /// <summary>
 /// Interface for the Grid2DData class. This interface is used to define the methods and properties that the Grid2DData class should have.
@@ -72,8 +72,11 @@ public interface IGrid2D_Data
     public abstract void ClearData();
 }
 
+#endregion
+
 // -------------------------------------------------------------------------------- >>
 
+#region Grid2D_Data : Class
 /// <summary>
 /// Definition of the Grid2DData class. This class is used by the Grid2D class to store the data for each grid cell.
 /// </summary>
@@ -187,7 +190,43 @@ public class Grid2D_Data : IGrid2D_Data
         return color;
     }
 }
+#endregion
 
+/// <summary>
+/// Create and stores the data from a Physics2D.OverlapBoxAll call at the world position of the Grid2DData. 
+/// </summary>
+public class OverlapGrid2D_Data : Grid2D_Data
+{
+    private bool disabledInitially = false;
+    public LayerMask layerMask; // The layer mask to use for the OverlapBoxAll called
+    public Collider2D[] colliders = new Collider2D[0]; /// The colliders found by the OverlapBoxAll call
+
+    public OverlapGrid2D_Data() { }
+    // Initialization method to set properties
+
+    public void Initialize(Vector2Int positionKey, Vector3 worldPosition, float coordinateSize, LayerMask layerMask)
+    {
+        base.Initialize(positionKey, disabled, weight, worldPosition, coordinateSize);
+        this.layerMask = layerMask;
+        this.disabledInitially = disabled; // << set equal to initial value
+    }
+
+    public override void CycleDataState()
+    {
+        base.CycleDataState();
+        this.disabledInitially = disabled; // << set to match the new state
+    }
+
+    public override void UpdateData()
+    {
+        // Update the collider data
+        this.colliders = Physics2D.OverlapBoxAll(worldPosition, Vector2.one * coordinateSize, 0, layerMask);
+        if (!disabledInitially)
+        {
+            this.disabled = colliders.Length > 0;
+        }
+    }
+}
 
 
 

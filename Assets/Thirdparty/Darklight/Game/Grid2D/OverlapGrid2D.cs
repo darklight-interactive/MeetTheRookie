@@ -1,25 +1,24 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using Darklight.UnityExt;
-using Darklight.Game.Grid;
-using Unity.Android.Gradle.Manifest;
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using UnityEngine;
 
 namespace Darklight.Game.Grid
 {
-
-
     /// <summary>
-    /// The most basic implementation of a Grid2D class. This class is used to store Grid2DData objects in a 2D grid.
+    /// A 2D Grid that stores Overlap_Grid2DData objects. 
     /// </summary>
-    public class Grid2D_BaseGrid : Grid2D_AbstractGrid<Grid2D_Data>
+    [ExecuteAlways]
+    public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
+        [SerializeField] protected LayerMask layerMask;
+
         public override void Awake()
         {
             base.Awake();
@@ -34,29 +33,28 @@ namespace Darklight.Game.Grid
                 return;
             }
 
-            // Create the grid data
-            for (int x = 0; x < preset.gridSizeX; x++)
+            DataMap.Clear();
+            for (int x = 0; x < GridArea.x; x++)
             {
-                for (int y = 0; y < preset.gridSizeY; y++)
+                for (int y = 0; y < GridArea.y; y++)
                 {
                     Vector2Int positionKey = new Vector2Int(x, y);
                     Vector3 worldPosition = GetWorldSpacePosition(positionKey);
 
-                    // Create the data object
-                    Grid2D_Data newData = new Grid2D_Data();
+                    OverlapGrid2D_Data newData = new OverlapGrid2D_Data();
                     Grid2D_SerializedData existingData = preset.LoadData(positionKey);
                     if (existingData != null)
                     {
-                        // Initialize the data with the existing data values
                         newData.Initialize(existingData, worldPosition, preset.coordinateSize);
+                        newData.layerMask = layerMask;
+
                     }
                     else
                     {
-                        // Initialize the data with default values
-                        newData.Initialize(positionKey, false, 1, worldPosition, preset.coordinateSize);
+                        newData.Initialize(positionKey, worldPosition, preset.coordinateSize, layerMask);
                     }
 
-                    // Set the data in the map ------------- >>
+                    // Set the data in the map
                     if (DataMap.ContainsKey(positionKey))
                         DataMap[positionKey] = newData;
                     else
@@ -65,27 +63,64 @@ namespace Darklight.Game.Grid
                     // Notify listeners of the data change
                     newData.OnDataStateChanged += (data) =>
                     {
-                        // Save the data when the data state changes
                         preset.SaveData(data);
                     };
                 }
             }
         }
+
+        public void Update()
+        {
+            foreach (OverlapGrid2D_Data data in DataMap.Values)
+            {
+                Vector3 worldPosition = GetWorldSpacePosition(data.positionKey);
+                data.worldPosition = worldPosition;
+
+                data.UpdateData();
+            }
+        }
+
+        public OverlapGrid2D_Data GetBestData()
+        {
+            OverlapGrid2D_Data bestData = null;
+
+            foreach (OverlapGrid2D_Data data in DataMap.Values)
+            {
+                if (data.disabled) continue; // Skip disabled data
+                if (data.colliders.Length > 0) continue; // Skip data with colliders
+                if (bestData == null || data.weight > bestData.weight)
+                {
+                    bestData = data;
+                }
+            }
+            return bestData;
+        }
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Grid2D_BaseGrid), true)]
-    public class Grid2D_BaseGridEditor : Editor
+    [CustomEditor(typeof(OverlapGrid2D), true)]
+    public class OverlapGrid2DEditor : Editor
     {
-
-        private Grid2D_BaseGrid grid2D;
+        private OverlapGrid2D grid2D;
         private void OnEnable()
         {
-            grid2D = target as Grid2D_BaseGrid;
+            grid2D = (OverlapGrid2D)target;
             grid2D.Awake();
         }
 
-        private void OnSceneGUI()
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+            base.OnInspectorGUI();
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        public void OnSceneGUI()
         {
             if (grid2D == null) return;
             DrawGrid();
@@ -98,6 +133,8 @@ namespace Darklight.Game.Grid
             foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
             {
                 Grid2D_Data data = grid2D.GetData(positionKey);
+                if (data.initialized == false) continue; // Skip uninitialized data
+
                 Vector3 worldPosition = data.worldPosition;
                 float size = data.coordinateSize;
 
@@ -111,4 +148,5 @@ namespace Darklight.Game.Grid
         }
     }
 #endif
+
 }

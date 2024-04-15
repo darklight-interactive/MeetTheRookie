@@ -11,6 +11,11 @@ public partial class UXMLElement_ComicBubble : VisualElement
     const string bubble_class = "comic-bubble";
 
     Label label;
+    public string Text
+    {
+        get => label.text;
+        set => label.text = value;
+    }
 
     public UXMLElement_ComicBubble()
     {
@@ -25,10 +30,7 @@ public partial class UXMLElement_ComicBubble : VisualElement
         this.Add(label);
     }
 
-    public void SetText(string text)
-    {
-        label.text = text;
-    }
+
 
     public void SetBackgroundSprite(Sprite sprite)
     {
