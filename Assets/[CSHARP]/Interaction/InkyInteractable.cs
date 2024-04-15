@@ -1,9 +1,13 @@
 using UnityEngine;
+using static Darklight.UnityExt.CustomInspectorGUI;
 
 public class InkyInteractable : Interactable
 {
-    [SerializeField] private string inkKnot;
-    private int counter = 0;
+    [SerializeField] private string inkKnotName;
+    [ShowOnly] public int counter = 0;
+    private InkyKnotIterator knotIterator;
+
+    [ShowOnly] private string currentText;
 
     public override void Initialize()
     {
@@ -18,28 +22,34 @@ public class InkyInteractable : Interactable
 
     public override void Interact()
     {
-        counter++;
-        if (counter == 1)
+        Debug.Log("Interacting with InkyInteractable");
+
+        if (counter == 0)
         {
-            StartInteractionKnot(OnInteractionComplete);
+            StartInteractionKnot(Complete);
         }
         else
         {
             ContinueInteraction();
         }
+        counter++;
+
+        base.Interact();
     }
-    public virtual void StartInteractionKnot(INKY_KnotIterator.KnotComplete onComplete)
+    public virtual void StartInteractionKnot(InkyKnotIterator.KnotComplete onComplete)
     {
-        InkyStoryWeaver.Instance.GoToKnotAt(inkKnot);
+        knotIterator = InkyStoryWeaver.Instance.CreateKnotIterator(inkKnotName);
+        Debug.Log("Starting Interaction Knot: " + inkKnotName);
     }
 
     public virtual void ContinueInteraction()
     {
         InkyStoryWeaver.Instance.ContinueStory();
+        Debug.Log("Continuing Interaction Knot: " + inkKnotName);
     }
 
-    public virtual void OnInteractionComplete()
+    public virtual void Complete()
     {
-        Reset();
+
     }
 }

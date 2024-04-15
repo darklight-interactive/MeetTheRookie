@@ -37,7 +37,7 @@ public class InkyStoryWeaver : MonoBehaviourSingleton<InkyStoryWeaver>
     // ========================  [[ INKY KNOT THREADER ]]  ========================
     public Story currentStory { get; private set; }
     public InkyVariableHandler variableHandler { get; private set; }
-    public INKY_KnotIterator currentKnot { get; private set; }
+    public InkyKnotIterator currentKnot { get; private set; }
 
     public string currentStoryName = "scene1";
     [SerializeField, ShowOnly] private string currentStoryFilePath => PATH + currentStoryName;
@@ -96,10 +96,11 @@ public class InkyStoryWeaver : MonoBehaviourSingleton<InkyStoryWeaver>
         return true;
     }
 
-    public void GoToKnotAt(string pathString)
+    public InkyKnotIterator CreateKnotIterator(string knotPath)
     {
         stateMachine.ChangeState(State.LOAD);
-        currentKnot = new INKY_KnotIterator(currentStory, pathString);
+        currentKnot = new InkyKnotIterator(currentStory, knotPath);
+        return currentKnot;
     }
 
     public void ContinueStory()

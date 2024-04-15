@@ -5,16 +5,28 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(InkyInteractable))]
 public class NPCDialogueHandler : OverlapGrid2D
 {
+    private InkyInteractable inkyInteractable => GetComponent<InkyInteractable>();
 
-    public void CreateDialogueBubble()
+    public void Start()
+    {
+        inkyInteractable.OnInteraction += () =>
+        {
+            UXML_WorldSpaceElement bubble = CreateDialogueBubble();
+            bubble.comicBubble.Text = "Hello, World!";
+        };
+    }
+
+    public UXML_WorldSpaceElement CreateDialogueBubble()
     {
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
         UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(position);
         element.transform.SetParent(this.transform);
         element.transform.localScale = data.coordinateSize * Vector3.one;
+        return element;
     }
 }
 

@@ -1,4 +1,9 @@
-Hello.Welcome to the test environment.This environment is only for the coolest of people.If you are not cool then you will burn if you continue
+INCLUDE global.ink
+
+//https://www.patreon.com/posts/tips-and-tricks-18667641
+
+Hello {curSpeaker}
+Welcome to the test environment.This environment is only for the coolest of people.If you are not cool then you will burn if you continue
 -> main
 
 === main ===

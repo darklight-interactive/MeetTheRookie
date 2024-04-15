@@ -43,7 +43,10 @@ public abstract class Interactable : MonoBehaviour, IInteract
         UXML_InteractionUI.Instance.DisplayInteractPrompt(promptIconTarget.position);
     }
 
-    public abstract void Interact();
+    public virtual void Interact()
+    {
+        OnInteraction?.Invoke();
+    }
 
     public virtual void Disable()
     {
@@ -51,4 +54,12 @@ public abstract class Interactable : MonoBehaviour, IInteract
     }
 
     public abstract void Reset();
+
+    public virtual void Interact(OnInteract onComplete)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public delegate void OnInteract();
+    public event OnInteract OnInteraction;
 }

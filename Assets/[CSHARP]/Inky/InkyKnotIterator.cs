@@ -5,7 +5,7 @@ using Darklight.Game;
 using Ink.Runtime;
 using UnityEngine;
 
-public class INKY_KnotIterator : StateMachine<INKY_KnotIterator.State>
+public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
 {
     public enum State { NULL, START, DIALOGUE, CHOICE, END }
     string Prefix => "[InkyKnot] >> ";
@@ -15,7 +15,7 @@ public class INKY_KnotIterator : StateMachine<INKY_KnotIterator.State>
     List<string> tags;
 
     List<Ink.Runtime.Choice> Choices => story.currentChoices;
-    public INKY_KnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
+    public InkyKnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
     {
         this.story = storyParent;
         this.knotName = knotName;
