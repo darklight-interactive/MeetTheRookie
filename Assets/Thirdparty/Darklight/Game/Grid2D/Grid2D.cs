@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt;
 using Darklight.Game.Grid;
-using Unity.Android.Gradle.Manifest;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
