@@ -8,9 +8,10 @@ using UnityEngine.UIElements;
 
 
 /// <summary>
-/// <<<
+/// Main class for the interaction UI. 
+/// This class is responsible for displaying all Screen Space UI 
+/// elements related to interaction.
 /// </summary>
-[RequireComponent(typeof(UIDocument))]
 public class UXML_InteractionUI : UXML_UIDocumentObject
 {
     const string PROMPT_TAG = "interactPrompt";
@@ -24,7 +25,7 @@ public class UXML_InteractionUI : UXML_UIDocumentObject
 
     public void DisplayInteractPrompt(Vector3 worldPosition)
     {
-        UXML_Element uIElement = GetUIElement(PROMPT_TAG);
+        UXML_UIDocumentElement uIElement = GetUIElement(PROMPT_TAG);
         if (uIElement == null) return;
         uIElement.SetWorldToScreenPosition(worldPosition);
         uIElement.SetVisible(true);
@@ -32,14 +33,14 @@ public class UXML_InteractionUI : UXML_UIDocumentObject
 
     public void HideInteractPrompt()
     {
-        UXML_Element uIElement = GetUIElement(PROMPT_TAG);
+        UXML_UIDocumentElement uIElement = GetUIElement(PROMPT_TAG);
         if (uIElement == null) return;
         uIElement.SetVisible(false);
     }
 
     public void CreateChoiceBubble(Vector3 worldPosition, Choice choice)
     {
-        UXML_Element groupElement = GetUIElement(CHOICE_GROUP_TAG);
+        UXML_UIDocumentElement groupElement = GetUIElement(CHOICE_GROUP_TAG);
         groupElement.SetVisible(true);
         groupElement.SetWorldToScreenPosition(worldPosition);
 

@@ -9,7 +9,7 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
     protected UXML_UIDocumentPreset preset;
     protected UIDocument document => GetComponent<UIDocument>();
     protected VisualElement root => document.rootVisualElement;
-    protected Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
+    protected Dictionary<string, UXML_UIDocumentElement> uiElements = new Dictionary<string, UXML_UIDocumentElement>();
     protected string[] tags = new string[0];
 
     public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags)
@@ -39,11 +39,11 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
             Debug.LogError($"Element with tag {tag} not found in UIDocument {document.name}");
             return false;
         }
-        uiElements.Add(tag, new UXML_Element(element, tag));
+        uiElements.Add(tag, new UXML_UIDocumentElement(element, tag));
         return true;
     }
 
-    public UXML_Element GetUIElement(string tag)
+    public UXML_UIDocumentElement GetUIElement(string tag)
     {
         if (uiElements.ContainsKey(tag))
         {
@@ -54,7 +54,7 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
 
     void OnDestroy()
     {
-        foreach (UXML_Element element in uiElements.Values)
+        foreach (UXML_UIDocumentElement element in uiElements.Values)
         {
             element.visualElement.Clear();
         }

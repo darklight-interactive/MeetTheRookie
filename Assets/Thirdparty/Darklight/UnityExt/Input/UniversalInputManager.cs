@@ -26,7 +26,7 @@ namespace Darklight.UnityExt.Input
             KEYBOARD,
             GAMEPAD
         }
-        public static string Prefix = "<< UNIVERSAL INPUT MANAGER >> ";
+
         public static InputType DeviceInputType = InputType.NULL;
         public static InputAction PrimaryInteractAction { get; private set; }
         public static InputAction SecondaryInteractAction { get; private set; }

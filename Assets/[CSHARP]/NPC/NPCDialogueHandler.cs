@@ -11,59 +11,34 @@ using UnityEditor;
 public class NPCDialogueHandler : OverlapGrid2D
 {
     private InkyInteractable inkyInteractable => GetComponent<InkyInteractable>();
-    private Queue<UXML_WorldSpaceElement> dialogueBubbles = new Queue<UXML_WorldSpaceElement>();
-    [SerializeField] private List<UXML_WorldSpaceElement> dialogueBubblesList = new List<UXML_WorldSpaceElement>();
+    private Queue<UXML_WorldSpaceUI> dialogueBubbles = new Queue<UXML_WorldSpaceUI>();
+    [SerializeField] private List<UXML_WorldSpaceUI> dialogueBubblesList = new List<UXML_WorldSpaceUI>();
 
     public void Start()
     {
         // >> ON INTERACTION -------------------------------------
         inkyInteractable.OnInteraction += () =>
         {
-            // Dequeue the top bubble and destroy it
-            if (dialogueBubbles.Count > 0)
-            {
-                UXML_WorldSpaceElement topBubble = dialogueBubbles.Dequeue();
-                dialogueBubblesList.RemoveAt(0);
-                Destroy(topBubble.gameObject);
-            }
-
-            // Create a new bubble with the current text
-            UXML_WorldSpaceElement dialogueBubble = CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
-            dialogueBubbles.Enqueue(dialogueBubble);
-            dialogueBubblesList.Add(dialogueBubble);
+            CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
         };
 
         // >> ON COMPLETED -------------------------------------
         inkyInteractable.OnCompleted += () =>
         {
-            foreach (UXML_WorldSpaceElement bubble in dialogueBubblesList)
-            {
-                if (bubble != null)
-                {
-                    if (Application.isPlaying)
-                        Destroy(bubble.gameObject);
-#if UNITY_EDITOR
-                    else
-                        DestroyImmediate(bubble.gameObject);
-#endif
-                }
-            }
-
-            dialogueBubbles.Clear();
-            dialogueBubblesList.Clear();
-            Debug.Log("NPCDialogueHandler: Interaction Completed");
+            UIManager.WorldSpaceUI.Hide();
         };
     }
 
-    public UXML_WorldSpaceElement CreateDialogueBubble(string text)
+    public UXML_WorldSpaceUI CreateDialogueBubble(string text)
     {
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
-        UXML_WorldSpaceElement element = UXML_WorldSpaceUI.Instance.CreateComicBubbleAt(position);
-        element.transform.SetParent(this.transform);
-        element.transform.localScale = data.coordinateSize * Vector3.one;
-        element.SetText(text);
-        return element;
+
+        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
+        worldSpaceUIDoc.transform.position = position;
+        worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
+        worldSpaceUIDoc.SetText(text);
+        return worldSpaceUIDoc;
     }
 }
 

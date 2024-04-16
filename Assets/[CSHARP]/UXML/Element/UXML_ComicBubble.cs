@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 
 [UxmlElement]
-public partial class UXMLElement_ComicBubble : VisualElement
+public partial class UXML_ComicBubble : VisualElement
 {
     const string label_class = "comic-label";
     const string bubble_class = "comic-bubble";
@@ -17,7 +17,7 @@ public partial class UXMLElement_ComicBubble : VisualElement
         set => label.text = value;
     }
 
-    public UXMLElement_ComicBubble()
+    public UXML_ComicBubble()
     {
         AddToClassList(bubble_class);
 

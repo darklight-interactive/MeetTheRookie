@@ -1,63 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Grid;
-using Darklight.Console;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.Game.Utility;
+using Darklight.UnityExt;
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class UXML_WorldSpaceUI : MonoBehaviourSingleton<UXML_WorldSpaceUI>
+[ExecuteAlways]
+public class UXML_WorldSpaceUI : UXML_UIDocumentObject
 {
-    public VisualTreeAsset visualTreeAsset;
-    public PanelSettings worldSpacePanelSettings;
-    public Material worldSpaceMaterial;
-    public RenderTexture worldSpaceRenderTexture;
+    MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
+    private Material _material => UIManager.Instance.worldSpaceMaterial;
+    private RenderTexture _renderTexture => UIManager.Instance.worldSpaceRenderTexture;
 
-    /// <summary>
-    /// Create a dialogue bubble gameobject in the world space at the given position.
-    /// </summary>
-    /// <param name="worldPosition"></param>
-    /// <param name="destroy_after"></param>
-    /// <returns></returns>
-    public UXML_WorldSpaceElement CreateComicBubbleAt(Vector3 worldPosition, float destroy_after = -1f)
+    // -- Element Tags --
+    const string COMIC_BUBBLE_TAG = "comicBubble";
+
+    // -- Element Changed Event --
+    public delegate void OnElementChangedDelegate();
+    protected OnElementChangedDelegate OnElementChanged;
+
+    private void Awake()
     {
-        // Create a new dialogue bubble
-        UXML_WorldSpaceElement bubble = new GameObject("DialogueBubble").AddComponent<UXML_WorldSpaceElement>();
-        bubble.transform.SetParent(this.transform);
-        bubble.transform.position = worldPosition;
-        bubble.Initialize(visualTreeAsset, worldSpacePanelSettings, worldSpaceMaterial, worldSpaceRenderTexture);
+        tags = new string[] { COMIC_BUBBLE_TAG };
+        Initialize(UIManager.Instance.worldSpaceUIPreset, tags);
 
-        if (destroy_after >= 0)
-        {
-            if (Application.isPlaying)
-                Destroy(bubble.gameObject, destroy_after);
-            else
-                DestroyImmediate(bubble.gameObject); // << for editor
-        }
+        // Create a quad mesh child
+        GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        meshChild.transform.SetParent(this.transform);
+        meshChild.transform.localPosition = Vector3.zero;
+        meshRenderer.enabled = false;
 
-        return bubble;
+        // Begin listening for changes
+        OnElementChanged += TextureUpdate;
     }
+
+    public void TextureUpdate()
+    {
+        // Set the material and texture
+        meshRenderer.sharedMaterial = new Material(_material); // << clone the material
+        document.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
+        meshRenderer.sharedMaterial.mainTexture = document.panelSettings.targetTexture; // << set the material texture
+        meshRenderer.enabled = true;
+    }
+
+    public void SetText(string text)
+    {
+        UXML_ComicBubble comicBubble = root.Q<UXML_ComicBubble>();
+        comicBubble.Text = text;
+        comicBubble.visible = true;
+
+        // Call the OnChanged event
+        OnElementChanged?.Invoke();
+    }
+
+    public void Hide()
+    {
+        UXML_ComicBubble comicBubble = root.Q<UXML_ComicBubble>();
+        comicBubble.visible = false;
+    }
+
+    public void SetLocalScale(float scale)
+    {
+        this.transform.localScale = new Vector3(scale, scale, scale);
+    }
+
+    private void OnDestroy()
+    {
+        OnElementChanged -= TextureUpdate;
+    }
+
 }
 
-#if UNITY_EDITOR
-
-[CustomEditor(typeof(UXML_WorldSpaceUI))]
-public class UXML_WorldSpaceUIEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        UXML_WorldSpaceUI worldSpaceUI = (UXML_WorldSpaceUI)target;
-
-        if (GUILayout.Button("Create Comic Bubble"))
-        {
-            worldSpaceUI.CreateComicBubbleAt(worldSpaceUI.transform.position);
-        }
-    }
-}
-#endif

@@ -4,11 +4,11 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Data structure for an UXML VisualElement.
 /// </summary>
-public class UXML_Element
+public class UXML_UIDocumentElement
 {
     public string tag;
     public VisualElement visualElement;
-    public UXML_Element(VisualElement element, string tag)
+    public UXML_UIDocumentElement(VisualElement element, string tag)
     {
         this.tag = tag;
         this.visualElement = element;
