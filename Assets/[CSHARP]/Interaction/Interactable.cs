@@ -50,17 +50,20 @@ public abstract class Interactable : MonoBehaviour, IInteract
     }
 
     // ====== [[ TARGETING ]] ======================================
+
     public virtual void TargetEnable()
     {
         Initialize();
         isActive = true;
-        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptIconTarget.position);
+
+        UIManager.InteractionUI.DisplayInteractPrompt(promptIconTarget.position);
     }
     public virtual void TargetDisable()
     {
         Reset();
         isActive = false;
-        UXML_InteractionUI.Instance.HideInteractPrompt();
+
+        UIManager.InteractionUI.HideInteractPrompt();
     }
 
     // ====== [[ INTERACTION ]] ===================================

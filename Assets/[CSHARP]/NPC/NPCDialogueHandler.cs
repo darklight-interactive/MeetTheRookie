@@ -50,6 +50,7 @@ public class NPCDialogueHandler : OverlapGrid2D
             }
 
             dialogueBubbles.Clear();
+            dialogueBubblesList.Clear();
             Debug.Log("NPCDialogueHandler: Interaction Completed");
         };
     }

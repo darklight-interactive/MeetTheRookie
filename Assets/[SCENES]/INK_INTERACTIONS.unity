@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 6247173}
   - component: {fileID: 6247174}
   - component: {fileID: 6247175}
+  - component: {fileID: 6247176}
   m_Layer: 0
   m_Name: <SINGLETON> GameManager
   m_TagString: Untagged
@@ -179,6 +180,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultUniversalInputActions: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
+--- !u!114 &6247176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionUIPreset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
 --- !u!1 &1266665504
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1420547525
 Transform:
   m_ObjectHideFlags: 0
@@ -759,7 +773,7 @@ PrefabInstance:
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - target: {fileID: 4357738810397188942, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: currentFrame
       value: 1
@@ -953,9 +967,9 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1420547525}
   - {fileID: 1536330174}
   - {fileID: 1930343672}
-  - {fileID: 1420547525}
   - {fileID: 6247173}
   - {fileID: 1266665508}
   - {fileID: 7527273016814130682}

@@ -11,46 +11,20 @@ using UnityEngine.UIElements;
 /// <<<
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
+public class UXML_InteractionUI : UXML_UIDocumentObject
 {
-    string interactPromptTag = "interactPrompt";
-    string choiceGroupTag = "choiceGroup";
+    const string PROMPT_TAG = "interactPrompt";
+    string CHOICE_GROUP_TAG = "choiceGroup";
 
-    UIDocument doc;
-    VisualElement root;
-    Dictionary<string, UXML_Element> uiElements = new Dictionary<string, UXML_Element>();
-
-    void AddUIElement(string tag)
+    public virtual void Awake()
     {
-        VisualElement element = root.Query(tag);
-
-        if (element == null) throw new System.Exception("No UI element found with tag " + tag);
-        uiElements.Add(tag, new UXML_Element(element, tag));
-    }
-
-    public UXML_Element GetUIElement(string tag)
-    {
-        if (uiElements.ContainsKey(tag))
-        {
-            return uiElements[tag];
-        }
-        return null;
-    }
-
-    private void Start()
-    {
-        doc = GetComponent<UIDocument>();
-        root = doc.rootVisualElement;
-
-        AddUIElement(interactPromptTag);
-        AddUIElement(choiceGroupTag);
-
-        //uiElements[choiceGroupTag].visualElement.visible = false;
+        tags = new string[] { PROMPT_TAG, CHOICE_GROUP_TAG };
+        Initialize(UIManager.Instance.interactionUIPreset, tags);
     }
 
     public void DisplayInteractPrompt(Vector3 worldPosition)
     {
-        UXML_Element uIElement = GetUIElement(interactPromptTag);
+        UXML_Element uIElement = GetUIElement(PROMPT_TAG);
         if (uIElement == null) return;
         uIElement.SetWorldToScreenPosition(worldPosition);
         uIElement.SetVisible(true);
@@ -58,14 +32,14 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
 
     public void HideInteractPrompt()
     {
-        UXML_Element uIElement = GetUIElement(interactPromptTag);
+        UXML_Element uIElement = GetUIElement(PROMPT_TAG);
         if (uIElement == null) return;
         uIElement.SetVisible(false);
     }
 
     public void CreateChoiceBubble(Vector3 worldPosition, Choice choice)
     {
-        UXML_Element groupElement = GetUIElement(choiceGroupTag);
+        UXML_Element groupElement = GetUIElement(CHOICE_GROUP_TAG);
         groupElement.SetVisible(true);
         groupElement.SetWorldToScreenPosition(worldPosition);
 

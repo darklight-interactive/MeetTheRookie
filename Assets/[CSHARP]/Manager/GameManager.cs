@@ -12,15 +12,18 @@ using UnityEditor;
 #endif
 
 
+[RequireComponent(typeof(UniversalInputManager), typeof(UIManager))]
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
-
-    //public static InkyKnotThreader InkyKnotThreader = InkyKnotThreader.Instance;
     public string initialStoryPath = "scene1";
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
 }
 
 // ================================================================================================= //
