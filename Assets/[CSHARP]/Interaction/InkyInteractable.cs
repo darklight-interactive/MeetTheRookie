@@ -21,7 +21,7 @@ public class InkyInteractable : Interactable
         // Move the story to this knot
         if (knotIterator == null)
         {
-            knotIterator = InkyStoryWeaver.Instance.CreateKnotIterator(inkKnotName);
+            knotIterator = InkyStoryManager.Instance.CreateKnotIterator(inkKnotName);
         }
 
         // State Handler

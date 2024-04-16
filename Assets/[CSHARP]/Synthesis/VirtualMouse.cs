@@ -1,3 +1,4 @@
+using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using UnityEngine.UIElements;
 /// I tried to revise these to be PointerDown, then PointerMove, then PointerUp (per the documentation), but maybe that's wrong.
 /// Maybe I just need to follow this tutorial? https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-Events-Synthesizing.html
 /// </remarks>
-public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPointerEvent
+public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
 {
     #region Interface Stuff We Need
     public Vector3 position { get; protected set; }
@@ -42,9 +43,9 @@ public class VirtualMouse : MonoBehaviour, ISceneSingleton<VirtualMouse>, IPoint
     public int clickCount => 0;
     #endregion
 
-    protected void Awake() {
-        (this as ISceneSingleton<VirtualMouse>).Initialize();
-
+    public override void Awake()
+    {
+        base.Awake();
         position = Vector2.zero;
     }
 

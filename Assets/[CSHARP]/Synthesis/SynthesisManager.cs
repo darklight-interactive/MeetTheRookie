@@ -1,3 +1,4 @@
+using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Handle the UI and <see cref="SynthesisObject"/>s.
 /// </summary>
-public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
+public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 {
     [SerializeField]
     protected UIDocument synthesisUI;
@@ -25,12 +26,13 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
     /// </summary>
     VisualElement cursor;
 
-    void Awake() {
-        (this as IGameSingleton<SynthesisManager>).Initialize();
+    public override void Awake()
+    {
+        base.Awake();
 
-        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
+        //InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        //InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        //InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
 
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
@@ -43,14 +45,14 @@ public class SynthesisManager : MonoBehaviour, IGameSingleton<SynthesisManager>
     }
 
     void Update() {
-        cursor.transform.position = ISceneSingleton<VirtualMouse>.Instance.position;
+        cursor.transform.position = VirtualMouse.Instance.position;
     }
 
     public void Show(bool visible) {
         synthesisUI.rootVisualElement.visible = visible;
 
         // Unhook when we're not visible.
-        ISceneSingleton<VirtualMouse>.Instance.HookTo(visible ? synthesisUI.rootVisualElement : null);
+        VirtualMouse.Instance.HookTo(visible ? synthesisUI.rootVisualElement : null);
     }
 
     public object CombineItems(object[] args) {

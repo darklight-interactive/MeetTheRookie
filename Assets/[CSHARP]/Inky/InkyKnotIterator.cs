@@ -28,13 +28,13 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         }
         catch (System.Exception e)
         {
-            InkyStoryWeaver.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
+            InkyStoryManager.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: {e.Message}");
         }
         finally
         {
             ChangeState(State.START);
-            InkyStoryWeaver.Console.Log($"{Prefix} Moved to Knot: {knotName}");
+            InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
         }
     }
 
@@ -44,7 +44,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // Check if null
         if (story == null || CurrentState == State.NULL)
         {
-            InkyStoryWeaver.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
+            InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: Story is null");
             return;
         }
@@ -52,7 +52,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // Check if end
         if (CurrentState == State.END)
         {
-            InkyStoryWeaver.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
+            InkyStoryManager.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
             Debug.LogWarning($"{Prefix} Knot has ended");
             return;
         }
@@ -65,18 +65,18 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             string text = story.Continue();
             HandleTags();
 
-            InkyStoryWeaver.Console.Log($"{Prefix} Continue Dialogue: {text}");
+            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {text}");
         }
         // -- ( CHOICE STATE ) --------------- >>
         else if (story.currentChoices.Count > 0)
         {
             ChangeState(State.CHOICE);
-            InkyStoryWeaver.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
+            InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
             foreach (Choice choice in story.currentChoices)
             {
                 choiceMap.Add(choice, choice.index);
-                InkyStoryWeaver.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
 
@@ -84,7 +84,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         else
         {
             ChangeState(State.END);
-            InkyStoryWeaver.Console.Log($"{Prefix} End of Knot");
+            InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }
     }
@@ -108,7 +108,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
-                InkyStoryWeaver.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
+                InkyStoryManager.Console.Log($"{Prefix} Tag is not formatted correctly: {tag}", 0, LogSeverity.Error);
             }
             else
             {
@@ -119,7 +119,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
                 switch (tagKey)
                 {
                     default:
-                        InkyStoryWeaver.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
+                        InkyStoryManager.Console.Log($"{Prefix} Tag came in but is not currently being handled: {tag}", 0, LogSeverity.Warning);
                         break;
                 }
             }

@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
     bool synthesisEnabled = false;
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
-        IGameSingleton<SynthesisManager>.Instance.Show(synthesisEnabled);
+        SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion
 }

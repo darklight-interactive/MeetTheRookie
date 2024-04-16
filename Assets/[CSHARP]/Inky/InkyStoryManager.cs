@@ -19,7 +19,7 @@ using UnityEditor;
 /// <summary>
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
-public class InkyStoryWeaver : MonoBehaviourSingleton<InkyStoryWeaver>
+public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
     const string PATH = "Inky/";
     const string SPEAKER_TAG = "speaker";
@@ -137,18 +137,36 @@ public class InkyStoryWeaver : MonoBehaviourSingleton<InkyStoryWeaver>
 
         }
     }
+
+    public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
+    {
+        currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+    }
+
+    public object RunExternalFunction(string func, object[] args)
+    {
+        if (currentStory.HasFunction(func))
+        {
+            return currentStory.EvaluateFunction(func, args);
+        }
+        else
+        {
+            Debug.LogError("Could not find function: " + func);
+            return null;
+        }
+    }
 }
 
 
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(InkyStoryWeaver))]
+[CustomEditor(typeof(InkyStoryManager))]
 public class InkyStoryWeaverEditor : Editor
 {
 
     private void OnEnable()
     {
-        InkyStoryWeaver threader = (InkyStoryWeaver)target;
+        InkyStoryManager threader = (InkyStoryManager)target;
 
     }
 
@@ -156,7 +174,7 @@ public class InkyStoryWeaverEditor : Editor
     {
         base.OnInspectorGUI();
 
-        InkyStoryWeaver threader = (InkyStoryWeaver)target;
+        InkyStoryManager threader = (InkyStoryManager)target;
 
         EditorGUILayout.Space();
 
@@ -183,7 +201,7 @@ public class InkyStoryWeaverEditor : Editor
             }
         }
 
-        InkyStoryWeaver.Console.DrawInEditor();
+        InkyStoryManager.Console.DrawInEditor();
 
         if (threader.variableHandler == null) return;
         if (threader.variableHandler.variables.Count > 0)

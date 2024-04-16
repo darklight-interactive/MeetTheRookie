@@ -58,7 +58,7 @@ public class SynthesisDraggable : PointerManipulator
                 Mathf.Clamp(targetStart.y + delta.y, -globalStart.y, bounds.height - globalStart.y - globalStart.height));
             target.transform.position = pos;
 
-            var toCombine = IGameSingleton<SynthesisManager>.Instance.OverlappingObject(target);
+            var toCombine = SynthesisManager.Instance.OverlappingObject(target);
             if (toCombine != wantToCombine) {
                 if (wantToCombine == null) {
                     target.AddToClassList("combine-target");
@@ -81,7 +81,7 @@ public class SynthesisDraggable : PointerManipulator
             isDragging = false;
             target.ReleasePointer(evt.pointerId);
             if (wantToCombine != null) {
-                IGameSingleton<SynthesisManager>.Instance.CombineItems(new[] { target.name, wantToCombine.name });
+                SynthesisManager.Instance.CombineItems(new[] { target.name, wantToCombine.name });
                 wantToCombine.RemoveFromClassList("combine-target");
                 target.RemoveFromClassList("combine-target");
             }

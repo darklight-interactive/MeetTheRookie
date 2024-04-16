@@ -59,7 +59,7 @@ public class InkyVariableHandler
             {
                 InkyVariableList inkList = new InkyVariableList(variableName, inkValue as InkList);
                 variables.Add(variableName, inkList);
-                Debug.Log($"{InkyStoryWeaver.Prefix} Initialized global dialogue variable: {variableName} = {inkValue.ToString()}");
+                Debug.Log($"{InkyStoryManager.Prefix} Initialized global dialogue variable: {variableName} = {inkValue.ToString()}");
             }
             else if (inkValue is Ink.Runtime.Object)
             {
@@ -68,7 +68,7 @@ public class InkyVariableHandler
             }
             else
             {
-                InkyStoryWeaver.Console.Log($"{InkyStoryWeaver.Prefix} Error: Unhandled variable type: {inkValue.GetType()}", 0);
+                InkyStoryManager.Console.Log($"{InkyStoryManager.Prefix} Error: Unhandled variable type: {inkValue.GetType()}", 0);
             }
         }
 
