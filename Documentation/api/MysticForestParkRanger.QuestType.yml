@@ -1,0 +1,171 @@
+### YamlMime:ManagedReference
+items:
+- uid: MysticForestParkRanger.QuestType
+  commentId: T:MysticForestParkRanger.QuestType
+  id: QuestType
+  parent: MysticForestParkRanger
+  children:
+  - MysticForestParkRanger.QuestType.FETCH
+  - MysticForestParkRanger.QuestType.GO_TO
+  - MysticForestParkRanger.QuestType.MINIGAME
+  - MysticForestParkRanger.QuestType.NONE
+  - MysticForestParkRanger.QuestType.TALK_TO
+  langs:
+  - csharp
+  - vb
+  name: QuestType
+  nameWithType: QuestType
+  fullName: QuestType
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: QuestType
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public enum QuestType
+    content.vb: Public Enum QuestType
+- uid: MysticForestParkRanger.QuestType.NONE
+  commentId: F:MysticForestParkRanger.QuestType.NONE
+  id: NONE
+  parent: MysticForestParkRanger.QuestType
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: QuestType.NONE
+  fullName: QuestType.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: NONE = 0
+    return:
+      type: MysticForestParkRanger.QuestType
+- uid: MysticForestParkRanger.QuestType.FETCH
+  commentId: F:MysticForestParkRanger.QuestType.FETCH
+  id: FETCH
+  parent: MysticForestParkRanger.QuestType
+  langs:
+  - csharp
+  - vb
+  name: FETCH
+  nameWithType: QuestType.FETCH
+  fullName: QuestType.FETCH
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: FETCH
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: FETCH = 1
+    return:
+      type: MysticForestParkRanger.QuestType
+- uid: MysticForestParkRanger.QuestType.TALK_TO
+  commentId: F:MysticForestParkRanger.QuestType.TALK_TO
+  id: TALK_TO
+  parent: MysticForestParkRanger.QuestType
+  langs:
+  - csharp
+  - vb
+  name: TALK_TO
+  nameWithType: QuestType.TALK_TO
+  fullName: QuestType.TALK_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: TALK_TO
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: TALK_TO = 2
+    return:
+      type: MysticForestParkRanger.QuestType
+- uid: MysticForestParkRanger.QuestType.GO_TO
+  commentId: F:MysticForestParkRanger.QuestType.GO_TO
+  id: GO_TO
+  parent: MysticForestParkRanger.QuestType
+  langs:
+  - csharp
+  - vb
+  name: GO_TO
+  nameWithType: QuestType.GO_TO
+  fullName: QuestType.GO_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GO_TO
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: GO_TO = 3
+    return:
+      type: MysticForestParkRanger.QuestType
+- uid: MysticForestParkRanger.QuestType.MINIGAME
+  commentId: F:MysticForestParkRanger.QuestType.MINIGAME
+  id: MINIGAME
+  parent: MysticForestParkRanger.QuestType
+  langs:
+  - csharp
+  - vb
+  name: MINIGAME
+  nameWithType: QuestType.MINIGAME
+  fullName: QuestType.MINIGAME
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: MINIGAME
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: MINIGAME = 4
+    return:
+      type: MysticForestParkRanger.QuestType
+references:
+- uid: MysticForestParkRanger
+- uid: MysticForestParkRanger.QuestType
+  commentId: T:MysticForestParkRanger.QuestType
+  href: QuestType.html
+  name: QuestType
+  nameWithType: QuestType
+  fullName: QuestType

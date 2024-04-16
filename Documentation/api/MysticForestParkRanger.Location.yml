@@ -1,0 +1,117 @@
+### YamlMime:ManagedReference
+items:
+- uid: MysticForestParkRanger.Location
+  commentId: T:MysticForestParkRanger.Location
+  id: Location
+  parent: MysticForestParkRanger
+  children:
+  - MysticForestParkRanger.Location.GS_FRONT
+  - MysticForestParkRanger.Location.GS_INTERIOR
+  - MysticForestParkRanger.Location.NONE
+  langs:
+  - csharp
+  - vb
+  name: Location
+  nameWithType: Location
+  fullName: Location
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: Location
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public enum Location
+    content.vb: Public Enum Location
+- uid: MysticForestParkRanger.Location.NONE
+  commentId: F:MysticForestParkRanger.Location.NONE
+  id: NONE
+  parent: MysticForestParkRanger.Location
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: Location.NONE
+  fullName: Location.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: NONE = 0
+    return:
+      type: MysticForestParkRanger.Location
+- uid: MysticForestParkRanger.Location.GS_INTERIOR
+  commentId: F:MysticForestParkRanger.Location.GS_INTERIOR
+  id: GS_INTERIOR
+  parent: MysticForestParkRanger.Location
+  langs:
+  - csharp
+  - vb
+  name: GS_INTERIOR
+  nameWithType: Location.GS_INTERIOR
+  fullName: Location.GS_INTERIOR
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GS_INTERIOR
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: GS_INTERIOR = 1
+    return:
+      type: MysticForestParkRanger.Location
+- uid: MysticForestParkRanger.Location.GS_FRONT
+  commentId: F:MysticForestParkRanger.Location.GS_FRONT
+  id: GS_FRONT
+  parent: MysticForestParkRanger.Location
+  langs:
+  - csharp
+  - vb
+  name: GS_FRONT
+  nameWithType: Location.GS_FRONT
+  fullName: Location.GS_FRONT
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GS_FRONT
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: GS_FRONT = 2
+    return:
+      type: MysticForestParkRanger.Location
+references:
+- uid: MysticForestParkRanger
+- uid: MysticForestParkRanger.Location
+  commentId: T:MysticForestParkRanger.Location
+  href: Location.html
+  name: Location
+  nameWithType: Location
+  fullName: Location

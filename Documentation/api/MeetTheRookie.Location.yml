@@ -1,0 +1,117 @@
+### YamlMime:ManagedReference
+items:
+- uid: MeetTheRookie.Location
+  commentId: T:MeetTheRookie.Location
+  id: Location
+  parent: MeetTheRookie
+  children:
+  - MeetTheRookie.Location.GS_FRONT
+  - MeetTheRookie.Location.GS_INTERIOR
+  - MeetTheRookie.Location.NONE
+  langs:
+  - csharp
+  - vb
+  name: Location
+  nameWithType: Location
+  fullName: Location
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: Location
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: public enum Location
+    content.vb: Public Enum Location
+- uid: MeetTheRookie.Location.NONE
+  commentId: F:MeetTheRookie.Location.NONE
+  id: NONE
+  parent: MeetTheRookie.Location
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: Location.NONE
+  fullName: Location.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: NONE = 0
+    return:
+      type: MeetTheRookie.Location
+- uid: MeetTheRookie.Location.GS_INTERIOR
+  commentId: F:MeetTheRookie.Location.GS_INTERIOR
+  id: GS_INTERIOR
+  parent: MeetTheRookie.Location
+  langs:
+  - csharp
+  - vb
+  name: GS_INTERIOR
+  nameWithType: Location.GS_INTERIOR
+  fullName: Location.GS_INTERIOR
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GS_INTERIOR
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: GS_INTERIOR = 1
+    return:
+      type: MeetTheRookie.Location
+- uid: MeetTheRookie.Location.GS_FRONT
+  commentId: F:MeetTheRookie.Location.GS_FRONT
+  id: GS_FRONT
+  parent: MeetTheRookie.Location
+  langs:
+  - csharp
+  - vb
+  name: GS_FRONT
+  nameWithType: Location.GS_FRONT
+  fullName: Location.GS_FRONT
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/Location_QuestComplete.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GS_FRONT
+    path: ../Assets/[CSHARP]/archive/Location_QuestComplete.cs
+    startLine: 3
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: GS_FRONT = 2
+    return:
+      type: MeetTheRookie.Location
+references:
+- uid: MeetTheRookie
+- uid: MeetTheRookie.Location
+  commentId: T:MeetTheRookie.Location
+  href: Location.html
+  name: Location
+  nameWithType: Location
+  fullName: Location
