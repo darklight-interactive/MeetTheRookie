@@ -74,7 +74,9 @@ public class PlayerInteractor : MonoBehaviour
             Interactable firstInteraction = interactions.First();
             if (firstInteraction.isComplete)
             {
+                // Remove the interaction & disable the target
                 interactions.Remove(firstInteraction);
+                firstInteraction.TargetDisable();
             }
             else
             {

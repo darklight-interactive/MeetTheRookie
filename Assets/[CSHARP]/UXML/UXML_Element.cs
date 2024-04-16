@@ -12,7 +12,7 @@ public class UXML_Element
     {
         this.tag = tag;
         this.visualElement = element;
-        //this.visualElement.visible = false; // << Hide it by default
+        this.visualElement.visible = false; // << Hide it by default
     }
 
     public void SetVisible(bool visible)

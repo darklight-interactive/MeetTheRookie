@@ -38,8 +38,17 @@ public class NPCDialogueHandler : OverlapGrid2D
         {
             foreach (UXML_WorldSpaceElement bubble in dialogueBubblesList)
             {
-                Destroy(bubble.gameObject);
+                if (bubble != null)
+                {
+                    if (Application.isPlaying)
+                        Destroy(bubble.gameObject);
+#if UNITY_EDITOR
+                    else
+                        DestroyImmediate(bubble.gameObject);
+#endif
+                }
             }
+
             dialogueBubbles.Clear();
             Debug.Log("NPCDialogueHandler: Interaction Completed");
         };

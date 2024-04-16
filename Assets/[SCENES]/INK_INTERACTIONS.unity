@@ -482,7 +482,7 @@ GameObject:
   m_Layer: 7
   m_Name: promptUITarget
   m_TagString: Untagged
-  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -932,6 +932,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 64
+  dialogueBubblesList: []
 --- !u!114 &7527273016814130685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,6 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
+  isComplete: 0
   promptIconTarget: {fileID: 1887364391}
   inkKnotName: Not_Mel
 --- !u!1660057539 &9223372036854775807

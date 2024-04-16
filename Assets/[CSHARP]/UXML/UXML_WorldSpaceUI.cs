@@ -34,7 +34,10 @@ public class UXML_WorldSpaceUI : MonoBehaviourSingleton<UXML_WorldSpaceUI>
 
         if (destroy_after >= 0)
         {
-            Destroy(bubble.gameObject, destroy_after);
+            if (Application.isPlaying)
+                Destroy(bubble.gameObject, destroy_after);
+            else
+                DestroyImmediate(bubble.gameObject); // << for editor
         }
 
         return bubble;

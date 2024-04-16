@@ -30,8 +30,11 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
 
     public UXML_Element GetUIElement(string tag)
     {
-        if (!uiElements.ContainsKey(tag)) throw new System.Exception("No UI element found with tag " + tag);
-        return uiElements[tag];
+        if (uiElements.ContainsKey(tag))
+        {
+            return uiElements[tag];
+        }
+        return null;
     }
 
     private void Start()
@@ -48,6 +51,7 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
     public void DisplayInteractPrompt(Vector3 worldPosition)
     {
         UXML_Element uIElement = GetUIElement(interactPromptTag);
+        if (uIElement == null) return;
         uIElement.SetWorldToScreenPosition(worldPosition);
         uIElement.SetVisible(true);
     }
@@ -55,6 +59,7 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
     public void HideInteractPrompt()
     {
         UXML_Element uIElement = GetUIElement(interactPromptTag);
+        if (uIElement == null) return;
         uIElement.SetVisible(false);
     }
 
@@ -69,7 +74,6 @@ public class UXML_InteractionUI : MonoBehaviourSingleton<UXML_InteractionUI>
         newLabel.AddToClassList("inky-choice__unselected");
         newLabel.visible = true;
         groupElement.visualElement.Add(newLabel);
-
     }
 
     /*

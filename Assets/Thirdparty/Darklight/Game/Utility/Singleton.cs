@@ -58,7 +58,16 @@ namespace Darklight.Game.Utility
         {
             if (_instance != null)
             {
-                Destroy(_instance.gameObject);
+                if (Application.isPlaying)
+                {
+                    //Debug.Log($"{Prefix} Destroying instance.");
+                    Destroy(_instance.gameObject);
+                }
+                else
+                {
+                    //Debug.Log($"{Prefix} Destroying instance in editor.");
+                    DestroyImmediate(_instance.gameObject);
+                }
                 _instance = null;
             }
         }
@@ -75,21 +84,20 @@ namespace Darklight.Game.Utility
             // If an instance already exists, destroy this object
             else if (_instance != this)
             {
-                Destroy(gameObject);
-                Debug.Log($"{Prefix} Awake: Destroying duplicate instance.");
+                if (Application.isPlaying)
+                {
+                    Destroy(gameObject);
+                    Debug.Log($"{Prefix} Awake: Destroying duplicate instance.");
+                }
+                else
+                {
+                    DestroyImmediate(gameObject);
+                    Debug.Log($"{Prefix} Awake: Destroying duplicate instance in editor.");
+                }
             }
 
             // Initialize the singletonObject
-            DontDestroyOnLoad(this.gameObject);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (_instance == this)
-            {
-                Debug.Log($"{Prefix} OnDestroy: Setting instance to null.");
-                _instance = null;
-            }
+            //DontDestroyOnLoad(this.gameObject);
         }
     }
 }

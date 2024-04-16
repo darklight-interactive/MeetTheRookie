@@ -11,7 +11,7 @@ using UnityEditor;
 
 [ExecuteAlways]
 [RequireComponent(typeof(UIDocument))]
-public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
+public class UXML_WorldSpaceElement : MonoBehaviour
 {
     UIDocument uiDocument => GetComponent<UIDocument>();
     VisualElement root => uiDocument.rootVisualElement;
@@ -66,14 +66,6 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
         OnElementChanged -= TextureUpdate;
     }
 
-    /// <summary>
-    /// Called when the editor is reloaded from a script compilation event. Uses the IUnityEditorListener interface.
-    /// </summary>
-    public void OnEditorReloaded()
-    {
-        OnDestroy();
-        DestroyImmediate(this.gameObject);
-    }
 }
 
 #if UNITY_EDITOR
