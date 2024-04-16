@@ -1,5 +1,7 @@
 using Darklight.Game.Grid;
 using UnityEngine;
+using static Darklight.UnityExt.CustomInspectorGUI;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,14 +10,14 @@ using UnityEditor;
 public interface IInteract
 {
     /// <summary>
-    /// Initialize the interactable object with any necessary data.
-    /// </summary>
-    void Initialize();
-
-    /// <summary>
     /// Called when the player is targeting the interactable object.
     /// </summary>
-    void Target();
+    void TargetEnable();
+
+    /// <summary>
+    /// Called to disable the interactable object and hide any prompts.
+    /// </summary>
+    void TargetDisable();
 
     /// <summary>
     /// Called when the player interacts with the object.
@@ -23,43 +25,60 @@ public interface IInteract
     void Interact();
 
     /// <summary>
-    /// Called to disable the interactable object and hide any prompts.
-    /// </summary>
-    void Disable();
-
-    /// <summary>
     /// Reset the interactable object to its default state.
     /// </summary>
     void Reset();
+
+    delegate void OnInteract();
+    delegate void OnComplete();
 }
 
 public abstract class Interactable : MonoBehaviour, IInteract
 {
+    [ShowOnly] public bool isActive = false;
+    [ShowOnly] public bool isComplete = false;
     [SerializeField] private Transform promptIconTarget;
+    public event IInteract.OnInteract OnInteraction;
+    public event IInteract.OnComplete OnCompleted;
 
-    public abstract void Initialize();
-    public virtual void Target()
+    // ====== [[ INITIALIZATION ]] ================================
+    protected abstract void Initialize();
+
+    public virtual void Reset()
     {
-        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptIconTarget.position);
+        isComplete = false;
     }
 
+    // ====== [[ TARGETING ]] ======================================
+    public virtual void TargetEnable()
+    {
+        Initialize();
+        isActive = true;
+        UXML_InteractionUI.Instance.DisplayInteractPrompt(promptIconTarget.position);
+    }
+    public virtual void TargetDisable()
+    {
+        Reset();
+        isActive = false;
+        UXML_InteractionUI.Instance.HideInteractPrompt();
+    }
+
+    // ====== [[ INTERACTION ]] ===================================
     public virtual void Interact()
     {
         OnInteraction?.Invoke();
     }
-
-    public virtual void Disable()
+    public virtual void Complete()
     {
-        UXML_InteractionUI.Instance.HideInteractPrompt();
+        OnCompleted?.Invoke();
+        isComplete = true;
     }
 
-    public abstract void Reset();
-
-    public virtual void Interact(OnInteract onComplete)
+    // ====== [[ MONOBEHAVIOUR ]] ===================================
+    public virtual void Awake()
     {
-        throw new System.NotImplementedException();
+        Initialize();
     }
 
-    public delegate void OnInteract();
-    public event OnInteract OnInteraction;
+    public abstract void OnDestroy();
 }

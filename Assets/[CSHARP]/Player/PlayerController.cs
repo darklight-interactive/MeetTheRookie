@@ -80,7 +80,12 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         stateMachine.ChangeState(PlayerState.INTERACTION);
-        playerInteractor.StartInteraction();
+        playerInteractor.InteractWithFirstTarget();
+    }
+
+    void ExitInteraction()
+    {
+        stateMachine.ChangeState(PlayerState.IDLE);
     }
 
 }

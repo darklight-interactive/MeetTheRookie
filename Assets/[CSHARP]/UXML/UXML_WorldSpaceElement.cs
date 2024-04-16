@@ -19,6 +19,8 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
     public UXMLElement_ComicBubble comicBubble;
     private Material _material;
     private RenderTexture _renderTexture;
+    public delegate void OnElementChangedDelegate();
+    protected OnElementChangedDelegate OnElementChanged;
 
     public void Initialize(VisualTreeAsset asset, PanelSettings settings, Material material, RenderTexture renderTexture)
     {
@@ -32,42 +34,26 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
         meshChild.transform.SetParent(this.transform);
         meshChild.transform.localPosition = Vector3.zero;
 
-        InvokeRepeating("ManualUpdate", 0.1f, 0.1f);
+        OnElementChanged += TextureUpdate;
     }
 
-    public void ManualUpdate()
+    public void TextureUpdate()
     {
-        comicBubble = root.Q<UXMLElement_ComicBubble>();
-
-        string currentText = "";
-        /*
-        if (InkyKnotThreader.Instance.currentKnot != null)
-        {
-            currentText = InkyKnotThreader.Instance.currentStory.currentText;
-        }
-        */
-
-
-        if (currentText == null || currentText == "")
-        {
-            currentText = "TEXT NOT FOUND";
-        }
-
-        // << CHECK IF TEXT IS THE SAME >>
-        if (comicBubble.Text == currentText)
-        {
-            return;
-        }
-
-        // Update the bubble
-        comicBubble.Text = currentText;
-        comicBubble.visible = true;
-
         // Set the material and texture
         meshRenderer.sharedMaterial = new Material(_material); // << clone the material
         uiDocument.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
         meshRenderer.sharedMaterial.mainTexture = uiDocument.panelSettings.targetTexture; // << set the material texture
         meshRenderer.enabled = true;
+    }
+
+    public void SetText(string text)
+    {
+        comicBubble = root.Q<UXMLElement_ComicBubble>();
+        comicBubble.Text = text;
+        comicBubble.visible = true;
+
+        // Call the OnChanged event
+        OnElementChanged?.Invoke();
     }
 
     public void SetLocalScale(float scale)
@@ -77,7 +63,7 @@ public class UXML_WorldSpaceElement : MonoBehaviour, IUnityEditorListener
 
     private void OnDestroy()
     {
-        CancelInvoke("ManualUpdate");
+        OnElementChanged -= TextureUpdate;
     }
 
     /// <summary>
@@ -102,7 +88,7 @@ public class UXML_WorldSpaceElementEditor : Editor
 
         if (GUILayout.Button("Manual Update"))
         {
-            element.ManualUpdate();
+            element.TextureUpdate();
         }
     }
 }

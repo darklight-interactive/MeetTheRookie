@@ -9,75 +9,82 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 [RequireComponent(typeof(BoxCollider2D), typeof(PlayerController))]
 public class PlayerInteractor : MonoBehaviour
 {
-    public PlayerController playerController => GetComponent<PlayerController>();
-    protected HashSet<IInteract> interactions = new HashSet<IInteract>();
+    PlayerController playerController => GetComponent<PlayerController>();
+    protected HashSet<Interactable> interactions = new HashSet<Interactable>();
+
+    [SerializeField] private List<Interactable> interactables;
+
     [ShowOnly] int interactionCount;
-    [ShowOnly] IInteract targetInteraction;
-    [ShowOnly] IInteract activeInteraction;
+    [ShowOnly] Interactable targetInteraction;
+    [ShowOnly] Interactable activeInteraction;
 
     void Update()
     {
         HandleInteractions();
 
         interactionCount = interactions.Count;
+        interactables = interactions.ToList();
     }
 
-    public void StartInteraction()
+    public void InteractWithFirstTarget()
     {
-        if (targetInteraction != null)
-        {
-            // Set the target interaction as the active interaction
-            activeInteraction = targetInteraction;
-            targetInteraction = null;
+        InteractWith(targetInteraction);
+    }
 
-            // Start the interaction
-            activeInteraction.Interact();
-        }
-        else if (activeInteraction != null)
-        {
+    public void InteractWith(Interactable interactable)
+    {
+        if (interactable == null) return;
+        if (interactable.isComplete) return;
 
-            // Start the interaction
-            activeInteraction.Interact();
-        }
+        // Set as active interaction
+        activeInteraction = interactable;
+
+        // Start the interaction
+        activeInteraction.Interact();
     }
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        IInteract interactable = other.GetComponent<IInteract>();
-        if (interactable != null)
-        {
-            Debug.Log("Interactable found: " + other.name);
-            interactions.Add(interactable);
-        }
-        else
-        {
-            Debug.Log("No interactable component found on: " + other.name);
-        }
+        Interactable interactable = other.GetComponent<Interactable>();
+        if (interactable == null) return;
+        if (interactable.isComplete) return;
+
+        interactable.TargetEnable();
+
+        Debug.Log("Interactable found: " + other.name);
+        interactions.Add(interactable);
     }
 
 
     void OnTriggerExit2D(Collider2D other)
     {
-        IInteract interaction = other.GetComponent<IInteract>();
-        if (interaction != null)
-        {
-            interactions.Remove(interaction);
-            UXML_InteractionUI.Instance.HideInteractPrompt();
-        }
+        Interactable interactable = other.GetComponent<Interactable>();
+        if (interactable == null) return;
+
+        interactable.TargetDisable();
+        interactions.Remove(interactable);
     }
-
-
 
     void HandleInteractions()
     {
         if (interactions.Count > 0)
         {
-            // May want a better priority system, but this is fine for now:
-            this.targetInteraction = interactions.First();
-            this.targetInteraction.Target();
+            Interactable firstInteraction = interactions.First();
+            if (firstInteraction.isComplete)
+            {
+                interactions.Remove(firstInteraction);
+            }
+            else
+            {
+                // Set the target interaction
+                targetInteraction = firstInteraction;
+                this.targetInteraction.TargetEnable();
+            }
         }
     }
+
+
     #endregion
 }

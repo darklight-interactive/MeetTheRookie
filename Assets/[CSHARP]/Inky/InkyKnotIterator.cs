@@ -13,13 +13,15 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
     string knotName;
     Dictionary<Ink.Runtime.Choice, int> choiceMap = new Dictionary<Ink.Runtime.Choice, int>();
     List<string> tags;
-
     List<Ink.Runtime.Choice> Choices => story.currentChoices;
+    public string currentText => story.currentText;
+
     public InkyKnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
     {
         this.story = storyParent;
         this.knotName = knotName;
 
+        // ( MOVE TO KNOT ) --------------- >>
         try
         {
             storyParent.ChoosePathString(knotName);
@@ -31,19 +33,31 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         }
         finally
         {
+            ChangeState(State.START);
             InkyStoryWeaver.Console.Log($"{Prefix} Moved to Knot: {knotName}");
         }
     }
 
     public void ContinueKnot()
     {
-        if (story == null)
+
+        // Check if null
+        if (story == null || CurrentState == State.NULL)
         {
             InkyStoryWeaver.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: Story is null");
             return;
         }
 
+        // Check if end
+        if (CurrentState == State.END)
+        {
+            InkyStoryWeaver.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
+            Debug.LogWarning($"{Prefix} Knot has ended");
+            return;
+        }
+
+        // -- ( DIALOGUE STATE ) --------------- >>
         if (story.canContinue)
         {
             ChangeState(State.DIALOGUE);
@@ -53,45 +67,36 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
 
             InkyStoryWeaver.Console.Log($"{Prefix} Continue Dialogue: {text}");
         }
+        // -- ( CHOICE STATE ) --------------- >>
         else if (story.currentChoices.Count > 0)
         {
             ChangeState(State.CHOICE);
             InkyStoryWeaver.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
-            foreach (Ink.Runtime.Choice choice in story.currentChoices)
+            foreach (Choice choice in story.currentChoices)
             {
                 choiceMap.Add(choice, choice.index);
                 InkyStoryWeaver.Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
+
+        // -- ( END STATE ) --------------- >>
         else
         {
             ChangeState(State.END);
-
-            OnKnotCompleted.Invoke();
-
+            InkyStoryWeaver.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }
     }
 
     public void ChooseChoice(int choiceIndex)
     {
-        Ink.Runtime.Choice choice = story.currentChoices[choiceIndex];
+        Choice choice = story.currentChoices[choiceIndex];
         story.ChooseChoiceIndex(choice.index);
         choiceMap.Clear();
         ContinueKnot();
     }
 
-    public delegate void KnotComplete();
-    protected event KnotComplete OnKnotCompleted;
-    public void Run(string name, KnotComplete onComplete)
-    {
-        story.ChoosePathString(name);
-
-        //InkyDecryptor dialogue = storyParent.Continue();
-
-        OnKnotCompleted += onComplete;
-    }
 
     private void HandleTags()
     {
