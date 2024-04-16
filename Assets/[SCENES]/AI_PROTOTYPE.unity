@@ -1420,8 +1420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bdb96b3de897b4ab7836d50feac439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
-  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
 --- !u!1 &123822241
 GameObject:
   m_ObjectHideFlags: 0
@@ -8016,9 +8014,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9076858523807608195, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076858523807608195, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076858523807608195, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      objectReference: {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
     - target: {fileID: 9076858523807608195, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -14946,6 +14952,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1685306097}
   - component: {fileID: 1685306096}
+  - component: {fileID: 1685306099}
+  - component: {fileID: 1685306098}
   m_Layer: 0
   m_Name: <SINGLETON> GameManager
   m_TagString: Untagged
@@ -14965,6 +14973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04eafa7f7e814847b6fb7eb2a7f019e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialStoryPath: scene1
 --- !u!4 &1685306097
 Transform:
   m_ObjectHideFlags: 0
@@ -14983,6 +14992,35 @@ Transform:
   - {fileID: 1999975524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1685306098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685306095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionUIPreset: {fileID: 0}
+  worldSpaceUIPreset: {fileID: 0}
+  worldSpaceMaterial: {fileID: 0}
+  worldSpaceRenderTexture: {fileID: 0}
+--- !u!114 &1685306099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685306095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f79ec6d444ee6b46b38cb264e750d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultUniversalInputActions: {fileID: 0}
 --- !u!1001 &1688810960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16304,6 +16342,7 @@ GameObject:
   - component: {fileID: 1701915552}
   - component: {fileID: 1701915551}
   - component: {fileID: 1701915550}
+  - component: {fileID: 1701915558}
   m_Layer: 6
   m_Name: '[PLAYER] Lupe'
   m_TagString: Player
@@ -16323,13 +16362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider2DGrid:
-    gridSizeX: 0
-    gridSizeY: 0
-    coordinateSize: 0
-    gridXAxisDirection: 0
-    gridYAxisDirection: 0
-    gridParentPositionKey: {x: 0, y: 0}
+  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -16449,7 +16482,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -16502,8 +16535,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 1
   moveVector: {x: 1, y: 0}
-  targetInteraction: {fileID: 0}
-  activeInkInteraction: {fileID: 0}
 --- !u!114 &1701915556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16522,7 +16553,7 @@ MonoBehaviour:
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!4 &1701915557
 Transform:
   m_ObjectHideFlags: 0
@@ -16539,6 +16570,19 @@ Transform:
   - {fileID: 391513821}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1701915558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701915549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactables: []
 --- !u!43 &1820732737
 Mesh:
   m_ObjectHideFlags: 0
