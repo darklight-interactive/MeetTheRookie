@@ -2,12 +2,17 @@ namespace Darklight.UnityExt.Input
 {
     using System.Collections;
     using System.Collections.Generic;
+    using Darklight.Game.Utility;
     using UnityEngine;
     using UnityEngine.Events;
     using UnityEngine.EventSystems;
     using UnityEngine.InputSystem;
 
-    public class UniversalInputManager : MonoBehaviour
+
+    /// <summary>
+    /// The Universal Input Manager is a singleton class that manages the input device type and the input actions for the current device.
+    /// </summary>
+    public class UniversalInputManager : MonoBehaviourSingleton<UniversalInputManager>
     {
         // Action Map
         private InputActionMap DefaultTouchActionMap;
@@ -21,7 +26,6 @@ namespace Darklight.UnityExt.Input
             KEYBOARD,
             GAMEPAD
         }
-        public static UniversalInputManager Instance { get; private set; }
         public static string Prefix = "<< UNIVERSAL INPUT MANAGER >> ";
         public static InputType DeviceInputType = InputType.NULL;
         public static InputAction PrimaryInteractAction { get; private set; }
@@ -40,19 +44,6 @@ namespace Darklight.UnityExt.Input
         private void OnDisable()
         {
             DefaultUniversalInputActions.Disable();
-        }
-
-        private void Awake()
-        {
-            // If there is an instance, and it's not me, delete myself.
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
         }
 
         private void Start()

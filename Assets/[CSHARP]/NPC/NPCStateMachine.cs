@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight;
-using Darklight.Game.SpriteAnimation;
+using Darklight.Game;
 using UnityEngine;
 
 public enum NPCState { NONE, IDLE, WALK, SPEAK }
