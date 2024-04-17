@@ -15,7 +15,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
     Dictionary<Ink.Runtime.Choice, int> choiceMap = new Dictionary<Ink.Runtime.Choice, int>();
     List<string> tags;
     List<Ink.Runtime.Choice> Choices => story.currentChoices;
-    public string currentText => story.currentText;
+    public string currentText => story.currentText.Trim();
 
     public InkyKnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
     {
@@ -65,7 +65,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         if (story.canContinue)
         {
             ChangeState(State.DIALOGUE);
-            string text = story.Continue();
+            story.Continue();
 
             // Invoke the Dialogue Event
             OnKnotDialogue?.Invoke(currentText);

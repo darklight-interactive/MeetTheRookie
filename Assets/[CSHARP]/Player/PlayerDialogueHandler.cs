@@ -23,6 +23,11 @@ public class PlayerDialogueHandler : OverlapGrid2D
         worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
     }
+
+    public void HideDialogueBubble()
+    {
+        UIManager.WorldSpaceUI.Hide();
+    }
 }
 
 #if UNITY_EDITOR

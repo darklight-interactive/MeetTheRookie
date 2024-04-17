@@ -6,7 +6,8 @@ public class InkyInteractable : Interactable
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
 
-    [ShowOnly] private string currentText;
+    [ShowOnly] public string currentText;
+    [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
     protected override void Initialize()
     {
@@ -16,7 +17,7 @@ public class InkyInteractable : Interactable
 
     public override void Interact()
     {
-        Debug.Log("Interacting with InkyInteractable");
+        //Debug.Log("Interacting with InkyInteractable");
 
         // Move the story to this knot
         if (knotIterator == null)
@@ -24,13 +25,14 @@ public class InkyInteractable : Interactable
             knotIterator = InkyStoryManager.Instance.CreateKnotIterator(inkKnotName);
         }
 
+
+
         // State Handler
         switch (knotIterator.CurrentState)
         {
             case InkyKnotIterator.State.START:
             case InkyKnotIterator.State.DIALOGUE:
                 knotIterator.ContinueKnot();
-                currentText = knotIterator.currentText;
                 break;
 
             case InkyKnotIterator.State.CHOICE:
@@ -52,6 +54,9 @@ public class InkyInteractable : Interactable
         {
             base.Interact();
         }
+
+        currentKnotState = knotIterator.CurrentState;
+        currentText = knotIterator.currentText;
     }
 
     public override void Complete()

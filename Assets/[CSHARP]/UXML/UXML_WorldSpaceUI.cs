@@ -60,6 +60,7 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
     {
         UXML_ComicBubble comicBubble = root.Q<UXML_ComicBubble>();
         comicBubble.visible = false;
+        meshRenderer.enabled = false;
     }
 
     public void SetLocalScale(float scale)

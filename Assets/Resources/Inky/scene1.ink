@@ -1,14 +1,39 @@
+LIST QuestChain = FIRST_INTERACT
+LIST Clues = GAS_PUMP
+
 VAR current_npc = ""
-VAR first_interact = false
 VAR paid_for_gas = false
 VAR tree_fell = false
 VAR knows_cash_is_broken = false
 VAR knows_how_to_fix_cash = false
 
+
+
 * [BEGIN] -> intro
+
+// ---- system ---
+
+VAR knowledgeState = ()
+
+=== function learn(fact)
+    ~ knowledgeState += fact
+    
+=== function know(fact)
+    { LIST_ALL(Clues) ? fact:
+        // simple facts are either known, or not
+        ~ return knowledgeState ? fact
+    - else:
+        // chained facts are more complicated: do we know a fact in the chain of equal or higher value than this one?
+        ~ temp factsInThisChain = knowledgeState ^ LIST_ALL(fact)
+        ~ return (LIST_MAX(factsInThisChain) >= fact)
+    }
+
+// ---- script ----
+
 === intro ===
 # name : Chief DI Thelton
 # location : unknown
+
 You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do.
 // We hear a generic voicemail beep.
 
@@ -20,9 +45,10 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
-
-{first_interact:
-    *[car] -> car
+Begin scene1_1
+{know(GAS_PUMP):
+    *[car]
+        -> car
     *[outside_npc] -> npc
     *[enter_store] -> scene1_2
 }
@@ -41,7 +67,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     
 
 = gas_pump
-~ first_interact = true
+~ learn(GAS_PUMP)
 {paid_for_gas: 
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
 - else:
@@ -167,7 +193,7 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
      {current_npc} No idea--was here when I unlocked this morning. Darn stuff won't scrub off. Can I help you with something?
    *I need to pay for gas. The cash register is broken. -> is_broken
    }
-=mel
+= mel
  {current_npc} Mel's the name. What are you doing back here?
     *I need to pay for gas. The cash register is broken. ->is_broken
    

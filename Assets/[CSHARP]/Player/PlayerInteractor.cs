@@ -39,6 +39,11 @@ public class PlayerInteractor : MonoBehaviour
         if (interactable == null) return;
         if (interactable.isComplete) return;
 
+        if (interactable is InkyInteractable)
+        {
+            playerDialogueHandler.HideDialogueBubble();
+        }
+
         // Set as active interaction
         activeInteraction = interactable;
 
@@ -49,7 +54,10 @@ public class PlayerInteractor : MonoBehaviour
         if (interactable is InkyInteractable)
         {
             InkyInteractable inkyInteractable = interactable as InkyInteractable;
-            playerDialogueHandler.CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
+            if (inkyInteractable.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
+            {
+                playerDialogueHandler.CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
+            }
         }
     }
 

@@ -161,7 +161,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(InkyStoryManager))]
-public class InkyStoryWeaverEditor : Editor
+public class InkyStoryManagerEditor : Editor
 {
 
     private void OnEnable()
@@ -199,6 +199,11 @@ public class InkyStoryWeaverEditor : Editor
             {
                 Debug.Log($"{variable.Key} = {variable.Value.ToString()}");
             }
+        }
+
+        if (GUILayout.Button("Clear Console"))
+        {
+            InkyStoryManager.Console.Reset();
         }
 
         InkyStoryManager.Console.DrawInEditor();
