@@ -138,6 +138,12 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
     }
 
+    public InkyVariableHandler GetVariableHandler()
+    {
+        variableHandler = new InkyVariableHandler(currentStory);
+        return new InkyVariableHandler(currentStory);
+    }
+
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
         currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
@@ -174,31 +180,23 @@ public class InkyStoryManagerEditor : Editor
     {
         base.OnInspectorGUI();
 
-        InkyStoryManager threader = (InkyStoryManager)target;
+        InkyStoryManager storyManager = (InkyStoryManager)target;
 
         EditorGUILayout.Space();
 
-        CustomInspectorGUI.CreateTwoColumnLabel("Current State: ", threader.currentState.ToString());
-        CustomInspectorGUI.CreateTwoColumnLabel("Current Story: ", threader.currentStoryName);
-        CustomInspectorGUI.CreateTwoColumnLabel("Current Knot: ", threader.currentKnot?.ToString() ?? "None");
+        CustomInspectorGUI.CreateTwoColumnLabel("Current State: ", storyManager.currentState.ToString());
+        CustomInspectorGUI.CreateTwoColumnLabel("Current Story: ", storyManager.currentStoryName);
+        CustomInspectorGUI.CreateTwoColumnLabel("Current Knot: ", storyManager.currentKnot?.ToString() ?? "None");
 
 
         if (GUILayout.Button("Load Story"))
         {
-            threader.LoadStory(threader.currentStoryName);
+            storyManager.LoadStory(storyManager.currentStoryName);
         }
 
         if (GUILayout.Button("Continue Story"))
         {
-            threader.ContinueStory();
-        }
-
-        if (GUILayout.Button("Debug Variables"))
-        {
-            foreach (KeyValuePair<string, IInkyVariable> variable in threader.variableHandler.variables)
-            {
-                Debug.Log($"{variable.Key} = {variable.Value.ToString()}");
-            }
+            storyManager.ContinueStory();
         }
 
         if (GUILayout.Button("Clear Console"))
@@ -208,14 +206,15 @@ public class InkyStoryManagerEditor : Editor
 
         InkyStoryManager.Console.DrawInEditor();
 
-        if (threader.variableHandler == null) return;
-        if (threader.variableHandler.variables.Count > 0)
+        InkyVariableHandler varHandler = storyManager.variableHandler;
+        if (varHandler == null) return;
+        if (varHandler.variables.Count > 0)
         {
             EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            foreach (KeyValuePair<string, IInkyVariable> variable in threader.variableHandler.variables)
+            foreach (KeyValuePair<string, IInkyVariable> variable in varHandler.variables)
             {
-                EditorGUILayout.LabelField(variable.Key, variable.Value.ToString());
+                EditorGUILayout.LabelField(variable.Key, variable.Value.ToString().Trim());
             }
             EditorGUI.indentLevel--;
         }

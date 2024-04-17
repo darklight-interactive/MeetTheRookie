@@ -15,6 +15,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
     Dictionary<Ink.Runtime.Choice, int> choiceMap = new Dictionary<Ink.Runtime.Choice, int>();
     List<string> tags;
     List<Ink.Runtime.Choice> Choices => story.currentChoices;
+    InkyVariableHandler variableHandler;
     public string currentText => story.currentText.Trim();
 
     public InkyKnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
@@ -61,6 +62,8 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             return;
         }
 
+
+
         // -- ( DIALOGUE STATE ) --------------- >>
         if (story.canContinue)
         {
@@ -93,6 +96,19 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             ChangeState(State.END);
             InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
+        }
+
+        // Get Variables
+        InkyVariableHandler variableHandler = InkyStoryManager.Instance.GetVariableHandler();
+
+        // Get Tags
+        List<string> tags = story.currentTags;
+        if (tags != null && tags.Count > 0)
+        {
+            foreach (string tag in tags)
+            {
+                InkyStoryManager.Console.Log($"{Prefix} Found Tag: {tag}", 3);
+            }
         }
     }
 

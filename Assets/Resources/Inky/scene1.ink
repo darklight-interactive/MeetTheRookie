@@ -1,34 +1,44 @@
-LIST QuestChain = FIRST_INTERACT
-LIST Clues = GAS_PUMP
-
 VAR current_npc = ""
-VAR paid_for_gas = false
-VAR tree_fell = false
-VAR knows_cash_is_broken = false
-VAR knows_how_to_fix_cash = false
 
+// LISTS are Enums that can toggle
+// VARS are one or more data values that store a single type of data
 
-
-* [BEGIN] -> intro
-
-// ---- system ---
-
-VAR knowledgeState = ()
-
-=== function learn(fact)
-    ~ knowledgeState += fact
+// ====== QUEST CHAIN =======
+LIST QuestChain = FIRST_INTERACT, PAY_FOR_GAS
+VAR activeQuests = (FIRST_INTERACT)
+VAR completedQuests = ()
+=== function StartQuest(quest)
+    ~ activeQuests += quest
+=== function CompleteQuest(quest)
+    ~ activeQuests -= quest
+    ~ completedQuests += quest
+=== function IsQuestComplete(quest)
+    ~ return completedQuests ? quest
     
-=== function know(fact)
-    { LIST_ALL(Clues) ? fact:
-        // simple facts are either known, or not
-        ~ return knowledgeState ? fact
-    - else:
-        // chained facts are more complicated: do we know a fact in the chain of equal or higher value than this one?
-        ~ temp factsInThisChain = knowledgeState ^ LIST_ALL(fact)
-        ~ return (LIST_MAX(factsInThisChain) >= fact)
+// ====== CLUES =======
+LIST Clues = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
+VAR knowledgeState = ()
+=== function DiscoverClue(clue)
+    ~ knowledgeState += clue
+    
+=== function IsClueFound(clue)
+    { LIST_ALL(Clues) ? clue:
+        // clues are either found, or not
+        ~ return knowledgeState ? clue
     }
 
-// ---- script ----
+// ===== SCENE HANDLING =====
+VAR currentScene = -> scene1_1
+
+=== GoToSubScene(int)
+    {int:
+        - 1: -> scene1_1
+        - 2: -> scene1_2
+    }
+
+// =================================== ( SCENE 1 ) ================================================================ >>
+-> GoToSubScene(1)
+
 
 === intro ===
 # name : Chief DI Thelton
@@ -45,42 +55,29 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
-Begin scene1_1
-{know(GAS_PUMP):
-    *[car]
-        -> car
-    *[outside_npc] -> npc
-    *[enter_store] -> scene1_2
-}
-
-*[gas_pump] 
-    -> gas_pump
-    
-*{tree_fell}[fallen_tree] -> fallen_tree
-*{fallen_tree}[car] -> car
-*{fallen_tree}[gas_pump] -> gas_pump
+~ StartQuest(FIRST_INTERACT)
+-> DONE
 
 = fallen_tree
 #Lupe sees a tree has fallen and blocked the way out of town.
 * What the hell... -> npc
 
-    
-
 = gas_pump
-~ learn(GAS_PUMP)
-{paid_for_gas: 
-    "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
+~ CompleteQuest(FIRST_INTERACT)
+~ DiscoverClue(GAS_PUMP_BROKEN)
+{IsQuestComplete(PAY_FOR_GAS):
+    "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
+    Ugh. Guess I'll be more than a little late...
+    Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
 - else:
         {stopping:
-            -   "Out of order. Pay inside." Of course. Just my luck. 
-                -> scene1_1
-            - Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off.
-                -> scene1_1
+            -   "Out of order. Pay inside." Of course. Just my luck. -> DONE
+            - Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
         } 
 }
 
 = car
-{tree_fell: 
+{PAY_FOR_GAS: 
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. -> DONE //{goto("precinct")} 
 - else: 
     Still gotta pay. -> scene1_1
@@ -88,7 +85,7 @@ Begin scene1_1
 
 = npc
 ~ current_npc = "[Random Dude]"
-{tree_fell: 
+{PAY_FOR_GAS: 
     {current_npc} Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
     * ...great. Any way I can get this fixed?
     {current_npc} Got a chainsaw on ya? Heheheheh. Ah, don't look so grumpy. If you put in a complaint with the local Police I'm sure you'll be out of here in no time.
@@ -114,7 +111,7 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
     
 + {employee3}[talk_to_employee]
 ~ current_npc = "[employee]"
-     {knows_how_to_fix_cash:
+     {CASHREG_FIX:
          #employee
          {current_npc} I told you--
              #lupe 
@@ -160,19 +157,19 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 =pay_for_gas
 #the employee whacks the side of the register.The Drawer pops open.
     {current_npc} Cool. $76.45.
-    ~ paid_for_gas = true
+    ~ CompleteQuest(PAY_FOR_GAS)
     Finally. #Lupe
     #Lupe pays. Suddenly, a loud crashing noise is heard from outside.
     #Lupe
     * What was that? 
-    ~tree_fell = true
-    -> scene1_1
+    -> DONE
+    //-> scene1_1
     
 =backroom
  ~current_npc = "[Mel]"
    #Lupe pushes through the door to the backroom of the gas station. The room is a small breack room. The presumed manager stands at the sink, scrubbing goop.
  +[talk_to_mel] 
-    {knows_cash_is_broken:
+    {CASHREG_BROKEN:
     {current_npc}{Look, I'd like to help more, but I gotta get this stuff out. It's <i>definitely</i> a code violation. | It almost looks like mold? Or jello. | Gross, ain't it? | I love my job. I love my job. Ugh.} -> backroom
 - else:
      Hey. Are you the manager?
@@ -187,7 +184,7 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 
  
 = goop 
-   {knows_cash_is_broken:
+   {CASHREG_BROKEN:
     {current_npc} No idea--was here when I unlocked this morning. Darn stuff won't scrub off. -> backroom
    -else:
      {current_npc} No idea--was here when I unlocked this morning. Darn stuff won't scrub off. Can I help you with something?
@@ -198,10 +195,10 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
     *I need to pay for gas. The cash register is broken. ->is_broken
    
 = is_broken
- {current_npc} That old piece of junk. The drawer is jut jammed; it just needs to be whacked in the side a bit.
-~knows_cash_is_broken = true
- ~knows_how_to_fix_cash = true
-    #Lupe
+ {current_npc} 
+ That old piece of junk. 
+ The drawer is jut jammed, it just needs to be whacked in the side a bit
+ ~ DiscoverClue(CASHREG_FIX)
     *Thanks.
         -> backroom
  
