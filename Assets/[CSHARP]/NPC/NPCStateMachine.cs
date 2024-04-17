@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight;
-using Darklight.Game.SpriteAnimation;
+using Darklight.Game;
 using UnityEngine;
 
-public enum NPCState { NONE, IDLE, WALK, SPEAK }
+public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE }
 
 public class NPCStateMachine : StateMachine<NPCState>
 {
@@ -28,7 +28,7 @@ public class NPCStateMachine : StateMachine<NPCState>
         if (_animator == null) return;
         if (newState == NPCState.NONE) return;
 
-        Debug.Log($"NPC OnStateChanged {previousState} -> {newState}");
+        //Debug.Log($"NPC OnStateChanged {previousState} -> {newState}");
         _animator.FrameAnimationPlayer.LoadSpriteSheet(_animator.GetSpriteSheetWithState(newState));
 
     }

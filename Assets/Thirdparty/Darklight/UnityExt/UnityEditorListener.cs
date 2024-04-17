@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Darklight.UnityExt
 {
@@ -11,6 +14,11 @@ namespace Darklight.UnityExt
         void OnEditorReloaded();
     }
 
+#if UNITY_EDITOR
+
+    /// <summary>
+    /// A class that listens for editor reloads and notifies all MonoBehaviour instances that implement IUnityEditorListener.
+    /// </summary>
     [InitializeOnLoad]
     public class EditorReloadHandler
     {
@@ -30,4 +38,6 @@ namespace Darklight.UnityExt
             }
         }
     }
+#endif
+
 }

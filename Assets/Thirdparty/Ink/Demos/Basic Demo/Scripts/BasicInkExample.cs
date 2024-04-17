@@ -40,7 +40,7 @@ public class BasicInkExample : MonoBehaviour {
 		// Display all the choices, if there are any!
 		if(story.currentChoices.Count > 0) {
 			for (int i = 0; i < story.currentChoices.Count; i++) {
-				Choice choice = story.currentChoices [i];
+				Choice choice = story.currentChoices[i];
 				Button button = CreateChoiceView (choice.text.Trim ());
 				// Tell the button what to do when we press it
 				button.onClick.AddListener (delegate {
@@ -58,7 +58,8 @@ public class BasicInkExample : MonoBehaviour {
 	}
 
 	// When we click the choice button, tell the story to choose that choice!
-	void OnClickChoiceButton (Choice choice) {
+	void OnClickChoiceButton(Choice choice)
+	{
 		story.ChooseChoiceIndex (choice.index);
 		RefreshView();
 	}

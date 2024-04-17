@@ -1,0 +1,144 @@
+### YamlMime:ManagedReference
+items:
+- uid: MysticForestParkRanger.PlayerState
+  commentId: T:MysticForestParkRanger.PlayerState
+  id: PlayerState
+  parent: MysticForestParkRanger
+  children:
+  - MysticForestParkRanger.PlayerState.IDLE
+  - MysticForestParkRanger.PlayerState.INTERACT
+  - MysticForestParkRanger.PlayerState.NONE
+  - MysticForestParkRanger.PlayerState.WALK
+  langs:
+  - csharp
+  - vb
+  name: PlayerState
+  nameWithType: PlayerState
+  fullName: PlayerState
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: PlayerState
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: public enum PlayerState
+    content.vb: Public Enum PlayerState
+- uid: MysticForestParkRanger.PlayerState.NONE
+  commentId: F:MysticForestParkRanger.PlayerState.NONE
+  id: NONE
+  parent: MysticForestParkRanger.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: PlayerState.NONE
+  fullName: PlayerState.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: NONE = 0
+    return:
+      type: MysticForestParkRanger.PlayerState
+- uid: MysticForestParkRanger.PlayerState.IDLE
+  commentId: F:MysticForestParkRanger.PlayerState.IDLE
+  id: IDLE
+  parent: MysticForestParkRanger.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: IDLE
+  nameWithType: PlayerState.IDLE
+  fullName: PlayerState.IDLE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: IDLE
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: IDLE = 1
+    return:
+      type: MysticForestParkRanger.PlayerState
+- uid: MysticForestParkRanger.PlayerState.WALK
+  commentId: F:MysticForestParkRanger.PlayerState.WALK
+  id: WALK
+  parent: MysticForestParkRanger.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: WALK
+  nameWithType: PlayerState.WALK
+  fullName: PlayerState.WALK
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: WALK
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: WALK = 2
+    return:
+      type: MysticForestParkRanger.PlayerState
+- uid: MysticForestParkRanger.PlayerState.INTERACT
+  commentId: F:MysticForestParkRanger.PlayerState.INTERACT
+  id: INTERACT
+  parent: MysticForestParkRanger.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: INTERACT
+  nameWithType: PlayerState.INTERACT
+  fullName: PlayerState.INTERACT
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: INTERACT
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MysticForestParkRanger
+  syntax:
+    content: INTERACT = 3
+    return:
+      type: MysticForestParkRanger.PlayerState
+references:
+- uid: MysticForestParkRanger
+- uid: MysticForestParkRanger.PlayerState
+  commentId: T:MysticForestParkRanger.PlayerState
+  href: PlayerState.html
+  name: PlayerState
+  nameWithType: PlayerState
+  fullName: PlayerState
