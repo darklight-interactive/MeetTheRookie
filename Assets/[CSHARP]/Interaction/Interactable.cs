@@ -33,6 +33,7 @@ public interface IInteract
     delegate void OnComplete();
 }
 
+[RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : MonoBehaviour, IInteract
 {
     [ShowOnly] public bool isActive = false;

@@ -9,7 +9,6 @@ using Darklight.UnityExt;
 using UnityEditor;
 #endif
 
-[ExecuteAlways]
 public class UXML_WorldSpaceUI : UXML_UIDocumentObject
 {
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();

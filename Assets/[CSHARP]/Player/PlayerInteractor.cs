@@ -10,6 +10,9 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 public class PlayerInteractor : MonoBehaviour
 {
     PlayerController playerController => GetComponent<PlayerController>();
+    PlayerDialogueHandler playerDialogueHandler => GetComponent<PlayerDialogueHandler>();
+
+
     protected HashSet<Interactable> interactions = new HashSet<Interactable>();
 
     [SerializeField] private List<Interactable> interactables;
@@ -41,6 +44,13 @@ public class PlayerInteractor : MonoBehaviour
 
         // Start the interaction
         activeInteraction.Interact();
+
+        // Lupe's Dialogue
+        if (interactable is InkyInteractable)
+        {
+            InkyInteractable inkyInteractable = interactable as InkyInteractable;
+            playerDialogueHandler.CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
+        }
     }
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>

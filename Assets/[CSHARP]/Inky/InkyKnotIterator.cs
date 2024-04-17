@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Darklight.Console;
@@ -38,6 +39,9 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         }
     }
 
+    public delegate void OnDialogue(string currentText);
+    public event OnDialogue OnKnotDialogue;
+
     public void ContinueKnot()
     {
 
@@ -61,11 +65,14 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         if (story.canContinue)
         {
             ChangeState(State.DIALOGUE);
-
             string text = story.Continue();
+
+            // Invoke the Dialogue Event
+            OnKnotDialogue?.Invoke(currentText);
+
             HandleTags();
 
-            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {text}");
+            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {currentText}");
         }
         // -- ( CHOICE STATE ) --------------- >>
         else if (story.currentChoices.Count > 0)
