@@ -35,19 +35,28 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         objects = synthesisUI.rootVisualElement.Q("objects");
     }
 
+    bool synthesisActive = false;
     void Start() {
         AddItem(new[] { "Test" });
         AddItem(new[] { "OtherTest" });
-    }
 
-    void Update() {
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+
+        UniversalInputManager.MoveInputAction.performed += Select;
     }
 
     public void Show(bool visible) {
-        synthesisUI.rootVisualElement.visible = visible;
+        synthesisActive = visible;
+        synthesisUI.rootVisualElement.visible = synthesisActive;
+    }
 
-        // Unhook when we're not visible.
-        VirtualMouse.Instance.HookTo(visible ? synthesisUI.rootVisualElement : null);
+    void Select(InputAction.CallbackContext context) {
+        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+        if (itemsSelection.currentlySelected != null) {
+            itemsSelection.currentlySelected.RemoveFromClassList("highlight");
+        }
+        var selected = itemsSelection.getFromDir(move);
+        selected.AddToClassList("highlight");
     }
 
     public object CombineItems(object[] args) {
@@ -79,7 +88,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         newObj.noteHeader.text = name;
         newObj.name = name;
         objects.Add(newObj);
-        //ISceneSingleton<VirtualMouse>.Instance.HookTo(newObj);
+        itemsSelection.Add(newObj);
         return synthesisItems.TryAdd(name, newObj);
     }
 
@@ -87,6 +96,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         if ((bool)HasItem(args)) {
             var name = (string)args[0];
             synthesisItems[name].RemoveFromHierarchy();
+            itemsSelection.Remove(synthesisItems[name]);
             return synthesisItems.Remove(name);
         }
         return false;

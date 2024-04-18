@@ -14,7 +14,7 @@ public class SelectableVectorField<T> where T: VisualElement
     /// </summary>
     List<T> selectables;
 
-    VisualElement currentlySelected = null;
+    public VisualElement currentlySelected = null;
     // TODO: Make this work with dynamically added elements.
     public SelectableVectorField() {
         this.selectables = new List<T>();
