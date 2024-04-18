@@ -1,0 +1,171 @@
+### YamlMime:ManagedReference
+items:
+- uid: MeetTheRookie.QuestType
+  commentId: T:MeetTheRookie.QuestType
+  id: QuestType
+  parent: MeetTheRookie
+  children:
+  - MeetTheRookie.QuestType.FETCH
+  - MeetTheRookie.QuestType.GO_TO
+  - MeetTheRookie.QuestType.MINIGAME
+  - MeetTheRookie.QuestType.NONE
+  - MeetTheRookie.QuestType.TALK_TO
+  langs:
+  - csharp
+  - vb
+  name: QuestType
+  nameWithType: QuestType
+  fullName: QuestType
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: QuestType
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: public enum QuestType
+    content.vb: Public Enum QuestType
+- uid: MeetTheRookie.QuestType.NONE
+  commentId: F:MeetTheRookie.QuestType.NONE
+  id: NONE
+  parent: MeetTheRookie.QuestType
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: QuestType.NONE
+  fullName: QuestType.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: NONE = 0
+    return:
+      type: MeetTheRookie.QuestType
+- uid: MeetTheRookie.QuestType.FETCH
+  commentId: F:MeetTheRookie.QuestType.FETCH
+  id: FETCH
+  parent: MeetTheRookie.QuestType
+  langs:
+  - csharp
+  - vb
+  name: FETCH
+  nameWithType: QuestType.FETCH
+  fullName: QuestType.FETCH
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: FETCH
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: FETCH = 1
+    return:
+      type: MeetTheRookie.QuestType
+- uid: MeetTheRookie.QuestType.TALK_TO
+  commentId: F:MeetTheRookie.QuestType.TALK_TO
+  id: TALK_TO
+  parent: MeetTheRookie.QuestType
+  langs:
+  - csharp
+  - vb
+  name: TALK_TO
+  nameWithType: QuestType.TALK_TO
+  fullName: QuestType.TALK_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: TALK_TO
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: TALK_TO = 2
+    return:
+      type: MeetTheRookie.QuestType
+- uid: MeetTheRookie.QuestType.GO_TO
+  commentId: F:MeetTheRookie.QuestType.GO_TO
+  id: GO_TO
+  parent: MeetTheRookie.QuestType
+  langs:
+  - csharp
+  - vb
+  name: GO_TO
+  nameWithType: QuestType.GO_TO
+  fullName: QuestType.GO_TO
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: GO_TO
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: GO_TO = 3
+    return:
+      type: MeetTheRookie.QuestType
+- uid: MeetTheRookie.QuestType.MINIGAME
+  commentId: F:MeetTheRookie.QuestType.MINIGAME
+  id: MINIGAME
+  parent: MeetTheRookie.QuestType
+  langs:
+  - csharp
+  - vb
+  name: MINIGAME
+  nameWithType: QuestType.MINIGAME
+  fullName: QuestType.MINIGAME
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/archive/QuestStep.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: MINIGAME
+    path: ../Assets/[CSHARP]/archive/QuestStep.cs
+    startLine: 5
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: MINIGAME = 4
+    return:
+      type: MeetTheRookie.QuestType
+references:
+- uid: MeetTheRookie
+- uid: MeetTheRookie.QuestType
+  commentId: T:MeetTheRookie.QuestType
+  href: QuestType.html
+  name: QuestType
+  nameWithType: QuestType
+  fullName: QuestType

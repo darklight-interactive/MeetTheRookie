@@ -1,0 +1,144 @@
+### YamlMime:ManagedReference
+items:
+- uid: MeetTheRookie.PlayerState
+  commentId: T:MeetTheRookie.PlayerState
+  id: PlayerState
+  parent: MeetTheRookie
+  children:
+  - MeetTheRookie.PlayerState.IDLE
+  - MeetTheRookie.PlayerState.INTERACT
+  - MeetTheRookie.PlayerState.NONE
+  - MeetTheRookie.PlayerState.WALK
+  langs:
+  - csharp
+  - vb
+  name: PlayerState
+  nameWithType: PlayerState
+  fullName: PlayerState
+  type: Enum
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: PlayerState
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: public enum PlayerState
+    content.vb: Public Enum PlayerState
+- uid: MeetTheRookie.PlayerState.NONE
+  commentId: F:MeetTheRookie.PlayerState.NONE
+  id: NONE
+  parent: MeetTheRookie.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: PlayerState.NONE
+  fullName: PlayerState.NONE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: NONE
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: NONE = 0
+    return:
+      type: MeetTheRookie.PlayerState
+- uid: MeetTheRookie.PlayerState.IDLE
+  commentId: F:MeetTheRookie.PlayerState.IDLE
+  id: IDLE
+  parent: MeetTheRookie.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: IDLE
+  nameWithType: PlayerState.IDLE
+  fullName: PlayerState.IDLE
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: IDLE
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: IDLE = 1
+    return:
+      type: MeetTheRookie.PlayerState
+- uid: MeetTheRookie.PlayerState.WALK
+  commentId: F:MeetTheRookie.PlayerState.WALK
+  id: WALK
+  parent: MeetTheRookie.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: WALK
+  nameWithType: PlayerState.WALK
+  fullName: PlayerState.WALK
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: WALK
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: WALK = 2
+    return:
+      type: MeetTheRookie.PlayerState
+- uid: MeetTheRookie.PlayerState.INTERACT
+  commentId: F:MeetTheRookie.PlayerState.INTERACT
+  id: INTERACT
+  parent: MeetTheRookie.PlayerState
+  langs:
+  - csharp
+  - vb
+  name: INTERACT
+  nameWithType: PlayerState.INTERACT
+  fullName: PlayerState.INTERACT
+  type: Field
+  source:
+    remote:
+      path: Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+      branch: documentation
+      repo: https://github.com/itspebbleboy/MeetTheRookie.git
+    id: INTERACT
+    path: ../Assets/[CSHARP]/PlayerController/PlayerStateMachine.cs
+    startLine: 6
+  assemblies:
+  - Assembly
+  namespace: MeetTheRookie
+  syntax:
+    content: INTERACT = 3
+    return:
+      type: MeetTheRookie.PlayerState
+references:
+- uid: MeetTheRookie
+- uid: MeetTheRookie.PlayerState
+  commentId: T:MeetTheRookie.PlayerState
+  href: PlayerState.html
+  name: PlayerState
+  nameWithType: PlayerState
+  fullName: PlayerState

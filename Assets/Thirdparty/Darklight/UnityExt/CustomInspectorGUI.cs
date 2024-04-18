@@ -1,13 +1,18 @@
+using System;
+using UnityEngine;
+
 namespace Darklight.UnityExt
 {
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine;
+
+#if UNITY_EDITOR
 	using UnityEditor;
+#endif
 
 	public static class CustomInspectorGUI
 	{
+		public class ShowOnlyAttribute : PropertyAttribute { }
+
+#if UNITY_EDITOR
 		public static bool DrawDefaultInspectorWithoutSelfReference(SerializedObject obj)
 		{
 			EditorGUI.BeginChangeCheck();
@@ -174,11 +179,6 @@ namespace Darklight.UnityExt
 			return false;
 		}
 
-
-		public class ShowOnlyAttribute : PropertyAttribute
-		{
-		}
-
 		[CustomPropertyDrawer(typeof(ShowOnlyAttribute))]
 		public class ShowOnlyDrawer : PropertyDrawer
 		{
@@ -214,6 +214,7 @@ namespace Darklight.UnityExt
 				EditorGUI.LabelField(position, label.text, valueStr);
 			}
 		}
+#endif
 
 	}
 }

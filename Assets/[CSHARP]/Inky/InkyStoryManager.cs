@@ -1,178 +1,228 @@
-using Ink.Runtime;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Linq;
+
+using Darklight.Game;
+using Darklight.Console;
+
+using Ink.Runtime;
+
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
+using Darklight.Game.Utility;
+using Darklight.UnityExt;
+using static Darklight.UnityExt.CustomInspectorGUI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
-/// Singleton for managing all Ink UI.
+///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
-[System.Serializable]
-public class InkyStoryManager
+public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
-    private static InkyStoryManager instance;
-    public static InkyStoryManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new InkyStoryManager();
-            }
-            return instance;
-        }
-    }
-    private InkyStoryManager()
-    {
-        story = new Story(((TextAsset)Resources.Load("Inky/test")).text);
+    const string PATH = "Inky/";
+    const string SPEAKER_TAG = "speaker";
 
-        story.onError += (message, type) =>
-        {
-            Debug.LogError("[Ink] " + type + " " + message);
-        };
+    // ========================  [[ STATE MACHINE ]]  ========================
+    public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
+    public class StateMachine : StateMachine<State>
+    {
+        public StateMachine(State initialState = State.INIT) : base(initialState) { }
     }
+    StateMachine stateMachine = new StateMachine(State.INIT);
+    public State currentState => stateMachine.CurrentState;
 
-    public InkyDialogue currentInkDialog { get; private set; }
+
+    // ========================  [[ INKY KNOT THREADER ]]  ========================
+    public Story currentStory { get; private set; }
+    public InkyVariableHandler variableHandler { get; private set; }
+    public InkyKnotIterator currentKnot { get; private set; }
+
+    public string currentStoryName = "scene1";
+    [SerializeField, ShowOnly] private string currentStoryFilePath => PATH + currentStoryName;
+
+    private void Start()
+    {
+        LoadStory(currentStoryName);
+    }
 
 
     /// <summary>
-    /// Ink Dialogue class to 
+    /// Load a story from the Resources folder.
     /// </summary>
-    public class InkyDialogue
+    /// <param name="storyName">The name of the Story File</param>
+    /// <returns></returns>
+    public bool LoadStory(string storyName)
     {
-        /// <summary>
-        /// Look for [SpeakerName:] at the beginning of story text when finding a speaker.
-        /// </summary>
-        Regex dialogueReader = new Regex(@"^(\[(?<speaker>.+):\]){0,1}(?<dialog>.*)");
+        stateMachine.ChangeState(State.LOAD);
+        currentStoryName = storyName;
+        Console.Log($"{Prefix} Loading Story: {storyName}");
 
-        public string speakerName = "[ Unknown ]";
-        public string textBody = " default text body";
-
-        public InkyDialogue(string storyText)
+        try
         {
-            // Get the token values from the dialogueReader
-            Match dialogueTokens = dialogueReader.Match(storyText);
-            if (dialogueTokens.Success)
+            TextAsset storyAsset = (TextAsset)Resources.Load(PATH + storyName);
+            currentStory = new Story(storyAsset.text);
+        }
+        catch (Exception e)
+        {
+            Console.Log($"{Prefix} Story Load Error: {e.Message}", 0, LogSeverity.Error);
+            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
+            return false;
+        }
+        finally
+        {
+            currentStory.onError += (message, type) =>
             {
-                // if speaker is found, set the speaker text
-                if (dialogueTokens.Groups["speaker"].Success)
-                {
-                    this.speakerName = dialogueTokens.Groups["speaker"].Value;
-                }
+                Debug.LogError("[Ink] " + type + " " + message);
+                Console.Log($"{Prefix} Story Error: {message}", 0, LogSeverity.Error);
+            };
 
-                this.textBody = dialogueTokens.Groups["dialog"].Value;
+            // Get Variables
+            variableHandler = new InkyVariableHandler(currentStory);
+
+            // Get Tags
+            List<string> tags = currentStory.globalTags;
+            if (tags != null && tags.Count > 0)
+            {
+                foreach (string tag in tags)
+                {
+                    Console.Log($"{Prefix} Found Tag: {tag}", 3);
+                }
+            }
+        }
+
+        Console.Log($"{Prefix} Story Loaded: {storyName}");
+        return true;
+    }
+
+    public InkyKnotIterator CreateKnotIterator(string knotPath)
+    {
+        stateMachine.ChangeState(State.LOAD);
+        currentKnot = new InkyKnotIterator(currentStory, knotPath);
+        return currentKnot;
+    }
+
+    public void ContinueStory()
+    {
+        if (currentStory.canContinue)
+        {
+            stateMachine.ChangeState(State.CONTINUE);
+            if (currentKnot != null)
+            {
+                currentKnot.ContinueKnot();
             }
             else
             {
-                Debug.LogError("Regex match for dialog not found.");
-                this.textBody = storyText;
+                // Continue the main story thread
+                string text = currentStory.Continue();
+                text = text.TrimEnd('\n');
+                Console.Log($"{Prefix} ContinueStory -> {text}");
             }
         }
-    }
-
-    /// <summary>
-    /// Because Ink doesn't give us choice indices 1:1, we have this mapping instead.
-    /// </summary>
-    List<int> choiceMapping = new List<int>();
-    bool handlingChoice = false;
-    int activeChoice = 0;
-    List<Choice> choices = new List<Choice>();
-    public InkyDialogue Continue()
-    {
-        // if player is handling a choice, choose the choice and continue
-        if (handlingChoice)
+        else if (currentStory.currentChoices.Count > 0)
         {
-            story.ChooseChoiceIndex(choiceMapping[activeChoice]);
-            choiceMapping.Clear();
-            handlingChoice = false;
-        }
+            stateMachine.ChangeState(State.CHOICE);
+            Console.Log($"{Prefix} Choices: {currentStory.currentChoices.Count}", 1);
 
-        // >> CONTINUE STORY --------------------------------
-        if (story.canContinue)
-        {
-            currentInkDialog = new InkyDialogue(story.Continue());
-            return currentInkDialog;
-        }
-
-        // >> CHECK FOR CHOICES -----------------------------------
-        else if (story.currentChoices.Count > 0)
-        {
-            handlingChoice = true;
-
-            // >> Get Choice Group Box
-            UXML_InteractionUI.UXML_Element choiceGroupElement = UXML_InteractionUI.Instance.GetUIElement("choiceGroup");
-            GroupBox groupBox = (GroupBox)choiceGroupElement.visualElement;
-
-            // >> Iterate through choices
-            foreach (Choice choice in story.currentChoices)
+            foreach (Choice choice in currentStory.currentChoices)
             {
-                choices.Add(choice);
-
-                // >> Create choice elements
-                Button choiceBox = new Button(() =>
-                {
-                    activeChoice = choice.index;
-                    Continue();
-                });
-
-                groupBox.Add(choiceBox);
-                groupBox.visible = true;
-
-                choiceBox.style.backgroundColor = new StyleColor(StyleKeyword.Initial);
-                choiceBox.text = choice.text;
-                choiceMapping.Add(choice.index);
+                Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
-            UpdateActiveChoice(0);
         }
         else
         {
-            OnKnotCompleted();
-        }
+            stateMachine.ChangeState(State.END);
+            Console.Log($"{Prefix} End of Story");
 
-        return null;
+        }
     }
 
-    void UpdateActiveChoice(int c)
+    public InkyVariableHandler GetVariableHandler()
     {
-        //choices[activeChoice].style.backgroundColor = new StyleColor(StyleKeyword.Initial);
-        //activeChoice = c;
-        //choices[activeChoice].style.backgroundColor = new StyleColor(Color.blue);
+        variableHandler = new InkyVariableHandler(currentStory);
+        return new InkyVariableHandler(currentStory);
     }
 
-    public void MoveUpdate(Vector2 move)
+    public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
-        if (!handlingChoice)
-        {
-            return;
-        }
-        float x = Mathf.Sign(move.x);
-        float y = -Mathf.Sign(move.y);
-
-        int choice = activeChoice;
-        if (Mathf.Abs(move.x) > 0.05f)
-        {
-            choice = (int)Mathf.Clamp(activeChoice + x, 0, story.currentChoices.Count - 1);
-        }
-        else if (Mathf.Abs(move.y) > 0.05f)
-        {
-            choice = (int)Mathf.Clamp(activeChoice + y, 0, story.currentChoices.Count - 1);
-        }
-        UpdateActiveChoice(choice);
+        currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
     }
 
-    public delegate void KnotComplete();
-    protected event KnotComplete OnKnotCompleted;
-
-    public void Run(string name, KnotComplete onComplete)
+    public object RunExternalFunction(string func, object[] args)
     {
-        story.ChoosePathString(name);
-
-        InkyDialogue dialogue = Continue();
-
-        OnKnotCompleted += onComplete;
+        if (currentStory.HasFunction(func))
+        {
+            return currentStory.EvaluateFunction(func, args);
+        }
+        else
+        {
+            Debug.LogError("Could not find function: " + func);
+            return null;
+        }
     }
-
-    protected Story story;
 }
+
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(InkyStoryManager))]
+public class InkyStoryManagerEditor : Editor
+{
+
+    private void OnEnable()
+    {
+        InkyStoryManager threader = (InkyStoryManager)target;
+
+    }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        InkyStoryManager storyManager = (InkyStoryManager)target;
+
+        EditorGUILayout.Space();
+
+        CustomInspectorGUI.CreateTwoColumnLabel("Current State: ", storyManager.currentState.ToString());
+        CustomInspectorGUI.CreateTwoColumnLabel("Current Story: ", storyManager.currentStoryName);
+        CustomInspectorGUI.CreateTwoColumnLabel("Current Knot: ", storyManager.currentKnot?.ToString() ?? "None");
+
+
+        if (GUILayout.Button("Load Story"))
+        {
+            storyManager.LoadStory(storyManager.currentStoryName);
+        }
+
+        if (GUILayout.Button("Continue Story"))
+        {
+            storyManager.ContinueStory();
+        }
+
+        if (GUILayout.Button("Clear Console"))
+        {
+            InkyStoryManager.Console.Reset();
+        }
+
+        InkyStoryManager.Console.DrawInEditor();
+
+        InkyVariableHandler varHandler = storyManager.variableHandler;
+        if (varHandler == null) return;
+        if (varHandler.variables.Count > 0)
+        {
+            EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            foreach (KeyValuePair<string, IInkyVariable> variable in varHandler.variables)
+            {
+                EditorGUILayout.LabelField(variable.Key, variable.Value.ToString().Trim());
+            }
+            EditorGUI.indentLevel--;
+        }
+        else
+        {
+            EditorGUILayout.LabelField("No variables loaded.");
+        }
+
+    }
+}
+#endif

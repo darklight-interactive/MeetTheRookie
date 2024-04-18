@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight;
-using Darklight.Game.SpriteAnimation;
+using Darklight.Game;
 using UnityEngine;
 
 public class PlayerStateMachine : StateMachine<PlayerState>
@@ -26,7 +26,7 @@ public class PlayerStateMachine : StateMachine<PlayerState>
         if (_animator == null) return;
         if (newState == PlayerState.NONE) return;
 
-        Debug.Log($"Player OnStateChanged {previousState} -> {newState}");
+        //Debug.Log($"Player OnStateChanged {previousState} -> {newState}");
         _animator.FrameAnimationPlayer.LoadSpriteSheet(_animator.GetSpriteSheetWithState(newState));
     }
 }
