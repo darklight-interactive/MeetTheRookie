@@ -28,9 +28,9 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     {
         base.Awake();
 
-        //InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        //InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        //InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
 
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
@@ -41,9 +41,6 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
     bool synthesisActive = false;
     void Start() {
-        AddItem(new[] { "Test" });
-        AddItem(new[] { "OtherTest" });
-
         Invoke("Initialize", 0.1f);
     }
 
