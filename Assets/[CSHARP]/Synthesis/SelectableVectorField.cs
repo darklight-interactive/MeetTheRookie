@@ -16,9 +16,8 @@ public class SelectableVectorField<T> where T: VisualElement
 
     VisualElement currentlySelected = null;
     // TODO: Make this work with dynamically added elements.
-    public SelectableVectorField(IEnumerable<T> selectables, int initialSelected = 0) {
-        this.selectables = new List<T>(selectables);
-        currentlySelected = this.selectables[initialSelected];
+    public SelectableVectorField() {
+        this.selectables = new List<T>();
     }
 
     /// <summary>
@@ -93,12 +92,32 @@ public class SelectableVectorField<T> where T: VisualElement
         return selected;
     }
 
+    public void Add(T selectable) {
+        selectables.Add(selectable);
+        if (this.currentlySelected == null) {
+            this.currentlySelected = selectable;
+        }
+    }
+
+    public void Remove(T selectable) {
+        selectables.Remove(selectable);
+        if (selectables.Count == 0) {
+            this.currentlySelected = null;
+        }
+    }
+
     /// <summary>
     /// Select an element given our currently selected element.
     /// </summary>
     /// <param name="dir">The direction from which to select.</param>
     /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
     public VisualElement getFromDir(Vector2 dir) {
+        if (selectables.Count == 0) return null;
+
+        if (this.currentlySelected == null) {
+            return selectables[0];
+        }
+
         if (dir != Vector2.zero) {
             VisualElement pick = raycastEstimate(currentlySelected.worldBound.center, dir);
 
