@@ -16,15 +16,12 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     protected UIDocument synthesisUI;
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
+    public SelectableVectorField<SynthesisObject> itemsSelection;
 
     /// <summary>
     /// Our group for showing the objects visually.
     /// </summary>
     VisualElement objects;
-    /// <summary>
-    /// The <see cref="VirtualMouse"/> image we move around.
-    /// </summary>
-    VisualElement cursor;
 
     public override void Awake()
     {
@@ -36,7 +33,6 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
-        cursor = synthesisUI.rootVisualElement.Q("cursor");
     }
 
     void Start() {
@@ -45,7 +41,6 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     }
 
     void Update() {
-        cursor.transform.position = VirtualMouse.Instance.position;
     }
 
     public void Show(bool visible) {

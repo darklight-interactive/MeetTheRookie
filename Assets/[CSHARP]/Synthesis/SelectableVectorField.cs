@@ -15,6 +15,7 @@ public class SelectableVectorField<T> where T: VisualElement
     List<T> selectables;
 
     VisualElement currentlySelected = null;
+    // TODO: Make this work with dynamically added elements.
     public SelectableVectorField(IEnumerable<T> selectables, int initialSelected = 0) {
         this.selectables = new List<T>(selectables);
         currentlySelected = this.selectables[initialSelected];
