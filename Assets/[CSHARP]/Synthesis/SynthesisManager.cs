@@ -59,6 +59,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
     void SelectMove(InputAction.CallbackContext context) {
         Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+        move.y = -move.y;
         if (itemsSelection.currentlySelected != null) {
             itemsSelection.currentlySelected.RemoveFromClassList("highlight");
         }
