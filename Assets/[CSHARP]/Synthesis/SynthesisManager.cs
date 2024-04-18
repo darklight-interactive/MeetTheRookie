@@ -23,6 +23,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     /// </summary>
     VisualElement objects;
 
+    VisualElement synthesizeButton;
     public override void Awake()
     {
         base.Awake();
@@ -34,7 +35,8 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
 
-        itemsSelection.Add(synthesisUI.rootVisualElement.Q("title"));
+        synthesizeButton = synthesisUI.rootVisualElement.Q("title");
+        itemsSelection.Add(synthesizeButton);
     }
 
     bool synthesisActive = false;
@@ -69,20 +71,33 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         }
     }
 
+    HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
     void Select(InputAction.CallbackContext context) {
         if (itemsSelection.currentlySelected != null) {
             var s = itemsSelection.currentlySelected;
-            s.RemoveFromClassList("highlight");
-            s.AddToClassList("selected");
-            itemsSelection.Remove(s);
-            // FIXME: Temp for now, should be based on selectable position (raycast different locations?)
-            if (itemsSelection.numSelectables > 1) {
-                var outSelect = itemsSelection.getFromDir(Vector2.zero);
-                if (outSelect != null) {
-                    outSelect.AddToClassList("highlight");
-                }
+            if (s == synthesizeButton) {
+                Synthesize();
+                return;
+            }
+
+            if (s.ClassListContains("selected")) {
+                s.RemoveFromClassList("selected");
+                toSynthesize.Remove((SynthesisObject)s);
+            } else if (toSynthesize.Count < 3) { // Don't allow us to select more than three.
+                s.AddToClassList("selected");
+                toSynthesize.Add((SynthesisObject)s);
             }
         }
+    }
+
+    void Synthesize() {
+        List<object> args = new List<object>();
+        foreach (var item in toSynthesize) {
+            item.RemoveFromClassList("selected");
+            args.Add(item);
+        }
+
+        InkyStoryManager.Instance.RunExternalFunction("synthesize", args.ToArray());
     }
 
     public object CombineItems(object[] args) {
