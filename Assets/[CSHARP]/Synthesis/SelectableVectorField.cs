@@ -13,8 +13,9 @@ public class SelectableVectorField<T> where T: VisualElement
     /// A list of selectable UI elements.
     /// </summary>
     List<T> selectables;
+    public int numSelectables { get {  return selectables.Count; } }
 
-    public VisualElement currentlySelected = null;
+    public T currentlySelected = null;
     // TODO: Make this work with dynamically added elements.
     public SelectableVectorField() {
         this.selectables = new List<T>();
@@ -32,9 +33,9 @@ public class SelectableVectorField<T> where T: VisualElement
     /// <param name="direction">Any direction relative to the position.</param>
     /// <param name="threshhold">The maximum distance a given Selectable from `from` can have to be selected.</param>
     /// <returns>Index of closest selectable from raycast.</returns>
-    VisualElement raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 100) {
+    T raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 100) {
         float closestDir = -1;
-        VisualElement selected = null;
+        T selected = null;
 
         // We parameterize our direction vector.
         // Direction = (dx/dt, dy/dt).
@@ -111,7 +112,7 @@ public class SelectableVectorField<T> where T: VisualElement
     /// </summary>
     /// <param name="dir">The direction from which to select.</param>
     /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
-    public VisualElement getFromDir(Vector2 dir) {
+    public T getFromDir(Vector2 dir) {
         if (selectables.Count == 0) return null;
 
         if (this.currentlySelected == null) {
@@ -119,7 +120,7 @@ public class SelectableVectorField<T> where T: VisualElement
         }
 
         if (dir != Vector2.zero) {
-            VisualElement pick = raycastEstimate(currentlySelected.worldBound.center, dir);
+            T pick = raycastEstimate(currentlySelected.worldBound.center, dir);
 
             if (pick != null) {
                 currentlySelected = pick;
