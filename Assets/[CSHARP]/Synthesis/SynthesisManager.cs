@@ -16,7 +16,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     protected UIDocument synthesisUI;
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
-    public SelectableVectorField<SynthesisObject> itemsSelection = new SelectableVectorField<SynthesisObject>();
+    public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
     /// Our group for showing the objects visually.
@@ -33,6 +33,8 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
         synthesisUI.rootVisualElement.visible = false;
         objects = synthesisUI.rootVisualElement.Q("objects");
+
+        itemsSelection.Add(synthesisUI.rootVisualElement.Q("title"));
     }
 
     bool synthesisActive = false;
