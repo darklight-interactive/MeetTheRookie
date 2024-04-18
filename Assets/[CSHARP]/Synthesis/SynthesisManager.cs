@@ -16,7 +16,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     protected UIDocument synthesisUI;
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
-    public SelectableVectorField<SynthesisObject> itemsSelection;
+    public SelectableVectorField<SynthesisObject> itemsSelection = new SelectableVectorField<SynthesisObject>();
 
     /// <summary>
     /// Our group for showing the objects visually.
@@ -40,6 +40,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         AddItem(new[] { "Test" });
         AddItem(new[] { "OtherTest" });
 
+        Invoke("Initialize", 0.1f);
+    }
+
+    void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
         UniversalInputManager.MoveInputAction.performed += Select;
