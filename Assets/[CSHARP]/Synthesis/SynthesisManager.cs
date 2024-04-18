@@ -46,7 +46,8 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        UniversalInputManager.MoveInputAction.performed += Select;
+        UniversalInputManager.MoveInputAction.performed += SelectMove;
+        UniversalInputManager.PrimaryInteractAction.performed += Select;
     }
 
     public void Show(bool visible) {
@@ -54,13 +55,26 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         synthesisUI.rootVisualElement.visible = synthesisActive;
     }
 
-    void Select(InputAction.CallbackContext context) {
+    void SelectMove(InputAction.CallbackContext context) {
         Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
         if (itemsSelection.currentlySelected != null) {
             itemsSelection.currentlySelected.RemoveFromClassList("highlight");
         }
         var selected = itemsSelection.getFromDir(move);
         selected.AddToClassList("highlight");
+    }
+
+    void Select(InputAction.CallbackContext context) {
+        if (itemsSelection.currentlySelected != null) {
+            var s = itemsSelection.currentlySelected;
+            s.RemoveFromClassList("highlight");
+            s.AddToClassList("selected");
+            itemsSelection.Remove(s);
+            // FIXME: Temp for now, should be based on selectable position (raycast different locations?)
+            if (itemsSelection.numSelectables > 1) {
+                itemsSelection.getFromDir(Vector2.zero);
+            }
+        }
     }
 
     public object CombineItems(object[] args) {
