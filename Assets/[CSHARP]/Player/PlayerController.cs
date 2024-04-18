@@ -9,6 +9,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Darklight.UnityExt.CustomInspectorGUI;
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
 
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 {
     PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
+    [SerializeField, ShowOnly] PlayerState currentState;
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour
         {
             HandleMovement();
         }
+
+        currentState = stateMachine.CurrentState;
     }
 
     void HandleMovement()

@@ -30,7 +30,7 @@ VAR knowledgeState = ()
 // ===== SCENE HANDLING =====
 VAR currentScene = -> scene1_1
 
-=== GoToSubScene(int)
+=== GoToSubScene(int) ===
     {int:
         - 1: -> scene1_1
         - 2: -> scene1_2
@@ -77,21 +77,21 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 }
 
 = car
-{PAY_FOR_GAS: 
+{IsQuestComplete(PAY_FOR_GAS): 
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. -> DONE //{goto("precinct")} 
 - else: 
-    Still gotta pay. -> scene1_1
+    Still gotta pay. -> DONE
 }
 
 = npc
 ~ current_npc = "[Random Dude]"
-{PAY_FOR_GAS: 
+{IsQuestComplete(PAY_FOR_GAS): 
     {current_npc} Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
     * ...great. Any way I can get this fixed?
     {current_npc} Got a chainsaw on ya? Heheheheh. Ah, don't look so grumpy. If you put in a complaint with the local Police I'm sure you'll be out of here in no time.
-        -> scene1_1
-- else :
-    You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> scene1_1
+        -> DONE
+    - else :
+    You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> DONE
 }
 
 

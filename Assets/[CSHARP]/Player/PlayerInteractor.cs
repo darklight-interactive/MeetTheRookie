@@ -6,73 +6,94 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-[RequireComponent(typeof(BoxCollider2D), typeof(PlayerController))]
+[RequireComponent(
+    typeof(BoxCollider2D),
+    typeof(PlayerController),
+    typeof(PlayerDialogueHandler))]
 public class PlayerInteractor : MonoBehaviour
 {
-    PlayerController playerController => GetComponent<PlayerController>();
-    PlayerDialogueHandler playerDialogueHandler => GetComponent<PlayerDialogueHandler>();
-
-
-    protected HashSet<Interactable> interactions = new HashSet<Interactable>();
-
-    [SerializeField] private List<Interactable> interactables;
-
+    protected HashSet<Interactable> interactables = new HashSet<Interactable>();
+    [SerializeField, ShowOnly] List<InkyInteractable> inkyInteractables = new List<InkyInteractable>();
+    [SerializeField, ShowOnly] InkyInteractable activeInkyInteraction;
     [ShowOnly] int interactionCount;
-    [ShowOnly] Interactable targetInteraction;
-    [ShowOnly] Interactable activeInteraction;
 
     void Update()
     {
         HandleInteractions();
 
-        interactionCount = interactions.Count;
-        interactables = interactions.ToList();
+        interactionCount = interactables.Count;
     }
-
-    public void InteractWithFirstTarget()
+    void HandleInteractions()
     {
-        InteractWith(targetInteraction);
-    }
+        // Temporary list to hold items to be removed
+        List<Interactable> toRemove = new List<Interactable>();
 
-    public void InteractWith(Interactable interactable)
-    {
-        if (interactable == null) return;
-        if (interactable.isComplete) return;
-
-        if (interactable is InkyInteractable)
+        foreach (Interactable interaction in interactables)
         {
-            playerDialogueHandler.HideDialogueBubble();
-        }
-
-        // Set as active interaction
-        activeInteraction = interactable;
-
-        // Start the interaction
-        activeInteraction.Interact();
-
-        // Lupe's Dialogue
-        if (interactable is InkyInteractable)
-        {
-            InkyInteractable inkyInteractable = interactable as InkyInteractable;
-            if (inkyInteractable.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
+            if (interaction.isComplete)
             {
-                playerDialogueHandler.CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
+                // Mark the interaction for removal
+                toRemove.Add(interaction);
+                interaction.TargetDisable();
+            }
+            else if (interaction is InkyInteractable)
+            {
+                if (activeInkyInteraction == null)
+                    activeInkyInteraction = interaction as InkyInteractable;
+
+                /*
+                Because this method is called every frame, 
+                this line will keep the active interaction target at the correct position */
+                activeInkyInteraction.TargetEnable();
             }
         }
     }
 
-    #region ===== [[ INTERACTION HANDLING ]] ===== >>
+    public void InteractWithFirstTarget()
+    {
+        InteractWith(activeInkyInteraction);
+    }
+
+    public void InteractWith(InkyInteractable interactable)
+    {
+        if (interactable == null || interactable.isComplete) return;
+        if (interactable is InkyInteractable)
+        {
+            PlayerDialogueHandler playerDialogueHandler = GetComponent<PlayerDialogueHandler>();
+            playerDialogueHandler.HideDialogueBubble();
+
+            if (activeInkyInteraction == interactable || activeInkyInteraction == null)
+            {
+                // Set as active interaction
+                activeInkyInteraction = interactable;
+                activeInkyInteraction.TargetDisable();
+                activeInkyInteraction.OnCompleted += () =>
+                {
+                    PlayerController playerController = GetComponent<PlayerController>();
+                    playerController.stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
+                };
+            }
+
+            // Start the interaction
+            activeInkyInteraction.Interact();
+
+            if (activeInkyInteraction.tempType == TempType.BASE)
+            {
+                if (activeInkyInteraction.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
+                {
+                    playerDialogueHandler.CreateDialogueBubble(activeInkyInteraction.knotIterator.currentText);
+                }
+            }
+
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable == null) return;
         if (interactable.isComplete) return;
-
-        interactable.TargetEnable();
-
-        Debug.Log("Interactable found: " + other.name);
-        interactions.Add(interactable);
+        interactables.Add(interactable);
     }
 
 
@@ -80,30 +101,68 @@ public class PlayerInteractor : MonoBehaviour
     {
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable == null) return;
+        interactables.Remove(interactable);
 
-        interactable.TargetDisable();
-        interactions.Remove(interactable);
+        if (activeInkyInteraction == interactable)
+        {
+            activeInkyInteraction.TargetDisable();
+            activeInkyInteraction = null;
+        }
+
     }
 
-    void HandleInteractions()
+    #region ===== [[ INTERACTION HANDLING ]] ===== >>
+
+    /*
+    public class InteractableRadar<Interactable>
     {
-        if (interactions.Count > 0)
+        public HashSet<Interactable> interactables = new HashSet<Interactable>();
+
+        public void Add(Interactable interactable)
         {
-            Interactable firstInteraction = interactions.First();
-            if (firstInteraction.isComplete)
+            interactables.Add(interactable);
+        }
+
+        public void Remove(Interactable interactable)
+        {
+            interactables.Remove(interactable);
+        }
+
+        public void Clear()
+        {
+            interactables.Clear();
+        }
+
+        public void HandleInteractions()
+        {
+            // Temporary list to hold items to be removed
+            List<Interactable> toRemove = new List<Interactable>();
+
+            foreach (Interactable interaction in interactables)
             {
-                // Remove the interaction & disable the target
-                interactions.Remove(firstInteraction);
-                firstInteraction.TargetDisable();
+                if (interaction.isComplete)
+                {
+                    // Mark the interaction for removal
+                    toRemove.Add(interaction);
+                    interaction.TargetDisable();
+                }
+                else
+                {
+                    // Optionally, handle active interactions differently if needed
+                    interaction.TargetEnable();
+                }
             }
-            else
+
+            // Remove the completed interactions from the HashSet
+            foreach (var completedInteraction in toRemove)
             {
-                // Set the target interaction
-                targetInteraction = firstInteraction;
-                this.targetInteraction.TargetEnable();
+                interactables.Remove(completedInteraction);
             }
         }
     }
+    */
+
+
 
 
     #endregion
