@@ -61,7 +61,9 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
             itemsSelection.currentlySelected.RemoveFromClassList("highlight");
         }
         var selected = itemsSelection.getFromDir(move);
-        selected.AddToClassList("highlight");
+        if (selected != null) {
+            selected.AddToClassList("highlight");
+        }
     }
 
     void Select(InputAction.CallbackContext context) {
@@ -72,7 +74,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
             itemsSelection.Remove(s);
             // FIXME: Temp for now, should be based on selectable position (raycast different locations?)
             if (itemsSelection.numSelectables > 1) {
-                itemsSelection.getFromDir(Vector2.zero);
+                var outSelect = itemsSelection.getFromDir(Vector2.zero);
+                if (outSelect != null) {
+                    outSelect.AddToClassList("highlight");
+                }
             }
         }
     }
