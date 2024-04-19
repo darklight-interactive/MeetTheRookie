@@ -1,0 +1,108 @@
+.background {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    align-self: auto;
+    justify-content: flex-end;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-grow: 0;
+    display: flex;
+}
+
+.DialogueBoxParent {
+    background-color: rgba(0, 0, 0, 0);
+    align-self: center;
+    justify-content: flex-end;
+    width: 70%;
+    height: 50%;
+    align-items: flex-start;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: column-reverse;
+}
+
+.NameTagMisra {
+    background-color: rgba(0, 0, 0, 0);
+    width: 30%;
+    align-self: auto;
+    height: 30%;
+    align-items: center;
+    background-image: url("project://database/Assets/Visual%20Novel/Images/Name%20Tag%20Misra.png?fileID=2800000&guid=734f97ec3f742b146af4ee077707ab23&type=3#Name Tag Misra");
+    -unity-background-scale-mode: scale-to-fit;
+    bottom: -45px;
+}
+
+.NameTagLupe {
+    background-color: rgba(0, 0, 0, 0);
+    width: 30%;
+    align-self: auto;
+    height: 30%;
+    align-items: center;
+    background-image: url("project://database/Assets/Visual%20Novel/Images/Name%20Tag%20Lupe.png?fileID=2800000&guid=3417bbaa413f3b54f987cf0502a47039&type=3#Name Tag Lupe");
+    -unity-background-scale-mode: scale-to-fit;
+    bottom: -45px;
+}
+
+.DialogueBox {
+    align-self: auto;
+    justify-content: flex-start;
+    width: 100%;
+    height: 55%;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-height: 65%;
+    min-height: 55%;
+    background-image: url('project://database/Assets/Visual%20Novel/Textbox.png?fileID=2800000&guid=6d61fb6d6e366cb4a9522074a6ab1869&type=3#Textbox');
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-scale: -1px;
+    -unity-slice-left: 40;
+    -unity-slice-top: 50;
+    -unity-slice-right: 40;
+    -unity-slice-bottom: 25;
+    background-color: rgba(0, 0, 0, 0.49);
+}
+
+.CharacterSide {
+    -unity-background-scale-mode: scale-to-fit;
+    width: 50%;
+    height: 100%;
+    flex-direction: column-reverse;
+}
+
+.TriangleUp {
+    width: 50px;
+    height: 50px;
+    align-self: flex-end;
+    justify-content: flex-start;
+    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&guid=36b22829bdfd5284c82359ec62ba0be2&type=3#arrow-down@2x");
+    transition-duration: 1s;
+    transition-property: all;
+    bottom: 0;
+    position: absolute;
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+}
+
+.TriangleDown {
+    translate: 0 10px;
+}
+
+.Choice {
+    flex-grow: 1;
+    font-size: 35px;
+    background-color: rgb(176, 0, 139);
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+    display: none;
+    width: 25%;
+    white-space: normal;
+}
+
+.Choice:hover {
+    background-color: rgb(153, 0, 121);
+}
+
+.Inactive {
+    -unity-background-image-tint-color: rgb(178, 178, 178);
+}
