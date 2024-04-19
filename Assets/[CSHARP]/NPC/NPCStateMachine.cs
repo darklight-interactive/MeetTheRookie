@@ -34,8 +34,7 @@ public class NPCStateMachine : FiniteStateMachine<NPCState>
     }
 }
 
-#region ================== [ STATES ] ==================
-
+#region ================== [ IDLE STATE ] ==================
 
 // IDLE
 public class IdleState : IState<NPCState>
@@ -68,6 +67,10 @@ public class IdleState : IState<NPCState>
         StateMachine.GoToState(NPCState.WALK);
     }
 }
+
+#endregion
+
+#region ================== [ WALK STATE ] ==================
 
 // WALK
 public class WalkState : IState<NPCState>
@@ -147,6 +150,35 @@ public class WalkState : IState<NPCState>
     {
         yield return new WaitForSeconds(Random.Range(0, _maxDuration));
         StateMachine.GoToState(NPCState.IDLE);
+    }
+}
+
+#endregion
+
+#region ================== [ SPEAK STATE ] ==================
+
+public class SpeakState : IState<NPCState>
+{
+    public FiniteStateMachine<NPCState> StateMachine { get; set; }
+    private NPCAnimator _animator;
+    private NPCController _controller;
+
+    public SpeakState() { }
+
+    public void Enter(params object[] enterArgs)
+    {
+        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
+        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+    }
+
+    public void Exit() { }
+
+    public void Execute(params object[] executeArgs)
+    {
+        GameObject player = _controller.player;
+
+        // Set NPC to face player when speaking
+        _animator.FrameAnimationPlayer.FlipTransform(new Vector2(StateMachine.parent.transform.position.x < player.transform.position.x ? -1 : 1, 0));
     }
 }
 

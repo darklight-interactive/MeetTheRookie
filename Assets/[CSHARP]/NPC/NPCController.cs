@@ -51,12 +51,14 @@ public class NPCController : MonoBehaviour
         // Create instances of the states
         IdleState idleState = new(this, ref idleMaxDuration);
         WalkState walkState = new(this, ref npcSpeed, ref walkMaxDuration, ref leftBound, ref rightBound);
+        SpeakState speakState = new();
 
         // Create dictionary to hold the possible states
         Dictionary<NPCState, IState<NPCState>> possibleStates = new()
         {
             { NPCState.IDLE, idleState },
-            { NPCState.WALK, walkState }
+            { NPCState.WALK, walkState },
+            { NPCState.SPEAK, speakState },
         };
 
         // initialize the NPCStateMachine
