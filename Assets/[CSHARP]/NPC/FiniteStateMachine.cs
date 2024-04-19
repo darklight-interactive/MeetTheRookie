@@ -33,9 +33,7 @@ public abstract class FiniteStateMachine<TState> where TState : Enum
         // on the first step, the state is null and needs to be initialized
         if (state == null)
         {
-            state = possibleStates[initialState];
-            currentState = initialState;
-            state.Enter();
+            GoToState(initialState);
         }
 
         possibleStates[currentState].Execute();
@@ -43,7 +41,10 @@ public abstract class FiniteStateMachine<TState> where TState : Enum
 
     public virtual void GoToState(TState state, params object[] enterArgs)
     {
-        this.state.Exit();
+        if (this.state != null)
+        {
+            this.state.Exit();
+        }
         this.state = possibleStates[state];
         currentState = state;
         this.state.Enter(enterArgs);

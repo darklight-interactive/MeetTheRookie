@@ -29,7 +29,7 @@ public class NPCStateMachine : FiniteStateMachine<NPCState>
         if (animator == null) return;
         if (currentState == NPCState.NONE) return;
 
-        //Debug.Log($"NPC OnStateChanged {previousState} -> {newState}");
+        Debug.Log($"NPC OnStateChanged -> {state}");
         animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(currentState));
     }
 }
@@ -381,6 +381,58 @@ public class HideState : IState<NPCState>
             yield return new WaitForSeconds(1 / 20);
             hideCheckCount++;
         }
+    }
+}
+
+#endregion
+
+#region ================== [ CHASE STATE ] ==================
+
+public class ChaseState : IState<NPCState>
+{
+    public FiniteStateMachine<NPCState> StateMachine { get; set; }
+    private NPCAnimator _animator;
+    private NPCController _controller;
+    private GameObject player;
+
+    private float chaseSpeakDistance;
+    private float chaseSpeed;
+
+    public ChaseState(ref float chaseSpeakDistance, ref float chaseSpeed)
+    {
+        this.chaseSpeakDistance = chaseSpeakDistance;
+        this.chaseSpeed = chaseSpeed;
+    }
+
+    public void Enter(params object[] enterArgs)
+    {
+        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
+        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+        if (player == null) { player = _controller.player; }
+    }
+
+    public void Exit() { }
+
+    public void Execute(params object[] executeArgs)
+    {
+        GameObject npc = StateMachine.parent.gameObject;
+
+        float currentChaseDistance = player.transform.position.x - npc.transform.position.x;
+
+        if (currentChaseDistance <= chaseSpeakDistance)
+        {
+            StateMachine.GoToState(NPCState.SPEAK);
+            return;
+        }
+
+        int chaseDirection = (currentChaseDistance < 0) ? -1 : 1;
+
+        float movement = chaseDirection * chaseSpeed;
+        float targetX = npc.transform.position.x + movement;
+
+        // move the character
+        npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
+        _animator.FrameAnimationPlayer.FlipTransform(new Vector2(-chaseDirection, 0));
     }
 }
 

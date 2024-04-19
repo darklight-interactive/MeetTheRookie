@@ -43,6 +43,7 @@ public class NPCController : MonoBehaviour
         SpeakState speakState = new();
         FollowState followState = new(this, ref followDistance, ref followSpeed);
         HideState hideState = new(this, ref hideSpeed);
+        ChaseState chaseState = new(ref chaseSpeakDistance, ref chaseSpeed);
 
         // Create dictionary to hold the possible states
         Dictionary<NPCState, IState<NPCState>> possibleStates = new()
@@ -52,10 +53,11 @@ public class NPCController : MonoBehaviour
             { NPCState.SPEAK, speakState },
             { NPCState.FOLLOW, followState },
             { NPCState.HIDE, hideState },
+            { NPCState.CHASE, chaseState },
         };
 
         // initialize the NPCStateMachine
-        stateMachine = new NPCStateMachine(NPCState.IDLE, possibleStates, gameObject);
+        stateMachine = new NPCStateMachine(NPCState.CHASE, possibleStates, gameObject);
 
         animationManager = GetComponent<NPCAnimator>();
     }
