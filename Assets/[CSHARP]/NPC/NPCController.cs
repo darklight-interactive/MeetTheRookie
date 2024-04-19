@@ -21,17 +21,6 @@ public class NPCController : MonoBehaviour
     public NPCStateMachine stateMachine;
     private NPCAnimator animationManager;
 
-    // Follow State
-    private bool movingInFollowState = false;
-    private float currentFollowDistance = 0;
-
-    // Hide State
-    private Hideable_Object[] hideableObjects;
-    private GameObject closestHideableObject;
-    private bool areThereHideableObjects = false;
-    private bool movingInHideState = false;
-    private float validHideDistance = 0.01f;
-
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
@@ -52,6 +41,8 @@ public class NPCController : MonoBehaviour
         IdleState idleState = new(this, ref idleMaxDuration);
         WalkState walkState = new(this, ref npcSpeed, ref walkMaxDuration, ref leftBound, ref rightBound);
         SpeakState speakState = new();
+        FollowState followState = new(this, ref followDistance, ref followSpeed);
+        HideState hideState = new(this, ref hideSpeed);
 
         // Create dictionary to hold the possible states
         Dictionary<NPCState, IState<NPCState>> possibleStates = new()
@@ -59,6 +50,8 @@ public class NPCController : MonoBehaviour
             { NPCState.IDLE, idleState },
             { NPCState.WALK, walkState },
             { NPCState.SPEAK, speakState },
+            { NPCState.FOLLOW, followState },
+            { NPCState.HIDE, hideState },
         };
 
         // initialize the NPCStateMachine
@@ -76,6 +69,12 @@ public class NPCController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawLine(new Vector3(leftBound, this.GetComponent<Transform>().position.y, 0), new Vector3(rightBound, this.GetComponent<Transform>().position.y, 0));
+    }
+
+    // This is a workaround because you cannot call FindObjectsByType on a reference to this
+    public Hideable_Object[] FindHideableObjects()
+    {
+        return FindObjectsByType<Hideable_Object>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
     }
 }
 
