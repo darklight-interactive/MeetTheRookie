@@ -18,18 +18,15 @@ using UnityEngine.InputSystem.LowLevel;
 [RequireComponent(typeof(NPCAnimator))]
 public class NPCController : MonoBehaviour
 {
-    public NPCStateMachine stateMachine = new NPCStateMachine(NPCState.IDLE);
+    public NPCStateMachine stateMachine;
     private NPCAnimator animationManager;
-
-    // Walk State
-    private int walkDirection;
 
     // Follow State
     private bool movingInFollowState = false;
     private float currentFollowDistance = 0;
 
     // Hide State
-    private NPC_Hideable_Object[] hideableObjects;
+    private Hideable_Object[] hideableObjects;
     private GameObject closestHideableObject;
     private bool areThereHideableObjects = false;
     private bool movingInHideState = false;
@@ -45,34 +42,42 @@ public class NPCController : MonoBehaviour
     public float rightBound;
     public float followDistance = 1;
     public float chaseSpeakDistance = .75f;
-    [Range(0f, 10f)] public float idleMaxDuration;
-    [Range(0f, 10f)] public float walkMaxDuration;
+    [Range(0f, 10f)] public float idleMaxDuration = 3f;
+    [Range(0f, 10f)] public float walkMaxDuration = 3f;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
-        animationManager = GetComponent<NPCAnimator>();
+        // Create instances of the states
+        IdleState idleState = new(this, ref idleMaxDuration);
+        WalkState walkState = new(this, ref npcSpeed, ref walkMaxDuration, ref leftBound, ref rightBound);
 
-        // NPC starts walking in a random direction at the start
-        walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        GoToState(NPCState.IDLE);
+        // Create dictionary to hold the possible states
+        Dictionary<NPCState, IState<NPCState>> possibleStates = new()
+        {
+            { NPCState.IDLE, idleState },
+            { NPCState.WALK, walkState }
+        };
+
+        // initialize the NPCStateMachine
+        stateMachine = new NPCStateMachine(NPCState.IDLE, possibleStates, gameObject);
+
+        animationManager = GetComponent<NPCAnimator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        HandleState();
+        stateMachine.Step();
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawLine(new Vector3(leftBound, this.GetComponent<Transform>().position.y, 0), new Vector3(rightBound, this.GetComponent<Transform>().position.y, 0));
     }
+}
 
-    // ================ [ CUSTOM METHODS ] =================== //
-
-    // The main state function, handles each states behaviours
-
+/*
 
     #region ================== [ HANDLE STATE UPDATES ] ==================
     private void HandleState()
@@ -284,7 +289,7 @@ public class NPCController : MonoBehaviour
         int hideCheckCount = 0;
         for (; ; )
         {
-            hideableObjects = FindObjectsByType<NPC_Hideable_Object>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            hideableObjects = FindObjectsByType<Hideable_Object>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
             // find the closest hideable object, only if there are any
             if (hideableObjects != null && hideableObjects.Length > 0)
@@ -344,3 +349,5 @@ public class NPCController : MonoBehaviour
 
     #endregion
 }
+
+*/
