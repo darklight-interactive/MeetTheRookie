@@ -661,6 +661,7 @@ MonoBehaviour:
   isActive: 0
   isComplete: 0
   promptIconTarget: {fileID: 244980267}
+  tempType: 0
   inkKnotName: scene1_1.gas_pump
   currentText: 
   currentKnotState: 0
@@ -2214,6 +2215,7 @@ MonoBehaviour:
   isActive: 0
   isComplete: 0
   promptIconTarget: {fileID: 0}
+  tempType: 0
   inkKnotName: scene1_1.npc
   currentText: 
   currentKnotState: 0
@@ -3306,10 +3308,10 @@ PrefabInstance:
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      objectReference: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - target: {fileID: 4357738810397188942, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: currentFrame
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3370,13 +3372,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 825759769}
   m_SourcePrefab: {fileID: 100100000, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
 --- !u!4 &825759767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6944989206972801970, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
   m_PrefabInstance: {fileID: 825759766}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &825759768 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 825759766}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &825759769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825759768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb8eef74a9b4934899627bdcb95c26e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 0}
 --- !u!43 &846160146
 Mesh:
   m_ObjectHideFlags: 0
@@ -8141,6 +8164,7 @@ MonoBehaviour:
   isActive: 0
   isComplete: 0
   promptIconTarget: {fileID: 1912532989}
+  tempType: 0
   inkKnotName: scene1_1.car
   currentText: 
   currentKnotState: 0
@@ -8239,6 +8263,7 @@ MonoBehaviour:
   isActive: 0
   isComplete: 0
   promptIconTarget: {fileID: 0}
+  tempType: 0
   inkKnotName: scene1_2
   currentText: 
   currentKnotState: 0
