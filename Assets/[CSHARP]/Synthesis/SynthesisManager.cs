@@ -1,5 +1,6 @@
 using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,8 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     public override void Awake()
     {
         base.Awake();
-
-        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
-
         synthesisUI.rootVisualElement.visible = false;
+
         objects = synthesisUI.rootVisualElement.Q("objects");
 
         synthesizeButton = synthesisUI.rootVisualElement.Q("title");
@@ -49,6 +46,9 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
         UniversalInputManager.MoveInputAction.performed += SelectMove;
         UniversalInputManager.PrimaryInteractAction.performed += Select;
+        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     public void Show(bool visible) {
@@ -88,15 +88,24 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     }
 
     void Synthesize() {
-        List<object> args = new List<object>();
+        List<string> args = new List<string>();
+
         foreach (var item in toSynthesize) {
             item.RemoveFromClassList("selected");
-            args.Add(item);
+            args.Add(item.name);
+        }
+        toSynthesize.Clear();
+
+        args = args.OrderBy(s => s).ToList();
+
+        if (args.Count == 2) {
+            args.Add("");
         }
 
         InkyStoryManager.Instance.RunExternalFunction("synthesize", args.ToArray());
     }
 
+    [Obsolete("Synthesis is handled by Synthesize instead.")]
     public object CombineItems(object[] args) {
         if (args.Length != 2) {
             Debug.LogError("Could not get 2 items to combine from " + args);
@@ -144,6 +153,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         return synthesisItems.ContainsKey((string)args[0]);
     }
 
+    [Obsolete("Dragging should not be used for synthesis items.")]
     public SynthesisObject OverlappingObject(VisualElement synthesisObj) {
         var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
