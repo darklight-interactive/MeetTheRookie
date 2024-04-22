@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   playerSpeed: 1
   moveVector: {x: 1, y: 0}
 --- !u!114 &2841869834561605672
@@ -150,7 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactables: []
+  inkyInteractables: []
+  activeInkyInteraction: {fileID: 0}
 --- !u!212 &4241149439006364865
 SpriteRenderer:
   m_ObjectHideFlags: 0
