@@ -84,8 +84,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        stateMachine.ChangeState(PlayerState.INTERACTION);
-        playerInteractor.InteractWithFirstTarget();
+        if (stateMachine.CurrentState != PlayerState.INTERACTION) {
+            stateMachine.ChangeState(PlayerState.INTERACTION);
+            playerInteractor.InteractWithFirstTarget();
+        }
     }
 
     void ExitInteraction()
@@ -97,6 +99,7 @@ public class PlayerController : MonoBehaviour
     bool synthesisEnabled = false;
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
+        stateMachine.ChangeState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion

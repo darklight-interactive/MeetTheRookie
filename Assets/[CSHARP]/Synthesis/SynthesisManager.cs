@@ -1,5 +1,6 @@
 using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,45 +17,95 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     protected UIDocument synthesisUI;
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
+    public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
     /// Our group for showing the objects visually.
     /// </summary>
     VisualElement objects;
-    /// <summary>
-    /// The <see cref="VirtualMouse"/> image we move around.
-    /// </summary>
-    VisualElement cursor;
 
+    VisualElement synthesizeButton;
     public override void Awake()
     {
         base.Awake();
-
-        //InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        //InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        //InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
-
         synthesisUI.rootVisualElement.visible = false;
+
         objects = synthesisUI.rootVisualElement.Q("objects");
-        cursor = synthesisUI.rootVisualElement.Q("cursor");
+
+        synthesizeButton = synthesisUI.rootVisualElement.Q("title");
+        itemsSelection.Add(synthesizeButton);
     }
 
+    bool synthesisActive = false;
     void Start() {
-        AddItem(new[] { "Test" });
-        AddItem(new[] { "OtherTest" });
+        Invoke("Initialize", 0.1f);
     }
 
-    void Update() {
-        cursor.transform.position = VirtualMouse.Instance.position;
+    void Initialize() {
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+
+        UniversalInputManager.MoveInputAction.performed += SelectMove;
+        UniversalInputManager.PrimaryInteractAction.performed += Select;
+        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     public void Show(bool visible) {
-        synthesisUI.rootVisualElement.visible = visible;
-
-        // Unhook when we're not visible.
-        VirtualMouse.Instance.HookTo(visible ? synthesisUI.rootVisualElement : null);
+        synthesisActive = visible;
+        synthesisUI.rootVisualElement.visible = synthesisActive;
     }
 
+    void SelectMove(InputAction.CallbackContext context) {
+        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+        move.y = -move.y;
+        if (itemsSelection.currentlySelected != null) {
+            itemsSelection.currentlySelected.RemoveFromClassList("highlight");
+        }
+        var selected = itemsSelection.getFromDir(move);
+        if (selected != null) {
+            selected.AddToClassList("highlight");
+        }
+    }
+
+    HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
+    void Select(InputAction.CallbackContext context) {
+        if (itemsSelection.currentlySelected != null) {
+            var s = itemsSelection.currentlySelected;
+            if (s == synthesizeButton) {
+                Synthesize();
+                return;
+            }
+
+            if (s.ClassListContains("selected")) {
+                s.RemoveFromClassList("selected");
+                toSynthesize.Remove((SynthesisObject)s);
+            } else if (toSynthesize.Count < 3) { // Don't allow us to select more than three.
+                s.AddToClassList("selected");
+                toSynthesize.Add((SynthesisObject)s);
+            }
+        }
+    }
+
+    void Synthesize() {
+        List<string> args = new List<string>();
+
+        foreach (var item in toSynthesize) {
+            item.RemoveFromClassList("selected");
+            args.Add(item.name);
+        }
+        toSynthesize.Clear();
+
+        args = args.OrderBy(s => s).ToList();
+
+        if (args.Count == 2) {
+            args.Add("");
+        }
+
+        InkyStoryManager.Instance.RunExternalFunction("synthesize", args.ToArray());
+    }
+
+    [Obsolete("Synthesis is handled by Synthesize instead.")]
     public object CombineItems(object[] args) {
         if (args.Length != 2) {
             Debug.LogError("Could not get 2 items to combine from " + args);
@@ -84,7 +135,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         newObj.noteHeader.text = name;
         newObj.name = name;
         objects.Add(newObj);
-        //ISceneSingleton<VirtualMouse>.Instance.HookTo(newObj);
+        itemsSelection.Add(newObj);
         return synthesisItems.TryAdd(name, newObj);
     }
 
@@ -92,6 +143,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         if ((bool)HasItem(args)) {
             var name = (string)args[0];
             synthesisItems[name].RemoveFromHierarchy();
+            itemsSelection.Remove(synthesisItems[name]);
             return synthesisItems.Remove(name);
         }
         return false;
@@ -101,6 +153,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         return synthesisItems.ContainsKey((string)args[0]);
     }
 
+    [Obsolete("Dragging should not be used for synthesis items.")]
     public SynthesisObject OverlappingObject(VisualElement synthesisObj) {
         var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
