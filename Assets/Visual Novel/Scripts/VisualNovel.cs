@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem;
+using Darklight.UnityExt.Input;
 
 public class VisualNovel : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;
+    public SelectableVectorField<Button> choiceMap = new SelectableVectorField<Button>();
 
-    InputSystemUIInputModule uiInput;
+    // Global variables
     Story currentStory;
+    bool choicesActive;
 
     // Variables for all the visual elements
     VisualElement misraImage;
@@ -24,11 +27,18 @@ public class VisualNovel : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<Button> choiceButtons = new List<Button>(4);
 
+    void Initialize()
+    {
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+        UniversalInputManager.MoveInputAction.performed += Move;
+        UniversalInputManager.PrimaryInteractAction.performed += Select;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        // Get UI input
-        uiInput = FindAnyObjectByType<InputSystemUIInputModule>();
+        // I think this stalls the initialize function
+        Invoke("Initialize", 0.1f);
 
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
@@ -43,13 +53,8 @@ public class VisualNovel : UXML_UIDocumentObject
         for (int i = 0; i < choiceButtons.Capacity; i++)
         {
             choiceButtons.Add(root.Q<Button>("Choice" + i));
+            choiceMap.Add(choiceButtons[i]);
         }
-        // Set button actions
-        choiceButtons[0].clicked += () => SelectChoice0();
-        choiceButtons[1].clicked += () => SelectChoice1();
-        choiceButtons[2].clicked += () => SelectChoice2();
-        choiceButtons[3].clicked += () => SelectChoice3();
-
         // Get Ink story
         currentStory = new Story(inkFile.text);
 
@@ -93,8 +98,6 @@ public class VisualNovel : UXML_UIDocumentObject
             index++;
         }
 
-        Debug.Log(choiceParent.resolvedStyle.height);
-        Debug.Log(choiceParent.resolvedStyle.width);
         float approxHeight = choiceParent.resolvedStyle.height;
         float approxWidth = choiceParent.resolvedStyle.width / index;
         for (int i = 0; i < index; i++)
@@ -104,36 +107,36 @@ public class VisualNovel : UXML_UIDocumentObject
             {
                 dialogueText.style.fontSize = Mathf.Min(Mathf.Max(textSize.y * (textSize.y * 3 / approxHeight), textSize.x), textSize.y);
             }
-
+            choiceButtons[i].RemoveFromClassList("Highlight");
         }
         for (int i = index; i < choiceButtons.Count; i++)
         {
             choiceButtons[i].style.display = DisplayStyle.None;
+            choiceButtons[i].RemoveFromClassList("Highlight");
         }
 
         nameTag.AddToClassList("NameTagLupe");
         nameTag.RemoveFromClassList("NameTagMisra");
         lupeImage.RemoveFromClassList("Inactive");
         misraImage.AddToClassList("Inactive");
+
+        choicesActive = true;
+        choiceMap.resetSelected();
+        choiceMap.currentlySelected.AddToClassList("Highlight");
     }
 
     /// <summary>
     /// Selects the choice at the given index
     /// </summary>
     /// <param name="index">The index of the choice</param>
-    void SelectChoice(int index)
+    void SelectChoice()
     {
-        currentStory.ChooseChoiceIndex(index);
+        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.currentlySelected));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
+        choicesActive = false;
         ContinueStory();
     }
-
-    // Seperate choice functions cause it didn't work otherwise
-    void SelectChoice0() { SelectChoice(0); }
-    void SelectChoice1() { SelectChoice(1); }
-    void SelectChoice2() { SelectChoice(2); }
-    void SelectChoice3() { SelectChoice(3); }
 
     /// <summary>
     /// Ends the story. Transition to next scene from here.
@@ -145,52 +148,78 @@ public class VisualNovel : UXML_UIDocumentObject
     }
 
     /// <summary>
+    /// The function to select choice via input
+    /// </summary>
+    /// <param name="context">IDK man</param>
+    void Select(InputAction.CallbackContext context)
+    {
+        if (choicesActive)
+        {
+            SelectChoice();
+        }
+        else
+        {
+            ContinueStory();
+        }
+    }
+
+    /// <summary>
+    /// The function to change choice via input
+    /// </summary>
+    /// <param name="context">IDK man</param>
+    void Move(InputAction.CallbackContext context)
+    {
+        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+        move.y = -move.y;
+        if (choiceMap.currentlySelected != null)
+        {
+            choiceMap.currentlySelected.RemoveFromClassList("Highlight");
+        }
+        var selected = choiceMap.getFromDir(move);
+        if (selected != null)
+        {
+            selected.AddToClassList("Highlight");
+        }
+    }
+
+    /// <summary>
     /// Update the dialogue 
     /// </summary>
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
         List<string> tags = currentStory.currentTags;
-        if (tags.Count > 0)
+        nameTag.style.visibility = Visibility.Hidden;
+        foreach (string tag in tags)
         {
-            foreach (string tag in tags)
+            string[] splitTag = tag.Split(":");
+            if (splitTag[0].Trim() == "name")
             {
-                string[] splitTag = tag.Split(":");
-                if (splitTag[0].Trim() == "name")
+                nameTag.style.visibility = Visibility.Visible;
+                string name = splitTag[1].Trim();
+                if (name == "Lupe")
                 {
-                    nameTag.style.visibility = Visibility.Visible;
-                    string name = splitTag[1].Trim();
-                    if (name == "Lupe")
-                    {
-                        nameTag.AddToClassList("NameTagLupe");
-                        nameTag.RemoveFromClassList("NameTagMisra");
-                        lupeImage.RemoveFromClassList("Inactive");
-                        misraImage.AddToClassList("Inactive");
-                    }
-                    else if (name == "Misra")
-                    {
-                        misraImage.style.visibility = Visibility.Visible;
-                        nameTag.AddToClassList("NameTagMisra");
-                        nameTag.RemoveFromClassList("NameTagLupe");
-                        misraImage.RemoveFromClassList("Inactive");
-                        lupeImage.AddToClassList("Inactive");
-                    }
-                    break;
+                    nameTag.AddToClassList("NameTagLupe");
+                    nameTag.RemoveFromClassList("NameTagMisra");
+                    lupeImage.RemoveFromClassList("Inactive");
+                    misraImage.AddToClassList("Inactive");
                 }
-                // Code for image changeing when it's supported
-                /* else if(splitTag[0].Trim()=="Emote"){ // Change with correct tag
-                    // Find emote
-                    // Change character based on emote
-                } */
-                else
+                else if (name == "Misra")
                 {
-                    nameTag.style.visibility = Visibility.Hidden;
+                    misraImage.style.visibility = Visibility.Visible;
+                    nameTag.AddToClassList("NameTagMisra");
+                    nameTag.RemoveFromClassList("NameTagLupe");
+                    misraImage.RemoveFromClassList("Inactive");
+                    lupeImage.AddToClassList("Inactive");
                 }
+                break;
             }
-        }
-        else
-        {
-            nameTag.style.visibility = Visibility.Hidden;
+            // Code for image changeing when it's supported
+            /* else if(splitTag[0].Trim()=="Emote"){ // Change with correct tag
+                // Find emote
+                // Change character based on emote
+            } */
+
         }
         dialogueText.text = dialogue;
         UpdateBoxNTextSize();
@@ -216,14 +245,5 @@ public class VisualNovel : UXML_UIDocumentObject
         continueTriangle.ToggleInClassList("TriangleDown");
         continueTriangle.RegisterCallback<TransitionEndEvent>(evt => continueTriangle.ToggleInClassList("TriangleDown"));
         root.schedule.Execute(() => continueTriangle.ToggleInClassList("TriangleDown")).StartingIn(100);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (uiInput.submit.action.triggered)
-        {
-            ContinueStory();
-        }
     }
 }

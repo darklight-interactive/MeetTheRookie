@@ -267,8 +267,7 @@ GameObject:
   - component: {fileID: 1316734656}
   - component: {fileID: 1316734655}
   - component: {fileID: 1316734654}
-  - component: {fileID: 1316734658}
-  - component: {fileID: 1316734657}
+  - component: {fileID: 1316734659}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -321,7 +320,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1316734657
+--- !u!114 &1316734659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -330,42 +329,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1316734653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f79ec6d444ee6b46b38cb264e750d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
-  m_PointAction: {fileID: 1079535806414667028, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
-  m_MoveAction: {fileID: 1581876655316265012, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
-  m_SubmitAction: {fileID: -3905140382198063091, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
-  m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: -5836625748515220231, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_TrackedDevicePositionAction: {fileID: 0}
-  m_TrackedDeviceOrientationAction: {fileID: 0}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
---- !u!114 &1316734658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316734653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
+  DefaultUniversalInputActions: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

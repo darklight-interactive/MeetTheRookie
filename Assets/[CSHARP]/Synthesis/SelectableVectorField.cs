@@ -128,4 +128,13 @@ public class SelectableVectorField<T> where T: VisualElement
         }
         return currentlySelected;
     }
+    
+    /// <summary>
+    /// Resets the currently selected object to the first one in the selectables list
+    /// </summary>
+    public void resetSelected(){
+        if(selectables.Count>0){
+            this.currentlySelected = selectables[0];
+        }
+    }
 }
