@@ -13,7 +13,10 @@ GameObject:
   - component: {fileID: 2736262935544259377}
   - component: {fileID: 3412433257022094393}
   - component: {fileID: 8741917591864611154}
-  m_Layer: 0
+  - component: {fileID: 7229035452921418264}
+  - component: {fileID: 5111795153052323315}
+  - component: {fileID: 5122769244414666580}
+  m_Layer: 7
   m_Name: NPC Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,8 +109,8 @@ MonoBehaviour:
   followSpeed: 0.5
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: -5
-  rightBound: 5
+  leftBound: 2.33
+  rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
   idleMaxDuration: 3
@@ -185,3 +188,89 @@ MonoBehaviour:
     - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
     - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
   currentFrame: 0
+--- !u!61 &7229035452921418264
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553759137234608480}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &5111795153052323315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553759137234608480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
+  isComplete: 0
+  promptIconTarget: {fileID: 0}
+  tempType: 0
+  inkKnotName: scene1_2.employee
+  meshRenderer: {fileID: 0}
+  activeMaterial: {fileID: 0}
+  defaultMaterial: {fileID: 0}
+  sceneName: 
+  currentText: 
+  currentKnotState: 0
+--- !u!114 &5122769244414666580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553759137234608480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46ec734b7295e6448bb3894b596a3e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 65
+  dialogueBubblesList: []

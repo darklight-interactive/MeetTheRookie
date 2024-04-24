@@ -7,8 +7,7 @@ public class InkyInteractable : Interactable
     [SerializeField] public TempType tempType;
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
-    [ShowOnly] public string currentText;
-    [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
+
 
 
     [Space(10), Header("Materials")]
@@ -19,6 +18,8 @@ public class InkyInteractable : Interactable
     [Header("Scene Change")]
     [SerializeField] private string sceneName = "";
 
+    [ShowOnly] public string currentText;
+    [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
     protected override void Initialize()
     {

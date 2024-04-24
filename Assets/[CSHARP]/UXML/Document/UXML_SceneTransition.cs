@@ -26,7 +26,7 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
 
         blackborder_docElement = base.GetUIElement("blackborder");
         background = blackborder_docElement.visualElement;
-        blackborder_docElement.SetVisible(true);
+        blackborder_docElement.SetVisible(false);
 
         textlabel = tscreen.Q<Label>("textlabel");
         textlabel.text = "";
@@ -51,6 +51,7 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
     {
         blackborder_docElement.SetVisible(true);
         background.SetEnabled(true);
+        textlabel.SetEnabled(true);
 
         yield return new WaitForSeconds(1);
         textlabel.visible = true;
@@ -58,6 +59,12 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         yield return new WaitForSeconds(1);
         textlabel.visible = false;
         yield return new WaitForSeconds(0.45f);
+
+        background.SetEnabled(false);
+        background.visible = false;
+
+        textlabel.SetEnabled(false);
+
         UnityEngine.SceneManagement.SceneManager.LoadScene(newSceneName);
     }
 }

@@ -30,7 +30,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonClicked()
     {
-        SceneManager.Instance.ChangeSceneTo("M");
+        SceneManager.Instance.ChangeSceneTo("SCENE1.1_MelOMart");
 
         Debug.Log("Play Button Clicked");
     }
