@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
+public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
@@ -77,6 +77,27 @@ public class PlayerController : MonoBehaviour
         {
             stateMachine.ChangeState(PlayerState.IDLE);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+			// Get Hidden Object Component
+            var hiddenObject = other.GetComponent<NPC_Hideable_Object>();
+            if (hiddenObject != null)
+            {
+				// debug.log for proof
+                Debug.Log("Character is hidden");
+                stateMachine.ChangeState(PlayerState.HIDE);
+            }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+			// Reset state to Walk/Idle 
+            if (other.GetComponent<NPC_Hideable_Object>() != null)
+            {
+                stateMachine.ChangeState(PlayerState.IDLE);
+            }
     }
 
     /// <summary>
