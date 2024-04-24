@@ -10,8 +10,7 @@ public class MainMenuController : MonoBehaviour
     public VisualElement ui;
     public Button playButton;
     public Button optionsButton;
-    public Button quitButton; 
-    public SceneManagerScript gm;  
+    public Button quitButton;
 
     private void Awake()
     {
@@ -31,8 +30,8 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonClicked()
     {
-        gm = FindFirstObjectByType<SceneManagerScript>();
-        gm.newSceneName = "MelOMart_Blockout";
+        SceneManager.Instance.ChangeSceneTo("M");
+
         Debug.Log("Play Button Clicked");
     }
 

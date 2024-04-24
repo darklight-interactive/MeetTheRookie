@@ -94,6 +94,9 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> DONE
 }
 
+= enter_store
+I guess I'll find someone to help me inside here.
+-> DONE
 
 === scene1_2 ===
 // FUNC_SCENE_CHANGE
