@@ -10,9 +10,15 @@ public class InkyInteractable : Interactable
     [ShowOnly] public string currentText;
     [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
+
+    [Space(10), Header("Materials")]
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Material activeMaterial;
+    [SerializeField] private Material defaultMaterial;
+
+
     protected override void Initialize()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void Update()
@@ -24,6 +30,21 @@ public class InkyInteractable : Interactable
         {
             Complete();
         }
+
+
+        // Set MAterial
+        if (meshRenderer)
+        {
+            if (isActive)
+            {
+                meshRenderer.material = activeMaterial;
+            }
+            else
+            {
+                meshRenderer.material = defaultMaterial;
+            }
+        }
+
     }
 
 

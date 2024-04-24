@@ -2043,6 +2043,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 31235993}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &53021570 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3269525813468321606, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
+  m_PrefabInstance: {fileID: 2095756099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &61203483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3671,8 +3676,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 244980267}
-  - component: {fileID: 244980266}
   - component: {fileID: 244980265}
+  - component: {fileID: 244980266}
   m_Layer: 0
   m_Name: Gas Pump
   m_TagString: Untagged
@@ -3699,6 +3704,9 @@ MonoBehaviour:
   inkKnotName: scene1_1.gas_pump
   currentText: 
   currentKnotState: 0
+  meshRenderer: {fileID: 1215389347}
+  activeMaterial: {fileID: 2100000, guid: e3f1f047b588df94289f441a8a1d14a1, type: 2}
+  defaultMaterial: {fileID: -8453829689451183871, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
 --- !u!61 &244980266
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8056,6 +8064,9 @@ MonoBehaviour:
   inkKnotName: scene1_1.npc
   currentText: 
   currentKnotState: 0
+  meshRenderer: {fileID: 0}
+  activeMaterial: {fileID: 0}
+  defaultMaterial: {fileID: 0}
 --- !u!1 &615343941
 GameObject:
   m_ObjectHideFlags: 0
@@ -11404,7 +11415,7 @@ PrefabInstance:
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      objectReference: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - target: {fileID: 4357738810397188942, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: currentFrame
       value: 0
@@ -12210,6 +12221,7 @@ Transform:
   - {fileID: 1338119432}
   - {fileID: 1896024463}
   - {fileID: 676170509}
+  - {fileID: 1420546490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &931527666
@@ -16069,6 +16081,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!23 &1215389347 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4957041603568809323, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
+  m_PrefabInstance: {fileID: 522964477}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1224188711
 Mesh:
   m_ObjectHideFlags: 0
@@ -19709,6 +19726,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 142972361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1420546490 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
+  m_PrefabInstance: {fileID: 2095756099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1427074493
 Mesh:
   m_ObjectHideFlags: 0
@@ -30929,6 +30951,9 @@ MonoBehaviour:
   inkKnotName: scene1_1.car
   currentText: 
   currentKnotState: 0
+  meshRenderer: {fileID: 53021570}
+  activeMaterial: {fileID: 2100000, guid: 2c035e31777b2f84abe3ce435bb41ec1, type: 2}
+  defaultMaterial: {fileID: -7217555465340273564, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
 --- !u!61 &1912532991
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -31192,6 +31217,9 @@ MonoBehaviour:
   inkKnotName: scene1_2
   currentText: 
   currentKnotState: 0
+  meshRenderer: {fileID: 0}
+  activeMaterial: {fileID: 0}
+  defaultMaterial: {fileID: 0}
 --- !u!61 &1955424073
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34098,7 +34126,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 921960996}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
       propertyPath: m_LocalScale.x
@@ -34114,15 +34142,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.9368353
+      value: 1.3731647
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1249542
+      value: 3.9705207
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.4507751
+      value: 10.41927
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d3cc6002f18cb2343821fe0458feeec8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -34865,7 +34893,7 @@ GameObject:
   - component: {fileID: 6725149855403942893}
   - component: {fileID: 4977776007402714321}
   - component: {fileID: 7734329074343816892}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: melOmart-building-ext.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36202,5 +36230,4 @@ SceneRoots:
   - {fileID: 921960996}
   - {fileID: 987175996433645435}
   - {fileID: 522964477}
-  - {fileID: 2095756099}
   - {fileID: 973307319}

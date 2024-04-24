@@ -76,6 +76,7 @@ public abstract class Interactable : MonoBehaviour, IInteract
     {
         OnCompleted?.Invoke();
         isComplete = true;
+        isActive = false;
     }
 
     // ====== [[ MONOBEHAVIOUR ]] ===================================
