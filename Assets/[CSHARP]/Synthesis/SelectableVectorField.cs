@@ -128,7 +128,7 @@ public class SelectableVectorField<T> where T: VisualElement
         }
         return currentlySelected;
     }
-    
+
     /// <summary>
     /// Resets the currently selected object to the first one in the selectables list
     /// </summary>

@@ -44,10 +44,10 @@ GameObject:
   - component: {fileID: 5365568965282730410}
   - component: {fileID: 2841869834561605672}
   - component: {fileID: 3932367194058205592}
+  - component: {fileID: 7797176430667915744}
   - component: {fileID: 4241149439006364865}
   - component: {fileID: 2433721290131396170}
   - component: {fileID: 210893148915583867}
-  - component: {fileID: 7797176430667915744}
   m_Layer: 6
   m_Name: '[PLAYER] Lupe'
   m_TagString: Player
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   playerSpeed: 1
   moveVector: {x: 1, y: 0}
 --- !u!114 &2841869834561605672
@@ -150,7 +151,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactables: []
+  inkyInteractables: []
+  activeInkyInteraction: {fileID: 0}
+--- !u!114 &7797176430667915744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171685949738713303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4257aa308f79ce54e96ea41e73492d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 896
+  dialogueBubblesList: []
 --- !u!212 &4241149439006364865
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -278,20 +297,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7797176430667915744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6171685949738713303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4257aa308f79ce54e96ea41e73492d9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  dialogueBubblesList: []

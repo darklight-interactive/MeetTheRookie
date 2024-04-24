@@ -94,6 +94,9 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> DONE
 }
 
+= enter_store
+I guess I'll find someone to help me inside here.
+-> DONE
 
 === scene1_2 ===
 // FUNC_SCENE_CHANGE
@@ -105,9 +108,10 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 *[talk_to_employee] 
     Lupe approaches the employee. They are pretending to sweep but really they are watching videos on their phone.
     -> employee
-+ [vending_machine]
+
+= vending_machine
     {Sugar-Flavored Snack Bites. Pickle Chips. Jerkied Ox Sticks...I think I'll pass.| Is this stuff FDA approved? | I though Pop Pops Gum went out of production in the 90s? Weird.}
-    -> main
+    -> DONE
     
 + {employee3}[talk_to_employee]
 ~ current_npc = "[employee]"
@@ -137,13 +141,10 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 = employee
 # name : employee
 ~ current_npc = "[employee]"
-* Hey man. How're you?
-    {current_npc} I work at a gas station. How do you think I am?
-    ->employee
-* ...the pump's broken. It says to pay inside?
-    {current_npc} Yeahhhhh. You can't pay right now. The register drawer is busted. 
-    -> employee2
-    
+Hey man. How're you?
+{current_npc} I work at a gas station. How do you think I am?
+...the pump's broken. It says to pay inside?
+{current_npc} Yeahhhhh. You can't pay right now. The register drawer is busted.->DONE
     
 = employee2
 *Can you, uh, fix it?
@@ -164,7 +165,11 @@ Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
     * What was that? 
     -> DONE
     //-> scene1_1
-    
+
+=playtest_backroom
+im tired, so haha yaayyyy the loop is done woo you get to go back to the start
+good job player! ->DONE
+
 =backroom
  ~current_npc = "[Mel]"
    #Lupe pushes through the door to the backroom of the gas station. The room is a small breack room. The presumed manager stands at the sink, scrubbing goop.
