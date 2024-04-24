@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC_Hideable_Object : MonoBehaviour
+public class Hideable_Object : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
