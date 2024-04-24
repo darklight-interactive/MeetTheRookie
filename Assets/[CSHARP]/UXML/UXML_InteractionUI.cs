@@ -19,8 +19,8 @@ public class UXML_InteractionUI : UXML_UIDocumentObject
 
     public virtual void Awake()
     {
-        tags = new string[] { PROMPT_TAG, CHOICE_GROUP_TAG };
-        Initialize(UIManager.Instance.interactionUIPreset, tags);
+        elementTags = new string[] { PROMPT_TAG, CHOICE_GROUP_TAG };
+        Initialize(UIManager.Instance.interactionUIPreset, elementTags);
     }
 
     public void DisplayInteractPrompt(Vector3 worldPosition)

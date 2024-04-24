@@ -1,18 +1,28 @@
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-public enum TempType { BASE, NPC }
+public enum TempType { BASIC, NPC }
 public class InkyInteractable : Interactable
 {
     [SerializeField] public TempType tempType;
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
+
+
+
+    [Space(10), Header("Materials")]
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Material activeMaterial;
+    [SerializeField] private Material defaultMaterial;
+
+    [Header("Scene Change")]
+    [SerializeField] private string sceneName = "";
+
     [ShowOnly] public string currentText;
     [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
     protected override void Initialize()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void Update()
@@ -24,6 +34,21 @@ public class InkyInteractable : Interactable
         {
             Complete();
         }
+
+
+        // Set MAterial
+        if (meshRenderer)
+        {
+            if (isActive)
+            {
+                meshRenderer.material = activeMaterial;
+            }
+            else
+            {
+                meshRenderer.material = defaultMaterial;
+            }
+        }
+
     }
 
 
@@ -68,6 +93,12 @@ public class InkyInteractable : Interactable
     {
         base.Complete();
         Debug.Log("Completing Interaction Knot: " + inkKnotName); // Invoke the OnInteractionCompleted event
+
+        if (sceneName != "")
+        {
+            SceneManager.Instance.ChangeSceneTo(sceneName);
+        }
+
     }
 
     public override void OnDestroy()
