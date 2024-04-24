@@ -71,11 +71,15 @@ public class VisualNovel : UXML_UIDocumentObject
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
+            if (currentStory.currentChoices.Count > 0)
+            {
+                PopulateChoices();
+            }
         }
-        else if (currentStory.currentChoices.Count > 0)
-        {
-            PopulateChoices();
-        }
+        // else if (currentStory.currentChoices.Count > 0)
+        // {
+        //     PopulateChoices();
+        // }
         else if (currentStory.currentChoices.Count <= 0)
         {
             EndStory();

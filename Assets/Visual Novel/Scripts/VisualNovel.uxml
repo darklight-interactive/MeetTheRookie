@@ -1,24 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Visual%20Novel/Scripts/VisualNovel.uss?fileID=7433441132597879392&amp;guid=f355bbbc73f8b6f4e81577431e243ca6&amp;type=3#VisualNovel" />
     <ui:VisualElement name="VisualElement" class="background">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 100%; height: 100%; flex-direction: row; flex-basis: 100%; flex-shrink: 0; position: absolute;">
-            <ui:VisualElement name="MisraSide" class="CharacterSide" style="background-color: rgb(7, 151, 36);">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 100%; height: 100%; flex-direction: row; flex-basis: 100%; flex-shrink: 0; position: absolute; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/WorldSpaceUI/UXML_WorldSpaceTexture.renderTexture?fileID=8400000&amp;guid=e7ee34e8fb65d8548a8b02bafb328c7f&amp;type=2#UXML_WorldSpaceTexture&quot;);">
+            <ui:VisualElement name="MisraSide" class="CharacterSide">
                 <ui:VisualElement name="MisraImage" class="Inactive" style="flex-grow: 0; width: 50%; height: 100%; flex-shrink: 0; align-self: flex-start; background-image: url(&quot;project://database/Assets/Visual%20Novel/Images/Misra%20Base%20-%20Athena%20Patronas.png?fileID=2800000&amp;guid=f5576879d9f90a246884740d108944a5&amp;type=3#Misra Base - Athena Patronas&quot;); -unity-background-scale-mode: scale-to-fit; display: flex; visibility: hidden;" />
             </ui:VisualElement>
-            <ui:VisualElement name="LupeSide" class="CharacterSide" style="align-self: flex-end; width: 50%; height: 100%; background-color: rgb(170, 0, 226);">
+            <ui:VisualElement name="LupeSide" class="CharacterSide" style="align-self: flex-end; width: 50%; height: 100%;">
                 <ui:VisualElement name="LupeImage" class="Inactive" style="flex-grow: 0; width: 50%; height: 100%; flex-shrink: 0; align-self: flex-end; background-image: url(&quot;project://database/Assets/Visual%20Novel/Images/Lupe%20Base%20-%20Athena%20Patronas.png?fileID=2800000&amp;guid=096aac1aee033c841b0ab3a3f816d9db&amp;type=3#Lupe Base - Athena Patronas&quot;); -unity-background-scale-mode: scale-to-fit; scale: -1 1; align-items: auto; display: flex;" />
             </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ChoiceParent" style="top: 5%; align-items: center; justify-content: center; align-self: center; flex-direction: column; width: 70%; height: 50%; opacity: 1; display: none;">
+            <ui:Button text="Button" name="Choice0" class="Choice" />
+            <ui:Button text="Button" name="Choice1" class="Choice" />
+            <ui:Button text="Button" name="Choice2" class="Choice" />
+            <ui:Button text="Button" name="Choice3" class="Choice" />
         </ui:VisualElement>
         <ui:VisualElement name="DialogueBoxParent" class="DialogueBoxParent">
             <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/Visual%20Novel/Images/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;);">
                 <ui:Label text="Dialogue Text" name="DialogueText" style="align-self: center; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); color: rgb(0, 0, 0); width: 95%; height: 90%; font-size: 48px; top: 5%; position: absolute; -unity-font-style: normal; white-space: normal; text-overflow: ellipsis; overflow: hidden; -unity-text-align: upper-left; left: 2%;" />
                 <ui:VisualElement name="DialogueTriangle" class="TriangleUp TriangleDown" style="transition-duration: 1s;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="ChoiceParent" style="flex-grow: 1; position: absolute; width: 100%; height: 55%; top: 32%; flex-direction: row; justify-content: space-around; display: none; align-items: stretch;">
-                <ui:Button text="Button" name="Choice0" class="Choice" />
-                <ui:Button text="Button" name="Choice1" class="Choice" />
-                <ui:Button text="Button" name="Choice2" class="Choice" />
-                <ui:Button text="Button" name="Choice3" class="Choice" />
             </ui:VisualElement>
             <ui:VisualElement name="NameTag" class="NameTagLupe">
                 <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
