@@ -75,7 +75,12 @@ namespace Darklight.Game.SpriteAnimation
 
         public void FlipTransform(Vector2 moveInput)
         {
-            _spriteRenderer.flipX = moveInput.x > 0; // Flip the sprite based on the input direction
+            // Flip the sprite based on the input direction only if the player is moving
+            float x = moveInput.x;
+            if (x > 0.1f || x < -0.1f)
+            {
+                _spriteRenderer.flipX = moveInput.x > 0f;
+            }
 
             /*
             //how many ways can you flip a sprite?

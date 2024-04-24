@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 4241149439006364865}
   - component: {fileID: 2433721290131396170}
   - component: {fileID: 210893148915583867}
+  - component: {fileID: 7797176430667915744}
   m_Layer: 6
   m_Name: '[PLAYER] Lupe'
   m_TagString: Player
@@ -88,7 +89,7 @@ MonoBehaviour:
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!114 &5365568965282730410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +194,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -277,3 +278,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7797176430667915744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171685949738713303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4257aa308f79ce54e96ea41e73492d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  dialogueBubblesList: []

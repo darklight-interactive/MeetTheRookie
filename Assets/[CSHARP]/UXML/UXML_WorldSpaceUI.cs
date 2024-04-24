@@ -9,7 +9,6 @@ using Darklight.UnityExt;
 using UnityEditor;
 #endif
 
-[ExecuteAlways]
 public class UXML_WorldSpaceUI : UXML_UIDocumentObject
 {
     MeshRenderer meshRenderer => GetComponentInChildren<MeshRenderer>();
@@ -61,6 +60,7 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
     {
         UXML_ComicBubble comicBubble = root.Q<UXML_ComicBubble>();
         comicBubble.visible = false;
+        meshRenderer.enabled = false;
     }
 
     public void SetLocalScale(float scale)

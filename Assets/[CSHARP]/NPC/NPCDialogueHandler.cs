@@ -19,7 +19,11 @@ public class NPCDialogueHandler : OverlapGrid2D
         // >> ON INTERACTION -------------------------------------
         inkyInteractable.OnInteraction += () =>
         {
-            CreateDialogueBubble(inkyInteractable.knotIterator.currentText);
+            InkyKnotIterator inkyKnotIterator = inkyInteractable.knotIterator;
+            if (inkyKnotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
+            {
+                ShowDialogueBubble(inkyKnotIterator.currentText);
+            }
         };
 
         // >> ON COMPLETED -------------------------------------
@@ -29,7 +33,7 @@ public class NPCDialogueHandler : OverlapGrid2D
         };
     }
 
-    public UXML_WorldSpaceUI CreateDialogueBubble(string text)
+    public UXML_WorldSpaceUI ShowDialogueBubble(string text)
     {
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
@@ -39,6 +43,11 @@ public class NPCDialogueHandler : OverlapGrid2D
         worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
         worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
+    }
+
+    public void HideDialogueBubble()
+    {
+        UIManager.WorldSpaceUI.Hide();
     }
 }
 

@@ -30,7 +30,7 @@ public class InkyVariableList : InkyVariable<InkList>, IInkyVariable
     public InkyVariableList(string name, InkList value) : base(name, value) { }
     public override string ToString()
     {
-        return value.ToString();
+        return value.ToString().Trim();
     }
 }
 
@@ -59,7 +59,7 @@ public class InkyVariableHandler
             {
                 InkyVariableList inkList = new InkyVariableList(variableName, inkValue as InkList);
                 variables.Add(variableName, inkList);
-                Debug.Log($"{InkyStoryManager.Prefix} Initialized global dialogue variable: {variableName} = {inkValue.ToString()}");
+                //Debug.Log($"{InkyStoryManager.Prefix} Initialized global dialogue variable: {variableName} = {inkValue.ToString()}");
             }
             else if (inkValue is Ink.Runtime.Object)
             {

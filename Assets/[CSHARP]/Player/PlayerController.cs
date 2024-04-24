@@ -9,14 +9,16 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Darklight.UnityExt.CustomInspectorGUI;
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
+public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
 {
     PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
+    [SerializeField, ShowOnly] PlayerState currentState;
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour
         {
             HandleMovement();
         }
+
+        currentState = stateMachine.CurrentState;
     }
 
     void HandleMovement()
@@ -73,6 +77,27 @@ public class PlayerController : MonoBehaviour
         {
             stateMachine.ChangeState(PlayerState.IDLE);
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+			// Get Hidden Object Component
+            var hiddenObject = other.GetComponent<NPC_Hideable_Object>();
+            if (hiddenObject != null)
+            {
+				// debug.log for proof
+                Debug.Log("Character is hidden");
+                stateMachine.ChangeState(PlayerState.HIDE);
+            }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+			// Reset state to Walk/Idle 
+            if (other.GetComponent<NPC_Hideable_Object>() != null)
+            {
+                stateMachine.ChangeState(PlayerState.IDLE);
+            }
     }
 
     /// <summary>

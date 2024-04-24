@@ -1,22 +1,35 @@
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
+public enum TempType { BASE, NPC }
 public class InkyInteractable : Interactable
 {
+    [SerializeField] public TempType tempType;
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
-
-    [ShowOnly] private string currentText;
+    [ShowOnly] public string currentText;
+    [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
     protected override void Initialize()
     {
         //throw new System.NotImplementedException();
     }
 
+    public void Update()
+    {
+        if (isComplete || knotIterator == null) return;
+        currentKnotState = knotIterator.CurrentState;
+        currentText = knotIterator.currentText;
+        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        {
+            Complete();
+        }
+    }
+
 
     public override void Interact()
     {
-        Debug.Log("Interacting with InkyInteractable");
+        //Debug.Log("Interacting with InkyInteractable");
 
         // Move the story to this knot
         if (knotIterator == null)
@@ -30,18 +43,15 @@ public class InkyInteractable : Interactable
             case InkyKnotIterator.State.START:
             case InkyKnotIterator.State.DIALOGUE:
                 knotIterator.ContinueKnot();
-                currentText = knotIterator.currentText;
                 break;
 
             case InkyKnotIterator.State.CHOICE:
                 // TODO : Implement choice selection using input
                 knotIterator.ChooseChoice(0);
                 break;
-
             case InkyKnotIterator.State.END:
                 Complete();
                 break;
-
             default:
                 break;
         }

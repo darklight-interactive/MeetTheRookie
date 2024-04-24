@@ -33,6 +33,7 @@ public interface IInteract
     delegate void OnComplete();
 }
 
+[RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : MonoBehaviour, IInteract
 {
     [ShowOnly] public bool isActive = false;
@@ -56,13 +57,13 @@ public abstract class Interactable : MonoBehaviour, IInteract
         Initialize();
         isActive = true;
 
+        if (promptIconTarget == null)
+            promptIconTarget = transform;
         UIManager.InteractionUI.DisplayInteractPrompt(promptIconTarget.position);
     }
     public virtual void TargetDisable()
     {
-        Reset();
         isActive = false;
-
         UIManager.InteractionUI.HideInteractPrompt();
     }
 
