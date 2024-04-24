@@ -17,7 +17,6 @@ public partial class MenuButton : Button
         {
             if (!string.IsNullOrEmpty(key))
             {
-                this.text = $"Inky > {key}";
                 //LocalizationManager.Instance.GetLocalizedValue(key);
             }
         });

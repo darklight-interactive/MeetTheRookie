@@ -28,10 +28,10 @@ namespace Darklight.Game.CameraController
         private float _xPosOffset = 0;
 
         [SerializeField, Range(0f, 10f)]
-        private float _yPosOffset = 50;
+        private float _yPosOffset = 0;
 
-        [SerializeField, Range(-10f, 0f)]
-        private float _zPosOffset = -50;
+        [SerializeField, Range(-10f, 10f)]
+        private float _zPosOffset = 0;
 
         [Header("PivotHandleRotation"), SerializeField, Range(-180, 180)]
         public float pivotHandleRotation = 0;

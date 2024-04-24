@@ -81,9 +81,9 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-			// Get Hidden Object Component
-            var hiddenObject = other.GetComponent<NPC_Hideable_Object>();
-            if (hiddenObject != null)
+        // Get Hidden Object Component
+        var hiddenObject = other.GetComponent<Hideable_Object>();
+        if (hiddenObject != null)
             {
 				// debug.log for proof
                 Debug.Log("Character is hidden");
@@ -93,9 +93,9 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-			// Reset state to Walk/Idle 
-            if (other.GetComponent<NPC_Hideable_Object>() != null)
-            {
+        // Reset state to Walk/Idle 
+        if (other.GetComponent<Hideable_Object>() != null)
+        {
                 stateMachine.ChangeState(PlayerState.IDLE);
             }
     }

@@ -77,7 +77,7 @@ public class PlayerInteractor : MonoBehaviour
             // Start the interaction
             activeInkyInteraction.Interact();
 
-            if (activeInkyInteraction.tempType == TempType.BASE)
+            if (activeInkyInteraction.tempType == TempType.BASIC)
             {
                 if (activeInkyInteraction.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
                 {
