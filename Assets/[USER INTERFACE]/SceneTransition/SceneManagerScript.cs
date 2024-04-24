@@ -1,48 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class SceneChange : MonoBehaviour
+public class SceneManagerScript : UXML_UIDocumentObject
 {
     public VisualElement tscreen;
     VisualElement background;
     Label textlabel;
-    public bool condition = false;
     public string newSceneName;
+    string PreviousScene;
     // Start is called before the first frame update
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        tscreen = GetComponent<UIDocument>().rootVisualElement;
-        background = tscreen.Q<VisualElement>("background");
+        Initialize(SceneTransition.Instance.SceneManager, tags);
+        tscreen = gameObject.GetComponent<UIDocument>().rootVisualElement;
+        background = tscreen.Q<VisualElement>("blackborder");
         background.SetEnabled(false);
         textlabel = tscreen.Q<Label>("textlabel");
         textlabel.text = "";
+        newSceneName = "";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (condition == true)
+        if (newSceneName != "")
         {
-            background.style.backgroundColor = Color.black;
+            PreviousScene = SceneManager.GetActiveScene().name;
             StartCoroutine(ChangeScene(newSceneName));
-            condition = false;
+            newSceneName = "";
         }
         
     }
     IEnumerator ChangeScene(string newSceneName)
     {
         background.SetEnabled(true);
-        yield return new WaitForSeconds(2);
-        textlabel.text = newSceneName;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(newSceneName);
         yield return new WaitForSeconds(1);
-        background.SetEnabled(false);
-        yield return new WaitForSeconds(0.45f);
+        textlabel.text = newSceneName;
+        yield return new WaitForSeconds(1);
         textlabel.text = "";
-        background.style.backgroundColor = Color.clear;
+        yield return new WaitForSeconds(0.45f);
+        SceneManager.LoadScene(newSceneName);
     }
 
 }

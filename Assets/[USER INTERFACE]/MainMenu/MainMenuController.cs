@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,13 +10,12 @@ public class MainMenuController : MonoBehaviour
     public VisualElement ui;
     public Button playButton;
     public Button optionsButton;
-    public Button quitButton;
-    SceneChange scenechanger;
+    public Button quitButton; 
+    public SceneManagerScript gm;  
 
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
-        scenechanger = FindFirstObjectByType<SceneChange>();
     }
 
     private void OnEnable()
@@ -31,9 +31,8 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonClicked()
     {
-        this.gameObject.SetActive(false);
-        scenechanger.newSceneName = "MelOMart Blockout";
-        scenechanger.condition = true;
+        gm = FindFirstObjectByType<SceneManagerScript>();
+        gm.newSceneName = "MelOMart_Blockout";
         Debug.Log("Play Button Clicked");
     }
 
