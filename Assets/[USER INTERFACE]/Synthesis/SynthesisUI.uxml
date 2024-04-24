@@ -1,8 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/synthesis.uss?fileID=7433441132597879392&amp;guid=8f3ac6dfa1bea63449de71aeff8f70d1&amp;type=3#synthesis" />
     <engine:VisualElement name="background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.41); justify-content: flex-start;">
-        <engine:Label text="SYNTHESIS" name="title" style="align-self: center; -unity-text-align: upper-center; color: rgb(255, 255, 255); font-size: 90px;" />
+        <engine:Button text="SYNTHESIZE!" name="title" style="align-self: center; font-size: 52px;" />
         <engine:VisualElement name="objects" style="flex-grow: 1; flex-direction: row; justify-content: center; flex-wrap: wrap;" />
     </engine:VisualElement>
-    <engine:VisualElement name="cursor" style="flex-grow: 1; position: absolute; width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/minecraft_enderpearl.jpg?fileID=21300000&amp;guid=0f2b9ee7a6861484297d6a37b9025f28&amp;type=3#minecraft_enderpearl&quot;);" />
 </engine:UXML>
