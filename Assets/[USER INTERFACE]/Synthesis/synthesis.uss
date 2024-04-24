@@ -10,6 +10,13 @@
     margin-left: 5px;
     align-self: flex-start;
 }
-.combine-target {
+.selected {
     background-color: rgb(255, 0, 0);
+}
+.highlight {
+    background-color: rgb(255, 255, 0);
+}
+
+.selected.highlight {
+    background-color: rgb(125, 0, 0);
 }

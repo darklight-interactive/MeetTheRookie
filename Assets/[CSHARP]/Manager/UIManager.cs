@@ -1,6 +1,7 @@
 using System;
 using Darklight.Game.Utility;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 // the InputSystemProvider throws an error if a UIDocument is destroyed.
@@ -22,7 +23,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
     public static UXML_WorldSpaceUI WorldSpaceUI;
-
 
     public void Start()
     {

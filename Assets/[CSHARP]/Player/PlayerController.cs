@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACTION }
+public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
@@ -79,13 +79,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Get Hidden Object Component
+        var hiddenObject = other.GetComponent<Hideable_Object>();
+        if (hiddenObject != null)
+            {
+				// debug.log for proof
+                Debug.Log("Character is hidden");
+                stateMachine.ChangeState(PlayerState.HIDE);
+            }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // Reset state to Walk/Idle 
+        if (other.GetComponent<Hideable_Object>() != null)
+        {
+                stateMachine.ChangeState(PlayerState.IDLE);
+            }
+    }
+
     /// <summary>
     /// Interaction Input has been pressed
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        stateMachine.ChangeState(PlayerState.INTERACTION);
-        playerInteractor.InteractWithFirstTarget();
+        if (stateMachine.CurrentState != PlayerState.INTERACTION) {
+            stateMachine.ChangeState(PlayerState.INTERACTION);
+            playerInteractor.InteractWithFirstTarget();
+        }
     }
 
     void ExitInteraction()
@@ -97,6 +120,7 @@ public class PlayerController : MonoBehaviour
     bool synthesisEnabled = false;
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
+        stateMachine.ChangeState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion
