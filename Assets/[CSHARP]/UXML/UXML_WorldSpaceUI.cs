@@ -32,6 +32,8 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
         meshChild.transform.SetParent(this.transform);
         meshChild.transform.localPosition = Vector3.zero;
         meshRenderer.enabled = false;
+        meshChild.layer = LayerMask.NameToLayer("Player");
+
 
         // Begin listening for changes
         OnElementChanged += TextureUpdate;
