@@ -12232,7 +12232,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 825759768}
-  - {fileID: 1338119432}
   - {fileID: 6812582921292670777}
   - {fileID: 676170509}
   m_Father: {fileID: 0}
@@ -17541,7 +17540,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 921960996}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2181482741714181426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: orthographic
@@ -17597,15 +17596,15 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a8318c8f2e43e90459ad9e56c77193ef, type: 2}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.034266
+      value: 2.7242665
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.8455665
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.968495
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17680,11 +17679,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
---- !u!4 &1338119432 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-  m_PrefabInstance: {fileID: 1338119431}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1365704861
 Mesh:
   m_ObjectHideFlags: 0
@@ -36472,7 +36466,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 12
+  field of view: 5
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -36799,7 +36793,7 @@ MonoBehaviour:
   followSpeed: 8
   rotateSpeed: 2
   isPerspective: 1
-  perspectiveFOV: 12
+  perspectiveFOV: 1
   orthographicSize: 5
 --- !u!1 &7158518054798466741
 GameObject:
@@ -37431,3 +37425,4 @@ SceneRoots:
   - {fileID: 142972361}
   - {fileID: 921960996}
   - {fileID: 987175996433645435}
+  - {fileID: 1338119431}
