@@ -165,6 +165,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
         funcsToBind.Add(new BoundFunction(funcName, function, lookaheadSafe));
+        if (currentStory != null) {
+            currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+        }
     }
 
     public object RunExternalFunction(string func, object[] args)
