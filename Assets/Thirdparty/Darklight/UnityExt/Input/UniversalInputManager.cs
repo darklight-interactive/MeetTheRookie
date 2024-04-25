@@ -42,6 +42,7 @@ namespace Darklight.UnityExt.Input
         private void OnEnable()
         {
             DefaultUniversalInputActions.Enable();
+            OnInputReady?.Invoke();
         }
 
         private void OnDisable()

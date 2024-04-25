@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
         UniversalInputManager.Instance.OnInputReady -= StartInputListener;
     }
 
+    void Start()
+    {
+        StartInputListener();
+    }
+
     Vector2 _activeMoveInput = Vector2.zero;
     void StartInputListener()
     {
