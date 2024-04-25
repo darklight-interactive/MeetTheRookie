@@ -12,7 +12,7 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
     protected Dictionary<string, UXML_UIDocumentElement> uiElements = new Dictionary<string, UXML_UIDocumentElement>();
     protected string[] elementTags = new string[0];
 
-    public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+    public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags)
     {
         this.preset = preset;
         document.visualTreeAsset = preset.VisualTreeAsset;

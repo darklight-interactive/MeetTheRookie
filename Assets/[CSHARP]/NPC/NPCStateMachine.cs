@@ -29,7 +29,7 @@ public class NPCStateMachine : FiniteStateMachine<NPCState>
         if (animator == null) return;
         if (currentState == NPCState.NONE) return;
 
-        Debug.Log($"NPC OnStateChanged -> {state}");
+        //Debug.Log($"NPC OnStateChanged -> {state}");
         animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(currentState));
     }
 }
