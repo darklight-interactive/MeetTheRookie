@@ -90,6 +90,10 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
                     Console.Log($"{Prefix} Found Tag: {tag}", 3);
                 }
             }
+
+            foreach (var func in funcsToBind) {
+                currentStory.BindExternalFunctionGeneral(func.name, func.function, func.lookaheadSafe);
+            }
         }
 
         Console.Log($"{Prefix} Story Loaded: {storyName}");
@@ -144,9 +148,23 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         return new InkyVariableHandler(currentStory);
     }
 
+    struct BoundFunction {
+        public string name { get; private set; }
+        public Story.ExternalFunction function { get; private set; }
+        public bool lookaheadSafe { get; private set; }
+
+        public BoundFunction(string name, Story.ExternalFunction function, bool lookaheadSafe = false) {
+            this.name = name;
+            this.function = function;
+            this.lookaheadSafe = lookaheadSafe;
+        }
+    }
+
+    HashSet<BoundFunction> funcsToBind = new HashSet<BoundFunction>();
+
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
-        currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+        funcsToBind.Add(new BoundFunction(funcName, function, lookaheadSafe));
     }
 
     public object RunExternalFunction(string func, object[] args)
