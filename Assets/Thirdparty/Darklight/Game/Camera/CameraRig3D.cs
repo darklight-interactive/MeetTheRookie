@@ -44,16 +44,16 @@ namespace Darklight.Game.Camera
 
             // << CALCULATE LERP POSITION >>
             _cameraPosition = transform.position + settings.LocalCameraPosition;
-            camera.transform.localPosition = Vector3.Lerp(
-                camera.transform.localPosition,
+            camera.transform.position = Vector3.Lerp(
+                camera.transform.position,
                 _cameraPosition,
                 followSpeed * Time.deltaTime
             );
 
             // << CALCULATE SLERP ROTATION >>
             _cameraRotation = GetLookRotation(camera.transform.position, _lookTargetPosition);
-            camera.transform.localRotation = Quaternion.Slerp(
-                camera.transform.localRotation,
+            camera.transform.rotation = Quaternion.Slerp(
+                camera.transform.rotation,
                 _cameraRotation,
                 rotateSpeed * Time.deltaTime
             );

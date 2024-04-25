@@ -49,12 +49,12 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    public void InteractWithFirstTarget()
+    public void InteractWithActiveTarget()
     {
         InteractWith(activeInkyInteraction);
     }
 
-    public void InteractWith(InkyInteractable interactable)
+    void InteractWith(InkyInteractable interactable)
     {
         if (interactable == null || interactable.isComplete) return;
         if (interactable is InkyInteractable)

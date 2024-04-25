@@ -8,15 +8,13 @@ public class InkyInteractable : Interactable
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
 
-
-
     [Space(10), Header("Materials")]
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Material activeMaterial;
     [SerializeField] private Material defaultMaterial;
 
     [Header("Scene Change")]
-    [SerializeField] private string sceneName = "";
+    [SerializeField] private SceneObject sceneChange;
 
     [ShowOnly] public string currentText;
     [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
@@ -36,7 +34,7 @@ public class InkyInteractable : Interactable
         }
 
 
-        // Set MAterial
+        // Set Material
         if (meshRenderer)
         {
             if (isActive)
@@ -94,9 +92,9 @@ public class InkyInteractable : Interactable
         base.Complete();
         Debug.Log("Completing Interaction Knot: " + inkKnotName); // Invoke the OnInteractionCompleted event
 
-        if (sceneName != "")
+        if (sceneChange != "")
         {
-            SceneManager.Instance.ChangeSceneTo(sceneName);
+            SceneManager.Instance.ChangeSceneTo(sceneChange);
         }
 
     }
