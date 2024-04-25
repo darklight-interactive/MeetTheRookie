@@ -34,6 +34,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
         synthesizeButton = synthesisUI.rootVisualElement.Q("title");
         itemsSelection.Add(synthesizeButton);
+
+        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     bool synthesisActive = false;
@@ -46,14 +50,11 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
         UniversalInputManager.MoveInputAction.performed += SelectMove;
         UniversalInputManager.PrimaryInteractAction.performed += Select;
-        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     public void Show(bool visible) {
         synthesisActive = visible;
-        synthesisUI.rootVisualElement.visible = synthesisActive;
+        synthesisUI.gameObject.SetActive(synthesisActive);
     }
 
     void SelectMove(InputAction.CallbackContext context) {
