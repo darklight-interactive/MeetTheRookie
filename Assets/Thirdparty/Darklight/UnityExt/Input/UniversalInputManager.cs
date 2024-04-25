@@ -36,6 +36,9 @@ namespace Darklight.UnityExt.Input
         [Header("Input Action Map")]
         public InputActionAsset DefaultUniversalInputActions;
 
+        public delegate void InputReady();
+        public event InputReady OnInputReady;
+
         private void OnEnable()
         {
             DefaultUniversalInputActions.Enable();
@@ -56,9 +59,9 @@ namespace Darklight.UnityExt.Input
             if (deviceFound)
             {
                 Debug.Log(Prefix + $"Found Input : {DeviceInputType}");
-
-
             }
+
+            OnInputReady?.Invoke();
         }
 
         private bool DetectAndEnableInputDevice()

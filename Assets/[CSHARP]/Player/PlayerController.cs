@@ -22,16 +22,19 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
-    void Start()
+    public void OnEnable()
     {
-        Invoke("StartInputListener", 0.1f);
+        UniversalInputManager.Instance.OnInputReady += StartInputListener;
+    }
+
+    public void OnDisable()
+    {
+        UniversalInputManager.Instance.OnInputReady -= StartInputListener;
     }
 
     Vector2 _activeMoveInput = Vector2.zero;
     void StartInputListener()
     {
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-
         // Subscribe to Universal MoveInput
         InputAction moveInputAction = UniversalInputManager.MoveInputAction;
         if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }

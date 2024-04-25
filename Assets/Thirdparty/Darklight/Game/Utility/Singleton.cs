@@ -50,7 +50,6 @@ namespace Darklight.Game.Utility
             }
         }
 
-
         /// <summary>
         /// Destroy the singleton instance and the GameObject it is attached to.
         /// </summary>
@@ -80,7 +79,6 @@ namespace Darklight.Game.Utility
             if (_instance == null)
             {
                 _instance = this as T;
-                Debug.Log($"{Prefix} Awake: Setting instance to {name}.");
             }
             else
             {
@@ -90,6 +88,8 @@ namespace Darklight.Game.Utility
 
             // Initialize the singletonObject
             DontDestroyOnLoad(this.gameObject);
+
+            Debug.Log($"{Prefix} Awake: Instance created.");
         }
     }
 }
