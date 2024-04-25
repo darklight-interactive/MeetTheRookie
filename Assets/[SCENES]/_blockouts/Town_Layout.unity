@@ -289,14 +289,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c810578f768f4498fce3533932c66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPrefab: {fileID: 0}
-  focusTarget: {fileID: 2126640382}
+  _lookTarget: {fileID: 0}
+  _lookTargetOffset: {x: 0, y: 0, z: 0}
   _xPosOffset: 0
   _yPosOffset: 0
   _zPosOffset: 3.2
-  pivotHandleRotation: 0
-  followSpeed: 2
-  rotateSpeed: 2
+  _followSpeed: 2
+  _rotateSpeed: 2
   isPerspective: 1
   perspectiveFOV: 3
   orthographicSize: 5
@@ -1230,6 +1229,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5365568965282730410, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: moveVector.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Name
       value: '[PLAYER] Lupe'
@@ -1837,11 +1840,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 063ae13554024d444a44f851ea0023ec, type: 3}
   m_PrefabInstance: {fileID: 2117827160}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2126640382 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6944989206972801970, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-  m_PrefabInstance: {fileID: 1428791288}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2130958753
 GameObject:

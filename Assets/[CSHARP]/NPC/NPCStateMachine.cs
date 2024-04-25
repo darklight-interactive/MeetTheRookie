@@ -315,7 +315,9 @@ public class HideState : IState<NPCState>
             float targetX = npc.transform.position.x + movement;
 
             // move the character
-            npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
+            npc.transform.position = Vector3.Lerp(npc.transform.position,
+                new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
+                Time.deltaTime);
             _animator.FrameAnimationPlayer.FlipTransform(new Vector2(-hideDirection, 0));
         }
     }
@@ -325,7 +327,7 @@ public class HideState : IState<NPCState>
         int hideCheckCount = 0;
         for (; ; )
         {
-            hideableObjects = _controller.FindHideableObjects();
+            hideableObjects = GameObject.FindObjectsOfType<Hideable_Object>();
 
             // find the closest hideable object, only if there are any
             if (hideableObjects != null && hideableObjects.Length > 0)
@@ -347,7 +349,7 @@ public class HideState : IState<NPCState>
                     }
                 }
 
-                // set the closest hideAbleObject
+                // set the closest hideableObject
                 closestHideableObject = currentClosest;
 
                 // Setup animation states
