@@ -1,7 +1,11 @@
-INCLUDE global.ink
-
 // LISTS are Enums that can toggle
 // VARS are one or more data values that store a single type of data
+
+// ====== SPEAKER ======
+LIST Speaker = Unkown, Lupe, Misra, Employee, Mel, Chief_Thelton
+VAR curSpeaker = Speaker.Lupe
+== function set_speaker(value)
+    ~ curSpeaker = value
 
 // ====== QUEST CHAIN =======
 LIST QuestChain = FIRST_INTERACT, PAY_FOR_GAS
@@ -27,25 +31,15 @@ VAR knowledgeState = ()
         ~ return knowledgeState ? clue
     }
 
-// ===== SCENE HANDLING =====
-VAR currentScene = -> scene1_1
-
-=== GoToSubScene(int) ===
-    {int:
-        - 0: -> scene1_0
-        - 1: -> scene1_1
-        - 2: -> scene1_2
-    }
-
 // == ( SCENE 1 ) ================================= >>
--> GoToSubScene(0)
 
 === scene1_0 ===
-You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do.
+~ set_speaker(Speaker.Chief_Thelton)
+You've reached Chief Detective Inspector Thelton, Boise Precinct. 
+I'm not available right now. You know what to do.
 // We hear a generic voicemail beep.
 
-* [CONTINUE] 
-# name : Lupe
+~ set_speaker(Speaker.Lupe)
 Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outside of Kettle Rock, Idaho. Should be back on the road soon--don't jump on me for being late. I'll debrief the Watchowski Case with you when I get back. Alright. Bye.
     -> scene1_1
 
@@ -57,7 +51,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 -> DONE
 
 = fallen_tree
-#Lupe sees a tree has fallen and blocked the way out of town.
+//Lupe sees a tree has fallen and blocked the way out of town.
 * What the hell... -> npc
 
 = gas_pump
@@ -73,14 +67,12 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
             - Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
         } 
 }
-
 = car
 {IsQuestComplete(PAY_FOR_GAS): 
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. -> DONE //{goto("precinct")} 
 - else: 
     Still gotta pay. -> DONE
 }
-
 = npc
 {IsQuestComplete(PAY_FOR_GAS):
     ~ set_speaker(Speaker.Unkown)
@@ -92,7 +84,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     Heheheheh. 
     Ah, don't look so grumpy. 
     If you put in a complaint with the local Police I'm sure you'll be out of here in no time.-> DONE
-    - else :
+- else :
     You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> DONE
 }
 
@@ -101,6 +93,7 @@ I guess I'll find someone to help me inside here.
 -> DONE
 
 // ------------- SCENE1.2 MelOMarket Store
+
 === scene1_2 ===
 //The gas station door chimes with a slightly out of tune jingle.
 //Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
@@ -210,9 +203,6 @@ I guess I'll find someone to help me inside here.
     ~ set_speaker(Speaker.Mel)
         No idea, it was here when I unlocked this morning. 
         Darn stuff won't scrub off. ->DONE
-
-   
-   
 
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
