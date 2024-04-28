@@ -50,8 +50,10 @@ namespace Darklight.UnityExt.Input
             DefaultUniversalInputActions.Disable();
         }
 
-        private void Start()
+        public override void Awake()
         {
+            base.Awake();
+
             DefaultTouchActionMap = DefaultUniversalInputActions.FindActionMap("DefaultTouch");
             DefaultKeyboardActionMap = DefaultUniversalInputActions.FindActionMap("DefaultKeyboard");
             DefaultControllerActionMap = DefaultUniversalInputActions.FindActionMap("DefaultController");

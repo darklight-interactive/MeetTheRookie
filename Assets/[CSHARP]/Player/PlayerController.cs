@@ -22,9 +22,14 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
-    void Start()
+    void OnEnable()
     {
-        StartInputListener();
+        UniversalInputManager.Instance.OnInputReady += StartInputListener;
+    }
+
+    void OnDisable()
+    {
+        UniversalInputManager.Instance.OnInputReady -= StartInputListener;
     }
 
     Vector2 _activeMoveInput = Vector2.zero;
