@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
 	<object class="Workspace" id="{fbf25497-e93e-45ed-82e7-4f14a55ea0f7}">
+		<property name="builtBanksOutputDirectory">
+			<value>Build</value>
+		</property>
+		<property name="builtBanksMirrorBrowserFolderHierarchy">
+			<value>true</value>
+		</property>
 		<relationship name="masterEventFolder">
 			<destination>{863fad5c-cc59-45c7-83fe-c7f85711c78d}</destination>
 		</relationship>
@@ -30,6 +36,7 @@
 		</relationship>
 		<relationship name="platforms">
 			<destination>{3bad9655-629b-4f5d-b6ff-363a2a7b40f0}</destination>
+			<destination>{2d083f7d-1576-4be7-9359-b6d3359edca3}</destination>
 		</relationship>
 	</object>
 </objects>
