@@ -5,38 +5,69 @@ using Darklight.Game.Camera;
 using Darklight.Game.Utility;
 using UnityEngine;
 
-public enum CameraState
-{
-    NULL,
-    FOLLOW,
 
-}
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class CameraStateMachine : FiniteStateMachine<CameraState>
+namespace Darklight.Game
 {
-    public CameraStateMachine(CameraState initialState, Dictionary<CameraState, IState<CameraState>> possibleStates, GameObject parent) : base(initialState, possibleStates, parent)
+
+    public enum CameraState
     {
-
-    }
-}
-
-
-public class IdleState : IState<CameraState>
-{
-    public FiniteStateMachine<CameraState> StateMachine { get; set; }
-
-    public void Enter(params object[] enterArgs)
-    {
-        Debug.Log("Entering Idle State");
+        DEFAULT,
+        FOLLOW_TARGET,
+        CLOSE_UP
     }
 
-    public void Exit()
+    public class CameraStateMachine : FiniteStateMachine<CameraState>
     {
-        Debug.Log("Exiting Idle State");
+        private CameraState dEFAULT;
+        private Dictionary<CameraState, IState<CameraState>> dictionary;
+
+        public CameraStateMachine(CameraState initialState, Dictionary<CameraState, IState<CameraState>> possibleStates, GameObject parent) : base(initialState, possibleStates, parent)
+        {
+        }
+
+        public override void Step()
+        {
+            base.Step();
+        }
+
+        public override void GoToState(CameraState state, params object[] enterArgs)
+        {
+            base.GoToState(state, enterArgs);
+        }
     }
 
-    public void Execute(params object[] executeArgs)
+    /// <summary>
+    /// This state is the default state for the camera. It does not follow any target and is in a fixed position.
+    /// </summary>
+    public class CameraDefaultState : IState<CameraState>
     {
-        Debug.Log("Executing Idle State");
+        CameraRig3D _rig3D;
+        CameraSettings _settings;
+        public CameraDefaultState(CameraRig3D rig3D, ref CameraSettings settings)
+        {
+            _settings = settings;
+            _rig3D = rig3D;
+        }
+
+        public FiniteStateMachine<CameraState> StateMachine { get; set; }
+
+        public void Enter(params object[] enterArgs)
+        {
+            _rig3D.ActiveSettings = _settings;
+        }
+
+        public void Exit()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Execute(params object[] executeArgs)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
