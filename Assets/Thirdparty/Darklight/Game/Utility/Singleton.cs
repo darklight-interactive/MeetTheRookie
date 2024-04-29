@@ -50,46 +50,28 @@ namespace Darklight.Game.Utility
             }
         }
 
-
-        /// <summary>
-        /// Destroy the singleton instance and the GameObject it is attached to.
-        /// </summary>
-        public static void DestroySingleton()
-        {
-            if (_instance != null)
-            {
-                if (Application.isPlaying)
-                {
-                    //Debug.Log($"{Prefix} Destroying instance.");
-                    Destroy(_instance.gameObject);
-                }
-#if UNITY_EDITOR
-                else
-                {
-                    //Debug.Log($"{Prefix} Destroying instance in editor.");
-                    DestroyImmediate(_instance.gameObject);
-                }
-#endif
-            }
-            _instance = null;
-        }
-
         public virtual void Awake()
         {
             // If an instance does not exist, set it to this object
             if (_instance == null)
             {
                 _instance = this as T;
-                Debug.Log($"{Prefix} Awake: Setting instance to {name}.");
             }
-            else
+            else if (_instance != this)
             {
-                DestroySingleton();
+                if (Application.isPlaying)
+                    Destroy(this.gameObject);
+#if UNITY_EDITOR
+                else
+                    DestroyImmediate(this.gameObject);
+#endif
                 return;
             }
 
             // Initialize the singletonObject
             DontDestroyOnLoad(this.gameObject);
+
+            Debug.Log($"{Prefix} Awake: Instance created.");
         }
     }
 }

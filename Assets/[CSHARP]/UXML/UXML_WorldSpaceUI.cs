@@ -24,14 +24,16 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
 
     private void Awake()
     {
-        tags = new string[] { COMIC_BUBBLE_TAG };
-        Initialize(UIManager.Instance.worldSpaceUIPreset, tags);
+        elementTags = new string[] { COMIC_BUBBLE_TAG };
+        Initialize(UIManager.Instance.worldSpaceUIPreset, elementTags);
 
         // Create a quad mesh child
         GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
         meshChild.transform.SetParent(this.transform);
         meshChild.transform.localPosition = Vector3.zero;
         meshRenderer.enabled = false;
+        meshChild.layer = LayerMask.NameToLayer("Player");
+
 
         // Begin listening for changes
         OnElementChanged += TextureUpdate;

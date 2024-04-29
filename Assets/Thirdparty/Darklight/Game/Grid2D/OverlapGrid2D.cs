@@ -18,6 +18,7 @@ namespace Darklight.Game.Grid
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
         [SerializeField] protected LayerMask layerMask;
+        [SerializeField] public bool showGizmos = true;
 
         public override void Awake()
         {
@@ -123,6 +124,7 @@ namespace Darklight.Game.Grid
         public void OnSceneGUI()
         {
             if (grid2D == null) return;
+            if (grid2D.showGizmos == false) return;
             DrawGrid();
         }
 
