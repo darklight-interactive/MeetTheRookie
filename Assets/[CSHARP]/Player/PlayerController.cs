@@ -103,11 +103,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-
-        if (playerInteractor.InteractWithActiveTarget())
-        {
-            stateMachine.ChangeState(PlayerState.INTERACTION);
-        }
+        bool result = playerInteractor.InteractWithTarget();
     }
 
     #region Synthesis Management

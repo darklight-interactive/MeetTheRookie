@@ -11,10 +11,10 @@ public interface IInteract
     /// <summary>
     /// Whether or not the interaction is being targeted.
     /// </summary>
-    public bool isTargeted { get; set; }
+    public bool isTarget { get; set; }
 
     /// <summary>
-    /// Whether or not the interaction is active.
+    /// Whether or not the interaction is allowed to be interacted with.
     /// </summary>
     public bool isActive { get; set; }
 
@@ -29,24 +29,11 @@ public interface IInteract
     public string interactionKey { get; set; }
 
     /// <summary>
-    /// The target transform for the interaction prompt UI.
-    /// </summary>
-    public Transform promptTarget { get; set; }
-
-    /// <summary>
     /// Called when the player is targeting the interactable object.
     /// </summary>
     public virtual void TargetEnable()
     {
-        isActive = true;
-
-        if (promptTarget == null)
-        {
-            Debug.LogWarning("No prompt target set for interactable object.");
-            return;
-        }
-
-        UIManager.InteractionUI.DisplayInteractPrompt(promptTarget.position);
+        isTarget = true;
     }
 
     /// <summary>
@@ -54,14 +41,17 @@ public interface IInteract
     /// </summary>
     public virtual void TargetDisable()
     {
-        isActive = false;
-        UIManager.InteractionUI.HideInteractPrompt();
+        isTarget = false;
     }
+
 
     /// <summary>
     /// Called when the player interacts with the object.
     /// </summary>
-    public abstract void Interact();
+    public virtual void Interact()
+    {
+        isActive = true;
+    }
 
     /// <summary>
     /// Called when the interaction is complete.
@@ -81,7 +71,7 @@ public interface IInteract
     }
 
     // Delegate Events
-    delegate void OnInteract();
+    delegate void OnInteract(string currentText);
     delegate void OnComplete();
 
     /// <summary>

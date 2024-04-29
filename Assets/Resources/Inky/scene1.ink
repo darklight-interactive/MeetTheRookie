@@ -163,8 +163,7 @@ I guess I'll find someone to help me inside here.
     -> DONE
     -else:
         ~ set_speaker(Speaker.Lupe)
-        Still gotta pay.
-        -> DONE
+        Still gotta pay. -> DONE
 }
 
 // ------------- SCENE1.3 Breakroom ---- >>

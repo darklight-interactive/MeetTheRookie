@@ -12,106 +12,103 @@ using static Darklight.UnityExt.CustomInspectorGUI;
     typeof(PlayerDialogueHandler))]
 public class PlayerInteractor : MonoBehaviour
 {
+    PlayerDialogueHandler playerDialogueHandler => GetComponent<PlayerDialogueHandler>();
+    PlayerController playerController => GetComponent<PlayerController>();
+    PlayerStateMachine stateMachine => playerController.stateMachine;
+
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
     [SerializeField, ShowOnly] int _interactionCount;
 
     void Update()
     {
-        HandleInteractions();
+        RefreshRadar();
+
+        if (_activeInteraction == null && interactables.Count > 0)
+        {
+            // Because this method is called every frame, this line will keep the target at the correct position
+            interactables.First().TargetEnable();
+        }
     }
-    void HandleInteractions()
+
+    void RefreshRadar()
     {
+        if (interactables.Count == 0) return;
+
         // Temporary list to hold items to be removed
         List<IInteract> toRemove = new List<IInteract>();
 
-        foreach (IInteract interaction in interactables)
-        {
-            if (interaction.isComplete)
-            {
-                // Mark the interaction for removal
-                toRemove.Add(interaction);
-                IInteract interactable = interaction as IInteract;
-                interactable.TargetDisable();
-            }
-            else if (interaction is NPC_Interactable)
-            {
-                if (_activeInteraction == null)
-                    _activeInteraction = interaction as NPC_Interactable;
-
-                /*
-                Because this method is called every frame, 
-                this line will keep the active interaction target at the correct position */
-                IInteract interactable = interaction as IInteract;
-                interactable.TargetEnable();
-            }
-        }
-
         // Update the interaction count
         _interactionCount = interactables.Count;
-    }
 
-    public bool InteractWithActiveTarget()
-    {
-        return InteractWith(_activeInteraction);
-    }
-
-    bool InteractWith(IInteract interactable)
-    {
-        if (interactable == null || interactable.isComplete) return false;
-        if (interactable is NPC_Interactable)
+        foreach (IInteract interactable in interactables)
         {
-            PlayerDialogueHandler playerDialogueHandler = GetComponent<PlayerDialogueHandler>();
-            playerDialogueHandler.HideDialogueBubble();
-
-            if (_activeInteraction == interactable || _activeInteraction == null)
+            if (interactable == null) continue;
+            if (interactable.isComplete)
             {
-                // Set as active interaction
-                _activeInteraction = interactable;
-                _activeInteraction.TargetDisable();
-                _activeInteraction.OnCompleted += () =>
-                {
-                    PlayerController playerController = GetComponent<PlayerController>();
-                    playerController.stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
-                };
+                // Mark the interaction for removal
+                toRemove.Add(interactable);
+                interactable.TargetDisable();
             }
-
-            // Start the interaction
-            _activeInteraction.Interact();
-
-            /*
-            if (_activeInteraction.tempType == TempType.BASIC)
-            {
-                if (_activeInteraction.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
-                {
-                    playerDialogueHandler.CreateDialogueBubble(_activeInteraction.knotIterator.currentText);
-                }
-            }
-            */
         }
+
+        // Remove the completed interactions from the HashSet
+        foreach (IInteract completedInteraction in toRemove)
+        {
+            interactables.Remove(completedInteraction);
+        }
+    }
+
+    public bool InteractWithTarget()
+    {
+        if (interactables.Count == 0) return false;
+
+        IInteract targetInteractable = interactables.First();
+        if (targetInteractable == null) return false;
+        if (targetInteractable.isComplete) return false;
+
+        _activeInteraction = targetInteractable;
+        _activeInteraction.TargetDisable();
+
+        // If not active, subscribe to the events
+        if (!_activeInteraction.isActive)
+        {
+            stateMachine.ChangeState(PlayerState.INTERACTION); // Set the Player State to Interaction
+
+            // Subscribe to the Interaction Events
+            _activeInteraction.OnInteraction += (string text) =>
+            {
+                if (_activeInteraction is Clue_Interactable)
+                    playerDialogueHandler.CreateDialogueBubble(text);
+            };
+
+            // Subscribe to the Completion Event
+            _activeInteraction.OnCompleted += () =>
+            {
+                stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
+
+                playerDialogueHandler.HideDialogueBubble();
+            };
+        }
+
+        // Continue the Interaction
+        _activeInteraction.Interact();
         return true;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Interactable interactable = other.GetComponent<Interactable>();
+        IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
-        if (interactable.isComplete) return;
         interactables.Add(interactable);
     }
 
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Interactable interactable = other.GetComponent<Interactable>();
+        IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
         interactables.Remove(interactable);
-
-        if (_activeInteraction == interactable as IInteract)
-        {
-            _activeInteraction.TargetDisable();
-            _activeInteraction = null;
-        }
     }
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>

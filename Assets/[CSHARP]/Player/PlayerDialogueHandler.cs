@@ -9,9 +9,6 @@ using UnityEditor;
 
 public class PlayerDialogueHandler : OverlapGrid2D
 {
-    private Queue<UXML_WorldSpaceUI> dialogueBubbles = new Queue<UXML_WorldSpaceUI>();
-    [SerializeField] private List<UXML_WorldSpaceUI> dialogueBubblesList = new List<UXML_WorldSpaceUI>();
-
     public UXML_WorldSpaceUI CreateDialogueBubble(string text)
     {
         OverlapGrid2D_Data data = this.GetBestData();
