@@ -7,10 +7,9 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(InkyInteractable))]
 public class NPCDialogueHandler : OverlapGrid2D
 {
-    private InkyInteractable inkyInteractable => GetComponent<InkyInteractable>();
+    private Interactable inkyInteractable => GetComponent<Interactable>();
     private Queue<UXML_WorldSpaceUI> dialogueBubbles = new Queue<UXML_WorldSpaceUI>();
     [SerializeField] private List<UXML_WorldSpaceUI> dialogueBubblesList = new List<UXML_WorldSpaceUI>();
 
@@ -31,12 +30,16 @@ public class NPCDialogueHandler : OverlapGrid2D
         {
             UIManager.WorldSpaceUI.Hide();
         };
+
+        inkyInteractable.promptTarget.transform.position = this.GetBestData().worldPosition;
     }
 
     public UXML_WorldSpaceUI ShowDialogueBubble(string text)
     {
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
+
+        inkyInteractable.promptTarget.transform.position = data.worldPosition;
 
         UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
         worldSpaceUIDoc.transform.position = position;

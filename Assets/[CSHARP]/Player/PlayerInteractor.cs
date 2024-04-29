@@ -12,62 +12,64 @@ using static Darklight.UnityExt.CustomInspectorGUI;
     typeof(PlayerDialogueHandler))]
 public class PlayerInteractor : MonoBehaviour
 {
-    protected HashSet<Interactable> interactables = new HashSet<Interactable>();
-    [SerializeField, ShowOnly] List<InkyInteractable> inkyInteractables = new List<InkyInteractable>();
-    [SerializeField, ShowOnly] InkyInteractable activeInkyInteraction;
-    [SerializeField, ShowOnly] int interactionCount;
+    protected HashSet<IInteract> interactables = new HashSet<IInteract>();
+    [SerializeField, ShowOnly] IInteract _activeInteraction;
+    [SerializeField, ShowOnly] int _interactionCount;
 
     void Update()
     {
         HandleInteractions();
-
-        interactionCount = interactables.Count;
     }
     void HandleInteractions()
     {
         // Temporary list to hold items to be removed
-        List<Interactable> toRemove = new List<Interactable>();
+        List<IInteract> toRemove = new List<IInteract>();
 
-        foreach (Interactable interaction in interactables)
+        foreach (IInteract interaction in interactables)
         {
             if (interaction.isComplete)
             {
                 // Mark the interaction for removal
                 toRemove.Add(interaction);
-                interaction.TargetDisable();
+                IInteract interactable = interaction as IInteract;
+                interactable.TargetDisable();
             }
-            else if (interaction is InkyInteractable)
+            else if (interaction is NPC_Interactable)
             {
-                if (activeInkyInteraction == null)
-                    activeInkyInteraction = interaction as InkyInteractable;
+                if (_activeInteraction == null)
+                    _activeInteraction = interaction as NPC_Interactable;
 
                 /*
                 Because this method is called every frame, 
                 this line will keep the active interaction target at the correct position */
-                activeInkyInteraction.TargetEnable();
+                IInteract interactable = interaction as IInteract;
+                interactable.TargetEnable();
             }
         }
+
+        // Update the interaction count
+        _interactionCount = interactables.Count;
     }
 
     public bool InteractWithActiveTarget()
     {
-        return InteractWith(activeInkyInteraction);
+        return InteractWith(_activeInteraction);
     }
 
-    bool InteractWith(InkyInteractable interactable)
+    bool InteractWith(IInteract interactable)
     {
         if (interactable == null || interactable.isComplete) return false;
-        if (interactable is InkyInteractable)
+        if (interactable is NPC_Interactable)
         {
             PlayerDialogueHandler playerDialogueHandler = GetComponent<PlayerDialogueHandler>();
             playerDialogueHandler.HideDialogueBubble();
 
-            if (activeInkyInteraction == interactable || activeInkyInteraction == null)
+            if (_activeInteraction == interactable || _activeInteraction == null)
             {
                 // Set as active interaction
-                activeInkyInteraction = interactable;
-                activeInkyInteraction.TargetDisable();
-                activeInkyInteraction.OnCompleted += () =>
+                _activeInteraction = interactable;
+                _activeInteraction.TargetDisable();
+                _activeInteraction.OnCompleted += () =>
                 {
                     PlayerController playerController = GetComponent<PlayerController>();
                     playerController.stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
@@ -75,15 +77,17 @@ public class PlayerInteractor : MonoBehaviour
             }
 
             // Start the interaction
-            activeInkyInteraction.Interact();
+            _activeInteraction.Interact();
 
-            if (activeInkyInteraction.tempType == TempType.BASIC)
+            /*
+            if (_activeInteraction.tempType == TempType.BASIC)
             {
-                if (activeInkyInteraction.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
+                if (_activeInteraction.knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
                 {
-                    playerDialogueHandler.CreateDialogueBubble(activeInkyInteraction.knotIterator.currentText);
+                    playerDialogueHandler.CreateDialogueBubble(_activeInteraction.knotIterator.currentText);
                 }
             }
+            */
         }
         return true;
     }
@@ -103,12 +107,11 @@ public class PlayerInteractor : MonoBehaviour
         if (interactable == null) return;
         interactables.Remove(interactable);
 
-        if (activeInkyInteraction == interactable)
+        if (_activeInteraction == interactable as IInteract)
         {
-            activeInkyInteraction.TargetDisable();
-            activeInkyInteraction = null;
+            _activeInteraction.TargetDisable();
+            _activeInteraction = null;
         }
-
     }
 
     #region ===== [[ INTERACTION HANDLING ]] ===== >>

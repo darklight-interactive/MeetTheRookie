@@ -1,88 +1,91 @@
-using Darklight.Game.Grid;
+
+#region  ABSTRACT INTERACTABLE CLASS ================== //
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-public interface IInteract
-{
-    /// <summary>
-    /// Called when the player is targeting the interactable object.
-    /// </summary>
-    void TargetEnable();
-
-    /// <summary>
-    /// Called to disable the interactable object and hide any prompts.
-    /// </summary>
-    void TargetDisable();
-
-    /// <summary>
-    /// Called when the player interacts with the object.
-    /// </summary>
-    void Interact();
-
-    /// <summary>
-    /// Reset the interactable object to its default state.
-    /// </summary>
-    void Reset();
-
-    delegate void OnInteract();
-    delegate void OnComplete();
-}
 
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : MonoBehaviour, IInteract
 {
-    [ShowOnly] public bool isActive = false;
-    [ShowOnly] public bool isComplete = false;
-    [SerializeField] private Transform promptTarget;
+    // << SERIALIZED VALUES >> //
+    [ShowOnly, SerializeField] bool _isTargeted;
+    [ShowOnly, SerializeField] bool _isActive;
+    [ShowOnly, SerializeField] bool _isComplete;
+    [SerializeField] string _interactionKey;
+    [SerializeField] Transform _promptTarget;
+
+    // << PUBLIC ACCESSORS >> //
+    public bool isTargeted { get => _isTargeted; set => _isTargeted = value; }
+    public bool isActive { get => _isActive; set => _isActive = value; }
+    public bool isComplete { get => _isComplete; set => _isComplete = value; }
+    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
+    public Transform promptTarget
+    {
+        get
+        {
+            if (_promptTarget == null)
+            {
+                Transform promptTarget = new GameObject("prompt target").transform;
+                promptTarget.SetParent(this.transform);
+                _promptTarget = promptTarget;
+            }
+            return _promptTarget;
+        }
+        set => _promptTarget = value;
+    }
+
+    // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
-    // ====== [[ INITIALIZATION ]] ================================
-    protected abstract void Initialize();
-
-    public virtual void Reset()
-    {
-        isComplete = false;
-    }
-
-    // ====== [[ TARGETING ]] ======================================
-
-    public virtual void TargetEnable()
-    {
-        Initialize();
-        isActive = true;
-
-        if (promptTarget == null)
-            promptTarget = transform;
-        UIManager.InteractionUI.DisplayInteractPrompt(promptTarget.position);
-    }
-    public virtual void TargetDisable()
-    {
-        isActive = false;
-        UIManager.InteractionUI.HideInteractPrompt();
-    }
-
-    // ====== [[ INTERACTION ]] ===================================
+    // << INTERACTION METHODS >> //
     public virtual void Interact()
     {
         OnInteraction?.Invoke();
+
+        knotIterator?.ContinueKnot();
+
+        // State Handler
+        switch (knotIterator.CurrentState)
+        {
+            case InkyKnotIterator.State.START:
+            case InkyKnotIterator.State.DIALOGUE:
+                knotIterator.ContinueKnot();
+                break;
+
+            case InkyKnotIterator.State.CHOICE:
+                // TODO : Implement choice selection using input
+                knotIterator.ChooseChoice(0);
+                break;
+            case InkyKnotIterator.State.END:
+                Complete();
+                break;
+            default:
+                break;
+        }
     }
     public virtual void Complete()
     {
         OnCompleted?.Invoke();
-        isComplete = true;
-        isActive = false;
     }
+    // ============================================================================== >>>>
 
-    // ====== [[ MONOBEHAVIOUR ]] ===================================
-    public virtual void Awake()
+
+    // << INKY KNOT ITERATOR >> //
+    public InkyKnotIterator knotIterator;
+
+
+    // << MONOBEHAVIOUR METHODS >> //
+
+
+
+    public void Update()
     {
-        Initialize();
-    }
+        if (isComplete || knotIterator == null) return;
 
-    public abstract void OnDestroy();
+        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        {
+            Complete();
+        }
+    }
 }
+#endregion
