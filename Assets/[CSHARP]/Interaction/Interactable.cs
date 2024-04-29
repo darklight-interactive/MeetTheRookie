@@ -1,89 +1,78 @@
+
+#region  ABSTRACT INTERACTABLE CLASS ================== //
 using Darklight.Game.Grid;
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-public interface IInteract
-{
-    /// <summary>
-    /// Called when the player is targeting the interactable object.
-    /// </summary>
-    void TargetEnable();
-
-    /// <summary>
-    /// Called to disable the interactable object and hide any prompts.
-    /// </summary>
-    void TargetDisable();
-
-    /// <summary>
-    /// Called when the player interacts with the object.
-    /// </summary>
-    void Interact();
-
-    /// <summary>
-    /// Reset the interactable object to its default state.
-    /// </summary>
-    void Reset();
-
-    delegate void OnInteract();
-    delegate void OnComplete();
-}
-
 [RequireComponent(typeof(BoxCollider2D))]
-public abstract class Interactable : MonoBehaviour, IInteract
+public abstract class Interactable : OverlapGrid2D, IInteract
 {
-    [ShowOnly] public bool isActive = false;
-    [ShowOnly] public bool isComplete = false;
-    [SerializeField] private Transform promptIconTarget;
+    // << SERIALIZED VALUES >> //
+    [ShowOnly, SerializeField] bool _isTarget;
+    [ShowOnly, SerializeField] bool _isActive;
+    [ShowOnly, SerializeField] bool _isComplete;
+    [SerializeField] string _interactionKey;
+
+    // << PUBLIC ACCESSORS >> //
+    public bool isTarget { get => _isTarget; set => _isTarget = value; }
+    public bool isActive { get => _isActive; set => _isActive = value; }
+    public bool isComplete { get => _isComplete; set => _isComplete = value; }
+    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
+
+    // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
-    // ====== [[ INITIALIZATION ]] ================================
-    protected abstract void Initialize();
-
-    public virtual void Reset()
-    {
-        isComplete = false;
-    }
-
-    // ====== [[ TARGETING ]] ======================================
-
     public virtual void TargetEnable()
     {
-        Initialize();
-        isActive = true;
+        isTarget = true;
 
-        if (promptIconTarget == null)
-            promptIconTarget = transform;
-        UIManager.InteractionUI.DisplayInteractPrompt(promptIconTarget.position);
+        OverlapGrid2D_Data data = this.GetBestData();
+        if (data == null) return;
+        UIManager.InteractionUI.DisplayInteractPrompt(data.worldPosition);
     }
+
     public virtual void TargetDisable()
     {
-        isActive = false;
+        isTarget = false;
         UIManager.InteractionUI.HideInteractPrompt();
     }
 
-    // ====== [[ INTERACTION ]] ===================================
+    public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
-        OnInteraction?.Invoke();
+        if (knotIterator == null)
+        {
+            knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
+        }
+
+        ContinueKnot();
     }
+
+    public virtual void ContinueKnot()
+    {
+        isTarget = false;
+        isActive = true;
+        isComplete = false;
+
+        knotIterator.ContinueKnot();
+
+        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        {
+            Complete();
+            return;
+        }
+
+        OnInteraction?.Invoke(knotIterator.currentText);
+    }
+
     public virtual void Complete()
     {
-        OnCompleted?.Invoke();
         isComplete = true;
         isActive = false;
-    }
+        knotIterator = null;
 
-    // ====== [[ MONOBEHAVIOUR ]] ===================================
-    public virtual void Awake()
-    {
-        Initialize();
+        OnCompleted?.Invoke();
     }
-
-    public abstract void OnDestroy();
 }
+#endregion

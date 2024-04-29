@@ -1,5 +1,10 @@
-LIST Characters = (Lupe), (Misra), (Employee)
-VAR curSpeaker = Characters.Lupe
+LIST Speaker = Unkown, Lupe, Misra, Employee, Mel
+VAR curSpeaker = Speaker.Lupe
 
 == function set_speaker(value)
     ~ curSpeaker = value
+
+
+// ============================================= >>
+
+

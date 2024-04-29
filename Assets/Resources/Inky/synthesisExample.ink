@@ -1,4 +1,4 @@
-﻿EXTERNAL playerAddItem(itemName)
+EXTERNAL playerAddItem(itemName)
 EXTERNAL playerHasItem(itemName)
 EXTERNAL playerRemoveItem(itemName)
 

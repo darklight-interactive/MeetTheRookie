@@ -62,8 +62,6 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             return;
         }
 
-
-
         // -- ( DIALOGUE STATE ) --------------- >>
         if (story.canContinue)
         {
