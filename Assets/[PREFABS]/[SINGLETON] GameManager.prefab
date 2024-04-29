@@ -45,18 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d6dc8e8aa9d6104a9cc1add1ba2669a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundEmitter: {fileID: 4830329436861829697}
-  backgroundMusicEvent:
-    Guid:
-      Data1: -276728039
-      Data2: 1229913755
-      Data3: 847198351
-      Data4: 2027149528
-    Path: event:/MusicTest
   busListOk: 0
   sysemIsOk: 0
   allBanksLoaded: 0
   allBusesLoaded: 0
+  masVolBusPath: bus:/MasterVolume
+  busVolume: 0
+  backgroundEmitter: {fileID: 4830329436861829697}
+  backgroundMusicEvent:
+    Guid:
+      Data1: 1009970235
+      Data2: 1170209264
+      Data3: -62989660
+      Data4: -619185197
+    Path: event:/Music/investigateWIP
 --- !u!114 &4830329436861829697
 MonoBehaviour:
   m_ObjectHideFlags: 0
