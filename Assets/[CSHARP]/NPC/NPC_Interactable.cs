@@ -8,7 +8,6 @@ public class NPC_Interactable : Interactable
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
-
             if (knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
             {
                 ShowDialogueBubble(currentText);

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight;
-using Darklight.Game;
+using Darklight.Game.Utility;
 using UnityEngine;
 
 public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE }
