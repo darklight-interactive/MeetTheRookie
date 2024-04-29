@@ -88,6 +88,7 @@ public class PlayerInteractor : MonoBehaviour
                 stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
 
                 playerDialogueHandler.HideDialogueBubble();
+                _activeInteraction = null;
             };
         }
 

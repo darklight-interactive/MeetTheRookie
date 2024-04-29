@@ -26,8 +26,10 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetEnable()
     {
         isTarget = true;
-        Vector3 promptPosition = this.GetBestData().worldPosition;
-        UIManager.InteractionUI.DisplayInteractPrompt(promptPosition);
+
+        OverlapGrid2D_Data data = this.GetBestData();
+        if (data == null) return;
+        UIManager.InteractionUI.DisplayInteractPrompt(data.worldPosition);
     }
 
     public virtual void TargetDisable()

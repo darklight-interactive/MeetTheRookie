@@ -1,20 +1,214 @@
 [LOG] System::create                           : Header version = 2.02.21. Current version = 2.02.21.
-[LOG] Manager::init                            : maxchannels = 256 studioflags = 00000006 flags 00000000 extradriverdata 0000000000000000.
+[LOG] Manager::init                            : maxchannels = 256 studioflags = 00000006 flags 00000000 extradriverdata 0x0.
 [LOG] SystemI::init                            : Initialize version=20221 (141420), maxchannels=256, flags=0x00020000
-[LOG] SystemI::setOutputInternal               : Setting output to 'FMOD WASAPI Output'
-[LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEX): wFormatTag=0xFFFE, nChannels=2, nSamplesPerSec=44100, nAvgBytesPerSec=352800, nBlockAlign=8, wBitsPerSample=32, cbSize=22.
-[LOG] OutputWASAPI::init                       : Mix Format (WAVEFORMATEXTENSIBLE): wValidBitsPerSample=32, dwChannelMask=0x00000003, SubFormat=00000003-0000-0010-8000-00AA00389B71.
-[LOG] OutputWASAPI::init                       : Output buffer size: 3760 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
-[LOG] SystemI::init                            : Output requires a sample rate of 44100Hz, resampling will occur.
+[LOG] SystemI::setOutputInternal               : Setting output to 'FMOD Core Audio Output'
+[LOG] OutputCoreAudio::init                    : Output running 2 channels at 48000Hz sample rate.
+[LOG] OutputCoreAudio::init                    : Maximum hardware read size: 1024 samples, Software buffer size: 512 samples, Number of software buffers: 4.
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
-[LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 0000017D273DA088 isAsync 0 updatePeriod 0.02
+[LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: Yes, Sleep Time: 0, Looping: Yes.
+[LOG] AsyncManager::init                       : manager 0x11cf22008 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] PlaybackSystem::init                     : done
 [LOG] Thread::initThread                       : Init FMOD Studio bank load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
 [LOG] Manager::init                            : done.
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[LOG] Manager::readBank                        : fileversion = 142, compatVersion = 140 (oldest = 44, newest = 142)
+[LOG] SystemI::createSound                     : filename = Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 0x32d35dbc8, queue head = 0x290bd2b08, queue count = 0
+[LOG] SystemI::createSound                     : filename = Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 0x32d35e058, queue head = 0x290bd2b08, queue count = 1
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0x32d35dbc8
+[LOG] SystemI::createSoundInternal             :     Create name='Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 4377344
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 23936
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0x32d35de90
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Investigate_MainBeatFMOD', format=5, channels=2, frequency=48000, lengthbytes=254624, lengthpcm=1319040, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.918152.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0x32d35dbc8
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0x32d35e058
+[LOG] SystemI::createSoundInternal             :     Create name='Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 4377344
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 23936
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0x32d35e320
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Investigate_DrumsFMOD', format=5, channels=2, frequency=48000, lengthbytes=342592, lengthpcm=1319040, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.622742.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0x32d35e058
+[LOG] SoundI::release                          : Investigate_IntroFMOD (0x290bd2ce8)
+[LOG] SoundI::release                          :     Investigate_IntroFMOD (0x290bd3388)
+[LOG] SoundI::release                          :     Investigate_IntroFMOD (0x290bd35e8)
+[LOG] SystemI::createSound                     : filename = Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         : add sound to async queue : soundi = 0x33315bb18, queue head = 0x290bd2b08, queue count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0x33315bb18
+[LOG] SystemI::createSoundInternal             :     Create name='Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 4377344
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 23936
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0x33315bde0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekposition = 27480
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSound                     :     filename = Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank : mode 02010082
+[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         :     add sound to async queue : soundi = 0x33315bdf8, queue head = 0x290bd2b08, queue count = 0
+[LOG] SystemI::createSound                     :     filename = Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank : mode 02010082
+[LOG] SystemI::createSound                     :     FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] AsyncThread::add                         :     add sound to async queue : soundi = 0x3308fba38, queue head = 0x290bd2b08, queue count = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Investigate_SoftChordsFMOD', format=5, channels=2, frequency=48000, lengthbytes=530880, lengthpcm=2635776, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.657104.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0x33315bb18
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0x33315bdf8
+[LOG] SystemI::createSoundInternal             :     Create name='Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 4377344
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 23936
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0x33315e6c0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Investigate_MainBeatFMOD', format=5, channels=2, frequency=48000, lengthbytes=254624, lengthpcm=1319040, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.918152.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0x33315bdf8
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0x3308fba38
+[LOG] SystemI::createSoundInternal             :     Create name='Assets/Resources/FMOD/Build/Desktop/DatingMusic.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 4377344
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 23936
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0x32566ae70
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='Investigate_DrumsFMOD', format=5, channels=2, frequency=48000, lengthbytes=342592, lengthpcm=1319040, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.622742.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0x3308fba38
+[LOG] SoundI::release                          : Investigate_SoftChordsFMOD (0x290bd26d8)
+[LOG] SoundI::release                          :     Investigate_SoftChordsFMOD (0x325108d28)
+[LOG] SoundI::release                          :     Investigate_SoftChordsFMOD (0x290bd3038)
+[LOG] SoundI::release                          : Investigate_DrumsFMOD (0x32d35e058)
+[LOG] SoundI::release                          :     Investigate_DrumsFMOD (0x32197cd98)
+[LOG] SoundI::release                          :     Investigate_DrumsFMOD (0x32197db08)
+[LOG] SoundI::release                          : Investigate_MainBeatFMOD (0x32d35dbc8)
+[LOG] SoundI::release                          :     Investigate_MainBeatFMOD (0x329e379e8)
+[LOG] SoundI::release                          :     Investigate_MainBeatFMOD (0x329e38018)
+[LOG] SoundI::release                          : Investigate_DrumsFMOD (0x3308fba38)
+[LOG] SoundI::release                          :     Investigate_DrumsFMOD (0x330b303c8)
+[LOG] SoundI::release                          :     Investigate_DrumsFMOD (0x330b30558)
+[LOG] SoundI::release                          : Investigate_MainBeatFMOD (0x33315bdf8)
+[LOG] SoundI::release                          :     Investigate_MainBeatFMOD (0x330bd6628)
+[LOG] SoundI::release                          :     Investigate_MainBeatFMOD (0x330bd67b8)
+[LOG] SoundI::release                          : Investigate_SoftChordsFMOD (0x33315bb18)
+[LOG] SoundI::release                          :     Investigate_SoftChordsFMOD (0x330b372d8)
+[LOG] SoundI::release                          :     Investigate_SoftChordsFMOD (0x330b37468)
+[LOG] SoundI::release                          :  (0x2c7c8ca98)
+[LOG] SoundI::release                          :     Investigate_Toms1 (0x2c7c8cc08)
+[LOG] SoundI::release                          :  (0x2c7c8cea8)
+[LOG] SoundI::release                          :     Investigate_Toms2 (0x2c7c8d018)
+[LOG] SoundI::release                          :  (0x322c55f58)
+[LOG] SoundI::release                          :     Investigate_Toms3 (0x322c2c538)
+[LOG] SoundI::release                          :  (0x2c7c8be78)
+[LOG] SoundI::release                          :     Investigate_Toms4 (0x2c7c8bfe8)
+[LOG] SoundI::release                          :  (0x32513f968)
+[LOG] SoundI::release                          :     Investigate_Toms5 (0x325148008)
+[LOG] SoundI::release                          :  (0x290be8d88)
+[LOG] SoundI::release                          :     Investigate_Toms6 (0x290bd8208)
+[LOG] SoundI::release                          :  (0x290bd7878)
+[LOG] SoundI::release                          :     Investigate_ElecPiano1 (0x290bd7ee8)
+[LOG] SoundI::release                          :  (0x2c7c8d338)
+[LOG] SoundI::release                          :     Investigate_ElecPiano2 (0x2c7c8d4a8)
+[LOG] SoundI::release                          :  (0x325177de8)
+[LOG] SoundI::release                          :     Investigate_ElecPiano3 (0x32513eda8)
+[LOG] SoundI::release                          :  (0x290bd7a78)
+[LOG] SoundI::release                          :     Investigate_ElecPiano4 (0x290bd8528)
+[LOG] SoundI::release                          :  (0x2c7c8ef08)
+[LOG] SoundI::release                          :     Investigate_ElecPiano5 (0x2c7c8f178)
+[LOG] SoundI::release                          :  (0x2c7c8c308)
+[LOG] SoundI::release                          :     Investigate_ElecPiano6 (0x2c7c8c478)
+[LOG] SoundI::release                          :  (0x322c142e8)
+[LOG] SoundI::release                          :     cashRegisterJammed01 (0x322c06c68)
+[LOG] SoundI::release                          :  (0x3251f9b88)
+[LOG] SoundI::release                          :     doorUnlock01 (0x32519cf68)
+[LOG] SoundI::release                          :  (0x325158c38)
+[LOG] SoundI::release                          :     sfx_obtainItem01 (0x2c7ba8938)
+[LOG] SoundI::release                          :  (0x2a30f4758)
+[LOG] SoundI::release                          :     sfx_obtainItem02 (0x2a301d7b8)
+[LOG] SoundI::release                          :  (0x290bd7168)
+[LOG] SoundI::release                          :     sfx_generatorON01 (0x290bce428)
+[LOG] SoundI::release                          :  (0x2a30dbbf8)
+[LOG] SoundI::release                          :     doorLocked01 (0x32643a9e8)
+[LOG] SoundI::release                          :  (0x3251304b8)
+[LOG] SoundI::release                          :     sfx_footstep08 (0x325130628)
+[LOG] SoundI::release                          :  (0x290bd6cd8)
+[LOG] SoundI::release                          :     sfx_footstep09 (0x290bd6e48)
+[LOG] SoundI::release                          :  (0x290bce748)
+[LOG] SoundI::release                          :     sfx_footstep01 (0x290bce8b8)
+[LOG] SoundI::release                          :  (0x2a3028e48)
+[LOG] SoundI::release                          :     sfx_footstep02 (0x3264b5388)
+[LOG] SoundI::release                          :  (0x290bcf068)
+[LOG] SoundI::release                          :     sfx_footstep03 (0x290bcf1d8)
+[LOG] SoundI::release                          :  (0x2911d9d48)
+[LOG] SoundI::release                          :     sfx_footstep04 (0x32647e778)
+[LOG] SoundI::release                          :  (0x2a30e2848)
+[LOG] SoundI::release                          :     sfx_footstep05 (0x2a30f4ba8)
+[LOG] SoundI::release                          :  (0x29116e798)
+[LOG] SoundI::release                          :     sfx_footstep06 (0x326458eb8)
+[LOG] SoundI::release                          :  (0x290bda868)
+[LOG] SoundI::release                          :     sfx_footstep07 (0x290bda9d8)
+[LOG] SoundI::release                          :  (0x2a300e8c8)
+[LOG] SoundI::release                          :     doorOpen01 (0x3264d3b48)
+[LOG] SoundI::release                          :  (0x290bda3d8)
+[LOG] SoundI::release                          :     sfx_rollingText04 (0x290bda548)
+[LOG] SoundI::release                          :  (0x326447a28)
+[LOG] SoundI::release                          :     sfx_rollingText05 (0x2a3022a18)
+[LOG] SoundI::release                          :  (0x29115c6f8)
+[LOG] SoundI::release                          :     sfx_rollingText06 (0x326416188)
+[LOG] SoundI::release                          :  (0x2a30f54d8)
+[LOG] SoundI::release                          :     sfx_rollingText07 (0x2911db718)
+[LOG] SoundI::release                          :  (0x2a30f4d58)
+[LOG] SoundI::release                          :     sfx_rollingText08 (0x29115b078)
+[LOG] SoundI::release                          :  (0x2a301a5a8)
+[LOG] SoundI::release                          :     sfx_rollingText09 (0x3264d2fd8)
+[LOG] SoundI::release                          :  (0x290bcebd8)
+[LOG] SoundI::release                          :     sfx_rollingText10 (0x290bced48)
+[LOG] SoundI::release                          :  (0x291104248)
+[LOG] SoundI::release                          :     sfx_rollingText11 (0x2a30f1358)
+[LOG] SoundI::release                          :  (0x2911413e8)
+[LOG] SoundI::release                          :     sfx_rollingText12 (0x322c1dd68)
+[LOG] SoundI::release                          :  (0x325120618)
+[LOG] SoundI::release                          :     sfx_rollingText02 (0x325120788)
+[LOG] SoundI::release                          :  (0x2c7b2c048)
+[LOG] SoundI::release                          :     sfx_rollingText03 (0x325131a18)
+[LOG] Thread::callback                         : FMOD Studio update thread finished.
+[LOG] Thread::callback                         : FMOD Studio bank load thread finished.
+[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
+[LOG] Thread::callback                         : FMOD Studio sample load thread finished.
+[LOG] LiveUpdate::release                      : 
+[LOG] LiveUpdate::reset                        : Reset connection (reason Disconnected)
+[LOG] Thread::callback                         : FMOD stream thread finished.
+[LOG] Thread::callback                         : FMOD mixer thread finished.
+[LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
+[LOG] SystemI::close                           : Closed.
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Thread::callback                         : FMOD Studio sample load thread finished.
 [LOG] LiveUpdate::release                      : 
@@ -22,3 +216,5 @@
 [LOG] Thread::callback                         : FMOD stream thread finished.
 [LOG] Thread::callback                         : FMOD mixer thread finished.
 [LOG] SystemI::close                           : Closed.
+[LOG] Thread::callback                         : FMOD nonblocking thread (0) finished.
+[LOG] Thread::callback                         : FMOD file thread finished.
