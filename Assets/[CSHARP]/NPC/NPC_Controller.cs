@@ -3,23 +3,16 @@
  * 4/10/2024
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight;
-using Darklight.UnityExt.Input;
-using UnityEngine.InputSystem;
-using Darklight.Game.SpriteAnimation;
-using UnityEngine.Rendering;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.LowLevel;
+using Darklight.Game.Utility;
 
 
-[RequireComponent(typeof(NPCAnimator))]
-public class NPCController : MonoBehaviour
+[RequireComponent(typeof(NPC_Animator))]
+public class NPC_Controller : MonoBehaviour
 {
-    public NPCStateMachine stateMachine;
-    private NPCAnimator animationManager;
+    public NPC_StateMachine stateMachine;
+    private NPC_Animator animationManager;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
@@ -57,9 +50,9 @@ public class NPCController : MonoBehaviour
         };
 
         // initialize the NPCStateMachine
-        stateMachine = new NPCStateMachine(NPCState.IDLE, possibleStates, gameObject);
+        stateMachine = new NPC_StateMachine(NPCState.IDLE, possibleStates, gameObject);
 
-        animationManager = GetComponent<NPCAnimator>();
+        animationManager = GetComponent<NPC_Animator>();
     }
 
     // Update is called once per frame
