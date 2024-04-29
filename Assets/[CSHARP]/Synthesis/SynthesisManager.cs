@@ -135,13 +135,26 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     }
 
     public object AddItem(object[] args) {
-        string name = (string)args[0];
-        var newObj = new SynthesisObject();
-        newObj.noteHeader.text = name;
-        newObj.name = name;
+        if (args.Length < 2) {
+            Debug.LogError("playerAddItem args: [synthesisItemType] [itemID]");
+            return null;
+        }
+        string objType = (string)args[0];
+        string id = (string)args[1];
+
+        object[] remainingArgs = new object[args.Length - 2];
+        Array.Copy(args, 2, remainingArgs, 0, args.Length - 2);
+
+        VisualTreeAsset obj = (VisualTreeAsset)Resources.Load("Synthesis/" + objType);
+        var tree = obj.Instantiate();
+        
+        SynthesisObject newObj = tree.Q<SynthesisObject>();
+        newObj.name = id;
+        newObj.Configure(remainingArgs);
+
         objects.Add(newObj);
         itemsSelection.Add(newObj);
-        return synthesisItems.TryAdd(name, newObj);
+        return synthesisItems.TryAdd(id, newObj);
     }
 
     public object RemoveItem(object[] args) {

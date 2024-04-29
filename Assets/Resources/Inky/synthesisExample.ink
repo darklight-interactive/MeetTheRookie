@@ -1,17 +1,17 @@
-﻿EXTERNAL playerAddItem(itemName)
-EXTERNAL playerHasItem(itemName)
-EXTERNAL playerRemoveItem(itemName)
+﻿EXTERNAL playerAddItem(type, itemID, arg1)
+EXTERNAL playerHasItem(itemID)
+EXTERNAL playerRemoveItem(itemID)
 
-~ playerAddItem("Test")
-~ playerAddItem("Other Test")
+~ playerAddItem("Scrap", "testItem", "This is a test item.")
+~ playerAddItem("Scrap", "otherTestItem", "This is another test item.")
 
 -> END
 
 // Args are sorted alphabetically
 === function synthesize(a, b, c) ===
 {
-	- a == "A new clue" && b == "Other Test" && c == "Test":
-		~ playerRemoveItem("Test")
-	- a == "Other Test" && b == "Test":
-		~ playerAddItem("A new clue")
+	- a == "newClue" && b == "otherTestItem" && c == "testItem":
+		~ playerRemoveItem("testItem")
+	- a == "otherTestItem" && b == "testItem":
+		~ playerAddItem("Scrap", "newClue", "This is a new clue.")
 }

@@ -7,13 +7,16 @@ using UnityEngine.UIElements;
 public partial class SynthesisObject : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<SynthesisObject> { }
-
-    public Label noteHeader;
     
     public SynthesisObject() {
         AddToClassList("synthesis-object");
+    }
 
-        noteHeader = new Label();
+    public void Configure(object[] args) {
+        Label noteHeader = new Label();
+        if (args.Length > 0) {
+            noteHeader.text = (string)args[0];
+        }
         noteHeader.AddToClassList("label");
         Add(noteHeader);
     }
