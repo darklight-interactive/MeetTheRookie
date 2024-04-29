@@ -14,7 +14,8 @@ using UnityEngine.UIElements;
 public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 {
     [SerializeField]
-    protected UIDocument synthesisUI;
+    protected VisualTreeAsset synthesisUIDocument;
+    protected VisualElement synthesisUI;
 
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
@@ -28,10 +29,13 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     public override void Awake()
     {
         base.Awake();
-
-        objects = synthesisUI.rootVisualElement.Q("objects");
-        synthesizeButton = synthesisUI.rootVisualElement.Q("title");
+        synthesisUI = synthesisUIDocument.Instantiate();
+        GetComponent<UIDocument>().rootVisualElement.Add(synthesisUI);
+        objects = synthesisUI.Q("objects");
+        synthesizeButton = synthesisUI.Q("title");
         itemsSelection.Add(synthesizeButton);
+
+        synthesisUI.visible = false;
     }
 
     bool synthesisActive = false;
@@ -52,10 +56,11 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
     public void Show(bool visible) {
         synthesisActive = visible;
-        synthesisUI.gameObject.SetActive(synthesisActive);
+        synthesisUI.visible = visible;
     }
 
     void SelectMove(InputAction.CallbackContext context) {
+        if (!synthesisActive) { return; }
         Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
         move.y = -move.y;
         if (itemsSelection.currentlySelected != null) {
@@ -69,6 +74,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
     HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
     void Select(InputAction.CallbackContext context) {
+        if (!synthesisActive) { return; }
         if (itemsSelection.currentlySelected != null) {
             var s = itemsSelection.currentlySelected;
             if (s == synthesizeButton) {
