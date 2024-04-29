@@ -39,19 +39,10 @@ namespace Darklight.UnityExt.Input
         public delegate void InputReady();
         public event InputReady OnInputReady;
 
-        private void OnEnable()
+        public override void Awake()
         {
-            DefaultUniversalInputActions.Enable();
-            OnInputReady?.Invoke();
-        }
+            base.Awake();
 
-        private void OnDisable()
-        {
-            DefaultUniversalInputActions.Disable();
-        }
-
-        private void Start()
-        {
             DefaultTouchActionMap = DefaultUniversalInputActions.FindActionMap("DefaultTouch");
             DefaultKeyboardActionMap = DefaultUniversalInputActions.FindActionMap("DefaultKeyboard");
             DefaultControllerActionMap = DefaultUniversalInputActions.FindActionMap("DefaultController");
@@ -62,6 +53,7 @@ namespace Darklight.UnityExt.Input
                 Debug.Log(Prefix + $"Found Input : {DeviceInputType}");
             }
 
+            DefaultUniversalInputActions.Enable();
             OnInputReady?.Invoke();
         }
 

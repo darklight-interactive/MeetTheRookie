@@ -133,7 +133,7 @@ public class Grid2D_Data : IGrid2D_Data
     }
 
 
-    const int MIN_WEIGHT = 1;
+    const int MIN_WEIGHT = 0;
     const int MAX_WEIGHT = 3;
     public virtual void CycleDataState()
     {
