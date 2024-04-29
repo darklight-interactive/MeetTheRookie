@@ -2,7 +2,6 @@ using Darklight.Game.Grid;
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -38,7 +37,7 @@ public abstract class Interactable : MonoBehaviour, IInteract
 {
     [ShowOnly] public bool isActive = false;
     [ShowOnly] public bool isComplete = false;
-    [SerializeField] private Transform promptIconTarget;
+    [SerializeField] private Transform promptTarget;
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
@@ -57,9 +56,9 @@ public abstract class Interactable : MonoBehaviour, IInteract
         Initialize();
         isActive = true;
 
-        if (promptIconTarget == null)
-            promptIconTarget = transform;
-        UIManager.InteractionUI.DisplayInteractPrompt(promptIconTarget.position);
+        if (promptTarget == null)
+            promptTarget = transform;
+        UIManager.InteractionUI.DisplayInteractPrompt(promptTarget.position);
     }
     public virtual void TargetDisable()
     {

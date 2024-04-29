@@ -13,6 +13,9 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
+/// <summary>
+/// This class is responsible for translating player input into movement and interaction.
+/// </summary>
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
 {
@@ -22,19 +25,11 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
-    void OnEnable()
-    {
-        UniversalInputManager.Instance.OnInputReady += StartInputListener;
-    }
-
-    void OnDisable()
-    {
-        UniversalInputManager.Instance.OnInputReady -= StartInputListener;
-    }
-
     Vector2 _activeMoveInput = Vector2.zero;
-    void StartInputListener()
+    void Start()
     {
+        Debug.Log($"PlayerController is listening to input from {UniversalInputManager.DeviceInputType}");
+
         // Subscribe to Universal MoveInput
         InputAction moveInputAction = UniversalInputManager.MoveInputAction;
         if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }
@@ -108,8 +103,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        stateMachine.ChangeState(PlayerState.INTERACTION);
-        playerInteractor.InteractWithActiveTarget();
+
+        if (playerInteractor.InteractWithActiveTarget())
+        {
+            stateMachine.ChangeState(PlayerState.INTERACTION);
+        }
     }
 
     #region Synthesis Management

@@ -19,17 +19,9 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
     [SerializeField] FMOD.Studio.Bus[] myBuses;
 
     [Space(10), Header("Buses")]
-    [SerializeField] private string masVolBusPath = "bus:/MasterVolume";
-
-
-    [Space(10), Header("Volume Control")]
-    [SerializeField]
-    [Range(-80f, 10f)]
-    private float busVolume;
-    private float volume;
-
-
-
+    [SerializeField] private Bus masterBus;
+    [SerializeField] private string masterBusPath = "bus:/MasterVolume";
+    [SerializeField, Range(-80f, 10.0f)] private float masterBusVolume;
 
 
     [Space(10), Header("Background Music Event")]
@@ -37,6 +29,8 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
     public EventReference backgroundMusicEvent;
     public EventInstance backgroundMusicInstance;
 
+    [Space(10), Header("Interaction")]
+    [SerializeField] public EventReference interactionEvent;
 
     public EventInstance currentPlaying;
     protected FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -50,7 +44,141 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
         backgroundMusicInstance.start();
 
         LoadBanksAndBuses();
+
+        Console.Log($"{Prefix} Initialized.");
     }
+
+    void Update()
+    {
+        float volume = Mathf.Pow(10.0f, masterBusVolume / 20f);
+        masterBus.setVolume(volume);
+    }
+
+
+
+
+    #region == [[ PLAY EVENTS ]] ==================================================
+
+    public void PlayEvent(EventReference eventReference)
+    {
+        EventInstance instance = RuntimeManager.CreateInstance(eventReference);
+        instance.start();
+        instance.release();
+    }
+    #endregion
+
+    #region == old code ===========================================================
+    /*
+    //plays a one shot given the fmod event path
+    public void Play(string path, Dictionary<string, float> parameters = null)
+    {
+        EventInstance instance = RuntimeManager.CreateInstance(path);
+        if (parameters != null)
+        {
+            foreach (KeyValuePair<string, float> val in parameters)
+            {
+                instance.setParameterByName(val.Key, val.Value);
+            }
+        }
+        instance.start();
+        instance.release();
+        Debug.Log("[Audio Manager] playing one shot: " + path);
+    }
+
+    public EventInstance Play(string path)
+    {
+
+        EventDescription eventDescription;
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
+        if (result != FMOD.RESULT.OK)
+        {
+            Debug.LogWarning("FMOD event path does not exist: " + path);
+            return RuntimeManager.CreateInstance(path); //NEEDS TO BE CHANGED
+        }
+
+        EventInstance instance = RuntimeManager.CreateInstance(path);
+        instance.start();
+        instance.release();
+        //Debug.Log("[Audio Manager] playing one shot: " + path);
+        return instance;
+    }
+
+
+
+    public void PlaySong(string path)
+    {
+        Debug.Log("[Audio Manager] Playing Song: " + path);
+        if (currentPlaying.isValid())
+        {
+            StartCoroutine(RestOfPlaySong(path));
+        }
+        else
+        {
+            EventDescription eventDescription;
+            FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
+            if (result != FMOD.RESULT.OK)
+            {
+                Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
+                return;
+            }
+
+            EventInstance song = RuntimeManager.CreateInstance(path);
+            currentPlaying = song;
+            song.start();
+            song.release();
+        }
+    }
+
+    public IEnumerator RestOfPlaySong(string path)
+    {
+        Debug.Log(currentPlaying);
+        currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        currentPlaying.getPlaybackState(out playbackState);
+        while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
+        {
+            currentPlaying.getPlaybackState(out playbackState);
+            yield return null;
+        }
+
+        EventDescription eventDescription;
+        FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
+        if (result != FMOD.RESULT.OK)
+        {
+            Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1);
+            EventInstance song = RuntimeManager.CreateInstance(path);
+            currentPlaying = song;
+            song.start();
+            song.release();
+        }
+    }
+
+    public void StopCurrentSong()
+    {
+        StartCoroutine(StopCurrentSongRoutine());
+    }
+
+    public IEnumerator StopCurrentSongRoutine()
+    {
+        Debug.Log(currentPlaying);
+        currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        currentPlaying.getPlaybackState(out playbackState);
+        while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
+        {
+            currentPlaying.getPlaybackState(out playbackState);
+            yield return null;
+        }
+    }
+*/
+    #endregion
+
+
+
+
+    #region == [[ LOAD BANKS AND BUSES ]] ========================================
 
     public void LoadBanksAndBuses()
     {
@@ -59,7 +187,7 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
 
     public IEnumerator LoadBanksAndBusesRoutine()
     {
-        Debug.Log("  << LOAD BANKS AND BUSES >>  ");
+        Console.Log($"{Prefix} Loading.");
 
         // ============================================= LOAD ============================
         FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] loadedBanks);
@@ -70,35 +198,35 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
 
             // Load the bank
             FMOD.RESULT bankLoadResult = bank.loadSampleData();
-            Debug.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
+            Console.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
 
 
             // Retrieve the list of buses associated with the bank
             busListOk = bank.getBusList(out myBuses);
 
-            int busCount;
-            string busPath;
-            bank.getBusCount(out busCount);
+            // Get the number of buses in the bank
+            bank.getBusCount(out int busCount);
+
             if (busCount > 0)
             {
                 // Iterate through the buses in the bank
-                foreach (var bus in myBuses)
+                foreach (Bus bus in myBuses)
                 {
                     // Get the path of each bus
-                    bus.getPath(out busPath);
+                    bus.getPath(out string busPath);
 
                     // Load the bus
                     FMOD.RESULT busLoadResult = bus.lockChannelGroup();
-                    Debug.Log($"{Prefix} Bus Load Result: " + bankPath + " -> " + bankLoadResult);
+                    Console.Log($"{Prefix} Bus Load Result: " + bankPath + " -> " + bankLoadResult);
 
-                    /*
                     // Save the bus to the appropriate variable
-                    if (busPath == masVolBusPath)
+                    if (busPath == masterBusPath)
                     {
-                        masBus = FMODUnity.RuntimeManager.GetBus(busPath);
-                        masBus.setVolume(masterVolume);
+                        masterBus = FMODUnity.RuntimeManager.GetBus(busPath);
+                        // masterBus.setVolume(masterBusVolume);
 
                     }
+                    /*
                     else if (busPath == musVolBusPath)
                     {
                         musBus = bus;
@@ -175,112 +303,26 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
             LoadBanksAndBuses();
         }
     }
+    #endregion
 
-    //plays a one shot given the fmod event path
-    public void Play(string path, Dictionary<string, float> parameters = null)
+}
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(FMODManager))]
+public class FMODManagerEditor : UnityEditor.Editor
+{
+    private void OnEnable()
     {
-        var instance = RuntimeManager.CreateInstance(path);
-        if (parameters != null)
-        {
-            foreach (KeyValuePair<string, float> val in parameters)
-            {
-                instance.setParameterByName(val.Key, val.Value);
-            }
-        }
-        instance.start();
-        instance.release();
-        Debug.Log("[Audio Manager] playing one shot: " + path);
+        FMODManager FMODManager = (FMODManager)target;
     }
 
-    public EventInstance Play(string path)
+    public override void OnInspectorGUI()
     {
+        FMODManager FMODManager = (FMODManager)target;
 
-        EventDescription eventDescription;
-        FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-        if (result != FMOD.RESULT.OK)
-        {
-            Debug.LogWarning("FMOD event path does not exist: " + path);
-            return RuntimeManager.CreateInstance(path); //NEEDS TO BE CHANGED
-        }
+        FMODManager.Console.DrawInEditor();
 
-        var instance = RuntimeManager.CreateInstance(path);
-        instance.start();
-        instance.release();
-        //Debug.Log("[Audio Manager] playing one shot: " + path);
-        return instance;
-    }
-
-    //a little more complicated! DO MATH to give sound 1 variable to work with
-
-    //volType {0= master, 1= music, 2 = sfx, 3 = dialogue}, volAmount = float range: [0,1]
-
-
-    /////////////////////////VOLUME//////////////////////////////
-    public void PlaySong(string path)
-    {
-        Debug.Log("[Audio Manager] Playing Song: " + path);
-        if (currentPlaying.isValid())
-        {
-            StartCoroutine(RestOfPlaySong(path));
-        }
-        else
-        {
-            EventDescription eventDescription;
-            FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-            if (result != FMOD.RESULT.OK)
-            {
-                Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
-                return;
-            }
-
-            EventInstance song = RuntimeManager.CreateInstance(path);
-            currentPlaying = song;
-            song.start();
-            song.release();
-        }
-    }
-
-    public IEnumerator RestOfPlaySong(string path)
-    {
-        Debug.Log(currentPlaying);
-        currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        currentPlaying.getPlaybackState(out playbackState);
-        while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
-        {
-            currentPlaying.getPlaybackState(out playbackState);
-            yield return null;
-        }
-
-        EventDescription eventDescription;
-        FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-        if (result != FMOD.RESULT.OK)
-        {
-            Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
-        }
-        else
-        {
-            yield return new WaitForSeconds(1);
-            EventInstance song = RuntimeManager.CreateInstance(path);
-            currentPlaying = song;
-            song.start();
-            song.release();
-        }
-    }
-
-    public void StopCurrentSong()
-    {
-        StartCoroutine(StopCurrentSongRoutine());
-    }
-
-    public IEnumerator StopCurrentSongRoutine()
-    {
-        Debug.Log(currentPlaying);
-        currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        currentPlaying.getPlaybackState(out playbackState);
-        while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
-        {
-            currentPlaying.getPlaybackState(out playbackState);
-            yield return null;
-        }
+        DrawDefaultInspector();
     }
 }
+#endif

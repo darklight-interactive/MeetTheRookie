@@ -15,7 +15,7 @@ public class PlayerInteractor : MonoBehaviour
     protected HashSet<Interactable> interactables = new HashSet<Interactable>();
     [SerializeField, ShowOnly] List<InkyInteractable> inkyInteractables = new List<InkyInteractable>();
     [SerializeField, ShowOnly] InkyInteractable activeInkyInteraction;
-    [ShowOnly] int interactionCount;
+    [SerializeField, ShowOnly] int interactionCount;
 
     void Update()
     {
@@ -49,14 +49,14 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    public void InteractWithActiveTarget()
+    public bool InteractWithActiveTarget()
     {
-        InteractWith(activeInkyInteraction);
+        return InteractWith(activeInkyInteraction);
     }
 
-    void InteractWith(InkyInteractable interactable)
+    bool InteractWith(InkyInteractable interactable)
     {
-        if (interactable == null || interactable.isComplete) return;
+        if (interactable == null || interactable.isComplete) return false;
         if (interactable is InkyInteractable)
         {
             PlayerDialogueHandler playerDialogueHandler = GetComponent<PlayerDialogueHandler>();
@@ -84,8 +84,8 @@ public class PlayerInteractor : MonoBehaviour
                     playerDialogueHandler.CreateDialogueBubble(activeInkyInteraction.knotIterator.currentText);
                 }
             }
-
         }
+        return true;
     }
 
     void OnTriggerEnter2D(Collider2D other)

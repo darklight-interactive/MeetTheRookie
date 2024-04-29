@@ -37,12 +37,6 @@ public class PlayerDialogueHandlerEditor : OverlapGrid2DEditor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-
-        if (GUILayout.Button("Create Dialogue Bubble"))
-        {
-            PlayerDialogueHandler handler = (PlayerDialogueHandler)target;
-            handler.CreateDialogueBubble("Hello World!");
-        }
     }
 }
 #endif

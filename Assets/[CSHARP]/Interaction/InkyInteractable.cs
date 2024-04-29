@@ -2,25 +2,19 @@ using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
 public enum TempType { BASIC, NPC }
+
 public class InkyInteractable : Interactable
 {
     [SerializeField] public TempType tempType;
     [SerializeField] private string inkKnotName;
     public InkyKnotIterator knotIterator;
 
-    [Space(10), Header("Materials")]
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private Material activeMaterial;
-    [SerializeField] private Material defaultMaterial;
-
-    [Header("Scene Change")]
-    [SerializeField] private SceneObject sceneChange;
-
     [ShowOnly] public string currentText;
     [ShowOnly] public InkyKnotIterator.State currentKnotState = InkyKnotIterator.State.NULL;
 
     protected override void Initialize()
     {
+        //throw new System.NotImplementedException();
     }
 
     public void Update()
@@ -32,21 +26,6 @@ public class InkyInteractable : Interactable
         {
             Complete();
         }
-
-
-        // Set Material
-        if (meshRenderer)
-        {
-            if (isActive)
-            {
-                meshRenderer.material = activeMaterial;
-            }
-            else
-            {
-                meshRenderer.material = defaultMaterial;
-            }
-        }
-
     }
 
 
@@ -79,24 +58,18 @@ public class InkyInteractable : Interactable
                 break;
         }
 
-        // Call the base interact method to invoke the OnInteraction event
         if (knotIterator.CurrentState != InkyKnotIterator.State.END
         && knotIterator.CurrentState != InkyKnotIterator.State.NULL)
         {
+            // Call the base interact method to invoke the OnInteraction event
             base.Interact();
         }
     }
 
     public override void Complete()
     {
-        base.Complete();
-        Debug.Log("Completing Interaction Knot: " + inkKnotName); // Invoke the OnInteractionCompleted event
-
-        if (sceneChange != "")
-        {
-            SceneManager.Instance.ChangeSceneTo(sceneChange);
-        }
-
+        base.Complete();// Invoke the OnInteractionCompleted event
+        Debug.Log("Completing Interaction Knot: " + inkKnotName);
     }
 
     public override void OnDestroy()

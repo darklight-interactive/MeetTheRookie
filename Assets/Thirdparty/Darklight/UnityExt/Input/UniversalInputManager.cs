@@ -39,17 +39,6 @@ namespace Darklight.UnityExt.Input
         public delegate void InputReady();
         public event InputReady OnInputReady;
 
-        private void OnEnable()
-        {
-            DefaultUniversalInputActions.Enable();
-            OnInputReady?.Invoke();
-        }
-
-        private void OnDisable()
-        {
-            DefaultUniversalInputActions.Disable();
-        }
-
         public override void Awake()
         {
             base.Awake();
@@ -64,6 +53,7 @@ namespace Darklight.UnityExt.Input
                 Debug.Log(Prefix + $"Found Input : {DeviceInputType}");
             }
 
+            DefaultUniversalInputActions.Enable();
             OnInputReady?.Invoke();
         }
 
