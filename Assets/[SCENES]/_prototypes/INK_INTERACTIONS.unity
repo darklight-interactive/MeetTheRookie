@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 788123050}
   - component: {fileID: 788123053}
   - component: {fileID: 788123052}
-  - component: {fileID: 788123054}
   m_Layer: 0
   m_Name: Small Box - Athena Patronas_0
   m_TagString: Untagged
@@ -278,37 +277,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64, y: 0.54}
   m_EdgeRadius: 0
---- !u!114 &788123054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 788123049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  EventReference:
-    Guid:
-      Data1: -276728039
-      Data2: 1229913755
-      Data3: 847198351
-      Data4: 2027149528
-    Path: event:/MusicTest
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &802714545
 GameObject:
   m_ObjectHideFlags: 0
