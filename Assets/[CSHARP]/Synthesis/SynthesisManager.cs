@@ -4,8 +4,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Properties;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -17,7 +20,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     protected VisualTreeAsset synthesisUIDocument;
     protected VisualElement synthesisUI;
 
-    protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
+    protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
@@ -72,7 +75,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         }
     }
 
-    HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
+    HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
     void Select(InputAction.CallbackContext context) {
         if (!synthesisActive) { return; }
         if (itemsSelection.currentlySelected != null) {
@@ -84,10 +87,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 
             if (s.ClassListContains("selected")) {
                 s.RemoveFromClassList("selected");
-                toSynthesize.Remove((SynthesisObject)s);
+                toSynthesize.Remove(s);
             } else if (toSynthesize.Count < 3) { // Don't allow us to select more than three.
                 s.AddToClassList("selected");
-                toSynthesize.Add((SynthesisObject)s);
+                toSynthesize.Add(s);
             }
         }
     }
@@ -142,19 +145,26 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         string objType = (string)args[0];
         string id = (string)args[1];
 
-        object[] remainingArgs = new object[args.Length - 2];
-        Array.Copy(args, 2, remainingArgs, 0, args.Length - 2);
 
         VisualTreeAsset obj = (VisualTreeAsset)Resources.Load("Synthesis/" + objType);
         var tree = obj.Instantiate();
-        
-        SynthesisObject newObj = tree.Q<SynthesisObject>();
-        newObj.name = id;
-        newObj.Configure(remainingArgs);
 
-        objects.Add(newObj);
-        itemsSelection.Add(newObj);
-        return synthesisItems.TryAdd(id, newObj);
+        SynthesisBinding b = ScriptableObject.CreateInstance<SynthesisBinding>();
+
+        if (args.Length > 2) {
+            b.value = (string)args[2];
+        }
+
+        foreach (var child in tree.Children()) {
+            child.dataSource = b;
+        }
+
+        tree.name = id;
+        tree.AddToClassList("synthesis-object");
+
+        objects.Add(tree);
+        itemsSelection.Add(tree);
+        return synthesisItems.TryAdd(id, tree);
     }
 
     public object RemoveItem(object[] args) {
@@ -172,13 +182,13 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     }
 
     [Obsolete("Dragging should not be used for synthesis items.")]
-    public SynthesisObject OverlappingObject(VisualElement synthesisObj) {
-        var rect = synthesisObj.worldBound;
+    public VisualElement OverlappingObject(VisualElement synthesisObj) {
+        /*var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
             if (obj.Value != synthesisObj && obj.Value.worldBound.Overlaps(rect, true)) {
                 return obj.Value;
             }
-        }
+        }*/
         return null;
     }
 }
