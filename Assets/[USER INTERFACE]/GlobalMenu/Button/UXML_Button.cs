@@ -15,9 +15,9 @@ public class UXML_Button : MonoBehaviour
     public Button button;
     private StyleColor NormalColor = new StyleColor(new Color(0.4f, 0.4f, 0.4f, 1f));
     private StyleScale NormalScale = new Scale(new Vector2(1, 1));
-    private StyleColor HoverColor = new StyleColor(new Color(1f, 0.5f, 0.5f, 1f));
+    private StyleColor HoverColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 8f));
     private StyleScale HoverScale = new Scale(new Vector2(1.2f, 1.2f));
-    private StyleColor SelectColor = new StyleColor(new Color(1f, 0.7f, 0.7f, 1f));
+    private StyleColor SelectColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 1));
     private StyleScale SelectScale1 = new Scale(new Vector2(1.4f, 1.4f));
     public GMItem item;
     public Sprite sprite;
