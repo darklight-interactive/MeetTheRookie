@@ -149,14 +149,12 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         VisualTreeAsset obj = (VisualTreeAsset)Resources.Load("Synthesis/" + objType);
         var tree = obj.Instantiate();
 
-        SynthesisBinding b = ScriptableObject.CreateInstance<SynthesisBinding>();
-
-        if (args.Length > 2) {
-            b.value = (string)args[2];
-        }
-
         foreach (var child in tree.Children()) {
-            child.dataSource = b;
+            var dummyValue = (SynthesisBinding)((SynthesisBinding)child.dataSource).Clone();
+            if (args.Length > 2) {
+                dummyValue.setValue((string)args[2]);
+            }
+            child.dataSource = dummyValue;
         }
 
         tree.name = id;

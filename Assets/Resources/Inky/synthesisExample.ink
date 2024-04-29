@@ -4,6 +4,7 @@ EXTERNAL playerRemoveItem(itemID)
 
 ~ playerAddItem("Scrap", "testItem", "This is a test item.")
 ~ playerAddItem("Scrap", "otherTestItem", "This is another test item.")
+~ playerAddItem("Polaroid", "polaroidTest", "backdoor")
 
 -> END
 
