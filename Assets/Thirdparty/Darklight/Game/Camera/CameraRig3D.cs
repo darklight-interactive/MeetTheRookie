@@ -16,27 +16,40 @@ namespace Darklight.Game.Camera
     {
 
         // ----- SERIALIZED VARIABLES ----- >>
-        [Header("State Machine")]
-        CameraStateMachine _stateMachine;
-        public CameraStateMachine StateMachine => _stateMachine;
 
         [Header("Settings")]
-        [SerializeField, ShowOnly] CameraSettings _activeSettings;
-        [SerializeField] CameraSettings _defaultSettings;
-        [SerializeField] CameraSettings _followSettings;
-        [SerializeField] CameraSettings _closeUpSettings;
+        [SerializeField] CameraSettings _activeSettings;
 
         [Header("Cameras")]
         [SerializeField] UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
 
-        [Header("Look Target")]
-        [SerializeField] Transform _lookTarget;
-        [SerializeField] Vector3 _lookTargetOffset;
-
         // ----- PRIVATE VARIABLES ----- >>
-        private Vector3 _cameraTargetPosition;
-        private Vector3 _lookTargetPosition;
-        private Quaternion _cameraTargetRotation;
+        [SerializeField, ShowOnly] private Vector3 _cameraTargetPosition;
+        [SerializeField, ShowOnly] private Quaternion _cameraTargetRotation;
+        [SerializeField, ShowOnly] private Transform _lookTarget;
+        [SerializeField, ShowOnly] private Vector3 _lookOffset = Vector3.up;
+        [SerializeField, ShowOnly] private Vector3 _lookTargetPosition;
+
+        public Vector3 LookTargetPosition
+        {
+            get
+            {
+                if (_lookTarget == null) return _lookTargetPosition + _lookOffset;
+                return _lookTarget.position + _lookOffset;
+            }
+            set
+            {
+                _lookTarget = null;
+                _lookOffset = Vector3.zero;
+                _lookTargetPosition = value;
+            }
+        }
+
+        public void SetNewLookTarget(Transform target, Vector3 offset)
+        {
+            _lookTarget = target;
+            _lookOffset = offset;
+        }
 
         public CameraSettings ActiveSettings
         {
@@ -44,35 +57,12 @@ namespace Darklight.Game.Camera
             set => _activeSettings = value;
         }
 
-        public void SetLookTarget(Transform target, Vector3 offset)
-        {
-            _lookTarget = target;
-            _lookTargetOffset = offset;
-        }
-
         #region UNITY METHODS =================================== >>
 
-        public void Awake()
+        protected virtual void Update()
         {
-            _stateMachine = new CameraStateMachine(CameraState.FOLLOW_TARGET,
-            new Dictionary<CameraState, IState<CameraState>>(){
-                    { CameraState.DEFAULT, new CameraDefaultState(this, ref _defaultSettings) },
-                    { CameraState.FOLLOW_TARGET, new CameraDefaultState(this, ref _followSettings) },
-                    { CameraState.CLOSE_UP, new CameraDefaultState(this, ref _closeUpSettings)}
-                    }, this.gameObject);
-        }
-
-        void Update()
-        {
-            if (!_activeSettings || !_lookTarget) return;
+            if (!_activeSettings) return;
             if (_cameras.Length == 0) return;
-
-            // Update the state machine
-            if (_stateMachine != null)
-                _stateMachine.Step();
-
-            // Set the rig's position to the look target
-            this.transform.position = _lookTarget.position;
 
             // Set each camera to the settings
             foreach (UnityEngine.Camera camera in _cameras)
@@ -86,9 +76,9 @@ namespace Darklight.Game.Camera
         {
             float followSpeed = settings.FollowSpeed;
             float rotateSpeed = settings.RotateSpeed;
-            _lookTargetPosition = _lookTarget.position + _lookTargetOffset;
 
             // << CALCULATE LERP POSITION >>
+            // Calculate the target position of the camera using this transform as a origin point
             _cameraTargetPosition = transform.position + settings.LocalCameraPosition;
             camera.transform.position = Vector3.Lerp(
                 camera.transform.position,
@@ -97,7 +87,7 @@ namespace Darklight.Game.Camera
             );
 
             // << CALCULATE SLERP ROTATION >>
-            _cameraTargetRotation = GetLookRotation(camera.transform.position, _lookTargetPosition);
+            _cameraTargetRotation = GetLookRotation(camera.transform.position, LookTargetPosition);
             camera.transform.rotation = Quaternion.Slerp(
                 camera.transform.rotation,
                 _cameraTargetRotation,
@@ -122,28 +112,4 @@ namespace Darklight.Game.Camera
         }
         #endregion
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(CameraRig3D))]
-    public class CameraRig3DEditor : Editor
-    {
-        CameraRig3D _rig3D;
-        int stateIndex = 0;
-
-        void OnEnable()
-        {
-            _rig3D = (CameraRig3D)target;
-            _rig3D.Awake();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            CameraRig3D cameraScript = (CameraRig3D)target;
-            CameraStateMachine stateMachine = cameraScript.StateMachine;
-
-            base.OnInspectorGUI();
-        }
-    }
-#endif
-
 }

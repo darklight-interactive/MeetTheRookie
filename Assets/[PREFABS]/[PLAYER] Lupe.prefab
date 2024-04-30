@@ -32,10 +32,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6171685949738713303}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.25, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -51,13 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 2
+  frameRate: 4
   spriteSheet:
     loop: 1
     frames:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+    - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 1
+    - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  currentFrame: 0
 --- !u!114 &5365568965282730410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +94,8 @@ MonoBehaviour:
       loop: 1
       frames:
       - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
       - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
   - state: 2
     spriteSheet:
@@ -119,9 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkyInteractables: []
-  activeInkyInteraction: {fileID: 0}
-  interactionCount: 0
+  _interactionCount: 0
 --- !u!114 &7797176430667915744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,9 +139,8 @@ MonoBehaviour:
   preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
   layerMask:
     serializedVersion: 2
-    m_Bits: 896
-  showGizmos: 0
-  dialogueBubblesList: []
+    m_Bits: 384
+  showGizmos: 1
 --- !u!212 &4241149439006364865
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -183,7 +184,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+  m_Sprite: {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -238,7 +239,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!50 &210893148915583867
 Rigidbody2D:

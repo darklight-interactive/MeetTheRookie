@@ -100,7 +100,7 @@ namespace Darklight.Game.Utility
                 GoToState(initialState);
             }
 
-            possibleStates[currentState].Execute();
+            possibleStates[currentState]?.Execute();
         }
 
         /// <summary>

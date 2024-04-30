@@ -24,13 +24,11 @@ public partial class UXML_ComicBubble : VisualElement
         // Create label
         label = new Label
         {
-            text = "New UXMLElement_ComicBubble Label"
+            text = "New UXML Element Comic Bubble Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well."
         };
         label.AddToClassList(label_class);
         this.Add(label);
     }
-
-
 
     public void SetBackgroundSprite(Sprite sprite)
     {
