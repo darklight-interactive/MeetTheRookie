@@ -22,12 +22,8 @@ public class CameraController : CameraRig3D
     [SerializeField] CameraSettings _followTargetSettings;
     [SerializeField] CameraSettings _closeUpSettings;
 
-    [SerializeField, Range(-1, 1)] float lookOffsetY = 0.5f;
-
     public void Awake()
     {
-        SetNewLookTarget(_defaultLookTarget, Vector3.up * lookOffsetY);
-
         _stateMachine = new CameraStateMachine
         (
             CameraState.DEFAULT,
@@ -51,23 +47,39 @@ public class CameraController : CameraRig3D
 
         // Change the Camera State based on the Player State
         PlayerStateMachine playerStateMachine = playerController.stateMachine;
-        IInteract target = playerController.playerInteractor.ActiveInteractable;
-        Interactable interactable = target as Interactable;
+        IInteract activeInteractable = playerController.playerInteractor.ActiveInteractable;
 
         // >> Switch Case for Player State
         switch (playerStateMachine.CurrentState)
         {
             case PlayerState.IDLE:
             case PlayerState.WALK:
-                SetNewLookTarget(playerController.transform, Vector3.up * lookOffsetY);
+
+                LookTargetPosition = _defaultLookTarget.position;
                 _stateMachine.GoToState(CameraState.FOLLOW_TARGET);
                 break;
 
             case PlayerState.INTERACTION:
-                if (interactable != null)
+
+                Interactable interactable = activeInteractable as Interactable;
+                if (interactable is NPC_Interactable)
                 {
-                    SetNewLookTarget(playerController.transform, Vector3.up * lookOffsetY);
+                    Vector3 interactableBestPosition = interactable.GetBestData().worldPosition;
+                    Vector3 defaultLookTargetPosition = _defaultLookTarget.position;
+
+                    // Set the Look Target Position to the Midpoint between the Interactable and the Default Look Target
+                    Vector3 midpoint = (defaultLookTargetPosition + interactableBestPosition) / 2;
+                    LookTargetPosition = midpoint;
                 }
+                else if (interactable is Clue_Interactable)
+                {
+                    PlayerDialogueHandler dialogueHandler = playerController.GetComponent<PlayerDialogueHandler>();
+                    Vector3 bestPosition = dialogueHandler.GetBestData().worldPosition;
+
+                    Vector3 midpoint = (_defaultLookTarget.position + bestPosition) / 2;
+                    LookTargetPosition = midpoint;
+                }
+
                 _stateMachine.GoToState(CameraState.CLOSE_UP);
                 break;
         }

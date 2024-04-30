@@ -87,9 +87,13 @@ namespace Darklight.Game.Grid
 
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
+                if (bestData == null) { bestData = data; }
+
                 if (data.disabled) continue; // Skip disabled data
                 if (data.colliders.Length > 0) continue; // Skip data with colliders
-                if (bestData == null || data.weight > bestData.weight)
+
+                // If the data has a higher or equal weight and less colliders, set it as the best data
+                if (data.weight >= bestData.weight)
                 {
                     bestData = data;
                 }

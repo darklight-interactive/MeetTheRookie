@@ -29,26 +29,10 @@ namespace Darklight.Game.Camera
         [SerializeField, ShowOnly] private Transform _lookTarget;
         [SerializeField, ShowOnly] private Vector3 _lookOffset = Vector3.up;
         [SerializeField, ShowOnly] private Vector3 _lookTargetPosition;
-
         public Vector3 LookTargetPosition
         {
-            get
-            {
-                if (_lookTarget == null) return _lookTargetPosition + _lookOffset;
-                return _lookTarget.position + _lookOffset;
-            }
-            set
-            {
-                _lookTarget = null;
-                _lookOffset = Vector3.zero;
-                _lookTargetPosition = value;
-            }
-        }
-
-        public void SetNewLookTarget(Transform target, Vector3 offset)
-        {
-            _lookTarget = target;
-            _lookOffset = offset;
+            get => _lookTargetPosition;
+            set => _lookTargetPosition = value;
         }
 
         public CameraSettings ActiveSettings
@@ -87,7 +71,7 @@ namespace Darklight.Game.Camera
             );
 
             // << CALCULATE SLERP ROTATION >>
-            _cameraTargetRotation = GetLookRotation(camera.transform.position, LookTargetPosition);
+            _cameraTargetRotation = GetLookRotation(camera.transform.position, LookTargetPosition + settings.LocalTargetOffset);
             camera.transform.rotation = Quaternion.Slerp(
                 camera.transform.rotation,
                 _cameraTargetRotation,
