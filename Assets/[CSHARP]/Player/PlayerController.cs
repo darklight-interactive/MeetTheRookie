@@ -19,7 +19,7 @@ public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
 {
-    PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
+    public PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
     public PlayerStateMachine stateMachine = new PlayerStateMachine(PlayerState.IDLE);
     [SerializeField, ShowOnly] PlayerState currentState;
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviour
         // Update the State Machine
         if (moveDirection != Vector2.zero)
         {
-            stateMachine.ChangeState(PlayerState.WALK);
+            stateMachine.ChangeActiveStateTo(PlayerState.WALK);
         }
         else
         {
-            stateMachine.ChangeState(PlayerState.IDLE);
+            stateMachine.ChangeActiveStateTo(PlayerState.IDLE);
         }
     }
 
@@ -85,8 +85,8 @@ public class PlayerController : MonoBehaviour
             {
 				// debug.log for proof
                 Debug.Log("Character is hidden");
-                stateMachine.ChangeState(PlayerState.HIDE);
-            }
+            stateMachine.ChangeActiveStateTo(PlayerState.HIDE);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -94,8 +94,8 @@ public class PlayerController : MonoBehaviour
         // Reset state to Walk/Idle 
         if (other.GetComponent<Hideable_Object>() != null)
         {
-                stateMachine.ChangeState(PlayerState.IDLE);
-            }
+            stateMachine.ChangeActiveStateTo(PlayerState.IDLE);
+        }
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
     bool synthesisEnabled = false;
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
-        stateMachine.ChangeState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
+        stateMachine.ChangeActiveStateTo(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion

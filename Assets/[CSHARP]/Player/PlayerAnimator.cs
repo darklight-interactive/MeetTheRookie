@@ -91,7 +91,7 @@ public class PlayerAnimationEditor : Editor
         {
             if (_script.animationStateOverride != PlayerState.NONE)
             {
-                _script.stateMachine.ChangeState(_script.animationStateOverride);
+                _script.stateMachine.ChangeActiveStateTo(_script.animationStateOverride);
             }
 
             _serializedObject.ApplyModifiedProperties();

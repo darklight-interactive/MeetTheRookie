@@ -4,6 +4,8 @@ using Darklight.Game;
 using Darklight.Game.Camera;
 using Darklight.Game.Utility;
 using UnityEngine;
+using static Darklight.UnityExt.CustomInspectorGUI;
+
 
 
 #if UNITY_EDITOR
@@ -20,13 +22,12 @@ namespace Darklight.Game
         CLOSE_UP
     }
 
+    [System.Serializable]
     public class CameraStateMachine : FiniteStateMachine<CameraState>
     {
-        private CameraState dEFAULT;
-        private Dictionary<CameraState, IState<CameraState>> dictionary;
-
         public CameraStateMachine(CameraState initialState, Dictionary<CameraState, IState<CameraState>> possibleStates, GameObject parent) : base(initialState, possibleStates, parent)
         {
+            GoToState(initialState);
         }
 
         public override void Step()
@@ -36,8 +37,10 @@ namespace Darklight.Game
 
         public override void GoToState(CameraState state, params object[] enterArgs)
         {
+            if (currentState == state) return;
             base.GoToState(state, enterArgs);
         }
+
     }
 
     /// <summary>
@@ -62,12 +65,13 @@ namespace Darklight.Game
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public void Execute(params object[] executeArgs)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
+
 }

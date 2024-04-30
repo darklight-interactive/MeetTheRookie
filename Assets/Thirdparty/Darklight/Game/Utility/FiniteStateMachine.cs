@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.NetworkInformation;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Darklight.Game.Utility
 {
@@ -41,20 +44,13 @@ namespace Darklight.Game.Utility
     /// <typeparam name="TState">The type of states, which must be an enumeration.</typeparam>
     public abstract class FiniteStateMachine<TState> where TState : Enum
     {
-        /// <summary>
-        /// The initial state of the state machine.
-        /// </summary>
         protected TState initialState;
 
         /// <summary>
         /// A dictionary mapping state identifiers to corresponding state objects.
         /// </summary>
         protected Dictionary<TState, IState<TState>> possibleStates;
-
-        /// <summary>
-        /// The parent GameObject associated with this state machine.
-        /// </summary>
-        public GameObject parent;
+        public List<TState> PossibleStates => new List<TState>(possibleStates.Keys);
 
         /// <summary>
         /// The current state identifier.
@@ -66,6 +62,9 @@ namespace Darklight.Game.Utility
         /// </summary>
         protected IState<TState> state;
 
+        public GameObject parentObject { get; private set; }
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FiniteStateMachine{TState}"/> class.
         /// </summary>
@@ -76,7 +75,7 @@ namespace Darklight.Game.Utility
         {
             this.initialState = initialState;
             this.possibleStates = possibleStates;
-            this.parent = parent;
+            this.parentObject = parent;
             state = null;
 
             // State instances get access to the state machine via `this.StateMachine`

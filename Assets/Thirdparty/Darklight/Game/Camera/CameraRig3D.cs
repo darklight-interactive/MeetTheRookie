@@ -3,10 +3,7 @@ using System.Collections;
 using Darklight.Game;
 using System.Collections.Generic;
 using Darklight.Game.Utility;
-
-
-
-
+using static Darklight.UnityExt.CustomInspectorGUI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,9 +17,11 @@ namespace Darklight.Game.Camera
 
         // ----- SERIALIZED VARIABLES ----- >>
         [Header("State Machine")]
-        [SerializeField] CameraStateMachine _stateMachine;
+        CameraStateMachine _stateMachine;
+        public CameraStateMachine StateMachine => _stateMachine;
 
         [Header("Settings")]
+        [SerializeField, ShowOnly] CameraSettings _activeSettings;
         [SerializeField] CameraSettings _defaultSettings;
         [SerializeField] CameraSettings _followSettings;
         [SerializeField] CameraSettings _closeUpSettings;
@@ -35,7 +34,6 @@ namespace Darklight.Game.Camera
         [SerializeField] Vector3 _lookTargetOffset;
 
         // ----- PRIVATE VARIABLES ----- >>
-        private CameraSettings _activeSettings;
         private Vector3 _cameraTargetPosition;
         private Vector3 _lookTargetPosition;
         private Quaternion _cameraTargetRotation;
@@ -46,11 +44,17 @@ namespace Darklight.Game.Camera
             set => _activeSettings = value;
         }
 
+        public void SetLookTarget(Transform target, Vector3 offset)
+        {
+            _lookTarget = target;
+            _lookTargetOffset = offset;
+        }
+
         #region UNITY METHODS =================================== >>
 
-        void Awake()
+        public void Awake()
         {
-            _stateMachine = new CameraStateMachine(CameraState.DEFAULT,
+            _stateMachine = new CameraStateMachine(CameraState.FOLLOW_TARGET,
             new Dictionary<CameraState, IState<CameraState>>(){
                     { CameraState.DEFAULT, new CameraDefaultState(this, ref _defaultSettings) },
                     { CameraState.FOLLOW_TARGET, new CameraDefaultState(this, ref _followSettings) },
@@ -62,6 +66,9 @@ namespace Darklight.Game.Camera
         {
             if (!_activeSettings || !_lookTarget) return;
             if (_cameras.Length == 0) return;
+
+            // Update the state machine
+            _stateMachine.Step();
 
             // Set the rig's position to the look target
             this.transform.position = _lookTarget.position;
@@ -119,22 +126,21 @@ namespace Darklight.Game.Camera
     [CustomEditor(typeof(CameraRig3D))]
     public class CameraRig3DEditor : Editor
     {
-        CameraRig3D cameraScript;
+        CameraRig3D _rig3D;
+        int stateIndex = 0;
+
+        void OnEnable()
+        {
+            _rig3D = (CameraRig3D)target;
+            _rig3D.Awake();
+        }
+
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-            cameraScript = (CameraRig3D)target;
-
-            // Detect changes to the serialized properties
-            EditorGUI.BeginChangeCheck();
+            CameraRig3D cameraScript = (CameraRig3D)target;
+            CameraStateMachine stateMachine = cameraScript.StateMachine;
 
             base.OnInspectorGUI();
-
-            // If something changed, apply the changes and update the camera position
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-            }
         }
     }
 #endif

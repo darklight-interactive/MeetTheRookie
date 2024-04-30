@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 348082412807241120}
   - component: {fileID: 7090470272912072425}
+  - component: {fileID: 7544430712495788645}
   m_Layer: 0
   m_Name: '[CAMERARIG3D]'
   m_TagString: Untagged
@@ -47,13 +48,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c810578f768f4498fce3533932c66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settings: {fileID: 11400000, guid: fd0d6eeb85a1c4daa976f4e16b709ec6, type: 2}
+  _activeSettings: {fileID: 11400000, guid: 799f0abcff17ba241a242f63269cd9e9, type: 2}
+  _defaultSettings: {fileID: 11400000, guid: fd0d6eeb85a1c4daa976f4e16b709ec6, type: 2}
+  _followSettings: {fileID: 11400000, guid: 799f0abcff17ba241a242f63269cd9e9, type: 2}
+  _closeUpSettings: {fileID: 11400000, guid: d8400b195ad1ab24e834827d17dad240, type: 2}
   _cameras:
   - {fileID: 294617130321755958}
   - {fileID: 2765671518855620946}
   - {fileID: 2547940476336873775}
   _lookTarget: {fileID: 0}
   _lookTargetOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &7544430712495788645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2895742502396242152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInteractor: {fileID: 0}
+  playerController: {fileID: 0}
+  cameraRig3D: {fileID: 0}
 --- !u!1 &3311293317203701699
 GameObject:
   m_ObjectHideFlags: 0
