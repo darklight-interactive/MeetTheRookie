@@ -68,7 +68,8 @@ namespace Darklight.Game.Camera
             if (_cameras.Length == 0) return;
 
             // Update the state machine
-            _stateMachine.Step();
+            if (_stateMachine != null)
+                _stateMachine.Step();
 
             // Set the rig's position to the look target
             this.transform.position = _lookTarget.position;

@@ -7237,7 +7237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.80058897
+      value: -1.0859195
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12144,7 +12144,7 @@ Transform:
   m_GameObject: {fileID: 954588743}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7765126, y: 1.7967752, z: -0.375}
+  m_LocalPosition: {x: -3.7765126, y: 2.0644403, z: -0.375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -15904,7 +15904,7 @@ Transform:
   m_GameObject: {fileID: 1210772550}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.012009472, y: -0.46003366, z: 0.17}
+  m_LocalPosition: {x: -0.012009472, y: -0.7453642, z: 0.17}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -34736,27 +34736,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1058964945939881344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5885300621370010421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  showGizmos: 0
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _interactionKey: scene1_1
 --- !u!1 &1367367787430405513
 GameObject:
   m_ObjectHideFlags: 0
@@ -46763,8 +46742,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9043265860304346458}
-  - component: {fileID: 1058964945939881344}
   - component: {fileID: 4685611341193627238}
+  - component: {fileID: 9043265860304346459}
   m_Layer: 8
   m_Name: STORE_Interaction
   m_TagString: Untagged
@@ -47595,6 +47574,29 @@ Transform:
   - {fileID: 7806171028093816188}
   m_Father: {fileID: 3181833851791777891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9043265860304346459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5885300621370010421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9f8d6034d4d6949a6672b9c9af7a7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _interactionKey: 
+  _sceneTarget:
+    m_SceneName: SCENE1.2
 --- !u!33 &9057375704519673880
 MeshFilter:
   m_ObjectHideFlags: 0

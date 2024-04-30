@@ -14,7 +14,7 @@ public class SceneManager : MonoBehaviourSingleton<SceneManager>
     [SerializeField] private SceneObject Scene1_1;
     [SerializeField] private SceneObject Scene1_2;
 
-    public void ChangeSceneTo(SceneObject sceneObject)
+    public void LoadScene(SceneObject sceneObject)
     {
         UXML_SceneTransition sceneTransition = new GameObject("SceneTransition").AddComponent<UXML_SceneTransition>();
         sceneTransition.Initialize(sceneTransitionPreset, new string[] { "blackborder", "textlabel" });
