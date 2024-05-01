@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField, ShowOnly] PlayerState currentState;
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
-
+    private SceneBounds sceneBounds;
+ 
     Vector2 _activeMoveInput = Vector2.zero;
     void Start()
     {
@@ -38,6 +39,15 @@ public class PlayerController : MonoBehaviour
         moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
         UniversalInputManager.PrimaryInteractAction.performed += Interact;
         UniversalInputManager.SecondaryInteractAction.performed += ToggleSynthesis;
+
+        SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        if (bounds.Length > 0)
+        {
+            sceneBounds = bounds[0];
+        } else
+        {
+            sceneBounds = null;
+        }
     }
 
     // Update is called once per frame
@@ -59,7 +69,18 @@ public class PlayerController : MonoBehaviour
 
         // Set Target Position & Apply
         Vector3 targetPosition = transform.position + (Vector3)moveDirection;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+
+        // Don't allow moving outside of SceneBounds
+        if (sceneBounds)
+        {
+            if ((transform.position.x > sceneBounds.leftBound && moveDirection.x < 0) || (transform.position.x < sceneBounds.rightBound && moveDirection.x > 0))
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+            }
+        } else
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+        }
 
         // Update the Animation
         PlayerAnimator animationManager = GetComponent<PlayerAnimator>();
