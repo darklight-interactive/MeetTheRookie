@@ -64,10 +64,10 @@ namespace Darklight.Game.Camera
                 transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationSpeed * Time.deltaTime);
             }
 
-            // >> UPDATE CAMERAS
+            // update the camera fov
             foreach (UnityEngine.Camera camera in _cameras)
             {
-                if (camera)
+                if (camera != null)
                 {
                     camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, _fov, _zoomSpeed * Time.deltaTime);
                 }

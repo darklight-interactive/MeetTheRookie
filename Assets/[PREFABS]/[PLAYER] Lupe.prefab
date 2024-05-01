@@ -243,7 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
+  _currentState: 0
+  _activeMoveInput: {x: 0, y: 0}
   playerSpeed: 1
   moveVector: {x: 1, y: 0}
 --- !u!114 &3932367194058205592
@@ -259,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDialogueHandler: {fileID: 4169634112966912223}
-  _interactionCount: 0
+  _interactablesCount: 0
 --- !u!61 &2433721290131396170
 BoxCollider2D:
   m_ObjectHideFlags: 0

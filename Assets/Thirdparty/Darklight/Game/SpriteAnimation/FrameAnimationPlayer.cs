@@ -82,8 +82,9 @@ namespace Darklight.Game.SpriteAnimation
                 _spriteRenderer.flipX = moveInput.x > 0f;
             }
 
-            /*
             //how many ways can you flip a sprite?
+
+            /*
             if (moveInput.x < 0) { _spriteRenderer.flipX = true; }
             else if (moveInput.x > 0) { _spriteRenderer.flipX = false; }
             */
@@ -122,7 +123,6 @@ namespace Darklight.Game.SpriteAnimation
             // force loop update so that inputs aren't required
             EditorApplication.QueuePlayerLoopUpdate();
         }
-
 
         public override void OnInspectorGUI()
         {

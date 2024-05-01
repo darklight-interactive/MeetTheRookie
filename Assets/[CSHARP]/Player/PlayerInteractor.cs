@@ -9,9 +9,8 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : MonoBehaviour
 {
+    public PlayerController playerController => GetComponent<PlayerController>();
     public PlayerDialogueHandler playerDialogueHandler;
-    public PlayerStateMachine stateMachine;
-
 
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
@@ -73,11 +72,13 @@ public class PlayerInteractor : MonoBehaviour
         // If not active, subscribe to the events
         if (!_activeInteraction.isActive)
         {
-            stateMachine.ChangeActiveStateTo(PlayerState.INTERACTION); // Set the Player State to Interaction
+            // Change the Player State to Interaction
+            playerController.stateMachine.GoToState(PlayerState.INTERACTION);
 
             // Subscribe to the Interaction Events
             _activeInteraction.OnInteraction += (string text) =>
             {
+                // Show the player's dialogue bubble
                 if (_activeInteraction is Clue_Interactable)
                     playerDialogueHandler.CreateDialogueBubble(text);
             };
@@ -85,7 +86,7 @@ public class PlayerInteractor : MonoBehaviour
             // Subscribe to the Completion Event
             _activeInteraction.OnCompleted += () =>
             {
-                stateMachine.ChangeActiveStateTo(PlayerState.IDLE); // Return to Idle State & reset
+                playerController.stateMachine.GoToState(PlayerState.IDLE);
 
                 playerDialogueHandler.HideDialogueBubble();
                 _activeInteraction = null;

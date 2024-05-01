@@ -11153,6 +11153,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3459753342046718353, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: animationStateOverride
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -11220,6 +11224,14 @@ PrefabInstance:
     - target: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Name
       value: '[PLAYER] Lupe'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183624099261158406, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+    - target: {fileID: 7121041432658350847, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: currentFrame
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7797176430667915744, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: showGizmos
@@ -47002,7 +47014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: orthographic size
@@ -47018,7 +47030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -89.3
+      value: -81.5
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -47054,7 +47066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _zoomSpeed
-      value: 5.81
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _lookTarget
@@ -47074,7 +47086,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 799f0abcff17ba241a242f63269cd9e9, type: 2}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _positionOffset.z
-      value: -87.8
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _defaultLookTarget
@@ -47082,7 +47094,7 @@ PrefabInstance:
       objectReference: {fileID: 825759768}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _distanceFromTarget
-      value: 87.8
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _lookTargetPosition.x
@@ -47126,7 +47138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2547940476336873775, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 2547940476336873775, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: orthographic size
@@ -47138,7 +47150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2765671518855620946, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 2765671518855620946, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: orthographic size
@@ -47234,11 +47246,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871316635775554948, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 6343645490125391593, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 6842953756032785796, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -47362,7 +47374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8659774086033083194, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 1.5000001
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7090470272912072425, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}

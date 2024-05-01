@@ -59,6 +59,8 @@ namespace Darklight.Game.Utility
         protected FiniteState<TState> currentState;
         protected object[] args;
 
+        public List<TState> StateKeys { get { return possibleStates.Keys.ToList(); } }
+
         public FiniteStateMachine() { }
 
         public FiniteStateMachine(Dictionary<TState, FiniteState<TState>> possibleStates, TState initialState, object[] args)
@@ -69,15 +71,22 @@ namespace Darklight.Game.Utility
             this.args = args;
         }
 
+        public void AddState(FiniteState<TState> state)
+        {
+            if (possibleStates == null) { possibleStates = new Dictionary<TState, FiniteState<TState>>(); }
+            possibleStates.Add(state.StateType, state);
+        }
+
         public virtual void Step()
         {
             if (currentState != null) { currentState.Execute(); }
             else { GoToState(initialState); }
         }
 
-        public virtual FiniteState<TState> GoToState(TState state)
+        public virtual bool GoToState(TState state)
         {
             // Exit from the previous state
+            if (currentState.StateType.Equals(state)) { return false; }
             if (currentState != null) { currentState.Exit(); }
 
             // Check if the state exists
@@ -90,9 +99,9 @@ namespace Darklight.Game.Utility
             else
             {
                 Debug.LogError($"State {state} not found in possible states.");
+                return false;
             }
-
-            return currentState;
+            return true;
         }
     }
 }
