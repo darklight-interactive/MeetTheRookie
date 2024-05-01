@@ -1,7 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="container" style="flex-grow: 1; flex-direction: row;">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
+    <engine:VisualElement name="header" style="flex-grow: 1;" />
+    <engine:VisualElement name="body" class="body" style="flex-grow: 1; flex-direction: row;">
         <engine:VisualElement name="left-column" style="flex-grow: 1;" />
         <engine:VisualElement name="middle-column" style="flex-grow: 1;" />
         <engine:VisualElement name="right-column" style="flex-grow: 1;" />
     </engine:VisualElement>
+    <engine:VisualElement name="footer" style="flex-grow: 1;" />
 </engine:UXML>

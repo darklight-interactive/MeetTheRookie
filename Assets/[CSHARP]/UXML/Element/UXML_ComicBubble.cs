@@ -4,8 +4,8 @@ using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
-public class UXML_ComicBubble : UXML_CustomElement
+[UxmlElement]
+public partial class UXML_ComicBubble : UXML_CustomElement
 {
     const string label_class = "comic-label";
     const string bubble_class = "comic-bubble";

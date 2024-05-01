@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Ink.Parsed;
-using Ink.Runtime;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder;
 using UnityEngine.UIElements;
 
 public class UXML_Button : MonoBehaviour
@@ -60,11 +55,11 @@ public class UXML_Button : MonoBehaviour
         item.SetText("Hi :3");
         item.SetScale(0.5f);
     }
-        public void SetText(string text)
+    public void SetText(string text)
     {
         button.text = text;
     }
-    
+
     void SetStyle(string style)
     {
         if (style == "Select")
