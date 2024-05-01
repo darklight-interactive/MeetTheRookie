@@ -33,10 +33,6 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
         meshChild.transform.localPosition = Vector3.zero;
         meshRenderer.enabled = false;
         meshChild.layer = LayerMask.NameToLayer("Player");
-
-
-        // Begin listening for changes
-        OnElementChanged += TextureUpdate;
     }
 
     public void TextureUpdate()
@@ -70,7 +66,12 @@ public class UXML_WorldSpaceUI : UXML_UIDocumentObject
         this.transform.localScale = new Vector3(scale, scale, scale);
     }
 
-    private void OnDestroy()
+    void OnEnable()
+    {
+        OnElementChanged += TextureUpdate;
+    }
+
+    private void OnDisable()
     {
         OnElementChanged -= TextureUpdate;
     }

@@ -3,23 +3,15 @@
  * 4/10/2024
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight;
-using Darklight.UnityExt.Input;
-using UnityEngine.InputSystem;
-using Darklight.Game.SpriteAnimation;
-using UnityEngine.Rendering;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.LowLevel;
+using Darklight.Game.Utility;
 
 
-[RequireComponent(typeof(NPCAnimator))]
-public class NPCController : MonoBehaviour
+[RequireComponent(typeof(NPC_Animator))]
+public class NPC_Controller : MonoBehaviour
 {
-    public NPCStateMachine stateMachine;
-    private NPCAnimator animationManager;
+    public NPC_StateMachine stateMachine;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
@@ -37,16 +29,18 @@ public class NPCController : MonoBehaviour
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
+        // Create the NPCStateMachine
+
         // Create instances of the states
-        IdleState idleState = new(this, ref idleMaxDuration);
-        WalkState walkState = new(this, ref npcSpeed, ref walkMaxDuration, ref leftBound, ref rightBound);
-        SpeakState speakState = new();
-        FollowState followState = new(this, ref followDistance, ref followSpeed);
-        HideState hideState = new(this, ref hideSpeed);
-        ChaseState chaseState = new(ref chaseSpeakDistance, ref chaseSpeed);
+        IdleState idleState = new(NPCState.IDLE, new object[] { idleMaxDuration });
+        WalkState walkState = new(NPCState.WALK, new object[] { walkMaxDuration });
+        SpeakState speakState = new(NPCState.SPEAK, new object[] { player });
+        FollowState followState = new(NPCState.FOLLOW, new object[] { player, followSpeed, followDistance });
+        HideState hideState = new(NPCState.HIDE, new object[] { player, hideSpeed });
+        ChaseState chaseState = new(NPCState.CHASE, new object[] { player, chaseSpeed, chaseSpeakDistance });
 
         // Create dictionary to hold the possible states
-        Dictionary<NPCState, IState<NPCState>> possibleStates = new()
+        Dictionary<NPCState, FiniteState<NPCState>> possibleStates = new()
         {
             { NPCState.IDLE, idleState },
             { NPCState.WALK, walkState },
@@ -55,11 +49,6 @@ public class NPCController : MonoBehaviour
             { NPCState.HIDE, hideState },
             { NPCState.CHASE, chaseState },
         };
-
-        // initialize the NPCStateMachine
-        stateMachine = new NPCStateMachine(NPCState.IDLE, possibleStates, gameObject);
-
-        animationManager = GetComponent<NPCAnimator>();
     }
 
     // Update is called once per frame

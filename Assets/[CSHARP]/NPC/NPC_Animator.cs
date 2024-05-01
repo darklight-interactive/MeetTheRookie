@@ -11,10 +11,10 @@ using UnityEditor;
     typeof(SpriteRenderer)
     //typeof(FrameAnimationPlayer)
     )]
-public class NPCAnimator : MonoBehaviour
+public class NPC_Animator : MonoBehaviour
 {
-    private NPCController _controller => GetComponent<NPCController>();
-    public NPCStateMachine StateMachine
+    private NPC_Controller _controller => GetComponent<NPC_Controller>();
+    public NPC_StateMachine StateMachine
     {
         get => _controller.stateMachine;
         set => _controller.stateMachine = value;
@@ -68,15 +68,15 @@ public class NPCAnimator : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(NPCAnimator)), CanEditMultipleObjects]
+[CustomEditor(typeof(NPC_Animator)), CanEditMultipleObjects]
 public class NPCAnimationEditor : Editor
 {
     SerializedObject _serializedObject;
-    NPCAnimator _script;
+    NPC_Animator _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (NPCAnimator)target;
+        _script = (NPC_Animator)target;
         _script.CreateFrameAnimationPlayer();
     }
 

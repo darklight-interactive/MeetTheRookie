@@ -25,12 +25,12 @@ namespace Darklight.Game
         /// </summary>
         public StateMachine(TState initialState)
         {
-            ChangeState(initialState);
+            ChangeActiveStateTo(initialState);
         }
         /// <summary>
         /// Update the current state of the machine
         /// </summary>
-        public virtual void ChangeState(TState newState)
+        public virtual void ChangeActiveStateTo(TState newState)
         {
             if (newState.Equals(CurrentState)) return;
             CurrentState = newState;

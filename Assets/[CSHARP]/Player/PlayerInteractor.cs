@@ -6,19 +6,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-[RequireComponent(
-    typeof(BoxCollider2D),
-    typeof(PlayerController),
-    typeof(PlayerDialogueHandler))]
+[RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : MonoBehaviour
 {
-    PlayerDialogueHandler playerDialogueHandler => GetComponent<PlayerDialogueHandler>();
-    PlayerController playerController => GetComponent<PlayerController>();
-    PlayerStateMachine stateMachine => playerController.stateMachine;
+    public PlayerController playerController => GetComponent<PlayerController>();
+    public PlayerDialogueHandler playerDialogueHandler;
 
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
-    [SerializeField, ShowOnly] int _interactionCount;
+    [SerializeField, ShowOnly] int _interactablesCount;
+
+    public IInteract ActiveInteractable => _activeInteraction;
 
     void Update()
     {
@@ -26,8 +24,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (_activeInteraction == null && interactables.Count > 0)
         {
-            // Because this method is called every frame, this line will keep the target at the correct position
-            interactables.First().TargetEnable();
+
         }
     }
 
@@ -35,11 +32,17 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (interactables.Count == 0) return;
 
+        if (_activeInteraction == null)
+        {
+            // Because this method is called every frame, this line will keep the target at the correct position
+            interactables.First().TargetEnable();
+        }
+
         // Temporary list to hold items to be removed
         List<IInteract> toRemove = new List<IInteract>();
 
         // Update the interaction count
-        _interactionCount = interactables.Count;
+        _interactablesCount = interactables.Count;
 
         foreach (IInteract interactable in interactables)
         {
@@ -63,37 +66,36 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (interactables.Count == 0) return false;
 
+        // Get the Target Interactable
         IInteract targetInteractable = interactables.First();
-        if (targetInteractable == null) return false;
-        if (targetInteractable.isComplete) return false;
+        if (targetInteractable == null || targetInteractable.isComplete) return false;
+        targetInteractable.TargetDisable();
 
-        _activeInteraction = targetInteractable;
-        _activeInteraction.TargetDisable();
-
-        // If not active, subscribe to the events
-        if (!_activeInteraction.isActive)
+        // If the target is not the same as the active interaction, 
+        // then set the active interaction to the target and subscribe to the events
+        if (_activeInteraction != targetInteractable)
         {
-            stateMachine.ChangeState(PlayerState.INTERACTION); // Set the Player State to Interaction
-
-            // Subscribe to the Interaction Events
+            _activeInteraction = targetInteractable;
             _activeInteraction.OnInteraction += (string text) =>
             {
+                // Show the player's dialogue bubble
                 if (_activeInteraction is Clue_Interactable)
                     playerDialogueHandler.CreateDialogueBubble(text);
             };
 
-            // Subscribe to the Completion Event
             _activeInteraction.OnCompleted += () =>
             {
-                stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
-
                 playerDialogueHandler.HideDialogueBubble();
-                _activeInteraction = null;
             };
         }
 
         // Continue the Interaction
         _activeInteraction.Interact();
+        if (_activeInteraction.isComplete)
+        {
+            _activeInteraction = null;
+            return false;
+        }
         return true;
     }
 
@@ -110,61 +112,6 @@ public class PlayerInteractor : MonoBehaviour
         IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
         interactables.Remove(interactable);
+        interactable.TargetDisable();
     }
-
-    #region ===== [[ INTERACTION HANDLING ]] ===== >>
-
-    /*
-    public class InteractableRadar<Interactable>
-    {
-        public HashSet<Interactable> interactables = new HashSet<Interactable>();
-
-        public void Add(Interactable interactable)
-        {
-            interactables.Add(interactable);
-        }
-
-        public void Remove(Interactable interactable)
-        {
-            interactables.Remove(interactable);
-        }
-
-        public void Clear()
-        {
-            interactables.Clear();
-        }
-
-        public void HandleInteractions()
-        {
-            // Temporary list to hold items to be removed
-            List<Interactable> toRemove = new List<Interactable>();
-
-            foreach (Interactable interaction in interactables)
-            {
-                if (interaction.isComplete)
-                {
-                    // Mark the interaction for removal
-                    toRemove.Add(interaction);
-                    interaction.TargetDisable();
-                }
-                else
-                {
-                    // Optionally, handle active interactions differently if needed
-                    interaction.TargetEnable();
-                }
-            }
-
-            // Remove the completed interactions from the HashSet
-            foreach (var completedInteraction in toRemove)
-            {
-                interactables.Remove(completedInteraction);
-            }
-        }
-    }
-    */
-
-
-
-
-    #endregion
 }
