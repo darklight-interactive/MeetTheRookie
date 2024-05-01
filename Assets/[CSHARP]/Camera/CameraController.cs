@@ -31,7 +31,6 @@ public class CameraController : CameraRig
     /// </summary>
     public class State : FiniteState<CameraState>
     {
-        private float _initialFOV;
         private float _FOVOffset;
 
         /// <param name="args">
@@ -46,7 +45,7 @@ public class CameraController : CameraRig
 
         public override void Enter()
         {
-            cameraRig.cameraFOVOffset = _FOVOffset;
+            cameraRig.SetFOVOffset(_FOVOffset);
         }
 
         public override void Exit() { }
@@ -81,7 +80,8 @@ public class CameraController : CameraRig
 
     public void Start()
     {
-        _playerController.stateMachine.OnStateChanged += (PlayerState state) => OnPlayerStateChange(state);
+        if (_playerController != null && _playerController.stateMachine != null)
+            _playerController.stateMachine.OnStateChanged += (PlayerState state) => OnPlayerStateChange(state);
     }
 
     public override void Update()
