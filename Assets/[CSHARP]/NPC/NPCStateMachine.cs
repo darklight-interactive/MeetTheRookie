@@ -52,6 +52,7 @@ public class IdleState : IState<NPCState>
     public void Enter(params object[] enterArgs)
     {
         _coroutineRunner.StartCoroutine(IdleTimer());
+        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.WALK); return; }
     }
 
     public void Exit()
@@ -98,7 +99,7 @@ public class WalkState : IState<NPCState>
     public void Enter(params object[] enterArgs)
     {
         if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.IDLE); }
+        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.IDLE); return; }
 
         // When walking, it can be either direction randomly
         _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
