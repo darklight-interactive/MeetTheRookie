@@ -6,8 +6,6 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class MenuButton : Button
 {
-    public static BindingId keyPropertyKey = nameof(key);
-
     [UxmlAttribute]
     public string key;
 

@@ -14,6 +14,8 @@ public class MainMenuController : MonoBehaviour
     public Button optionsButton;
     public Button quitButton;
 
+    public SceneObject playScene;
+
     private void Awake()
     {
         ui = GetComponent<UIDocument>().rootVisualElement;
@@ -32,7 +34,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonClicked()
     {
-        SceneManager.Instance.LoadScene("SCENE1.1_MelOMart");
+        SceneManager.Instance.LoadScene(playScene);
 
         Debug.Log("Play Button Clicked");
     }
