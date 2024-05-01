@@ -51,13 +51,13 @@ MonoBehaviour:
   _focusTarget: {fileID: 0}
   _offsetPosition: {x: 0, y: 0, z: -10}
   _offsetRotation: {x: 0, y: 0, z: 0}
+  _positionLerpSpeed: 5
+  _rotationLerpSpeed: 5
+  _fovLerpSpeed: 5
+  _distanceZ: 10
+  _baseFOV: 5
   _offsetFOV: 0
   _currentFOV: 0
-  _followSpeed: 5
-  _rotationSpeed: 5
-  _fovAdjustSpeed: 5
-  _distanceFromTarget: 10
-  _baseFOV: 5
 --- !u!1 &3311293317203701699
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8456337971512060597
 Transform:
   m_ObjectHideFlags: 0

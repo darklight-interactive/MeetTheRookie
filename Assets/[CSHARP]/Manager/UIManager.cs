@@ -14,7 +14,13 @@ using UnityEngine.UIElements;
 /// </summary>
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
+    // ----- [[ INTERACTION UI ]] ----------------------------------->>
+    public UXML_UIDocumentPreset interactionUIPreset;
+    public UXML_ScreenSpaceUI interactionUI { get; private set; }
+
+
     // ----- [[ WORLD SPACE UI ]] -----------------------------------
+    [Space(10), Header("World Space UI")]
     public UXML_UIDocumentPreset worldSpaceUIPreset;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
@@ -27,8 +33,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         return worldSpaceUI;
     }
 
+
+    // ----- [[ UNITY METHODS ]] ------------------------------------>
     public void Start()
     {
+        interactionUI = new GameObject("InteractionUI").AddComponent<UXML_ScreenSpaceUI>();
+        interactionUI.transform.SetParent(transform);
+        interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt", "choiceGroup" });
+
         // Initialize the world space UI singleton
         WorldSpaceUI = GetWorldSpaceUI();
     }

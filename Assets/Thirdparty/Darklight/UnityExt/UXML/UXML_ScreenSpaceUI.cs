@@ -16,20 +16,14 @@ namespace Darklight.UnityExt.UXML
         const string PROMPT_TAG = "interactPrompt";
         const string CHOICE_GROUP_TAG = "choiceGroup";
 
-        [SerializeField] private UXML_UIDocumentPreset _preset;
-
-        public virtual void Awake()
-        {
-            elementTags = new string[] { PROMPT_TAG, CHOICE_GROUP_TAG };
-            Initialize(_preset, elementTags);
-        }
-
         public void DisplayInteractPrompt(Vector3 worldPosition)
         {
-            UXML_CustomElement uIElement = GetUIElement(PROMPT_TAG);
-            if (uIElement == null) return;
-            uIElement.SetWorldToScreenPosition(worldPosition);
-            uIElement.SetVisible(true);
+            UXML_CustomElement uiElement = GetUIElement(PROMPT_TAG);
+            if (uiElement == null) return;
+            uiElement.SetWorldToScreenPosition(worldPosition);
+            uiElement.SetVisible(true);
+
+            Debug.Log($"Displaying Interact Prompt at {worldPosition} {uiElement}");
         }
 
         public void HideInteractPrompt()
@@ -64,35 +58,4 @@ namespace Darklight.UnityExt.UXML
         */
 
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(UXML_ScreenSpaceUI))]
-    public class CustomEditorForScript : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        UXML_ScreenSpaceUI _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (UXML_ScreenSpaceUI)target;
-
-            _script.Awake();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
-
 }
