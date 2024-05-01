@@ -4203,7 +4203,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4250,6 +4250,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _currentFOV
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _defaultFOV
       value: 2.5
       objectReference: {fileID: 0}
@@ -4257,6 +4261,10 @@ PrefabInstance:
       propertyPath: _focusTarget
       value: 
       objectReference: {fileID: 825759768}
+    - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _offsetPosition.z
+      value: -35
+      objectReference: {fileID: 0}
     - target: {fileID: 649292512940621640, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _playerController
       value: 
@@ -4271,11 +4279,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2547940476336873775, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2765671518855620946, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
@@ -4347,11 +4355,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871316635775554948, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6343645490125391593, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6842953756032785796, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4403,7 +4411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8659774086033083194, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 2.5
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
