@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 8403832537613495249}
   - component: {fileID: 8703908369491067701}
   - component: {fileID: 1048859347481113319}
-  - component: {fileID: 6448613592131777975}
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
   - component: {fileID: 4408537733405745119}
@@ -113,7 +112,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+  m_Sprite: {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f255823f865124798f3a0812654ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   player: {fileID: 0}
   npcSpeed: 0.2
   followSpeed: 0.5
@@ -201,24 +201,6 @@ MonoBehaviour:
       - {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
       - {fileID: 1732469636954548053, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
       - {fileID: 7151748471517913395, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
---- !u!114 &6448613592131777975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7152001243824678401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46ec734b7295e6448bb3894b596a3e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 448
-  showGizmos: 0
-  dialogueBubblesList: []
 --- !u!114 &5971972618659859766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +219,7 @@ MonoBehaviour:
     frames:
     - {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
     - {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!61 &6562033029251709814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -296,10 +278,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  isComplete: 0
-  promptTarget: {fileID: 1215345948523717738}
-  tempType: 1
-  inkKnotName: 
-  currentText: 
-  currentKnotState: 0
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _interactionKey: 

@@ -200,8 +200,8 @@ public class FollowState : IState<NPCState>
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
-    private NPCAnimator _animator;
-    private NPCController _controller;
+    private NPC_Animator _animator;
+    private NPC_Controller _controller;
     private GameObject player;
 
     private bool movingInFollowState = false;

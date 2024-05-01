@@ -6,7 +6,7 @@ public class NPC_Interactable : Interactable
 {
     public void Start()
     {
-        NPCController controller = GetComponent<NPCController>();
+        NPC_Controller controller = GetComponent<NPC_Controller>();
 
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
@@ -18,6 +18,7 @@ public class NPC_Interactable : Interactable
 
             if (controller)
             {
+                Debug.Log("Going to SPEAK");
                 controller.stateMachine.GoToState(NPCState.SPEAK);
             }
         };

@@ -3,16 +3,18 @@
  * 4/10/2024
  */
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.Game.Utility;
+using static Darklight.UnityExt.CustomInspectorGUI;
 
 
 [RequireComponent(typeof(NPC_Animator))]
 public class NPC_Controller : MonoBehaviour
 {
-    public NPCStateMachine stateMachine;
-    private NPCAnimator animationManager;
+    public NPC_StateMachine stateMachine;
+    private NPC_Animator animationManager;
     [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
