@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight;
-using Darklight.Game;
+using Darklight.Game.Utility;
 using UnityEngine;
 
 public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE }
 
-public class NPCStateMachine : FiniteStateMachine<NPCState>
+public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
-    private readonly NPCAnimator animator;
+    private readonly NPC_Animator animator;
 
-    // Constructor
-    public NPCStateMachine(NPCState initialState, Dictionary<NPCState, IState<NPCState>> possibleStates, GameObject NPC) : base(initialState, possibleStates, NPC)
+    /// <summary>
+    /// Constructor for the NPCStateMachine
+    /// </summary>
+    /// <param name="initialState"> The initial state of the NPC </param>
+    /// <param name="possibleStates"> All possible states the NPC can be in </param>
+    /// <param name="parent"></param>
+    public NPC_StateMachine(NPCState initialState, Dictionary<NPCState, IState<NPCState>> possibleStates, GameObject parent) : base(initialState, possibleStates, parent)
     {
-        animator = parent.GetComponent<NPCAnimator>();
+        animator = base.parentObject.GetComponent<NPC_Animator>();
     }
 
     public override void Step()
@@ -79,8 +83,8 @@ public class IdleState : IState<NPCState>
 public class WalkState : IState<NPCState>
 {
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
-    private NPCAnimator _animator;
-    
+    private NPC_Animator _animator;
+
     private readonly float _maxDuration;
     private int _walkDirection = 1;
     private readonly float _leftBound;
@@ -101,8 +105,8 @@ public class WalkState : IState<NPCState>
 
     public void Enter(params object[] enterArgs)
     {
-        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.IDLE); return; }
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.IDLE); }
 
         // When walking, it can be either direction randomly
         _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
@@ -118,7 +122,7 @@ public class WalkState : IState<NPCState>
     public void Execute(params object[] executeArgs)
     {
 
-        Transform transform = StateMachine.parent.transform;
+        Transform transform = StateMachine.parentObject.transform;
         float movement = _walkDirection * _walkSpeed;
         float targetX = transform.position.x + movement;
 
@@ -165,15 +169,15 @@ public class WalkState : IState<NPCState>
 public class SpeakState : IState<NPCState>
 {
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
-    private NPCAnimator _animator;
-    private NPCController _controller;
+    private NPC_Animator _animator;
+    private NPC_Controller _controller;
 
     public SpeakState() { }
 
     public void Enter(params object[] enterArgs)
     {
-        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
     }
 
     public void Exit() { }
@@ -183,7 +187,7 @@ public class SpeakState : IState<NPCState>
         GameObject player = _controller.player;
 
         // Set NPC to face player when speaking
-        _animator.FrameAnimationPlayer.FlipTransform(new Vector2(StateMachine.parent.transform.position.x < player.transform.position.x ? -1 : 1, 0));
+        _animator.FrameAnimationPlayer.FlipTransform(new Vector2(StateMachine.parentObject.transform.position.x < player.transform.position.x ? -1 : 1, 0));
     }
 }
 
@@ -216,8 +220,8 @@ public class FollowState : IState<NPCState>
 
     public void Enter(params object[] enterArgs)
     {
-        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
         if (player == null) { player = _controller.player; }
 
          coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
@@ -236,7 +240,7 @@ public class FollowState : IState<NPCState>
 
         if (movingInFollowState)
         {
-            GameObject npc = StateMachine.parent;
+            GameObject npc = StateMachine.parentObject;
 
             float movement = followDirection * followSpeed;
             float targetX = npc.transform.position.x + movement;
@@ -255,7 +259,7 @@ public class FollowState : IState<NPCState>
 
             // If NPC is moving and they're within distance, stop
             // If NPC not moving and they're outside distance, start
-            currentFollowDistance = player.transform.position.x - StateMachine.parent.transform.position.x;
+            currentFollowDistance = player.transform.position.x - StateMachine.parentObject.transform.position.x;
             bool beyondFollowDistance = Mathf.Abs(currentFollowDistance) > followDistance;
             if (!movingInFollowState && beyondFollowDistance)
             {
@@ -278,8 +282,8 @@ public class FollowState : IState<NPCState>
 public class HideState : IState<NPCState>
 {
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
-    private NPCAnimator _animator;
-    private NPCController _controller;
+    private NPC_Animator _animator;
+    private NPC_Controller _controller;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
 
@@ -299,8 +303,8 @@ public class HideState : IState<NPCState>
 
     public void Enter(params object[] enterArgs)
     {
-        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
 
         coroutine = _coroutineRunner.StartCoroutine(HideCheck());
     }
@@ -344,7 +348,7 @@ public class HideState : IState<NPCState>
                 areThereHideableObjects = true;
 
                 GameObject currentClosest = hideableObjects[0].gameObject;
-                float currentPos = StateMachine.parent.transform.position.x;
+                float currentPos = StateMachine.parentObject.transform.position.x;
                 float currentClosestDistance = Mathf.Abs(currentPos - currentClosest.transform.position.x);
 
                 for (int i = 1; i < hideableObjects.Length; i++)
@@ -402,8 +406,8 @@ public class HideState : IState<NPCState>
 public class ChaseState : IState<NPCState>
 {
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
-    private NPCAnimator _animator;
-    private NPCController _controller;
+    private NPC_Animator _animator;
+    private NPC_Controller _controller;
     private GameObject player;
 
     private float chaseSpeakDistance;
@@ -417,8 +421,8 @@ public class ChaseState : IState<NPCState>
 
     public void Enter(params object[] enterArgs)
     {
-        if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
-        if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
         if (player == null) { player = _controller.player; }
     }
 
@@ -426,7 +430,7 @@ public class ChaseState : IState<NPCState>
 
     public void Execute(params object[] executeArgs)
     {
-        GameObject npc = StateMachine.parent.gameObject;
+        GameObject npc = StateMachine.parentObject.gameObject;
 
         float currentChaseDistance = player.transform.position.x - npc.transform.position.x;
 

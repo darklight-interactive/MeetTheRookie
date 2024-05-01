@@ -1,4 +1,10 @@
 using UnityEngine;
+using System.Collections;
+using Darklight.Game;
+using System.Collections.Generic;
+using Darklight.Game.Utility;
+using static Darklight.UnityExt.CustomInspectorGUI;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -8,31 +14,45 @@ namespace Darklight.Game.Camera
     [ExecuteAlways]
     public class CameraRig3D : MonoBehaviour
     {
-        private Vector3 _cameraPosition;
-        private Vector3 _lookTargetPosition;
-        private Quaternion _cameraRotation;
-        [SerializeField] private CameraSettings _settings;
+
+        // ----- SERIALIZED VARIABLES ----- >>
+
+        [Header("Settings")]
+        [SerializeField] CameraSettings _activeSettings;
 
         [Header("Cameras")]
-        [SerializeField] private UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
+        [SerializeField] UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
 
-        [Header("Look Target")]
-        [SerializeField] private Transform _lookTarget;
-        [SerializeField] private Vector3 _lookTargetOffset;
-
-        public void Update()
+        // ----- PRIVATE VARIABLES ----- >>
+        [SerializeField, ShowOnly] private Vector3 _cameraTargetPosition;
+        [SerializeField, ShowOnly] private Quaternion _cameraTargetRotation;
+        [SerializeField, ShowOnly] private Transform _lookTarget;
+        [SerializeField, ShowOnly] private Vector3 _lookOffset = Vector3.up;
+        [SerializeField, ShowOnly] private Vector3 _lookTargetPosition;
+        public Vector3 LookTargetPosition
         {
-            if (!_settings || !_lookTarget) return;
-            if (_cameras.Length == 0) return;
+            get => _lookTargetPosition;
+            set => _lookTargetPosition = value;
+        }
 
-            // Set the rig's position to the look target
-            this.transform.position = _lookTarget.position;
+        public CameraSettings ActiveSettings
+        {
+            get => _activeSettings;
+            set => _activeSettings = value;
+        }
+
+        #region UNITY METHODS =================================== >>
+
+        protected virtual void Update()
+        {
+            if (!_activeSettings) return;
+            if (_cameras.Length == 0) return;
 
             // Set each camera to the settings
             foreach (UnityEngine.Camera camera in _cameras)
             {
                 if (!camera) continue;
-                UpdateCamera(camera, _settings);
+                UpdateCamera(camera, _activeSettings);
             }
         }
 
@@ -40,30 +60,30 @@ namespace Darklight.Game.Camera
         {
             float followSpeed = settings.FollowSpeed;
             float rotateSpeed = settings.RotateSpeed;
-            _lookTargetPosition = _lookTarget.position + _lookTargetOffset;
 
             // << CALCULATE LERP POSITION >>
-            _cameraPosition = transform.position + settings.LocalCameraPosition;
+            // Calculate the target position of the camera using this transform as a origin point
+            _cameraTargetPosition = transform.position + settings.LocalCameraPosition;
             camera.transform.position = Vector3.Lerp(
                 camera.transform.position,
-                _cameraPosition,
+                _cameraTargetPosition,
                 followSpeed * Time.deltaTime
             );
 
             // << CALCULATE SLERP ROTATION >>
-            _cameraRotation = GetLookRotation(camera.transform.position, _lookTargetPosition);
+            _cameraTargetRotation = GetLookRotation(camera.transform.position, LookTargetPosition + settings.LocalTargetOffset);
             camera.transform.rotation = Quaternion.Slerp(
                 camera.transform.rotation,
-                _cameraRotation,
+                _cameraTargetRotation,
                 rotateSpeed * Time.deltaTime
             );
 
             // << UPDATE THE CAMERA FOV >>
-            camera.orthographic = !_settings.IsPerspective;
-            if (_settings.IsPerspective)
-                camera.fieldOfView = _settings.PerspectiveFOV;
+            camera.orthographic = !_activeSettings.IsPerspective;
+            if (_activeSettings.IsPerspective)
+                camera.fieldOfView = _activeSettings.PerspectiveFOV;
             else
-                camera.orthographicSize = _settings.OrthographicSize;
+                camera.orthographicSize = _activeSettings.OrthographicSize;
 
         }
 
@@ -74,30 +94,6 @@ namespace Darklight.Game.Camera
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             return lookRotation;
         }
+        #endregion
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(CameraRig3D))]
-    public class CameraRig3DEditor : Editor
-    {
-        CameraRig3D cameraScript;
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-            cameraScript = (CameraRig3D)target;
-
-            // Detect changes to the serialized properties
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            // If something changed, apply the changes and update the camera position
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
-
 }

@@ -14,6 +14,16 @@ namespace Darklight.Game.Camera
         [SerializeField, Range(-100f, 100f)]
         private float _zLocalPos = 0;
 
+        // >> ----------------- Local Target Offset ----------------- <<
+        [Header("Local Target Offset")]
+        [SerializeField, Range(-10f, 10f)]
+        private float _xLocalTargetOffset = 0;
+        [SerializeField, Range(-10f, 10f)]
+        private float _yLocalTargetOffset = 0;
+
+        [SerializeField, Range(-10f, 10f)]
+        private float _zLocalTargetOffset = 0;
+
         // >> ----------------- Camera Movement ----------------- <<
         [Header("Camera Movement Speeds")]
         [SerializeField, Range(0, 10f)]
@@ -31,6 +41,7 @@ namespace Darklight.Game.Camera
 
         // >> ----------------- Getters ----------------- <<
         public Vector3 LocalCameraPosition => new Vector3(_xLocalPos, _yLocalPos, _zLocalPos);
+        public Vector3 LocalTargetOffset => new Vector3(_xLocalTargetOffset, _yLocalTargetOffset, _zLocalTargetOffset);
         public float FollowSpeed => _followSpeed;
         public float RotateSpeed => _rotateSpeed;
         public bool IsPerspective => _isPerspective;

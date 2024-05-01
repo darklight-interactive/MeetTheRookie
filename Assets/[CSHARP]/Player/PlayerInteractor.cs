@@ -16,9 +16,12 @@ public class PlayerInteractor : MonoBehaviour
     PlayerController playerController => GetComponent<PlayerController>();
     PlayerStateMachine stateMachine => playerController.stateMachine;
 
+
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
     [SerializeField, ShowOnly] int _interactionCount;
+
+    public IInteract ActiveInteractable => _activeInteraction;
 
     void Update()
     {
@@ -67,13 +70,14 @@ public class PlayerInteractor : MonoBehaviour
         if (targetInteractable == null) return false;
         if (targetInteractable.isComplete) return false;
 
+        targetInteractable.TargetDisable();
+
         _activeInteraction = targetInteractable;
-        _activeInteraction.TargetDisable();
 
         // If not active, subscribe to the events
         if (!_activeInteraction.isActive)
         {
-            stateMachine.ChangeState(PlayerState.INTERACTION); // Set the Player State to Interaction
+            stateMachine.ChangeActiveStateTo(PlayerState.INTERACTION); // Set the Player State to Interaction
 
             // Subscribe to the Interaction Events
             _activeInteraction.OnInteraction += (string text) =>
@@ -85,7 +89,7 @@ public class PlayerInteractor : MonoBehaviour
             // Subscribe to the Completion Event
             _activeInteraction.OnCompleted += () =>
             {
-                stateMachine.ChangeState(PlayerState.IDLE); // Return to Idle State & reset
+                stateMachine.ChangeActiveStateTo(PlayerState.IDLE); // Return to Idle State & reset
 
                 playerDialogueHandler.HideDialogueBubble();
                 _activeInteraction = null;
@@ -110,61 +114,6 @@ public class PlayerInteractor : MonoBehaviour
         IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
         interactables.Remove(interactable);
+        interactable.TargetDisable();
     }
-
-    #region ===== [[ INTERACTION HANDLING ]] ===== >>
-
-    /*
-    public class InteractableRadar<Interactable>
-    {
-        public HashSet<Interactable> interactables = new HashSet<Interactable>();
-
-        public void Add(Interactable interactable)
-        {
-            interactables.Add(interactable);
-        }
-
-        public void Remove(Interactable interactable)
-        {
-            interactables.Remove(interactable);
-        }
-
-        public void Clear()
-        {
-            interactables.Clear();
-        }
-
-        public void HandleInteractions()
-        {
-            // Temporary list to hold items to be removed
-            List<Interactable> toRemove = new List<Interactable>();
-
-            foreach (Interactable interaction in interactables)
-            {
-                if (interaction.isComplete)
-                {
-                    // Mark the interaction for removal
-                    toRemove.Add(interaction);
-                    interaction.TargetDisable();
-                }
-                else
-                {
-                    // Optionally, handle active interactions differently if needed
-                    interaction.TargetEnable();
-                }
-            }
-
-            // Remove the completed interactions from the HashSet
-            foreach (var completedInteraction in toRemove)
-            {
-                interactables.Remove(completedInteraction);
-            }
-        }
-    }
-    */
-
-
-
-
-    #endregion
 }

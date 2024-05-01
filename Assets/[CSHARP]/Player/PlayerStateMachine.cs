@@ -14,9 +14,9 @@ public class PlayerStateMachine : StateMachine<PlayerState>
         _animator = animator;
     }
 
-    public override void ChangeState(PlayerState newState)
+    public override void ChangeActiveStateTo(PlayerState newState)
     {
-        base.ChangeState(newState);
+        base.ChangeActiveStateTo(newState);
     }
 
     public override void OnStateChanged(PlayerState previousState, PlayerState newState)
