@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
 
     public class State : FiniteState<PlayerState>
     {
+        /// <param name="args">
+        ///   args[0] = PlayerController ( playerController )
         public State(PlayerState stateType, params object[] args) : base(stateType, args) { }
 
         public override void Enter()
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
             {PlayerState.WALK, new State(PlayerState.WALK)},
             {PlayerState.INTERACTION, new State(PlayerState.INTERACTION)},
             {PlayerState.HIDE, new State(PlayerState.HIDE)}
-        }, PlayerState.NONE, this);
+        }, PlayerState.IDLE, this);
     }
 
     void Start()
@@ -126,6 +128,9 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        // If the player is in an interaction state, do not allow movement
+        if (stateMachine.CurrentState == PlayerState.INTERACTION) return;
+
         Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
         moveDirection *= playerSpeed; // Scalar
         moveDirection *= moveVector; // Nullify the Y axis { Force movement on given axis only }
@@ -172,6 +177,10 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         bool result = interactor.InteractWithTarget();
+        if (result)
+            stateMachine.GoToState(PlayerState.INTERACTION);
+        else
+            stateMachine.GoToState(PlayerState.IDLE);
     }
 
     #region Synthesis Management

@@ -24,14 +24,19 @@ public class PlayerInteractor : MonoBehaviour
 
         if (_activeInteraction == null && interactables.Count > 0)
         {
-            // Because this method is called every frame, this line will keep the target at the correct position
-            interactables.First().TargetEnable();
+
         }
     }
 
     void RefreshRadar()
     {
         if (interactables.Count == 0) return;
+
+        if (_activeInteraction == null)
+        {
+            // Because this method is called every frame, this line will keep the target at the correct position
+            interactables.First().TargetEnable();
+        }
 
         // Temporary list to hold items to be removed
         List<IInteract> toRemove = new List<IInteract>();
@@ -61,21 +66,16 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (interactables.Count == 0) return false;
 
+        // Get the Target Interactable
         IInteract targetInteractable = interactables.First();
-        if (targetInteractable == null) return false;
-        if (targetInteractable.isComplete) return false;
-
+        if (targetInteractable == null || targetInteractable.isComplete) return false;
         targetInteractable.TargetDisable();
 
-        _activeInteraction = targetInteractable;
-
-        // If not active, subscribe to the events
-        if (!_activeInteraction.isActive)
+        // If the target is not the same as the active interaction, 
+        // then set the active interaction to the target and subscribe to the events
+        if (_activeInteraction != targetInteractable)
         {
-            // Change the Player State to Interaction
-            playerController.stateMachine.GoToState(PlayerState.INTERACTION);
-
-            // Subscribe to the Interaction Events
+            _activeInteraction = targetInteractable;
             _activeInteraction.OnInteraction += (string text) =>
             {
                 // Show the player's dialogue bubble
@@ -83,18 +83,19 @@ public class PlayerInteractor : MonoBehaviour
                     playerDialogueHandler.CreateDialogueBubble(text);
             };
 
-            // Subscribe to the Completion Event
             _activeInteraction.OnCompleted += () =>
             {
-                playerController.stateMachine.GoToState(PlayerState.IDLE);
-
                 playerDialogueHandler.HideDialogueBubble();
-                _activeInteraction = null;
             };
         }
 
         // Continue the Interaction
         _activeInteraction.Interact();
+        if (_activeInteraction.isComplete)
+        {
+            _activeInteraction = null;
+            return false;
+        }
         return true;
     }
 

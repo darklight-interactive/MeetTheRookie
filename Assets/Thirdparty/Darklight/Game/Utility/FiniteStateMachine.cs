@@ -59,7 +59,10 @@ namespace Darklight.Game.Utility
         protected FiniteState<TState> currentState;
         protected object[] args;
 
-        public List<TState> StateKeys { get { return possibleStates.Keys.ToList(); } }
+        public delegate void OnStateChange(TState state);
+        public event OnStateChange OnStateChanged;
+
+        public TState CurrentState { get { return currentState.StateType; } }
 
         public FiniteStateMachine() { }
 
@@ -101,6 +104,9 @@ namespace Darklight.Game.Utility
                 Debug.LogError($"State {state} not found in possible states.");
                 return false;
             }
+
+            // Invoke the OnStateChanged event
+            OnStateChanged?.Invoke(state);
             return true;
         }
     }

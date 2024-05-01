@@ -35,18 +35,25 @@ namespace Darklight.Game.Camera
         /// </summary>
         [SerializeField, ShowOnly] private Vector3 _rotationOffset;
 
+        /// <summary>
+        /// This offset is used to adjust the field of view of the camera rig based on the default FOV value
+        /// </summary>
+        [SerializeField, ShowOnly] private float _cameraFovOffset;
+
         [Header("CameraRig Settings")]
         [SerializeField, Range(0, 10)] private float _followSpeed = 5f;
         [SerializeField, Range(0, 10)] private float _rotationSpeed = 5f;
         [SerializeField, Range(0, 10)] private float _zoomSpeed = 5f;
         [SerializeField, Range(1, 100)] private float _distanceFromTarget = 10f; // typically on the z-axis
-        [SerializeField, Range(0.1f, 90)] private float _fov = 5f;
-        public float cameraFov { get { return _fov; } set { _fov = value; } }
+        [SerializeField, Range(0.1f, 90)] private float _defaultFOV = 5f;
+
+        public float cameraFOVOffset { get { return _cameraFovOffset; } set { _cameraFovOffset = value; } }
+        public float cameraFOV => _defaultFOV + _cameraFovOffset;
 
         [Header("Cameras")]
         [SerializeField] UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
 
-        protected virtual void Update()
+        public virtual void Update()
         {
             // set the offsets
             _positionOffset = new Vector3(0, 0, -_distanceFromTarget);
@@ -60,7 +67,7 @@ namespace Darklight.Game.Camera
                 transform.position = Vector3.Lerp(transform.position, rigPosition, _followSpeed * Time.deltaTime);
 
                 // set the rotation
-                Quaternion rigRotation = GetLookRotation(transform.position, _focusTarget.position);
+                Quaternion rigRotation = GetLookRotation(rigPosition, _focusTarget.position + _rotationOffset);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationSpeed * Time.deltaTime);
             }
 
@@ -69,10 +76,17 @@ namespace Darklight.Game.Camera
             {
                 if (camera != null)
                 {
-                    camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, _fov, _zoomSpeed * Time.deltaTime);
+                    // Reset the local position and rotation of the camera
+                    camera.transform.localPosition = Vector3.zero;
+                    camera.transform.localRotation = Quaternion.identity;
+
+                    // 
+                    camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, cameraFOV, _zoomSpeed * Time.deltaTime);
                 }
             }
         }
+
+
 
         Quaternion GetLookRotation(Vector3 originPosition, Vector3 targetPosition)
         {

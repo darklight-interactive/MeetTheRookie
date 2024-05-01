@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 348082412807241120}
   - component: {fileID: 649292512940621640}
   m_Layer: 0
-  m_Name: '[CAMERARIG3D]'
+  m_Name: '[CAMERARIG]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activeSettings: {fileID: 11400000, guid: fd0d6eeb85a1c4daa976f4e16b709ec6, type: 2}
+  _focusTarget: {fileID: 0}
+  _positionOffset: {x: 0, y: 0, z: -10}
+  _rotationOffset: {x: 0, y: 0, z: 0}
+  _followSpeed: 5
+  _rotationSpeed: 5
+  _zoomSpeed: 5
+  _distanceFromTarget: 10
+  _fov: 1.5
   _cameras:
   - {fileID: 294617130321755958}
   - {fileID: 8659774086033083194}
@@ -55,17 +62,6 @@ MonoBehaviour:
   - {fileID: 5871316635775554948}
   - {fileID: 2765671518855620946}
   - {fileID: 2547940476336873775}
-  _cameraTargetPosition: {x: -4.18, y: 1.9549999, z: -101.83}
-  _cameraTargetRotation: {x: 0.0046841013, y: 0.020511221, z: -0.00009609792, w: 0.9997786}
-  _lookTarget: {fileID: 0}
-  _lookOffset: {x: 0, y: 0.5, z: 0}
-  _lookTargetPosition: {x: 0, y: 0, z: 0}
-  _defaultLookTarget: {fileID: 0}
-  _stateMachine:
-    _currentState: 0
-  _defaultSettings: {fileID: 11400000, guid: fd0d6eeb85a1c4daa976f4e16b709ec6, type: 2}
-  _followTargetSettings: {fileID: 11400000, guid: 799f0abcff17ba241a242f63269cd9e9, type: 2}
-  _closeUpSettings: {fileID: 11400000, guid: d8400b195ad1ab24e834827d17dad240, type: 2}
 --- !u!1 &3311293317203701699
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +129,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -261,7 +257,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -638,7 +634,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -872,7 +868,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1000,7 +996,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1303,7 +1299,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 1.5
+  field of view: 1
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
