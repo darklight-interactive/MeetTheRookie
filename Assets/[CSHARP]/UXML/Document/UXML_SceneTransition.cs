@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class UXML_SceneTransition : UXML_UIDocumentObject
 {
-    UXML_UIDocumentElement blackborder_docElement;
+    UXML_Element blackborder_docElement;
     public VisualElement tscreen;
     VisualElement background;
     Label textlabel;

@@ -13,25 +13,25 @@ using UnityEngine.UIElements;
 /// </summary>
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-
-    // ----- [[ INTERACTION UI ]] -----------------------------------
-    public UXML_UIDocumentPreset interactionUIPreset;
-    public static UXML_InteractionUI InteractionUI;
-
     // ----- [[ WORLD SPACE UI ]] -----------------------------------
     public UXML_UIDocumentPreset worldSpaceUIPreset;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
     public static UXML_WorldSpaceUI WorldSpaceUI;
+    UXML_WorldSpaceUI GetWorldSpaceUI()
+    {
+        // Initialize the world space UI singleton
+        UXML_WorldSpaceUI worldSpaceUI = new GameObject("WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
+        worldSpaceUI.transform.SetParent(transform);
+        return worldSpaceUI;
+    }
 
     public void Start()
     {
-        // Initialize the interaction UI singleton
-        InteractionUI = new GameObject("InteractionUI").AddComponent<UXML_InteractionUI>();
-        InteractionUI.transform.SetParent(transform);
-
         // Initialize the world space UI singleton
-        WorldSpaceUI = new GameObject("WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
-        WorldSpaceUI.transform.SetParent(transform);
+        WorldSpaceUI = GetWorldSpaceUI();
+
     }
+
+
 }

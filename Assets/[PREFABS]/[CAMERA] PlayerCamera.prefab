@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348082412807241120}
-  - component: {fileID: 649292512940621640}
+  - component: {fileID: 4288399207057580138}
   m_Layer: 0
-  m_Name: '[CAMERARIG]'
+  m_Name: '[CAMERA] PlayerCamera'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 4261319594994166877}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &649292512940621640
+--- !u!114 &4288399207057580138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,16 +44,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2895742502396242152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
+  m_Script: {fileID: 11500000, guid: d2f4f69ce17324906b30b31788f0eede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameras:
-  - {fileID: 294617130321755958}
-  - {fileID: 8659774086033083194}
-  - {fileID: 6343645490125391593}
-  - {fileID: 5871316635775554948}
-  - {fileID: 2765671518855620946}
-  - {fileID: 2547940476336873775}
+  _cameras: []
   _focusTarget: {fileID: 0}
   _offsetPosition: {x: 0, y: 0, z: -10}
   _offsetRotation: {x: 0, y: 0, z: 0}
@@ -61,10 +55,9 @@ MonoBehaviour:
   _currentFOV: 0
   _followSpeed: 5
   _rotationSpeed: 5
-  _fovAdjustSpeed: 3.5
+  _fovAdjustSpeed: 5
   _distanceFromTarget: 10
   _baseFOV: 5
-  _currentPlayerState: 0
 --- !u!1 &3311293317203701699
 GameObject:
   m_ObjectHideFlags: 0

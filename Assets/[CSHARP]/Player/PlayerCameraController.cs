@@ -2,25 +2,31 @@ using System.Collections.Generic;
 using Darklight.Game.Camera;
 using Darklight.Game.Utility;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+[ExecuteAlways]
 public class PlayerCameraController : CameraController
 {
-    PlayerController _playerController => FindFirstObjectByType<PlayerController>();
+    PlayerController _playerController;
 
-    public override void Awake()
+    public void Awake()
     {
+        _playerController = FindFirstObjectByType<PlayerController>();
+        SetFocusTarget(_playerController.transform);
+
         // Create States
-        CameraState defaultState = new CameraState(CameraStateType.DEFAULT, this, 0f);
-        CameraState followTargetState = new CameraState(CameraStateType.FOLLOW_TARGET, this, -0.25f);
-        CameraState closeUpState = new CameraState(CameraStateType.CLOSE_UP, this, -0.5f);
+        CameraState defaultState = new CameraState(CameraStateKey.DEFAULT, this, 0f);
+        CameraState followTargetState = new CameraState(CameraStateKey.FOLLOW_TARGET, this, -0.25f);
+        CameraState closeUpState = new CameraState(CameraStateKey.CLOSE_UP, this, -0.5f);
 
         // Create State Machine
-        _stateMachine = new StateMachine(new Dictionary<CameraStateType, FiniteState<CameraStateType>>()
+        _stateMachine = new StateMachine(new Dictionary<CameraStateKey, FiniteState<CameraStateKey>>()
         {
-            { CameraStateType.DEFAULT, defaultState },
-            { CameraStateType.FOLLOW_TARGET, followTargetState },
-            { CameraStateType.CLOSE_UP, closeUpState }
-        }, CameraStateType.DEFAULT);
+            { CameraStateKey.DEFAULT, defaultState },
+            { CameraStateKey.FOLLOW_TARGET, followTargetState },
+            { CameraStateKey.CLOSE_UP, closeUpState }
+        }, CameraStateKey.DEFAULT);
 
     }
 
@@ -36,13 +42,13 @@ public class PlayerCameraController : CameraController
         {
             case PlayerState.NONE:
             case PlayerState.IDLE:
-                _stateMachine.GoToState(CameraStateType.DEFAULT);
+                _stateMachine.GoToState(CameraStateKey.DEFAULT);
                 break;
             case PlayerState.INTERACTION:
-                _stateMachine.GoToState(CameraStateType.CLOSE_UP);
+                _stateMachine.GoToState(CameraStateKey.CLOSE_UP);
                 break;
             case PlayerState.WALK:
-                _stateMachine.GoToState(CameraStateType.FOLLOW_TARGET);
+                _stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
                 break;
         }
     }
@@ -53,3 +59,32 @@ public class PlayerCameraController : CameraController
             _playerController.stateMachine.OnStateChanged -= (PlayerState state) => OnPlayerStateChange(state);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(PlayerCameraController))]
+public class CustomEditorForScript : Editor
+{
+    SerializedObject _serializedObject;
+    PlayerCameraController _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (PlayerCameraController)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

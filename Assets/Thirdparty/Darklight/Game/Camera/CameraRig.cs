@@ -19,53 +19,36 @@ namespace Darklight.Game.Camera
     public class CameraRig : MonoBehaviour
     {
         [SerializeField] UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
+        [SerializeField, ShowOnly] private Transform _focusTarget;
+        public void SetFocusTarget(Transform target) => _focusTarget = target;
 
-        /// <summary>
-        /// This is the active focus target for the camera rig.
-        /// It acts as an "origin position" for this transform to be located at.
-        /// </summary>
-        [SerializeField] private Transform _focusTarget;
-        public Transform FocusTarget { get { return _focusTarget; } set { _focusTarget = value; } }
-
-        /// <summary>
-        /// This offset is used to adjust the position of the camera rig in relation to the focus target.
-        /// </summary>
         [SerializeField, ShowOnly] private Vector3 _offsetPosition;
-
-        /// <summary>
-        /// This offset is used to adjust the rotation of the camera rig in relation to the focus target.
-        /// </summary>
         [SerializeField, ShowOnly] private Vector3 _offsetRotation;
 
-        /// <summary>
-        /// This offset is used to adjust the field of view of the camera rig based on the default FOV value
-        /// </summary>
+
+        [Header("Lerp Speed")]
+        [SerializeField, Range(0, 10)] private float _positionLerpSpeed = 5f;
+        [SerializeField, Range(0, 10)] private float _rotationLerpSpeed = 5f;
+        [SerializeField, Range(0, 10)] private float _fovLerpSpeed = 5f;
+
+        [Space(10), Header("Distance")]
+        [SerializeField, Range(1, 100)] private float _distanceZ = 10f; // distance from the targeton the Z axis
+
+        [Header("Field of View")]
+        [SerializeField, Range(0.1f, 45)] private float _baseFOV = 5f;
         [SerializeField, ShowOnly] private float _offsetFOV;
+        public void SetOffsetFOV(float value) => _offsetFOV = value;
         [SerializeField, ShowOnly] private float _currentFOV;
-        public void SetFOVOffset(float value) => _offsetFOV = value;
-
-        [Header("Speed Settings")]
-        [SerializeField, Range(0, 10)] private float _followSpeed = 5f;
-        [SerializeField, Range(0, 10)] private float _rotationSpeed = 5f;
-        [SerializeField, Range(0, 10)] private float _fovAdjustSpeed = 5f;
-
-        [Space(10), Header("Camera Settings")]
-        [SerializeField, Range(1, 100)] private float _distanceFromTarget = 10f; // typically on the z-axis
-        [SerializeField, Range(0.1f, 90)] private float _baseFOV = 5f;
-        public float cameraFOV
+        public float GetCurrentFOV()
         {
-            get
-            {
-                float fov = _baseFOV + _offsetFOV;
-                _currentFOV = fov;
-                return fov;
-            }
+            _currentFOV = _baseFOV + _offsetFOV;
+            return _currentFOV;
         }
 
         public virtual void Update()
         {
             // set the offsets
-            _offsetPosition = new Vector3(0, 0, -_distanceFromTarget);
+            _offsetPosition = new Vector3(0, 0, -_distanceZ);
             _offsetRotation = Vector3.zero;
 
             // << UPDATE THE RIG TRANSFORM >>
@@ -73,11 +56,11 @@ namespace Darklight.Game.Camera
             {
                 // set the position
                 Vector3 rigPosition = _focusTarget.position + _offsetPosition;
-                transform.position = Vector3.Lerp(transform.position, rigPosition, _followSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, rigPosition, _positionLerpSpeed * Time.deltaTime);
 
                 // set the rotation
                 Quaternion rigRotation = GetLookRotation(rigPosition, _focusTarget.position + _offsetRotation);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationLerpSpeed * Time.deltaTime);
             }
 
             // << UPDATE ALL CAMERAS >>
@@ -86,11 +69,10 @@ namespace Darklight.Game.Camera
                 if (camera != null)
                 {
                     // Reset the local position and rotation of the camera
-                    camera.transform.localPosition = Vector3.zero;
-                    camera.transform.localRotation = Quaternion.identity;
+                    camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
                     // Lerp the field of view
-                    camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, cameraFOV, _fovAdjustSpeed * Time.deltaTime);
+                    camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, GetCurrentFOV(), _fovLerpSpeed * Time.deltaTime);
                 }
             }
         }

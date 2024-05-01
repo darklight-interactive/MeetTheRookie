@@ -4,11 +4,11 @@ using UnityEngine.UIElements;
 /// <summary>
 /// Data structure for an UXML VisualElement.
 /// </summary>
-public class UXML_UIDocumentElement
+public class UXML_Element
 {
     public string tag;
     public VisualElement visualElement;
-    public UXML_UIDocumentElement(VisualElement element, string tag)
+    public UXML_Element(VisualElement element, string tag)
     {
         this.tag = tag;
         this.visualElement = element;
@@ -25,18 +25,18 @@ public class UXML_UIDocumentElement
         Camera cam = Camera.main;
         if (cam == null) throw new System.Exception("No main camera found.");
 
+        // Convert from screen position to a coordinate appropriate for UI Toolkit
+        // UI Toolkit origin is top-left, so invert the y-coordinate
         Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
         screenPosition.y = cam.pixelHeight - screenPosition.y;
         screenPosition.z = 0;
-
-        // Convert from screen position to a coordinate appropriate for UI Toolkit
-        // UI Toolkit origin is top-left, so invert the y-coordinate
-        float correctY = cam.pixelHeight + screenPosition.y;
 
         // Set positions using left and top in style
         visualElement.style.left = screenPosition.x;
         visualElement.style.top = screenPosition.y;
     }
+
+    // TODO : Center the Element
 }
 
 
