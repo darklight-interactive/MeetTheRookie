@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
@@ -5,6 +6,8 @@ public class NPC_Interactable : Interactable
 {
     public void Start()
     {
+        NPCController controller = GetComponent<NPCController>();
+
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
@@ -13,12 +16,21 @@ public class NPC_Interactable : Interactable
             {
                 ShowDialogueBubble(currentText);
             }
+
+            if (controller)
+            {
+                controller.stateMachine.GoToState(NPCState.SPEAK);
+            }
         };
 
         // >> ON COMPLETED -------------------------------------
         this.OnCompleted += () =>
         {
             UIManager.WorldSpaceUI.Hide();
+            if (controller)
+            {
+                controller.stateMachine.GoToState(NPCState.IDLE);
+            }
         };
     }
 

@@ -24,7 +24,7 @@ public class NPCStateMachine : FiniteStateMachine<NPCState>
     public override void GoToState(NPCState state, params object[] enterArgs)
     {
         base.GoToState(state, enterArgs);
-
+        
         // Load the related Spritesheet to the FrameAnimationPlayer
         if (animator == null) return;
         if (currentState == NPCState.NONE) return;
@@ -42,6 +42,7 @@ public class IdleState : IState<NPCState>
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
     private readonly float _maxDuration;
     private readonly MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
 
     public IdleState(MonoBehaviour coroutineRunner, ref float idleMaxDuration)
     {
@@ -51,13 +52,14 @@ public class IdleState : IState<NPCState>
 
     public void Enter(params object[] enterArgs)
     {
-        _coroutineRunner.StartCoroutine(IdleTimer());
         if (_maxDuration == 0) { StateMachine.GoToState(NPCState.WALK); return; }
+        coroutine = _coroutineRunner.StartCoroutine(IdleTimer());
     }
 
     public void Exit()
     {
-        _coroutineRunner.StopCoroutine(IdleTimer());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public void Execute(params object[] executeArgs) { }
@@ -86,6 +88,7 @@ public class WalkState : IState<NPCState>
     private readonly float _walkSpeed;
 
     private readonly MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
 
     public WalkState(MonoBehaviour coroutineRunner, ref float walkSpeed, ref float walkMaxDuration, ref float leftBound, ref float rightBound)
     {
@@ -103,12 +106,13 @@ public class WalkState : IState<NPCState>
 
         // When walking, it can be either direction randomly
         _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        _coroutineRunner.StartCoroutine(WalkTimer());
+        coroutine = _coroutineRunner.StartCoroutine(WalkTimer());
     }
 
     public void Exit()
     {
-        _coroutineRunner.StopCoroutine(WalkTimer());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public void Execute(params object[] executeArgs)
@@ -191,6 +195,7 @@ public class FollowState : IState<NPCState>
 {
     public FiniteStateMachine<NPCState> StateMachine { get; set; }
     private MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
     private NPCAnimator _animator;
     private NPCController _controller;
     private GameObject player;
@@ -215,12 +220,13 @@ public class FollowState : IState<NPCState>
         if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
         if (player == null) { player = _controller.player; }
 
-        _coroutineRunner.StartCoroutine(FollowCheck());
+         coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
     }
 
     public void Exit()
     {
-        _coroutineRunner.StopCoroutine(FollowCheck());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public void Execute(params object[] executeArgs)
@@ -275,6 +281,7 @@ public class HideState : IState<NPCState>
     private NPCAnimator _animator;
     private NPCController _controller;
     private MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
 
     private Hideable_Object[] hideableObjects;
     private GameObject closestHideableObject;
@@ -295,12 +302,13 @@ public class HideState : IState<NPCState>
         if (_animator == null) { _animator = StateMachine.parent.GetComponent<NPCAnimator>(); }
         if (_controller == null) { _controller = StateMachine.parent.GetComponent<NPCController>(); }
 
-        _coroutineRunner.StartCoroutine(HideCheck());
+        coroutine = _coroutineRunner.StartCoroutine(HideCheck());
     }
 
     public void Exit()
     {
-        _controller.StopCoroutine(HideCheck());
+        _controller.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public void Execute(params object[] executeArgs)
