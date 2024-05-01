@@ -11,12 +11,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
 /// </summary>
-[RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
+
 public class PlayerController : MonoBehaviour
 {
     public PlayerInteractor playerInteractor => GetComponent<PlayerInteractor>();
@@ -114,6 +119,36 @@ public class PlayerController : MonoBehaviour
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(PlayerController))]
+    public class CustomEditorForScript : Editor
+    {
+        SerializedObject _serializedObject;
+        PlayerController _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (PlayerController)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
+
 }
 
 

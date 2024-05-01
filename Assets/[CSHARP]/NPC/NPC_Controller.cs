@@ -12,7 +12,6 @@ using Darklight.Game.Utility;
 public class NPC_Controller : MonoBehaviour
 {
     public NPC_StateMachine stateMachine;
-    private NPC_Animator animationManager;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
@@ -30,16 +29,18 @@ public class NPC_Controller : MonoBehaviour
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
+        // Create the NPCStateMachine
+
         // Create instances of the states
-        IdleState idleState = new(this, ref idleMaxDuration);
-        WalkState walkState = new(this, ref npcSpeed, ref walkMaxDuration, ref leftBound, ref rightBound);
-        SpeakState speakState = new();
-        FollowState followState = new(this, ref followDistance, ref followSpeed);
-        HideState hideState = new(this, ref hideSpeed);
-        ChaseState chaseState = new(ref chaseSpeakDistance, ref chaseSpeed);
+        IdleState idleState = new(NPCState.IDLE, new object[] { idleMaxDuration });
+        WalkState walkState = new(NPCState.WALK, new object[] { walkMaxDuration });
+        SpeakState speakState = new(NPCState.SPEAK, new object[] { player });
+        FollowState followState = new(NPCState.FOLLOW, new object[] { player, followSpeed, followDistance });
+        HideState hideState = new(NPCState.HIDE, new object[] { player, hideSpeed });
+        ChaseState chaseState = new(NPCState.CHASE, new object[] { player, chaseSpeed, chaseSpeakDistance });
 
         // Create dictionary to hold the possible states
-        Dictionary<NPCState, IState<NPCState>> possibleStates = new()
+        Dictionary<NPCState, FiniteState<NPCState>> possibleStates = new()
         {
             { NPCState.IDLE, idleState },
             { NPCState.WALK, walkState },
@@ -48,11 +49,6 @@ public class NPC_Controller : MonoBehaviour
             { NPCState.HIDE, hideState },
             { NPCState.CHASE, chaseState },
         };
-
-        // initialize the NPCStateMachine
-        stateMachine = new NPC_StateMachine(NPCState.IDLE, possibleStates, gameObject);
-
-        animationManager = GetComponent<NPC_Animator>();
     }
 
     // Update is called once per frame

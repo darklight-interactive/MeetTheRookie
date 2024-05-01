@@ -6,20 +6,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
-[RequireComponent(
-    typeof(BoxCollider2D),
-    typeof(PlayerController),
-    typeof(PlayerDialogueHandler))]
+[RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : MonoBehaviour
 {
-    PlayerDialogueHandler playerDialogueHandler => GetComponent<PlayerDialogueHandler>();
-    PlayerController playerController => GetComponent<PlayerController>();
-    PlayerStateMachine stateMachine => playerController.stateMachine;
+    public PlayerDialogueHandler playerDialogueHandler;
+    public PlayerStateMachine stateMachine;
 
 
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
-    [SerializeField, ShowOnly] int _interactionCount;
+    [SerializeField, ShowOnly] int _interactablesCount;
 
     public IInteract ActiveInteractable => _activeInteraction;
 
@@ -42,7 +38,7 @@ public class PlayerInteractor : MonoBehaviour
         List<IInteract> toRemove = new List<IInteract>();
 
         // Update the interaction count
-        _interactionCount = interactables.Count;
+        _interactablesCount = interactables.Count;
 
         foreach (IInteract interactable in interactables)
         {

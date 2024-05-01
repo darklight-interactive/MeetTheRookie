@@ -10,12 +10,6 @@ using UnityEditor;
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlayerAnimator : MonoBehaviour
 {
-    private PlayerController _controller => GetComponent<PlayerController>();
-    public PlayerStateMachine stateMachine
-    {
-        get => _controller.stateMachine;
-        set => _controller.stateMachine = value;
-    }
     public PlayerState animationStateOverride = PlayerState.NONE;
     public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
 
@@ -23,8 +17,6 @@ public class PlayerAnimator : MonoBehaviour
     public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
     public void CreateFrameAnimationPlayer()
     {
-        stateMachine = new PlayerStateMachine(PlayerState.IDLE, this);
-
         FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
 
         if (FrameAnimationPlayer == null)
@@ -89,11 +81,6 @@ public class PlayerAnimationEditor : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
-            if (_script.animationStateOverride != PlayerState.NONE)
-            {
-                _script.stateMachine.ChangeActiveStateTo(_script.animationStateOverride);
-            }
-
             _serializedObject.ApplyModifiedProperties();
         }
     }
