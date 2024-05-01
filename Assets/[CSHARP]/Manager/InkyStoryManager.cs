@@ -9,8 +9,7 @@ using Ink.Runtime;
 
 using UnityEngine;
 using Darklight.Game.Utility;
-using Darklight.UnityExt;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;

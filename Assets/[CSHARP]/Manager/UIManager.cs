@@ -1,5 +1,6 @@
 using System;
 using Darklight.Game.Utility;
+using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -30,7 +31,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         // Initialize the world space UI singleton
         WorldSpaceUI = GetWorldSpaceUI();
-
     }
 
 

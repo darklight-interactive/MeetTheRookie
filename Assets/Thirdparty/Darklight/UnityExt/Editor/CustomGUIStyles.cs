@@ -1,11 +1,7 @@
-namespace Darklight.UnityExt
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEditor;
+using UnityEngine;
 
+namespace Darklight.UnityExt.Editor
+{
     public class CustomGUIStyles
     {
         public static GUIStyle TitleHeaderStyle => new GUIStyle(GUI.skin.label)

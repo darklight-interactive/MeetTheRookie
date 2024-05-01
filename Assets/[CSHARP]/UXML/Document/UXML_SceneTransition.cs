@@ -1,14 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
+using Darklight.UnityExt.UXML;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UXML_SceneTransition : UXML_UIDocumentObject
 {
-    UXML_Element blackborder_docElement;
+    UXML_CustomElement blackOverlayElement;
     public VisualElement tscreen;
-    VisualElement background;
     Label textlabel;
 
     public bool isStarted;
@@ -24,9 +22,8 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         tscreen = base.root;
 
 
-        blackborder_docElement = base.GetUIElement("blackborder");
-        background = blackborder_docElement.visualElement;
-        blackborder_docElement.SetVisible(false);
+        blackOverlayElement = base.GetUIElement("blackborder");
+        blackOverlayElement.SetVisible(false);
 
         textlabel = tscreen.Q<Label>("textlabel");
         textlabel.text = "";
@@ -49,8 +46,8 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
 
     IEnumerator FadeOut(string newSceneName)
     {
-        blackborder_docElement.SetVisible(true);
-        background.SetEnabled(true);
+        blackOverlayElement.SetVisible(true);
+        blackOverlayElement.SetEnabled(true);
         textlabel.SetEnabled(true);
 
         yield return new WaitForSeconds(1);
@@ -60,8 +57,8 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         textlabel.visible = false;
         yield return new WaitForSeconds(0.45f);
 
-        background.SetEnabled(false);
-        background.visible = false;
+        blackOverlayElement.SetEnabled(false);
+        blackOverlayElement.SetVisible(false);
 
         textlabel.SetEnabled(false);
 

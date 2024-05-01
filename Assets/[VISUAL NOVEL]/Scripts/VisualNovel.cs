@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using Darklight.UnityExt.Input;
+using Darklight.UnityExt.UXML;
 
 public class VisualNovel : UXML_UIDocumentObject
 {

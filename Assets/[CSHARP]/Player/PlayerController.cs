@@ -9,7 +9,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
 using Darklight.Game.Utility;
 
 

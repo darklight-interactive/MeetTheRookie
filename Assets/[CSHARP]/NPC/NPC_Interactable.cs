@@ -1,5 +1,6 @@
 using UnityEngine;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.UXML;
 
 public class NPC_Interactable : Interactable
 {
@@ -29,7 +30,7 @@ public class NPC_Interactable : Interactable
         UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
         //worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
-        worldSpaceUIDoc.SetText(text);
+        //worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
     }
 }

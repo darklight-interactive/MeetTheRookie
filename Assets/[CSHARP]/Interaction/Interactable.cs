@@ -1,8 +1,6 @@
-
-#region  ABSTRACT INTERACTABLE CLASS ================== //
-using Darklight.Game.Grid;
 using UnityEngine;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
+using Darklight.Game.Grid;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : OverlapGrid2D, IInteract
@@ -75,4 +73,3 @@ public abstract class Interactable : OverlapGrid2D, IInteract
         OnCompleted?.Invoke();
     }
 }
-#endregion

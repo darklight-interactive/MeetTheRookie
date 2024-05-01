@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Darklight.Game.Grid;
-using Darklight.UnityExt;
+using Darklight.UnityExt.Editor;
 using UnityEngine;
-using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,7 +15,7 @@ public class Grid2D_Preset : ScriptableObject
 {
 
     #region << Create Unique ID >> ------------------------------------ >>
-    [CustomInspectorGUI.ShowOnly] public string uniqueID;
+    [ShowOnly] public string uniqueID;
     private void OnValidate()
     {
 

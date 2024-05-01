@@ -1,7 +1,6 @@
 using Darklight.Game.Grid;
 using UnityEngine;
-using System.Collections.Generic;
-
+using Darklight.UnityExt.UXML;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,7 +16,7 @@ public class PlayerDialogueHandler : OverlapGrid2D
         UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
         worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
-        worldSpaceUIDoc.SetText(text);
+        //worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
     }
 

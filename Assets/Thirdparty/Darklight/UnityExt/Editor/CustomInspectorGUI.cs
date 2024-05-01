@@ -1,16 +1,15 @@
 using System;
 using UnityEngine;
-
-namespace Darklight.UnityExt
-{
-
 #if UNITY_EDITOR
-	using UnityEditor;
+using UnityEditor;
 #endif
+
+namespace Darklight.UnityExt.Editor
+{
+	public class ShowOnlyAttribute : PropertyAttribute { }
 
 	public static class CustomInspectorGUI
 	{
-		public class ShowOnlyAttribute : PropertyAttribute { }
 
 #if UNITY_EDITOR
 		public static bool DrawDefaultInspectorWithoutSelfReference(SerializedObject obj)
