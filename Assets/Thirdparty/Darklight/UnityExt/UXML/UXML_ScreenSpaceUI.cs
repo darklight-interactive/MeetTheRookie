@@ -1,5 +1,8 @@
 using Darklight.UnityExt.UXML;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Darklight.UnityExt.UXML
 {
@@ -61,4 +64,35 @@ namespace Darklight.UnityExt.UXML
         */
 
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(UXML_ScreenSpaceUI))]
+    public class CustomEditorForScript : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        UXML_ScreenSpaceUI _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (UXML_ScreenSpaceUI)target;
+
+            _script.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
 }

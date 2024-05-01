@@ -1,6 +1,6 @@
 #header {
     background-color: rgb(34, 51, 87);
-    max-height: 128px;
+    max-height: 10%;
 }
 
 #body {
@@ -11,5 +11,28 @@
     max-height: 128px;
 }
 
+Label {
+    font-size: 100%;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco-Thin.ttf?fileID=12800000&guid=8d084e655e51e5f458abcf16d21c0fb9&type=3#DigitalDisco-Thin");
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+}
+
 .icon {
+}
+
+.column-active {
+    flex-grow: 1;
+    visibility: visible;
+    transition-duration: 0.5s, 0.5s;
+    transition-property: flex-grow, opacity;
+    background-color: rgb(0, 0, 0);
+}
+
+.column-inactive {
+    flex-grow: 0.25;
+    transition-duration: 1s;
+    transition-property: flex-grow;
+    background-color: rgb(0, 0, 0);
+    opacity: 0;
 }

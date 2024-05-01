@@ -1,10 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
     <engine:VisualElement name="header" style="flex-grow: 1;" />
-    <engine:VisualElement name="body" class="body" style="flex-grow: 1; flex-direction: row;">
-        <engine:VisualElement name="left-column" style="flex-grow: 1;" />
+    <engine:VisualElement name="body" style="flex-grow: 1; flex-direction: row; align-items: stretch; justify-content: space-between;">
+        <engine:VisualElement name="left-column" focusable="false" class="column-inactive" />
         <engine:VisualElement name="middle-column" style="flex-grow: 1;" />
-        <engine:VisualElement name="right-column" style="flex-grow: 1;" />
+        <SideColumn Active="true">
+            <engine:Label text="Hello this is a test label" />
+        </SideColumn>
     </engine:VisualElement>
-    <engine:VisualElement name="footer" style="flex-grow: 1;" />
+    <engine:VisualElement name="footer" style="flex-grow: 1; max-height: 15%;" />
 </engine:UXML>
