@@ -13,6 +13,7 @@ using Darklight.Game.SpriteAnimation;
 using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.LowLevel;
+using static Darklight.UnityExt.CustomInspectorGUI;
 
 
 [RequireComponent(typeof(NPCAnimator))]
@@ -20,6 +21,7 @@ public class NPCController : MonoBehaviour
 {
     public NPCStateMachine stateMachine;
     private NPCAnimator animationManager;
+    [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player;
@@ -66,6 +68,7 @@ public class NPCController : MonoBehaviour
     void Update()
     {
         stateMachine.Step();
+        currentState = stateMachine.currentState;
     }
 
     private void OnDrawGizmosSelected()

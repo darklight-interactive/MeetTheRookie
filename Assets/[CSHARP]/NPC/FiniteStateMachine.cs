@@ -9,7 +9,7 @@ public abstract class FiniteStateMachine<TState> where TState : Enum
     protected TState initialState;
     protected Dictionary<TState, IState<TState>> possibleStates;
     public GameObject parent;
-    protected TState currentState;
+    public TState currentState;
     protected IState<TState> state;
 
     public FiniteStateMachine(TState initialState, Dictionary<TState, IState<TState>> possibleStates, GameObject parent)
