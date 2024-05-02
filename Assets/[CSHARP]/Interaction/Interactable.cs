@@ -1,11 +1,14 @@
 using Darklight.Game.Grid;
 using UnityEngine;
+using System.Collections;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+
 
 public interface IInteract
 {
@@ -39,7 +42,11 @@ public abstract class Interactable : MonoBehaviour, IInteract
     [ShowOnly] public bool isActive = false;
     [ShowOnly] public bool isComplete = false;
     [SerializeField] private Transform promptIconTarget;
+
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    private Color defaultColor;
     public event IInteract.OnInteract OnInteraction;
+
     public event IInteract.OnComplete OnCompleted;
 
     // ====== [[ INITIALIZATION ]] ================================
@@ -48,6 +55,7 @@ public abstract class Interactable : MonoBehaviour, IInteract
     public virtual void Reset()
     {
         isComplete = false;
+        spriteRenderer.color = defaultColor;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -71,6 +79,7 @@ public abstract class Interactable : MonoBehaviour, IInteract
     public virtual void Interact()
     {
         OnInteraction?.Invoke();
+        StartCoroutine(ColorChangeRoutine(Color.red,2.0f));
     }
     public virtual void Complete()
     {
@@ -82,7 +91,17 @@ public abstract class Interactable : MonoBehaviour, IInteract
     public virtual void Awake()
     {
         Initialize();
+        defaultColor = spriteRenderer.color;
     }
 
     public abstract void OnDestroy();
+
+    private IEnumerator ColorChangeRoutine(Color newColor, float duration)
+    {
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = newColor;
+
+        yield return new WaitForSeconds(duration);
+        spriteRenderer.color = originalColor;     
+    }
 }
