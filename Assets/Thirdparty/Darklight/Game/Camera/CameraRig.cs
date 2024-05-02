@@ -37,6 +37,8 @@ namespace Darklight.Game.Camera
         /// </summary>
         [SerializeField, ShowOnly] private Vector3 _offsetRotation;
 
+        public float yOffset;
+
         /// <summary>
         /// This offset is used to adjust the field of view of the camera rig based on the default FOV value
         /// </summary>
@@ -71,12 +73,16 @@ namespace Darklight.Game.Camera
             // << UPDATE THE RIG TRANSFORM >>
             if (_focusTarget)
             {
+                Vector3 target = _focusTarget.position;
+                target.y += yOffset;
                 // set the position
-                Vector3 rigPosition = _focusTarget.position + _offsetPosition;
+                //Vector3 rigPosition = _focusTarget.position + _offsetPosition;
+                Vector3 rigPosition = target + _offsetPosition;
                 transform.position = Vector3.Lerp(transform.position, rigPosition, _followSpeed * Time.deltaTime);
 
                 // set the rotation
-                Quaternion rigRotation = GetLookRotation(rigPosition, _focusTarget.position + _offsetRotation);
+                //Quaternion rigRotation = GetLookRotation(rigPosition, _focusTarget.position + _offsetRotation);
+                Quaternion rigRotation = GetLookRotation(rigPosition, target + _offsetRotation);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationSpeed * Time.deltaTime);
             }
 
