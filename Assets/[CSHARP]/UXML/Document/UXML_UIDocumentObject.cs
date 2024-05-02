@@ -10,7 +10,7 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
     protected UIDocument document => GetComponent<UIDocument>();
     protected VisualElement root => document.rootVisualElement;
     protected Dictionary<string, UXML_UIDocumentElement> uiElements = new Dictionary<string, UXML_UIDocumentElement>();
-    protected string[] tags = new string[0];
+    protected string[] elementTags = new string[0];
 
     public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags)
     {
@@ -18,7 +18,12 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
         document.visualTreeAsset = preset.VisualTreeAsset;
         document.panelSettings = preset.PanelSettings;
 
-        LoadUIElements(tags);
+        if (tags != null)
+        {
+            LoadUIElements(tags);
+        }
+
+        gameObject.layer = LayerMask.NameToLayer("UI");
     }
 
     void LoadUIElements(string[] tags)
@@ -27,6 +32,8 @@ public abstract class UXML_UIDocumentObject : MonoBehaviour
         {
             bool foundElement = AddUIElement(tag);
             if (!foundElement) continue;
+
+            //Debug.Log($"Element with tag {tag} found in UIDocument {document.name}");
         }
     }
 

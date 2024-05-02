@@ -13,6 +13,9 @@ using static Darklight.UnityExt.CustomInspectorGUI;
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 
+/// <summary>
+/// This class is responsible for translating player input into movement and interaction.
+/// </summary>
 [RequireComponent(typeof(PlayerAnimator), typeof(PlayerInteractor))]
 public class PlayerController : MonoBehaviour
 {
@@ -22,15 +25,10 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
 
+    Vector2 _activeMoveInput = Vector2.zero;
     void Start()
     {
-        Invoke("StartInputListener", 0.1f);
-    }
-
-    Vector2 _activeMoveInput = Vector2.zero;
-    void StartInputListener()
-    {
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+        Debug.Log($"PlayerController is listening to input from {UniversalInputManager.DeviceInputType}");
 
         // Subscribe to Universal MoveInput
         InputAction moveInputAction = UniversalInputManager.MoveInputAction;
@@ -81,9 +79,9 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-			// Get Hidden Object Component
-            var hiddenObject = other.GetComponent<NPC_Hideable_Object>();
-            if (hiddenObject != null)
+        // Get Hidden Object Component
+        var hiddenObject = other.GetComponent<Hideable_Object>();
+        if (hiddenObject != null)
             {
 				// debug.log for proof
                 Debug.Log("Character is hidden");
@@ -93,9 +91,9 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-			// Reset state to Walk/Idle 
-            if (other.GetComponent<NPC_Hideable_Object>() != null)
-            {
+        // Reset state to Walk/Idle 
+        if (other.GetComponent<Hideable_Object>() != null)
+        {
                 stateMachine.ChangeState(PlayerState.IDLE);
             }
     }
@@ -105,19 +103,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        stateMachine.ChangeState(PlayerState.INTERACTION);
-        playerInteractor.InteractWithFirstTarget();
-    }
-
-    void ExitInteraction()
-    {
-        stateMachine.ChangeState(PlayerState.IDLE);
+        bool result = playerInteractor.InteractWithTarget();
     }
 
     #region Synthesis Management
     bool synthesisEnabled = false;
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
+        stateMachine.ChangeState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion

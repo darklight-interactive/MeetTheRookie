@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
-    public string initialStoryPath = "scene1";
-
     public override void Awake()
     {
         base.Awake();

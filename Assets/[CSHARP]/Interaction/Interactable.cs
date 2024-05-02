@@ -1,8 +1,11 @@
+
+#region  ABSTRACT INTERACTABLE CLASS ================== //
 using Darklight.Game.Grid;
 using UnityEngine;
 using System.Collections;
 using static Darklight.UnityExt.CustomInspectorGUI;
 
+<<<<<<< HEAD
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -36,19 +39,38 @@ public interface IInteract
     delegate void OnComplete();
 }
 
+=======
+>>>>>>> 940056fcd0b6b156086ee58ac2941b378d26f338
 [RequireComponent(typeof(BoxCollider2D))]
-public abstract class Interactable : MonoBehaviour, IInteract
+public abstract class Interactable : OverlapGrid2D, IInteract
 {
+<<<<<<< HEAD
     [ShowOnly] public bool isActive = false;
     [ShowOnly] public bool isComplete = false;
     [SerializeField] private Transform promptIconTarget;
 
     [SerializeField] private SpriteRenderer spriteRenderer;
     private Color defaultColor;
+=======
+    // << SERIALIZED VALUES >> //
+    [ShowOnly, SerializeField] bool _isTarget;
+    [ShowOnly, SerializeField] bool _isActive;
+    [ShowOnly, SerializeField] bool _isComplete;
+    [SerializeField] string _interactionKey;
+
+    // << PUBLIC ACCESSORS >> //
+    public bool isTarget { get => _isTarget; set => _isTarget = value; }
+    public bool isActive { get => _isActive; set => _isActive = value; }
+    public bool isComplete { get => _isComplete; set => _isComplete = value; }
+    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
+
+    // << EVENTS >> //
+>>>>>>> 940056fcd0b6b156086ee58ac2941b378d26f338
     public event IInteract.OnInteract OnInteraction;
 
     public event IInteract.OnComplete OnCompleted;
 
+<<<<<<< HEAD
     // ====== [[ INITIALIZATION ]] ================================
     protected abstract void Initialize();
 
@@ -60,36 +82,59 @@ public abstract class Interactable : MonoBehaviour, IInteract
 
     // ====== [[ TARGETING ]] ======================================
 
+=======
+>>>>>>> 940056fcd0b6b156086ee58ac2941b378d26f338
     public virtual void TargetEnable()
     {
-        Initialize();
-        isActive = true;
+        isTarget = true;
 
-        if (promptIconTarget == null)
-            promptIconTarget = transform;
-        UIManager.InteractionUI.DisplayInteractPrompt(promptIconTarget.position);
+        OverlapGrid2D_Data data = this.GetBestData();
+        if (data == null) return;
+        UIManager.InteractionUI.DisplayInteractPrompt(data.worldPosition);
     }
+
     public virtual void TargetDisable()
     {
-        isActive = false;
+        isTarget = false;
         UIManager.InteractionUI.HideInteractPrompt();
     }
 
-    // ====== [[ INTERACTION ]] ===================================
+    public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
+<<<<<<< HEAD
         OnInteraction?.Invoke();
         StartCoroutine(ColorChangeRoutine(Color.red,2.0f));
-    }
-    public virtual void Complete()
-    {
-        OnCompleted?.Invoke();
-        isComplete = true;
+=======
+        if (knotIterator == null)
+        {
+            knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
+        }
+
+        ContinueKnot();
+>>>>>>> 940056fcd0b6b156086ee58ac2941b378d26f338
     }
 
-    // ====== [[ MONOBEHAVIOUR ]] ===================================
-    public virtual void Awake()
+    public virtual void ContinueKnot()
     {
+        isTarget = false;
+        isActive = true;
+        isComplete = false;
+
+        knotIterator.ContinueKnot();
+
+        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        {
+            Complete();
+            return;
+        }
+
+        OnInteraction?.Invoke(knotIterator.currentText);
+    }
+
+    public virtual void Complete()
+    {
+<<<<<<< HEAD
         Initialize();
         defaultColor = spriteRenderer.color;
     }
@@ -105,3 +150,13 @@ public abstract class Interactable : MonoBehaviour, IInteract
         spriteRenderer.color = originalColor;     
     }
 }
+=======
+        isComplete = true;
+        isActive = false;
+        knotIterator = null;
+
+        OnCompleted?.Invoke();
+    }
+}
+#endregion
+>>>>>>> 940056fcd0b6b156086ee58ac2941b378d26f338

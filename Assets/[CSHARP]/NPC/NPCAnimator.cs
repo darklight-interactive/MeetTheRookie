@@ -14,7 +14,7 @@ using UnityEditor;
 public class NPCAnimator : MonoBehaviour
 {
     private NPCController _controller => GetComponent<NPCController>();
-    public NPCStateMachine stateMachine
+    public NPCStateMachine StateMachine
     {
         get => _controller.stateMachine;
         set => _controller.stateMachine = value;
@@ -26,8 +26,6 @@ public class NPCAnimator : MonoBehaviour
     public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
     public void CreateFrameAnimationPlayer()
     {
-        stateMachine = new NPCStateMachine(NPCState.IDLE, this);
-
         FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
 
         if (FrameAnimationPlayer == null)
@@ -94,7 +92,7 @@ public class NPCAnimationEditor : Editor
         {
             if (_script.animationStateOverride != NPCState.NONE)
             {
-                _script.stateMachine.ChangeState(_script.animationStateOverride);
+                _script.FrameAnimationPlayer.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
             }
 
             _serializedObject.ApplyModifiedProperties();
