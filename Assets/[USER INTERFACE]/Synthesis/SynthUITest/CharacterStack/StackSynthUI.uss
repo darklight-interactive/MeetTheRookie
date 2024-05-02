@@ -10,9 +10,9 @@ VisualElement.StackBase {
 }
 
 VisualElement.StackFile {
-    background-color: rgb(133, 109, 44);
-    width: 150px;
-    height: 190px;
+    background-color: rgba(133, 109, 44, 0);
+    width: 256px;
+    height: 256px;
     position: absolute;
     transition-duration: 0.2s;
     -unity-background-image-tint-color: rgb(255, 255, 255);
@@ -26,31 +26,36 @@ VisualElement.StackFileSelect {
 VisualElement.StackSelected {
     position: absolute;
     flex-grow: 1;
-    width: 175px;
-    height: 210px;
+    width: 210px;
+    height: 256px;
     align-self: center;
-    bottom: -10px;
+    bottom: auto;
     background-color: rgba(188, 162, 0, 0);
+    top: 0;
+    left: 23px;
+    transition-duration: 0.2s;
 }
 
 VisualElement.StackTextHolder {
     position: absolute;
-    top: auto;
-    bottom: 10px;
-    left: 11px;
-    width: 128px;
-    height: 100px;
-    background-color: rgb(115, 115, 115);
+    top: 124px;
+    bottom: auto;
+    left: 38px;
+    width: 180px;
+    height: 118px;
+    background-color: rgba(115, 115, 115, 0);
 }
 
 VisualElement.StackTextHolderSelected {
     color: rgb(214, 203, 0);
     background-color: rgba(188, 162, 0, 0);
-    width: 140px;
-    height: 110px;
+    width: 190px;
+    height: 128px;
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    bottom: auto;
+    right: auto;
+    top: 119px;
+    left: 33px;
 }
 
 VisualElement.StackPFP {
@@ -65,18 +70,18 @@ VisualElement.StackPFP {
 
 VisualElement.StackTextSelected {
     background-color: rgba(188, 162, 0, 0);
-    width: 128px;
+    width: 180px;
     height: 30px;
     align-self: center;
     position: absolute;
-    top: 80px;
-    left: 11px;
+    top: 124px;
+    left: 38px;
 }
 
 Label.StackName {
     position: absolute;
-    left: 5px;
-    top: 0;
+    left: 130px;
+    top: -2px;
     white-space: nowrap;
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/pixelplay.ttf?fileID=12800000&guid=e2cb29917e71d184a9ea0469322749c1&type=3#pixelplay");
     width: 64px;
@@ -87,7 +92,7 @@ Label.StackName {
 Label.StackLocation {
     position: absolute;
     top: 30px;
-    left: 5px;
+    left: 130px;
     width: 64px;
     height: 24px;
     font-size: 24px;

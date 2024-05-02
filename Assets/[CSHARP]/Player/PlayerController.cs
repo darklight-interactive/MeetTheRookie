@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis(InputAction.CallbackContext context) {
         synthesisEnabled = !synthesisEnabled;
         stateMachine.ChangeState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
-        SynthesisManager.Instance.Show(synthesisEnabled);
+        ///SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion
 }

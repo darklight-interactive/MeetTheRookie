@@ -13,9 +13,11 @@ public class StackSynthUI : MonoBehaviour
     public VisualElement stackBase;
     public List<VisualElement> Stack = new List<VisualElement>();
     private int childcounter = 0;
+    private float colorchanger;
     private string j;
     private bool selected = false;
-    private bool hovered = false;
+    public bool hovered = false;
+    public bool nothovered = true;
     private bool textselected = false;
     private VisualElement holder;
     private VisualElement CurrentFile;
@@ -28,39 +30,39 @@ public class StackSynthUI : MonoBehaviour
     {
         root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         stackBase = root.Q<VisualElement>("Stack");
-        stackBase.style.scale = new StyleScale(new Vector2(1.4f, 1.4f));
         foreach (VisualElement child in stackBase.Children())
             {
                 Stack.Add(child);
                 childcounter += 1;
                 child.style.top = 20 * childcounter;
                 child.style.left = 20 * childcounter;
+                colorchanger = ((childcounter+1) * 2.5f)/10;
+                child.style.unityBackgroundImageTintColor = new StyleColor(new Color(colorchanger, colorchanger, colorchanger, 1));
             }
         childcounter = 0;
-        AddText("rat", "yomama");
-        AddText("rat", "I'm a rat");
-        AddText("rat", "shiminy");
-        AddText("rat", "biminy");
-        AddText("rat", "bop");
-        AddText("rat", "the kids went down to the store");
-        AddText("rat", "hi my name is bob and I approve this message");
-        AddText("dog", "yomama");
-        AddText("dog", "I'm a rat");
-        AddText("dog", "shiminy");
-        AddText("dog", "biminy");
-        AddText("dog", "bop");
-        AddText("dog", "the kids went down to the store");
-        AddText("dog", "hi my name is bob and I approve this message");
+        AddText("Irene", "yomama");
+        AddText("Irene", "I'm Irene");
+        AddText("Irene", "shiminy");
+        AddText("Irene", "biminy");
+        AddText("Irene", "bop");
+        AddText("Irene", "the kids went down to the store");
+        AddText("Irene", "hi my name is bob and I approve this message");
+        AddText("Roy", "yomama");
+        AddText("Roy", "I'm Roy");
+        AddText("Roy", "shiminy");
+        AddText("Roy", "biminy");
+        AddText("Roy", "bop");
+        AddText("Roy", "the kids went down to the store");
+        AddText("Roy", "hi my name is bob and I approve this message");
         TextFix(Stack[^1].name);
         //Make sure to comment this out later!
-        OnHover();
     }
 
     // Update is called once per frame
     void Update()
     {
         CurrentFile = Stack[^1];
-        if (hovered == true || selected == true || textselected == true)
+        if (hovered == true || textselected == true)
         {
             if (Keyboard.current.zKey.wasPressedThisFrame)
             {
@@ -70,12 +72,9 @@ public class StackSynthUI : MonoBehaviour
             {
                 Deselect();
             }
-            if (selected == true)
+            if (Keyboard.current.cKey.wasPressedThisFrame && textselected != true)
             {
-                if (Keyboard.current.cKey.wasPressedThisFrame)
-                {
-                    Change();
-                }
+                Change();
             }
             if (textselected == true)
             {
@@ -83,6 +82,13 @@ public class StackSynthUI : MonoBehaviour
                 {
                     TextChange();
                 }
+            }
+        }
+        if (nothovered == true)
+        {
+            if (Keyboard.current.zKey.wasPressedThisFrame)
+            {
+                OnHover();
             }
         }
     }
@@ -93,42 +99,33 @@ public class StackSynthUI : MonoBehaviour
         {
             GrabText();
         }
-        if (selected == true)
-        {
-            selected = false;
-            textselected = true;
-            CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
-            CurrentFile.Q<VisualElement>("TextSelected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
-        }
         if (hovered == true)
         {
             hovered = false;
-            selected = true;
+            textselected = true;
             CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
-            CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+            CurrentFile.Q<VisualElement>("TextSelected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
         }
     }
     public void Deselect()
     {
-        if (selected == true)
+        if (hovered == true)
         {
-            selected = false;
-            hovered = true;
-            CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
-            CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+            OnHover();
         }
         if (textselected == true)
         {
             textselected = false;
-            selected = true;
+            hovered = true;
             CurrentFile.Q<VisualElement>("TextSelected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
-            CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+            CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
         }
     }
     
     public void OnHover()
     {
         hovered = !hovered;
+        nothovered = !nothovered;
         if (hovered == true)
             {
                 CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
@@ -141,21 +138,23 @@ public class StackSynthUI : MonoBehaviour
 
     public void Change()
     {
-        CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
+        CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
         holder = Stack[0];
         Stack.Remove(Stack[0]);
         Stack.Add(holder);
         foreach (VisualElement child in Stack)
         {   
+            Debug.Log(childcounter);
             Stack[childcounter].BringToFront();
-            child.style.backgroundColor = new StyleColor(new Color(0.72f - 0.5f/(childcounter+1), 0.591049f - 0.4f/(childcounter+1), 0.2371274f - 0.12f/(childcounter+1), 1));
+            colorchanger = ((childcounter+1) * 2.5f)/10;
+            child.style.unityBackgroundImageTintColor = new StyleColor(new Color(colorchanger, colorchanger, colorchanger, 1));
             childcounter += 1;
             child.style.top = 20 * childcounter;
             child.style.left = 20 * childcounter;
         }
         childcounter = 0;
         CurrentFile = holder;
-        CurrentFile.Q<VisualElement>("Selected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+        CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
         TextFix(CurrentFile.name);
     }
 
@@ -170,7 +169,7 @@ public class StackSynthUI : MonoBehaviour
             Lines.Add(child);
             linescounter += 1;
             child.style.top = -4 + 30 * (linescounter-1);
-            if (child.style.top.value.value > 60)
+            if (child.style.top.value.value > 90)
             {
                 child.style.color = Color.clear;
             }
@@ -180,7 +179,10 @@ public class StackSynthUI : MonoBehaviour
             }
         }
         linescounter = 0;
-        CurrentLine = Lines[0];
+        if (Lines.Count > 0)
+        {
+            CurrentLine = Lines[0];
+        }
     }
     public void GrabText()
     {
@@ -196,7 +198,7 @@ public class StackSynthUI : MonoBehaviour
         {
             linescounter += 1;
             child.style.top = -4 + 30 * (linescounter-1);
-            if (child.style.top.value.value > 60)
+            if (child.style.top.value.value > 90)
             {
                 child.style.color = Color.clear;
             }
