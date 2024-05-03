@@ -1,5 +1,7 @@
 using Darklight.UnityExt.UXML;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,19 +20,19 @@ namespace Darklight.UnityExt.UXML
 
         public void DisplayInteractPrompt(Vector3 worldPosition)
         {
-            UXML_CustomElement uiElement = GetUIElement(PROMPT_TAG);
+            UXML_ControlledVisualElement uiElement = GetUIElement(PROMPT_TAG);
             if (uiElement == null) return;
             uiElement.SetWorldToScreenPosition(worldPosition);
-            uiElement.SetVisible(true);
+            uiElement.visible = true;
 
             Debug.Log($"Displaying Interact Prompt at {worldPosition} {uiElement}");
         }
 
         public void HideInteractPrompt()
         {
-            UXML_CustomElement uIElement = GetUIElement(PROMPT_TAG);
+            UXML_ControlledVisualElement uIElement = GetUIElement(PROMPT_TAG);
             if (uIElement == null) return;
-            uIElement.SetVisible(false);
+            uIElement.visible = false;
         }
 
 

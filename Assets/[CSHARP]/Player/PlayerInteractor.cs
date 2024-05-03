@@ -24,19 +24,14 @@ public class PlayerInteractor : MonoBehaviour
 
         if (_activeInteraction == null && interactables.Count > 0)
         {
-
+            // Because this method is called every frame, this line will keep the target at the correct position
+            interactables.First().TargetEnable();
         }
     }
 
     void RefreshRadar()
     {
         if (interactables.Count == 0) return;
-
-        if (_activeInteraction == null)
-        {
-            // Because this method is called every frame, this line will keep the target at the correct position
-            interactables.First().TargetEnable();
-        }
 
         // Temporary list to hold items to be removed
         List<IInteract> toRemove = new List<IInteract>();

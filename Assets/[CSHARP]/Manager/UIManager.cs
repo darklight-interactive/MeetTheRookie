@@ -21,8 +21,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     // ----- [[ INTERACTION UI ]] ----------------------------------->>
     [Header("Interaction UI")]
     public UXML_UIDocumentPreset interactionUIPreset;
-    public UXML_ScreenSpaceUI interactionUI;
-
+    private UXML_ScreenSpaceUI _interactionUI;
+    public UXML_ScreenSpaceUI interactionUI
+    {
+        get
+        {
+            if (_interactionUI == null)
+            {
+                _interactionUI = CreateUIObject(interactionUIPreset, new string[] { "interactPrompt", "choiceGroup" }) as UXML_ScreenSpaceUI;
+            }
+            return _interactionUI;
+        }
+    }
 
     // ----- [[ WORLD SPACE UI ]] -----------------------------------
     [Space(10), Header("World Space UI")]
@@ -84,17 +94,6 @@ public class UIManagerCustomEditor : Editor
         EditorGUI.BeginChangeCheck();
 
         base.OnInspectorGUI();
-
-        EditorGUILayout.Space(10);
-        if (_script.interactionUI == null && GUILayout.Button("Initialize Interaction UI"))
-        {
-            _script.interactionUI = _script.CreateUIObject(_script.interactionUIPreset, new string[] { "interactPrompt", "choiceGroup" }) as UXML_ScreenSpaceUI;
-        }
-        else if (_script.interactionUI != null && GUILayout.Button("Destroy Interaction UI"))
-        {
-            DestroyImmediate(_script.interactionUI.gameObject);
-            _script.interactionUI = null;
-        }
 
         if (EditorGUI.EndChangeCheck())
         {

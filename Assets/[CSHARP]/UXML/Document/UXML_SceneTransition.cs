@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class UXML_SceneTransition : UXML_UIDocumentObject
 {
-    UXML_CustomElement blackOverlayElement;
+    UXML_ControlledVisualElement blackOverlayElement;
     Label textlabel;
 
     public bool isStarted;
@@ -20,7 +20,7 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         textlabel = FindElementWithTag("textlabel") as Label;
 
         blackOverlayElement = base.GetUIElement("blackborder");
-        blackOverlayElement.SetVisible(false);
+        blackOverlayElement.visible = false;
     }
 
     public void BeginFadeOut(string newSceneName)
@@ -40,8 +40,8 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
 
     IEnumerator FadeOut(string newSceneName)
     {
-        blackOverlayElement.SetVisible(true);
-        blackOverlayElement.SetEnabled(true);
+        blackOverlayElement.visible = true;
+
         //textlabel.SetEnabled(true);
 
         /*
@@ -53,8 +53,7 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         */
         yield return new WaitForSeconds(0.45f);
 
-        blackOverlayElement.SetEnabled(false);
-        blackOverlayElement.SetVisible(false);
+        blackOverlayElement.visible = true;
 
         //textlabel.SetEnabled(false);
 

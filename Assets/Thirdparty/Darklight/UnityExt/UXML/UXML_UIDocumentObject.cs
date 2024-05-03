@@ -8,19 +8,29 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.UXML
 {
+    interface I_UIDocument
+    {
+        UXML_UIDocumentPreset preset { get; }
+        UIDocument document { get; }
+        VisualElement root { get; }
+        Dictionary<string, UXML_ControlledVisualElement> uiElements { get; }
+    }
+
     /// <summary>
     /// A MonoBehaviour that handles the initialization of a UIDocument and manages its elements.
     /// It is suggested that you create a new ScriptableObject that inherits from UXML_UIDocumentPreset
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public abstract class UXML_UIDocumentObject : MonoBehaviour
+    public class UXML_UIDocumentObject : MonoBehaviour, I_UIDocument
     {
-        protected UXML_UIDocumentPreset preset;
-        protected UIDocument document => GetComponent<UIDocument>();
-        protected VisualElement root => document.rootVisualElement;
-        protected Dictionary<string, UXML_CustomElement> uiElements = new Dictionary<string, UXML_CustomElement>();
-        protected string[] elementTags = new string[0];
+        public UXML_UIDocumentPreset preset { get; private set; }
+
+        public UIDocument document => GetComponent<UIDocument>();
+
+        public VisualElement root => document.rootVisualElement;
+
+        public Dictionary<string, UXML_ControlledVisualElement> uiElements { get; private set; } = new Dictionary<string, UXML_ControlledVisualElement>();
 
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags)
         {
@@ -34,6 +44,8 @@ namespace Darklight.UnityExt.UXML
             }
 
             gameObject.layer = LayerMask.NameToLayer("UI");
+
+            Debug.Log($"Initialized UIDocument {document.name}");
         }
 
         void LoadUIElements(string[] tags)
@@ -43,15 +55,14 @@ namespace Darklight.UnityExt.UXML
                 VisualElement element = FindElementWithTag(tag);
                 if (element != null)
                 {
-                    UXML_CustomElement elementWrapper = new UXML_CustomElement(element, tag);
-                    uiElements.Add(tag, elementWrapper);
+                    uiElements.Add(tag, new UXML_ControlledVisualElement(element, tag));
                 }
                 else
                 {
                     Debug.LogWarning($"Element with tag {tag} not found in UIDocument {document.name}");
                 }
 
-                //Debug.Log($"Element with tag {tag} found in UIDocument {document.name}");
+                Debug.Log($"Element with tag {tag} found in UIDocument {document.name}");
             }
         }
 
@@ -61,7 +72,7 @@ namespace Darklight.UnityExt.UXML
             return element;
         }
 
-        public UXML_CustomElement GetUIElement(string tag)
+        public UXML_ControlledVisualElement GetUIElement(string tag)
         {
             if (uiElements.ContainsKey(tag))
             {
@@ -72,9 +83,9 @@ namespace Darklight.UnityExt.UXML
 
         void OnDestroy()
         {
-            foreach (UXML_CustomElement element in uiElements.Values)
+            foreach (UXML_ControlledVisualElement element in uiElements.Values)
             {
-                element.Clear();
+                element.element.Clear();
             }
         }
     }

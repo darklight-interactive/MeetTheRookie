@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [UxmlElement]
-public partial class SpeechBubble : UXML_CustomElement
+public partial class SpeechBubble : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
 
