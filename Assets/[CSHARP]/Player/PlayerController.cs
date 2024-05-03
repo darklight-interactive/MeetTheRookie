@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
     public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
     public PlayerDialogueHandler dialogueHandler => GetComponentInChildren<PlayerDialogueHandler>();
+    public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
 
     [SerializeField, ShowOnly] PlayerState _currentState = PlayerState.NONE;
@@ -200,11 +201,11 @@ void Start()
         if (stateMachine.CurrentState != PlayerState.INTERACTION)
         {
             stateMachine.GoToState(PlayerState.INTERACTION);
-            interactor.InteractWithTarget();
         }
+        interactor.InteractWithTarget();
     }
 
-    void ExitInteraction()
+    public void ExitInteraction()
     {
         stateMachine.GoToState(PlayerState.IDLE);
     }

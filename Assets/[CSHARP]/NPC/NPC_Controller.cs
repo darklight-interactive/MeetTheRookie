@@ -17,7 +17,7 @@ public class NPC_Controller : MonoBehaviour
     [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
-    public GameObject player;
+    public GameObject player => FindFirstObjectByType<PlayerController>().gameObject;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
     [Range(0.1f, 1f)] public float followSpeed = .5f;
     [Range(0.1f, 1f)] public float hideSpeed = .5f;

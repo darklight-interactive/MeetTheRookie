@@ -5,6 +5,10 @@ using Darklight.UnityExt.UXML;
 
 public class NPC_Interactable : Interactable
 {
+    [SerializeField] private float speechBubbleScalar = 1.5f;
+    [SerializeField, ShowOnly] private UXML_WorldSpaceUI dialogueBubble;
+    public UXML_WorldSpaceUI DialogueBubble { get => dialogueBubble; set => dialogueBubble = value; }
+
     public void Start()
     {
         NPC_Controller controller = GetComponent<NPC_Controller>();
@@ -12,10 +16,7 @@ public class NPC_Interactable : Interactable
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
-            if (knotIterator.CurrentState == InkyKnotIterator.State.DIALOGUE)
-            {
-                ShowDialogueBubble(currentText);
-            }
+            dialogueBubble = ShowDialogueBubble(currentText);
 
             if (controller)
             {
@@ -40,10 +41,12 @@ public class NPC_Interactable : Interactable
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
 
-        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
+        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.Instance.worldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
-        worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
-        //worldSpaceUIDoc.SetText(text);
+        worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one * speechBubbleScalar;
+        worldSpaceUIDoc.SetText(text);
+
+        worldSpaceUIDoc.TextureUpdate();
         return worldSpaceUIDoc;
     }
 

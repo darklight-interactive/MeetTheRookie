@@ -44,8 +44,6 @@ namespace Darklight.UnityExt.UXML
             }
 
             gameObject.layer = LayerMask.NameToLayer("UI");
-
-            Debug.Log($"Initialized UIDocument {document.name}");
         }
 
         void LoadUIElements(string[] tags)

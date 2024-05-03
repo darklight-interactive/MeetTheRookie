@@ -69,7 +69,8 @@ public class IdleState : FiniteState<NPCState>
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(coroutine);
+        if (coroutine != null)
+            _coroutineRunner.StopCoroutine(coroutine);
         coroutine = null;
     }
 
@@ -188,15 +189,21 @@ public class SpeakState : FiniteState<NPCState>
         _stateMachine = (NPC_StateMachine)args[0];
     }
 
-    public override void Enter() { }
-    public override void Exit() { }
-    public override void Execute()
+    public override void Enter()
     {
+        /*
         Vector2 playerPos = _stateMachine.controller.player.transform.position;
         Vector2 npcPos = _stateMachine.controller.transform.position;
 
         // Set NPC to face player when speaking
         _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(npcPos.x < playerPos.x ? -1 : 1, 0));
+        */
+    }
+    public override void Exit() { }
+    public override void Execute()
+    {
+
+
     }
 }
 

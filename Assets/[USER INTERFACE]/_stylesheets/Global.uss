@@ -9,11 +9,10 @@
 #body {
 }
 
-Label {
-    font-size: 100%;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco-Thin.ttf?fileID=12800000&guid=8d084e655e51e5f458abcf16d21c0fb9&type=3#DigitalDisco-Thin");
-    color: rgb(255, 255, 255);
+Label .black {
+    color: rgb(0, 0, 0);
     -unity-font-style: normal;
+    flex-grow: 1;
 }
 
 Button {

@@ -27,10 +27,25 @@ namespace Darklight.Game.Camera
         }
 
         [SerializeField] private Transform _focusTarget;
-        public void SetFocusTarget(Transform target) => _focusTarget = target;
+        public void SetFocusTarget(Transform target)
+        {
+            _focusTarget = target;
+        }
 
         [SerializeField, ShowOnly] private Vector3 _offsetPosition;
-        [SerializeField, ShowOnly] private Vector3 _offsetRotation;
+        [SerializeField, ShowOnly] private Vector3 _offsetRotation = Vector3.zero;
+        public void SetOffsetRotation(Transform mainTarget, Transform secondTarget)
+        {
+            float mainX = mainTarget.position.x;
+            float secondX = secondTarget.position.x;
+            float middleX = (secondX - mainX) / 2;
+            _offsetRotation = new Vector3(middleX, 0, 0);
+        }
+
+        public void ResetOffsetRotation()
+        {
+            _offsetRotation = Vector3.zero;
+        }
 
         [Header("Lerp Speed")]
         [SerializeField, Range(0, 10)] private float _positionLerpSpeed = 5f;
@@ -64,19 +79,15 @@ namespace Darklight.Game.Camera
 
             // set the offsets
             _offsetPosition = new Vector3(0, _distanceY, -_distanceZ);
-            _offsetRotation = Vector3.zero;
+            //_offsetRotation = Vector3.zero;
 
-            // << UPDATE THE RIG TRANSFORM >>
-            if (_focusTarget)
-            {
-                // set the position
-                Vector3 rigPosition = _focusTarget.position + _offsetPosition;
-                transform.position = Vector3.Lerp(transform.position, rigPosition, _positionLerpSpeed * Time.deltaTime);
+            // set the position
+            Vector3 newPosition = _focusTarget.position + _offsetPosition;
+            transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
 
-                // set the rotation
-                Quaternion rigRotation = GetLookRotation(rigPosition, _focusTarget.position + _offsetRotation);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rigRotation, _rotationLerpSpeed * Time.deltaTime);
-            }
+            // set the rotation
+            Quaternion newRotation = GetLookRotation(newPosition, _focusTarget.position + _offsetRotation);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, _rotationLerpSpeed * Time.deltaTime);
 
             // << UPDATE ALL CAMERAS >>
             foreach (UnityEngine.Camera camera in _camerasInChildren)

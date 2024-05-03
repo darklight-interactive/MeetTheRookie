@@ -14,7 +14,7 @@ public class Clue_Interactable : Interactable
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
 
-        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
+        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.Instance.worldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
         worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
         //worldSpaceUIDoc.SetText(text);

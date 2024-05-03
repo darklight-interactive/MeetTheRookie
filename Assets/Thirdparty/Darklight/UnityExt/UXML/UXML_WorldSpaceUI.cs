@@ -20,16 +20,23 @@ namespace Darklight.UnityExt.UXML
         // -- Element Changed Event --
         public delegate void OnChange();
         protected OnChange OnElementChanged;
-
-        public override void Initialize(UXML_UIDocumentPreset preset, string[] tags)
+        void OnEnable()
         {
-            base.Initialize(preset, tags);
+            OnElementChanged += TextureUpdate;
+        }
 
-            // Create a quad mesh child
-            GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            meshChild.transform.SetParent(this.transform);
-            meshChild.transform.localPosition = Vector3.zero;
-            _meshRenderer.enabled = false;
+        void OnDisable()
+        {
+            OnElementChanged -= TextureUpdate;
+        }
+
+        public void SetText(string text)
+        {
+            if (uiElements.ContainsKey("inkyLabel"))
+            {
+                uiElements["inkyLabel"].element.Q<Label>().text = text;
+                OnElementChanged?.Invoke();
+            }
         }
 
         public void TextureUpdate()
@@ -40,6 +47,22 @@ namespace Darklight.UnityExt.UXML
             _meshRenderer.sharedMaterial.mainTexture = document.panelSettings.targetTexture; // << set the material texture
             _meshRenderer.enabled = true;
         }
+
+        public void Initialize(UXML_UIDocumentPreset preset, string[] tags, Material material, RenderTexture renderTexture)
+        {
+            _material = material;
+            _renderTexture = renderTexture;
+            base.Initialize(preset, tags);
+
+            // Create a quad mesh child
+            GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            meshChild.transform.SetParent(this.transform);
+            meshChild.transform.localPosition = Vector3.zero;
+            _meshRenderer.enabled = false;
+
+            OnElementChanged?.Invoke();
+        }
+
 
         public void SetLocalScale(float scale)
         {
@@ -56,15 +79,7 @@ namespace Darklight.UnityExt.UXML
             _meshRenderer.enabled = false;
         }
 
-        void OnEnable()
-        {
-            OnElementChanged += TextureUpdate;
-        }
 
-        private void OnDisable()
-        {
-            OnElementChanged -= TextureUpdate;
-        }
 
     }
 }

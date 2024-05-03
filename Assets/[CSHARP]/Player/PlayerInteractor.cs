@@ -76,11 +76,19 @@ public class PlayerInteractor : MonoBehaviour
                 // Show the player's dialogue bubble
                 if (_activeInteraction is Clue_Interactable)
                     playerDialogueHandler.CreateDialogueBubble(text);
+
+                if (_activeInteraction is NPC_Interactable)
+                {
+                    NPC_Interactable npcInteractable = _activeInteraction as NPC_Interactable;
+                    playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
+                    npcInteractable.DialogueBubble.TextureUpdate();
+                }
             };
 
             _activeInteraction.OnCompleted += () =>
             {
                 playerDialogueHandler.HideDialogueBubble();
+                playerController.ExitInteraction();
             };
         }
 
@@ -92,6 +100,11 @@ public class PlayerInteractor : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
+    {
+        return (point1 + point2) * 0.5f;
     }
 
     void OnTriggerEnter2D(Collider2D other)

@@ -70,8 +70,9 @@ public abstract class Interactable : OverlapGrid2D, IInteract
         {
             knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
         }
-
         ContinueKnot();
+
+        Debug.Log("Interacting with " + gameObject.name);
     }
 
     public virtual void ContinueKnot()

@@ -28,7 +28,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         {
             if (_interactionUI == null)
             {
-                _interactionUI = CreateUIObject(interactionUIPreset, new string[] { "interactPrompt", "choiceGroup" }) as UXML_ScreenSpaceUI;
+                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_ScreenSpaceUI>();
+                _interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt" });
             }
             return _interactionUI;
         }
@@ -39,13 +40,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public UXML_UIDocumentPreset worldSpaceUIPreset;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
-    public static UXML_WorldSpaceUI WorldSpaceUI;
-    UXML_WorldSpaceUI GetWorldSpaceUI()
+    private UXML_WorldSpaceUI _worldSpaceUI;
+    public UXML_WorldSpaceUI worldSpaceUI
     {
-        // Initialize the world space UI singleton
-        UXML_WorldSpaceUI worldSpaceUI = new GameObject("WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
-        worldSpaceUI.transform.SetParent(transform);
-        return worldSpaceUI;
+        get
+        {
+            if (_worldSpaceUI == null)
+            {
+                _worldSpaceUI = new GameObject("UIDocument : WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
+                _worldSpaceUI.Initialize(worldSpaceUIPreset, new string[] { "inkyLabel" }, worldSpaceMaterial, worldSpaceRenderTexture);
+            }
+            return _worldSpaceUI;
+        }
     }
 
     [Space(10), Header("Synthesis UI")]
@@ -54,23 +60,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
-    public void Start()
+    public override void Awake()
     {
-        /*
-        interactionUI = new GameObject("InteractionUI").AddComponent<UXML_ScreenSpaceUI>();
-        interactionUI.transform.SetParent(transform);
-        interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt", "choiceGroup" });
-
-        // Initialize the world space UI singleton
-        WorldSpaceUI = GetWorldSpaceUI();
-        */
-    }
-
-    public MonoBehaviour CreateUIObject(UXML_UIDocumentPreset preset, string[] tags)
-    {
-        UXML_ScreenSpaceUI ui = new GameObject($"UIObject : {preset.name}").AddComponent<UXML_ScreenSpaceUI>();
-        ui.Initialize(preset, tags);
-        return ui;
+        base.Awake();
     }
 }
 

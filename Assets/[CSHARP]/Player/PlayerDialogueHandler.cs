@@ -13,7 +13,7 @@ public class PlayerDialogueHandler : OverlapGrid2D
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
 
-        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
+        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.Instance.worldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
         worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
         //worldSpaceUIDoc.SetText(text);
@@ -22,7 +22,7 @@ public class PlayerDialogueHandler : OverlapGrid2D
 
     public void HideDialogueBubble()
     {
-        UIManager.WorldSpaceUI.Hide();
+        UIManager.Instance.worldSpaceUI.Hide();
     }
 }
 

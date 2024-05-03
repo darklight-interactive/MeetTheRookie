@@ -10,15 +10,20 @@ public class PlayerCameraController : CameraController
 {
     PlayerController _playerController;
 
+    [Header("States")]
+    [SerializeField] private float defaultStateFOVOffset = 0f;
+    [SerializeField] private float followTargetStateFOVOffset = -0.25f;
+    [SerializeField] private float closeUpStateFOVOffset = -0.5f;
+
     public void Awake()
     {
         _playerController = FindFirstObjectByType<PlayerController>();
         SetFocusTarget(_playerController.transform);
 
         // Create States
-        CameraState defaultState = new CameraState(CameraStateKey.DEFAULT, this, 0f);
-        CameraState followTargetState = new CameraState(CameraStateKey.FOLLOW_TARGET, this, -0.25f);
-        CameraState closeUpState = new CameraState(CameraStateKey.CLOSE_UP, this, -0.5f);
+        CameraState defaultState = new CameraState(CameraStateKey.DEFAULT, this, defaultStateFOVOffset);
+        CameraState followTargetState = new CameraState(CameraStateKey.FOLLOW_TARGET, this, followTargetStateFOVOffset);
+        CameraState closeUpState = new CameraState(CameraStateKey.CLOSE_UP, this, closeUpStateFOVOffset);
 
         // Create State Machine
         _stateMachine = new StateMachine(new Dictionary<CameraStateKey, FiniteState<CameraStateKey>>()
