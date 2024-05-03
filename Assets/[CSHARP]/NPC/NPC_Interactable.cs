@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
@@ -6,6 +7,8 @@ public class NPC_Interactable : Interactable
 {
     public void Start()
     {
+        NPC_Controller controller = GetComponent<NPC_Controller>();
+
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
@@ -13,12 +16,22 @@ public class NPC_Interactable : Interactable
             {
                 ShowDialogueBubble(currentText);
             }
+
+            if (controller)
+            {
+                Debug.Log("Going to SPEAK");
+                controller.stateMachine.GoToState(NPCState.SPEAK);
+            }
         };
 
         // >> ON COMPLETED -------------------------------------
         this.OnCompleted += () =>
         {
             UIManager.WorldSpaceUI.Hide();
+            if (controller)
+            {
+                controller.stateMachine.GoToState(NPCState.IDLE);
+            }
         };
     }
 

@@ -25,6 +25,22 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
         animator = (NPC_Animator)args[1];
     }
 
+    public override void Step()
+    {
+        base.Step();
+    }
+
+    public override void GoToState(NPCState state, params object[] enterArgs)
+    {
+        base.GoToState(state, enterArgs);
+        
+        // Load the related Spritesheet to the FrameAnimationPlayer
+        if (animator == null) return;
+        if (currentState == NPCState.NONE) return;
+
+        //Debug.Log($"NPC OnStateChanged -> {state}");
+        animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(currentState));
+    }
 }
 
 #region ================== [ IDLE STATE ] ==================
@@ -34,6 +50,7 @@ public class IdleState : FiniteState<NPCState>
 {
     private NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
     private readonly float _maxDuration;
 
     /// <param name="args">
@@ -50,12 +67,14 @@ public class IdleState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        _coroutineRunner.StartCoroutine(IdleTimer());
+        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.WALK); return; }
+        coroutine = _coroutineRunner.StartCoroutine(IdleTimer());
     }
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(IdleTimer());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public override void Execute() { }
@@ -82,6 +101,7 @@ public class WalkState : FiniteState<NPCState>
     private readonly float _walkSpeed;
 
     private readonly MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
 
     /// <param name="args">
     ///   args[0] = FiniteStateMachine<NPCState> (_stateMachine)
@@ -107,12 +127,13 @@ public class WalkState : FiniteState<NPCState>
 
         // When walking, it can be either direction randomly
         _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-        _coroutineRunner.StartCoroutine(WalkTimer());
+        coroutine = _coroutineRunner.StartCoroutine(WalkTimer());
     }
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(WalkTimer());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public override void Execute()
@@ -191,6 +212,10 @@ public class FollowState : FiniteState<NPCState>
 {
     private NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
+    private NPC_Animator _animator;
+    private NPC_Controller _controller;
+    private GameObject player;
 
     private bool movingInFollowState = false;
     private float currentFollowDistance = 0;
@@ -214,12 +239,17 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        _coroutineRunner.StartCoroutine(FollowCheck());
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
+        if (player == null) { player = _controller.player; }
+
+         coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
     }
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(FollowCheck());
+        _coroutineRunner.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public override void Execute()
@@ -276,6 +306,7 @@ public class HideState : FiniteState<NPCState>
 {
     private NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
+    private Coroutine coroutine = null;
 
     private Hideable_Object[] hideableObjects;
     private GameObject closestHideableObject;
@@ -299,12 +330,16 @@ public class HideState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        _coroutineRunner.StartCoroutine(HideCheck());
+        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
+        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
+
+        coroutine = _coroutineRunner.StartCoroutine(HideCheck());
     }
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(HideCheck());
+        _controller.StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public override void Execute()
