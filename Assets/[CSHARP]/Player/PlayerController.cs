@@ -176,11 +176,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact(InputAction.CallbackContext context)
     {
-        bool result = interactor.InteractWithTarget();
-        if (result)
-            stateMachine.GoToState(PlayerState.INTERACTION);
-        else
-            stateMachine.GoToState(PlayerState.IDLE);
+        if (stateMachine.CurrentState != PlayerState.INTERACTION) {
+            stateMachine.ChangeState(PlayerState.INTERACTION);
+            playerInteractor.InteractWithFirstTarget();
+        }
+    }
+
+    void ExitInteraction()
+    {
+        stateMachine.ChangeState(PlayerState.IDLE);
     }
 
     #region Synthesis Management
@@ -188,7 +192,6 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis(InputAction.CallbackContext context)
     {
         synthesisEnabled = !synthesisEnabled;
-        stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
         SynthesisManager.Instance.Show(synthesisEnabled);
     }
     #endregion
