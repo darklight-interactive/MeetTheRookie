@@ -64,12 +64,8 @@ namespace Darklight.UnityExt.UXML
                 {
                     uiElements.Add(tag, new UXML_ControlledVisualElement(element, tag));
                 }
-                else
-                {
-                    Debug.LogWarning($"Element with tag {tag} not found in UIDocument {document.name}");
-                }
 
-                Debug.Log($"Element with tag {tag} found in UIDocument {document.name}");
+                //Debug.Log($"Element with tag {tag} found in UIDocument {document.name}");
             }
         }
 

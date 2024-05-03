@@ -318,10 +318,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preset: {fileID: 11400000, guid: d02b2b55e0f084e8596163b9197fea21, type: 2}
+  quitTag: quit-button
   sceneButtonList:
-  - tag: play-button
+  - tag: play-scene1
     scene:
       m_SceneName: SCENE_1.1
+  - tag: play-scene2
+    scene:
+      m_SceneName: DATING_SIM_PROTOTYPE
+  - tag: play-scene3
+    scene:
+      m_SceneName: DATING_SIM_PROTOTYPE
 --- !u!1001 &1958999861
 PrefabInstance:
   m_ObjectHideFlags: 0

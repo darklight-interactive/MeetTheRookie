@@ -658,13 +658,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  isComplete: 0
-  promptIconTarget: {fileID: 244980267}
-  tempType: 0
-  inkKnotName: scene1_1.gas_pump
-  currentText: 
-  currentKnotState: 0
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _interactionKey: 
+  speechBubbleScalar: 1.5
+  dialogueBubble: {fileID: 0}
 --- !u!61 &244980266
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2212,13 +2218,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  isComplete: 0
-  promptIconTarget: {fileID: 0}
-  tempType: 0
-  inkKnotName: scene1_1.npc
-  currentText: 
-  currentKnotState: 0
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _spriteRenderer: {fileID: 603698124}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _interactionKey: 
+  speechBubbleScalar: 1.5
+  dialogueBubble: {fileID: 0}
 --- !u!1 &615343941
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,7 +3388,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
 --- !u!4 &825759767 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6944989206972801970, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
   m_PrefabInstance: {fileID: 825759766}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &846160146
@@ -6470,7 +6482,7 @@ PrefabInstance:
     - target: {fileID: 2688557090611215929, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: focusTarget
       value: 
-      objectReference: {fileID: 825759767}
+      objectReference: {fileID: 0}
     - target: {fileID: 2688557090611215929, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: perspectiveFOV
       value: 25
@@ -8100,6 +8112,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 676170509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1872450721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.0885773
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.27612382
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.4617605
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_Name
+      value: '[CAMERA CONTROLLER]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTarget
+      value: 
+      objectReference: {fileID: 825759767}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
 --- !u!1 &1912532988
 GameObject:
   m_ObjectHideFlags: 0
@@ -8145,13 +8218,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  isComplete: 0
-  promptIconTarget: {fileID: 1912532989}
-  tempType: 0
-  inkKnotName: scene1_1.car
-  currentText: 
-  currentKnotState: 0
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _interactionKey: 
+  speechBubbleScalar: 1.5
+  dialogueBubble: {fileID: 0}
 --- !u!61 &1912532991
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8244,13 +8323,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  isComplete: 0
-  promptIconTarget: {fileID: 0}
-  tempType: 0
-  inkKnotName: scene1_2
-  currentText: 
-  currentKnotState: 0
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _spriteRenderer: {fileID: 1955424074}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _interactionKey: 
+  speechBubbleScalar: 1.5
+  dialogueBubble: {fileID: 0}
 --- !u!61 &1955424073
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8365,6 +8450,7 @@ PrefabInstance:
       objectReference: {fileID: 1333927003}
     - target: {fileID: 2736262935544259377, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
       propertyPath: leftBound
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2736262935544259377, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
       propertyPath: rightBound
@@ -8429,6 +8515,7 @@ PrefabInstance:
     - target: {fileID: 9076858523807608195, guid: b4fa91f7d3f6be84ca11ba49d067bb38, type: 3}
       propertyPath: m_Sprite
       value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10541,3 +10628,4 @@ SceneRoots:
   - {fileID: 980337163}
   - {fileID: 245219347}
   - {fileID: 1993128765}
+  - {fileID: 1872450721}

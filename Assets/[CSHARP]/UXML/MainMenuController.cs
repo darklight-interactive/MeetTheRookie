@@ -40,12 +40,23 @@ public class MainMenuController : UXML_UIDocumentObject
     }
 
     Dictionary<string, SceneButtonData> sceneButtons = new Dictionary<string, SceneButtonData>();
-    public List<SceneButtonData> sceneButtonList = new List<SceneButtonData>();
+
+    [SerializeField] string quitTag = "quit-button";
+    [SerializeField] List<SceneButtonData> sceneButtonList = new List<SceneButtonData>();
 
     void Awake()
     {
         Initialize(preset);
         LoadSceneButtons();
+
+        // Quit Button
+        UXML_ControlledVisualElement quitButton = GetUIElement(quitTag);
+        Button button = quitButton.element as Button;
+        button.clickable.clicked += () =>
+        {
+            Quit();
+            button.clickable.clicked -= () => { };
+        };
     }
 
     void LoadSceneButtons()
@@ -57,15 +68,16 @@ public class MainMenuController : UXML_UIDocumentObject
 
             sceneButtonData.OnButtonClicked += (scene) =>
             {
-                SceneManager.Instance.LoadScene(scene);
-
                 // Clear the event
                 sceneButtonData.OnButtonClicked -= (scene) => { };
+
+                // Load the scene
+                SceneManager.Instance.LoadScene(scene);
             };
         }
     }
 
-    public void QuitButtonClicked()
+    public void Quit()
     {
         Application.Quit();
 #if UNITY_EDITOR
