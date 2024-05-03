@@ -58,7 +58,8 @@ namespace Darklight.Game.Utility
                 _instance = this as T;
 
                 // Initialize the singletonObject
-                DontDestroyOnLoad(this.gameObject);
+                if (Application.isPlaying)
+                    DontDestroyOnLoad(this.gameObject);
                 Debug.Log($"{Prefix} Awake: Instance created.");
             }
             else if (_instance != this)
