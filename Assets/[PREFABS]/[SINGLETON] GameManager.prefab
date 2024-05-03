@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d77d174a9e8f19448b4dba46e02ebe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  synthesisUI: {fileID: 1840243627797846965}
+  _preset: {fileID: 0}
 --- !u!1 &2231574691370785194
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2550697016036176478}
   - component: {fileID: 5919333771943831542}
+  - component: {fileID: 383798062316541612}
   m_Layer: 0
   m_Name: SynthesisManager
   m_TagString: Untagged
@@ -310,7 +311,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d77d174a9e8f19448b4dba46e02ebe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  synthesisUI: {fileID: 1840243627797846965}
+  _preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
+--- !u!114 &383798062316541612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8385691848171633723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 0}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
 --- !u!1 &8548882099775672820
 GameObject:
   m_ObjectHideFlags: 0

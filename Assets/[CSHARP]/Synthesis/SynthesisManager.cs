@@ -1,5 +1,6 @@
 using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
+using Darklight.UnityExt.UXML;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,15 +8,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// Handle the UI and <see cref="SynthesisObject"/>s.
 /// </summary>
-public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
+[RequireComponent(typeof(UIDocument))]
+public class SynthesisManager : MonoBehaviour
 {
-    [SerializeField]
-    protected UIDocument synthesisUI;
-
+    [SerializeField] private UXML_UIDocumentPreset _preset;
+    protected UIDocument document => GetComponent<UIDocument>();
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
@@ -23,21 +27,23 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     /// Our group for showing the objects visually.
     /// </summary>
     VisualElement objects;
-
     VisualElement synthesizeButton;
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
-        synthesisUI.rootVisualElement.visible = false;
-
-        objects = synthesisUI.rootVisualElement.Q("objects");
-
-        synthesizeButton = synthesisUI.rootVisualElement.Q("title");
-        itemsSelection.Add(synthesizeButton);
+        document.visualTreeAsset = _preset.VisualTreeAsset;
+        document.panelSettings = _preset.PanelSettings;
     }
 
     bool synthesisActive = false;
-    void Start() {
+    void Start()
+    {
+        document.rootVisualElement.visible = false;
+
+        objects = document.rootVisualElement.Q("objects");
+
+        synthesizeButton = document.rootVisualElement.Q("title");
+        itemsSelection.Add(synthesizeButton);
+
         Invoke("Initialize", 0.1f);
     }
     ///oijqwdoijqwodijqwd
@@ -164,3 +170,32 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         return null;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(SynthesisManager))]
+public class SynthesisManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    SynthesisManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (SynthesisManager)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
