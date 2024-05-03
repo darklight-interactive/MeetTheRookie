@@ -1,14 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
+using Darklight.UnityExt.UXML;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UXML_SceneTransition : UXML_UIDocumentObject
 {
-    UXML_UIDocumentElement blackborder_docElement;
-    public VisualElement tscreen;
-    VisualElement background;
+    UXML_ControlledVisualElement blackOverlayElement;
     Label textlabel;
 
     public bool isStarted;
@@ -20,16 +17,10 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         // Initialize the base class
         base.Initialize(preset, tags);
 
-        // Get the root element of the document
-        tscreen = base.root;
+        textlabel = FindElementWithTag("textlabel") as Label;
 
-
-        blackborder_docElement = base.GetUIElement("blackborder");
-        background = blackborder_docElement.visualElement;
-        blackborder_docElement.SetVisible(false);
-
-        textlabel = tscreen.Q<Label>("textlabel");
-        textlabel.text = "";
+        blackOverlayElement = base.GetUIElement("blackborder");
+        blackOverlayElement.visible = false;
     }
 
     public void BeginFadeOut(string newSceneName)
@@ -49,21 +40,22 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
 
     IEnumerator FadeOut(string newSceneName)
     {
-        blackborder_docElement.SetVisible(true);
-        background.SetEnabled(true);
-        textlabel.SetEnabled(true);
+        blackOverlayElement.visible = true;
 
+        //textlabel.SetEnabled(true);
+
+        /*
         yield return new WaitForSeconds(1);
         textlabel.visible = true;
         textlabel.text = newSceneName;
         yield return new WaitForSeconds(1);
         textlabel.visible = false;
+        */
         yield return new WaitForSeconds(0.45f);
 
-        background.SetEnabled(false);
-        background.visible = false;
+        blackOverlayElement.visible = true;
 
-        textlabel.SetEnabled(false);
+        //textlabel.SetEnabled(false);
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(newSceneName);
     }

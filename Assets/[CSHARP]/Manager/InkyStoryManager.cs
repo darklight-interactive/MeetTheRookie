@@ -9,8 +9,7 @@ using Ink.Runtime;
 
 using UnityEngine;
 using Darklight.Game.Utility;
-using Darklight.UnityExt;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -55,7 +54,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     /// <returns></returns>
     public bool LoadStory(string storyName)
     {
-        stateMachine.ChangeState(State.LOAD);
+        stateMachine.ChangeActiveStateTo(State.LOAD);
         currentStoryName = storyName;
         Console.Log($"{Prefix} Loading Story: {storyName}");
 
@@ -98,7 +97,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     public InkyKnotIterator CreateKnotIterator(string knotPath)
     {
-        stateMachine.ChangeState(State.LOAD);
+        stateMachine.ChangeActiveStateTo(State.LOAD);
         currentKnot = new InkyKnotIterator(currentStory, knotPath);
         return currentKnot;
     }
@@ -107,7 +106,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     {
         if (currentStory.canContinue)
         {
-            stateMachine.ChangeState(State.CONTINUE);
+            stateMachine.ChangeActiveStateTo(State.CONTINUE);
             if (currentKnot != null)
             {
                 currentKnot.ContinueKnot();
@@ -122,7 +121,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
         else if (currentStory.currentChoices.Count > 0)
         {
-            stateMachine.ChangeState(State.CHOICE);
+            stateMachine.ChangeActiveStateTo(State.CHOICE);
             Console.Log($"{Prefix} Choices: {currentStory.currentChoices.Count}", 1);
 
             foreach (Choice choice in currentStory.currentChoices)
@@ -132,7 +131,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
         else
         {
-            stateMachine.ChangeState(State.END);
+            stateMachine.ChangeActiveStateTo(State.END);
             Console.Log($"{Prefix} End of Story");
 
         }
