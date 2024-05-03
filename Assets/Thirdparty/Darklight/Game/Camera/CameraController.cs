@@ -61,34 +61,6 @@ namespace Darklight.Game.Camera
                 _stateMachine.Step();
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(CameraController))]
-    public class CustomEditorForScript : Editor
-    {
-        SerializedObject _serializedObject;
-        CameraController _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (CameraController)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
 }
 
 

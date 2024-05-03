@@ -20,21 +20,29 @@ namespace Darklight.Game.Camera
     [ExecuteAlways]
     public class CameraRig : MonoBehaviour
     {
-        [SerializeField] UnityEngine.Camera[] _cameras = new UnityEngine.Camera[0];
-        [SerializeField, ShowOnly] private Transform _focusTarget;
+        [SerializeField] UnityEngine.Camera[] _camerasInChildren = new UnityEngine.Camera[0];
+        public void GetCamerasInChildren()
+        {
+            _camerasInChildren = GetComponentsInChildren<UnityEngine.Camera>();
+        }
+
+        [SerializeField] private Transform _focusTarget;
         public void SetFocusTarget(Transform target) => _focusTarget = target;
 
         [SerializeField, ShowOnly] private Vector3 _offsetPosition;
         [SerializeField, ShowOnly] private Vector3 _offsetRotation;
-
 
         [Header("Lerp Speed")]
         [SerializeField, Range(0, 10)] private float _positionLerpSpeed = 5f;
         [SerializeField, Range(0, 10)] private float _rotationLerpSpeed = 5f;
         [SerializeField, Range(0, 10)] private float _fovLerpSpeed = 5f;
 
+        // TODO : Rotate the Camera around the target
+        // this is instead of including _distanceX
+
         [Space(10), Header("Distance")]
-        [SerializeField, Range(1, 100)] private float _distanceZ = 10f; // distance from the targeton the Z axis
+        [SerializeField, Range(-50, 50)] private float _distanceY = 0f; // distance from the target on the Y axis
+        [SerializeField, Range(0, 100)] private float _distanceZ = 10f; // distance from the targeton the Z axis
 
         [Header("Field of View")]
         [SerializeField, Range(0.1f, 45)] private float _baseFOV = 5f;
@@ -49,8 +57,10 @@ namespace Darklight.Game.Camera
 
         public virtual void Update()
         {
+            GetCamerasInChildren();
+
             // set the offsets
-            _offsetPosition = new Vector3(0, 0, -_distanceZ);
+            _offsetPosition = new Vector3(0, _distanceY, -_distanceZ);
             _offsetRotation = Vector3.zero;
 
             // << UPDATE THE RIG TRANSFORM >>
@@ -66,7 +76,7 @@ namespace Darklight.Game.Camera
             }
 
             // << UPDATE ALL CAMERAS >>
-            foreach (UnityEngine.Camera camera in _cameras)
+            foreach (UnityEngine.Camera camera in _camerasInChildren)
             {
                 if (camera != null)
                 {
@@ -87,4 +97,31 @@ namespace Darklight.Game.Camera
             return lookRotation;
         }
     }
+#if UNITY_EDITOR
+    [CustomEditor(typeof(CameraRig))]
+    public class CameraRigCustomEditor : Editor
+    {
+        SerializedObject _serializedObject;
+        CameraRig _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (CameraRig)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }
