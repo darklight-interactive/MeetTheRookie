@@ -27,7 +27,7 @@ public class NPC_Interactable : Interactable
         // >> ON COMPLETED -------------------------------------
         this.OnCompleted += () =>
         {
-            UIManager.WorldSpaceUI.Hide();
+            //UIManager.WorldSpaceUI.Hide();
             if (controller)
             {
                 controller.stateMachine.GoToState(NPCState.IDLE);

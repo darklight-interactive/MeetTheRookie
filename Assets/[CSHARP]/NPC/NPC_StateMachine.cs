@@ -30,16 +30,12 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
         base.Step();
     }
 
-    public override void GoToState(NPCState state, params object[] enterArgs)
+    public override bool GoToState(NPCState newState)
     {
-        base.GoToState(state, enterArgs);
-        
-        // Load the related Spritesheet to the FrameAnimationPlayer
-        if (animator == null) return;
-        if (currentState == NPCState.NONE) return;
-
-        //Debug.Log($"NPC OnStateChanged -> {state}");
-        animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(currentState));
+        bool result = base.GoToState(newState);
+        if (result)
+            animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(newState));
+        return result;
     }
 }
 
@@ -67,7 +63,7 @@ public class IdleState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        if (_maxDuration == 0) { StateMachine.GoToState(NPCState.WALK); return; }
+        if (_maxDuration == 0) { _stateMachine.GoToState(NPCState.WALK); }
         coroutine = _coroutineRunner.StartCoroutine(IdleTimer());
     }
 
@@ -239,8 +235,6 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
-        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
         if (player == null) { player = _controller.player; }
 
          coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
@@ -330,15 +324,12 @@ public class HideState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        if (_animator == null) { _animator = StateMachine.parentObject.GetComponent<NPC_Animator>(); }
-        if (_controller == null) { _controller = StateMachine.parentObject.GetComponent<NPC_Controller>(); }
-
         coroutine = _coroutineRunner.StartCoroutine(HideCheck());
     }
 
     public override void Exit()
     {
-        _controller.StopCoroutine(coroutine);
+        coroutine = _coroutineRunner.StartCoroutine(HideCheck());
         coroutine = null;
     }
 

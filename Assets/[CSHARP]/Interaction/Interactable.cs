@@ -11,7 +11,6 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : OverlapGrid2D, IInteract
 {
-    [SerializeField] private Transform promptIconTarget;
     [SerializeField] private SpriteRenderer spriteRenderer;
     private Color defaultColor;
 
@@ -60,7 +59,13 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+
         StartCoroutine(ColorChangeRoutine(Color.red, 2.0f));
+
         if (knotIterator == null)
         {
             knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);

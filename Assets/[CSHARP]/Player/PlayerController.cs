@@ -95,8 +95,6 @@ public class PlayerController : MonoBehaviour
     [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
     private SceneBounds sceneBounds;
- 
-    Vector2 _activeMoveInput = Vector2.zero;
 
     void Awake()
     {
