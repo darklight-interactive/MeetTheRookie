@@ -40,7 +40,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     void Start() {
         Invoke("Initialize", 0.1f);
     }
-
+    ///oijqwdoijqwodijqwd
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
@@ -51,10 +51,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
-    public void Show(bool visible) {
+    /*public void Show(bool visible) {
         synthesisActive = visible;
         synthesisUI.rootVisualElement.visible = synthesisActive;
-    }
+    }*/
 
     void SelectMove(InputAction.CallbackContext context) {
         Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
