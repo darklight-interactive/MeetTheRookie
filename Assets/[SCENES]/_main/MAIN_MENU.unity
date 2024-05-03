@@ -317,8 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3be0b839b9a51419955ffa19e4b189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playScene:
-    m_SceneName: SCENE_1.1
+  _preset: {fileID: 11400000, guid: d02b2b55e0f084e8596163b9197fea21, type: 2}
+  sceneButtonList:
+  - tag: play-button
+    scene:
+      m_SceneName: SCENE_1.1
 --- !u!1001 &1958999861
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ namespace Darklight.Game.Grid
     [ExecuteAlways]
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
+        [Header("Overlap Grid2D Properties")]
         [SerializeField] protected LayerMask layerMask;
         [SerializeField] public bool showGizmos = true;
 
