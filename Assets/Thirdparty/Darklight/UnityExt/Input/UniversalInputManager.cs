@@ -65,13 +65,13 @@ namespace Darklight.UnityExt.Input
             DefaultControllerActionMap.Disable();
 
             // Enable the appropriate action map based on the current input device
-            if (Touchscreen.current != null)
+            if (Keyboard.current != null)
             {
-                DefaultTouchActionMap.Enable();
-                PrimaryInteractAction = DefaultTouchActionMap.FindAction("PrimaryInteract");
-                SecondaryInteractAction = DefaultTouchActionMap.FindAction("SecondaryInteract");
-                MoveInputAction = DefaultTouchActionMap.FindAction("MoveInput");
-                DeviceInputType = InputType.TOUCH;
+                DefaultKeyboardActionMap.Enable();
+                PrimaryInteractAction = DefaultKeyboardActionMap.FindAction("PrimaryInteract");
+                SecondaryInteractAction = DefaultKeyboardActionMap.FindAction("SecondaryInteract");
+                MoveInputAction = DefaultKeyboardActionMap.FindAction("MoveInput");
+                DeviceInputType = InputType.KEYBOARD;
             }
             else if (Gamepad.current != null)
             {
@@ -81,14 +81,15 @@ namespace Darklight.UnityExt.Input
                 MoveInputAction = DefaultControllerActionMap.FindAction("MoveInput");
                 DeviceInputType = InputType.GAMEPAD;
             }
-            else if (Keyboard.current != null)
+            else if (Touchscreen.current != null)
             {
-                DefaultKeyboardActionMap.Enable();
-                PrimaryInteractAction = DefaultKeyboardActionMap.FindAction("PrimaryInteract");
-                SecondaryInteractAction = DefaultKeyboardActionMap.FindAction("SecondaryInteract");
-                MoveInputAction = DefaultKeyboardActionMap.FindAction("MoveInput");
-                DeviceInputType = InputType.KEYBOARD;
+                DefaultTouchActionMap.Enable();
+                PrimaryInteractAction = DefaultTouchActionMap.FindAction("PrimaryInteract");
+                SecondaryInteractAction = DefaultTouchActionMap.FindAction("SecondaryInteract");
+                MoveInputAction = DefaultTouchActionMap.FindAction("MoveInput");
+                DeviceInputType = InputType.TOUCH;
             }
+
             else
             {
                 Debug.LogError(Prefix + "Could not find Input Type");
