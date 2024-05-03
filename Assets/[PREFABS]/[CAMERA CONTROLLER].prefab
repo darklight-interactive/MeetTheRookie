@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameras: []
+  _camerasInChildren:
+  - {fileID: 294617130321755958}
   _focusTarget: {fileID: 0}
   _offsetPosition: {x: 0, y: 0, z: -10}
   _offsetRotation: {x: 0, y: 0, z: 0}
@@ -56,7 +57,7 @@ MonoBehaviour:
   _distanceZ: 10
   _baseFOV: 5
   _offsetFOV: 0
-  _currentFOV: 0
+  _currentFOV: 5
 --- !u!1 &5947460541986450070
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +101,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19631417, g: 0.14124244, b: 0.4339623, a: 1}
+  m_BackGroundColor: {r: 0.42352945, g: 0.46274513, b: 0.47058827, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

@@ -29,18 +29,18 @@ public class NPC_Interactable : Interactable
 
         UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.WorldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
-        //worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
+        worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
         //worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
     }
 
     protected override void Initialize()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     public override void OnDestroy()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 }

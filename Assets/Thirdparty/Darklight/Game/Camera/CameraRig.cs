@@ -45,9 +45,12 @@ namespace Darklight.Game.Camera
         [SerializeField, Range(0, 100)] private float _distanceZ = 10f; // distance from the targeton the Z axis
 
         [Header("Field of View")]
-        [SerializeField, Range(0.1f, 45)] private float _baseFOV = 5f;
+        [SerializeField, Range(0.1f, 190)] private float _baseFOV = 5f;
         [SerializeField, ShowOnly] private float _offsetFOV;
-        public void SetOffsetFOV(float value) => _offsetFOV = value;
+        public void SetOffsetFOV(float value)
+        {
+            _offsetFOV = value;
+        }
         [SerializeField, ShowOnly] private float _currentFOV;
         public float GetCurrentFOV()
         {

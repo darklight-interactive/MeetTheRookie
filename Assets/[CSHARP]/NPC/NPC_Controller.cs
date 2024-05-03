@@ -29,7 +29,6 @@ public class NPC_Controller : MonoBehaviour
     // ================ [ UNITY MAIN METHODS ] =================== //
     void Start()
     {
-        // Create the NPCStateMachine
 
         // Create instances of the states
         IdleState idleState = new(NPCState.IDLE, new object[] { idleMaxDuration });
@@ -49,6 +48,9 @@ public class NPC_Controller : MonoBehaviour
             { NPCState.HIDE, hideState },
             { NPCState.CHASE, chaseState },
         };
+
+        // Create the NPCStateMachine
+        stateMachine = new(possibleStates, NPCState.IDLE, this);
     }
 
     // Update is called once per frame

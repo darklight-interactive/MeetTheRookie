@@ -157,7 +157,7 @@ MonoBehaviour:
     - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
     - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
-  currentFrame: 3
+  currentFrame: 2
 --- !u!114 &3459753342046718353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +175,11 @@ MonoBehaviour:
   - state: 1
     spriteSheet:
       loop: 1
-      frames: []
+      frames:
+      - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: 979639723, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
+      - {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
@@ -221,7 +225,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.25, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6172525793551313900}
   - {fileID: 1985180874934168226}

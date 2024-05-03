@@ -24,8 +24,6 @@ namespace Darklight.UnityExt.UXML
             if (uiElement == null) return;
             uiElement.SetWorldToScreenPosition(worldPosition);
             uiElement.visible = true;
-
-            Debug.Log($"Displaying Interact Prompt at {worldPosition} {uiElement}");
         }
 
         public void HideInteractPrompt()

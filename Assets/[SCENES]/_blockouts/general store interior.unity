@@ -4397,7 +4397,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4405,11 +4405,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.875
+      value: -7.375
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4491,6 +4491,22 @@ PrefabInstance:
       propertyPath: field of view
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _currentFOV
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTarget
+      value: 
+      objectReference: {fileID: 895662910}
+    - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _camerasInChildren.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: '_camerasInChildren.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1192357160}
     - target: {fileID: 8659774086033083194, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
       value: 7
@@ -6283,6 +6299,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 496812695}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1192357160 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+  m_PrefabInstance: {fileID: 985779597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1195046416
 GameObject:
   m_ObjectHideFlags: 0

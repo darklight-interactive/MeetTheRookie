@@ -12,7 +12,6 @@ using UnityEditor;
 public abstract class Interactable : OverlapGrid2D, IInteract
 {
     [SerializeField] private Transform promptIconTarget;
-
     [SerializeField] private SpriteRenderer spriteRenderer;
     private Color defaultColor;
 
