@@ -177,14 +177,14 @@ public class PlayerController : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         if (stateMachine.CurrentState != PlayerState.INTERACTION) {
-            stateMachine.ChangeState(PlayerState.INTERACTION);
-            playerInteractor.InteractWithFirstTarget();
+            stateMachine.GoToState(PlayerState.INTERACTION);
+            interactor.InteractWithTarget();
         }
     }
 
     void ExitInteraction()
     {
-        stateMachine.ChangeState(PlayerState.IDLE);
+        stateMachine.GoToState(PlayerState.IDLE);
     }
 
     #region Synthesis Management

@@ -56,6 +56,10 @@ namespace Darklight.Game.Utility
             if (_instance == null)
             {
                 _instance = this as T;
+
+                // Initialize the singletonObject
+                DontDestroyOnLoad(this.gameObject);
+                Debug.Log($"{Prefix} Awake: Instance created.");
             }
             else if (_instance != this)
             {
@@ -68,10 +72,7 @@ namespace Darklight.Game.Utility
                 return;
             }
 
-            // Initialize the singletonObject
-            DontDestroyOnLoad(this.gameObject);
 
-            Debug.Log($"{Prefix} Awake: Instance created.");
         }
     }
 }

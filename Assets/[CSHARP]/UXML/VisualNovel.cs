@@ -126,7 +126,8 @@ public class VisualNovel : UXML_UIDocumentObject
         misraImage.AddToClassList("Inactive");
 
         choicesActive = true;
-        choiceMap.resetSelected();
+        //TODO : Fix this
+        //choiceMap.resetSelected(); 
         choiceMap.currentlySelected.AddToClassList("Highlight");
     }
 
