@@ -1,11 +1,3 @@
-using Darklight.Game.Grid;
-using UnityEngine;
-using static Darklight.UnityExt.CustomInspectorGUI;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public interface IInteract
 {
     /// <summary>
@@ -84,7 +76,3 @@ public interface IInteract
     /// </summary>
     public event OnComplete OnCompleted;
 }
-
-
-
-

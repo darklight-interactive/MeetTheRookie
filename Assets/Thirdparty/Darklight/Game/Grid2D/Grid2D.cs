@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.UnityExt;
-using Darklight.Game.Grid;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;

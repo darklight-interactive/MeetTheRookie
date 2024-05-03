@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class SynthesisDraggable : PointerManipulator
 {
+    SynthesisManager synthesisManager;
     Rect globalStart;
     /// <summary>
     /// Because we don't want to mess with other items without relativePosition,
@@ -58,7 +59,7 @@ public class SynthesisDraggable : PointerManipulator
                 Mathf.Clamp(targetStart.y + delta.y, -globalStart.y, bounds.height - globalStart.y - globalStart.height));
             target.transform.position = pos;
 
-            var toCombine = SynthesisManager.Instance.OverlappingObject(target);
+            var toCombine = synthesisManager.OverlappingObject(target);
             if (toCombine != wantToCombine) {
                 if (wantToCombine == null) {
                     target.AddToClassList("combine-target");
@@ -81,7 +82,7 @@ public class SynthesisDraggable : PointerManipulator
             isDragging = false;
             target.ReleasePointer(evt.pointerId);
             if (wantToCombine != null) {
-                SynthesisManager.Instance.CombineItems(new[] { target.name, wantToCombine.name });
+                synthesisManager.CombineItems(new[] { target.name, wantToCombine.name });
                 wantToCombine.RemoveFromClassList("combine-target");
                 target.RemoveFromClassList("combine-target");
             }

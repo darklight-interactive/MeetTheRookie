@@ -265,8 +265,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 211101709}
-  - component: {fileID: 211101710}
   - component: {fileID: 211101711}
+  - component: {fileID: 211101710}
   m_Layer: 0
   m_Name: '[UXML] Main Menu'
   m_TagString: Untagged
@@ -317,7 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3be0b839b9a51419955ffa19e4b189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionPreset: {fileID: 0}
+  playScene:
+    m_SceneName: SCENE_1.1
 --- !u!1001 &1958999861
 PrefabInstance:
   m_ObjectHideFlags: 0

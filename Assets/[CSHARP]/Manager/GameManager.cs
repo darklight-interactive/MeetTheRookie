@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 
 
-[RequireComponent(typeof(UniversalInputManager), typeof(UIManager))]
+[RequireComponent(typeof(UniversalInputManager))]
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;

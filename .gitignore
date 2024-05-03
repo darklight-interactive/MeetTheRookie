@@ -1,7 +1,7 @@
-# This .gitignore file should be placed at the root of your Unity project directory
-#
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
+
+# Darklight UnityExt GitIgnore
+# Last Updated 5/3/24
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -9,6 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+Assets/AssetStoreTools*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -55,11 +56,19 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
+
 # Builds
 *.apk
 *.aab
 *.unitypackage
 *.app
+
+### Mac Stuff ###
+.DS_Store
+.bak
+.BAK
 
 # Crashlytics generated file
 crashlytics-build.properties
@@ -72,14 +81,24 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .vsconfig
 
+### FMOD Unity Integration ###
+# Never ignore DLLs in the FMOD subfolder, so make sure that the FMOD-folder is in the correct path.
+!/[Aa]ssets/Plugins/FMOD/**/*.dll
 
-# ============================ CUSTOM =====================================
+# Don't ignore images and gizmos used by FMOD in the Unity Editor
+!/[Aa}ssets/Gizmos/FMOD/*
+!/[Aa}ssets/Editor Default Resources/FMOD/*
 
-# Ignore docfx generated content (Github workflows takes care of that for us)
-Documentation/_site
+# Ignore the Cache-file since it is updated locally either way
+/[Aa]ssets/**/FMODStudioCache.asset
+/[Aa]ssets/**/FMODStudioCache.asset.meta
+/[Aa]ssets/Plugins/FMOD/Cache.meta
+/[Aa]ssets/Plugins/FMOD/Cache/Editor.meta
 
-*.DS_Store
-/Assets/Resources/FMOD/Metadata
-/Assets/Plugins
-*.plist
-*.log
+# Log-files
+fmod.log
+fmod_editor.log
+
+# FMOD 1.10.x (Legacy)
+/Assets/FMODAssets/*
+/Assets/FMODStudioCache.meta

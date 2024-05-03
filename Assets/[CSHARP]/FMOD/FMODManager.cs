@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using Darklight.Game.Utility;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
 
 /// <summary>
 ///  This is the main singleton class that manages all FMOD audio events and buses.

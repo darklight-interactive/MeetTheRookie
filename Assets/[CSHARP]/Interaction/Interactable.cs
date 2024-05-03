@@ -1,12 +1,20 @@
-
-#region  ABSTRACT INTERACTABLE CLASS ================== //
-using Darklight.Game.Grid;
 using UnityEngine;
-using static Darklight.UnityExt.CustomInspectorGUI;
+using Darklight.UnityExt.Editor;
+using Darklight.Game.Grid;
+using System.Collections;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : OverlapGrid2D, IInteract
 {
+    [SerializeField] private Transform promptIconTarget;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    private Color defaultColor;
+
     // << SERIALIZED VALUES >> //
     [ShowOnly, SerializeField] bool _isTarget;
     [ShowOnly, SerializeField] bool _isActive;
@@ -21,26 +29,38 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
     // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
+
     public event IInteract.OnComplete OnCompleted;
 
+    // ====== [[ INITIALIZATION ]] ================================
+    protected abstract void Initialize();
+
+    public virtual void Reset()
+    {
+        isComplete = false;
+        spriteRenderer.color = defaultColor;
+    }
+
+    // ====== [[ TARGETING ]] ======================================
     public virtual void TargetEnable()
     {
         isTarget = true;
 
         OverlapGrid2D_Data data = this.GetBestData();
         if (data == null) return;
-        UIManager.InteractionUI.DisplayInteractPrompt(data.worldPosition);
+        UIManager.Instance.interactionUI.DisplayInteractPrompt(data.worldPosition);
     }
 
     public virtual void TargetDisable()
     {
         isTarget = false;
-        UIManager.InteractionUI.HideInteractPrompt();
+        UIManager.Instance.interactionUI.HideInteractPrompt();
     }
 
     public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
+        StartCoroutine(ColorChangeRoutine(Color.red, 2.0f));
         if (knotIterator == null)
         {
             knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
@@ -68,11 +88,24 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
     public virtual void Complete()
     {
+        Initialize();
+        defaultColor = spriteRenderer.color;
+
         isComplete = true;
         isActive = false;
         knotIterator = null;
 
         OnCompleted?.Invoke();
     }
+
+    public abstract void OnDestroy();
+
+    private IEnumerator ColorChangeRoutine(Color newColor, float duration)
+    {
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = newColor;
+
+        yield return new WaitForSeconds(duration);
+        spriteRenderer.color = originalColor;
+    }
 }
-#endregion
