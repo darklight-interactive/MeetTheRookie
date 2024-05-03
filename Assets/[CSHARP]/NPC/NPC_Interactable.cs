@@ -33,4 +33,14 @@ public class NPC_Interactable : Interactable
         //worldSpaceUIDoc.SetText(text);
         return worldSpaceUIDoc;
     }
+
+    protected override void Initialize()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnDestroy()
+    {
+        throw new System.NotImplementedException();
+    }
 }
