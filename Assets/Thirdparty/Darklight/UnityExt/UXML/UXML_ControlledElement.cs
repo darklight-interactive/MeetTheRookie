@@ -22,9 +22,8 @@ namespace Darklight.UnityExt.UXML
     }
 
     /// <summary>
-    /// The base class for creating eaily controllable Visual Elements
+    /// A wrapper class for handling VisualElements in UXML
     /// </summary>
-    /// 
     public class UXML_ControlledVisualElement : VisualElement, I_VisualElement
     {
         public VisualElement element { get; private set; }
