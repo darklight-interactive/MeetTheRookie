@@ -1,5 +1,4 @@
-name: Unity Build and Test
-
+name: Unity - Automated Build
 on:
   workflow_dispatch:
   push:
@@ -11,9 +10,12 @@ on:
       - 'ProjectSettings/**/*'
       - .github/workflows/main.yml
 
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: true # cancel if a new push is made
       
 permissions:
   actions: read
@@ -23,25 +25,27 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build MeetTheRookie
+  # ----- Build for WebGL -----
+  buildWebGL:
+    name: Build for WebGL 🖥️
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
     steps:
-      # Checkout
       - name: Checkout repository
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v4.1.4
+
       - run: git submodule update --init --recursive
 
-      # Cache
-      - uses: actions/cache@v3
+      - name: Restore Library cache
+        uses: actions/cache@v4.0.2
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-build-WebGL
           restore-keys: |
+            Library-build-
             Library-
 
-# BUILD -> StandaloneWindows64
       - name: Build project
         uses: game-ci/unity-builder@v4
         env:
@@ -50,9 +54,65 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
-          buildName: MeetTheRookie_v1
-      # Output
-      - uses: actions/upload-artifact@v3
+          buildName: MeetTheRookie
+
+      - uses: actions/upload-artifact@v4.3.3
         with:
-          name: Build
+          name: build-WebGL
+          path: build/WebGL
+
+  # ----- Build for Windows -----
+  buildWindows:
+    name: Build for Windows 🖥️
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.4
+
+      - run: git submodule update --init --recursive
+
+      - name: Restore Library cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: Library
+          key: Library-build-WebGL
+          restore-keys: |
+            Library-build-
+            Library-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          buildName: MeetTheRookie
+
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          name: build-WebGL
+          path: build/WebGL
+
+
+  # ----- Deploy to Github Pages -----  
+  deployPages:
+    needs: buildWebGL
+    name: Deploy to Github Pages 🚀
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.4
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          name: build-WebGL
           path: build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: build/WebGL
