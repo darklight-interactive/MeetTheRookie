@@ -2807,13 +2807,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: field of view
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.875
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2850,6 +2854,26 @@ PrefabInstance:
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _baseFOV
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _currentFOV
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTarget
+      value: 
+      objectReference: {fileID: 825759768}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _offsetPosition.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: closeUpStateFOVOffset
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _currentFOV
@@ -11241,7 +11265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.875
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12198,11 +12222,12 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  showGizmos: 0
-  spriteRenderer: {fileID: 1210772552}
+  showGizmos: 1
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1.gas_pump
 --- !u!61 &954588747
 BoxCollider2D:
@@ -46787,10 +46812,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   showGizmos: 1
-  spriteRenderer: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1.npc
   speechBubbleScalar: 1.5
   dialogueBubble: {fileID: 0}
@@ -46934,10 +46960,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   showGizmos: 0
-  spriteRenderer: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1.car
 --- !u!4 &6725149855403942893
 Transform:
@@ -47356,10 +47383,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   showGizmos: 1
-  spriteRenderer: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: 
   _sceneTarget:
     m_SceneName: SCENE_1.2

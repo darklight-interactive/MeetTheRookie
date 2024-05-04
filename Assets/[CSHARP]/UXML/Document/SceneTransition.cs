@@ -3,7 +3,7 @@ using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UXML_SceneTransition : UXML_UIDocumentObject
+public class SceneTransition : UXML_UIDocumentObject
 {
     UXML_ControlledVisualElement blackOverlayElement;
     Label textlabel;
@@ -17,7 +17,7 @@ public class UXML_SceneTransition : UXML_UIDocumentObject
         // Initialize the base class
         base.Initialize(preset, tags);
 
-        textlabel = FindElementWithTag("textlabel") as Label;
+        textlabel = GetUIElement("textlabel").element as Label;
 
         blackOverlayElement = base.GetUIElement("blackborder");
         blackOverlayElement.visible = false;

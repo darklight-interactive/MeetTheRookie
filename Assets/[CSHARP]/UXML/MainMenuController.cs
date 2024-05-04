@@ -1,50 +1,83 @@
 using Darklight.UnityExt.Editor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.UXML;
+using System.Collections.Generic;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : UXML_UIDocumentObject
 {
-    public VisualElement ui;
-    public Button playButton;
-    public Button optionsButton;
-    public Button quitButton;
-
-    public SceneObject playScene;
-
-    private void Awake()
+    [System.Serializable]
+    public class SceneButtonData
     {
-        ui = GetComponent<UIDocument>().rootVisualElement;
+        public string tag;
+        public SceneObject scene;
+
+        // -- EVENTS -- >>
+        public delegate void OnClick(SceneObject scene);
+        public event OnClick OnButtonClicked;
+
+        // Internal Data
+        UXML_UIDocumentObject documentObject;
+        Button button;
+
+        public void Initialize(UXML_UIDocumentObject documentObject)
+        {
+            this.documentObject = documentObject;
+            button = documentObject.GetUIElement(tag).element as Button;
+
+            button.clickable.clicked += () =>
+            {
+                OnButtonClicked?.Invoke(scene);
+            };
+        }
     }
 
-    private void OnEnable()
-    {
-        playButton = ui.Q<Button>("play-button");
-        optionsButton = ui.Q<Button>("options-button");
-        quitButton = ui.Q<Button>("quit-button");
+    Dictionary<string, SceneButtonData> sceneButtons = new Dictionary<string, SceneButtonData>();
 
-        playButton.clicked += PlayButtonClicked;
-        optionsButton.clicked += OptionsButtonClicked;
-        quitButton.clicked += QuitButtonClicked;
+    [SerializeField] string quitTag = "quit-button";
+    [SerializeField] List<SceneButtonData> sceneButtonList = new List<SceneButtonData>();
+
+    void Awake()
+    {
+        Initialize(preset);
+        LoadSceneButtons();
+
+        // Quit Button
+        UXML_ControlledVisualElement quitButton = GetUIElement(quitTag);
+        Button button = quitButton.element as Button;
+        button.clickable.clicked += () =>
+        {
+            Quit();
+            button.clickable.clicked -= () => { };
+        };
     }
 
-    public void PlayButtonClicked()
+    void LoadSceneButtons()
     {
-        SceneManager.Instance.LoadScene(playScene);
+        foreach (SceneButtonData sceneButtonData in sceneButtonList)
+        {
+            sceneButtonData.Initialize(this);
+            sceneButtons.Add(sceneButtonData.tag, sceneButtonData);
 
-        Debug.Log("Play Button Clicked");
+            sceneButtonData.OnButtonClicked += (scene) =>
+            {
+                // Clear the event
+                sceneButtonData.OnButtonClicked -= (scene) => { };
+
+                // Load the scene
+                SceneManager.Instance.LoadScene(scene);
+            };
+        }
     }
 
-    public void OptionsButtonClicked()
-    {
-        Debug.Log("Options Button Clicked");
-    }
-
-    public void QuitButtonClicked()
+    public void Quit()
     {
         Application.Quit();
 #if UNITY_EDITOR

@@ -13,11 +13,11 @@ public class SceneChange_Interactable : Interactable
 
     public override void OnDestroy()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     protected override void Initialize()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 }

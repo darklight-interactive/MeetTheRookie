@@ -11,7 +11,7 @@ public class SceneManager : MonoBehaviourSingleton<SceneManager>
 
     public void LoadScene(SceneObject sceneObject)
     {
-        UXML_SceneTransition sceneTransition = new GameObject("SceneTransition").AddComponent<UXML_SceneTransition>();
+        SceneTransition sceneTransition = new GameObject("SceneTransition").AddComponent<SceneTransition>();
         sceneTransition.Initialize(sceneTransitionPreset, new string[] { "blackborder", "textlabel" });
         sceneTransition.BeginFadeOut(sceneObject);
     }

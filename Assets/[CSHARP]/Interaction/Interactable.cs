@@ -11,13 +11,14 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : OverlapGrid2D, IInteract
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    private Color defaultColor;
 
     // << SERIALIZED VALUES >> //
+    [Header("Interactable Properties")]
     [ShowOnly, SerializeField] bool _isTarget;
     [ShowOnly, SerializeField] bool _isActive;
     [ShowOnly, SerializeField] bool _isComplete;
+    [ShowOnly, SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] Color _interactColor = Color.yellow;
     [SerializeField] string _interactionKey;
 
     // << PUBLIC ACCESSORS >> //
@@ -28,8 +29,16 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
     // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
-
     public event IInteract.OnComplete OnCompleted;
+
+    // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
+    public override void Awake()
+    {
+        base.Awake();
+        Initialize();
+
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
 
     // ====== [[ INITIALIZATION ]] ================================
     protected abstract void Initialize();
@@ -37,7 +46,7 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public virtual void Reset()
     {
         isComplete = false;
-        spriteRenderer.color = defaultColor;
+        _spriteRenderer.color = _interactColor;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -59,20 +68,13 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
-        if (spriteRenderer == null)
-        {
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        }
-
+        // >> TEMPORARY COLOR CHANGE
         StartCoroutine(ColorChangeRoutine(Color.red, 2.0f));
 
+        // >> CONTINUE KNOT
         if (knotIterator == null)
-        {
             knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
-        }
         ContinueKnot();
-
-        Debug.Log("Interacting with " + gameObject.name);
     }
 
     public virtual void ContinueKnot()
@@ -94,9 +96,6 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
     public virtual void Complete()
     {
-        Initialize();
-        defaultColor = spriteRenderer.color;
-
         isComplete = true;
         isActive = false;
         knotIterator = null;
@@ -108,10 +107,40 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {
-        Color originalColor = spriteRenderer.color;
-        spriteRenderer.color = newColor;
+        if (_spriteRenderer == null) yield break;
+        Color originalColor = _spriteRenderer.color;
+        _spriteRenderer.color = newColor;
 
         yield return new WaitForSeconds(duration);
-        spriteRenderer.color = originalColor;
+        _spriteRenderer.color = originalColor;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Interactable), true)]
+public class InteractableCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    Interactable _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (Interactable)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
