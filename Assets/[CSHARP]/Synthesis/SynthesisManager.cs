@@ -50,8 +50,8 @@ public class SynthesisManager : MonoBehaviour
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        UniversalInputManager.MoveInputAction.performed += SelectMove;
-        UniversalInputManager.PrimaryInteractAction.performed += Select;
+        UniversalInputManager.OnMoveInput += SelectMove;
+        UniversalInputManager.OnPrimaryInteract += Select;
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
@@ -62,8 +62,8 @@ public class SynthesisManager : MonoBehaviour
         synthesisUI.rootVisualElement.visible = synthesisActive;
     }*/
 
-    void SelectMove(InputAction.CallbackContext context) {
-        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+    void SelectMove(Vector2 move)
+    {
         move.y = -move.y;
         if (itemsSelection.currentlySelected != null) {
             itemsSelection.currentlySelected.RemoveFromClassList("highlight");
@@ -75,7 +75,8 @@ public class SynthesisManager : MonoBehaviour
     }
 
     HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
-    void Select(InputAction.CallbackContext context) {
+    void Select()
+    {
         if (itemsSelection.currentlySelected != null) {
             var s = itemsSelection.currentlySelected;
             if (s == synthesizeButton) {

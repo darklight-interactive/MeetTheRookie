@@ -31,8 +31,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     void Initialize()
     {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-        UniversalInputManager.MoveInputAction.performed += Move;
-        UniversalInputManager.PrimaryInteractAction.performed += Select;
+        UniversalInputManager.OnMoveInput += Move;
+        UniversalInputManager.OnPrimaryInteract += Select;
     }
 
     // Start is called before the first frame update
@@ -157,7 +157,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// The function to select choice via input
     /// </summary>
     /// <param name="context">IDK man</param>
-    void Select(InputAction.CallbackContext context)
+    void Select()
     {
         if (choicesActive)
         {
@@ -173,9 +173,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// The function to change choice via input
     /// </summary>
     /// <param name="context">IDK man</param>
-    void Move(InputAction.CallbackContext context)
+    void Move(Vector2 move)
     {
-        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
         move.y = -move.y;
         if (choiceMap.currentlySelected != null)
         {

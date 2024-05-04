@@ -108,24 +108,19 @@ public class PlayerController : MonoBehaviour
         }, PlayerState.IDLE, this);
     }
 
-void Start()
+    void Start()
     {
-        Debug.Log($"PlayerController is listening to input from {UniversalInputManager.DeviceInputType}");
+        UniversalInputManager.OnPrimaryInteract += Interact;
+        UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
 
-        // Subscribe to Universal MoveInput
-        InputAction moveInputAction = UniversalInputManager.MoveInputAction;
-        if (moveInputAction == null) { Debug.LogWarning("MoveInputAction is not initialized"); return; }
 
-        moveInputAction.performed += context => _activeMoveInput = moveInputAction.ReadValue<Vector2>();
-        moveInputAction.canceled += context => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.PrimaryInteractAction.performed += Interact;
-        UniversalInputManager.SecondaryInteractAction.performed += ToggleSynthesis;
-
+        // << Find SceneBounds >>
         SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         if (bounds.Length > 0)
         {
             sceneBounds = bounds[0];
-        } else
+        }
+        else
         {
             sceneBounds = null;
         }
@@ -156,7 +151,8 @@ void Start()
             {
                 transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
             }
-        } else
+        }
+        else
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
         }
@@ -196,7 +192,7 @@ void Start()
     /// <summary>
     /// Interaction Input has been pressed
     /// </summary>
-    void Interact(InputAction.CallbackContext context)
+    void Interact()
     {
         if (stateMachine.CurrentState != PlayerState.INTERACTION)
         {
@@ -212,7 +208,7 @@ void Start()
 
     #region Synthesis Management
     bool synthesisEnabled = false;
-    void ToggleSynthesis(InputAction.CallbackContext context)
+    void ToggleSynthesis()
     {
         synthesisEnabled = !synthesisEnabled;
         //SynthesisManager.Instance.Show(synthesisEnabled);

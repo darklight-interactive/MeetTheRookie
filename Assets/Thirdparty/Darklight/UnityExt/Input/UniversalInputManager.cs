@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Darklight.Game.Utility;
-
+using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
 
 namespace Darklight.UnityExt.Input
 {
@@ -15,21 +13,49 @@ namespace Darklight.UnityExt.Input
     public class UniversalInputManager : MonoBehaviourSingleton<UniversalInputManager>
     {
         public enum InputType { NULL, KEYBOARD, TOUCH, GAMEPAD }
-        public static InputType DeviceInputType = InputType.NULL;
+        public static InputType DeviceInputType
+        {
+            get => Instance._deviceInputType;
+            private set => Instance._deviceInputType = value;
+        }
 
-        [Header("Input Action Map")]
+        // -------------- [[ SERIALIZED FIELDS ]] -------------- >>
         [SerializeField] private InputActionAsset _inputActionAsset;
-        public InputActionMap KeyboardActionMap => _inputActionAsset.FindActionMap("DefaultKeyboard");
-        public InputActionMap GamepadActionMap => _inputActionAsset.FindActionMap("DefaultGamepad");
-        public InputActionMap TouchActionMap => _inputActionAsset.FindActionMap("DefaultTouch");
+        [SerializeField, ShowOnly] private InputType _deviceInputType;
+        [SerializeField, ShowOnly] private Vector2 _moveInput;
+        [SerializeField, ShowOnly] private bool _primaryInteract;
+        [SerializeField, ShowOnly] private bool _secondaryInteract;
 
-        public static InputAction MoveInputAction { get; private set; }
-        public static InputAction PrimaryInteractAction { get; private set; }
-        public static InputAction SecondaryInteractAction { get; private set; }
+        // -------------- [[ INPUT ACTION MAPS ]] -------------- >>
+        InputActionMap _activeActionMap;
+        InputActionMap _keyboardActionMap;
+        InputActionMap _gamepadActionMap;
+        InputActionMap _touchActionMap;
+
+        // -------------- [[ INPUT ACTIONS ]] -------------- >>
+        InputAction _move => _activeActionMap.FindAction("MoveInput");
+        InputAction _primary => _activeActionMap.FindAction("PrimaryInteract");
+        InputAction _secondary => _activeActionMap.FindAction("SecondaryInteract");
+
+        // -------------- [[ INPUT EVENTS ]] -------------- >>
+        public delegate void OnVec2Input(Vector2 moveInput);
+        public delegate void OnTrigger();
+
+        /// <summary> Event for the move input from the active device. </summary>
+        public static event OnVec2Input OnMoveInput;
+        public static event OnTrigger OnMoveInputCanceled;
+
+        /// <summary> Event for the primary interaction input from the active device. </summary>
+        public static event OnTrigger OnPrimaryInteract;
+        public static event OnTrigger OnPrimaryInteractCanceled;
+
+        /// <summary> Event for the secondary interaction input from the active device. </summary>
+        public static event OnTrigger OnSecondaryInteract;
+        public static event OnTrigger OnSecondaryInteractCanceled;
 
         public override void Awake()
         {
-            base.Awake();
+            base.Awake(); // Initialize the singleton instance
             if (DetectAndEnableInputDevice())
             {
                 Debug.Log($"{Prefix}Found Input: {DeviceInputType}");
@@ -37,52 +63,101 @@ namespace Darklight.UnityExt.Input
             _inputActionAsset.Enable();
         }
 
+        #region ---- [[ DEVICE INPUT DETECTION ]] ---->>
         bool DetectAndEnableInputDevice()
         {
             DisableAllActionMaps();
             return EnableDeviceBasedActionMap();
         }
 
-        private void DisableAllActionMaps()
+        void DisableAllActionMaps()
         {
-            KeyboardActionMap.Disable();
-            GamepadActionMap.Disable();
-            TouchActionMap.Disable();
+            if (_keyboardActionMap != null) { _keyboardActionMap.Disable(); }
+            if (_gamepadActionMap != null) { _gamepadActionMap.Disable(); }
+            if (_touchActionMap != null) { _touchActionMap.Disable(); }
         }
 
-        private bool EnableDeviceBasedActionMap()
+        bool EnableDeviceBasedActionMap()
         {
-            // Enable the action map based on the device
-            bool EnableActionMap(InputActionMap map, InputType type)
-            {
-                map.Enable();
-                SetInputActions(map);
-                DeviceInputType = type;
-                return true;
-            }
-
             // Detect the device and enable the action map
             switch (InputSystem.devices[0])
             {
                 case Keyboard:
-                    return EnableActionMap(KeyboardActionMap, InputType.KEYBOARD);
+                    _keyboardActionMap = _inputActionAsset.FindActionMap("DefaultKeyboard");
+                    return EnableActionMap(_keyboardActionMap, InputType.KEYBOARD);
                 case Gamepad:
-                    return EnableActionMap(GamepadActionMap, InputType.GAMEPAD);
+                    _gamepadActionMap = _inputActionAsset.FindActionMap("DefaultGamepad");
+                    return EnableActionMap(_gamepadActionMap, InputType.GAMEPAD);
                 case Touchscreen:
-                    return EnableActionMap(TouchActionMap, InputType.TOUCH);
+                    _touchActionMap = _inputActionAsset.FindActionMap("DefaultTouch");
+                    return EnableActionMap(_touchActionMap, InputType.TOUCH);
                 default:
                     Debug.LogError($"{Prefix}Could not find Input Type");
                     return false;
             }
         }
 
-
-
-        private void SetInputActions(InputActionMap map)
+        bool EnableActionMap(InputActionMap map, InputType type)
         {
-            PrimaryInteractAction = map.FindAction("PrimaryInteract");
-            SecondaryInteractAction = map.FindAction("SecondaryInteract");
-            MoveInputAction = map.FindAction("MoveInput");
+            DisableAllActionMaps();
+            if (map == null)
+            {
+                Debug.LogError($"{Prefix} Could not find Action Map for {type}");
+                return false;
+            }
+
+            // Set the active action map
+            _activeActionMap = map;
+            _activeActionMap.Enable();
+
+            // Set the device input type
+            DeviceInputType = type;
+
+            // Enable the actions
+            _move.Enable();
+            _primary.Enable();
+            _secondary.Enable();
+
+            // << -- Set the input events -- >>
+            _move.performed += (ctx) =>
+            {
+                _moveInput = ctx.ReadValue<Vector2>();
+                OnMoveInput?.Invoke(_moveInput);
+            };
+
+            _move.canceled += (ctx) =>
+            {
+                _moveInput = Vector2.zero;
+                OnMoveInputCanceled?.Invoke();
+            };
+
+            _primary.performed += (ctx) =>
+            {
+                _primaryInteract = true;
+                OnPrimaryInteract?.Invoke();
+            };
+
+            _primary.canceled += (ctx) =>
+            {
+                _primaryInteract = false;
+                OnPrimaryInteractCanceled?.Invoke();
+            };
+
+            _secondary.performed += (ctx) =>
+            {
+                _secondaryInteract = true;
+                OnSecondaryInteract?.Invoke();
+            };
+
+            _secondary.canceled += (ctx) =>
+            {
+                _secondaryInteract = false;
+                OnSecondaryInteractCanceled?.Invoke();
+            };
+
+            return true;
         }
+
+        #endregion
     }
 }

@@ -325,13 +325,13 @@ MonoBehaviour:
       m_SceneName: SCENE_1.1
   - tag: play-scene2
     scene:
-      m_SceneName: SCENE_2 - The Precinct
+      m_SceneName: 
   - tag: play-scene4
     scene:
-      m_SceneName: SCENE_4.1 - Main Street
+      m_SceneName: 
   - tag: play-synthesis
     scene:
-      m_SceneName: SYNTHESIS_PROTOTYPE
+      m_SceneName: 
 --- !u!1001 &1958999861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,6 +379,18 @@ PrefabInstance:
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342227784319069846, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: Actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342227784319069846, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: Actions.Array.data[0].InputAction.m_Id
+      value: 19518159-3ec2-4721-93f4-e2e7e581ac12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342227784319069846, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: Actions.Array.data[0].InputAction.m_Name
+      value: Input
       objectReference: {fileID: 0}
     - target: {fileID: 7521541780355231664, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: TransitionVisuals
