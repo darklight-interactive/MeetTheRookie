@@ -3,8 +3,8 @@ using System.Collections;
 using Darklight.Game;
 using System.Collections.Generic;
 using Darklight.Game.Utility;
-using Darklight.UnityExt.Editor;
-using static Darklight.UnityExt.Editor.CustomInspectorGUI;
+using Darklight.UnityExt.CustomEditor;
+using static Darklight.UnityExt.CustomEditor.CustomInspectorGUI;
 
 
 #if UNITY_EDITOR

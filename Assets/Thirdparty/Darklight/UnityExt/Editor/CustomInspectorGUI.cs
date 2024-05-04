@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.CustomEditor
 {
 	public static class CustomInspectorGUI
 	{

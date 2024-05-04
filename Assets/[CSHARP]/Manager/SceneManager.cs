@@ -1,74 +1,76 @@
-using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Utility;
-using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.UXML;
-using UnityEngine;
 using System.Linq;
 
+using Darklight.Game.Utility;
+using Darklight.UnityExt.CustomEditor;
+
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
 #endif
 
-public class SceneManager : MonoBehaviourSingleton<SceneManager>
+namespace Darklight.UnityExt.Scene
 {
-    [SerializeField]
-    private string sceneDirectory = "Assets/Scenes";
-    [SerializeField, ShowOnly] private List<SceneAsset> scenesInBuild = new List<SceneAsset>();
-    public void SetScenes(List<SceneAsset> scenes)
+
+    /// <summary>
+    /// Universal Scene Manager, used to manage scenes in all aspects
+    /// </summary>
+    public class SceneManager : MonoBehaviourSingleton<SceneManager>
     {
-        this.scenesInBuild = scenes;
+        [SerializeField, ShowOnly] string sceneBuildDirectory = "Assets/Scenes/Build"; // Updated path to be relative to the Assets folder
+        [SerializeField, ShowOnly] private List<SceneAsset> scenesInBuild = new List<SceneAsset>();
+        public string SceneDirectory => sceneBuildDirectory;
+        public List<SceneAsset> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
     }
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(SceneManager))]
-public class SceneManagerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    SceneManager _script;
-    List<SceneAsset> m_SceneAssets = new List<SceneAsset>();
-    private void OnEnable()
+    [UnityEditor.CustomEditor(typeof(SceneManager))]
+    public class SceneManagerCustomEditor : Editor
     {
-        _serializedObject = new SerializedObject(target);
-        _script = (SceneManager)target;
+        SerializedObject _serializedObject;
+        SceneManager _script;
 
-        m_SceneAssets = LoadScenesFromBuildSettings();
-        _script.SetScenes(m_SceneAssets);
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
+        private void OnEnable()
         {
-            _serializedObject.ApplyModifiedProperties();
+            _serializedObject = new SerializedObject(target);
+            _script = (SceneManager)target;
+            LoadBuildScenes();
         }
-    }
 
-    List<SceneAsset> LoadScenesFromBuildSettings()
-    {
-        m_SceneAssets.Clear();
-        //Debug.Log($"Loading {EditorBuildSettings.scenes.Count()} scenes from build settings...");
-
-        List<SceneAsset> sceneAssets = new List<SceneAsset>();
-        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        public override void OnInspectorGUI()
         {
-            if (scene.enabled)
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
             {
-                string path = scene.path;
-                SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-                if (sceneAsset != null)
-                    sceneAssets.Add(sceneAsset);
+                _serializedObject.ApplyModifiedProperties();
+                LoadBuildScenes();
             }
         }
-        return sceneAssets;
+
+        private void LoadBuildScenes()
+        {
+            string[] scenePaths = Directory.GetFiles(_script.SceneDirectory, "*.unity", SearchOption.AllDirectories);
+            List<SceneAsset> scenes = new List<SceneAsset>();
+            foreach (string scenePath in scenePaths)
+            {
+                SceneAsset scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+                scenes.Add(scene);
+            }
+            _script.ScenesInBuild = scenes;
+        }
     }
-}
 #endif
+}
+
+
+

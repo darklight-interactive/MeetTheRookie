@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.Game.Utility;
-using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.CustomEditor;
 
 [RequireComponent(typeof(NPC_Animator))]
 public class NPC_Controller : MonoBehaviour

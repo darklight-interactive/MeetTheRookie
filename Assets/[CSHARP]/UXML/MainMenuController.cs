@@ -1,4 +1,4 @@
-using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.CustomEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
@@ -72,7 +72,7 @@ public class MainMenuController : UXML_UIDocumentObject
                 sceneButtonData.OnButtonClicked -= (scene) => { };
 
                 // Load the scene
-                SceneManager.Instance.LoadScene(scene);
+                //SceneManager.Instance.LoadScene(scene);
             };
         }
     }

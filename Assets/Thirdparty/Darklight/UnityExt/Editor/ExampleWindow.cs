@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.CustomEditor
 {
     public class ExampleWindow : EditorWindow
     {

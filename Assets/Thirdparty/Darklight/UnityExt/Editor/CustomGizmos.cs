@@ -5,7 +5,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.CustomEditor
 {
     public static class CustomGizmos
     {

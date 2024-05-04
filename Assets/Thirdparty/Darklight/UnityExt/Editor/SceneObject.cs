@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.CustomEditor
 {
 
     // <summary>

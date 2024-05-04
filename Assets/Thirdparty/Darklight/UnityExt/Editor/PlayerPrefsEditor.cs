@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.CustomEditor
 {
 #if UNITY_EDITOR
     using UnityEditor;

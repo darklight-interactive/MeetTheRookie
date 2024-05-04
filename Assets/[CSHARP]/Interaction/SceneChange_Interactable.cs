@@ -1,4 +1,4 @@
-using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.CustomEditor;
 using UnityEngine;
 
 public class SceneChange_Interactable : Interactable
@@ -8,7 +8,7 @@ public class SceneChange_Interactable : Interactable
     public override void Interact()
     {
         base.Interact();
-        SceneManager.Instance.LoadScene(_sceneTarget);
+        //SceneManager.Instance.LoadScene(_sceneTarget);
     }
 
     public override void OnDestroy()
