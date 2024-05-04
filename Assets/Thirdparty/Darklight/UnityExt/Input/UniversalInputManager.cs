@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Darklight.Game.Utility;
 using System.Collections.Generic;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 namespace Darklight.UnityExt.Input
 {

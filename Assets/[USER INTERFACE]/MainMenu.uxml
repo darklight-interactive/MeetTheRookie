@@ -1,23 +1,18 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="container" style="flex-grow: 1; flex-direction: row; justify-content: center; align-items: stretch; align-self: center; background-color: rgba(0, 0, 0, 0); background-image: url(&quot;project://database/Assets/[SPRITES]/_archive/streetRight.png?fileID=2800000&amp;guid=70c057e461c3f3943bfef69fcac07d61&amp;type=3#streetRight&quot;); -unity-background-scale-mode: scale-and-crop;">
-        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column;" />
-        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column; flex-basis: 45%;">
-            <engine:VisualElement name="main-container" style="flex-grow: 1; background-color: rgba(51, 20, 0, 0);">
-                <engine:VisualElement name="container" style="flex-grow: 0; padding-bottom: 5%; padding-top: 5%; padding-right: 2.5%; padding-left: 2.5%; margin-bottom: 0; margin-top: 0; margin-right: 0; margin-left: 0; justify-content: center; align-self: center;">
-                    <engine:Label text="Meet The Rookie" name="title" style="font-size: 146px; -unity-font-style: bold; -unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco-Thin.ttf?fileID=12800000&amp;guid=8d084e655e51e5f458abcf16d21c0fb9&amp;type=3#DigitalDisco-Thin&quot;); -unity-text-outline-width: 7px;" />
-                </engine:VisualElement>
-                <engine:GroupBox name="column" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-between; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;">
-                    <engine:Button text="scene 1" name="play-scene1" />
-                    <engine:Button text="scene 2" name="play-scene2" />
-                    <engine:Button text="scene 4" name="play-scene4" />
-                    <engine:GroupBox style="flex-direction: row; align-items: center; justify-content: space-between;">
-                        <engine:Button text="synthesis" name="play-synthesis" />
-                        <engine:Button text="Quit" name="quit-button" />
-                    </engine:GroupBox>
-                </engine:GroupBox>
-            </engine:VisualElement>
+    <engine:VisualElement name="background" />
+    <engine:VisualElement name="header" />
+    <engine:VisualElement name="body">
+        <engine:VisualElement name="panel" class="panel horz" style="justify-content: center; flex-direction: column; background-color: rgb(122, 72, 65);">
+            <engine:Label text="Meet The Rookie" name="title" />
         </engine:VisualElement>
-        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column;" />
+        <engine:VisualElement name="panel" class="panel" style="flex-grow: 1; background-color: rgba(51, 20, 0, 0);">
+            <engine:GroupBox name="column" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-between; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;">
+                <SceneChangeButton text="Play" Scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" />
+                <engine:Button text="synthesis" name="play-synthesis" />
+                <engine:Button text="Quit" name="quit-button" />
+            </engine:GroupBox>
+        </engine:VisualElement>
     </engine:VisualElement>
+    <engine:VisualElement name="footer" />
 </engine:UXML>

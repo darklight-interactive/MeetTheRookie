@@ -1,5 +1,5 @@
 using UnityEngine;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;

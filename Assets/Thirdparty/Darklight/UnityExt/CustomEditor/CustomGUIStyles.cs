@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Darklight.UnityExt.CustomEditor
+namespace Darklight.UnityExt.Editor
 {
     public class CustomGUIStyles
     {

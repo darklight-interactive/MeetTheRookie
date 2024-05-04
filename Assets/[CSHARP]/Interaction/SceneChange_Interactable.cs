@@ -1,4 +1,4 @@
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 using UnityEngine;
 
 public class SceneChange_Interactable : Interactable

@@ -4,7 +4,7 @@ using System.Linq;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : MonoBehaviour

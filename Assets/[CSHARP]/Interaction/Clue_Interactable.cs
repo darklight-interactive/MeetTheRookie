@@ -1,5 +1,5 @@
 using UnityEngine;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
 
 public class Clue_Interactable : Interactable

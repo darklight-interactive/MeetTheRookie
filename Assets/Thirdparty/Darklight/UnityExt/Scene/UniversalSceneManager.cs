@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Darklight.Game.Utility;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -31,18 +31,7 @@ namespace Darklight.UnityExt.Scene
         [SerializeField, ShowOnly] private List<SceneAsset> scenesInBuild = new List<SceneAsset>();
         public string SceneDirectory => sceneBuildDirectory;
         public List<SceneAsset> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
-        public void SetSceneAsCurrent(string name)
-        {
-            SceneAsset scene = scenesInBuild.Find(s => s.name == name);
-            if (scene != null)
-            {
-                currentScene = scene.name;
-            }
-            else
-            {
-                currentScene = "ERROR : Current Scene not in Build Settings";
-            }
-        }
+        public string CurrentScene { get => currentScene; set => currentScene = value; }
 
         public bool IsSceneInBuild(SceneAsset scene)
         {
@@ -73,7 +62,7 @@ namespace Darklight.UnityExt.Scene
 
 #if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(UniversalSceneManager))]
-    public class SceneManagerCustomEditor : Editor
+    public class SceneManagerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
         UniversalSceneManager _script;
@@ -84,7 +73,7 @@ namespace Darklight.UnityExt.Scene
             _script = (UniversalSceneManager)target;
             LoadBuildScenes();
 
-            _script.SetSceneAsCurrent(EditorSceneManager.GetActiveScene().name);
+            _script.CurrentScene = SceneManager.GetActiveScene().name;
         }
 
         public override void OnInspectorGUI()
@@ -100,6 +89,37 @@ namespace Darklight.UnityExt.Scene
                 _serializedObject.ApplyModifiedProperties();
                 LoadBuildScenes();
             }
+
+            SceneSelector();
+
+            // Save changes
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(_script);
+                EditorSceneManager.MarkSceneDirty(_script.gameObject.scene);
+            }
+        }
+
+        public void SceneSelector()
+        {
+            // Get all scenes in the build settings
+            var scenes = EditorBuildSettings.scenes
+                .Where(scene => scene.enabled)
+                .Select(scene => scene.path)
+                .ToArray();
+
+            // Create an array of scene names to display in the dropdown
+            string[] sceneNames = scenes
+                .Select(s => System.IO.Path.GetFileNameWithoutExtension(s))
+                .ToArray();
+
+            // Current selected index
+            int currentIndex = System.Array.IndexOf(scenes, _script.CurrentScene);
+            if (currentIndex == -1) currentIndex = 0;
+
+            // Dropdown for selecting scene
+            int selectedIndex = EditorGUILayout.Popup("Select Scene", currentIndex, sceneNames);
+            _script.CurrentScene = scenes[selectedIndex];
         }
 
         private void LoadBuildScenes()

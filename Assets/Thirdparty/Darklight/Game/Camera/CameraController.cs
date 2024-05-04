@@ -3,7 +3,7 @@ using Darklight.Game.Camera;
 using UnityEngine;
 using Darklight.Game.Utility;
 using System.Collections.Generic;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;

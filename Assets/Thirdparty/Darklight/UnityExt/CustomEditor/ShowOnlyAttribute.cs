@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
-namespace Darklight.UnityExt.CustomEditor
+namespace Darklight.UnityExt.Editor
 {
     public class ShowOnlyAttribute : PropertyAttribute { }
 

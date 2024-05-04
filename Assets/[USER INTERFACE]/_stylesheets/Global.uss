@@ -1,23 +1,56 @@
 #header {
-    background-color: rgb(34, 51, 87);
-    max-height: 10%;
-    flex-grow: 1;
-    flex-direction: row;
-    align-items: center;
+    flex-basis: 25%;
 }
 
 #body {
+    flex-basis: 150%;
 }
 
-Label .black {
-    color: rgb(0, 0, 0);
-    -unity-font-style: normal;
+#footer {
+    flex-basis: 25%;
+}
+
+#background {
     flex-grow: 1;
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(30, 29, 57);
+    position: absolute;
 }
 
-Button {
+#title.unity-text-element {
+    flex-grow: 1;
+    color: rgb(0, 0, 0);
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&guid=d95d61c132c648c42b6313ed97ed9cf7&type=3#LGGothic");
+    align-self: center;
+    justify-content: center;
+    font-size: 164px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-left;
+}
+
+.unity-button {
     min-width: 25%;
-    min-height: 25%;
+    min-height: 45%;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
+    max-height: 45%;
+    flex-grow: 1;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    font-size: 48px;
+    max-width: 100%;
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
+    justify-content: center;
+    transition-timing-function: ease-in;
+}
+
+.unity-button:hover {
+    min-width: 25%;
+    min-height: 45%;
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
     max-height: 50%;
     flex-grow: 1;
@@ -27,6 +60,9 @@ Button {
     margin-left: 15px;
     font-size: 48px;
     max-width: 100%;
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=2371981046512543649&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_3");
+    transition-duration: 0.25s;
+    transition-timing-function: linear;
 }
 
 .column-active {
@@ -49,11 +85,8 @@ Button {
 }
 
 .panel {
-    flex-grow: 1;
 }
 
-#title.unity-text-element {
-    flex-grow: 1;
-    color: rgb(0, 0, 0);
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
+.panel.horz {
+    justify-content: space-between;
 }

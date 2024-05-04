@@ -9,7 +9,7 @@ using Ink.Runtime;
 
 using UnityEngine;
 using Darklight.Game.Utility;
-using Darklight.UnityExt.CustomEditor;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;
