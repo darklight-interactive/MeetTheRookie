@@ -32,20 +32,16 @@
 }
 
 .unity-button {
-    min-width: 25%;
-    min-height: 45%;
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
-    max-height: 45%;
     flex-grow: 1;
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
-    font-size: 48px;
-    max-width: 100%;
+    font-size: 75px;
     background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
     justify-content: center;
     transition-timing-function: ease-in;
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
 }
 
 .unity-button:hover {
@@ -89,4 +85,7 @@
 
 .panel.horz {
     justify-content: space-between;
+}
+
+.selectable {
 }

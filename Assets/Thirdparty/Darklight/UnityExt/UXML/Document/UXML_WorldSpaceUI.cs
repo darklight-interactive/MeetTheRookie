@@ -9,7 +9,7 @@ using Darklight.UnityExt;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.UXML
+namespace Darklight.UnityExt.UXML.Document
 {
     public class UXML_WorldSpaceUI : UXML_UIDocumentObject
     {
@@ -28,15 +28,6 @@ namespace Darklight.UnityExt.UXML
         void OnDisable()
         {
             OnElementChanged -= TextureUpdate;
-        }
-
-        public void SetText(string text)
-        {
-            if (uiElements.ContainsKey("inkyLabel"))
-            {
-                uiElements["inkyLabel"].element.Q<Label>().text = text;
-                OnElementChanged?.Invoke();
-            }
         }
 
         public void TextureUpdate()

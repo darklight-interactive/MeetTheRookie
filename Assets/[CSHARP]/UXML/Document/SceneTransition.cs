@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class SceneTransition : UXML_UIDocumentObject
 {
-    UXML_ControlledVisualElement blackOverlayElement;
+    VisualElement blackOverlayElement;
     Label textlabel;
 
     public bool isStarted;
@@ -17,9 +17,9 @@ public class SceneTransition : UXML_UIDocumentObject
         // Initialize the base class
         base.Initialize(preset, tags);
 
-        textlabel = GetUIElement("textlabel").element as Label;
+        textlabel = ElementQuery<Label>();
 
-        blackOverlayElement = base.GetUIElement("blackborder");
+        blackOverlayElement = ElementQuery<VisualElement>("blackOverlay");
         blackOverlayElement.visible = false;
     }
 

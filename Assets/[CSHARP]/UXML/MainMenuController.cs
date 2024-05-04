@@ -2,6 +2,7 @@ using Darklight.UnityExt.Editor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
+using Darklight.UnityExt.UXML.Element;
 using System.Collections.Generic;
 using System;
 using Darklight.UnityExt.Scene;
@@ -15,6 +16,7 @@ using UnityEditor;
 
 public class MainMenuController : UXML_UIDocumentObject
 {
+    /*
     [System.Serializable]
     public class SceneButtonData
     {
@@ -38,45 +40,21 @@ public class MainMenuController : UXML_UIDocumentObject
             {
                 OnButtonClicked?.Invoke(scene);
             };
-        }
+        }  
     }
+    */
 
-    Dictionary<string, SceneButtonData> sceneButtons = new Dictionary<string, SceneButtonData>();
-
-    [SerializeField] string quitTag = "quit-button";
-    [SerializeField] List<SceneButtonData> sceneButtonList = new List<SceneButtonData>();
+    SelectableVectorField<SelectableElement> selectableVectorField = new SelectableVectorField<SelectableElement>();
+    [SerializeField] int selectablesCount = 0;
 
     void Awake()
     {
         Initialize(preset);
-        LoadSceneButtons();
 
-        // Quit Button
-        UXML_ControlledVisualElement quitButton = GetUIElement(quitTag);
-        Button button = quitButton.element as Button;
-        button.clickable.clicked += () =>
-        {
-            Quit();
-            button.clickable.clicked -= () => { };
-        };
-    }
+        // Load the Selectable Elements
+        List<SelectableElement> selectables = ElementQueryAll<SelectableElement>();
+        selectablesCount = selectables.Count;
 
-    void LoadSceneButtons()
-    {
-        foreach (SceneButtonData sceneButtonData in sceneButtonList)
-        {
-            sceneButtonData.Initialize(this);
-            sceneButtons.Add(sceneButtonData.tag, sceneButtonData);
-
-            sceneButtonData.OnButtonClicked += (scene) =>
-            {
-                // Clear the event
-                sceneButtonData.OnButtonClicked -= (scene) => { };
-
-                // Load the scene
-                //SceneManager.Instance.LoadScene(scene);
-            };
-        }
     }
 
     public void Quit()

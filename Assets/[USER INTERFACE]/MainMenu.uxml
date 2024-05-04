@@ -7,11 +7,7 @@
             <engine:Label text="Meet The Rookie" name="title" />
         </engine:VisualElement>
         <engine:VisualElement name="panel" class="panel" style="flex-grow: 1; background-color: rgba(51, 20, 0, 0);">
-            <engine:GroupBox name="column" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-between; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;">
-                <SceneChangeButton text="Play" Scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" />
-                <engine:Button text="synthesis" name="play-synthesis" />
-                <engine:Button text="Quit" name="quit-button" />
-            </engine:GroupBox>
+            <engine:GroupBox name="column" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;" />
         </engine:VisualElement>
     </engine:VisualElement>
     <engine:VisualElement name="footer" />
