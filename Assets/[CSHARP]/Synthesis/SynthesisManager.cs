@@ -18,6 +18,7 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
 {
     [SerializeField]
     protected VisualTreeAsset synthesisUIDocument;
+    protected PanelSettings panelSettings;
     protected VisualElement synthesisUI;
 
     protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();
@@ -32,8 +33,8 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     public override void Awake()
     {
         base.Awake();
-        synthesisUI = synthesisUIDocument.Instantiate();
-        GetComponent<UIDocument>().rootVisualElement.Add(synthesisUI);
+        GetComponent<UIDocument>().visualTreeAsset = synthesisUIDocument;
+        synthesisUI = GetComponent<UIDocument>().rootVisualElement;
         objects = synthesisUI.Q("objects");
         synthesizeButton = synthesisUI.Q("title");
         itemsSelection.Add(synthesizeButton);
