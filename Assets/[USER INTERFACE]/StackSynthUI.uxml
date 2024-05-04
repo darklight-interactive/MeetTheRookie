@@ -1,0 +1,34 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/SynthUITest/StackSynthUI.uss?fileID=7433441132597879392&amp;guid=161d545512230e642ba8fb65b5118381&amp;type=3#StackSynthUI" />
+    <ui:VisualElement name="Background" style="flex-grow: 1;">
+        <ui:VisualElement name="Stack" class="StackBase">
+            <ui:VisualElement name="cat" class="StackFile">
+                <ui:VisualElement name="Hovered" class="StackSelected" />
+                <ui:VisualElement name="PFP" class="StackPFP" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/SynthUITest/catpfp.jpg?fileID=2800000&amp;guid=5d9c79c41d5a9714ca273f1b5bdfe8e0&amp;type=3#catpfp&quot;);" />
+                <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
+                <ui:VisualElement name="TextHolder" class="StackTextHolder" />
+                <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
+                <ui:Label text="Cat" name="Name" class="StackName" />
+                <ui:Label text="Outside" name="Location" class="StackLocation" />
+            </ui:VisualElement>
+            <ui:VisualElement name="dog" class="StackFile">
+                <ui:VisualElement name="Hovered" class="StackSelected" />
+                <ui:VisualElement name="PFP" class="StackPFP" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/SynthUITest/dogpfp.png?fileID=2800000&amp;guid=fa6fafa645f14ac4898de1cbefd3427e&amp;type=3#dogpfp&quot;);" />
+                <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
+                <ui:VisualElement name="TextHolder" class="StackTextHolder" />
+                <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
+                <ui:Label text="Dog" name="Name" class="StackName" />
+                <ui:Label text="In Da House" name="Location" class="StackLocation" />
+            </ui:VisualElement>
+            <ui:VisualElement name="rat" class="StackFile">
+                <ui:VisualElement name="Hovered" class="StackSelected" />
+                <ui:VisualElement name="PFP" class="StackPFP" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/SynthUITest/ratpfp.jpg?fileID=2800000&amp;guid=f2a699a16bea22b4a86b822f447657ab&amp;type=3#ratpfp&quot;);" />
+                <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
+                <ui:VisualElement name="TextHolder" class="StackTextHolder" />
+                <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
+                <ui:Label text="Rat" name="Name" class="StackName" />
+                <ui:Label text="Sewer" name="Location" class="StackLocation" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,5 +1,6 @@
 using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
+using Darklight.UnityExt.UXML;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,17 +11,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
-/// Handle the UI and <see cref="SynthesisObject"/>s.
+/// Handle the UI
 /// </summary>
-public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
+[RequireComponent(typeof(UIDocument))]
+public class SynthesisManager : MonoBehaviour
 {
-    [SerializeField]
-    protected VisualTreeAsset synthesisUIDocument;
-    protected PanelSettings panelSettings;
-    protected VisualElement synthesisUI;
-
+    [SerializeField] private UXML_UIDocumentPreset _preset;
+    protected UIDocument document => GetComponent<UIDocument>();
     protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
@@ -28,25 +30,26 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
     /// Our group for showing the objects visually.
     /// </summary>
     VisualElement objects;
-
     VisualElement synthesizeButton;
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
-        GetComponent<UIDocument>().visualTreeAsset = synthesisUIDocument;
-        synthesisUI = GetComponent<UIDocument>().rootVisualElement;
-        objects = synthesisUI.Q("objects");
-        synthesizeButton = synthesisUI.Q("title");
-        itemsSelection.Add(synthesizeButton);
-
-        synthesisUI.visible = false;
+        document.visualTreeAsset = _preset.VisualTreeAsset;
+        document.panelSettings = _preset.PanelSettings;
     }
 
     bool synthesisActive = false;
-    void Start() {
+    void Start()
+    {
+        document.rootVisualElement.visible = false;
+
+        objects = document.rootVisualElement.Q("objects");
+
+        synthesizeButton = document.rootVisualElement.Q("title");
+        itemsSelection.Add(synthesizeButton);
+
         Invoke("Initialize", 0.1f);
     }
-
+    ///oijqwdoijqwodijqwd
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
@@ -58,10 +61,10 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
-    public void Show(bool visible) {
+    /*public void Show(bool visible) {
         synthesisActive = visible;
-        synthesisUI.visible = visible;
-    }
+        synthesisUI.rootVisualElement.visible = synthesisActive;
+    }*/
 
     void SelectMove(InputAction.CallbackContext context) {
         if (!synthesisActive) { return; }
@@ -191,3 +194,32 @@ public class SynthesisManager : MonoBehaviourSingleton<SynthesisManager>
         return null;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(SynthesisManager))]
+public class SynthesisManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    SynthesisManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (SynthesisManager)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

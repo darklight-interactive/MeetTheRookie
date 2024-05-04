@@ -1,8 +1,13 @@
 using System;
 using Darklight.Game.Utility;
+using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 // the InputSystemProvider throws an error if a UIDocument is destroyed.
 // This is a workaround to prevent the error from being thrown ( https://forum.unity.com/threads/case-1426900-error-destroy-may-not-be-called-from-edit-mode-is-shown-when-stopping-play.1279895/#post-8454926 )
@@ -13,25 +18,79 @@ using UnityEngine.UIElements;
 /// </summary>
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-
-    // ----- [[ INTERACTION UI ]] -----------------------------------
+    // ----- [[ INTERACTION UI ]] ----------------------------------->>
+    [Header("Interaction UI")]
     public UXML_UIDocumentPreset interactionUIPreset;
-    public static UXML_InteractionUI InteractionUI;
+    private UXML_ScreenSpaceUI _interactionUI;
+    public UXML_ScreenSpaceUI interactionUI
+    {
+        get
+        {
+            if (_interactionUI == null)
+            {
+                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_ScreenSpaceUI>();
+                _interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt" });
+            }
+            return _interactionUI;
+        }
+    }
 
     // ----- [[ WORLD SPACE UI ]] -----------------------------------
+    [Space(10), Header("World Space UI")]
     public UXML_UIDocumentPreset worldSpaceUIPreset;
     public Material worldSpaceMaterial;
     public RenderTexture worldSpaceRenderTexture;
-    public static UXML_WorldSpaceUI WorldSpaceUI;
-
-    public void Start()
+    private UXML_WorldSpaceUI _worldSpaceUI;
+    public UXML_WorldSpaceUI worldSpaceUI
     {
-        // Initialize the interaction UI singleton
-        InteractionUI = new GameObject("InteractionUI").AddComponent<UXML_InteractionUI>();
-        InteractionUI.transform.SetParent(transform);
+        get
+        {
+            if (_worldSpaceUI == null)
+            {
+                _worldSpaceUI = new GameObject("UIDocument : WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
+                _worldSpaceUI.Initialize(worldSpaceUIPreset, new string[] { "inkyLabel" }, worldSpaceMaterial, worldSpaceRenderTexture);
+            }
+            return _worldSpaceUI;
+        }
+    }
 
-        // Initialize the world space UI singleton
-        WorldSpaceUI = new GameObject("WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
-        WorldSpaceUI.transform.SetParent(transform);
+    [Space(10), Header("Synthesis UI")]
+    public UXML_UIDocumentPreset synthesisUIPreset;
+    public SynthesisManager synthesisManager { get; private set; }
+
+
+    // ----- [[ UNITY METHODS ]] ------------------------------------>
+    public override void Awake()
+    {
+        base.Awake();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(UIManager))]
+public class UIManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    UIManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (UIManager)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

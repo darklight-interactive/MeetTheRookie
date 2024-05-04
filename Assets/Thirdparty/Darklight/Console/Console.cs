@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Darklight.UnityExt.Editor;
+
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 namespace Darklight.Console
@@ -85,7 +86,7 @@ namespace Darklight.Console
 			// Dark gray background
 			GUIStyle backgroundStyle = new GUIStyle
 			{
-				normal = { background = UnityExt.CustomInspectorGUI.MakeTex(600, 1, new Color(0.1f, 0.1f, 0.1f, 1.0f)) }
+				normal = { background = CustomInspectorGUI.MakeTex(600, 1, new Color(0.1f, 0.1f, 0.1f, 1.0f)) }
 			};
 
 			// Creating a scroll view with a custom background
@@ -97,7 +98,7 @@ namespace Darklight.Console
 				EditorGUILayout.BeginHorizontal(); // Start a horizontal group for inline elements
 
 				string message = $"[{log.Timestamp}] || {logCount} || {log.Message}";
-				EditorGUILayout.LabelField(message, UnityExt.CustomGUIStyles.SmallTextStyle, GUILayout.ExpandWidth(true));
+				EditorGUILayout.LabelField(message, CustomGUIStyles.SmallTextStyle, GUILayout.ExpandWidth(true));
 				EditorGUILayout.EndHorizontal();
 
 				/*

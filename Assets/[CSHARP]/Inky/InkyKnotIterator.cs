@@ -35,7 +35,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         }
         finally
         {
-            ChangeState(State.START);
+            ChangeActiveStateTo(State.START);
             InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
         }
     }
@@ -62,12 +62,10 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             return;
         }
 
-
-
         // -- ( DIALOGUE STATE ) --------------- >>
         if (story.canContinue)
         {
-            ChangeState(State.DIALOGUE);
+            ChangeActiveStateTo(State.DIALOGUE);
             story.Continue();
 
             // Invoke the Dialogue Event
@@ -80,7 +78,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // -- ( CHOICE STATE ) --------------- >>
         else if (story.currentChoices.Count > 0)
         {
-            ChangeState(State.CHOICE);
+            ChangeActiveStateTo(State.CHOICE);
             InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
             foreach (Choice choice in story.currentChoices)
@@ -93,7 +91,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // -- ( END STATE ) --------------- >>
         else
         {
-            ChangeState(State.END);
+            ChangeActiveStateTo(State.END);
             InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }

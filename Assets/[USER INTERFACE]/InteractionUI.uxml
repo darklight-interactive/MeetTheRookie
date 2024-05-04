@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:GroupBox name="choiceGroup" style="min-width: auto; min-height: 0; max-width: 256px; max-height: 512px; display: none;" />
+    <engine:VisualElement name="interactPrompt" style="width: 128px; height: 128px; justify-content: center; position: absolute; background-color: rgba(37, 58, 94, 0.49); align-self: stretch; right: 0; bottom: 0; left: 0; top: 0;">
+        <engine:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[SPRITES]/interactive_icon.png?fileID=-3613990710919120209&amp;guid=97de63d8f831ca6488150ee31f083a67&amp;type=3#interactive_0&quot;);">
+            <engine:VisualElement name="VisualElement" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[SPRITES]/interactive_icon.png?fileID=-3613990710919120209&amp;guid=97de63d8f831ca6488150ee31f083a67&amp;type=3#interactive_0&quot;); -unity-text-align: middle-left;">
+                <engine:VisualElement style="flex-grow: 1; flex-direction: column; justify-content: flex-end;">
+                    <engine:Label text="Press Z" name="Label" style="color: rgb(37, 58, 94); -unity-text-align: middle-center; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&amp;guid=d95d61c132c648c42b6313ed97ed9cf7&amp;type=3#LGGothic&quot;); flex-grow: 0; flex-shrink: 1; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 25px; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/medium%20paper%202%20.png?fileID=2800000&amp;guid=291e24ff229a246bdbf44b37608a76c3&amp;type=3#medium paper 2 &quot;); justify-content: flex-start; align-self: stretch; flex-direction: column; height: 32px;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

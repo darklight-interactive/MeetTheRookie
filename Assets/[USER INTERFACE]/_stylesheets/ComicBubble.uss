@@ -1,0 +1,45 @@
+.comic-label {
+    font-size: 450%;
+    -unity-font-style: bold;
+    -unity-text-align: upper-left;
+    padding-top: 15px;
+    padding-right: 25px;
+    padding-bottom: 15px;
+    padding-left: 25px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    white-space: normal;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-start;
+    flex-wrap: wrap;
+    text-overflow: clip;
+    overflow: visible;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/pixelplay.ttf?fileID=12800000&guid=e2cb29917e71d184a9ea0469322749c1&type=3#pixelplay");
+    flex-grow: 0;
+    flex-shrink: 0;
+    color: rgb(37, 58, 94);
+    -unity-text-outline-color: rgb(0, 0, 0);
+}
+
+.comic-bubble {
+    padding-top: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    padding-left: 12.5%;
+    justify-content: flex-start;
+    align-self: auto;
+    background-image: url("project://database/Assets/[SPRITES]/speech%20bubble2.png?fileID=21300000&guid=21f7e93c56d887f4eb531613de040d9e&type=3#speech bubble2");
+    flex-shrink: 1;
+    flex-grow: 0;
+    -unity-background-scale-mode: scale-and-crop;
+    -unity-slice-left: 2;
+    -unity-slice-top: 2;
+    -unity-slice-right: 2;
+    -unity-slice-bottom: 2;
+    flex-wrap: nowrap;
+    margin-right: 15%;
+}

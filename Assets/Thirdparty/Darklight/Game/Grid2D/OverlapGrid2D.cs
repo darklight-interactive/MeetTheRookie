@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Darklight.UnityExt;
-
+using UnityEngine;
+using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
 
 namespace Darklight.Game.Grid
 {
@@ -17,7 +13,9 @@ namespace Darklight.Game.Grid
     [ExecuteAlways]
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
+        [Header("Overlap Grid2D Properties")]
         [SerializeField] protected LayerMask layerMask;
+        [SerializeField] public bool showGizmos = true;
 
         public override void Awake()
         {
@@ -86,9 +84,13 @@ namespace Darklight.Game.Grid
 
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
+                if (bestData == null) { bestData = data; }
+
                 if (data.disabled) continue; // Skip disabled data
                 if (data.colliders.Length > 0) continue; // Skip data with colliders
-                if (bestData == null || data.weight > bestData.weight)
+
+                // If the data has a higher or equal weight and less colliders, set it as the best data
+                if (data.weight >= bestData.weight)
                 {
                     bestData = data;
                 }
@@ -123,6 +125,7 @@ namespace Darklight.Game.Grid
         public void OnSceneGUI()
         {
             if (grid2D == null) return;
+            if (grid2D.showGizmos == false) return;
             DrawGrid();
         }
 

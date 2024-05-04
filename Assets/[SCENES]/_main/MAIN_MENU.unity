@@ -265,8 +265,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 211101709}
-  - component: {fileID: 211101710}
   - component: {fileID: 211101711}
+  - component: {fileID: 211101710}
   m_Layer: 0
   m_Name: '[UXML] Main Menu'
   m_TagString: Untagged
@@ -317,7 +317,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3be0b839b9a51419955ffa19e4b189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionPreset: {fileID: 0}
+  _preset: {fileID: 11400000, guid: d02b2b55e0f084e8596163b9197fea21, type: 2}
+  quitTag: quit-button
+  sceneButtonList:
+  - tag: play-scene1
+    scene:
+      m_SceneName: SCENE_1.1
+  - tag: play-scene2
+    scene:
+      m_SceneName: SCENE_2 - The Precinct
+  - tag: play-scene4
+    scene:
+      m_SceneName: SCENE_4.1 - Main Street
+  - tag: play-synthesis
+    scene:
+      m_SceneName: SYNTHESIS_PROTOTYPE
 --- !u!1001 &1958999861
 PrefabInstance:
   m_ObjectHideFlags: 0
