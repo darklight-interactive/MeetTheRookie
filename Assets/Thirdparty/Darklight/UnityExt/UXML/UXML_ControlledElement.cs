@@ -25,32 +25,10 @@ namespace Darklight.UnityExt.UXML
     /// The base class for creating eaily controllable Visual Elements
     /// </summary>
     /// 
-    public class UXML_ControlledVisualElement : I_VisualElement
+    public class UXML_ControlledVisualElement : VisualElement, I_VisualElement
     {
         public VisualElement element { get; private set; }
         public string tag { get; private set; }
-        public bool visible
-        {
-            get => element.visible;
-            set => element.visible = value;
-        }
-
-        /// <summary>
-        /// Allow Implicit conversion to the VisualElement Type
-        /// </summary>
-        /// <param name="element"></param>
-        public static implicit operator VisualElement(UXML_ControlledVisualElement element)
-        {
-            return element.element;
-        }
-
-        /// <summary>
-        /// Allow Implicit conversion to the VisualElement Type
-        /// </summary>
-        public static implicit operator UXML_ControlledVisualElement(VisualElement element)
-        {
-            return new UXML_ControlledVisualElement(element, element.name);
-        }
 
         public UXML_ControlledVisualElement(VisualElement element, string tag)
         {

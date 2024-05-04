@@ -1,102 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using Darklight.Game.Utility;
+
+
 namespace Darklight.UnityExt.Input
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using Darklight.Game.Utility;
-    using UnityEngine;
-    using UnityEngine.Events;
-    using UnityEngine.EventSystems;
-    using UnityEngine.InputSystem;
-
-
     /// <summary>
-    /// The Universal Input Manager is a singleton class that manages the input device type and the input actions for the current device.
+    /// A MonoBehaviour singleton class that manages the input device type and the input actions for the current device.
     /// </summary>
     public class UniversalInputManager : MonoBehaviourSingleton<UniversalInputManager>
     {
-        // Action Map
-        private InputActionMap DefaultTouchActionMap;
-        private InputActionMap DefaultKeyboardActionMap;
-        private InputActionMap DefaultControllerActionMap;
-
-        public enum InputType
-        {
-            NULL,
-            TOUCH,
-            KEYBOARD,
-            GAMEPAD
-        }
-
+        public enum InputType { NULL, KEYBOARD, TOUCH, GAMEPAD }
         public static InputType DeviceInputType = InputType.NULL;
-        public static InputAction PrimaryInteractAction { get; private set; }
-        public static InputAction SecondaryInteractAction { get; private set; }
-        public static InputAction MoveInputAction { get; private set; }
-
 
         [Header("Input Action Map")]
-        public InputActionAsset DefaultUniversalInputActions;
+        [SerializeField] private InputActionAsset _inputActionAsset;
+        public InputActionMap KeyboardActionMap => _inputActionAsset.FindActionMap("DefaultKeyboard");
+        public InputActionMap GamepadActionMap => _inputActionAsset.FindActionMap("DefaultGamepad");
+        public InputActionMap TouchActionMap => _inputActionAsset.FindActionMap("DefaultTouch");
 
-        public delegate void InputReady();
-        public event InputReady OnInputReady;
+        public static InputAction MoveInputAction { get; private set; }
+        public static InputAction PrimaryInteractAction { get; private set; }
+        public static InputAction SecondaryInteractAction { get; private set; }
 
         public override void Awake()
         {
             base.Awake();
-
-            DefaultTouchActionMap = DefaultUniversalInputActions.FindActionMap("DefaultTouch");
-            DefaultKeyboardActionMap = DefaultUniversalInputActions.FindActionMap("DefaultKeyboard");
-            DefaultControllerActionMap = DefaultUniversalInputActions.FindActionMap("DefaultController");
-
-            bool deviceFound = DetectAndEnableInputDevice();
-            if (deviceFound)
+            if (DetectAndEnableInputDevice())
             {
-                Debug.Log(Prefix + $"Found Input : {DeviceInputType}");
+                Debug.Log($"{Prefix}Found Input: {DeviceInputType}");
             }
-
-            DefaultUniversalInputActions.Enable();
-            OnInputReady?.Invoke();
+            _inputActionAsset.Enable();
         }
 
-        private bool DetectAndEnableInputDevice()
+        bool DetectAndEnableInputDevice()
         {
-            // Disable all action maps initially
-            DefaultTouchActionMap.Disable();
-            DefaultKeyboardActionMap.Disable();
-            DefaultControllerActionMap.Disable();
+            DisableAllActionMaps();
+            return EnableDeviceBasedActionMap();
+        }
 
-            // Enable the appropriate action map based on the current input device
-            if (Keyboard.current != null)
+        private void DisableAllActionMaps()
+        {
+            KeyboardActionMap.Disable();
+            GamepadActionMap.Disable();
+            TouchActionMap.Disable();
+        }
+
+        private bool EnableDeviceBasedActionMap()
+        {
+            // Enable the action map based on the device
+            bool EnableActionMap(InputActionMap map, InputType type)
             {
-                DefaultKeyboardActionMap.Enable();
-                PrimaryInteractAction = DefaultKeyboardActionMap.FindAction("PrimaryInteract");
-                SecondaryInteractAction = DefaultKeyboardActionMap.FindAction("SecondaryInteract");
-                MoveInputAction = DefaultKeyboardActionMap.FindAction("MoveInput");
-                DeviceInputType = InputType.KEYBOARD;
-            }
-            else if (Gamepad.current != null)
-            {
-                DefaultControllerActionMap.Enable();
-                PrimaryInteractAction = DefaultControllerActionMap.FindAction("PrimaryInteract");
-                SecondaryInteractAction = DefaultControllerActionMap.FindAction("SecondaryInteract");
-                MoveInputAction = DefaultControllerActionMap.FindAction("MoveInput");
-                DeviceInputType = InputType.GAMEPAD;
-            }
-            else if (Touchscreen.current != null)
-            {
-                DefaultTouchActionMap.Enable();
-                PrimaryInteractAction = DefaultTouchActionMap.FindAction("PrimaryInteract");
-                SecondaryInteractAction = DefaultTouchActionMap.FindAction("SecondaryInteract");
-                MoveInputAction = DefaultTouchActionMap.FindAction("MoveInput");
-                DeviceInputType = InputType.TOUCH;
+                map.Enable();
+                SetInputActions(map);
+                DeviceInputType = type;
+                return true;
             }
 
-            else
+            // Detect the device and enable the action map
+            switch (InputSystem.devices[0])
             {
-                Debug.LogError(Prefix + "Could not find Input Type");
-                return false;
+                case Keyboard:
+                    return EnableActionMap(KeyboardActionMap, InputType.KEYBOARD);
+                case Gamepad:
+                    return EnableActionMap(GamepadActionMap, InputType.GAMEPAD);
+                case Touchscreen:
+                    return EnableActionMap(TouchActionMap, InputType.TOUCH);
+                default:
+                    Debug.LogError($"{Prefix}Could not find Input Type");
+                    return false;
             }
+        }
 
-            return true;
+
+
+        private void SetInputActions(InputActionMap map)
+        {
+            PrimaryInteractAction = map.FindAction("PrimaryInteract");
+            SecondaryInteractAction = map.FindAction("SecondaryInteract");
+            MoveInputAction = map.FindAction("MoveInput");
         }
     }
 }

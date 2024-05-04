@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
 
-public class VisualNovel : UXML_UIDocumentObject
+public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;

@@ -16,8 +16,6 @@ namespace Darklight.UnityExt.UXML
     public class UXML_ScreenSpaceUI : UXML_UIDocumentObject
     {
         const string PROMPT_TAG = "interactPrompt";
-        const string CHOICE_GROUP_TAG = "choiceGroup";
-
         public void DisplayInteractPrompt(Vector3 worldPosition)
         {
             UXML_ControlledVisualElement uiElement = GetUIElement(PROMPT_TAG);

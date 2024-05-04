@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 /// Basically, given a 2D grid of positions, a present position, and a given direction, where will you go based on the direction?
 /// </summary>
 /// <typeparam name="T">The selectables we'll be looking over.</typeparam>
-public class SelectableVectorField<T> where T: VisualElement 
+public class SelectableVectorField<T> where T : VisualElement
 {
     /// <summary>
     /// A list of selectable UI elements.
