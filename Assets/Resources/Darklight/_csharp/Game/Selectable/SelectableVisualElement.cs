@@ -1,6 +1,8 @@
 using System;
 using Unity.Android.Gradle;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Darklight.Selectable
@@ -69,6 +71,24 @@ namespace Darklight.Selectable
             Button.AddToClassList("clicked");
             OnClick?.Invoke();
             Debug.Log("Button Clicked");
+        }
+    }
+
+    [UxmlElement]
+    public partial class SelectableSceneChangeButton : SelectableButton
+    {
+        [UxmlAttribute]
+        public SceneAsset Scene { get; set; }
+        public SelectableSceneChangeButton()
+        {
+            Text = "Change Scene";
+            OnClick += () =>
+            {
+                if (Scene != null)
+                {
+                    SceneManager.LoadScene(Scene.name);
+                }
+            };
         }
     }
 }

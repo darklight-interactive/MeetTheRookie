@@ -5,26 +5,19 @@
         <engine:Label text="Meet The Rookie" name="title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
     </engine:VisualElement>
     <engine:VisualElement name="body">
-        <engine:GroupBox class="vert-direction">
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton class="icon" style="align-self: center;" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton />
-        </engine:GroupBox>
+        <engine:VisualElement style="flex-grow: 1;" />
         <engine:GroupBox class="vert-direction">
             <Darklight.Selectable.SelectableButton />
             <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableSceneChangeButton scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" />
         </engine:GroupBox>
-        <engine:GroupBox class="vert-direction">
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton />
-        </engine:GroupBox>
+        <engine:VisualElement style="flex-grow: 1;" />
     </engine:VisualElement>
     <engine:VisualElement name="footer">
-        <engine:GroupBox style="flex-direction: row; align-self: stretch; flex-shrink: 1;">
+        <engine:GroupBox style="flex-direction: row; flex-shrink: 1;">
+            <Darklight.Selectable.SelectableButton class="icon" />
+            <Darklight.Selectable.SelectableButton class="icon" />
+            <Darklight.Selectable.SelectableButton class="icon" />
             <Darklight.Selectable.SelectableButton class="icon" />
             <Darklight.Selectable.SelectableButton class="icon" />
             <Darklight.Selectable.SelectableButton class="icon" />
