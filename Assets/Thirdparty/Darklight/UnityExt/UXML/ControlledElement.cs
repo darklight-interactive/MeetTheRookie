@@ -25,19 +25,7 @@ namespace Darklight.UnityExt.UXML
         {
             Element = new TElement();
             this.Add(Element);
-
-            this.AddToClassList("controlled-element");
             this.focusable = true;
-        }
-    }
-
-    // Specific implementation for a generic VisualElement.
-    [UxmlElement]
-    public partial class ControlledElement : ControlledElement<VisualElement>
-    {
-        public ControlledElement()
-        {
-            this.AddToClassList("controlled-element");
         }
     }
 
@@ -45,8 +33,8 @@ namespace Darklight.UnityExt.UXML
     [UxmlElement]
     public partial class ControlledButton : ControlledElement<Button>
     {
-        public event Action onClick;
-
+        public Button buttonElement => Element;
+        public bool selected;
         public string Text
         {
             get => Element.text;
@@ -55,14 +43,32 @@ namespace Darklight.UnityExt.UXML
 
         public ControlledButton()
         {
-            this.AddToClassList("controlled-button");
-            Element.clicked += Element_Clicked;
-            Text = " Controlled Button";
+            Text = "controlled-button";
         }
 
-        private void Element_Clicked()
+        public void Select()
         {
-            onClick?.Invoke();
+            selected = true;
+            Element.AddToClassList("selected");
+            Element.Focus();
+        }
+
+        public void Deselect()
+        {
+            selected = false;
+            Element.RemoveFromClassList("selected");
+        }
+
+        public void Activate()
+        {
+            using (ClickEvent clickEvent = ClickEvent.GetPooled())
+            {
+                // Set necessary properties of clickEvent
+                clickEvent.target = buttonElement;
+
+                // Send the event
+                buttonElement.SendEvent(clickEvent);
+            }
         }
     }
 }

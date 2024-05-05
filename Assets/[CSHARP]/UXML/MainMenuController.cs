@@ -51,16 +51,15 @@ public class MainMenuController : UXML_UIDocumentObject
         Initialize(preset);
 
         // Load the Selectable Elements
-        List<ControlledElement<Button>> selectables = ElementQueryAll<ControlledElement<Button>>();
+        List<ControlledButton> selectables = ElementQueryAll<ControlledButton>();
+
         selectablesCount = selectables.Count;
-
         Debug.Log("Selectable Elements Count: " + selectablesCount);
-
         if (selectables.Count > 0)
         {
-            selectables[0].Element.Focus();
+            selectables[0].Select();
+            selectables[0].Text = "Selected";
         }
-
     }
 
     public void Quit()
