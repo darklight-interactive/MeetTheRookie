@@ -1,13 +1,12 @@
 using System.Collections;
-using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UXML;
 
 public class SceneTransition : UXML_UIDocumentObject
 {
     VisualElement blackOverlayElement;
     Label textlabel;
-
     public bool isStarted;
     public bool isComplete;
 
@@ -36,7 +35,6 @@ public class SceneTransition : UXML_UIDocumentObject
         isComplete = false;
         //StartCoroutine(FadeIn()); TODO
     }
-
 
     IEnumerator FadeOut(string newSceneName)
     {

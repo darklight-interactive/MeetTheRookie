@@ -5,11 +5,20 @@
         <engine:Label text="Meet The Rookie" name="title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
     </engine:VisualElement>
     <engine:VisualElement name="body">
-        <engine:GroupBox class="vert-direction" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;">
-            <Darklight.UnityExt.UXML.ControlledButton />
-            <Darklight.UnityExt.UXML.ControlledButton />
-            <Darklight.UnityExt.UXML.ControlledButton />
-            <Darklight.UnityExt.UXML.ControlledButton />
+        <engine:GroupBox class="vert-direction">
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
+        </engine:GroupBox>
+        <engine:GroupBox class="vert-direction">
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
+        </engine:GroupBox>
+        <engine:GroupBox class="vert-direction">
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton />
         </engine:GroupBox>
     </engine:VisualElement>
     <engine:VisualElement name="footer" />

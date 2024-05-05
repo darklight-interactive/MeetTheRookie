@@ -9,7 +9,7 @@ using Darklight.UnityExt;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.UXML
+namespace Darklight.UXML
 {
     public class UXML_WorldSpaceUI : UXML_UIDocumentObject
     {

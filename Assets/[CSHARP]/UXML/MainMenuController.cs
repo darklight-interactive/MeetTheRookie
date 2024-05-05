@@ -1,10 +1,11 @@
-using Darklight.UnityExt.Editor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Darklight.UnityExt.UXML;
 using System.Collections.Generic;
-using System;
-using Darklight.UnityExt.Scene;
+using Darklight.UnityExt.Input;
+using System.Linq;
+using Darklight.Game.Selectable;
+using Darklight.UXML;
+using Darklight.Selectable;
+
 
 
 
@@ -43,7 +44,7 @@ public class MainMenuController : UXML_UIDocumentObject
     }
     */
 
-    //SelectableVectorField<ControlledElement<Button>> selectableVectorField = new SelectableVectorField<Focusable>();
+    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;
 
     public void Awake()
@@ -51,15 +52,26 @@ public class MainMenuController : UXML_UIDocumentObject
         Initialize(preset);
 
         // Load the Selectable Elements
-        List<ControlledButton> selectables = ElementQueryAll<ControlledButton>();
+        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
 
-        selectablesCount = selectables.Count;
-        Debug.Log("Selectable Elements Count: " + selectablesCount);
-        if (selectables.Count > 0)
+        // Listen to the input manager
+        UniversalInputManager.OnMoveInput += (Vector2 dir) =>
         {
-            selectables[0].Select();
-            selectables[0].Text = "Selected";
-        }
+            SelectableButton previousButton = selectableVectorField.CurrentSelection;
+            SelectableButton selected = selectableVectorField.getFromDir(dir * -1); // inverted y
+            if (previousButton != null)
+            {
+                previousButton.RemoveFromClassList("selected");
+                selected.AddToClassList("selected");
+                selected.Focus();
+                Debug.Log($"Selected: {selected.name}");
+            }
+        };
+
+        UniversalInputManager.OnPrimaryInteract += () =>
+        {
+            selectableVectorField.CurrentSelection.Activate();
+        };
     }
 
     public void Quit()
@@ -82,6 +94,10 @@ public class MainMenuControllerCustomEditor : Editor
         _serializedObject = new SerializedObject(target);
         _script = (MainMenuController)target;
         _script.Awake();
+    }
+
+    private void OnDisable()
+    {
     }
 
     public override void OnInspectorGUI()

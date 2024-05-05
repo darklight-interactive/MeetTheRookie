@@ -1,11 +1,5 @@
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
 /// <summary>

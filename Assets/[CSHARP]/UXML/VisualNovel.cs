@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
+using Darklight.UXML;
+using Darklight.Game.Selectable;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
@@ -128,7 +127,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choicesActive = true;
         //TODO : Fix this
         //choiceMap.resetSelected(); 
-        choiceMap.currentlySelected.AddToClassList("Highlight");
+        choiceMap.CurrentSelection.AddToClassList("Highlight");
     }
 
     /// <summary>
@@ -137,7 +136,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="index">The index of the choice</param>
     void SelectChoice()
     {
-        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.currentlySelected));
+        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
         choicesActive = false;
@@ -176,9 +175,9 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     void Move(Vector2 move)
     {
         move.y = -move.y;
-        if (choiceMap.currentlySelected != null)
+        if (choiceMap.CurrentSelection != null)
         {
-            choiceMap.currentlySelected.RemoveFromClassList("Highlight");
+            choiceMap.CurrentSelection.RemoveFromClassList("Highlight");
         }
         var selected = choiceMap.getFromDir(move);
         if (selected != null)

@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Editor;
 
 /// <summary>

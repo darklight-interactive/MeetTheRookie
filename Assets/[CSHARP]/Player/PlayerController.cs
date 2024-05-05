@@ -1,20 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-
-using Darklight;
-using Darklight.Game.SpriteAnimation;
 using Darklight.UnityExt.Input;
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Darklight.UnityExt.Editor;
 using Darklight.Game.Utility;
 
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 

@@ -2,12 +2,22 @@ Button {
     font-size: 25px;
 }
 
+GroupBox {
+    flex-grow: 1;
+    justify-content: space-around;
+    padding-top: 2.5%;
+    padding-right: 2.5%;
+    padding-bottom: 2.5%;
+    padding-left: 2.5%;
+}
+
 #header {
     flex-basis: 50%;
 }
 
 #body {
     flex-basis: 100%;
+    flex-direction: row;
 }
 
 #footer {
@@ -85,4 +95,12 @@ Button {
 }
 
 .selected {
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    border-top-width: 15px;
+    border-right-width: 15px;
+    border-bottom-width: 15px;
+    border-left-width: 15px;
 }

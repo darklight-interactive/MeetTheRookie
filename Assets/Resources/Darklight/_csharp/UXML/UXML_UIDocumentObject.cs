@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.UXML
+namespace Darklight.UXML
 {
     /// <summary>
     /// A MonoBehaviour that handles the initialization of a UIDocument and manages its elements.
@@ -56,14 +56,13 @@ namespace Darklight.UnityExt.UXML
         /// </summary>
         /// <typeparam name="T">The type of VisualElement to query for.</typeparam>
         /// <param name="tagOrClass">Optional tag or class name to further refine the query.</param>
-        /// <returns>A list of all matching elements.</returns>
-        public List<T> ElementQueryAll<T>(string tagOrClass = null) where T : VisualElement
+        /// <returns>An enumerable of all matching elements.</returns>
+        public IEnumerable<T> ElementQueryAll<T>(string tagOrClass = null) where T : VisualElement
         {
-            List<T> elements = new List<T>();
+            HashSet<T> elements = new HashSet<T>();
             root.Query<T>(tagOrClass).ForEach(element => elements.Add(element));
             return elements;
         }
-
 
         public void SetWorldToScreenPoint(VisualElement element, Vector3 worldPosition)
         {

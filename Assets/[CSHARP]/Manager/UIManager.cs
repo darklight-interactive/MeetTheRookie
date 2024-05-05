@@ -1,9 +1,6 @@
-using System;
-using Darklight.Game.Utility;
-using Darklight.UnityExt.UXML;
+using Darklight.UXML;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+
 
 #if UNITY_EDITOR
 using UnityEditor;

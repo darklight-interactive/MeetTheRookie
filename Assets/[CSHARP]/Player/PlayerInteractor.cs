@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Ink.Runtime;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Darklight.UnityExt.Editor;
 
 [RequireComponent(typeof(PlayerController))]
@@ -74,8 +71,9 @@ public class PlayerInteractor : MonoBehaviour
             _activeInteraction.OnInteraction += (string text) =>
             {
                 // Show the player's dialogue bubble
+                /*
                 if (_activeInteraction is Clue_Interactable)
-                    playerDialogueHandler.CreateDialogueBubble(text);
+                    playerDialogueHandler.CreateDialogueBubble(text);*/
 
                 if (_activeInteraction is NPC_Interactable)
                 {
