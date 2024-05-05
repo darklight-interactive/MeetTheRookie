@@ -2,7 +2,6 @@ using Darklight.UnityExt.Editor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.UXML.Element;
 using System.Collections.Generic;
 using System;
 using Darklight.UnityExt.Scene;
@@ -44,16 +43,23 @@ public class MainMenuController : UXML_UIDocumentObject
     }
     */
 
-    SelectableVectorField<SelectableElement> selectableVectorField = new SelectableVectorField<SelectableElement>();
+    //SelectableVectorField<ControlledElement<Button>> selectableVectorField = new SelectableVectorField<Focusable>();
     [SerializeField] int selectablesCount = 0;
 
-    void Awake()
+    public void Awake()
     {
         Initialize(preset);
 
         // Load the Selectable Elements
-        List<SelectableElement> selectables = ElementQueryAll<SelectableElement>();
+        List<ControlledElement<Button>> selectables = ElementQueryAll<ControlledElement<Button>>();
         selectablesCount = selectables.Count;
+
+        Debug.Log("Selectable Elements Count: " + selectablesCount);
+
+        if (selectables.Count > 0)
+        {
+            selectables[0].Element.Focus();
+        }
 
     }
 
@@ -65,6 +71,35 @@ public class MainMenuController : UXML_UIDocumentObject
 #endif
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(MainMenuController))]
+public class MainMenuControllerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    MainMenuController _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (MainMenuController)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
 
 
 

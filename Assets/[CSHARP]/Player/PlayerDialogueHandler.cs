@@ -1,8 +1,6 @@
 using Darklight.Game.Grid;
 using UnityEngine;
 using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.UXML.Document;
-
 
 #if UNITY_EDITOR
 using UnityEditor;

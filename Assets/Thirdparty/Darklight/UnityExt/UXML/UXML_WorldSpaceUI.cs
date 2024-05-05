@@ -9,7 +9,7 @@ using Darklight.UnityExt;
 using UnityEditor;
 #endif
 
-namespace Darklight.UnityExt.UXML.Document
+namespace Darklight.UnityExt.UXML
 {
     public class UXML_WorldSpaceUI : UXML_UIDocumentObject
     {
@@ -54,7 +54,6 @@ namespace Darklight.UnityExt.UXML.Document
             OnElementChanged?.Invoke();
         }
 
-
         public void SetLocalScale(float scale)
         {
             this.transform.localScale = new Vector3(scale, scale, scale);
@@ -69,8 +68,5 @@ namespace Darklight.UnityExt.UXML.Document
         {
             _meshRenderer.enabled = false;
         }
-
-
-
     }
 }

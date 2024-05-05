@@ -1,13 +1,17 @@
+Button {
+    font-size: 25px;
+}
+
 #header {
-    flex-basis: 25%;
+    flex-basis: 50%;
 }
 
 #body {
-    flex-basis: 150%;
+    flex-basis: 100%;
 }
 
 #footer {
-    flex-basis: 25%;
+    flex-basis: 50%;
 }
 
 #background {
@@ -26,39 +30,24 @@
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&guid=d95d61c132c648c42b6313ed97ed9cf7&type=3#LGGothic");
     align-self: center;
     justify-content: center;
-    font-size: 164px;
+    font-size: 100px;
     -unity-font-style: normal;
     -unity-text-align: middle-left;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 15%;
+    margin-right: 15%;
+    margin-bottom: 15%;
+    margin-left: 15%;
 }
 
-.unity-button {
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
-    flex-grow: 1;
-    font-size: 75px;
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
-    justify-content: center;
-    transition-timing-function: ease-in;
-    padding-top: 50px;
-    padding-right: 50px;
-    padding-bottom: 50px;
-    padding-left: 50px;
+.unity-text-element.unity-button {
+    font-size: 62px;
 }
 
 .unity-button:hover {
-    min-width: 25%;
-    min-height: 45%;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
-    max-height: 50%;
-    flex-grow: 1;
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
-    font-size: 48px;
-    max-width: 100%;
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=2371981046512543649&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_3");
-    transition-duration: 0.25s;
-    transition-timing-function: linear;
 }
 
 .column-active {
@@ -83,9 +72,34 @@
 .panel {
 }
 
-.panel.horz {
+.horz-direction {
+    flex-direction: row;
+}
+
+.vert-direction {
+    flex-direction: column;
+}
+
+.panel {
     justify-content: space-between;
 }
 
 .selectable {
+}
+
+.unity-button:focus {
+    min-width: 25%;
+    min-height: 45%;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&guid=243d7d35991cc1c4ab3ad9c627faab37&type=3#DigitalDisco");
+    max-height: 50%;
+    flex-grow: 1;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    font-size: 48px;
+    max-width: 100%;
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=2371981046512543649&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_3");
+    transition-duration: 0.25s;
+    transition-timing-function: linear;
 }

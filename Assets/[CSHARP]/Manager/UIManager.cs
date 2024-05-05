@@ -4,8 +4,6 @@ using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.UXML.Document;
-
 
 #if UNITY_EDITOR
 using UnityEditor;

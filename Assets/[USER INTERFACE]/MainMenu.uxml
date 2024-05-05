@@ -1,14 +1,18 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
     <engine:VisualElement name="background" />
-    <engine:VisualElement name="header" />
+    <engine:VisualElement name="header" style="flex-grow: 2; align-self: stretch;">
+        <engine:Label text="Meet The Rookie" name="title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+    </engine:VisualElement>
     <engine:VisualElement name="body">
-        <engine:VisualElement name="panel" class="panel horz" style="justify-content: center; flex-direction: column; background-color: rgb(122, 72, 65);">
-            <engine:Label text="Meet The Rookie" name="title" />
-        </engine:VisualElement>
-        <engine:VisualElement name="panel" class="panel" style="flex-grow: 1; background-color: rgba(51, 20, 0, 0);">
-            <engine:GroupBox name="column" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;" />
-        </engine:VisualElement>
+        <engine:GroupBox class="vert-direction" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-around; flex-grow: 1; flex-shrink: 1; flex-wrap: nowrap;">
+            <Darklight.UnityExt.UXML.ControlledButton />
+            <Darklight.UnityExt.UXML.ControlledButton />
+            <Darklight.UnityExt.UXML.ControlledButton />
+            <engine:Button text="Button" />
+            <engine:Button text="Button" />
+            <engine:Button text="Button" />
+        </engine:GroupBox>
     </engine:VisualElement>
     <engine:VisualElement name="footer" />
 </engine:UXML>

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.UXML.Document;
 
 public class NPC_Interactable : Interactable
 {
