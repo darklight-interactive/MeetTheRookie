@@ -7,21 +7,13 @@
     <engine:VisualElement name="body">
         <engine:VisualElement style="flex-grow: 1;" />
         <engine:GroupBox class="vert-direction">
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableButton />
-            <Darklight.Selectable.SelectableSceneChangeButton scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" />
+            <Darklight.Selectable.SelectableSceneChangeButton name="play-button" text-override="PLAY" scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" text="Play" />
+            <Darklight.Selectable.SelectableButton name="quit-button" text="Quit" />
         </engine:GroupBox>
         <engine:VisualElement style="flex-grow: 1;" />
     </engine:VisualElement>
     <engine:VisualElement name="footer">
-        <engine:GroupBox style="flex-direction: row; flex-shrink: 1;">
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-            <Darklight.Selectable.SelectableButton class="icon" />
-        </engine:GroupBox>
+        <engine:GroupBox style="flex-direction: row; flex-shrink: 1;" />
+        <engine:VisualElement style="flex-grow: 1;" />
     </engine:VisualElement>
 </engine:UXML>

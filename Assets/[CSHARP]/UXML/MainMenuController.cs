@@ -16,37 +16,8 @@ using UnityEditor;
 
 public class MainMenuController : UXML_UIDocumentObject
 {
-    /*
-    [System.Serializable]
-    public class SceneButtonData
-    {
-        public string tag;
-        public SceneObject scene;
-
-        // -- EVENTS -- >>
-        public delegate void OnClick(SceneObject scene);
-        public event OnClick OnButtonClicked;
-
-        // Internal Data
-        UXML_UIDocumentObject documentObject;
-        Button button;
-
-        public void Initialize(UXML_UIDocumentObject documentObject)
-        {
-            this.documentObject = documentObject;
-            button = documentObject.GetUIElement(tag).element as Button;
-
-            button.clickable.clicked += () =>
-            {
-                OnButtonClicked?.Invoke(scene);
-            };
-        }  
-    }
-    */
-
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;
-
     bool lockSelection = false;
 
     public void Awake()
@@ -60,7 +31,7 @@ public class MainMenuController : UXML_UIDocumentObject
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += (Vector2 dir) =>
         {
-            Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y
+            Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
             SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
             Select(buttonInDirection);
         };
@@ -71,6 +42,8 @@ public class MainMenuController : UXML_UIDocumentObject
         };
 
 
+        SelectableButton quitButton = ElementQuery<SelectableButton>("quit-button");
+        quitButton.OnClick += Quit;
     }
 
     void Select(SelectableButton selectedButton)
@@ -80,14 +53,9 @@ public class MainMenuController : UXML_UIDocumentObject
         {
             previousButton?.Deselect();
             selectedButton.Select();
-            LockSelection();
+            lockSelection = true;
+            Invoke("UnlockSelection", 0.1f);
         }
-    }
-
-    void LockSelection()
-    {
-        lockSelection = true;
-        Invoke("UnlockSelection", 0.1f);
     }
 
     void UnlockSelection()

@@ -155,7 +155,7 @@ namespace Darklight.Game.Selectable
                         {
                             closestDir = actualElementDist;
                             selected = selectable;
-                            Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
+                            //Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
                         }
                     }
                 }

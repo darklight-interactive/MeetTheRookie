@@ -2,23 +2,36 @@ using System;
 using Unity.Android.Gradle;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Darklight.Selectable
 {
+    interface ISelectable
+    {
+        public event Action OnSelect;
+        public event Action OnClick;
+        void Select();
+        void Click();
+        void Deselect();
+    }
+
+    #region ---- [[ SELECTABLE VISUAL ELEMENT ]] ----
     /// <summary>
     /// Base class for controlled elements that encapsulates common functionalities for UXML elements.
     /// </summary>
     /// <typeparam name="TElement">The Type of the </typeparam>
     // Base class for controlled elements that encapsulates common functionalities for UXML elements.
     [UxmlElement]
-    public partial class SelectableVisualElement<TElement> : VisualElement where TElement : VisualElement, new()
+    public partial class SelectableVisualElement<TElement> : VisualElement, ISelectable where TElement : VisualElement, new()
     {
         // Publicly accessible element instance.
         public TElement Element { get; private set; }
         public Rect Rect => Element.worldBound;
         public Vector2 CenterPosition => Element.worldBound.center;
+        public event Action OnSelect;
+        public event Action OnClick;
         public SelectableVisualElement()
         {
             Element = new TElement();
@@ -26,15 +39,24 @@ namespace Darklight.Selectable
             this.focusable = true;
         }
 
-        public void Select()
+        public virtual void Select()
         {
             this.AddToClassList("selected");
             this.Focus();
+            OnSelect?.Invoke();
         }
 
-        public void Deselect()
+        public virtual void Click()
         {
             this.RemoveFromClassList("selected");
+            this.AddToClassList("clicked");
+            OnClick?.Invoke();
+        }
+
+        public virtual void Deselect()
+        {
+            this.RemoveFromClassList("selected");
+            this.RemoveFromClassList("clicked");
         }
 
         /// <summary>
@@ -46,49 +68,46 @@ namespace Darklight.Selectable
             return wrapper.Element;
         }
     }
+    #endregion
 
+    #region ---- [[ SELECTABLE BUTTON ]] ----
     // Specific implementation for a Button element.
     [UxmlElement]
-    public partial class SelectableButton : SelectableVisualElement<Button>
+    public partial class SelectableButton : SelectableVisualElement<Button>, ISelectable
     {
         public Button Button => Element as Button;
+
+        [UxmlAttribute]
         public string Text
         {
-            get => Element.text;
-            set => Element.text = value;
+            get => Button.text;
+            set => Button.text = value;
         }
-        public event Action OnClick;
 
         public SelectableButton()
         {
-            Text = "selectable";
+            Text = "selectable-button";
             Button.clickable.clicked += () => Click();
         }
-
-        public void Click()
-        {
-            Button.RemoveFromClassList("selected");
-            Button.AddToClassList("clicked");
-            OnClick?.Invoke();
-            Debug.Log("Button Clicked");
-        }
     }
+    #endregion
 
+    #region ---- [[ SELECTABLE SCENE CHANGE BUTTON ]] ----
     [UxmlElement]
     public partial class SelectableSceneChangeButton : SelectableButton
     {
         [UxmlAttribute]
-        public SceneAsset Scene { get; set; }
+        public SceneAsset scene;
         public SelectableSceneChangeButton()
         {
-            Text = "Change Scene";
             OnClick += () =>
             {
-                if (Scene != null)
+                if (scene != null)
                 {
-                    SceneManager.LoadScene(Scene.name);
+                    SceneManager.LoadScene(scene.name);
                 }
             };
         }
     }
+    #endregion
 }
