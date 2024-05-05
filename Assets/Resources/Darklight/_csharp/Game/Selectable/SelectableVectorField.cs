@@ -20,6 +20,7 @@ namespace Darklight.Game.Selectable
             get { return _selectables; }
             set { _selectables = value; }
         }
+        public TSelectable PreviousSelection { get; private set; }
         public TSelectable CurrentSelection { get; private set; }
         public void Select(TSelectable selectable)
         {
@@ -76,6 +77,7 @@ namespace Darklight.Game.Selectable
                 TSelectable pick = raycastEstimate(CurrentSelection.worldBound.center, dir);
                 if (pick != null && pick != CurrentSelection)
                 {
+                    PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
                 }
             }
@@ -105,15 +107,17 @@ namespace Darklight.Game.Selectable
             // So direction.y = dy/dt, y = direction.y * t + C_1.
             // And direction.x = dx/dt, x = direction.x * t + C_2.
             // C_1 and C_2 are just from.y and from.x respectively.
-            foreach (var selectable in _selectables)
+            foreach (TSelectable selectable in _selectables)
             {
                 if (selectable != CurrentSelection)
                 {
+                    Vector2 selectable_center = selectable.worldBound.center;
+
                     // The direction ray gives us an equation we can solve for. But first,
                     // Get a dot product to quickly see if we're headed in the right direction:
-                    var to = selectable.worldBound.center - from;
+                    Vector2 to = selectable_center - from;
                     to.Normalize();
-                    var dot = Vector3.Dot(to, direction);
+                    float dot = Vector3.Dot(to, direction);
                     if (dot > 0.5f)
                     {
                         // Now we construct a function that, given some value t, gives us the distance to the center of the rect.
@@ -130,6 +134,38 @@ namespace Darklight.Game.Selectable
                         // t = (direction.y * (center.y - C_1) + direction.x * (center.x - C_2))/(direction.x^2 + direction.y^2).
 
                         // Visualization: https://www.desmos.com/calculator/kl2oypib1f
+                        var t = (direction.y * (selectable_center.y - from.y)
+                            + direction.x * (selectable_center.x - from.x))
+                            / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
+                        // And so we get the x and y from our t-value:
+                        var dirClose = new Vector2(direction.x * t + from.x, direction.y * t + from.y);
+                        // And now we just find the distance, and see if it's closer than the other distances we've calculated.
+                        var dist = Vector2.Distance(dirClose, selectable_center);
+
+                        // Check if the point is within the rect bounds.
+                        Vector2 selectFullPos = selectable.worldBound.position;
+                        bool withinRectBounds = dirClose.x >= selectFullPos.x
+                            && dirClose.x <= selectFullPos.x + selectable.worldBound.width
+                            && dirClose.y >= selectFullPos.y
+                            && dirClose.y <= selectFullPos.y + selectable.worldBound.height;
+
+                        // If we're within the rect bounds, && its the closest , select it.
+                        float actualElementDist = Vector2.Distance(from, selectable.worldBound.center);
+                        if ((dist <= threshhold || withinRectBounds) && (actualElementDist < closestDir || closestDir == -1))
+                        {
+                            closestDir = actualElementDist;
+                            selected = selectable;
+                            Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
+                        }
+                    }
+                }
+            }
+            return selected;
+        }
+        #endregion
+
+        /*
+                        // Visualization: https://www.desmos.com/calculator/kl2oypib1f
                         var t = (direction.y * (selectable.worldBound.center.y - from.y)
                             + direction.x * (selectable.worldBound.center.x - from.x))
                             / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
@@ -138,27 +174,22 @@ namespace Darklight.Game.Selectable
                         // And now we just find the distance, and see if it's closer than the other distances we've calculated.
                         var dist = Vector2.Distance(dirClose, selectable.worldBound.center);
 
-
                         // Check if the point is within the rect bounds.
-                        var selectFullPos = selectable.worldBound.position;
-                        var withinRectBounds = dirClose.x >= selectFullPos.x
+                        Vector2 selectFullPos = selectable.worldBound.position;
+                        bool withinRectBounds = dirClose.x >= selectFullPos.x
                             && dirClose.x <= selectFullPos.x + selectable.worldBound.width
                             && dirClose.y >= selectFullPos.y
                             && dirClose.y <= selectFullPos.y + selectable.worldBound.height;
 
                         // If we're within the rect bounds, && its the closest , select it.
-                        var actualElementDist = Vector2.Distance(from, selectable.worldBound.center);
+                        float actualElementDist = Vector2.Distance(from, selectable.worldBound.center);
                         if ((dist <= threshhold || withinRectBounds) && (actualElementDist < closestDir || closestDir == -1))
                         {
                             closestDir = actualElementDist;
                             selected = selectable;
+                            Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
                         }
-                    }
-                }
-            }
-            return selected;
-        }
-        #endregion
+        */
 
     }
 }

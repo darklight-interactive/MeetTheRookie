@@ -12,6 +12,9 @@ namespace Darklight.UnityExt.Input
     /// </summary>
     public class UniversalInputManager : MonoBehaviourSingleton<UniversalInputManager>
     {
+        private bool _moveStarted;
+
+        // -------------- [[ STATIC INPUT TYPE ]] -------------- >>
         public enum InputType { NULL, KEYBOARD, TOUCH, GAMEPAD }
         public static InputType DeviceInputType
         {
@@ -38,20 +41,21 @@ namespace Darklight.UnityExt.Input
         InputAction _secondary => _activeActionMap.FindAction("SecondaryInteract");
 
         // -------------- [[ INPUT EVENTS ]] -------------- >>
-        public delegate void OnVec2Input(Vector2 moveInput);
-        public delegate void OnTrigger();
+        public delegate void OnInput_Trigger();
+        public delegate void OnInput_Vec2(Vector2 moveInput);
 
         /// <summary> Event for the move input from the active device. </summary>
-        public static event OnVec2Input OnMoveInput;
-        public static event OnTrigger OnMoveInputCanceled;
+        public static event OnInput_Vec2 OnMoveInput;
+        public static event OnInput_Vec2 OnMoveInputStarted;
+        public static event OnInput_Trigger OnMoveInputCanceled;
 
         /// <summary> Event for the primary interaction input from the active device. </summary>
-        public static event OnTrigger OnPrimaryInteract;
-        public static event OnTrigger OnPrimaryInteractCanceled;
+        public static event OnInput_Trigger OnPrimaryInteract;
+        public static event OnInput_Trigger OnPrimaryInteractCanceled;
 
         /// <summary> Event for the secondary interaction input from the active device. </summary>
-        public static event OnTrigger OnSecondaryInteract;
-        public static event OnTrigger OnSecondaryInteractCanceled;
+        public static event OnInput_Trigger OnSecondaryInteract;
+        public static event OnInput_Trigger OnSecondaryInteractCanceled;
 
         public override void Awake()
         {
@@ -119,6 +123,16 @@ namespace Darklight.UnityExt.Input
             _secondary.Enable();
 
             // << -- Set the input events -- >>
+            _move.started += ctx =>
+            {
+                if (!_moveStarted)
+                {
+                    Vector2 input = ctx.ReadValue<Vector2>();
+                    OnMoveInputStarted?.Invoke(input);
+                    _moveStarted = true;
+                }
+            };
+
             _move.performed += (ctx) =>
             {
                 _moveInput = ctx.ReadValue<Vector2>();
@@ -127,6 +141,7 @@ namespace Darklight.UnityExt.Input
 
             _move.canceled += (ctx) =>
             {
+                _moveStarted = false;
                 _moveInput = Vector2.zero;
                 OnMoveInputCanceled?.Invoke();
             };
@@ -157,7 +172,6 @@ namespace Darklight.UnityExt.Input
 
             return true;
         }
-
         #endregion
     }
 }

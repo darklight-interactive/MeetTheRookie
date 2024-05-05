@@ -47,6 +47,8 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;
 
+    bool lockSelection = false;
+
     public void Awake()
     {
         Initialize(preset);
@@ -55,23 +57,41 @@ public class MainMenuController : UXML_UIDocumentObject
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
 
         // Listen to the input manager
-        UniversalInputManager.OnMoveInput += (Vector2 dir) =>
+        UniversalInputManager.OnMoveInputStarted += (Vector2 dir) =>
         {
-            SelectableButton previousButton = selectableVectorField.CurrentSelection;
-            SelectableButton selected = selectableVectorField.getFromDir(dir * -1); // inverted y
-            if (previousButton != null)
-            {
-                previousButton.RemoveFromClassList("selected");
-                selected.AddToClassList("selected");
-                selected.Focus();
-                Debug.Log($"Selected: {selected.name}");
-            }
+            Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y
+            SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
+            Select(buttonInDirection);
         };
 
         UniversalInputManager.OnPrimaryInteract += () =>
         {
             selectableVectorField.CurrentSelection.Activate();
         };
+    }
+
+    void Select(SelectableButton button)
+    {
+        SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        if (!lockSelection && button != null && button != previousButton)
+        {
+            previousButton.RemoveFromClassList("selected");
+            button.AddToClassList("selected");
+            button.Focus();
+            LockSelection();
+        }
+        button.Activate();
+    }
+
+    void LockSelection()
+    {
+        lockSelection = true;
+        Invoke("UnlockSelection", 0.1f);
+    }
+
+    void UnlockSelection()
+    {
+        lockSelection = false;
     }
 
     public void Quit()
@@ -99,7 +119,6 @@ public class MainMenuControllerCustomEditor : Editor
     private void OnDisable()
     {
     }
-
     public override void OnInspectorGUI()
     {
         _serializedObject.Update();

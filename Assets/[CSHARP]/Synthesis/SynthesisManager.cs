@@ -53,7 +53,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        UniversalInputManager.OnMoveInput += SelectMove;
+        //UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);

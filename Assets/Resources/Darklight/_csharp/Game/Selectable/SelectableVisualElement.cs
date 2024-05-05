@@ -92,6 +92,8 @@ namespace Darklight.Selectable
 
                 // Send the event
                 Button.SendEvent(clickEvent);
+
+                Debug.Log($"Activated: {Element.name}");
             }
         }
     }
