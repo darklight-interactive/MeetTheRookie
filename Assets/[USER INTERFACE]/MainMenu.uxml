@@ -7,6 +7,8 @@
     <engine:VisualElement name="body">
         <engine:GroupBox class="vert-direction">
             <Darklight.Selectable.SelectableButton />
+            <Darklight.Selectable.SelectableButton class="icon" style="align-self: center;" />
+            <Darklight.Selectable.SelectableButton class="icon" />
             <Darklight.Selectable.SelectableButton />
         </engine:GroupBox>
         <engine:GroupBox class="vert-direction">
@@ -21,5 +23,12 @@
             <Darklight.Selectable.SelectableButton />
         </engine:GroupBox>
     </engine:VisualElement>
-    <engine:VisualElement name="footer" />
+    <engine:VisualElement name="footer">
+        <engine:GroupBox style="flex-direction: row; align-self: stretch; flex-shrink: 1;">
+            <Darklight.Selectable.SelectableButton class="icon" />
+            <Darklight.Selectable.SelectableButton class="icon" />
+            <Darklight.Selectable.SelectableButton class="icon" />
+            <Darklight.Selectable.SelectableButton class="icon" />
+        </engine:GroupBox>
+    </engine:VisualElement>
 </engine:UXML>

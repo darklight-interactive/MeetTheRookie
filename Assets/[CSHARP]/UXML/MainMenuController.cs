@@ -55,6 +55,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        Select(selectableVectorField.Selectables.First());
 
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += (Vector2 dir) =>
@@ -66,21 +67,21 @@ public class MainMenuController : UXML_UIDocumentObject
 
         UniversalInputManager.OnPrimaryInteract += () =>
         {
-            selectableVectorField.CurrentSelection.Activate();
+            selectableVectorField.CurrentSelection.Click();
         };
+
+
     }
 
-    void Select(SelectableButton button)
+    void Select(SelectableButton selectedButton)
     {
         SelectableButton previousButton = selectableVectorField.PreviousSelection;
-        if (!lockSelection && button != null && button != previousButton)
+        if (!lockSelection && selectedButton != null && selectedButton != previousButton)
         {
-            previousButton.RemoveFromClassList("selected");
-            button.AddToClassList("selected");
-            button.Focus();
+            previousButton?.Deselect();
+            selectedButton.Select();
             LockSelection();
         }
-        button.Activate();
     }
 
     void LockSelection()

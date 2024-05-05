@@ -5,13 +5,6 @@ using UnityEngine.UIElements;
 
 namespace Darklight.Selectable
 {
-
-    public interface ISelectable
-    {
-        void Select();
-        void Deselect();
-    }
-
     /// <summary>
     /// Base class for controlled elements that encapsulates common functionalities for UXML elements.
     /// </summary>
@@ -31,6 +24,17 @@ namespace Darklight.Selectable
             this.focusable = true;
         }
 
+        public void Select()
+        {
+            this.AddToClassList("selected");
+            this.Focus();
+        }
+
+        public void Deselect()
+        {
+            this.RemoveFromClassList("selected");
+        }
+
         /// <summary>
         /// Allows implicit conversion from SelectableElement to the generic class, typeof(TElement) : VisualElement.
         /// </summary>
@@ -43,58 +47,28 @@ namespace Darklight.Selectable
 
     // Specific implementation for a Button element.
     [UxmlElement]
-    public partial class SelectableButton : SelectableVisualElement<Button>, ISelectable
+    public partial class SelectableButton : SelectableVisualElement<Button>
     {
         public Button Button => Element as Button;
-        public bool selected;
         public string Text
         {
             get => Element.text;
             set => Element.text = value;
         }
+        public event Action OnClick;
 
         public SelectableButton()
         {
-            Text = "controlled-button";
-            Button.AddToClassList("controlled-button");
-            Button.clicked += () =>
-            {
-                if (!selected)
-                {
-                    Select();
-                }
-                else
-                {
-                    Deselect();
-                }
-            };
+            Text = "selectable";
+            Button.clickable.clicked += () => Click();
         }
 
-        public void Select()
+        public void Click()
         {
-            selected = true;
-
-            Debug.Log($"Selected: {Element.name} {Element.style.position}");
-        }
-
-        public void Deselect()
-        {
-            selected = false;
             Button.RemoveFromClassList("selected");
-        }
-
-        public void Activate()
-        {
-            using (ClickEvent clickEvent = ClickEvent.GetPooled())
-            {
-                // Set necessary properties of clickEvent
-                clickEvent.target = Button;
-
-                // Send the event
-                Button.SendEvent(clickEvent);
-
-                Debug.Log($"Activated: {Element.name}");
-            }
+            Button.AddToClassList("clicked");
+            OnClick?.Invoke();
+            Debug.Log("Button Clicked");
         }
     }
 }
