@@ -1,5 +1,7 @@
 public interface IInteract
 {
+
+    #region ------------------ >> STATE FLAGS
     /// <summary>
     /// Whether or not the interaction is being targeted.
     /// </summary>
@@ -14,16 +16,19 @@ public interface IInteract
     /// Whether or not the interaction is complete.
     /// </summary>
     public bool isComplete { get; set; }
+    #endregion
 
     /// <summary>
     /// The key to use to identify the interaction.
     /// </summary>
     public string interactionKey { get; set; }
 
+
+    // ===================== [[ INTERACTION METHODS ]] =====================    
     /// <summary>
     /// Called when the player is targeting the interactable object.
     /// </summary>
-    public virtual void TargetEnable()
+    public virtual void TargetSet()
     {
         isTarget = true;
     }
@@ -31,11 +36,10 @@ public interface IInteract
     /// <summary>
     /// Called to disable the interactable object and hide any prompts.
     /// </summary>
-    public virtual void TargetDisable()
+    public virtual void TargetClear()
     {
         isTarget = false;
     }
-
 
     /// <summary>
     /// Called when the player interacts with the object.
@@ -62,6 +66,7 @@ public interface IInteract
         isComplete = false;
     }
 
+    // ===================== [[ EVENTS ]] =====================
     // Delegate Events
     delegate void OnInteract(string currentText);
     delegate void OnComplete();

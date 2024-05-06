@@ -8,6 +8,8 @@ using Ink.Runtime;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,6 +37,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public Story currentStory { get; private set; }
     public InkyVariableHandler variableHandler { get; private set; }
     public InkyKnotIterator currentKnot { get; private set; }
+    [ShowOnly, SerializeField] private List<string> knotAndStitches = new List<string>();
 
     public string currentStoryName = "scene1";
     [SerializeField, ShowOnly] private string currentStoryFilePath => PATH + currentStoryName;
@@ -69,11 +72,15 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
         finally
         {
+            // Set up Error Handling
             currentStory.onError += (message, type) =>
             {
                 Debug.LogError("[Ink] " + type + " " + message);
                 Console.Log($"{Prefix} Story Error: {message}", 0, LogSeverity.Error);
             };
+
+            // Get Knots and Stiches
+            knotAndStitches = GetKnotAndStitches(currentStory);
 
             // Get Variables
             variableHandler = new InkyVariableHandler(currentStory);
@@ -91,6 +98,25 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
         Console.Log($"{Prefix} Story Loaded: {storyName}");
         return true;
+    }
+
+    // Get All Knots and Stiches - https://github.com/inkle/ink/issues/406
+    List<string> GetKnotAndStitches(Story story)
+    {
+        var output = new List<string>();
+        var knots = story.mainContentContainer.namedContent.Keys;
+        knots.ToList().ForEach((knot) =>
+        {
+            output.Add(knot);
+
+            var container = story.KnotContainerWithName(knot);
+            var stitchKeys = container.namedContent.Keys;
+            stitchKeys.ToList().ForEach((stitch) =>
+            {
+                output.Add(knot + "." + stitch);
+            });
+        });
+        return output;
     }
 
     public InkyKnotIterator CreateKnotIterator(string knotPath)
@@ -140,6 +166,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         variableHandler = new InkyVariableHandler(currentStory);
         return new InkyVariableHandler(currentStory);
     }
+
+    // Get All Knots and Stiches - https://github.com/inkle/ink/issues/406
+
 
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {

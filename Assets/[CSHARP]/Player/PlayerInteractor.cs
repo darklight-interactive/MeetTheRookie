@@ -22,7 +22,7 @@ public class PlayerInteractor : MonoBehaviour
         if (_activeInteraction == null && interactables.Count > 0)
         {
             // Because this method is called every frame, this line will keep the target at the correct position
-            interactables.First().TargetEnable();
+            interactables.First().TargetSet();
         }
     }
 
@@ -43,7 +43,7 @@ public class PlayerInteractor : MonoBehaviour
             {
                 // Mark the interaction for removal
                 toRemove.Add(interactable);
-                interactable.TargetDisable();
+                interactable.TargetClear();
             }
         }
 
@@ -61,7 +61,7 @@ public class PlayerInteractor : MonoBehaviour
         // Get the Target Interactable
         IInteract targetInteractable = interactables.First();
         if (targetInteractable == null || targetInteractable.isComplete) return false;
-        targetInteractable.TargetDisable();
+        targetInteractable.TargetClear();
 
         // If the target is not the same as the active interaction, 
         // then set the active interaction to the target and subscribe to the events
@@ -75,9 +75,9 @@ public class PlayerInteractor : MonoBehaviour
                 if (_activeInteraction is Clue_Interactable)
                     playerDialogueHandler.CreateDialogueBubble(text);*/
 
-                if (_activeInteraction is NPC_Interactable)
+                if (_activeInteraction is InteractableNPC)
                 {
-                    NPC_Interactable npcInteractable = _activeInteraction as NPC_Interactable;
+                    InteractableNPC npcInteractable = _activeInteraction as InteractableNPC;
                     playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
                     npcInteractable.DialogueBubble.TextureUpdate();
                 }
@@ -118,6 +118,6 @@ public class PlayerInteractor : MonoBehaviour
         IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
         interactables.Remove(interactable);
-        interactable.TargetDisable();
+        interactable.TargetClear();
     }
 }

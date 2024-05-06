@@ -3,23 +3,29 @@ using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
 using System.Collections;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(BoxCollider2D))]
-public abstract class Interactable : OverlapGrid2D, IInteract
+[RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
+public class Interactable : MonoBehaviour, IInteract
 {
-
     // << SERIALIZED VALUES >> //
-    [Header("Interactable Properties")]
+    [ShowOnly, SerializeField] protected InteractableData data;
+    [ShowOnly, SerializeField] SpriteRenderer _spriteRenderer;
+    [ShowOnly, SerializeField] Sprite _sprite;
+
+    [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
     [ShowOnly, SerializeField] bool _isActive;
     [ShowOnly, SerializeField] bool _isComplete;
-    [ShowOnly, SerializeField] SpriteRenderer _spriteRenderer;
+
+    [Header("Interaction Settings")]
+    [SerializeField] Color _defaultColor = Color.white;
     [SerializeField] Color _interactColor = Color.yellow;
-    [SerializeField] string _interactionKey;
+
+
+    public string _interactionKey;
 
     // << PUBLIC ACCESSORS >> //
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
@@ -32,16 +38,19 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public event IInteract.OnComplete OnCompleted;
 
     // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
         Initialize();
 
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _spriteRenderer.sprite = _sprite;
     }
 
     // ====== [[ INITIALIZATION ]] ================================
-    protected abstract void Initialize();
+    public virtual void Initialize()
+    {
+        //throw new System.NotImplementedException();
+    }
 
     public virtual void Reset()
     {
@@ -50,16 +59,13 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     }
 
     // ====== [[ TARGETING ]] ======================================
-    public virtual void TargetEnable()
+    public virtual void TargetSet()
     {
         isTarget = true;
-
-        OverlapGrid2D_Data data = this.GetBestData();
-        if (data == null) return;
         //UIManager.Instance.interactionUI.DisplayInteractPrompt(data.worldPosition);
     }
 
-    public virtual void TargetDisable()
+    public virtual void TargetClear()
     {
         isTarget = false;
         //UIManager.Instance.interactionUI.HideInteractPrompt();
@@ -69,7 +75,7 @@ public abstract class Interactable : OverlapGrid2D, IInteract
     public virtual void Interact()
     {
         // >> TEMPORARY COLOR CHANGE
-        StartCoroutine(ColorChangeRoutine(Color.red, 2.0f));
+        StartCoroutine(ColorChangeRoutine(_interactColor, 0.25f));
 
         // >> CONTINUE KNOT
         if (knotIterator == null)
@@ -103,7 +109,10 @@ public abstract class Interactable : OverlapGrid2D, IInteract
         OnCompleted?.Invoke();
     }
 
-    public abstract void OnDestroy();
+    public virtual void OnDestroy()
+    {
+        //throw new System.NotImplementedException();
+    }
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {
