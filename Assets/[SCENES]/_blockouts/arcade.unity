@@ -4394,6 +4394,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[PLAYER] Lupe'
       objectReference: {fileID: 0}
+    - target: {fileID: 6183624099261158406, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2137254424, guid: 6b167707065891e4c826ace85794e423, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6760,13 +6764,17 @@ PrefabInstance:
       propertyPath: 'spriteSheets.Array.data[0].spriteSheet.frames.Array.data[0]'
       value: 
       objectReference: {fileID: 4802313167339451427, guid: 608472c639c92104a9e53e21068b760f, type: 3}
+    - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: preset
+      value: 
+      objectReference: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
     - target: {fileID: 5416394239746758926, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.170562
       objectReference: {fileID: 0}
     - target: {fileID: 5416394239746758926, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.50010014
+      value: 0.49804688
       objectReference: {fileID: 0}
     - target: {fileID: 5416394239746758926, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6800,6 +6808,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5971972618659859766, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: currentFrame
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971972618659859766, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheet.frames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971972618659859766, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheet.frames.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4802313167339451427, guid: 608472c639c92104a9e53e21068b760f, type: 3}
+    - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.390625
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.9921875
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.390625
+      objectReference: {fileID: 0}
+    - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.9921875
+      objectReference: {fileID: 0}
     - target: {fileID: 7152001243824678401, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Name
       value: '[NPC] Base'
@@ -6816,7 +6856,8 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 4802313167339451427, guid: 608472c639c92104a9e53e21068b760f, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6448613592131777975, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
