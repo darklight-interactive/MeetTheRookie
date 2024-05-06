@@ -23,20 +23,6 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     const string PATH = "Inky/";
     const string SPEAKER_TAG = "speaker";
 
-    public static List<string> KnotAndStitchKeys
-    {
-        get => Instance.allKnotsAndStitches;
-        private set
-        {
-            Instance.allKnotsAndStitches = value;
-            KnotAndStitchKeys = value;
-        }
-    }
-    [SerializeField, ShowOnly] private List<string> allKnotsAndStitches;
-
-    [Dropdown("allKnotsAndStitches")]
-    public string currentKnotKey;
-
     // ========================  [[ STATE MACHINE ]]  ========================
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
     public class StateMachine : StateMachine<State>
@@ -47,9 +33,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public State currentState => stateMachine.CurrentState;
 
 
-    // ========================  [[ INKY KNOT THREADER ]]  ========================
     public Story currentStory { get; private set; }
-    public InkyVariableHandler variableHandler { get; private set; }
     public InkyKnotIterator currentKnot { get; private set; }
 
     public string currentStoryName = "scene1";
@@ -103,12 +87,6 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
                 Console.Log($"{Prefix} Story Error: {message}", 0, LogSeverity.Error);
             };
 
-            // Get Knots and Stiches
-            allKnotsAndStitches = GetKnotAndStitches(currentStory);
-
-            // Get Variables
-            variableHandler = new InkyVariableHandler(currentStory);
-
             // Get Tags
             List<string> tags = currentStory.globalTags;
             if (tags != null && tags.Count > 0)
@@ -124,24 +102,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         return true;
     }
 
-    // Get All Knots and Stiches - https://github.com/inkle/ink/issues/406
-    List<string> GetKnotAndStitches(Story story)
-    {
-        var output = new List<string>();
-        var knots = story.mainContentContainer.namedContent.Keys;
-        knots.ToList().ForEach((knot) =>
-        {
-            output.Add(knot);
 
-            var container = story.KnotContainerWithName(knot);
-            var stitchKeys = container.namedContent.Keys;
-            stitchKeys.ToList().ForEach((stitch) =>
-            {
-                output.Add(knot + "." + stitch);
-            });
-        });
-        return output;
-    }
 
     public InkyKnotIterator CreateKnotIterator(string knotPath)
     {
@@ -186,15 +147,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
     }
 
-    public InkyVariableHandler GetVariableHandler()
-    {
-        variableHandler = new InkyVariableHandler(currentStory);
-        return new InkyVariableHandler(currentStory);
-    }
-
     // Get All Knots and Stiches - https://github.com/inkle/ink/issues/406
-
-
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
         currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
@@ -214,54 +167,31 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     }
 }
 
+#if UNITY_EDITOR
+[CustomEditor(typeof(InkyStoryManager))]
+public class InkyStoryManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    InkyStoryManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (InkyStoryManager)target;
+        _script.Awake();
+    }
 
-
-/*
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        _serializedObject.Update();
 
-        InkyStoryManager storyManager = (InkyStoryManager)target;
+        EditorGUI.BeginChangeCheck();
 
-        EditorGUILayout.Space();
+        base.DrawDefaultInspector();
 
-        CustomInspectorGUI.CreateTwoColumnLabel("Current State: ", storyManager.currentState.ToString());
-        CustomInspectorGUI.CreateTwoColumnLabel("Current Story: ", storyManager.currentStoryName);
-        CustomInspectorGUI.CreateTwoColumnLabel("Current Knot: ", storyManager.currentKnot?.ToString() ?? "None");
-
-
-        if (GUILayout.Button("Load Story"))
+        if (EditorGUI.EndChangeCheck())
         {
-            storyManager.LoadStory(storyManager.currentStoryName);
-        }
-
-        if (GUILayout.Button("Continue Story"))
-        {
-            storyManager.ContinueStory();
-        }
-
-        if (GUILayout.Button("Clear Console"))
-        {
-            InkyStoryManager.Console.Reset();
-        }
-
-        InkyStoryManager.Console.DrawInEditor();
-
-        InkyVariableHandler varHandler = storyManager.variableHandler;
-        if (varHandler == null) return;
-        if (varHandler.variables.Count > 0)
-        {
-            EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-            foreach (KeyValuePair<string, IInkyVariable> variable in varHandler.variables)
-            {
-                EditorGUILayout.LabelField(variable.Key, variable.Value.ToString().Trim());
-            }
-            EditorGUI.indentLevel--;
-        }
-        else
-        {
-            EditorGUILayout.LabelField("No variables loaded.");
+            _serializedObject.ApplyModifiedProperties();
         }
     }
-    */
+}
+#endif

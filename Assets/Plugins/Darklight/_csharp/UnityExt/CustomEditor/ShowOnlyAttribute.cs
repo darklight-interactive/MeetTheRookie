@@ -11,6 +11,8 @@ namespace Darklight.UnityExt.Editor
     {
         public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
         {
+            EditorGUI.BeginProperty(position, label, prop);
+
             string valueStr = GetValueString(prop);
 
             if (prop.propertyType == SerializedPropertyType.ArraySize)
@@ -28,10 +30,46 @@ namespace Darklight.UnityExt.Editor
                 }
                 EditorGUI.indentLevel--;
             }
+            else if (prop.propertyType == SerializedPropertyType.Generic && IsSerializableClass(prop))
+            {
+                DrawSerializableClass(position, prop, label);
+            }
             else
             {
                 EditorGUI.LabelField(position, label.text, valueStr);
             }
+
+            EditorGUI.EndProperty();
+        }
+
+        private bool IsSerializableClass(SerializedProperty prop)
+        {
+            return prop.hasVisibleChildren && prop.depth == 0; // Simple check to see if it's a complex type
+        }
+
+        private void DrawSerializableClass(Rect position, SerializedProperty prop, GUIContent label)
+        {
+            EditorGUI.LabelField(position, label.text, "Class Object");
+            position.y += EditorGUIUtility.singleLineHeight;
+
+            EditorGUI.indentLevel++;
+            SerializedProperty childProp = prop.Copy();
+            bool enteredChildren = false;
+            while (childProp.NextVisible(enteredChildren))
+            {
+                if (!enteredChildren)
+                {
+                    enteredChildren = true;
+                }
+                else if (childProp.depth == 0)
+                {
+                    break;
+                }
+
+                EditorGUI.LabelField(position, childProp.displayName, GetValueString(childProp));
+                position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            }
+            EditorGUI.indentLevel--;
         }
 
         private string GetValueString(SerializedProperty prop)
@@ -61,7 +99,7 @@ namespace Darklight.UnityExt.Editor
                 case SerializedPropertyType.Quaternion:
                     return prop.quaternionValue.ToString();
                 default:
-                    return "(not supported)";
+                    return "[ShowOnly] Unsupported field type";
             }
         }
 
