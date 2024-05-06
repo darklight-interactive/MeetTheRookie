@@ -19,11 +19,14 @@ public class InkyStoryLoader : MonoBehaviour
     private const string PATH = "Inky/";
     private Dictionary<string, InkyStory> _stories = new Dictionary<string, InkyStory>();
 
-    // ------ [[ SERIALIZED FIELDS ]] ------
+    // ------ [[ SERIALIZED FIELDS ]] ------ >>
     [Button("Load All Stories")]
     public void Load() => LoadAllStories();
     [SerializeField, ShowOnly] string[] _nameKeys = new string[0];
     [SerializeField] InkyStory[] _storyValues = new InkyStory[0];
+
+
+    // ------ [[ PUBLIC ACCESSORS ]] ------ >>
     public string[] NameKeys
     {
         get
@@ -60,14 +63,24 @@ public class InkyStoryLoader : MonoBehaviour
 
     public InkyStory GetStory(string key)
     {
-        if (_stories.ContainsKey(key))
-        {
-            return _stories[key];
-        }
-        else
+        LoadStory(key);
+        return _stories[key];
+    }
+
+    void LoadStory(string key)
+    {
+        if (_stories.ContainsKey(key)) return;
+        TextAsset storyAsset = Resources.Load<TextAsset>(PATH + key);
+        if (storyAsset == null)
         {
             Debug.LogError($"Story with key {key} not found.");
-            return null;
+            return;
         }
+
+        Story story = new Story(storyAsset.text);
+        InkyStory inkyStory = new InkyStory(key, story);
+        _stories.Add(key, inkyStory);
+        _nameKeys = _stories.Keys.ToArray();
+        _storyValues = _stories.Values.ToArray();
     }
 }

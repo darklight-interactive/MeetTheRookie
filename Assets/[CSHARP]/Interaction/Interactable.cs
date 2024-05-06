@@ -2,6 +2,12 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using EasyButtons;
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,9 +16,40 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class Interactable : MonoBehaviour, IInteract
 {
-    // << SERIALIZED VALUES >> //
-    [ShowOnly, SerializeField] protected InteractableData data;
-    [ShowOnly, SerializeField] SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
+    private List<string> _storyNameKeys;
+    private InkyStory _relatedStory;
+    private List<string> _interactionKnotKeys;
+    private InkyKnotIterator _knotIterator;
+    [SerializeField, ShowOnly] private bool _knotFound;
+
+    public InkyKnotIterator KnotIterator
+    {
+        get
+        {
+            if (_knotIterator == null)
+                _knotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
+            _knotFound = _knotIterator != null;
+            return _knotIterator;
+        }
+        set
+        {
+            _knotIterator = value;
+            _knotFound = _knotIterator != null;
+        }
+    }
+
+    // ------------------- [[ SERIALIZED FIELDS ]] -------------------
+
+    [Header("Story Settings")]
+    [Dropdown("_storyNameKeys")]
+    [SerializeField] string sceneNameKey = "default-scene";
+
+    [DropdownAttribute("_interactionKnotKeys")]
+    [SerializeField] string _interactionKey = "default-interaction";
+    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
+
+    [Header("Components")]
     [ShowOnly, SerializeField] Sprite _sprite;
 
     [Header("State Flags")]
@@ -24,14 +61,10 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] Color _defaultColor = Color.white;
     [SerializeField] Color _interactColor = Color.yellow;
 
-    [DropdownAttribute("InkyStoryManager.knotsAndStitches")]
-    public string _interactionKey;
-
     // << PUBLIC ACCESSORS >> //
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
 
     // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
@@ -41,15 +74,16 @@ public class Interactable : MonoBehaviour, IInteract
     public void Awake()
     {
         Initialize();
-
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _spriteRenderer.sprite = _sprite;
     }
 
     // ====== [[ INITIALIZATION ]] ================================
     public virtual void Initialize()
     {
-        //throw new System.NotImplementedException();
+        _storyNameKeys = InkyStoryManager.Instance.storyLoader.NameKeys.ToList();
+        _relatedStory = InkyStoryManager.Instance.storyLoader.GetStory(sceneNameKey);
+        _interactionKnotKeys = _relatedStory.knotAndStitchKeys;
+        _spriteRenderer.sprite = _sprite;
+        KnotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
     }
 
     public virtual void Reset()
@@ -148,6 +182,7 @@ public class InteractableCustomEditor : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
+            _script.Awake();
             _serializedObject.ApplyModifiedProperties();
         }
     }

@@ -23,7 +23,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
     const string PATH = "Inky/";
     public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
-    public InkyKnotIterator currentKnot { get; private set; }
+    public InkyKnotIterator currentKnotIterator { get; private set; }
 
     #region ==== State Machine ====
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
@@ -37,9 +37,12 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     [Dropdown("storyLoader.NameKeys")]
     public string currentStoryKey;
-    public InkyStory currentStoryWrapper;
-    private Story _story => currentStoryWrapper;
 
+    public InkyStory currentStory;
+    private Story _story => currentStory;
+
+    [Dropdown("currentStory.knotAndStitchKeys")]
+    public string currentKnot;
 
     public override void Awake()
     {
@@ -47,7 +50,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         stateMachine.ChangeActiveStateTo(State.INIT);
 
         storyLoader.Load();
-        currentStoryWrapper = storyLoader.GetStory(currentStoryKey);
+        currentStory = storyLoader.GetStory(currentStoryKey);
     }
 
     [Button("Continue Story")]
@@ -56,9 +59,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         if (_story.canContinue)
         {
             stateMachine.ChangeActiveStateTo(State.CONTINUE);
-            if (currentKnot != null)
+            if (currentKnotIterator != null)
             {
-                currentKnot.ContinueKnot();
+                currentKnotIterator.ContinueKnot();
             }
             else
             {

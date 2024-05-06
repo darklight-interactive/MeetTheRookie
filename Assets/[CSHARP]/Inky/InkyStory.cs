@@ -11,6 +11,7 @@ public class InkyStory
     [SerializeField, ShowOnly] private string _name;
     [SerializeField, ShowOnly] private Story _story;
     [SerializeField, ShowOnly] private List<string> _knotAndStitchKeys;
+    public List<string> knotAndStitchKeys => _knotAndStitchKeys;
     [SerializeField] private List<InkyVariable> _variables;
     [SerializeField, ShowOnly] private List<string> _globalTags;
     public InkyStory(string name, Story story)
@@ -36,6 +37,7 @@ public class InkyStory
         var knots = story.mainContentContainer.namedContent.Keys;
         knots.ToList().ForEach((knot) =>
         {
+            if (knot.Contains("global")) return; // Skip the global declaration knot
             output.Add(knot);
 
             var container = story.KnotContainerWithName(knot);

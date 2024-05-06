@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Darklight/InteractableData")]
-public class InteractableData : ScriptableObject
+[System.Serializable]
+public class InteractableData
 {
-    private string _interactionKey;
+
 }
