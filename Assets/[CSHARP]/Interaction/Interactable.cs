@@ -24,7 +24,7 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] Color _defaultColor = Color.white;
     [SerializeField] Color _interactColor = Color.yellow;
 
-
+    [DropdownAttribute("InkyStoryManager.knotsAndStitches")]
     public string _interactionKey;
 
     // << PUBLIC ACCESSORS >> //

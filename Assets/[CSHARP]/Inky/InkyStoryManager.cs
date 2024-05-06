@@ -9,7 +9,7 @@ using Ink.Runtime;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using System.Linq;
-
+using EasyButtons;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,6 +22,20 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
     const string PATH = "Inky/";
     const string SPEAKER_TAG = "speaker";
+
+    public static List<string> KnotAndStitchKeys
+    {
+        get => Instance.allKnotsAndStitches;
+        private set
+        {
+            Instance.allKnotsAndStitches = value;
+            KnotAndStitchKeys = value;
+        }
+    }
+    [SerializeField, ShowOnly] private List<string> allKnotsAndStitches;
+
+    [Dropdown("allKnotsAndStitches")]
+    public string currentKnotKey;
 
     // ========================  [[ STATE MACHINE ]]  ========================
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
@@ -37,16 +51,26 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public Story currentStory { get; private set; }
     public InkyVariableHandler variableHandler { get; private set; }
     public InkyKnotIterator currentKnot { get; private set; }
-    [ShowOnly, SerializeField] private List<string> knotAndStitches = new List<string>();
 
     public string currentStoryName = "scene1";
     [SerializeField, ShowOnly] private string currentStoryFilePath => PATH + currentStoryName;
+
+    public override void Awake()
+    {
+        base.Awake();
+        stateMachine.ChangeActiveStateTo(State.INIT);
+    }
+
+    [Button("Load Story")]
+    public void LoadStory()
+    {
+        LoadStory(currentStoryName);
+    }
 
     private void Start()
     {
         LoadStory(currentStoryName);
     }
-
 
     /// <summary>
     /// Load a story from the Resources folder.
@@ -80,7 +104,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
             };
 
             // Get Knots and Stiches
-            knotAndStitches = GetKnotAndStitches(currentStory);
+            allKnotsAndStitches = GetKnotAndStitches(currentStory);
 
             // Get Variables
             variableHandler = new InkyVariableHandler(currentStory);
@@ -126,6 +150,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         return currentKnot;
     }
 
+    [Button("Continue Story")]
     public void ContinueStory()
     {
         if (currentStory.canContinue)
@@ -191,17 +216,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
 
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(InkyStoryManager))]
-public class InkyStoryManagerEditor : Editor
-{
-
-    private void OnEnable()
-    {
-        InkyStoryManager threader = (InkyStoryManager)target;
-
-    }
-
+/*
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -248,7 +263,5 @@ public class InkyStoryManagerEditor : Editor
         {
             EditorGUILayout.LabelField("No variables loaded.");
         }
-
     }
-}
-#endif
+    */

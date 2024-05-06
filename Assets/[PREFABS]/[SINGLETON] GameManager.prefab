@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6914380045224247625}
   - component: {fileID: 4205332937202348411}
   m_Layer: 0
-  m_Name: FMOD Manager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,9 +152,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7034851221228567786}
-  - component: {fileID: 2926313913478783821}
+  - component: {fileID: 8684255466814499576}
   m_Layer: 0
-  m_Name: INKY Story Manager
+  m_Name: StoryManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5054830795790530424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2926313913478783821
+--- !u!114 &8684255466814499576
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,10 +184,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8860814965438179826}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5f4d653c1241d1409742d52401eda68, type: 3}
+  m_Script: {fileID: 11500000, guid: b486296396653634187305e1a8d85f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStoryName: scene1
+  currentStory: {fileID: 4900000, guid: ec1a37c94b8214e45b8413776fed681c, type: 3}
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +250,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0dbd76607f79040806a0ceee308384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionPreset: {fileID: 11400000, guid: a8318c8f2e43e90459ad9e56c77193ef, type: 2}
+  sceneBuildDirectory: Assets/Scenes/Build
+  currentScene: Assets/Scenes/Build/MAIN_MENU.unity
+  scenesInBuild:
+  - {fileID: 102900000, guid: 14a5101b082acf5438a57e39dc7731e0, type: 3}
+  - {fileID: 102900000, guid: dec0233f10f64f342aa5bb6310fcb246, type: 3}
+  - {fileID: 102900000, guid: dc4b8b818db9b2049b1ab0c869ec409f, type: 3}
+  - {fileID: 102900000, guid: 69689f5ac1cb84bfda539d32a95238b7, type: 3}
+  - {fileID: 102900000, guid: 63763f0be6c4b4d1097c3d112abd37e4, type: 3}
+  - {fileID: 102900000, guid: 501a8c988ea034a919b0576b7dc59ee5, type: 3}
+  - {fileID: 102900000, guid: ba975b12f38e24506a5bc67460fe2aca, type: 3}
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +273,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionAsset: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
+  _deviceInputType: 0
+  _moveInput: {x: 0, y: 0}
+  _primaryInteract: 0
+  _secondaryInteract: 0
 --- !u!114 &9014096649367524951
 MonoBehaviour:
   m_ObjectHideFlags: 0
