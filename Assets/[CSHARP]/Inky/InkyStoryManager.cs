@@ -18,12 +18,14 @@ using UnityEditor;
 /// <summary>
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
+[RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
     const string PATH = "Inky/";
-    const string SPEAKER_TAG = "speaker";
+    public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
+    public InkyKnotIterator currentKnot { get; private set; }
 
-    // ========================  [[ STATE MACHINE ]]  ========================
+    #region ==== State Machine ====
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
     public class StateMachine : StateMachine<State>
     {
@@ -31,90 +33,27 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     }
     StateMachine stateMachine = new StateMachine(State.INIT);
     public State currentState => stateMachine.CurrentState;
+    #endregion
 
+    [Dropdown("storyLoader.NameKeys")]
+    public string currentStoryKey;
+    public InkyStory currentStoryWrapper;
+    private Story _story => currentStoryWrapper;
 
-    public Story currentStory { get; private set; }
-    public InkyKnotIterator currentKnot { get; private set; }
-
-    public string currentStoryName = "scene1";
-    [SerializeField, ShowOnly] private string currentStoryFilePath => PATH + currentStoryName;
 
     public override void Awake()
     {
         base.Awake();
         stateMachine.ChangeActiveStateTo(State.INIT);
-    }
 
-    [Button("Load Story")]
-    public void LoadStory()
-    {
-        LoadStory(currentStoryName);
-    }
-
-    private void Start()
-    {
-        LoadStory(currentStoryName);
-    }
-
-    /// <summary>
-    /// Load a story from the Resources folder.
-    /// </summary>
-    /// <param name="storyName">The name of the Story File</param>
-    /// <returns></returns>
-    public bool LoadStory(string storyName)
-    {
-        stateMachine.ChangeActiveStateTo(State.LOAD);
-        currentStoryName = storyName;
-        Console.Log($"{Prefix} Loading Story: {storyName}");
-
-        try
-        {
-            TextAsset storyAsset = (TextAsset)Resources.Load(PATH + storyName);
-            currentStory = new Story(storyAsset.text);
-        }
-        catch (Exception e)
-        {
-            Console.Log($"{Prefix} Story Load Error: {e.Message}", 0, LogSeverity.Error);
-            Debug.LogError($"{Prefix} Story Load Error: {e.Message}");
-            return false;
-        }
-        finally
-        {
-            // Set up Error Handling
-            currentStory.onError += (message, type) =>
-            {
-                Debug.LogError("[Ink] " + type + " " + message);
-                Console.Log($"{Prefix} Story Error: {message}", 0, LogSeverity.Error);
-            };
-
-            // Get Tags
-            List<string> tags = currentStory.globalTags;
-            if (tags != null && tags.Count > 0)
-            {
-                foreach (string tag in tags)
-                {
-                    Console.Log($"{Prefix} Found Tag: {tag}", 3);
-                }
-            }
-        }
-
-        Console.Log($"{Prefix} Story Loaded: {storyName}");
-        return true;
-    }
-
-
-
-    public InkyKnotIterator CreateKnotIterator(string knotPath)
-    {
-        stateMachine.ChangeActiveStateTo(State.LOAD);
-        currentKnot = new InkyKnotIterator(currentStory, knotPath);
-        return currentKnot;
+        storyLoader.Load();
+        currentStoryWrapper = storyLoader.GetStory(currentStoryKey);
     }
 
     [Button("Continue Story")]
     public void ContinueStory()
     {
-        if (currentStory.canContinue)
+        if (_story.canContinue)
         {
             stateMachine.ChangeActiveStateTo(State.CONTINUE);
             if (currentKnot != null)
@@ -124,17 +63,17 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
             else
             {
                 // Continue the main story thread
-                string text = currentStory.Continue();
+                string text = _story.Continue();
                 text = text.TrimEnd('\n');
                 Console.Log($"{Prefix} ContinueStory -> {text}");
             }
         }
-        else if (currentStory.currentChoices.Count > 0)
+        else if (_story.currentChoices.Count > 0)
         {
             stateMachine.ChangeActiveStateTo(State.CHOICE);
-            Console.Log($"{Prefix} Choices: {currentStory.currentChoices.Count}", 1);
+            Console.Log($"{Prefix} Choices: {_story.currentChoices.Count}", 1);
 
-            foreach (Choice choice in currentStory.currentChoices)
+            foreach (Choice choice in _story.currentChoices)
             {
                 Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
@@ -143,21 +82,19 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         {
             stateMachine.ChangeActiveStateTo(State.END);
             Console.Log($"{Prefix} End of Story");
-
         }
     }
 
-    // Get All Knots and Stiches - https://github.com/inkle/ink/issues/406
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
-        currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+        _story.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
     }
 
     public object RunExternalFunction(string func, object[] args)
     {
-        if (currentStory.HasFunction(func))
+        if (_story.HasFunction(func))
         {
-            return currentStory.EvaluateFunction(func, args);
+            return _story.EvaluateFunction(func, args);
         }
         else
         {
@@ -190,6 +127,7 @@ public class InkyStoryManagerCustomEditor : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
+            _script.Awake();
             _serializedObject.ApplyModifiedProperties();
         }
     }

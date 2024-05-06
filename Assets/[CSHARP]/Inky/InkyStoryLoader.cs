@@ -4,6 +4,10 @@ using Darklight.UnityExt.Editor;
 using EasyButtons;
 using Ink.Runtime;
 using UnityEngine;
+using System;
+using System.Runtime.Serialization.Formatters;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,16 +16,22 @@ using UnityEditor;
 /// </summary>
 public class InkyStoryLoader : MonoBehaviour
 {
-    [Button("Load All Stories")]
-    public void LoadButton() => LoadAllStories();
-
     private const string PATH = "Inky/";
-    [SerializeField, ShowOnly] List<string> _storyNames = new List<string>();
-    [SerializeField] List<InkyStory> _stories = new List<InkyStory>();
+    private Dictionary<string, InkyStory> _stories = new Dictionary<string, InkyStory>();
 
-    public void Awake()
+    // ------ [[ SERIALIZED FIELDS ]] ------
+    [Button("Load All Stories")]
+    public void Load() => LoadAllStories();
+    [SerializeField, ShowOnly] string[] _nameKeys = new string[0];
+    [SerializeField] InkyStory[] _storyValues = new InkyStory[0];
+    public string[] NameKeys
     {
-        LoadAllStories();
+        get
+        {
+            List<string> keys = _nameKeys.ToList();
+            keys.Remove("mtr_global");
+            return keys.ToArray();
+        }
     }
 
     /// <summary>
@@ -29,43 +39,35 @@ public class InkyStoryLoader : MonoBehaviour
     /// </summary>
     void LoadAllStories()
     {
-        _storyNames.Clear();
-        _stories.Clear();
+        _nameKeys = new string[0];
+        _storyValues = new InkyStory[0];
 
         // Load all text assets from the Inky resources directory
+        Dictionary<string, InkyStory> stories = new Dictionary<string, InkyStory>();
         UnityEngine.Object[] storyAssets = Resources.LoadAll(PATH, typeof(TextAsset));
         foreach (TextAsset storyAsset in storyAssets)
         {
-            _storyNames.Add(storyAsset.name);
-            _stories.Add(new InkyStory(storyAsset.name, new Story(storyAsset.text)));
+            // Load the story from the text asset
+            Story story = new Story(storyAsset.text);
+            InkyStory inkyStory = new InkyStory(storyAsset.name, story);
+            stories.Add(storyAsset.name, inkyStory);
         }
-    }
-}
-#if UNITY_EDITOR
-[CustomEditor(typeof(InkyStoryLoader))]
-public class InkyStoryLoaderCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    InkyStoryLoader _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (InkyStoryLoader)target;
-        _script.Awake();
+
+        _stories = stories;
+        _nameKeys = stories.Keys.ToArray();
+        _storyValues = stories.Values.ToArray();
     }
 
-    public override void OnInspectorGUI()
+    public InkyStory GetStory(string key)
     {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
+        if (_stories.ContainsKey(key))
         {
-            _serializedObject.ApplyModifiedProperties();
+            return _stories[key];
+        }
+        else
+        {
+            Debug.LogError($"Story with key {key} not found.");
+            return null;
         }
     }
 }
-#endif

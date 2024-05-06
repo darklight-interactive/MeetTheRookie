@@ -1152,6 +1152,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 574323930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &332981586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8860814965438179826, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+  m_PrefabInstance: {fileID: 1231048030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &332981588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332981586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStoryKey: mtr_level1
 --- !u!1 &412561261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1266,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8703908369491067701, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: player
       value: 
@@ -2887,6 +2909,543 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._name
+      value: mtr_global
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._name
+      value: mtr_level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._name
+      value: mtr_level3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._name
+      value: mtr_level5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0].variableCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1].variableCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2].variableCount
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3].variableCount
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._knotAndStitchKeys.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[0]._key
+      value: Speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[1]._key
+      value: curSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[2]._key
+      value: mainQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[3]._key
+      value: activeQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[4]._key
+      value: completedQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[5]._key
+      value: ClueKnowledge
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[6]._key
+      value: Clues_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[7]._key
+      value: QuestChain_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[8]._key
+      value: knowledgeState_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._knotAndStitchKeys.Array.size
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[0]._key
+      value: Speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[1]._key
+      value: curSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[2]._key
+      value: mainQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[3]._key
+      value: activeQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[4]._key
+      value: completedQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[5]._key
+      value: ClueKnowledge
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[6]._key
+      value: Clues_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[7]._key
+      value: QuestChain_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[8]._key
+      value: knowledgeState_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._knotAndStitchKeys.Array.size
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[0]._key
+      value: Speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[1]._key
+      value: curSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[2]._key
+      value: QuestChain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[3]._key
+      value: activeQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[4]._key
+      value: completedQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[5]._key
+      value: Clues
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[6]._key
+      value: knowledgeState
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[7]._key
+      value: currentScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._knotAndStitchKeys.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[0]._key
+      value: Speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[1]._key
+      value: curSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[2]._key
+      value: QuestChain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[3]._key
+      value: activeQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[4]._key
+      value: completedQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[5]._key
+      value: Clues
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[6]._key
+      value: knowledgeState
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[0]'
+      value: NewSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[1]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[2]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[3]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[4]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[5]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[0]._knotAndStitchKeys.Array.data[6]'
+      value: global decl
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[0]'
+      value: scene1_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[1]'
+      value: scene1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[2]'
+      value: scene1_1.fallen_tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[3]'
+      value: scene1_1.gas_pump
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[4]'
+      value: scene1_1.car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[5]'
+      value: scene1_1.npc
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[6]'
+      value: scene1_1.enter_store
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[7]'
+      value: scene1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[8]'
+      value: scene1_2.vending_machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[9]'
+      value: scene1_2.employee
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[0]'
+      value: set_speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[1]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[2]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[3]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[4]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[5]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[6]'
+      value: GoToSubScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[7]'
+      value: scene3_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[8]'
+      value: scene3_1.investigate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[9]'
+      value: scene3_1.evidence_discussed_Misra
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[0]'
+      value: set_speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[1]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[2]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[3]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[4]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[5]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[6]'
+      value: scene5_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[7]'
+      value: scene5_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[8]'
+      value: scene5_2.outdoor_choices
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[9]'
+      value: scene5_2INSIDE
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[10]'
+      value: scene1_2.door_to_backroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[11]'
+      value: scene1_2.door_to_outside
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[12]'
+      value: scene1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[13]'
+      value: scene1_3.mel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[14]'
+      value: scene1_3.goop
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[15]'
+      value: scene1_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[16]'
+      value: NewSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[17]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[18]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[19]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[20]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[21]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[1]._knotAndStitchKeys.Array.data[22]'
+      value: global decl
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[10]'
+      value: scene3_1.Misra_
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[11]'
+      value: scene3_1.Misra_dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[12]'
+      value: scene3_1.fence
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[13]'
+      value: scene3_1.window
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[14]'
+      value: scene3_1.strange_footsteps
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[15]'
+      value: scene3_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[16]'
+      value: scene3_2.intro_conversation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[17]'
+      value: scene3_2.investigate_inside
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[18]'
+      value: scene3_2.evidence_discussed_Misra_inside
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[19]'
+      value: scene3_2.closing_discussion
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[20]'
+      value: scene3_2.closing_discussion_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[21]'
+      value: scene3_2.claw_marks
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[22]'
+      value: scene3_2.floor_splatters
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[23]'
+      value: scene3_2.additional_damages
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[24]'
+      value: scene3_2.wine_barrels
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[25]'
+      value: scene3_2.wine_barrels2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[26]'
+      value: scene3_2.backroom_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[27]'
+      value: scene3_2.Winery_front_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[2]._knotAndStitchKeys.Array.data[28]'
+      value: global decl
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[10]'
+      value: scene5_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[11]'
+      value: scene5_3.table_papers
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[12]'
+      value: scene5_3.number_pad
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[13]'
+      value: scene5_3.misra_found_dating_sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[14]'
+      value: scene5_3.ending_sequence
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_stories.Array.data[3]._knotAndStitchKeys.Array.data[15]'
+      value: global decl
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[1]._valueAsString
+      value: Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[0]._variables.Array.data[6]._valueAsString
+      value: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[1]._valueAsString
+      value: Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[1]._variables.Array.data[6]._valueAsString
+      value: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[1]._valueAsString
+      value: Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[3]._valueAsString
+      value: FIRST_INTERACT
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[5]._valueAsString
+      value: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE, EVIDENCE_CLAW_MARKS,
+        EVIDENCE_DAMAGES
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[2]._variables.Array.data[7]._valueAsString
+      value: scene3_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684255466814499576, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _stories.Array.data[3]._variables.Array.data[1]._valueAsString
+      value: Lupe
+      objectReference: {fileID: 0}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_Name
       value: '[SINGLETON] GameManager'
@@ -2895,7 +3454,10 @@ PrefabInstance:
     - {fileID: 2926313913478783821, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8860814965438179826, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 332981588}
   m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
 --- !u!1 &1307645519
 GameObject:

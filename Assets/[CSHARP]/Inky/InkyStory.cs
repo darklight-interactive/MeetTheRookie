@@ -12,14 +12,17 @@ public class InkyStory
     [SerializeField, ShowOnly] private Story _story;
     [SerializeField, ShowOnly] private List<string> _knotAndStitchKeys;
     [SerializeField] private List<InkyVariable> _variables;
-    [SerializeField, ShowOnly] private int variableCount;
+    [SerializeField, ShowOnly] private List<string> _globalTags;
     public InkyStory(string name, Story story)
     {
         this._name = name;
         this._story = story;
         this._knotAndStitchKeys = GetKnotAndStitches(story);
         this._variables = GetVariables(story);
-        this.variableCount = _variables.Count;
+        this._globalTags = story.globalTags;
+
+        // Set up error handling
+        story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
     }
 
     /// <summary>
@@ -64,4 +67,8 @@ public class InkyStory
         return output;
     }
 
+    public static implicit operator Story(InkyStory story)
+    {
+        return story._story;
+    }
 }
