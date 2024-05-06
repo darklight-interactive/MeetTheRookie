@@ -108,8 +108,8 @@ public class Interactable : MonoBehaviour, IInteract
         StartCoroutine(ColorChangeRoutine(_interactColor, 0.25f));
 
         // >> CONTINUE KNOT
-        //if (knotIterator == null)
-        //knotIterator = new InkyKnotIterator(InkyStoryManager.Instance._story, _interactionKey);
+        if (knotIterator == null)
+            knotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
         ContinueKnot();
     }
 

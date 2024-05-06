@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
+        UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
         UniversalInputManager.OnPrimaryInteract += Interact;
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
 

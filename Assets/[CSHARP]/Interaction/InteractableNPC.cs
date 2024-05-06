@@ -1,6 +1,7 @@
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UXML;
+using UnityEngine.UIElements;
 
 public class InteractableNPC : Interactable
 {
@@ -41,7 +42,7 @@ public class InteractableNPC : Interactable
         UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.Instance.worldSpaceUI;
         worldSpaceUIDoc.transform.position = position;
         //worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one * speechBubbleScalar;
-        //worldSpaceUIDoc.SetText(text);
+        worldSpaceUIDoc.ElementQuery<Label>("inky-label").text = text;
 
         worldSpaceUIDoc.TextureUpdate();
         return worldSpaceUIDoc;

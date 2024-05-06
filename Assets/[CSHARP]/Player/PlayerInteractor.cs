@@ -70,10 +70,7 @@ public class PlayerInteractor : MonoBehaviour
             _activeInteraction = targetInteractable;
             _activeInteraction.OnInteraction += (string text) =>
             {
-                // Show the player's dialogue bubble
-                /*
-                if (_activeInteraction is Clue_Interactable)
-                    playerDialogueHandler.CreateDialogueBubble(text);*/
+
 
                 if (_activeInteraction is InteractableNPC)
                 {
@@ -81,6 +78,10 @@ public class PlayerInteractor : MonoBehaviour
                     playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
                     npcInteractable.DialogueBubble.TextureUpdate();
                 }
+
+                // Show the player's dialogue bubble
+                else if (_activeInteraction is Interactable)
+                    playerDialogueHandler.CreateDialogueBubble(text);
             };
 
             _activeInteraction.OnCompleted += () =>
