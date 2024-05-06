@@ -121,10 +121,9 @@ GroupBox {
 }
 
 .icon {
+    max-width: 128px;
+    max-height: 128px;
     height: 128px;
     width: 128px;
-    align-items: center;
-    align-self: center;
-    justify-content: center;
-    flex-grow: 1;
+    position: absolute;
 }

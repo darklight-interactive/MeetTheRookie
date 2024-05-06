@@ -1152,24 +1152,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 574323930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &332981586 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8860814965438179826, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-  m_PrefabInstance: {fileID: 1231048030}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &332981588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332981586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentStoryKey: mtr_level1
 --- !u!1 &412561261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,6 +2851,154 @@ PrefabInstance:
       propertyPath: 'knotAndStitchesList.Array.data[22]'
       value: global decl
       objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentKnot
+      value: scene1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._name
+      value: mtr_level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._knotAndStitchKeys.Array.size
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[0]._key
+      value: Speaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[1]._key
+      value: curSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[2]._key
+      value: mainQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[3]._key
+      value: activeQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[4]._key
+      value: completedQuests
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[5]._key
+      value: ClueKnowledge
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[6]._key
+      value: Clues_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[7]._key
+      value: QuestChain_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[8]._key
+      value: knowledgeState_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[0]'
+      value: scene1_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[1]'
+      value: scene1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[2]'
+      value: scene1_1.fallen_tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[3]'
+      value: scene1_1.gas_pump
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[4]'
+      value: scene1_1.car
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[5]'
+      value: scene1_1.npc
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[6]'
+      value: scene1_1.enter_store
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[7]'
+      value: scene1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[8]'
+      value: scene1_2.vending_machine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[9]'
+      value: scene1_2.employee
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[10]'
+      value: scene1_2.door_to_backroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[11]'
+      value: scene1_2.door_to_outside
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[12]'
+      value: scene1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[13]'
+      value: scene1_3.mel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[14]'
+      value: scene1_3.goop
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[15]'
+      value: scene1_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[16]'
+      value: NewSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[17]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[18]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[19]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[20]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'currentStory._knotAndStitchKeys.Array.data[21]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[1]._valueAsString
+      value: Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory._variables.Array.data[6]._valueAsString
+      value: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+      objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3454,10 +3584,7 @@ PrefabInstance:
     - {fileID: 2926313913478783821, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8860814965438179826, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 332981588}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
 --- !u!1 &1307645519
 GameObject:
@@ -3860,15 +3987,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
-  _spriteRenderer: {fileID: 1396728433}
+  _knotFound: 1
+  sceneNameKey: mtr_level1
+  _interactionKey: scene1_0
+  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _sprite: {fileID: 21300000, guid: 30c4f936a84952f47bb2a93feb9eeab3, type: 3}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
-  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: 
 --- !u!61 &1396728432
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5689,15 +5816,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.7
+      value: -36.4
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9995223
+      value: 0.9981094
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.030904751
+      value: 0.061462376
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
@@ -5733,7 +5860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _distanceZ
-      value: 72.7
+      value: 36.4
       objectReference: {fileID: 0}
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _currentFOV
@@ -5753,7 +5880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _offsetPosition.z
-      value: -72.7
+      value: -36.4
       objectReference: {fileID: 0}
     - target: {fileID: 8334976060130458572, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _baseFOV
