@@ -18,6 +18,7 @@ public class NPC_Controller : MonoBehaviour
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player => FindFirstObjectByType<PlayerController>().gameObject;
+    public NPCState startingState = NPCState.IDLE;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
     [Range(0.1f, 1f)] public float followSpeed = .5f;
     [Range(0.1f, 1f)] public float hideSpeed = .5f;
@@ -52,7 +53,7 @@ public class NPC_Controller : MonoBehaviour
         };
 
         // Create the NPCStateMachine
-        stateMachine = new(possibleStates, NPCState.IDLE, this, animator);
+        stateMachine = new(possibleStates, startingState, this, animator);
     }
 
     // Update is called once per frame
