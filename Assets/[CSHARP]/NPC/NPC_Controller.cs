@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Darklight.Game.Utility;
 using Darklight.UnityExt.Editor;
+using System;
 
 [RequireComponent(typeof(NPC_Animator))]
 public class NPC_Controller : MonoBehaviour
@@ -54,6 +55,15 @@ public class NPC_Controller : MonoBehaviour
 
         // Create the NPCStateMachine
         stateMachine = new(possibleStates, startingState, this, animator);
+
+
+        // Hacky solution to fix null reference bug, setting the stateMachine field for each state
+        idleState._stateMachine = stateMachine;
+        walkState._stateMachine = stateMachine;
+        speakState._stateMachine = stateMachine;
+        followState._stateMachine = stateMachine;
+        hideState._stateMachine = stateMachine;
+        chaseState._stateMachine = stateMachine;
     }
 
     // Update is called once per frame

@@ -89,7 +89,7 @@ namespace Darklight.Game.Utility
         public virtual bool GoToState(TState state)
         {
             // Exit from the previous state
-            if (currentState.StateType.Equals(state)) { return false; }
+            if (currentState != null && currentState.StateType.Equals(state)) { return false; }
             if (currentState != null) { currentState.Exit(); }
 
             // Check if the state exists
