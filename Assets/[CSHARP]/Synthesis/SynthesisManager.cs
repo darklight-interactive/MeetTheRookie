@@ -1,13 +1,17 @@
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Darklight.UXML;
+using Darklight.Game.Selectable;
+using Darklight.Selectable;
+using Unity.Android.Gradle;
+
+
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,10 +20,9 @@ using UnityEditor;
 /// Handle the UI and <see cref="SynthesisObject"/>s.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class SynthesisManager : MonoBehaviour
+public class SynthesisManager : UXML_UIDocumentObject
 {
     [SerializeField] private UXML_UIDocumentPreset _preset;
-    protected UIDocument document => GetComponent<UIDocument>();
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
@@ -41,7 +44,7 @@ public class SynthesisManager : MonoBehaviour
 
         objects = document.rootVisualElement.Q("objects");
 
-        synthesizeButton = document.rootVisualElement.Q("title");
+        synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
         itemsSelection.Add(synthesizeButton);
 
         Invoke("Initialize", 0.1f);
@@ -50,8 +53,8 @@ public class SynthesisManager : MonoBehaviour
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        UniversalInputManager.MoveInputAction.performed += SelectMove;
-        UniversalInputManager.PrimaryInteractAction.performed += Select;
+        //UniversalInputManager.OnMoveInputStarted += SelectMove;
+        UniversalInputManager.OnPrimaryInteract += Select;
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
@@ -62,11 +65,12 @@ public class SynthesisManager : MonoBehaviour
         synthesisUI.rootVisualElement.visible = synthesisActive;
     }*/
 
-    void SelectMove(InputAction.CallbackContext context) {
-        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+    void SelectMove(Vector2 move)
+    {
         move.y = -move.y;
-        if (itemsSelection.currentlySelected != null) {
-            itemsSelection.currentlySelected.RemoveFromClassList("highlight");
+        if (itemsSelection.CurrentSelection != null)
+        {
+            itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
         }
         var selected = itemsSelection.getFromDir(move);
         if (selected != null) {
@@ -75,9 +79,11 @@ public class SynthesisManager : MonoBehaviour
     }
 
     HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
-    void Select(InputAction.CallbackContext context) {
-        if (itemsSelection.currentlySelected != null) {
-            var s = itemsSelection.currentlySelected;
+    void Select()
+    {
+        if (itemsSelection.CurrentSelection != null)
+        {
+            var s = itemsSelection.CurrentSelection;
             if (s == synthesizeButton) {
                 Synthesize();
                 return;

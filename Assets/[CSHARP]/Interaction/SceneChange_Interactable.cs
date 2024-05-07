@@ -8,7 +8,7 @@ public class SceneChange_Interactable : Interactable
     public override void Interact()
     {
         base.Interact();
-        SceneManager.Instance.LoadScene(_sceneTarget);
+        //SceneManager.Instance.LoadScene(_sceneTarget);
     }
 
     public override void OnDestroy()

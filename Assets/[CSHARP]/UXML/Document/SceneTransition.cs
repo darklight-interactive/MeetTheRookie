@@ -1,13 +1,12 @@
 using System.Collections;
-using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UXML;
 
 public class SceneTransition : UXML_UIDocumentObject
 {
-    UXML_ControlledVisualElement blackOverlayElement;
+    VisualElement blackOverlayElement;
     Label textlabel;
-
     public bool isStarted;
     public bool isComplete;
 
@@ -17,9 +16,9 @@ public class SceneTransition : UXML_UIDocumentObject
         // Initialize the base class
         base.Initialize(preset, tags);
 
-        textlabel = GetUIElement("textlabel").element as Label;
+        textlabel = ElementQuery<Label>();
 
-        blackOverlayElement = base.GetUIElement("blackborder");
+        blackOverlayElement = ElementQuery<VisualElement>("blackOverlay");
         blackOverlayElement.visible = false;
     }
 
@@ -36,7 +35,6 @@ public class SceneTransition : UXML_UIDocumentObject
         isComplete = false;
         //StartCoroutine(FadeIn()); TODO
     }
-
 
     IEnumerator FadeOut(string newSceneName)
     {

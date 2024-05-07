@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
+using Darklight.UXML;
+using Darklight.Game.Selectable;
 
-public class VisualNovel : UXML_UIDocumentObject
+public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;
@@ -31,8 +30,8 @@ public class VisualNovel : UXML_UIDocumentObject
     void Initialize()
     {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-        UniversalInputManager.MoveInputAction.performed += Move;
-        UniversalInputManager.PrimaryInteractAction.performed += Select;
+        UniversalInputManager.OnMoveInput += Move;
+        UniversalInputManager.OnPrimaryInteract += Select;
     }
 
     // Start is called before the first frame update
@@ -128,7 +127,7 @@ public class VisualNovel : UXML_UIDocumentObject
         choicesActive = true;
         //TODO : Fix this
         //choiceMap.resetSelected(); 
-        choiceMap.currentlySelected.AddToClassList("Highlight");
+        choiceMap.CurrentSelection.AddToClassList("Highlight");
     }
 
     /// <summary>
@@ -137,7 +136,7 @@ public class VisualNovel : UXML_UIDocumentObject
     /// <param name="index">The index of the choice</param>
     void SelectChoice()
     {
-        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.currentlySelected));
+        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
         choicesActive = false;
@@ -157,7 +156,7 @@ public class VisualNovel : UXML_UIDocumentObject
     /// The function to select choice via input
     /// </summary>
     /// <param name="context">IDK man</param>
-    void Select(InputAction.CallbackContext context)
+    void Select()
     {
         if (choicesActive)
         {
@@ -173,13 +172,12 @@ public class VisualNovel : UXML_UIDocumentObject
     /// The function to change choice via input
     /// </summary>
     /// <param name="context">IDK man</param>
-    void Move(InputAction.CallbackContext context)
+    void Move(Vector2 move)
     {
-        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
         move.y = -move.y;
-        if (choiceMap.currentlySelected != null)
+        if (choiceMap.CurrentSelection != null)
         {
-            choiceMap.currentlySelected.RemoveFromClassList("Highlight");
+            choiceMap.CurrentSelection.RemoveFromClassList("Highlight");
         }
         var selected = choiceMap.getFromDir(move);
         if (selected != null)

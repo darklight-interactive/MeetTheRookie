@@ -56,13 +56,13 @@ public abstract class Interactable : OverlapGrid2D, IInteract
 
         OverlapGrid2D_Data data = this.GetBestData();
         if (data == null) return;
-        UIManager.Instance.interactionUI.DisplayInteractPrompt(data.worldPosition);
+        //UIManager.Instance.interactionUI.DisplayInteractPrompt(data.worldPosition);
     }
 
     public virtual void TargetDisable()
     {
         isTarget = false;
-        UIManager.Instance.interactionUI.HideInteractPrompt();
+        //UIManager.Instance.interactionUI.HideInteractPrompt();
     }
 
     public InkyKnotIterator knotIterator;

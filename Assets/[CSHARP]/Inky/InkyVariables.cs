@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 using Ink.Runtime;
 
 public interface IInkyVariable

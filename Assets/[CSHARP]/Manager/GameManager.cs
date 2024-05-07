@@ -1,14 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Darklight.UnityExt;
-using Darklight;
 using Darklight.UnityExt.Input;
 using Darklight.Game;
-using Darklight.Game.Utility;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 
