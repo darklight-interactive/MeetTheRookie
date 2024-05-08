@@ -17420,79 +17420,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &1321727793
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: '_storyValues.Array.data[0]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: '_storyValues.Array.data[1]'
-      value: 
-      objectReference: {fileID: 1865817252}
-    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: '_storyValues.Array.data[2]'
-      value: 
-      objectReference: {fileID: 1512795020}
-    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: '_storyValues.Array.data[3]'
-      value: 
-      objectReference: {fileID: 2106301649}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: m_Name
-      value: '[SINGLETON] GameManager'
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
 --- !u!43 &1365704861
 Mesh:
   m_ObjectHideFlags: 0
@@ -20208,67 +20135,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 615343942}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &1512795020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inkFile: {fileID: 4900000, guid: 21bd6d4883ac70e4390eed5ce182b18c, type: 3}
-  _knotAndStitchKeys:
-  - set_speaker
-  - StartQuest
-  - CompleteQuest
-  - IsQuestComplete
-  - DiscoverClue
-  - IsClueFound
-  - GoToSubScene
-  - scene3_1
-  - scene3_1.investigate
-  - scene3_1.evidence_discussed_Misra
-  - scene3_1.Misra_
-  - scene3_1.Misra_dialogue
-  - scene3_1.fence
-  - scene3_1.window
-  - scene3_1.strange_footsteps
-  - scene3_2
-  - scene3_2.intro_conversation
-  - scene3_2.investigate_inside
-  - scene3_2.evidence_discussed_Misra_inside
-  - scene3_2.closing_discussion
-  - scene3_2.closing_discussion_2
-  - scene3_2.claw_marks
-  - scene3_2.floor_splatters
-  - scene3_2.additional_damages
-  - scene3_2.wine_barrels
-  - scene3_2.wine_barrels2
-  - scene3_2.backroom_door
-  - scene3_2.Winery_front_door
-  _variables:
-  - _key: Speaker
-    _valueAsString: 
-  - _key: curSpeaker
-    _valueAsString: Lupe
-  - _key: QuestChain
-    _valueAsString: 
-  - _key: activeQuests
-    _valueAsString: FIRST_INTERACT
-  - _key: completedQuests
-    _valueAsString: 
-  - _key: Clues
-    _valueAsString: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE, EVIDENCE_CLAW_MARKS,
-      EVIDENCE_DAMAGES
-  - _key: knowledgeState
-    _valueAsString: 
-  - _key: currentScene
-    _valueAsString: scene3_1
-  _globalTags: []
 --- !u!43 &1529445322
 Mesh:
   m_ObjectHideFlags: 0
@@ -30611,62 +30477,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 142972361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1865817252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inkFile: {fileID: 4900000, guid: 806dd59271f480847bb7d8f943e61eb2, type: 3}
-  _knotAndStitchKeys:
-  - scene1_0
-  - scene1_1
-  - scene1_1.fallen_tree
-  - scene1_1.gas_pump
-  - scene1_1.car
-  - scene1_1.npc
-  - scene1_1.enter_store
-  - scene1_2
-  - scene1_2.vending_machine
-  - scene1_2.employee
-  - scene1_2.door_to_backroom
-  - scene1_2.door_to_outside
-  - scene1_3
-  - scene1_3.mel
-  - scene1_3.goop
-  - scene1_4
-  - NewSpeaker
-  - StartQuest
-  - CompleteQuest
-  - IsQuestComplete
-  - DiscoverClue
-  - IsClueFound
-  _variables:
-  - _key: Speaker
-    _valueAsString: 
-  - _key: curSpeaker
-    _valueAsString: Lupe
-  - _key: mainQuest
-    _valueAsString: 
-  - _key: activeQuests
-    _valueAsString: 
-  - _key: completedQuests
-    _valueAsString: 
-  - _key: ClueKnowledge
-    _valueAsString: 
-  - _key: Clues_1_1
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: QuestChain_1_1
-    _valueAsString: 
-  - _key: knowledgeState_1
-    _valueAsString: 
-  _globalTags: []
 --- !u!1 &1867808855
 GameObject:
   m_ObjectHideFlags: 0
@@ -34309,56 +34119,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &2106301649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inkFile: {fileID: 4900000, guid: 5d4811cf4779d764b8d5d9d78f92dd74, type: 3}
-  _knotAndStitchKeys:
-  - set_speaker
-  - StartQuest
-  - CompleteQuest
-  - IsQuestComplete
-  - DiscoverClue
-  - IsClueFound
-  - scene5_1
-  - scene5_2
-  - scene5_2.outdoor_choices
-  - scene5_2INSIDE
-  - scene5_3
-  - scene5_3.table_papers
-  - scene5_3.number_pad
-  - scene5_3.misra_found_dating_sim
-  - scene5_3.ending_sequence
-  _variables:
-  - _key: Speaker
-    _valueAsString: 
-  - _key: curSpeaker
-    _valueAsString: Lupe
-  - _key: QuestChain
-    _valueAsString: 
-  - _key: activeQuests
-    _valueAsString: 
-  - _key: completedQuests
-    _valueAsString: 
-  - _key: Clues
-    _valueAsString: 
-  - _key: knowledgeState
-    _valueAsString: 
-  _globalTags:
-  - Level 5 - The Winery, Night, Day 1
-  - This Level holds both a Dating Sim and Gameplay. We start in the interior of
-    Lupe's car during a Stakeout with Misra, outside the Old Winery. The Dating Sim
-    can be cycled through, and at a certain point is interrupted by a loud, unexplained
-    disturbance from inside the Winery. Misra is quick to get out of the car to invesitigate.
 --- !u!43 &2115464617
 Mesh:
   m_ObjectHideFlags: 0
@@ -47649,7 +47409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storyParent: {fileID: 11400000, guid: 2f6c86fbc7cb3864e93b8f46ee65bff6, type: 2}
-  _interactionKey: scene1_1.enter_store
+  _interactionKey: scene1_2.playtest_go_to_precinct
   _sprite: {fileID: 0}
   _isTarget: 0
   _isActive: 0
@@ -47910,4 +47670,3 @@ SceneRoots:
   - {fileID: 987175996433645435}
   - {fileID: 825759766}
   - {fileID: 101217506}
-  - {fileID: 1321727793}

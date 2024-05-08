@@ -28,6 +28,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        selectableVectorField.Selectables.First().Select();
 
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;

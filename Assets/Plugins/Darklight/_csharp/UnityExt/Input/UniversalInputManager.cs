@@ -123,55 +123,94 @@ namespace Darklight.UnityExt.Input
             _secondary.Enable();
 
             // << -- Set the input events -- >>
-            _move.started += ctx =>
-            {
-                if (!_moveStarted)
-                {
-                    Vector2 input = ctx.ReadValue<Vector2>();
-                    OnMoveInputStarted?.Invoke(input);
-                    _moveStarted = true;
-                }
-            };
+            _move.started += HandleMoveStarted;
+            _move.performed += HandleMovePerformed;
+            _move.canceled += HandleMoveCanceled;
 
-            _move.performed += (ctx) =>
-            {
-                _moveInput = ctx.ReadValue<Vector2>();
-                OnMoveInput?.Invoke(_moveInput);
-            };
+            _primary.performed += HandlePrimaryPerformed;
+            _primary.canceled += HandlePrimaryCanceled;
 
-            _move.canceled += (ctx) =>
-            {
-                _moveStarted = false;
-                _moveInput = Vector2.zero;
-                OnMoveInputCanceled?.Invoke();
-            };
-
-            _primary.performed += (ctx) =>
-            {
-                _primaryInteract = true;
-                OnPrimaryInteract?.Invoke();
-            };
-
-            _primary.canceled += (ctx) =>
-            {
-                _primaryInteract = false;
-                OnPrimaryInteractCanceled?.Invoke();
-            };
-
-            _secondary.performed += (ctx) =>
-            {
-                _secondaryInteract = true;
-                OnSecondaryInteract?.Invoke();
-            };
-
-            _secondary.canceled += (ctx) =>
-            {
-                _secondaryInteract = false;
-                OnSecondaryInteractCanceled?.Invoke();
-            };
-
+            _secondary.performed += HandleSecondaryPerformed;
+            _secondary.canceled += HandleSecondaryCanceled;
             return true;
         }
         #endregion
+
+        void OnDestroy()
+        {
+            Debug.Log($"{Prefix}Destroying Input Manager");
+
+            // Unsubscribe from all input actions
+            if (_move != null)
+            {
+                _move.started -= HandleMoveStarted;
+                _move.performed -= HandleMovePerformed;
+                _move.canceled -= HandleMoveCanceled;
+            }
+
+            if (_primary != null)
+            {
+                _primary.performed -= HandlePrimaryPerformed;
+                _primary.canceled -= HandlePrimaryCanceled;
+            }
+
+            if (_secondary != null)
+            {
+                _secondary.performed -= HandleSecondaryPerformed;
+                _secondary.canceled -= HandleSecondaryCanceled;
+            }
+
+            DisableAllActionMaps();
+        }
+
+
+        private void HandleMoveStarted(InputAction.CallbackContext ctx)
+        {
+            if (!_moveStarted)
+            {
+                Vector2 input = ctx.ReadValue<Vector2>();
+                OnMoveInputStarted?.Invoke(input);
+                _moveStarted = true;
+            }
+        }
+
+        private void HandleMovePerformed(InputAction.CallbackContext ctx)
+        {
+            _moveInput = ctx.ReadValue<Vector2>();
+            OnMoveInput?.Invoke(_moveInput);
+        }
+
+        private void HandleMoveCanceled(InputAction.CallbackContext ctx)
+        {
+            _moveStarted = false;
+            _moveInput = Vector2.zero;
+            OnMoveInputCanceled?.Invoke();
+        }
+
+        private void HandlePrimaryPerformed(InputAction.CallbackContext ctx)
+        {
+            _primaryInteract = true;
+            OnPrimaryInteract?.Invoke();
+        }
+
+        private void HandlePrimaryCanceled(InputAction.CallbackContext ctx)
+        {
+            _primaryInteract = false;
+            OnPrimaryInteractCanceled?.Invoke();
+        }
+
+        private void HandleSecondaryPerformed(InputAction.CallbackContext ctx)
+        {
+            _secondaryInteract = true;
+            OnSecondaryInteract?.Invoke();
+        }
+
+        private void HandleSecondaryCanceled(InputAction.CallbackContext ctx)
+        {
+            _secondaryInteract = false;
+            OnSecondaryInteractCanceled?.Invoke();
+        }
+
+
     }
 }

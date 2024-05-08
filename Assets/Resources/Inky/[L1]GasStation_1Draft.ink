@@ -46,7 +46,8 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE //{goto("precinct")} 
 - else:
         {stopping:
-            -   "Out of order. Pay inside." Of course. Just my luck. 
+            -   "Out of order. Pay inside." 
+                Of course. Just my luck. 
                 -> DONE
             - Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off.
                 -> DONE
@@ -75,7 +76,9 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 === scene1_2 ===
 // FUNC_SCENE_CHANGE
 # location : MelOMart Store
--> main
+Let's see if someone can help us in here
+
+
 = main
 *[talk_to_employee] 
     -> employee
