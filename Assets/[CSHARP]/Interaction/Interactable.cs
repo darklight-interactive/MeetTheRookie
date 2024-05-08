@@ -7,10 +7,6 @@ using System.Linq;
 using EasyButtons;
 using UnityEngine.UIElements;
 
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -45,13 +41,11 @@ public class Interactable : MonoBehaviour, IInteract
 
     [Header("Interaction Settings")]
     [Dropdown("_storyNameKeys")]
-    [SerializeField] string sceneNameKey = "default-scene";
+    [SerializeField] string _sceneNameKey = "default-scene";
 
     [DropdownAttribute("_interactionKnotKeys")]
     [SerializeField] string _interactionKey = "default-interaction";
     public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
-    [SerializeField] Color _defaultColor = Color.white;
-    [SerializeField] Color _interactColor = Color.yellow;
 
     [Header("Components")]
     [ShowOnly, SerializeField] Sprite _sprite;
@@ -60,6 +54,12 @@ public class Interactable : MonoBehaviour, IInteract
     [ShowOnly, SerializeField] bool _isTarget;
     [ShowOnly, SerializeField] bool _isActive;
     [ShowOnly, SerializeField] bool _isComplete;
+
+    [Header("Colors")]
+    [SerializeField] Color _defaultTint = Color.white;
+    [SerializeField] Color _interactionTint = Color.yellow;
+
+
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
@@ -75,8 +75,15 @@ public class Interactable : MonoBehaviour, IInteract
     // ====== [[ INITIALIZATION ]] ================================
     public virtual void Initialize()
     {
-        _storyNameKeys = InkyStoryManager.Instance.storyLoader.NameKeys.ToList();
-        _relatedStory = InkyStoryManager.Instance.storyLoader.GetStory(sceneNameKey);
+        InkyStoryLoader inkyStoryLoader = InkyStoryManager.Instance.storyLoader;
+        if (!inkyStoryLoader.allStoriesLoaded)
+        {
+            inkyStoryLoader.LoadAllStories();
+        }
+
+        _storyNameKeys = inkyStoryLoader.NameKeys.ToList();
+        _relatedStory = inkyStoryLoader.GetStory(_sceneNameKey);
+
         _interactionKnotKeys = _relatedStory.knotAndStitchKeys;
         _spriteRenderer.sprite = _sprite;
         KnotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
@@ -85,7 +92,7 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void Reset()
     {
         isComplete = false;
-        _spriteRenderer.color = _interactColor;
+        _spriteRenderer.color = _interactionTint;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -105,7 +112,7 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void Interact()
     {
         // >> TEMPORARY COLOR CHANGE
-        StartCoroutine(ColorChangeRoutine(_interactColor, 0.25f));
+        StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
         // >> CONTINUE KNOT
         if (knotIterator == null)

@@ -5,8 +5,9 @@ using EasyButtons;
 using Ink.Runtime;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Darklight/Inky/Story")]
 [System.Serializable]
-public class InkyStory
+public class InkyStory : ScriptableObject
 {
     [SerializeField, ShowOnly] private string _name;
     [SerializeField, ShowOnly] private Story _story;

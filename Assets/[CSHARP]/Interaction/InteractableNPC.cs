@@ -2,6 +2,9 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UXML;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class InteractableNPC : Interactable
 {
@@ -47,14 +50,33 @@ public class InteractableNPC : Interactable
         worldSpaceUIDoc.TextureUpdate();
         return worldSpaceUIDoc;
     }
+}
 
-    public override void Initialize()
+#if UNITY_EDITOR
+[CustomEditor(typeof(InteractableNPC))]
+public class InteractableNPCCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    InteractableNPC _script;
+    private void OnEnable()
     {
-        //throw new System.NotImplementedException();
+        _serializedObject = new SerializedObject(target);
+        _script = (InteractableNPC)target;
+        _script.Awake();
     }
 
-    public override void OnDestroy()
+    public override void OnInspectorGUI()
     {
-        //throw new System.NotImplementedException();
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
     }
 }
+#endif

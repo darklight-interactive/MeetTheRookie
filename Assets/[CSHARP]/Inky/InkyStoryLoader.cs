@@ -27,6 +27,7 @@ public class InkyStoryLoader : MonoBehaviour
 
 
     // ------ [[ PUBLIC ACCESSORS ]] ------ >>
+    public bool allStoriesLoaded { get; private set; }
     public string[] NameKeys
     {
         get
@@ -40,7 +41,7 @@ public class InkyStoryLoader : MonoBehaviour
     /// <summary>
     /// Loads all Ink story files found in the Resources/Inky directory.
     /// </summary>
-    void LoadAllStories()
+    public void LoadAllStories()
     {
         _nameKeys = new string[0];
         _storyValues = new InkyStory[0];
@@ -52,17 +53,20 @@ public class InkyStoryLoader : MonoBehaviour
         {
             // Load the story from the text asset
             Story story = new Story(storyAsset.text);
-            InkyStory inkyStory = new InkyStory(storyAsset.name, story);
+            InkyStory inkyStory = ScriptableObject.CreateInstance<InkyStory>();
             stories.Add(storyAsset.name, inkyStory);
+            SaveStoryData(inkyStory, storyAsset.name);
         }
 
         _stories = stories;
         _nameKeys = stories.Keys.ToArray();
         _storyValues = stories.Values.ToArray();
+        allStoriesLoaded = true;
     }
 
     public InkyStory GetStory(string key)
     {
+        if (!allStoriesLoaded) LoadAllStories();
         LoadStory(key);
         return _stories[key];
     }
@@ -83,4 +87,14 @@ public class InkyStoryLoader : MonoBehaviour
         _nameKeys = _stories.Keys.ToArray();
         _storyValues = _stories.Values.ToArray();
     }
+
+#if UNITY_EDITOR
+
+    private void SaveStoryData(InkyStory data, string name)
+    {
+        string path = "Assets/Resources/Inky/StoryObjects/" + name + ".asset";
+        AssetDatabase.CreateAsset(data, path);
+        AssetDatabase.SaveAssets();
+    }
+#endif
 }
