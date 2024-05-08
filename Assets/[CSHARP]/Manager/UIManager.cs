@@ -1,9 +1,6 @@
-using System;
-using Darklight.Game.Utility;
-using Darklight.UnityExt.UXML;
+using Darklight.UXML;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,14 +18,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     // ----- [[ INTERACTION UI ]] ----------------------------------->>
     [Header("Interaction UI")]
     public UXML_UIDocumentPreset interactionUIPreset;
-    private UXML_ScreenSpaceUI _interactionUI;
-    public UXML_ScreenSpaceUI interactionUI
+    private UXML_UIDocumentObject _interactionUI;
+    public UXML_UIDocumentObject interactionUI
     {
         get
         {
             if (_interactionUI == null)
             {
-                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_ScreenSpaceUI>();
+                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_UIDocumentObject>();
                 _interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt" });
             }
             return _interactionUI;

@@ -1,29 +1,29 @@
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Properties;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
+using Darklight.UXML;
+using Darklight.Game.Selectable;
+using Darklight.Selectable;
+using Unity.Android.Gradle;
+
+
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 /// <summary>
-/// Handle the UI
+/// Handle the UI and <see cref="SynthesisObject"/>s.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class SynthesisManager : MonoBehaviour
+public class SynthesisManager : UXML_UIDocumentObject
 {
     [SerializeField] private UXML_UIDocumentPreset _preset;
-    protected UIDocument document => GetComponent<UIDocument>();
-    protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();
+    protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
@@ -44,7 +44,7 @@ public class SynthesisManager : MonoBehaviour
 
         objects = document.rootVisualElement.Q("objects");
 
-        synthesizeButton = document.rootVisualElement.Q("title");
+        synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
         itemsSelection.Add(synthesizeButton);
 
         Invoke("Initialize", 0.1f);
@@ -53,9 +53,8 @@ public class SynthesisManager : MonoBehaviour
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        UniversalInputManager.MoveInputAction.performed += SelectMove;
-        UniversalInputManager.PrimaryInteractAction.performed += Select;
-
+        //UniversalInputManager.OnMoveInputStarted += SelectMove;
+        UniversalInputManager.OnPrimaryInteract += Select;
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
@@ -66,12 +65,12 @@ public class SynthesisManager : MonoBehaviour
         synthesisUI.rootVisualElement.visible = synthesisActive;
     }*/
 
-    void SelectMove(InputAction.CallbackContext context) {
-        if (!synthesisActive) { return; }
-        Vector2 move = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+    void SelectMove(Vector2 move)
+    {
         move.y = -move.y;
-        if (itemsSelection.currentlySelected != null) {
-            itemsSelection.currentlySelected.RemoveFromClassList("highlight");
+        if (itemsSelection.CurrentSelection != null)
+        {
+            itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
         }
         var selected = itemsSelection.getFromDir(move);
         if (selected != null) {
@@ -79,11 +78,12 @@ public class SynthesisManager : MonoBehaviour
         }
     }
 
-    HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
-    void Select(InputAction.CallbackContext context) {
-        if (!synthesisActive) { return; }
-        if (itemsSelection.currentlySelected != null) {
-            var s = itemsSelection.currentlySelected;
+    HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
+    void Select()
+    {
+        if (itemsSelection.CurrentSelection != null)
+        {
+            var s = itemsSelection.CurrentSelection;
             if (s == synthesizeButton) {
                 Synthesize();
                 return;
@@ -91,10 +91,10 @@ public class SynthesisManager : MonoBehaviour
 
             if (s.ClassListContains("selected")) {
                 s.RemoveFromClassList("selected");
-                toSynthesize.Remove(s);
+                toSynthesize.Remove((SynthesisObject)s);
             } else if (toSynthesize.Count < 3) { // Don't allow us to select more than three.
                 s.AddToClassList("selected");
-                toSynthesize.Add(s);
+                toSynthesize.Add((SynthesisObject)s);
             }
         }
     }
@@ -142,31 +142,13 @@ public class SynthesisManager : MonoBehaviour
     }
 
     public object AddItem(object[] args) {
-        if (args.Length < 2) {
-            Debug.LogError("playerAddItem args: [synthesisItemType] [itemID]");
-            return null;
-        }
-        string objType = (string)args[0];
-        string id = (string)args[1];
-
-
-        VisualTreeAsset obj = (VisualTreeAsset)Resources.Load("Synthesis/" + objType);
-        var tree = obj.Instantiate();
-
-        foreach (var child in tree.Children()) {
-            var dummyValue = (SynthesisBinding)((SynthesisBinding)child.dataSource).Clone();
-            if (args.Length > 2) {
-                dummyValue.setValue((string)args[2]);
-            }
-            child.dataSource = dummyValue;
-        }
-
-        tree.name = id;
-        tree.AddToClassList("synthesis-object");
-
-        objects.Add(tree);
-        itemsSelection.Add(tree);
-        return synthesisItems.TryAdd(id, tree);
+        string name = (string)args[0];
+        var newObj = new SynthesisObject();
+        newObj.noteHeader.text = name;
+        newObj.name = name;
+        objects.Add(newObj);
+        itemsSelection.Add(newObj);
+        return synthesisItems.TryAdd(name, newObj);
     }
 
     public object RemoveItem(object[] args) {
@@ -184,13 +166,13 @@ public class SynthesisManager : MonoBehaviour
     }
 
     [Obsolete("Dragging should not be used for synthesis items.")]
-    public VisualElement OverlappingObject(VisualElement synthesisObj) {
-        /*var rect = synthesisObj.worldBound;
+    public SynthesisObject OverlappingObject(VisualElement synthesisObj) {
+        var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
             if (obj.Value != synthesisObj && obj.Value.worldBound.Overlaps(rect, true)) {
                 return obj.Value;
             }
-        }*/
+        }
         return null;
     }
 }

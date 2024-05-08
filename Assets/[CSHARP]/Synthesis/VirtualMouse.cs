@@ -1,11 +1,5 @@
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Input;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -55,10 +49,10 @@ public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
 
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogError("UniversalInputManager is not initialized"); return; }
-        UniversalInputManager.MoveInputAction.performed += MoveCursor;
-        UniversalInputManager.MoveInputAction.canceled += StopMoveCursor;
-        UniversalInputManager.PrimaryInteractAction.performed += Click;
-        UniversalInputManager.PrimaryInteractAction.canceled += StopClick;
+        UniversalInputManager.OnMoveInput += MoveCursor;
+        UniversalInputManager.OnMoveInputCanceled += StopMoveCursor;
+        UniversalInputManager.OnPrimaryInteract += Click;
+        UniversalInputManager.OnPrimaryInteractCanceled += StopClick;
 
         /*var e = new Event();
         e.type = EventType.MouseEnterWindow;
@@ -71,12 +65,14 @@ public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
     }
 
     Vector2 intendedMoveDir;
-    void MoveCursor(InputAction.CallbackContext context) {
-        intendedMoveDir = UniversalInputManager.MoveInputAction.ReadValue<Vector2>();
+    void MoveCursor(Vector2 move)
+    {
+        intendedMoveDir = move;
         intendedMoveDir.y *= -1;
     }
 
-    void StopMoveCursor(InputAction.CallbackContext context) {
+    void StopMoveCursor()
+    {
         intendedMoveDir = Vector2.zero;
     }
 
@@ -85,12 +81,14 @@ public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
     /// </summary>
     bool downSent = false;
     bool sendDown = false;
-    void Click(InputAction.CallbackContext context) {
+    void Click()
+    {
         sendDown = true;
     }
 
     bool sendUp = false;
-    void StopClick(InputAction.CallbackContext context) {
+    void StopClick()
+    {
         sendUp = true;
     }
 

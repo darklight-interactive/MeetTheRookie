@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Darklight.Game;
 using Darklight.Console;
@@ -8,7 +7,6 @@ using Darklight.Console;
 using Ink.Runtime;
 
 using UnityEngine;
-using Darklight.Game.Utility;
 using Darklight.UnityExt.Editor;
 
 #if UNITY_EDITOR
