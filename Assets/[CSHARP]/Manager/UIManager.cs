@@ -1,5 +1,7 @@
 using Darklight.UXML;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 
 
 #if UNITY_EDITOR
@@ -15,6 +17,8 @@ using UnityEditor;
 /// </summary>
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
+    const string INTERACT_PROMPT_TAG = "icon-interact";
+
     // ----- [[ INTERACTION UI ]] ----------------------------------->>
     [Header("Interaction UI")]
     public UXML_UIDocumentPreset interactionUIPreset;
@@ -26,7 +30,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             if (_interactionUI == null)
             {
                 _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_UIDocumentObject>();
-                _interactionUI.Initialize(interactionUIPreset, new string[] { "interactPrompt" });
+                _interactionUI.Initialize(interactionUIPreset, new string[] { INTERACT_PROMPT_TAG });
             }
             return _interactionUI;
         }
@@ -60,6 +64,21 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public override void Awake()
     {
         base.Awake();
+    }
+
+    public void ShowInteractionPromptInWorld(Vector3 worldPos)
+    {
+        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
+        icon.SetEnabled(true);
+        icon.visible = true;
+
+    }
+
+    public void HideInteractPrompt()
+    {
+        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        icon.visible = false;
     }
 }
 

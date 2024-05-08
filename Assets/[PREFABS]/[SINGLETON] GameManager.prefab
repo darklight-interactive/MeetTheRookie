@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6914380045224247625}
   - component: {fileID: 4205332937202348411}
   m_Layer: 0
-  m_Name: FMOD Manager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!1 &8860814965438179826
+--- !u!1 &3700630360981046889
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,22 +151,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7034851221228567786}
-  - component: {fileID: 2926313913478783821}
+  - component: {fileID: 7162846943886124095}
+  - component: {fileID: 5035073438910074066}
+  - component: {fileID: 4959384409519080637}
   m_Layer: 0
-  m_Name: INKY Story Manager
+  m_Name: StoryManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7034851221228567786
+--- !u!4 &7162846943886124095
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8860814965438179826}
+  m_GameObject: {fileID: 3700630360981046889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -175,19 +176,256 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5054830795790530424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2926313913478783821
+--- !u!114 &5035073438910074066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8860814965438179826}
+  m_GameObject: {fileID: 3700630360981046889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5f4d653c1241d1409742d52401eda68, type: 3}
+  m_Script: {fileID: 11500000, guid: b486296396653634187305e1a8d85f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStoryName: scene1
+  _nameKeys:
+  - mtr_global
+  - mtr_level1
+  - mtr_level3
+  - mtr_level5
+  _storyValues:
+  - _name: mtr_global
+    _knotAndStitchKeys:
+    - NewSpeaker
+    - StartQuest
+    - CompleteQuest
+    - IsQuestComplete
+    - DiscoverClue
+    - IsClueFound
+    - global decl
+    _variables:
+    - _key: Speaker
+      _valueAsString: 
+    - _key: curSpeaker
+      _valueAsString: Lupe
+    - _key: mainQuest
+      _valueAsString: 
+    - _key: activeQuests
+      _valueAsString: 
+    - _key: completedQuests
+      _valueAsString: 
+    - _key: ClueKnowledge
+      _valueAsString: 
+    - _key: Clues_1_1
+      _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+    - _key: QuestChain_1_1
+      _valueAsString: 
+    - _key: knowledgeState_1
+      _valueAsString: 
+    _globalTags: []
+  - _name: mtr_level1
+    _knotAndStitchKeys:
+    - scene1_0
+    - scene1_1
+    - scene1_1.fallen_tree
+    - scene1_1.gas_pump
+    - scene1_1.car
+    - scene1_1.npc
+    - scene1_1.enter_store
+    - scene1_2
+    - scene1_2.vending_machine
+    - scene1_2.employee
+    - scene1_2.door_to_backroom
+    - scene1_2.door_to_outside
+    - scene1_3
+    - scene1_3.mel
+    - scene1_3.goop
+    - scene1_4
+    - NewSpeaker
+    - StartQuest
+    - CompleteQuest
+    - IsQuestComplete
+    - DiscoverClue
+    - IsClueFound
+    - global decl
+    _variables:
+    - _key: Speaker
+      _valueAsString: 
+    - _key: curSpeaker
+      _valueAsString: Lupe
+    - _key: mainQuest
+      _valueAsString: 
+    - _key: activeQuests
+      _valueAsString: 
+    - _key: completedQuests
+      _valueAsString: 
+    - _key: ClueKnowledge
+      _valueAsString: 
+    - _key: Clues_1_1
+      _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+    - _key: QuestChain_1_1
+      _valueAsString: 
+    - _key: knowledgeState_1
+      _valueAsString: 
+    _globalTags: []
+  - _name: mtr_level3
+    _knotAndStitchKeys:
+    - set_speaker
+    - StartQuest
+    - CompleteQuest
+    - IsQuestComplete
+    - DiscoverClue
+    - IsClueFound
+    - GoToSubScene
+    - scene3_1
+    - scene3_1.investigate
+    - scene3_1.evidence_discussed_Misra
+    - scene3_1.Misra_
+    - scene3_1.Misra_dialogue
+    - scene3_1.fence
+    - scene3_1.window
+    - scene3_1.strange_footsteps
+    - scene3_2
+    - scene3_2.intro_conversation
+    - scene3_2.investigate_inside
+    - scene3_2.evidence_discussed_Misra_inside
+    - scene3_2.closing_discussion
+    - scene3_2.closing_discussion_2
+    - scene3_2.claw_marks
+    - scene3_2.floor_splatters
+    - scene3_2.additional_damages
+    - scene3_2.wine_barrels
+    - scene3_2.wine_barrels2
+    - scene3_2.backroom_door
+    - scene3_2.Winery_front_door
+    - global decl
+    _variables:
+    - _key: Speaker
+      _valueAsString: 
+    - _key: curSpeaker
+      _valueAsString: Lupe
+    - _key: QuestChain
+      _valueAsString: 
+    - _key: activeQuests
+      _valueAsString: FIRST_INTERACT
+    - _key: completedQuests
+      _valueAsString: 
+    - _key: Clues
+      _valueAsString: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE,
+        EVIDENCE_CLAW_MARKS, EVIDENCE_DAMAGES
+    - _key: knowledgeState
+      _valueAsString: 
+    - _key: currentScene
+      _valueAsString: scene3_1
+    _globalTags: []
+  - _name: mtr_level5
+    _knotAndStitchKeys:
+    - set_speaker
+    - StartQuest
+    - CompleteQuest
+    - IsQuestComplete
+    - DiscoverClue
+    - IsClueFound
+    - scene5_1
+    - scene5_2
+    - scene5_2.outdoor_choices
+    - scene5_2INSIDE
+    - scene5_3
+    - scene5_3.table_papers
+    - scene5_3.number_pad
+    - scene5_3.misra_found_dating_sim
+    - scene5_3.ending_sequence
+    - global decl
+    _variables:
+    - _key: Speaker
+      _valueAsString: 
+    - _key: curSpeaker
+      _valueAsString: Lupe
+    - _key: QuestChain
+      _valueAsString: 
+    - _key: activeQuests
+      _valueAsString: 
+    - _key: completedQuests
+      _valueAsString: 
+    - _key: Clues
+      _valueAsString: 
+    - _key: knowledgeState
+      _valueAsString: 
+    _globalTags:
+    - Level 5 - The Winery, Night, Day 1
+    - This Level holds both a Dating Sim and Gameplay. We start in the interior of
+      Lupe's car during a Stakeout with Misra, outside the Old Winery. The Dating
+      Sim can be cycled through, and at a certain point is interrupted by a loud,
+      unexplained disturbance from inside the Winery. Misra is quick to get out of
+      the car to invesitigate.
+--- !u!114 &4959384409519080637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3700630360981046889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStoryKey: mtr_level1
+  currentStory:
+    _name: 
+    _knotAndStitchKeys: []
+    _variables: []
+    _globalTags: []
+  currentKnot: 
+--- !u!1 &5330460194198749337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4499979008374654216}
+  - component: {fileID: 517871753729993483}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4499979008374654216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054830795790530424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517871753729993483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionUIPreset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
+  worldSpaceUIPreset: {fileID: 11400000, guid: c0567e73f117547109442beb4df313db, type: 2}
+  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
+  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+  synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +438,6 @@ GameObject:
   - component: {fileID: 2927568867421027592}
   - component: {fileID: 3935851452667166986}
   - component: {fileID: 5342227784319069846}
-  - component: {fileID: 9014096649367524951}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -223,7 +460,8 @@ Transform:
   m_Children:
   - {fileID: 7313103818091379476}
   - {fileID: 6914380045224247625}
-  - {fileID: 7034851221228567786}
+  - {fileID: 7162846943886124095}
+  - {fileID: 4499979008374654216}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2927568867421027592
@@ -250,7 +488,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0dbd76607f79040806a0ceee308384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionPreset: {fileID: 11400000, guid: a8318c8f2e43e90459ad9e56c77193ef, type: 2}
+  sceneBuildDirectory: Assets/Scenes/Build
+  currentScene: Assets/Scenes/Build/MAIN_MENU.unity
+  scenesInBuild:
+  - {fileID: 102900000, guid: 14a5101b082acf5438a57e39dc7731e0, type: 3}
+  - {fileID: 102900000, guid: dec0233f10f64f342aa5bb6310fcb246, type: 3}
+  - {fileID: 102900000, guid: dc4b8b818db9b2049b1ab0c869ec409f, type: 3}
+  - {fileID: 102900000, guid: 69689f5ac1cb84bfda539d32a95238b7, type: 3}
+  - {fileID: 102900000, guid: 63763f0be6c4b4d1097c3d112abd37e4, type: 3}
+  - {fileID: 102900000, guid: 501a8c988ea034a919b0576b7dc59ee5, type: 3}
+  - {fileID: 102900000, guid: ba975b12f38e24506a5bc67460fe2aca, type: 3}
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,20 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionAsset: {fileID: -944628639613478452, guid: 07bc34b70e01d0641b078a46addac167, type: 3}
---- !u!114 &9014096649367524951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionUIPreset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
-  worldSpaceUIPreset: {fileID: 11400000, guid: c0567e73f117547109442beb4df313db, type: 2}
-  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
-  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
-  synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
+  _deviceInputType: 0
+  _moveInput: {x: 0, y: 0}
+  _primaryInteract: 0
+  _secondaryInteract: 0

@@ -23,6 +23,8 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     {
         controller = (NPC_Controller)args[0];
         animator = (NPC_Animator)args[1];
+
+        currentState = null;
     }
 
     public override void Step()
@@ -44,7 +46,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
 // IDLE
 public class IdleState : FiniteState<NPCState>
 {
-    private NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
     private readonly float _maxDuration;
@@ -90,7 +92,7 @@ public class IdleState : FiniteState<NPCState>
 // WALK
 public class WalkState : FiniteState<NPCState>
 {
-    NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
     private readonly float _maxDuration;
     private int _walkDirection = 1;
     private readonly float _leftBound;
@@ -129,7 +131,10 @@ public class WalkState : FiniteState<NPCState>
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(coroutine);
+        if (coroutine != null)
+        {
+            _coroutineRunner.StopCoroutine(coroutine);
+        }
         coroutine = null;
     }
 
@@ -182,7 +187,7 @@ public class WalkState : FiniteState<NPCState>
 
 public class SpeakState : FiniteState<NPCState>
 {
-    NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
 
     public SpeakState(NPCState stateType, params object[] args) : base(stateType, args)
     {
@@ -213,7 +218,7 @@ public class SpeakState : FiniteState<NPCState>
 
 public class FollowState : FiniteState<NPCState>
 {
-    private NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
     private NPC_Animator _animator;
@@ -227,7 +232,7 @@ public class FollowState : FiniteState<NPCState>
     private float followSpeed;
 
     /// <param name="args">
-    ///    args[0] = NPC_StateMachine (_stateMachine)
+    ///    args[0] = NPC_StateMachine (ref _stateMachine)
     ///    args[1] = MonoBehaviour (_coroutineRunner)
     ///    args[2] = float (followDistance)
     ///    args[3] = float (followSpeed)
@@ -242,14 +247,17 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        if (player == null) { player = _controller.player; }
+        if (player == null) { player = _stateMachine.controller.player; }
 
          coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
     }
 
     public override void Exit()
     {
-        _coroutineRunner.StopCoroutine(coroutine);
+        if (coroutine != null)
+        {
+            _coroutineRunner.StopCoroutine(coroutine);
+        }
         coroutine = null;
     }
 
@@ -305,7 +313,7 @@ public class FollowState : FiniteState<NPCState>
 
 public class HideState : FiniteState<NPCState>
 {
-    private NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
 
@@ -431,7 +439,7 @@ public class HideState : FiniteState<NPCState>
 
 public class ChaseState : FiniteState<NPCState>
 {
-    private NPC_StateMachine _stateMachine;
+    public new NPC_StateMachine _stateMachine;
 
     private float chaseSpeakDistance;
     private float chaseSpeed;

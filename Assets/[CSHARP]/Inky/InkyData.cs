@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "MeetTheRookie/InkyData")]
-public class InkyData : ScriptableObject
+[CreateAssetMenu(menuName = "Darklight/Inky/StoryData")]
+public class InkyStoryData : ScriptableObject
 {
     [SerializeField] private string inkyKnotName;
 }
