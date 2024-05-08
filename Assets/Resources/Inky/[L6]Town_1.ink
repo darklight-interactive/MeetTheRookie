@@ -5,6 +5,7 @@ INCLUDE Josh.ink
 INCLUDE Jenkins.ink
 INCLUDE Irene.ink
 
+-> main
 // applicable everywhere
 VAR current_npc = ""
 
@@ -46,6 +47,9 @@ VAR knowledgeState = ()
         ~ return knowledgeState ? clue
     }
 
+===main===
+* [bar_door] ->scene4_1.the_rockin_kettle
+
 
 === scene4_1 === 
 # Location: Main Street
@@ -53,8 +57,8 @@ VAR knowledgeState = ()
 # The General Store and Arcade are accessible.
 # The Bar is not.
 # Any store marked with a closed sign is not accessible.
-
-* [Misra]
+->DONE
+= Misra_dialogue
     ~ CompleteQuest(visited_misra)
     ~ set_speaker(Speaker.Misra)
     [Misra] Here we are! 
@@ -63,7 +67,7 @@ VAR knowledgeState = ()
     ~ set_speaker(Speaker.Lupe)
     -> DONE
     
- *{IsQuestComplete(visited_arcade)}[Misra]
+* {IsQuestComplete(visited_arcade)}[Misra]
     ~ CompleteQuest(visited_misra)
     ~ set_speaker(Speaker.Misra)
      [Misra] Those guys are the worst.
@@ -94,16 +98,11 @@ VAR knowledgeState = ()
         [Misra] Think of it this way...we get more time to crack this case!
         [Misra] But in the meantime, let's take a bit of a break...
         -> DONE
-    
  
- 
- 
- 
-= main_street
 
-{IsQuestComplete(visited_misra):
+//{IsQuestComplete(visited_misra):
 
-+ [strange_symbol_on_fountain]
+= strange_symbol_on_fountain
     {IsQuestComplete(visited_symbol):
     ~ set_speaker(Speaker.Misra)
     [Misra]{It's probably just some historical symbol. | I don't think it's anything important. | We should move on. | Where to next?}
@@ -121,62 +120,57 @@ VAR knowledgeState = ()
     -> DONE
 }
 
-+ [goop_on_fountain]
-    {IsQuestComplete(visited_goop):
-        [Lupe] {So weird...|It looks...squishy?| It smells kinda acidic. | Weird.}
-        -> DONE
-    - else: 
-        [Lupe] More of this stuff.
-        ~ set_speaker(Speaker.Misra)
-        [Misra] You've seen it before?
-        ~ set_speaker(Speaker.Lupe)
-        [Lupe] Yeah. 
-        [Lupe] It was at the Gas Station near the edge of town. 
-     ~ CompleteQuest(visited_goop)
-     ~ DiscoverClue(goop_evidence)
-    // Add to Synthesis - The Town of KR
-
-     -> DONE
-}
-
-+ [idahome_and_goods] -> scene4_2
-
-+ [power_up_arcade] -> scene4_3
-   
-+ [the_rockin_kettle]
-    {IsQuestComplete(visited_gen_store) && IsQuestComplete(visited_arcade):
-        ~ set_speaker(Speaker.Misra)
-        [Misra] Looks like the Bar is open! Shall we?
-        ~ set_speaker(Speaker.Lupe)
-        [Lupe] I shouldn't drink.
-        [Lupe] I still need to drive back out tonight once the road is cleared.
-        ~ set_speaker(Speaker.Misra)
-        [Misra] Right, about that...
-        [Misra] I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
-        [Misra] I'm really sorry.
-        [Misra] I know you had somewhere to be.
-        ~ set_speaker(Speaker.Lupe)
-        [Lupe] Ah...
-        [Lupe] Well, that's not great.
-        [Lupe] But I suppose there's nothing you can do about it.
-        ~ set_speaker(Speaker.Misra)
-        [Misra] Think of it this way...we get more time to crack this case!
-        [Misra] But in the meantime, let's take a bit of a break...
-        ~ set_speaker(Speaker.Lupe)
-        -> scene4_4
-        
-    - else:
-        ~ set_speaker(Speaker.Misra)
-        [Misra] Someone wants a drink, I see.
-        [Misra] The Rockin Kettle doesn't open until happy hour! 
-        [Misra] We can come back later.
-        ~ set_speaker(Speaker.Lupe)
+= goop_on_fountain
+{IsQuestComplete(visited_goop):
+    [Lupe] {So weird...|It looks...squishy?| It smells kinda acidic. | Weird.}
     -> DONE
-    
-  
+- else: 
+    [Lupe] More of this stuff.
+    ~ set_speaker(Speaker.Misra)
+    [Misra] You've seen it before?
+    ~ set_speaker(Speaker.Lupe)
+    [Lupe] Yeah. 
+    [Lupe] It was at the Gas Station near the edge of town. 
+ ~ CompleteQuest(visited_goop)
+ ~ DiscoverClue(goop_evidence)
+// Add to Synthesis - The Town of KR
+
+ -> DONE
 }
 
- *{IsQuestComplete(visited_gen_store)}[Misra]
+= power_up_arcade
+->scene4_3
+   
+= the_rockin_kettle
+{IsQuestComplete(visited_gen_store) && IsQuestComplete(visited_arcade):
+    ~ set_speaker(Speaker.Misra)
+    [Misra] Looks like the Bar is open! Shall we?
+    ~ set_speaker(Speaker.Lupe)
+    [Lupe] I shouldn't drink.
+    [Lupe] I still need to drive back out tonight once the road is cleared.
+    ~ set_speaker(Speaker.Misra)
+    [Misra] Right, about that...
+    [Misra] I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
+    [Misra] I'm really sorry.
+    [Misra] I know you had somewhere to be.
+    ~ set_speaker(Speaker.Lupe)
+    [Lupe] Ah...
+    [Lupe] Well, that's not great.
+    [Lupe] But I suppose there's nothing you can do about it.
+    ~ set_speaker(Speaker.Misra)
+    [Misra] Think of it this way...we get more time to crack this case!
+    [Misra] But in the meantime, let's take a bit of a break...
+    ~ set_speaker(Speaker.Lupe)
+- else:
+    ~ set_speaker(Speaker.Misra)
+    [Misra] Someone wants a drink, I see.
+    [Misra] The Rockin Kettle doesn't open until happy hour! 
+    [Misra] We can come back later.
+    ~ set_speaker(Speaker.Lupe)
+-> DONE
+}
+
+* {IsQuestComplete(visited_gen_store)}[Misra]
     ~ CompleteQuest(visited_misra)
     ~ set_speaker(Speaker.Misra)
     [Misra] I'm sorry if Roy seems like a bit of a downer.
@@ -235,8 +229,6 @@ VAR knowledgeState = ()
         ~ set_speaker(Speaker.Lupe)
         // Add to Synthesis - The Town of KR
         -> DONE
-}
-
 
 === scene4_2 ===
 // FUNC SCENE CHANGE
@@ -281,13 +273,13 @@ VAR knowledgeState = ()
     {current_npc} Take care!
     // ?
     ~ set_speaker(Speaker.Lupe)
-        -> scene4_1.main_street
+    -> DONE
 
 === scene4_3 ===
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
 
-+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
+//+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
 
 + {IsQuestComplete(visited_arcade)}[teens]
      ~ set_speaker(Speaker.Jenny)

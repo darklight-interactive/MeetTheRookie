@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 77e49a5e0a809fa4689a2a16bb421120
+guid: 549b267e33027b54e867e9a30ce72c0e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6323836167556335035
-    second: large fountain goop_0
+      213: -741193441932847754
+    second: NPC3_idle_0
+  - first:
+      213: -819768252044271187
+    second: NPC3_idle_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -47,13 +50,13 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 1
+  spriteExtrude: 0
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -72,10 +75,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -152,13 +155,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: large fountain goop_0
+      name: NPC3_idle_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 30
-        width: 100
-        height: 48
+        x: 40
+        y: 0
+        width: 48
+        height: 117
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +169,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54a790fb2883d38a0800000000000000
-      internalID: -6323836167556335035
+      spriteID: 6755eb7dd70c6b5f0800000000000000
+      internalID: -741193441932847754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NPC3_idle_1
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 48
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da122ca3e199f94f0800000000000000
+      internalID: -819768252044271187
       vertices: []
       indices: 
       edges: []
@@ -183,7 +207,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      large fountain goop_0: -6323836167556335035
+      NPC3_idle_0: -741193441932847754
+      NPC3_idle_1: -819768252044271187
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

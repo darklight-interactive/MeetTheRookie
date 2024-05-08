@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
   - component: {fileID: 4408537733405745119}
+  - component: {fileID: 4138829041031667111}
   m_Layer: 0
   m_Name: '[NPC] Base'
   m_TagString: Untagged
@@ -246,16 +247,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  showGizmos: 1
+  _storyParent: {fileID: 0}
+  _interactionKey: scene1_2.employee
+  _sprite: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
-  _spriteRenderer: {fileID: 8403832537613495249}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: scene1_2.employee
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   speechBubbleScalar: 1.5
   dialogueBubble: {fileID: 0}
+--- !u!114 &4138829041031667111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1

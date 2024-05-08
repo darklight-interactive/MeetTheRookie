@@ -146,7 +146,7 @@
 
     -> pamphlet
   
- * {golden_age && tragedy && rocky_years} -> scene4_2  
+ // TODO : * {golden_age && tragedy && rocky_years} -> scene4_2  
  
 === personal_info ===
 ~ current_npc = "[Roy_Rodgerson]"
