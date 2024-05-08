@@ -12,7 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_global
   m_EditorClassIdentifier: 
-  _name: 
-  _knotAndStitchKeys: []
-  _variables: []
+  _name: mtr_global
+  _inkFile: {fileID: 4900000, guid: 9f1e654fd6585e84d9101b671769d999, type: 3}
+  _knotAndStitchKeys:
+  - NewSpeaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: mainQuest
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: ClueKnowledge
+    _valueAsString: 
+  - _key: Clues_1_1
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: QuestChain_1_1
+    _valueAsString: 
+  - _key: knowledgeState_1
+    _valueAsString: 
   _globalTags: []

@@ -12,7 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_level5
   m_EditorClassIdentifier: 
-  _name: 
-  _knotAndStitchKeys: []
-  _variables: []
-  _globalTags: []
+  _name: mtr_level5
+  _inkFile: {fileID: 4900000, guid: 5d4811cf4779d764b8d5d9d78f92dd74, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - scene5_1
+  - scene5_2
+  - scene5_2.outdoor_choices
+  - scene5_2INSIDE
+  - scene5_3
+  - scene5_3.table_papers
+  - scene5_3.number_pad
+  - scene5_3.misra_found_dating_sim
+  - scene5_3.ending_sequence
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: 
+  - _key: knowledgeState
+    _valueAsString: 
+  _globalTags:
+  - Level 5 - The Winery, Night, Day 1
+  - This Level holds both a Dating Sim and Gameplay. We start in the interior of
+    Lupe's car during a Stakeout with Misra, outside the Old Winery. The Dating Sim
+    can be cycled through, and at a certain point is interrupted by a loud, unexplained
+    disturbance from inside the Winery. Misra is quick to get out of the car to invesitigate.

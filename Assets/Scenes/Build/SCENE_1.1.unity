@@ -4378,7 +4378,7 @@ SpriteRenderer:
   m_Size: {x: 2.54, y: 0.9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!43 &393260003
@@ -7319,35 +7319,35 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 954588745}
+    m_TransformParent: {fileID: 987175996433645435}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 0.40000015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 0.40000015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3470416
+      value: -4.524048
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.0859195
+      value: 0.14671147
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.09603214
+      value: -0.09941435
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7355,7 +7355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 59fc55665811b7243a7484a8f0c572e5, type: 3}
       propertyPath: m_LocalRotation.z
@@ -12006,6 +12006,63 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!114 &917074908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level1
+  m_EditorClassIdentifier: 
+  _name: mtr_level1
+  _inkFile: {fileID: 4900000, guid: 806dd59271f480847bb7d8f943e61eb2, type: 3}
+  _knotAndStitchKeys:
+  - scene1_0
+  - scene1_1
+  - scene1_1.fallen_tree
+  - scene1_1.gas_pump
+  - scene1_1.car
+  - scene1_1.npc
+  - scene1_1.enter_store
+  - scene1_2
+  - scene1_2.vending_machine
+  - scene1_2.employee
+  - scene1_2.door_to_backroom
+  - scene1_2.door_to_outside
+  - scene1_3
+  - scene1_3.mel
+  - scene1_3.goop
+  - scene1_4
+  - NewSpeaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: mainQuest
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: ClueKnowledge
+    _valueAsString: 
+  - _key: Clues_1_1
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: QuestChain_1_1
+    _valueAsString: 
+  - _key: knowledgeState_1
+    _valueAsString: 
+  _globalTags: []
 --- !u!43 &931527666
 Mesh:
   m_ObjectHideFlags: 0
@@ -12180,12 +12237,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 954588745}
-  - component: {fileID: 954588746}
+  - component: {fileID: 954588749}
   - component: {fileID: 954588747}
+  - component: {fileID: 954588748}
   m_Layer: 8
   m_Name: GAS_PUMP_Interaction
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -12197,38 +12255,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954588743}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.6944814, y: 2.1894405, z: -0.375}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -3.6875, y: 1.375, z: -0.375}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 1210772551}
-  - {fileID: 522964478}
+  m_Children: []
   m_Father: {fileID: 3181833851791777891}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &954588746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954588743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8869e6c1bee746546b1422b02399a4f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  showGizmos: 1
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _spriteRenderer: {fileID: 0}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: scene1_1.gas_pump
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!61 &954588747
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12268,13 +12301,87 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.328125, y: 0.9375}
-    newSize: {x: 0.42, y: 1.2}
+    newSize: {x: 0.328125, y: 0.9375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.9375}
   m_EdgeRadius: 0
+--- !u!212 &954588748
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954588743}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 4816572674808989152, guid: ba45dd439753d3d408567fd9f24b466c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.328125, y: 0.9375}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &954588749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954588743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _storyParent: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+  _interactionKey: scene1_1.gas_pump
+  _sprite: {fileID: 4816572674808989152, guid: ba45dd439753d3d408567fd9f24b466c, type: 3}
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &980337160
 GameObject:
   m_ObjectHideFlags: 0
@@ -15934,92 +16041,68 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1210772550
-GameObject:
+--- !u!114 &1199898215
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1210772551}
-  - component: {fileID: 1210772552}
-  m_Layer: 8
-  m_Name: sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1210772551
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1210772550}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.6894405, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 954588745}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!212 &1210772552
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1210772550}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 8705605568361936435, guid: cef7ec047fd5eac47a992268ae647f6b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.42, y: 1.2}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level3
+  m_EditorClassIdentifier: 
+  _name: mtr_level3
+  _inkFile: {fileID: 4900000, guid: 21bd6d4883ac70e4390eed5ce182b18c, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - GoToSubScene
+  - scene3_1
+  - scene3_1.investigate
+  - scene3_1.evidence_discussed_Misra
+  - scene3_1.Misra_
+  - scene3_1.Misra_dialogue
+  - scene3_1.fence
+  - scene3_1.window
+  - scene3_1.strange_footsteps
+  - scene3_2
+  - scene3_2.intro_conversation
+  - scene3_2.investigate_inside
+  - scene3_2.evidence_discussed_Misra_inside
+  - scene3_2.closing_discussion
+  - scene3_2.closing_discussion_2
+  - scene3_2.claw_marks
+  - scene3_2.floor_splatters
+  - scene3_2.additional_damages
+  - scene3_2.wine_barrels
+  - scene3_2.wine_barrels2
+  - scene3_2.backroom_door
+  - scene3_2.Winery_front_door
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: FIRST_INTERACT
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE, EVIDENCE_CLAW_MARKS,
+      EVIDENCE_DAMAGES
+  - _key: knowledgeState
+    _valueAsString: 
+  - _key: currentScene
+    _valueAsString: scene3_1
+  _globalTags: []
 --- !u!43 &1224188711
 Mesh:
   m_ObjectHideFlags: 0
@@ -17291,6 +17374,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 142972361}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+--- !u!114 &1313125327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level5
+  m_EditorClassIdentifier: 
+  _name: mtr_level5
+  _inkFile: {fileID: 4900000, guid: 5d4811cf4779d764b8d5d9d78f92dd74, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - scene5_1
+  - scene5_2
+  - scene5_2.outdoor_choices
+  - scene5_2INSIDE
+  - scene5_3
+  - scene5_3.table_papers
+  - scene5_3.number_pad
+  - scene5_3.misra_found_dating_sim
+  - scene5_3.ending_sequence
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: 
+  - _key: knowledgeState
+    _valueAsString: 
+  _globalTags:
+  - Level 5 - The Winery, Night, Day 1
+  - This Level holds both a Dating Sim and Gameplay. We start in the interior of
+    Lupe's car during a Stakeout with Misra, outside the Old Winery. The Dating Sim
+    can be cycled through, and at a certain point is interrupted by a loud, unexplained
+    disturbance from inside the Winery. Misra is quick to get out of the car to invesitigate.
 --- !u!43 &1321436304
 Mesh:
   m_ObjectHideFlags: 0
@@ -17464,6 +17598,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_storyValues.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_storyValues.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1865817252}
+    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_storyValues.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1512795020}
+    - target: {fileID: 5035073438910074066, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_storyValues.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2106301649}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20228,6 +20378,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 615343942}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1512795020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: mtr_level3
+  _inkFile: {fileID: 4900000, guid: 21bd6d4883ac70e4390eed5ce182b18c, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - GoToSubScene
+  - scene3_1
+  - scene3_1.investigate
+  - scene3_1.evidence_discussed_Misra
+  - scene3_1.Misra_
+  - scene3_1.Misra_dialogue
+  - scene3_1.fence
+  - scene3_1.window
+  - scene3_1.strange_footsteps
+  - scene3_2
+  - scene3_2.intro_conversation
+  - scene3_2.investigate_inside
+  - scene3_2.evidence_discussed_Misra_inside
+  - scene3_2.closing_discussion
+  - scene3_2.closing_discussion_2
+  - scene3_2.claw_marks
+  - scene3_2.floor_splatters
+  - scene3_2.additional_damages
+  - scene3_2.wine_barrels
+  - scene3_2.wine_barrels2
+  - scene3_2.backroom_door
+  - scene3_2.Winery_front_door
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: FIRST_INTERACT
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE, EVIDENCE_CLAW_MARKS,
+      EVIDENCE_DAMAGES
+  - _key: knowledgeState
+    _valueAsString: 
+  - _key: currentScene
+    _valueAsString: scene3_1
+  _globalTags: []
 --- !u!43 &1529445322
 Mesh:
   m_ObjectHideFlags: 0
@@ -30570,6 +30782,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 142972361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1865817252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: mtr_level1
+  _inkFile: {fileID: 4900000, guid: 806dd59271f480847bb7d8f943e61eb2, type: 3}
+  _knotAndStitchKeys:
+  - scene1_0
+  - scene1_1
+  - scene1_1.fallen_tree
+  - scene1_1.gas_pump
+  - scene1_1.car
+  - scene1_1.npc
+  - scene1_1.enter_store
+  - scene1_2
+  - scene1_2.vending_machine
+  - scene1_2.employee
+  - scene1_2.door_to_backroom
+  - scene1_2.door_to_outside
+  - scene1_3
+  - scene1_3.mel
+  - scene1_3.goop
+  - scene1_4
+  - NewSpeaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: mainQuest
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: ClueKnowledge
+    _valueAsString: 
+  - _key: Clues_1_1
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: QuestChain_1_1
+    _valueAsString: 
+  - _key: knowledgeState_1
+    _valueAsString: 
+  _globalTags: []
 --- !u!1 &1867808855
 GameObject:
   m_ObjectHideFlags: 0
@@ -34212,6 +34481,57 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &2106301649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: mtr_level5
+  _inkFile: {fileID: 4900000, guid: 5d4811cf4779d764b8d5d9d78f92dd74, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - scene5_1
+  - scene5_2
+  - scene5_2.outdoor_choices
+  - scene5_2INSIDE
+  - scene5_3
+  - scene5_3.table_papers
+  - scene5_3.number_pad
+  - scene5_3.misra_found_dating_sim
+  - scene5_3.ending_sequence
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: 
+  - _key: knowledgeState
+    _valueAsString: 
+  _globalTags:
+  - Level 5 - The Winery, Night, Day 1
+  - This Level holds both a Dating Sim and Gameplay. We start in the interior of
+    Lupe's car during a Stakeout with Misra, outside the Old Winery. The Dating Sim
+    can be cycled through, and at a certain point is interrupted by a loud, unexplained
+    disturbance from inside the Winery. Misra is quick to get out of the car to invesitigate.
 --- !u!43 &2115464617
 Mesh:
   m_ObjectHideFlags: 0
@@ -34377,6 +34697,47 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &2116602805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_global
+  m_EditorClassIdentifier: 
+  _name: mtr_global
+  _inkFile: {fileID: 4900000, guid: 9f1e654fd6585e84d9101b671769d999, type: 3}
+  _knotAndStitchKeys:
+  - NewSpeaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: mainQuest
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: 
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: ClueKnowledge
+    _valueAsString: 
+  - _key: Clues_1_1
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: QuestChain_1_1
+    _valueAsString: 
+  - _key: knowledgeState_1
+    _valueAsString: 
+  _globalTags: []
 --- !u!1 &258535181832070184
 GameObject:
   m_ObjectHideFlags: 0
@@ -34687,6 +35048,7 @@ Transform:
   m_Children:
   - {fileID: 472566046}
   - {fileID: 196319036}
+  - {fileID: 522964478}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1021306262873877890
@@ -34842,12 +35204,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4378752405384703283}
-  - component: {fileID: 6615088009409205217}
   - component: {fileID: 6615088009409205219}
+  - component: {fileID: 6615088009409205217}
+  - component: {fileID: 6615088009409205218}
   m_Layer: 8
   m_Name: CAR_Interaction
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -34877,52 +35240,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9135716612960679894}
   m_Mesh: {fileID: 1820513707}
---- !u!61 &1834566720605230017
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6019669713433399406}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.009858638, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.3515625, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.3591892, y: 1}
-  m_EdgeRadius: 0
 --- !u!4 &1844761012593283523
 Transform:
   m_ObjectHideFlags: 0
@@ -35069,7 +35386,7 @@ Transform:
   m_GameObject: {fileID: 6019669713433399406}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.37500012, y: 1.457, z: -1.375}
+  m_LocalPosition: {x: 0, y: 1.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -35485,7 +35802,7 @@ Transform:
   m_GameObject: {fileID: 1594974522457498516}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.125, y: 1.9169999, z: -1.125}
+  m_LocalPosition: {x: -4.75, y: 1.25, z: -1.125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46714,6 +47031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9043265860304346458}
   - component: {fileID: 4685611341193627238}
+  - component: {fileID: 9043265860304346460}
   - component: {fileID: 9043265860304346459}
   m_Layer: 8
   m_Name: STORE_Interaction
@@ -46722,7 +47040,46 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &5886118890286423615
+--- !u!1 &6019669713433399406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2219413263936555467}
+  - component: {fileID: 6019669713433399409}
+  - component: {fileID: 6019669713433399408}
+  - component: {fileID: 6019669713433399407}
+  m_Layer: 7
+  m_Name: NPC_1_Interaction
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &6019669713433399407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6019669713433399406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _storyParent: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+  _interactionKey: scene1_1.npc
+  _sprite: {fileID: -3433175864039088387, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!212 &6019669713433399408
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46770,56 +47127,58 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.3515625, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &6019669713433399406
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2219413263936555467}
-  - component: {fileID: 5886118890286423615}
-  - component: {fileID: 1834566720605230017}
-  - component: {fileID: 6019669713433399407}
-  m_Layer: 7
-  m_Name: NPC_1_Interaction
-  m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &6019669713433399407
-MonoBehaviour:
+--- !u!61 &6019669713433399409
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6019669713433399406}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 64
-  showGizmos: 1
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _spriteRenderer: {fileID: 0}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: scene1_1.npc
-  speechBubbleScalar: 1.5
-  dialogueBubble: {fileID: 0}
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.3515625, y: 1}
+    newSize: {x: 0.3515625, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!33 &6143264582024481468
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -46935,7 +47294,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.54, y: 0.9}
+    oldSize: {x: 1.984375, y: 0.703125}
     newSize: {x: 2.54, y: 0.9}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -46943,6 +47302,60 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
+--- !u!212 &6615088009409205218
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594974522457498516}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 8081776846125497721, guid: ebc6bcafd05494544946d90f78ec518a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2.54, y: 0.9}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!114 &6615088009409205219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46952,20 +47365,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1594974522457498516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8869e6c1bee746546b1422b02399a4f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  showGizmos: 0
+  _storyParent: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+  _interactionKey: scene1_1.car
+  _sprite: {fileID: 8081776846125497721, guid: ebc6bcafd05494544946d90f78ec518a, type: 3}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
-  _spriteRenderer: {fileID: 0}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: scene1_1.car
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &6725149855403942893
 Transform:
   m_ObjectHideFlags: 0
@@ -47375,22 +47785,71 @@ MonoBehaviour:
   m_GameObject: {fileID: 5885300621370010421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b9f8d6034d4d6949a6672b9c9af7a7b, type: 3}
+  m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  showGizmos: 1
+  _storyParent: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+  _interactionKey: scene1_1.enter_store
+  _sprite: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
-  _spriteRenderer: {fileID: 0}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: 
-  _sceneTarget:
-    m_SceneName: SCENE_1.2
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!212 &9043265860304346460
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5885300621370010421}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!33 &9057375704519673880
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
     public InkyKnotIterator currentKnotIterator { get; private set; }
 
-    #region ==== State Machine ====
+    #region ----- [[ STATE MACHINE ]] ----- >>
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
     public class StateMachine : StateMachine<State>
     {
@@ -35,11 +35,8 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public State currentState => stateMachine.CurrentState;
     #endregion
 
-    [Dropdown("storyLoader.NameKeys")]
-    public string currentStoryKey;
-
-    public InkyStory currentStory;
-    private Story _story => currentStory;
+    public InkyStoryObject currentStoryObject;
+    private Story _story => currentStoryObject.CreateStory();
 
     [Dropdown("currentStory.knotAndStitchKeys")]
     public string currentKnot;
@@ -48,9 +45,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     {
         base.Awake();
         stateMachine.ChangeActiveStateTo(State.INIT);
-
         storyLoader.Load();
-        currentStory = storyLoader.GetStory(currentStoryKey);
     }
 
     [Button("Continue Story")]

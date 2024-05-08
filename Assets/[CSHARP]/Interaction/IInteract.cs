@@ -21,7 +21,7 @@ public interface IInteract
     /// <summary>
     /// The key to use to identify the interaction.
     /// </summary>
-    public string interactionKey { get; set; }
+    public string interactionKey { get; }
 
 
     // ===================== [[ INTERACTION METHODS ]] =====================    

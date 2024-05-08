@@ -50,7 +50,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
     ~ NewSpeaker(Speaker.Lupe)
     ...great. Any way I can get this fixed?
-    ~NewSpeaker(Speaker.Unkown)
+    ~ NewSpeaker(Speaker.Unkown)
     Got a chainsaw on ya? 
     Heheheheh. 
     Ah, don't look so grumpy. 

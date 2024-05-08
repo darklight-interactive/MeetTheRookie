@@ -16,27 +16,17 @@ using UnityEditor;
 /// </summary>
 public class InkyStoryLoader : MonoBehaviour
 {
-    private const string PATH = "Inky/";
-    private Dictionary<string, InkyStory> _stories = new Dictionary<string, InkyStory>();
+    private Dictionary<string, InkyStoryObject> _stories = new Dictionary<string, InkyStoryObject>();
 
     // ------ [[ SERIALIZED FIELDS ]] ------ >>
     [Button("Load All Stories")]
     public void Load() => LoadAllStories();
     [SerializeField, ShowOnly] string[] _nameKeys = new string[0];
-    [SerializeField] InkyStory[] _storyValues = new InkyStory[0];
+    [SerializeField] InkyStoryObject[] _storyValues = new InkyStoryObject[0];
 
 
     // ------ [[ PUBLIC ACCESSORS ]] ------ >>
     public bool allStoriesLoaded { get; private set; }
-    public string[] NameKeys
-    {
-        get
-        {
-            List<string> keys = _nameKeys.ToList();
-            keys.Remove("mtr_global");
-            return keys.ToArray();
-        }
-    }
 
     /// <summary>
     /// Loads all Ink story files found in the Resources/Inky directory.
@@ -44,18 +34,16 @@ public class InkyStoryLoader : MonoBehaviour
     public void LoadAllStories()
     {
         _nameKeys = new string[0];
-        _storyValues = new InkyStory[0];
+        _storyValues = new InkyStoryObject[0];
 
         // Load all text assets from the Inky resources directory
-        Dictionary<string, InkyStory> stories = new Dictionary<string, InkyStory>();
-        UnityEngine.Object[] storyAssets = Resources.LoadAll(PATH, typeof(TextAsset));
+        Dictionary<string, InkyStoryObject> stories = new Dictionary<string, InkyStoryObject>();
+        UnityEngine.Object[] storyAssets = Resources.LoadAll("Inky/", typeof(TextAsset));
         foreach (TextAsset storyAsset in storyAssets)
         {
-            // Load the story from the text asset
-            Story story = new Story(storyAsset.text);
-            InkyStory inkyStory = ScriptableObject.CreateInstance<InkyStory>();
+            InkyStoryObject inkyStory = ScriptableObject.CreateInstance<InkyStoryObject>();
+            inkyStory.Initialize(storyAsset);
             stories.Add(storyAsset.name, inkyStory);
-            SaveStoryData(inkyStory, storyAsset.name);
         }
 
         _stories = stories;
@@ -64,37 +52,30 @@ public class InkyStoryLoader : MonoBehaviour
         allStoriesLoaded = true;
     }
 
-    public InkyStory GetStory(string key)
+    public InkyStoryObject GetStory(string key)
     {
         if (!allStoriesLoaded) LoadAllStories();
-        LoadStory(key);
         return _stories[key];
     }
 
-    void LoadStory(string key)
-    {
-        if (_stories.ContainsKey(key)) return;
-        TextAsset storyAsset = Resources.Load<TextAsset>(PATH + key);
-        if (storyAsset == null)
-        {
-            Debug.LogError($"Story with key {key} not found.");
-            return;
-        }
-
-        Story story = new Story(storyAsset.text);
-        InkyStory inkyStory = new InkyStory(key, story);
-        _stories.Add(key, inkyStory);
-        _nameKeys = _stories.Keys.ToArray();
-        _storyValues = _stories.Values.ToArray();
-    }
 
 #if UNITY_EDITOR
-
-    private void SaveStoryData(InkyStory data, string name)
+    public InkyStoryObject SaveInkyStoryObject(TextAsset textAsset)
     {
-        string path = "Assets/Resources/Inky/StoryObjects/" + name + ".asset";
-        AssetDatabase.CreateAsset(data, path);
+        string path = $"Assets/Resources/Inky/StoryObjects/{textAsset.name}.asset";
+        InkyStoryObject inkyStory = AssetDatabase.LoadAssetAtPath<InkyStoryObject>(path);
+
+        if (inkyStory == null)
+        {
+            inkyStory = ScriptableObject.CreateInstance<InkyStoryObject>();
+            AssetDatabase.CreateAsset(inkyStory, path);
+        }
+
+        inkyStory.Initialize(textAsset);
+        EditorUtility.SetDirty(inkyStory);
         AssetDatabase.SaveAssets();
+
+        return inkyStory;
     }
 #endif
 }

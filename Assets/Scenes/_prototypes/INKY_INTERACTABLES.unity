@@ -1193,6 +1193,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: storyParent
+      value: 
+      objectReference: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+    - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: _storyParent
+      value: 
+      objectReference: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+    - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: speechBubbleScalar
       value: 1
       objectReference: {fileID: 0}
@@ -2856,6 +2864,10 @@ PrefabInstance:
       value: scene1_1
       objectReference: {fileID: 0}
     - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStory
+      value: 
+      objectReference: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentStory._name
       value: mtr_level1
       objectReference: {fileID: 0}
@@ -3987,9 +3999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knotFound: 1
-  _sceneNameKey: mtr_level1
-  _interactionKey: scene1_1.gas_pump
+  _storyParent: {fileID: 11400000, guid: 511f16d0c13794b4aa4c7fad67c1ae17, type: 2}
+  _interactionKey: scene1_2
   _sprite: {fileID: 21300000, guid: 30c4f936a84952f47bb2a93feb9eeab3, type: 3}
   _isTarget: 0
   _isActive: 0

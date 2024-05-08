@@ -5,26 +5,42 @@ using EasyButtons;
 using Ink.Runtime;
 using UnityEngine;
 
+/// <summary>
+/// Scriptable Object to store Ink stories and their associated data.
+/// </summary>
 [CreateAssetMenu(menuName = "Darklight/Inky/Story")]
-[System.Serializable]
-public class InkyStory : ScriptableObject
+public class InkyStoryObject : ScriptableObject
 {
-    [SerializeField, ShowOnly] private string _name;
-    [SerializeField, ShowOnly] private Story _story;
+    [SerializeField] private Story _story;
+    [SerializeField] private TextAsset _inkFile;
     [SerializeField, ShowOnly] private List<string> _knotAndStitchKeys;
-    public List<string> knotAndStitchKeys => _knotAndStitchKeys;
     [SerializeField] private List<InkyVariable> _variables;
     [SerializeField, ShowOnly] private List<string> _globalTags;
-    public InkyStory(string name, Story story)
+    public List<string> knotAndStitchKeys => _knotAndStitchKeys;
+
+
+    public void Initialize(TextAsset inkTextAsset)
     {
-        this._name = name;
-        this._story = story;
-        this._knotAndStitchKeys = GetKnotAndStitches(story);
-        this._variables = GetVariables(story);
-        this._globalTags = story.globalTags;
+        if (inkTextAsset == null)
+        {
+            Debug.LogError("Ink TextAsset is null.");
+            return;
+        }
+
+        this._inkFile = inkTextAsset;
+        this.name = inkTextAsset.name; // ScriptableObject name
+        this._story = CreateStory();
+        this._knotAndStitchKeys = GetKnotAndStitches(_story);
+        this._variables = GetVariables(_story);
+        this._globalTags = _story.globalTags;
 
         // Set up error handling
-        story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
+        _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
+    }
+
+    public Story CreateStory()
+    {
+        return new Story(_inkFile.text);
     }
 
     /// <summary>
@@ -51,7 +67,6 @@ public class InkyStory : ScriptableObject
         return output;
     }
 
-
     /// <summary>
     /// Retrieves all variables from an Ink story and wraps them in a dictionary.
     /// </summary>
@@ -68,10 +83,5 @@ public class InkyStory : ScriptableObject
             output.Add(inkyVariable);
         }
         return output;
-    }
-
-    public static implicit operator Story(InkyStory story)
-    {
-        return story._story;
     }
 }

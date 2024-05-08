@@ -15,40 +15,19 @@ using UnityEditor;
 public class Interactable : MonoBehaviour, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private List<string> _storyNameKeys;
-    private InkyStory _relatedStory;
-    private List<string> _interactionKnotKeys;
+    private InkyStoryLoader _storyLoader => InkyStoryManager.Instance.storyLoader;
     private InkyKnotIterator _knotIterator;
-    [SerializeField, ShowOnly] private bool _knotFound;
-
-    public InkyKnotIterator KnotIterator
-    {
-        get
-        {
-            if (_knotIterator == null)
-                _knotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
-            _knotFound = _knotIterator != null;
-            return _knotIterator;
-        }
-        set
-        {
-            _knotIterator = value;
-            _knotFound = _knotIterator != null;
-        }
-    }
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
     [Header("Interaction Settings")]
-    [Dropdown("_storyNameKeys")]
-    [SerializeField] string _sceneNameKey = "default-scene";
+    [SerializeField] InkyStoryObject _storyParent;
 
-    [DropdownAttribute("_interactionKnotKeys")]
-    [SerializeField] string _interactionKey = "default-interaction";
-    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
+    [DropdownAttribute("storyParent.knotAndStitchKeys")]
+    [SerializeField] string _interactionKey;
 
     [Header("Components")]
-    [ShowOnly, SerializeField] Sprite _sprite;
+    [SerializeField] Sprite _sprite;
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -59,7 +38,10 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] Color _defaultTint = Color.white;
     [SerializeField] Color _interactionTint = Color.yellow;
 
-
+    // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
+    public InkyStoryObject storyParent { get => _storyParent; private set => _storyParent = value; }
+    public string interactionKey { get => _interactionKey; private set => _interactionKey = value; }
+    public InkyKnotIterator knotIterator { get => _knotIterator; private set => _knotIterator = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
@@ -75,18 +57,22 @@ public class Interactable : MonoBehaviour, IInteract
     // ====== [[ INITIALIZATION ]] ================================
     public virtual void Initialize()
     {
-        InkyStoryLoader inkyStoryLoader = InkyStoryManager.Instance.storyLoader;
-        if (!inkyStoryLoader.allStoriesLoaded)
+        _spriteRenderer.sprite = _sprite;
+        _spriteRenderer.color = _defaultTint;
+
+        if (_storyParent == null)
         {
-            inkyStoryLoader.LoadAllStories();
+            Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
+            return;
         }
 
-        _storyNameKeys = inkyStoryLoader.NameKeys.ToList();
-        _relatedStory = inkyStoryLoader.GetStory(_sceneNameKey);
+        if (_interactionKey == null || _interactionKey == "")
+        {
+            Debug.LogError("Interaction Key is null. Please assign a valid knot or stitch key.");
+            return;
+        }
 
-        _interactionKnotKeys = _relatedStory.knotAndStitchKeys;
-        _spriteRenderer.sprite = _sprite;
-        KnotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
+        _knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
     }
 
     public virtual void Reset()
@@ -108,7 +94,6 @@ public class Interactable : MonoBehaviour, IInteract
         UIManager.Instance.HideInteractPrompt();
     }
 
-    public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
         // >> TEMPORARY COLOR CHANGE
@@ -116,7 +101,7 @@ public class Interactable : MonoBehaviour, IInteract
 
         // >> CONTINUE KNOT
         if (knotIterator == null)
-            knotIterator = new InkyKnotIterator(_relatedStory, _interactionKey);
+            knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
         ContinueKnot();
     }
 

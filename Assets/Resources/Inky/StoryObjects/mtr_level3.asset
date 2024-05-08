@@ -12,7 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_level3
   m_EditorClassIdentifier: 
-  _name: 
-  _knotAndStitchKeys: []
-  _variables: []
+  _name: mtr_level3
+  _inkFile: {fileID: 4900000, guid: 21bd6d4883ac70e4390eed5ce182b18c, type: 3}
+  _knotAndStitchKeys:
+  - set_speaker
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - GoToSubScene
+  - scene3_1
+  - scene3_1.investigate
+  - scene3_1.evidence_discussed_Misra
+  - scene3_1.Misra_
+  - scene3_1.Misra_dialogue
+  - scene3_1.fence
+  - scene3_1.window
+  - scene3_1.strange_footsteps
+  - scene3_2
+  - scene3_2.intro_conversation
+  - scene3_2.investigate_inside
+  - scene3_2.evidence_discussed_Misra_inside
+  - scene3_2.closing_discussion
+  - scene3_2.closing_discussion_2
+  - scene3_2.claw_marks
+  - scene3_2.floor_splatters
+  - scene3_2.additional_damages
+  - scene3_2.wine_barrels
+  - scene3_2.wine_barrels2
+  - scene3_2.backroom_door
+  - scene3_2.Winery_front_door
+  _variables:
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: activeQuests
+    _valueAsString: FIRST_INTERACT
+  - _key: completedQuests
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: EVIDENCE_BROKEN_WINDOW, EVIDENCE_FOOTSTEPS, EVIDENCE_FENCE, EVIDENCE_CLAW_MARKS,
+      EVIDENCE_DAMAGES
+  - _key: knowledgeState
+    _valueAsString: 
+  - _key: currentScene
+    _valueAsString: scene3_1
   _globalTags: []
