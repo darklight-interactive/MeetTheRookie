@@ -10,17 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level5
+  m_Name: '[L5]TheWineryNIGHT_1'
   m_EditorClassIdentifier: 
-  _name: mtr_level5
-  _inkFile: {fileID: 4900000, guid: 5d4811cf4779d764b8d5d9d78f92dd74, type: 3}
+  _inkFile: {fileID: 4900000, guid: da8f9984e46f146419c0b6427eaeeb4d, type: 3}
   _knotAndStitchKeys:
-  - set_speaker
-  - StartQuest
-  - CompleteQuest
-  - IsQuestComplete
-  - DiscoverClue
-  - IsClueFound
   - scene5_1
   - scene5_2
   - scene5_2.outdoor_choices
@@ -28,23 +21,28 @@ MonoBehaviour:
   - scene5_3
   - scene5_3.table_papers
   - scene5_3.number_pad
-  - scene5_3.misra_found_dating_sim
-  - scene5_3.ending_sequence
+  - scene5_3.misra_found
   _variables:
-  - _key: Speaker
-    _valueAsString: 
-  - _key: curSpeaker
-    _valueAsString: Lupe
-  - _key: QuestChain
-    _valueAsString: 
-  - _key: activeQuests
-    _valueAsString: 
-  - _key: completedQuests
-    _valueAsString: 
-  - _key: Clues
-    _valueAsString: 
-  - _key: knowledgeState
-    _valueAsString: 
+  - _key: locked_door_visited
+    _valueAsString: False
+  - _key: correct_code
+    _valueAsString: False
+  - _key: table_papers_visited
+    _valueAsString: False
+  - _key: newspaper_article_visited
+    _valueAsString: False
+  - _key: handwritten_note_visited
+    _valueAsString: False
+  - _key: economics_of_winery_visited
+    _valueAsString: False
+  - _key: winery_blueprint_evidence
+    _valueAsString: False
+  - _key: newspaper_article_evidence
+    _valueAsString: False
+  - _key: winery_handwritten_note_evidence
+    _valueAsString: False
+  - _key: winery_graph_evidence
+    _valueAsString: False
   _globalTags:
   - Level 5 - The Winery, Night, Day 1
   - This Level holds both a Dating Sim and Gameplay. We start in the interior of

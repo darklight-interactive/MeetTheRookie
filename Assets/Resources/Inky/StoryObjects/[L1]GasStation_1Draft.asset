@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: '[L1]GasStation_1Draft'
+  m_EditorClassIdentifier: 
+  _inkFile: {fileID: 4900000, guid: e213b1a1a92f79b4d8032ca97aabf5af, type: 3}
+  _knotAndStitchKeys:
+  - intro
+  - scene1_1
+  - scene1_1.fallen_tree
+  - scene1_1.gas_pump
+  - scene1_1.car
+  - scene1_1.npc
+  - scene1_2
+  - scene1_2.main
+  - scene1_2.employee
+  - scene1_2.employee2
+  - scene1_2.employee3
+  - scene1_2.pay_for_gas
+  - scene1_2.backroom
+  - scene1_2.goop
+  - scene1_2.mel
+  - scene1_2.is_broken
+  _variables:
+  - _key: current_npc
+    _valueAsString: 
+  - _key: first_interact
+    _valueAsString: False
+  - _key: paid_for_gas
+    _valueAsString: False
+  - _key: tree_fell
+    _valueAsString: False
+  - _key: knows_cash_is_broken
+    _valueAsString: False
+  - _key: knows_how_to_fix_cash
+    _valueAsString: False
+  _globalTags: []

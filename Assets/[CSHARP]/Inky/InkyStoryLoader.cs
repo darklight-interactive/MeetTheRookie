@@ -43,6 +43,8 @@ public class InkyStoryLoader : MonoBehaviour
         {
             InkyStoryObject inkyStory = ScriptableObject.CreateInstance<InkyStoryObject>();
             inkyStory.Initialize(storyAsset);
+            SaveInkyStoryObject(storyAsset);
+
             stories.Add(storyAsset.name, inkyStory);
         }
 
