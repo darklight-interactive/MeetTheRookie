@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -86,7 +87,13 @@ namespace Darklight.Selectable
         public SelectableButton()
         {
             Text = "selectable-button";
-            Button.clickable.clicked += () => Click();
+            Button.clickable.clicked += ClickAction;
+        }
+
+        private void ClickAction()
+        {
+            Click();
+            Button.clickable.clicked -= ClickAction;
         }
     }
     #endregion
@@ -99,13 +106,16 @@ namespace Darklight.Selectable
         public SceneAsset scene;
         public SelectableSceneChangeButton()
         {
-            OnClick += () =>
+            OnClick += ChangeScene;
+        }
+
+        private void ChangeScene()
+        {
+            if (scene != null)
             {
-                if (scene != null)
-                {
-                    SceneManager.LoadScene(scene.name);
-                }
-            };
+                SceneManager.LoadScene(scene.name);
+                OnClick -= ChangeScene; // Ensure this is only called once
+            }
         }
     }
     #endregion

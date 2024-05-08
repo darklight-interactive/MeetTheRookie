@@ -62,11 +62,16 @@ namespace Darklight.Game.SpriteAnimation
         public void LoadSpriteSheet(SpriteSheet spriteSheet)
         {
             this.spriteSheet = spriteSheet;
-            Sprite sprite = spriteSheet.GetSpriteAtFrame(0);
-            if (sprite != null)
+            try
             {
-                _spriteRenderer.sprite = sprite;
+                Sprite sprite = spriteSheet.GetSpriteAtFrame(0);
+                if (sprite != null)
+                {
+                    _spriteRenderer.sprite = sprite;
+                }
             }
+            catch { }
+
             currentFrame = 0;
             _timer = 0f;
         }

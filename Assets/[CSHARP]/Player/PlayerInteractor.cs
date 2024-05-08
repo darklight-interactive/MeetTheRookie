@@ -68,37 +68,55 @@ public class PlayerInteractor : MonoBehaviour
         if (_activeInteraction != targetInteractable)
         {
             _activeInteraction = targetInteractable;
-            _activeInteraction.OnInteraction += (string text) =>
-            {
-
-
-                if (_activeInteraction is InteractableNPC)
-                {
-                    InteractableNPC npcInteractable = _activeInteraction as InteractableNPC;
-                    playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
-                    npcInteractable.DialogueBubble.TextureUpdate();
-                }
-
-                // Show the player's dialogue bubble
-                else if (_activeInteraction is Interactable)
-                    playerDialogueHandler.CreateDialogueBubble(text);
-            };
-
-            _activeInteraction.OnCompleted += () =>
-            {
-                playerDialogueHandler.HideDialogueBubble();
-                playerController.ExitInteraction();
-            };
+            _activeInteraction.OnInteraction += OnInteraction;
+            _activeInteraction.OnCompleted += OnComplete;
         }
 
         // Continue the Interaction
         _activeInteraction.Interact();
         if (_activeInteraction.isComplete)
         {
+            _activeInteraction.OnInteraction -= OnInteraction;
+            _activeInteraction.OnCompleted -= OnComplete;
             _activeInteraction = null;
             return false;
         }
         return true;
+    }
+
+    void OnInteraction(string text)
+    {
+        if (_activeInteraction is InteractableNPC)
+        {
+            InteractableNPC npcInteractable = _activeInteraction as InteractableNPC;
+            playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
+            npcInteractable.DialogueBubble.TextureUpdate();
+        }
+
+        // Show the player's dialogue bubble
+        else if (_activeInteraction is Interactable)
+        {
+            Interactable interactable = _activeInteraction as Interactable;
+            playerDialogueHandler.CreateDialogueBubble(text);
+        }
+
+        Debug.Log($"Interacting with {_activeInteraction} => {text}");
+    }
+
+    void OnComplete()
+    {
+        //playerDialogueHandler.HideDialogueBubble();
+        playerController.ExitInteraction();
+        interactables.Remove(_activeInteraction);
+    }
+
+    private void OnDestroy()
+    {
+        if (_activeInteraction != null)
+        {
+            _activeInteraction.OnInteraction -= OnInteraction;
+            _activeInteraction.OnCompleted -= OnComplete;
+        }
     }
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
@@ -110,6 +128,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         IInteract interactable = other.GetComponent<IInteract>();
         if (interactable == null) return;
+        if (interactable.isComplete) return;
         interactables.Add(interactable);
     }
 

@@ -502,7 +502,7 @@ SpriteRenderer:
   m_Size: {x: 0.765625, y: 1.796875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!43 &399542304
@@ -2367,7 +2367,7 @@ SpriteRenderer:
   m_Size: {x: 1.28, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!43 &649290506
@@ -2775,7 +2775,7 @@ SpriteRenderer:
   m_Size: {x: 0.453125, y: 0.90625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &679717496
@@ -3026,7 +3026,7 @@ SpriteRenderer:
   m_Size: {x: 3.875, y: 0.90625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &773623568
@@ -7203,7 +7203,7 @@ SpriteRenderer:
   m_Size: {x: 1.28, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!43 &1294280989
@@ -7411,6 +7411,46 @@ PrefabInstance:
     m_TransformParent: {fileID: 496812695}
     m_Modifications:
     - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[1].state
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[2].state
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[3].state
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[4].state
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[0].spriteSheet.frames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[1].spriteSheet.frames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[2].spriteSheet.frames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[3].spriteSheet.frames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: spriteSheets.Array.data[4].spriteSheet.frames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: 'spriteSheets.Array.data[0].spriteSheet.frames.Array.data[0]'
       value: 
       objectReference: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
@@ -7418,10 +7458,78 @@ PrefabInstance:
       propertyPath: 'spriteSheets.Array.data[0].spriteSheet.frames.Array.data[1]'
       value: 
       objectReference: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[1].spriteSheet.frames.Array.data[0]'
+      value: 
+      objectReference: {fileID: -2556916416602114176, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[1].spriteSheet.frames.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[2].spriteSheet.frames.Array.data[0]'
+      value: 
+      objectReference: {fileID: -2556916416602114176, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[2].spriteSheet.frames.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[2].spriteSheet.frames.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1732469636954548053, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[2].spriteSheet.frames.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7151748471517913395, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[3].spriteSheet.frames.Array.data[0]'
+      value: 
+      objectReference: {fileID: -2556916416602114176, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[3].spriteSheet.frames.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[3].spriteSheet.frames.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1732469636954548053, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[3].spriteSheet.frames.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7151748471517913395, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[4].spriteSheet.frames.Array.data[0]'
+      value: 
+      objectReference: {fileID: -2556916416602114176, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[4].spriteSheet.frames.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2037283016615257379, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[4].spriteSheet.frames.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1732469636954548053, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 1048859347481113319, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: 'spriteSheets.Array.data[4].spriteSheet.frames.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7151748471517913395, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+    - target: {fileID: 4138829041031667111, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: preset
       value: 
       objectReference: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
+    - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: _storyParent
+      value: 
+      objectReference: {fileID: 11400000, guid: 3cc4aca1b43bc7f4a9c2fcf84c0e7338, type: 2}
+    - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: _interactionKey
+      value: roy_teenagers
+      objectReference: {fileID: 0}
     - target: {fileID: 4408537733405745119, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: _spriteRenderer
       value: 
@@ -7472,11 +7580,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 0.4140625
+      value: 0.4296875
       objectReference: {fileID: 0}
     - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 0.9140625
+      value: 0.90625
       objectReference: {fileID: 0}
     - target: {fileID: 6562033029251709814, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -7492,16 +7600,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Size.x
-      value: 0.4140625
+      value: 0.4296875
       objectReference: {fileID: 0}
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Size.y
-      value: 0.9140625
+      value: 0.90625
       objectReference: {fileID: 0}
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      objectReference: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+    - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8106,6 +8218,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'scenesInBuild.Array.data[0]'
+      value: 
+      objectReference: {fileID: 102900000, guid: a592b47d8bf5b4d45999c7e160d41f46, type: 3}
+    - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'scenesInBuild.Array.data[4]'
+      value: 
+      objectReference: {fileID: 102900000, guid: 1518c46f984580d4eb70249f8d0ba859, type: 3}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9278,7 +9398,7 @@ SpriteRenderer:
   m_Size: {x: 0.5, y: 1.1328125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!43 &2124566924

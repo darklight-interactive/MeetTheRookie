@@ -6,13 +6,15 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.Input;
 using Darklight.UXML;
 using Darklight.Game.Selectable;
+using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;
     public SelectableVectorField<Button> choiceMap = new SelectableVectorField<Button>();
-
+    public SceneAsset sceneAsset;
     // Global variables
     Story currentStory;
     bool choicesActive;
@@ -150,6 +152,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     {
         UpdateDialogue("END OF STORY");
         Debug.Log("END OF STORY");
+        SceneManager.LoadScene(sceneAsset.name);
     }
 
     /// <summary>

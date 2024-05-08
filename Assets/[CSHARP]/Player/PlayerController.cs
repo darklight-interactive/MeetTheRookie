@@ -127,6 +127,14 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
     }
 
+    public void OnDestroy()
+    {
+        UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
+        UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
+        UniversalInputManager.OnPrimaryInteract -= Interact;
+        UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
+    }
+
     void HandleMovement()
     {
         // If the player is in an interaction state, do not allow movement

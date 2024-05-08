@@ -47,9 +47,9 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 - else:
         {stopping:
             -   "Out of order. Pay inside." Of course. Just my luck. 
-                -> scene1_1
+                -> DONE
             - Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off.
-                -> scene1_1
+                -> DONE
         } 
 }
 
@@ -57,7 +57,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 {tree_fell: 
     "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me. -> DONE //{goto("precinct")} 
 - else: 
-    Still gotta pay. -> scene1_1
+    Still gotta pay. -> DONE
 }
 
 = npc
@@ -66,9 +66,9 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     {current_npc} Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
     * ...great. Any way I can get this fixed?
     {current_npc} Got a chainsaw on ya? Heheheheh. Ah, don't look so grumpy. If you put in a complaint with the local Police I'm sure you'll be out of here in no time.
-        -> scene1_1
+        -> DONE
 - else :
-    You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? -> scene1_1
+    You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right? ->DONE
 }
 
 
@@ -108,12 +108,11 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 = employee
 # name : employee
 ~ current_npc = "[employee]"
-* Hey man. How're you?
-    {current_npc} I work at a gas station. How do you think I am?
-    ->employee
-* ...the pump's broken. It says to pay inside?
-    {current_npc} Yeahhhhh. You can't pay right now. The register drawer is busted. 
-    -> employee2
+Hey man. How're you?
+{current_npc} I work at a gas station. How do you think I am?
+...the pump's broken. It says to pay inside?
+Yeahhhhh. You can't pay right now. The register drawer is busted. 
+-> DONE
     
     
 = employee2
@@ -138,7 +137,8 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     
 =backroom
  ~current_npc = "[Mel]"
-   #Lupe pushes through the door to the backroom of the gas station. The room is a small breack room. The presumed manager stands at the sink, scrubbing goop.
+   #Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
+   
  +[talk_to_mel] 
     {knows_cash_is_broken:
     {current_npc}{Look, I'd like to help more, but I gotta get this stuff out. It's <i>definitely</i> a code violation. | It almost looks like mold? Or jello. | Gross, ain't it? | I love my job. I love my job. Ugh.} -> backroom
@@ -170,5 +170,8 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
     * What is that stuff?
         -> goop
  
+= playtest_go_to_precinct
+'*teleports*'
+-> DONE
 
   

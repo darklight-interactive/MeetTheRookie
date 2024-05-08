@@ -5,6 +5,8 @@ using System.Linq;
 using Darklight.Game.Selectable;
 using Darklight.UXML;
 using Darklight.Selectable;
+using System;
+
 
 
 
@@ -26,35 +28,46 @@ public class MainMenuController : UXML_UIDocumentObject
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        Select(selectableVectorField.Selectables.First());
 
         // Listen to the input manager
-        UniversalInputManager.OnMoveInputStarted += (Vector2 dir) =>
-        {
-            Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-            SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
-            Select(buttonInDirection);
-        };
-
-        UniversalInputManager.OnPrimaryInteract += () =>
-        {
-            selectableVectorField.CurrentSelection.Click();
-        };
-
+        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
 
         SelectableButton quitButton = ElementQuery<SelectableButton>("quit-button");
         quitButton.OnClick += Quit;
     }
 
+    void OnMoveInputStartAction(Vector2 dir)
+    {
+        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
+        SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
+        Select(buttonInDirection);
+    }
+
+    void OnPrimaryInteractAction()
+    {
+        selectableVectorField.CurrentSelection?.Click();
+    }
+
+
+    private void OnDestroy()
+    {
+        UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+    }
+
+
     void Select(SelectableButton selectedButton)
     {
+        if (selectedButton == null || lockSelection) return;
+
         SelectableButton previousButton = selectableVectorField.PreviousSelection;
-        if (!lockSelection && selectedButton != null && selectedButton != previousButton)
+        if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
             selectedButton.Select();
             lockSelection = true;
-            Invoke("UnlockSelection", 0.1f);
+            Invoke(nameof(UnlockSelection), 0.1f);
         }
     }
 
@@ -62,6 +75,7 @@ public class MainMenuController : UXML_UIDocumentObject
     {
         lockSelection = false;
     }
+
 
     public void Quit()
     {
