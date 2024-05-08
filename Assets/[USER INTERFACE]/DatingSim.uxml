@@ -17,10 +17,10 @@
         </ui:VisualElement>
         <ui:VisualElement name="DialogueBoxParent" class="DialogueBoxParent">
             <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;);">
-                <ui:Label text="Dialogue Text" name="DialogueText" style="align-self: center; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); color: rgb(0, 0, 0); width: 95%; height: 90%; font-size: 48px; top: 5%; position: absolute; -unity-font-style: normal; white-space: normal; text-overflow: ellipsis; overflow: hidden; -unity-text-align: upper-left; left: 2%;" />
+                <ui:Label text="Dialogue Text" name="DialogueText" style="align-self: center; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); color: rgb(0, 0, 0); width: 95%; height: 90%; font-size: 30px; top: 5%; position: absolute; -unity-font-style: normal; white-space: normal; text-overflow: ellipsis; overflow: hidden; -unity-text-align: upper-left; left: 2%;" />
                 <ui:VisualElement name="DialogueTriangle" class="TriangleUp TriangleDown" style="transition-duration: 1s;" />
             </ui:VisualElement>
-            <ui:VisualElement name="NameTag" class="NameTagLupe">
+            <ui:VisualElement name="NameTag" class="NameTagLupe" style="bottom: auto; top: 15px;">
                 <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>

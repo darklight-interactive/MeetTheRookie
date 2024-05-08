@@ -9,8 +9,11 @@ public class SynthTestControls : MonoBehaviour
     public SynthesisItems[] SynthItems;
     public SynthesisItems CurrentItem;
     public SynthesisItems PreviousItem;
+    public SynthesisItems[] SelectedItems;
+    public SynthesisItems SynthesizeButton;
     public int selector = 0;
-    public bool movable = true;
+    public bool movable = false;
+    public GameObject Combiner;
     void OnEnable()
     {
         SynthItems = FindObjectsByType<SynthesisItems>(FindObjectsSortMode.InstanceID);
@@ -62,5 +65,28 @@ public class SynthTestControls : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         CurrentItem.OnHover();
+        movable = true;
     }
+
+    /*void ReadyToCombine()
+    {
+        SynthItems[SynthItems.Length] = SynthesizeButton;
+        SynthesizeButton.gameObject.SetActive(true);
+    }
+    public void Combine()
+    {
+        foreach (SynthesisItems item in SelectedItems)
+        {
+            item.gameObject.SetActive(false);
+        }   
+        StartCoroutine(CombinationMaker());
+    }
+    IEnumerator CombinationMaker()
+    {
+        SynthesizeButton.gameObject.SetActive(false);
+        Combiner.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        Combiner.SetActive(false);
+
+    }*/
 }

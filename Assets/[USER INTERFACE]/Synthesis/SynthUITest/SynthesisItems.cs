@@ -16,6 +16,7 @@ public class SynthesisItems : MonoBehaviour
     private bool stacked;
     public bool hovered = false;
     public bool selected = false;
+    public bool synthbutton = false;
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -35,6 +36,10 @@ public class SynthesisItems : MonoBehaviour
             Debug.Log(gameObject.name);
             hoverset = basefile.Q<VisualElement>("Selected");
             text = basefile.Q<Label>("Text");
+        }
+        if (gameObject.name == "SynthesizeButton")
+        {
+            synthbutton = true;
         }
     }
 
@@ -90,9 +95,16 @@ public class SynthesisItems : MonoBehaviour
     }
     public void Select()
     {
-        selected = true;
-        //somelist.add(this.gameObject);
-        ChangeText("Selected!");
+        if (synthbutton == false)
+        {
+            selected = true;
+            //somelist.add(this.gameObject);
+            ChangeText("Selected!");
+        }
+        /*if (synthbutton == true)
+        {
+            controls.Combine();
+        }*/
     }
     public void Deselect()
     {
