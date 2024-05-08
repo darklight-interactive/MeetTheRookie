@@ -15,7 +15,7 @@ public class SynthTestControls : MonoBehaviour
     {
         SynthItems = FindObjectsByType<SynthesisItems>(FindObjectsSortMode.InstanceID);
         CurrentItem = SynthItems[selector];
-        CurrentItem.OnHover();
+        StartCoroutine(StartHover());
     }
     void Update()
     {
@@ -56,5 +56,11 @@ public class SynthTestControls : MonoBehaviour
         CurrentItem.OnHover();
         PreviousItem.OnHover();
         Debug.Log(CurrentItem.name);
+    }
+
+    private IEnumerator StartHover()
+    {
+        yield return new WaitForSeconds(0.5f);
+        CurrentItem.OnHover();
     }
 }
