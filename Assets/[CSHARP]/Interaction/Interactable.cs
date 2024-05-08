@@ -21,10 +21,10 @@ public class Interactable : MonoBehaviour, IInteract
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
     [Header("Interaction Settings")]
-    [SerializeField] InkyStoryObject _storyParent;
+    [SerializeField] protected InkyStoryObject _storyParent;
 
-    [DropdownAttribute("storyParent.knotAndStitchKeys")]
-    [SerializeField] string _interactionKey;
+    [DropdownAttribute("_storyParent.knotAndStitchKeys")]
+    [SerializeField] protected string _interactionKey;
 
     [Header("Components")]
     [SerializeField] Sprite _sprite;
@@ -168,6 +168,9 @@ public class InteractableCustomEditor : Editor
 
         base.OnInspectorGUI();
 
+
+        GUILayout.Space(10);
+        GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
         if (!_script.isTarget && GUILayout.Button("Target"))
         {
             _script.TargetSet();

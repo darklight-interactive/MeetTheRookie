@@ -18,6 +18,7 @@ public class PlayerDialogueHandler : OverlapGrid2D
         worldSpaceUIDoc.transform.position = position;
         worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one;
         worldSpaceUIDoc.ElementQuery<Label>("inky-label").text = text;
+        worldSpaceUIDoc.Show();
         return worldSpaceUIDoc;
     }
 

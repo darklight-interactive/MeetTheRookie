@@ -16,6 +16,7 @@ namespace Darklight.UXML
         MeshRenderer _meshRenderer => GetComponentInChildren<MeshRenderer>();
         Material _material;
         RenderTexture _renderTexture;
+        public bool isVisible => _meshRenderer.enabled;
 
         // -- Element Changed Event --
         public delegate void OnChange();
