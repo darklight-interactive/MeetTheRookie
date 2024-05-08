@@ -2,78 +2,106 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Linq;
+using EasyButtons;
+using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(BoxCollider2D))]
-public abstract class Interactable : OverlapGrid2D, IInteract
+[RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
+public class Interactable : MonoBehaviour, IInteract
 {
+    private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
+    private InkyStoryLoader _storyLoader => InkyStoryManager.Instance.storyLoader;
+    private InkyKnotIterator _knotIterator;
 
-    // << SERIALIZED VALUES >> //
-    [Header("Interactable Properties")]
+    // ------------------- [[ SERIALIZED FIELDS ]] -------------------
+
+    [Header("Interaction Settings")]
+    [SerializeField] protected InkyStoryObject _storyParent;
+
+    [DropdownAttribute("_storyParent.knotAndStitchKeys")]
+    [SerializeField] protected string _interactionKey;
+
+    [Header("Components")]
+    [SerializeField] Sprite _sprite;
+
+    [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
     [ShowOnly, SerializeField] bool _isActive;
     [ShowOnly, SerializeField] bool _isComplete;
-    [ShowOnly, SerializeField] SpriteRenderer _spriteRenderer;
-    [SerializeField] Color _interactColor = Color.yellow;
-    [SerializeField] string _interactionKey;
 
-    // << PUBLIC ACCESSORS >> //
+    [Header("Colors")]
+    [SerializeField] Color _defaultTint = Color.white;
+    [SerializeField] Color _interactionTint = Color.yellow;
+
+    // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
+    public InkyStoryObject storyParent { get => _storyParent; private set => _storyParent = value; }
+    public string interactionKey { get => _interactionKey; private set => _interactionKey = value; }
+    public InkyKnotIterator knotIterator { get => _knotIterator; private set => _knotIterator = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string interactionKey { get => _interactionKey; set => _interactionKey = value; }
-
-    // << EVENTS >> //
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
     // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
         Initialize();
-
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     // ====== [[ INITIALIZATION ]] ================================
-    protected abstract void Initialize();
+    public virtual void Initialize()
+    {
+        _spriteRenderer.sprite = _sprite;
+        _spriteRenderer.color = _defaultTint;
+
+        if (_storyParent == null)
+        {
+            Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
+            return;
+        }
+
+        if (_interactionKey == null || _interactionKey == "")
+        {
+            Debug.LogError("Interaction Key is null. Please assign a valid knot or stitch key.");
+            return;
+        }
+
+        _knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
+    }
 
     public virtual void Reset()
     {
         isComplete = false;
-        _spriteRenderer.color = _interactColor;
+        _spriteRenderer.color = _interactionTint;
     }
 
     // ====== [[ TARGETING ]] ======================================
-    public virtual void TargetEnable()
+    public virtual void TargetSet()
     {
         isTarget = true;
-
-        OverlapGrid2D_Data data = this.GetBestData();
-        if (data == null) return;
-        //UIManager.Instance.interactionUI.DisplayInteractPrompt(data.worldPosition);
+        UIManager.Instance.ShowInteractionPromptInWorld(transform.position);
     }
 
-    public virtual void TargetDisable()
+    public virtual void TargetClear()
     {
         isTarget = false;
-        //UIManager.Instance.interactionUI.HideInteractPrompt();
+        UIManager.Instance.HideInteractPrompt();
     }
 
-    public InkyKnotIterator knotIterator;
     public virtual void Interact()
     {
         // >> TEMPORARY COLOR CHANGE
-        StartCoroutine(ColorChangeRoutine(Color.red, 2.0f));
+        StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
         // >> CONTINUE KNOT
         if (knotIterator == null)
-            knotIterator = new InkyKnotIterator(InkyStoryManager.Instance.currentStory, _interactionKey);
+            knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
         ContinueKnot();
     }
 
@@ -103,7 +131,10 @@ public abstract class Interactable : OverlapGrid2D, IInteract
         OnCompleted?.Invoke();
     }
 
-    public abstract void OnDestroy();
+    public virtual void OnDestroy()
+    {
+        //throw new System.NotImplementedException();
+    }
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {
@@ -137,8 +168,23 @@ public class InteractableCustomEditor : Editor
 
         base.OnInspectorGUI();
 
+
+        GUILayout.Space(10);
+        GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
+        if (!_script.isTarget && GUILayout.Button("Target"))
+        {
+            _script.TargetSet();
+        }
+
+        if (_script.isTarget && GUILayout.Button("Clear Target"))
+        {
+            _script.TargetClear();
+        }
+
+
         if (EditorGUI.EndChangeCheck())
         {
+            _script.Awake();
             _serializedObject.ApplyModifiedProperties();
         }
     }

@@ -11137,7 +11137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2433721290131396170, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Offset.y
-      value: 1
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4241149439006364865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
@@ -11161,15 +11161,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.6261144
+      value: -7.63
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: 2.28
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3175392
+      value: 1.34
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12146,6 +12146,8 @@ MonoBehaviour:
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 1210772552}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1.gas_pump
 --- !u!61 &954588747
 BoxCollider2D:
@@ -32421,7 +32423,7 @@ PrefabInstance:
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3092629257998954063, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
+      objectReference: {fileID: -3758917301208995547, guid: 38d13fb858422b644b434bc4b5b4bd7f, type: 3}
     - target: {fileID: 8703908369491067701, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: player
       value: 
@@ -34683,7 +34685,11 @@ MonoBehaviour:
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 0}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1
+  speechBubbleScalar: 1.5
+  dialogueBubble: {fileID: 0}
 --- !u!1 &1367367787430405513
 GameObject:
   m_ObjectHideFlags: 0
@@ -35495,6 +35501,71 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1001 &4810243151843406995
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1766258732976720846, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074045513971451017, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
+    - target: {fileID: 6670640723545290807, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_Name
+      value: '[NPC] Misra'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.355
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.425796
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
 --- !u!23 &4825570297920213642
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35827,6 +35898,8 @@ MonoBehaviour:
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
+  _spriteRenderer: {fileID: 345561776}
+  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _interactionKey: scene1_1.car
 --- !u!4 &6725149855403942893
 Transform:
@@ -35870,7 +35943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 1.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: orthographic size
@@ -35878,15 +35951,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.7499995
+      value: -4.76123
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.955
+      value: 2.09
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8300018
+      value: -11.831944
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35982,11 +36055,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.99999994
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35994,15 +36067,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7090470272912072425, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Enabled
@@ -36674,3 +36747,4 @@ SceneRoots:
   - {fileID: 987175996433645435}
   - {fileID: 1338119431}
   - {fileID: 6934014930500552352}
+  - {fileID: 4810243151843406995}

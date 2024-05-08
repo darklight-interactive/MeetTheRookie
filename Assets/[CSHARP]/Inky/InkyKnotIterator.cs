@@ -10,26 +10,27 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
     string Prefix => "[InkyKnot] >> ";
     Story story;
     string knotName;
-    Dictionary<Ink.Runtime.Choice, int> choiceMap = new Dictionary<Ink.Runtime.Choice, int>();
+    Dictionary<Choice, int> choiceMap = new Dictionary<Choice, int>();
     List<string> tags;
-    List<Ink.Runtime.Choice> Choices => story.currentChoices;
-    InkyVariableHandler variableHandler;
+    List<Choice> Choices => story.currentChoices;
     public string currentText => story.currentText.Trim();
 
-    public InkyKnotIterator(Story storyParent, string knotName, State initialState = State.NULL) : base(initialState)
+    public InkyKnotIterator(Story story, string knotName, State initialState = State.NULL) : base(initialState)
     {
-        this.story = storyParent;
+        this.story = story;
         this.knotName = knotName;
+
+        if (story == null) { Debug.LogError($"{Prefix} Story is null"); return; }
 
         // ( MOVE TO KNOT ) --------------- >>
         try
         {
-            storyParent.ChoosePathString(knotName);
+            story.ChoosePathString(knotName);
         }
         catch (System.Exception e)
         {
             InkyStoryManager.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
-            Debug.LogError($"{Prefix} Error: {e.Message}");
+            Debug.LogError($"{Prefix} Error: {e.Message}, this");
         }
         finally
         {
@@ -93,10 +94,6 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
             InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }
-
-        // Get Variables
-        InkyVariableHandler variableHandler = InkyStoryManager.Instance.GetVariableHandler();
-
         // Get Tags
         List<string> tags = story.currentTags;
         if (tags != null && tags.Count > 0)

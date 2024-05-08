@@ -1,13 +1,14 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="background" />
-    <engine:VisualElement name="header" style="flex-grow: 2; align-self: stretch;">
+    <engine:VisualElement name="background" style="display: none;" />
+    <engine:VisualElement name="header" style="flex-grow: 2; align-self: stretch; background-image: url(&quot;project://database/Assets/[TEXTURES]/mtr_color/mtr_color_25.png?fileID=2800000&amp;guid=47e963d9c4cd77347870a4e07dfb26e9&amp;type=3#mtr_color_25&quot;);">
         <engine:Label text="Meet The Rookie" name="title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
     </engine:VisualElement>
     <engine:VisualElement name="body">
         <engine:VisualElement style="flex-grow: 1;" />
         <engine:GroupBox class="vert-direction">
-            <Darklight.Selectable.SelectableSceneChangeButton name="play-button" text-override="PLAY" scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" text="Play" />
+            <Darklight.Selectable.SelectableSceneChangeButton name="play-button" text-override="PLAY" scene="project://database/Assets/Scenes/Build/SCENE_1.1.unity?fileID=102900000&amp;guid=dec0233f10f64f342aa5bb6310fcb246&amp;type=3#SCENE_1.1" text="Play from Start (Scene1.1)" />
+            <Darklight.Selectable.SelectableSceneChangeButton name="town-button" text-override="PLAY" scene="project://database/Assets/Scenes/Build/SCENE_4.1%20-%20Main%20Street.unity?fileID=102900000&amp;guid=1518c46f984580d4eb70249f8d0ba859&amp;type=3#SCENE_4.1 - Main Street" text="Skip to Main Street (Scene 4.1)" />
             <Darklight.Selectable.SelectableButton name="quit-button" text="Quit" />
         </engine:GroupBox>
         <engine:VisualElement style="flex-grow: 1;" />
