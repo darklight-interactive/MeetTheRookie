@@ -28,6 +28,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
+        Initialize(preset);
         document.rootVisualElement.visible = false;
 
         objects = document.rootVisualElement.Q("objects");
