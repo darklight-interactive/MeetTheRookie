@@ -13,13 +13,12 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Handle the UI and <see cref="SynthesisObject"/>s.
+/// Handle the UI and Synthesis objets.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject
 {
-    [SerializeField] private UXML_UIDocumentPreset _preset;
-    protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
+    protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
@@ -29,24 +28,21 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
-        document.visualTreeAsset = _preset.VisualTreeAsset;
-        document.panelSettings = _preset.PanelSettings;
-    }
-
-    bool synthesisActive = false;
-    void Start()
-    {
         document.rootVisualElement.visible = false;
 
         objects = document.rootVisualElement.Q("objects");
 
         synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
         itemsSelection.Add(synthesizeButton);
+    }
 
-        Invoke("Initialize", 0.1f);
+    bool synthesisActive = false;
+    void Start()
+    {
+        Invoke("Init", 0.1f);
     }
     ///oijqwdoijqwodijqwd
-    void Initialize() {
+    void Init() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
         //UniversalInputManager.OnMoveInputStarted += SelectMove;
@@ -138,10 +134,21 @@ public class SynthesisManager : UXML_UIDocumentObject
     }
 
     public object AddItem(object[] args) {
-        string name = (string)args[0];
-        var newObj = new SynthesisObject();
-        newObj.noteHeader.text = name;
-        newObj.name = name;
+        if (args.Length < 2) {
+            Debug.LogError("Invalid number of args for AddItem: " + args.Length + " minimum of 2 needed.");
+            return null;
+        }
+        string type = (string)args[0];
+        VisualTreeAsset asset = (VisualTreeAsset)Resources.Load("Synthesis/" + type);
+        var newObj = asset.Instantiate();
+        newObj.name = (string)args[1];
+        foreach (var child in newObj.Children()) {
+            var source = (SynthesisBinding)((SynthesisBinding)child.dataSource).Clone();
+            if (args.Length == 3) {
+                source.setValue((string)args[2]);
+            }
+            child.dataSource = source;
+        }
         objects.Add(newObj);
         itemsSelection.Add(newObj);
         return synthesisItems.TryAdd(name, newObj);
@@ -166,7 +173,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
             if (obj.Value != synthesisObj && obj.Value.worldBound.Overlaps(rect, true)) {
-                return obj.Value;
+                //return obj.Value;
             }
         }
         return null;
