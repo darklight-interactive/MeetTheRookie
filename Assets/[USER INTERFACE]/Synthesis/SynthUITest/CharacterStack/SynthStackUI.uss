@@ -46,16 +46,16 @@ VisualElement.StackTextHolder {
     background-color: rgba(115, 115, 115, 0);
 }
 
-VisualElement.StackTextHolderSelected {
+VisualElement.StackTextSelected {
     color: rgb(214, 203, 0);
     background-color: rgba(188, 162, 0, 0);
-    width: 190px;
-    height: 128px;
+    width: 180px;
+    height: 30px;
     position: absolute;
     bottom: auto;
     right: auto;
-    top: 119px;
-    left: 33px;
+    top: 124px;
+    left: 38px;
 }
 
 VisualElement.StackPFP {
@@ -66,16 +66,6 @@ VisualElement.StackPFP {
     height: 64px;
     color: rgb(190, 190, 190);
     background-color: rgb(168, 168, 168);
-}
-
-VisualElement.StackTextSelected {
-    background-color: rgba(188, 162, 0, 0);
-    width: 180px;
-    height: 30px;
-    align-self: center;
-    position: absolute;
-    top: 124px;
-    left: 38px;
 }
 
 Label.StackName {

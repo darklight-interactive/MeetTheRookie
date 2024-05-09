@@ -7,23 +7,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class StackSynthUI : MonoBehaviour
+public class SynthStackUI : MonoBehaviour
 {
     public VisualElement root;
     public VisualElement stackBase;
     public List<VisualElement> Stack = new List<VisualElement>();
     private int childcounter = 0;
     private float colorchanger;
-    private string j;
-    private bool selected = false;
     public bool hovered = false;
     public bool nothovered = true;
-    private bool textselected = false;
+    public bool textselected = false;
     private VisualElement holder;
-    private VisualElement CurrentFile;
+    public VisualElement CurrentFile;
     private VisualElement CurrentTextHolder;
     private List<Label> Lines = new List<Label>();
-    private Label CurrentLine;
+    public Label CurrentLine;
     private Label LineChangeHolder;
     // Start is called before the first frame update
     void OnEnable()
@@ -36,7 +34,7 @@ public class StackSynthUI : MonoBehaviour
                 childcounter += 1;
                 child.style.top = 20 * childcounter;
                 child.style.left = 20 * childcounter;
-                colorchanger = ((childcounter+1) * 2.5f)/10;
+                colorchanger = (childcounter+1) * 2.5f/10;
                 child.style.unityBackgroundImageTintColor = new StyleColor(new Color(colorchanger, colorchanger, colorchanger, 1));
             }
         childcounter = 0;
@@ -55,64 +53,29 @@ public class StackSynthUI : MonoBehaviour
         AddText("Roy", "the kids went down to the store");
         AddText("Roy", "hi my name is bob and I approve this message");
         TextFix(Stack[^1].name);
-        //Make sure to comment this out later!
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         CurrentFile = Stack[^1];
-        if (hovered == true || textselected == true)
-        {
-            if (Keyboard.current.zKey.wasPressedThisFrame)
-            {
-                Select();
-            }
-            if (Keyboard.current.xKey.wasPressedThisFrame)
-            {
-                Deselect();
-            }
-            if (Keyboard.current.cKey.wasPressedThisFrame && textselected != true)
-            {
-                Change();
-            }
-            if (textselected == true)
-            {
-                if (Keyboard.current.cKey.wasPressedThisFrame)
-                {
-                    TextChange();
-                }
-            }
-        }
-        if (nothovered == true)
-        {
-            if (Keyboard.current.zKey.wasPressedThisFrame)
-            {
-                OnHover();
-            }
-        }
+        //Make sure to comment this out later!
     }
 
     public void Select()
     {
-        if (textselected == true)
+        if (Lines.Count > 0)
         {
-            GrabText();
-        }
-        if (hovered == true)
-        {
-            hovered = false;
-            textselected = true;
-            CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
-            CurrentFile.Q<VisualElement>("TextSelected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+            if (textselected == true)
+            {
+                GrabText();
+            }
+            if (hovered == true)
+            {
+                hovered = false;
+                textselected = true;
+                CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
+                CurrentFile.Q<VisualElement>("TextSelected").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0.5372549f));
+            }
         }
     }
     public void Deselect()
     {
-        if (hovered == true)
-        {
-            OnHover();
-        }
         if (textselected == true)
         {
             textselected = false;
@@ -138,13 +101,13 @@ public class StackSynthUI : MonoBehaviour
 
     public void Change()
     {
+        Debug.Log("yomama");
         CurrentFile.Q<VisualElement>("Hovered").style.backgroundColor = new StyleColor(new Color(0.735849f, 0.6361687f, 0, 0));
         holder = Stack[0];
         Stack.Remove(Stack[0]);
         Stack.Add(holder);
         foreach (VisualElement child in Stack)
         {   
-            Debug.Log(childcounter);
             Stack[childcounter].BringToFront();
             colorchanger = ((childcounter+1) * 2.5f)/10;
             child.style.unityBackgroundImageTintColor = new StyleColor(new Color(colorchanger, colorchanger, colorchanger, 1));
