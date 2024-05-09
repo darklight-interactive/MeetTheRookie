@@ -57,7 +57,16 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     [Space(10), Header("Synthesis UI")]
     public UXML_UIDocumentPreset synthesisUIPreset;
-    public SynthesisManager synthesisManager { get; private set; }
+    private SynthesisManager _synthesisManager;
+    public SynthesisManager synthesisManager {
+        get {
+            if (_synthesisManager == null) {
+                _synthesisManager = new GameObject("UIDocument : SynthesisManager").AddComponent<SynthesisManager>();
+                _synthesisManager.Initialize(synthesisUIPreset);
+            }
+            return _synthesisManager;
+        }
+    }
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
@@ -79,6 +88,10 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         icon.visible = false;
+    }
+
+    public void ShowSynthesis(bool visible) {
+        synthesisManager.Show(visible);
     }
 }
 

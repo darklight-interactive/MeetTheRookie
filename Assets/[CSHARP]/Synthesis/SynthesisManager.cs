@@ -13,7 +13,7 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Handle the UI and Synthesis objets.
+/// Handle the UI and Synthesis objects.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject
@@ -28,7 +28,6 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
-        Initialize(preset);
         document.rootVisualElement.visible = false;
 
         objects = document.rootVisualElement.Q("objects");
@@ -53,10 +52,10 @@ public class SynthesisManager : UXML_UIDocumentObject
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
-    /*public void Show(bool visible) {
+    public void Show(bool visible) {
         synthesisActive = visible;
-        synthesisUI.rootVisualElement.visible = synthesisActive;
-    }*/
+        document.rootVisualElement.visible = synthesisActive;
+    }
 
     void SelectMove(Vector2 move)
     {
