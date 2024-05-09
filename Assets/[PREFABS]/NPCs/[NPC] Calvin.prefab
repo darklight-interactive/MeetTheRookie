@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 296168923467016266}
   - component: {fileID: 4165984020649371347}
   - component: {fileID: 2241518446289900087}
+  - component: {fileID: 2333247472725621624}
   m_Layer: 0
   m_Name: '[NPC] Calvin'
   m_TagString: Untagged
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4257475269257040620, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+  m_Sprite: {fileID: -6521527979389369535, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -218,7 +219,7 @@ MonoBehaviour:
     - {fileID: 8609721151305637149, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
     - {fileID: 5484843246563276747, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
     - {fileID: 8615295126695275498, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-  currentFrame: 1
+  currentFrame: 3
 --- !u!61 &4165984020649371347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -277,16 +278,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  showGizmos: 1
+  _storyParent: {fileID: 0}
+  _interactionKey: scene1_2.employee
+  _sprite: {fileID: 0}
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
-  _spriteRenderer: {fileID: 949951112859401814}
-  _interactColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _interactionKey: scene1_2.employee
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   speechBubbleScalar: 1.5
   dialogueBubble: {fileID: 0}
+--- !u!114 &2333247472725621624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664196745688733946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  showGizmos: 1
