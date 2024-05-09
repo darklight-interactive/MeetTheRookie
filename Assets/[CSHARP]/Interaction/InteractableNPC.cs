@@ -22,15 +22,19 @@ public class InteractableNPC : Interactable, IInteract
     {
         NPC_Controller controller = GetComponent<NPC_Controller>();
 
+        // >> ON FIRST INTERACTION -------------------------------
+
+        this.OnFirstInteraction += () =>
+        {
+            stateBeforeTalkedTo = controller.stateMachine.CurrentState;
+        };
+
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
             dialogueBubble = ShowDialogueBubble(currentText);
             if (controller)
             {
-                Debug.Log(stateBeforeTalkedTo);
-                stateBeforeTalkedTo = controller.stateMachine.CurrentState;
-                Debug.Log(stateBeforeTalkedTo);
                 controller.stateMachine.GoToState(NPCState.SPEAK);
             }
         };
