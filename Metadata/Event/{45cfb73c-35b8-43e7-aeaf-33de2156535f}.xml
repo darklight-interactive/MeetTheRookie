@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{6a40daf0-2999-4fef-83de-79ae795f802e}">
 		<property name="volume">
-			<value>-13</value>
+			<value>-3</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{5ed25d2d-c2f4-4a36-92b9-0f5112f299db}</destination>
@@ -99,15 +99,16 @@
 	<object class="MixerBusEffectChain" id="{5ed25d2d-c2f4-4a36-92b9-0f5112f299db}">
 		<relationship name="effects">
 			<destination>{03a91daf-3008-4069-969c-cc7bf215a32a}</destination>
+			<destination>{eecdaf67-f9f1-4663-976a-a64f8f41c4fa}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{06afbe2c-c540-4cf4-8ca9-06a6b2698767}" />
 	<object class="SingleSound" id="{5655e2fc-ef30-4788-84e2-8c9db93b7d2a}">
 		<property name="startOffset">
-			<value>31</value>
+			<value>42</value>
 		</property>
 		<property name="pitch">
-			<value>10.5</value>
+			<value>1.39999998</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{e91daf9f-89be-414a-8d42-8e81f6c9d577}</destination>
@@ -119,6 +120,17 @@
 	</object>
 	<object class="MixerBusFader" id="{4a7b8044-80f9-4272-8922-114b3c36e714}" />
 	<object class="MixerBusFader" id="{03a91daf-3008-4069-969c-cc7bf215a32a}" />
+	<object class="MultibandEqEffect" id="{eecdaf67-f9f1-4663-976a-a64f8f41c4fa}">
+		<property name="filterTypeA">
+			<value>4</value>
+		</property>
+		<property name="frequencyA">
+			<value>640</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{43e337b0-4a05-4d8c-97df-a8b46c5bda54}</destination>
+		</relationship>
+	</object>
 	<object class="RandomizerModulator" id="{e91daf9f-89be-414a-8d42-8e81f6c9d577}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
@@ -133,6 +145,14 @@
 		</property>
 		<property name="amount">
 			<value>16.5</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{43e337b0-4a05-4d8c-97df-a8b46c5bda54}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>frequencyA</value>
+		</property>
+		<property name="amount">
+			<value>22</value>
 		</property>
 	</object>
 </objects>

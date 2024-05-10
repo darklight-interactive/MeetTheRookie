@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{89a648e7-b805-48c0-a21b-d96979eecfa7}">
 		<property name="name">
-			<value>cultMotif-</value>
+			<value>cultMotif</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -81,7 +81,7 @@
 	</object>
 	<object class="MultiSound" id="{447e26a7-aacf-4c70-892f-23faa52c4c75}">
 		<relationship name="sounds">
-			<destination>{7502c651-f3bd-474d-8063-575a07ab6b0e}</destination>
+			<destination>{a86e289b-9f0b-4b2e-9b91-0c7dfbf214f2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{4d9e1316-9f4a-4058-b5cf-e64a170aac1e}">
@@ -96,11 +96,22 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{834e0559-333f-489a-85fc-9a3056e65737}" />
-	<object class="SingleSound" id="{7502c651-f3bd-474d-8063-575a07ab6b0e}">
-		<relationship name="audioFile">
-			<destination>{f74aaab7-19ee-4fb4-bad9-bfa3cd689bda}</destination>
+	<object class="MultiSound" id="{a86e289b-9f0b-4b2e-9b91-0c7dfbf214f2}">
+		<relationship name="sounds">
+			<destination>{575670e5-6361-4453-a3fa-ce880be6bd31}</destination>
+			<destination>{c0e4a9ae-5ff3-421d-b88d-36a9ae673bae}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{99cfab8b-489e-45ca-b887-73ccec23b95d}" />
 	<object class="MixerBusFader" id="{e562c932-e646-4e5b-9c53-ce4e6e9b1b52}" />
+	<object class="SingleSound" id="{575670e5-6361-4453-a3fa-ce880be6bd31}">
+		<relationship name="audioFile">
+			<destination>{f76d8c41-f088-46a5-b788-053840a09061}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{c0e4a9ae-5ff3-421d-b88d-36a9ae673bae}">
+		<relationship name="audioFile">
+			<destination>{f74aaab7-19ee-4fb4-bad9-bfa3cd689bda}</destination>
+		</relationship>
+	</object>
 </objects>

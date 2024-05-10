@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{c3ebeab4-34bb-42f9-852b-53140c5e7b48}">
 		<property name="name">
-			<value>fountainClose</value>
+			<value>town_fountainClose</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -199,6 +199,7 @@
 	<object class="MixerBusEffectChain" id="{8b8bc429-f82a-4419-9bc8-5901ae5d49ae}">
 		<relationship name="effects">
 			<destination>{6043e22c-c41a-476f-af35-9055adb54664}</destination>
+			<destination>{90d15e49-30d0-4de1-93fe-873f2af3e934}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{63f118b8-dbef-4c85-bf1a-643915507e0b}" />
@@ -251,4 +252,15 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{6043e22c-c41a-476f-af35-9055adb54664}" />
+	<object class="ThreeEQEffect" id="{90d15e49-30d0-4de1-93fe-873f2af3e934}">
+		<property name="lowGain">
+			<value>-80</value>
+		</property>
+		<property name="midGain">
+			<value>-6</value>
+		</property>
+		<property name="highGain">
+			<value>1.5</value>
+		</property>
+	</object>
 </objects>
