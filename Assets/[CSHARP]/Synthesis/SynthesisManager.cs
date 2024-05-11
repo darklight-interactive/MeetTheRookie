@@ -28,12 +28,19 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
+
         document.rootVisualElement.visible = false;
 
         objects = document.rootVisualElement.Q("objects");
 
         synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
         itemsSelection.Add(synthesizeButton);
+    }
+
+    public void Prepare() {
+        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     bool synthesisActive = false;
@@ -45,11 +52,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     void Init() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
-        //UniversalInputManager.OnMoveInputStarted += SelectMove;
+        UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
-        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
     }
 
     public void Show(bool visible) {
