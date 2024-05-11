@@ -36,7 +36,8 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     #endregion
 
     public InkyStoryObject currentStoryObject;
-    private Story _story => currentStoryObject.CreateStory();
+
+    private Story _story;
 
     [Dropdown("currentStoryObject.knotAndStitchKeys")]
     public string currentKnot;
@@ -44,6 +45,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public override void Awake()
     {
         base.Awake();
+        _story = currentStoryObject.CreateStory();
         stateMachine.ChangeActiveStateTo(State.INIT);
         storyLoader.Load();
     }
