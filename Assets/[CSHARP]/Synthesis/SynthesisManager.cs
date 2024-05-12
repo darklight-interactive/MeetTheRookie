@@ -190,7 +190,6 @@ public class SynthesisManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (SynthesisManager)target;
-        _script.Awake();
     }
 
     public override void OnInspectorGUI()
