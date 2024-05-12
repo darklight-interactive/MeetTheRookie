@@ -1,7 +1,12 @@
 ﻿EXTERNAL playerAddItem(type, id, value)
 
-=== start ===
-~ playerAddItem("Scrap", "scrap1", "Test")
+~ playerAddItem("Scrap", "scrap1", "Sample Scrap Text")
+~ playerAddItem("Polaroid", "polaroidDoor", "backdoor")
+
+->END
+
+=== nada ===
+Unreachable
 -> END
 
 === function combine(a, b) ===
