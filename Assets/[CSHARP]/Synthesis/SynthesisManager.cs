@@ -141,7 +141,10 @@ public class SynthesisManager : UXML_UIDocumentObject
         string type = (string)args[0];
         VisualTreeAsset asset = (VisualTreeAsset)Resources.Load("Synthesis/" + type);
         var newObj = asset.Instantiate();
+        
         newObj.name = (string)args[1];
+        newObj.AddToClassList("synthesis-object");
+
         foreach (var child in newObj.Children()) {
             var source = (SynthesisBinding)((SynthesisBinding)child.dataSource).Clone();
             if (args.Length == 3) {
