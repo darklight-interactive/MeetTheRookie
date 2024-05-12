@@ -26,21 +26,17 @@ public class SynthesisManager : UXML_UIDocumentObject
     /// </summary>
     VisualElement objects;
     VisualElement synthesizeButton;
-    public void Awake()
-    {
-
-        document.rootVisualElement.visible = false;
-
-        objects = document.rootVisualElement.Q("objects");
-
-        synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
-        itemsSelection.Add(synthesizeButton);
-    }
 
     public void Prepare() {
         InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
+
+        document.rootVisualElement.visible = false;
+        objects = document.rootVisualElement.Q("objects");
+
+        synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
+        itemsSelection.Add(synthesizeButton);
     }
 
     bool synthesisActive = false;
