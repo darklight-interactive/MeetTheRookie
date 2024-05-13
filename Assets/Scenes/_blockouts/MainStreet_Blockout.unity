@@ -9801,9 +9801,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059533645}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -4.5, y: 0, z: 2}
+  m_LocalScale: {x: 0.40000013, y: 0.4, z: 0.40000013}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1120632760}
@@ -9820,7 +9820,7 @@ Transform:
   - {fileID: 1720172631}
   - {fileID: 1065469302}
   - {fileID: 286297860}
-  m_Father: {fileID: 1916478131}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1059554364
 GameObject:
@@ -20399,38 +20399,6 @@ Transform:
   - {fileID: 305511140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1916478130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1916478131}
-  m_Layer: 0
-  m_Name: tu madre
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1916478131
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916478130}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4.5, y: 0, z: 1.9999995}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 1059533646}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1917768219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22410,17 +22378,9 @@ MonoBehaviour:
   m_Mesh: {fileID: 640876691}
   m_VersionIndex: 2471
   m_IsSelectable: 1
-  m_SelectedFaces: 20000000
-  m_SelectedEdges:
-  - a: 116
-    b: 117
-  - a: 117
-    b: 118
-  - a: 118
-    b: 119
-  - a: 119
-    b: 116
-  m_SelectedVertices: 76000000740000007500000077000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!43 &2037167555
 Mesh:
   m_ObjectHideFlags: 0
@@ -23464,7 +23424,7 @@ SceneRoots:
   - {fileID: 237639919}
   - {fileID: 789481750}
   - {fileID: 101699421}
-  - {fileID: 1916478131}
+  - {fileID: 1059533646}
   - {fileID: 412561262}
   - {fileID: 1901090926}
   - {fileID: 1489699565}

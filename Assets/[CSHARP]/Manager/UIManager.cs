@@ -18,6 +18,8 @@ using UnityEditor;
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     const string INTERACT_PROMPT_TAG = "icon-interact";
+    private int lastScreenWidth;
+    private int lastScreenHeight;
 
     // ----- [[ INTERACTION UI ]] ----------------------------------->>
     [Header("Interaction UI")]
@@ -74,6 +76,30 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         icon.visible = true;
 
     }
+
+    void Update()
+    {
+        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            AdjustVisualElements();
+        }
+    }
+
+    void AdjustVisualElements()
+    {
+        float aspectRatio = (float)Screen.width / Screen.height;
+
+        // Adjust the content size based on the aspect ratio
+
+        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        icon.style.width = new Length(100 * aspectRatio, LengthUnit.Pixel);
+        icon.style.height = new Length(100 / aspectRatio, LengthUnit.Pixel);
+
+        Debug.Log($"Screen Size: {Screen.width}x{Screen.height}, Aspect Ratio: {aspectRatio}");
+    }
+
 
     public void HideInteractPrompt()
     {
