@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/MediumPaper/MediumPaper3.png?fileID=2800000&amp;guid=bb1e77a5ddb2d48f2b4e238da200b286&amp;type=3#MediumPaper3&quot;); width: 256px; height: 128px; position: absolute;" />
+    <engine:Label text="Label" data-source="project://database/Assets/Resources/Synthesis/New%20Synthesis%20Binding.asset?fileID=11400000&amp;guid=e3966740f44bdb24a84194189719aa9e&amp;type=2#New Synthesis Binding" style="font-size: 16px; rotate: -3deg; position: absolute; width: 240px; left: 15px; top: -1px;">
+        <Bindings>
+            <engine:DataBinding property="text" binding-mode="ToTarget" data-source-path="value" />
+        </Bindings>
+    </engine:Label>
+</engine:UXML>
