@@ -7,7 +7,7 @@ public class RunSynthesisRealQuick : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        Invoke("Initialize", 0.2f);
+        Invoke("Initialize", 0.5f);
     }
 
     void Initialize() {
