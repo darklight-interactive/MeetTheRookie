@@ -65,7 +65,21 @@ namespace Darklight.UXML
             root.Query<T>(tagOrClass).ForEach(element => elements.Add(element));
             return elements;
         }
-
-
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(UXML_UIDocumentObject), true)]
+    public class UXML_UIDocumentObjectCustomEditor : Editor
+    {
+        SerializedObject _serializedObject;
+        UXML_UIDocumentObject _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (UXML_UIDocumentObject)target;
+            _script.Initialize(_script.preset);
+        }
+    }
+#endif
+
 }

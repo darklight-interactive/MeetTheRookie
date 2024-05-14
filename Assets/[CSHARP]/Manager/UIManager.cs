@@ -87,12 +87,21 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     [Header("Base UIDocument")]
-    [ShowOnly] public MenuController menuUI;
-    [SerializeField] UXML_UIDocumentPreset menuUIPreset;
-
-    [Header("Interactable UIDocument")]
-    [ShowOnly] public InteractableUI interactableUI;
+    private UXML_UIDocumentObject baseUI;
+    private InteractableUI _interactableUI;
     [SerializeField] UXML_UIDocumentPreset interactableUIPreset;
+    public InteractableUI interactableUI
+    {
+        get
+        {
+            _interactableUI = FindAnyObjectByType<InteractableUI>();
+            if (_interactableUI == null)
+            {
+                _interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
+            }
+            return _interactableUI;
+        }
+    }
 
     [Header("Synthesis UIDocument")]
     [ShowOnly] public SynthesisManager synthesisManager;
@@ -123,8 +132,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         UpdateScreenSize();
 
         VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        SetWorldToScreenPoint(icon, worldPos, true);
-        ScaleElementToScreenSize(icon, 0.1f);
+        SetWorldToScreenPoint(icon, worldPos);
+        ScaleElementToScreenSize(icon, 0.05f);
         icon.SetEnabled(true);
         icon.visible = true;
     }
