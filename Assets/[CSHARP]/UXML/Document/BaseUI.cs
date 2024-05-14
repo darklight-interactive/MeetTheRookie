@@ -3,9 +3,9 @@ using Darklight.UXML;
 using Darklight.UXML.Element;
 using UnityEngine;
 
-public class BaseUI : UXML_UIDocumentObject
+public class BaseUI : MenuUI
 {
-    public SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    //public SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
 
 
 }

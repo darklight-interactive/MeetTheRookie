@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+
 
 
 
@@ -36,11 +38,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// </summary>
     /// <param name="preset"></param>
     /// <returns></returns>
-    public static UXML_UIDocumentObject CreateUIDocumentObject(UXML_UIDocumentPreset preset)
+    public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset) where TDocument : UXML_UIDocumentObject
     {
         GameObject go = new GameObject($"UIDocument : {preset.name}");
         go.hideFlags = HideFlags.DontSaveInEditor;
-        UXML_UIDocumentObject uiDocument = go.AddComponent<UXML_UIDocumentObject>();
+        TDocument uiDocument = go.AddComponent<TDocument>();
         uiDocument.Initialize(preset);
         return uiDocument;
     }
@@ -106,36 +108,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
 
+    [EasyButtons.Button]
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
         UpdateScreenSize();
-
-    }
-
-    [EasyButtons.Button]
-    public void Start()
-    {
-
-        List<UXML_UIDocumentObject> uiDocuments = FindObjectsByType<UXML_UIDocumentObject>(FindObjectsSortMode.None).ToList();
-        foreach (UXML_UIDocumentObject uiDocument in uiDocuments)
-        {
-
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                DestroyImmediate(uiDocument.gameObject);
-                continue;
-            }
-#endif
-            Destroy(uiDocument.gameObject);
-        }
-
-        baseUI = CreateUIDocumentObject(baseUIPreset);
-
-        interactableUI = CreateUIDocumentObject(interactableUIPreset) as InteractableUI;
-
-        synthesisManager = CreateUIDocumentObject(synthesisUIPreset) as SynthesisManager;
+        baseUI = CreateUIDocumentObject<BaseUI>(baseUIPreset);
+        interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
+        synthesisManager = CreateUIDocumentObject<SynthesisManager>(synthesisUIPreset);
         synthesisManager.Prepare();
     }
 
@@ -176,16 +156,23 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
 
 
-    [EasyButtons.Button]
-    public void DestroyAllUI()
+#if UNITY_EDITOR
+    [MenuItem("Tools/Clean Hidden Objects")]
+    public static void CleanHiddenObjects()
     {
-        List<UIDocument> uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None).ToList();
-        foreach (UIDocument uiDocument in uiDocuments)
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+        int count = 0;
+
+        foreach (GameObject obj in allObjects)
         {
-            Destroy(uiDocument.gameObject);
+            if ((obj.hideFlags & HideFlags.HideAndDontSave) != 0)
+            {
+                DestroyImmediate(obj);
+                count++;
+            }
         }
+
+        Debug.Log($"{count} hidden objects have been destroyed.");
     }
-
-
-
+#endif
 }

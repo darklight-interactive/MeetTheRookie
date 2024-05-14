@@ -28,7 +28,7 @@ namespace Darklight.UXML.Element
     public partial class SelectableVisualElement<TElement> : VisualElement, ISelectableUIElement<TElement> where TElement : VisualElement, new()
     {
         // Publicly accessible element instance.
-        public TElement Element { get; }
+        public TElement Element { get; protected set; }
         public Rect Rect => Element.worldBound;
         public Vector2 CenterPosition => Element.worldBound.center;
         public event Action OnSelect;
