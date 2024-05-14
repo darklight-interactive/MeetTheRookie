@@ -1,13 +1,5 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="InteractIcon" src="project://database/Assets/InteractIcon.uxml?fileID=9197481963319205126&amp;guid=a87f3a30f4694a147b2b6bef711a1376&amp;type=3#InteractIcon" />
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="icon-interact" style="position: absolute; flex-grow: 1; width: 250px; height: 250px; visibility: hidden;">
-        <engine:VisualElement name="bg-circle" style="background-color: rgba(15, 24, 38, 0.39); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; align-items: stretch; justify-content: center; align-self: auto; flex-grow: 1; flex-direction: column;">
-            <engine:VisualElement name="magnify-glass-image" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/icon_interact.png?fileID=21300000&amp;guid=40e70f19364c41a40a12697a0eeb3530&amp;type=3#icon_interact&quot;); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-grow: 1; justify-content: center; align-self: stretch; flex-direction: column; align-items: stretch;">
-                <engine:VisualElement style="flex-grow: 1; flex-basis: 75%;" />
-                <engine:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/paper_medium2.png?fileID=4585824368742884431&amp;guid=cab7f5c7e17c9b1478c897aa15a3236c&amp;type=3#paper_medium2_0&quot;);">
-                    <engine:Label text="Press Z" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&amp;guid=d95d61c132c648c42b6313ed97ed9cf7&amp;type=3#LGGothic&quot;); -unity-font-style: normal; font-size: 64%;" />
-                </engine:VisualElement>
-            </engine:VisualElement>
-        </engine:VisualElement>
-    </engine:VisualElement>
+    <engine:Instance template="InteractIcon" name="InteractIcon" />
 </engine:UXML>

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Darklight.Game.Utility;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,8 +17,12 @@ namespace Darklight.UXML
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class UXML_UIDocumentObject : MonoBehaviour
+    public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
     {
+        public void OnEditorReloaded()
+        {
+            DestroyImmediate(this);
+        }
         // << SERIALIZED VALUES >> //
         [SerializeField] UXML_UIDocumentPreset _preset;
 

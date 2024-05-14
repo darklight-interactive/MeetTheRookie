@@ -1,7 +1,7 @@
 using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using Darklight.UnityExt.Editor;
 
 
 #if UNITY_EDITOR
@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
         icon.SetEnabled(true);
-        ScaleToScreenSize(icon, 0.2f);
+        ScaleToScreenSize(icon, 0.05f);
         icon.visible = true;
     }
 
@@ -108,4 +108,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         icon.visible = false;
     }
+
+
 }
