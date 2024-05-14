@@ -38,21 +38,21 @@ public class PlayerCameraController : CameraController
     public void Start()
     {
         if (_playerController != null && _playerController.stateMachine != null)
-            _playerController.stateMachine.OnStateChanged += (PlayerState state) => OnPlayerStateChange(state);
+            _playerController.stateMachine.OnStateChanged += (PlayerStateType state) => OnPlayerStateChange(state);
     }
 
-    public void OnPlayerStateChange(PlayerState state)
+    public void OnPlayerStateChange(PlayerStateType state)
     {
         switch (state)
         {
-            case PlayerState.NONE:
-            case PlayerState.IDLE:
+            case PlayerStateType.NONE:
+            case PlayerStateType.IDLE:
                 _stateMachine.GoToState(CameraStateKey.DEFAULT);
                 break;
-            case PlayerState.INTERACTION:
+            case PlayerStateType.INTERACTION:
                 _stateMachine.GoToState(CameraStateKey.CLOSE_UP);
                 break;
-            case PlayerState.WALK:
+            case PlayerStateType.WALK:
                 _stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
                 break;
         }
@@ -61,7 +61,7 @@ public class PlayerCameraController : CameraController
     public void OnDestroy()
     {
         if (_playerController != null && _playerController.stateMachine != null)
-            _playerController.stateMachine.OnStateChanged -= (PlayerState state) => OnPlayerStateChange(state);
+            _playerController.stateMachine.OnStateChanged -= (PlayerStateType state) => OnPlayerStateChange(state);
     }
 }
 

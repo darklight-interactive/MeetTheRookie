@@ -7,7 +7,7 @@ using Darklight.UnityExt.Editor;
 /// <summary>
 ///  This is the main singleton class that manages all FMOD audio events and buses.
 /// </summary>
-public class FMODManager : MonoBehaviourSingleton<FMODManager>
+public class FMOD_SoundManager : MonoBehaviourSingleton<FMOD_SoundManager>
 {
     [ShowOnly] public FMOD.RESULT busListOk;
     [ShowOnly] public FMOD.RESULT sysemIsOk;
@@ -26,9 +26,6 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
     [SerializeField] private StudioEventEmitter backgroundEmitter;
     public EventReference backgroundMusicEvent;
     public EventInstance backgroundMusicInstance;
-
-    [Space(10), Header("Interaction")]
-    [SerializeField] public EventReference interactionEvent;
 
     public EventInstance currentPlaying;
     protected FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -56,14 +53,44 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
 
 
     #region == [[ PLAY EVENTS ]] ==================================================
-
-    public void PlayEvent(EventReference eventReference)
+    public static void PlayEvent(EventReference eventReference)
     {
+        if (eventReference.IsNull) return;
+
         EventInstance instance = RuntimeManager.CreateInstance(eventReference);
         instance.start();
         instance.release();
     }
+
+    public static void PlayOneShot(EventReference eventReference)
+    {
+        RuntimeManager.PlayOneShot(eventReference);
+    }
     #endregion
+
+    // Coroutine to handle the repeated playing of an event
+    private IEnumerator RepeatEventRoutine(EventReference eventReference, float interval)
+    {
+        while (true)
+        {
+            FMOD_SoundManager.PlayEvent(eventReference);
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    // Method to start repeating an event
+    public void StartRepeatingEvent(EventReference eventReference, float interval)
+    {
+        StartCoroutine(RepeatEventRoutine(eventReference, interval));
+    }
+
+    // Method to stop repeating an event
+    public void StopRepeatingEvent()
+    {
+        StopAllCoroutines();  // This stops all coroutines; consider a more targeted approach if using multiple coroutines
+    }
+
+
 
     #region == old code ===========================================================
     /*
@@ -306,19 +333,19 @@ public class FMODManager : MonoBehaviourSingleton<FMODManager>
 }
 
 #if UNITY_EDITOR
-[UnityEditor.CustomEditor(typeof(FMODManager))]
+[UnityEditor.CustomEditor(typeof(FMOD_SoundManager))]
 public class FMODManagerEditor : UnityEditor.Editor
 {
     private void OnEnable()
     {
-        FMODManager FMODManager = (FMODManager)target;
+        FMOD_SoundManager FMODManager = (FMOD_SoundManager)target;
     }
 
     public override void OnInspectorGUI()
     {
-        FMODManager FMODManager = (FMODManager)target;
+        FMOD_SoundManager FMODManager = (FMOD_SoundManager)target;
 
-        FMODManager.Console.DrawInEditor();
+        FMOD_SoundManager.Console.DrawInEditor();
 
         DrawDefaultInspector();
     }

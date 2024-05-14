@@ -34,8 +34,7 @@ namespace Darklight.Selectable
         public event Action OnClick;
         public SelectableVisualElement()
         {
-            Element = new TElement();
-            this.Add(Element);
+            Element = this as TElement;
             this.focusable = true;
         }
 

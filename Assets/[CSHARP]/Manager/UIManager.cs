@@ -16,47 +16,65 @@ using UnityEditor;
 /// UIDocuments in the game.
 /// </summary>
 [ExecuteAlways]
+[RequireComponent(typeof(UXML_UIDocumentObject))]
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-    const string INTERACT_PROMPT_TAG = "icon-interact";
-    private int lastScreenWidth;
-    private int lastScreenHeight;
+    const string INTERACT_PROMPT_TAG = "interact-icon";
+    const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
-    // ----- [[ INTERACTION UI ]] ----------------------------------->>
-    [Header("Interaction UI")]
-    public UXML_UIDocumentPreset interactionUIPreset;
-    private UXML_UIDocumentObject _interactionUI;
-    public UXML_UIDocumentObject interactionUI
+    #region ======= [[ STATIC METHODS ]] ======= >>>>
+    private static int lastScreenWidth;
+    private static int lastScreenHeight;
+    /// <summary>
+    /// Sets the position of a UI Toolkit element to correspond to a world position.
+    /// Optionally centers the element on the screen position.
+    /// </summary>
+    /// <param name="element">The UI Toolkit element to position.</param>
+    /// <param name="worldPosition">The world position to map to screen space.</param>
+    /// <param name="center">Optional parameter to center the element at the screen position (default false).</param>
+    public static void SetWorldToScreenPoint(VisualElement element, Vector3 worldPosition, bool center = false)
     {
-        get
+        Camera cam = Camera.main;
+        if (cam == null) throw new System.Exception("No main camera found.");
+
+        // Convert world position to screen position
+        Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
+        screenPosition.y = cam.pixelHeight - screenPosition.y;  // UI Toolkit uses top-left origin
+        screenPosition.z = 0;
+
+        if (center)
         {
-            if (_interactionUI == null)
-            {
-                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_UIDocumentObject>();
-                _interactionUI.Initialize(interactionUIPreset, new string[] { INTERACT_PROMPT_TAG });
-            }
-            return _interactionUI;
+            // Adjust position to center the element
+            screenPosition.x -= element.resolvedStyle.width / 2;
+            screenPosition.y -= element.resolvedStyle.height / 2;
         }
+
+        // Set positions using left and top in style
+        element.style.left = screenPosition.x;
+        element.style.top = screenPosition.y;
     }
 
-    // ----- [[ WORLD SPACE UI ]] -----------------------------------
-    [Space(10), Header("World Space UI")]
-    public UXML_UIDocumentPreset worldSpaceUIPreset;
-    public Material worldSpaceMaterial;
-    public RenderTexture worldSpaceRenderTexture;
-    private UXML_WorldSpaceUI _worldSpaceUI;
-    public UXML_WorldSpaceUI worldSpaceUI
+    /// <summary>
+    /// Adjusts the size of the given VisualElement based on the current screen size.
+    /// </summary>
+    /// <param name="element">The VisualElement to adjust.</param>
+    public static void ScaleElementToScreenSize(VisualElement element, float scale = 1f)
     {
-        get
-        {
-            if (_worldSpaceUI == null)
-            {
-                _worldSpaceUI = new GameObject("UIDocument : WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
-                _worldSpaceUI.Initialize(worldSpaceUIPreset, new string[] { "inkyLabel" }, worldSpaceMaterial, worldSpaceRenderTexture);
-            }
-            return _worldSpaceUI;
-        }
+        float maxDimension = Mathf.Max(lastScreenWidth, lastScreenHeight);
+
+        // Adjust the size of the element based on the smaller dimension of the screen
+        float newSize = maxDimension * scale;
+        element.style.width = new Length(newSize, LengthUnit.Pixel);
+        element.style.height = new Length(newSize, LengthUnit.Pixel);
+
+        Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
     }
+    #endregion <<< ======= [[ STATIC METHODS ]] =======
+
+    [Header("UXML Document Objects")]
+    [SerializeField] UXML_UIDocumentPreset interactionUIPreset;
+    public UXML_UIDocumentObject interactionUIDocument => GetComponent<UXML_UIDocumentObject>();
+
 
     [Space(10), Header("Synthesis UI")]
     public UXML_UIDocumentPreset synthesisUIPreset;
@@ -66,30 +84,29 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     // ----- [[ UNITY METHODS ]] ------------------------------------>
     public override void Awake()
     {
-        base.Awake();
+        base.Awake(); // << Update the Singleton instance
+        UpdateScreenSize();
+
+        interactionUIDocument.Initialize(interactionUIPreset, new string[] { INTERACT_PROMPT_TAG, SPEECH_BUBBLE_TAG });
+
     }
 
-    public void ShowInteractionPromptInWorld(Vector3 worldPos)
+    public void ShowInteractIcon(Vector3 worldPos)
     {
         UpdateScreenSize();
 
-        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
-        ScaleToScreenSize(icon, 0.05f);
+        VisualElement icon = interactionUIDocument.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        SetWorldToScreenPoint(icon, worldPos, true);
+        ScaleElementToScreenSize(icon, 0.1f);
         icon.SetEnabled(true);
         icon.visible = true;
     }
-
-    public void ShowSpeechBubbleInWorld(Vector3 worldPos, string text)
+    public void HideInteractIcon()
     {
-        UpdateScreenSize();
-
-        VisualElement bubble = interactionUI.ElementQuery<VisualElement>("speech-bubble");
-        interactionUI.SetWorldToScreenPoint(bubble, worldPos, true);
-        ScaleToScreenSize(bubble, 2f);
-        bubble.SetEnabled(true);
-        bubble.visible = true;
+        VisualElement icon = interactionUIDocument.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        icon.visible = false;
     }
+
 
     void Update()
     {
@@ -105,29 +122,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         }
     }
 
-    /// <summary>
-    /// Adjusts the size of the given VisualElement based on the current screen size.
-    /// </summary>
-    /// <param name="element">The VisualElement to adjust.</param>
-    public void ScaleToScreenSize(VisualElement element, float scale = 1f)
-    {
-        float minDimension = Mathf.Min(lastScreenWidth, lastScreenHeight);
-
-        // Adjust the size of the element based on the smaller dimension of the screen
-        float newSize = minDimension * scale;
-        element.style.width = new Length(newSize, LengthUnit.Pixel);
-        element.style.height = new Length(newSize, LengthUnit.Pixel);
 
 
 
-        Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
-    }
-
-    public void HideInteractPrompt()
-    {
-        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        icon.visible = false;
-    }
 
 
 }

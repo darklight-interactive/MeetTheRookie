@@ -17,11 +17,5 @@ public class PlayerUIGrid : OverlapGrid2D
         UIManager.Instance.ShowSpeechBubbleInWorld(position, text);
         Debug.Log($"Player Dialogue -> Grid Position: {data.positionKey} | World Position: {data.worldPosition}");
     }
-
-
-    public void HideDialogueBubble()
-    {
-        UIManager.Instance.worldSpaceUI.Hide();
-    }
 }
 

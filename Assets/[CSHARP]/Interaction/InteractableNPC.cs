@@ -24,7 +24,7 @@ public class InteractableNPC : Interactable, IInteract
         // >> ON INTERACTION -------------------------------------
         this.OnInteraction += (string currentText) =>
         {
-            dialogueBubble = ShowDialogueBubble(currentText);
+            //dialogueBubble = ShowDialogueBubble(currentText);
             if (controller)
             {
                 controller.stateMachine.GoToState(NPCState.SPEAK);
@@ -42,25 +42,6 @@ public class InteractableNPC : Interactable, IInteract
         };
     }
 
-    public UXML_WorldSpaceUI ShowDialogueBubble(string text)
-    {
-        OverlapGrid2D_Data data = overlapGrid2D.GetBestData();
-        Vector3 position = data.worldPosition;
-        Debug.Log($"Grid Position: {data.positionKey} | World Position: {data.worldPosition}");
-
-        UXML_WorldSpaceUI worldSpaceUIDoc = UIManager.Instance.worldSpaceUI;
-        worldSpaceUIDoc.transform.position = position;
-        worldSpaceUIDoc.transform.localScale = data.coordinateSize * Vector3.one * speechBubbleScalar;
-        worldSpaceUIDoc.ElementQuery<Label>("inky-label").text = text;
-
-        worldSpaceUIDoc.TextureUpdate();
-        return worldSpaceUIDoc;
-    }
-
-    public void HideDialogueBubble()
-    {
-        UIManager.Instance.worldSpaceUI.Hide();
-    }
 }
 
 #if UNITY_EDITOR
@@ -73,20 +54,6 @@ public class InteractableNPCCustomEditor : InteractableCustomEditor
 
         DrawDefaultInspector();
 
-        if (interactableNPC.DialogueBubble.isVisible)
-        {
-            if (GUILayout.Button("Hide Dialogue Bubble"))
-            {
-                interactableNPC.HideDialogueBubble();
-            }
-        }
-        else
-        {
-            if (GUILayout.Button("Show Dialogue Bubble"))
-            {
-                interactableNPC.ShowDialogueBubble("Hello, I am an NPC.");
-            }
-        }
     }
 }
 #endif

@@ -105,7 +105,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnComplete()
     {
-        playerDialogueHandler.HideDialogueBubble();
+        //playerDialogueHandler.HideDialogueBubble();
         playerController.ExitInteraction();
         interactables.Remove(_activeInteraction);
     }

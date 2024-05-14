@@ -4,18 +4,32 @@ using Darklight.UXML;
 using Darklight.Selectable;
 
 [UxmlElement]
-public partial class SpeechBubble : SelectableVisualElement<VisualElement>
+public partial class SpeechBubble : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
 
-    [UxmlAttribute("bubble-sprite")]
-    public Sprite bubbleSprite;
+    [UxmlAttribute("sprite")]
+    public Sprite bubbleSprite
+    {
+        get { return this.style.backgroundImage.value.sprite; }
+        set { SetBackgroundSprite(value); }
+    }
 
     [UxmlAttribute("text")]
     public string text
     {
         get { return speechLabel.text; }
         set { speechLabel.text = value; }
+    }
+
+    [UxmlAttribute("text-size")]
+    public int textSize
+    {
+        get
+        {
+            return (int)speechLabel.style.fontSize.value.value;
+        }
+        set { speechLabel.style.fontSize = value; }
     }
 
     public Label speechLabel = new Label
@@ -25,8 +39,13 @@ public partial class SpeechBubble : SelectableVisualElement<VisualElement>
 
     public SpeechBubble()
     {
+        speechLabel.RemoveFromClassList("unity-label");
+        speechLabel.RemoveFromClassList("unity-text-element");
+        speechLabel.AddToClassList("speech-label");
         this.Add(speechLabel);
+
         this.AddToClassList("speech-bubble");
+        SetBackgroundSprite(bubbleSprite);
     }
 
     public void SetBackgroundSprite(Sprite sprite)

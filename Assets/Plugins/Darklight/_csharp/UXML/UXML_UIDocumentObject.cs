@@ -70,33 +70,6 @@ namespace Darklight.UXML
             return elements;
         }
 
-        /// <summary>
-        /// Sets the position of a UI Toolkit element to correspond to a world position.
-        /// Optionally centers the element on the screen position.
-        /// </summary>
-        /// <param name="element">The UI Toolkit element to position.</param>
-        /// <param name="worldPosition">The world position to map to screen space.</param>
-        /// <param name="center">Optional parameter to center the element at the screen position (default false).</param>
-        public void SetWorldToScreenPoint(VisualElement element, Vector3 worldPosition, bool center = false)
-        {
-            Camera cam = Camera.main;
-            if (cam == null) throw new System.Exception("No main camera found.");
 
-            // Convert world position to screen position
-            Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
-            screenPosition.y = cam.pixelHeight - screenPosition.y;  // UI Toolkit uses top-left origin
-            screenPosition.z = 0;
-
-            if (center)
-            {
-                // Adjust position to center the element
-                screenPosition.x -= element.resolvedStyle.width / 2;
-                screenPosition.y -= element.resolvedStyle.height / 2;
-            }
-
-            // Set positions using left and top in style
-            element.style.left = screenPosition.x;
-            element.style.top = screenPosition.y;
-        }
     }
 }
