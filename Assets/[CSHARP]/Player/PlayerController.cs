@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour
     {
         // If the player is in an interaction state, do not allow movement
         if (stateMachine.CurrentState == PlayerStateType.INTERACTION) return;
+        if (synthesisEnabled) return;
 
         Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
         moveDirection *= playerSpeed; // Scalar

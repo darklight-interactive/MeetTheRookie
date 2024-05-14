@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,7 +17,6 @@ using UnityEditor;
 /// The UIManager is a singleton class that handles the creation and management of 
 /// UIDocuments in the game.
 /// </summary>
-[ExecuteAlways]
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     const string INTERACT_PROMPT_TAG = "interact-icon";
@@ -30,8 +25,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #region ======= [[ STATIC METHODS ]] ============================================= >>>>
     private static int lastScreenWidth;
     private static int lastScreenHeight;
-
-
 
     /// <summary>
     /// Creates a new UIDocumentObject from a given preset.
@@ -94,8 +87,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     [Header("Base UIDocument")]
-    [ShowOnly] public UXML_UIDocumentObject baseUI;
-    [SerializeField] UXML_UIDocumentPreset baseUIPreset;
+    [ShowOnly] public MenuController menuUI;
+    [SerializeField] UXML_UIDocumentPreset menuUIPreset;
 
     [Header("Interactable UIDocument")]
     [ShowOnly] public InteractableUI interactableUI;
@@ -108,15 +101,21 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
 
-    [EasyButtons.Button]
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
         UpdateScreenSize();
-        baseUI = CreateUIDocumentObject<BaseUI>(baseUIPreset);
-        interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
-        synthesisManager = CreateUIDocumentObject<SynthesisManager>(synthesisUIPreset);
-        synthesisManager.Prepare();
+
+
+        //menuUI = CreateUIDocumentObject<MenuUI>(menuUIPreset);
+
+        //interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
+
+
+        //synthesisManager = CreateUIDocumentObject<SynthesisManager>(synthesisUIPreset);
+
+        synthesisManager = FindAnyObjectByType<SynthesisManager>();
+        synthesisManager?.Prepare();
     }
 
     public void ShowInteractIcon(Vector3 worldPos)
@@ -157,15 +156,16 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
 
 #if UNITY_EDITOR
-    [MenuItem("Tools/Clean Hidden Objects")]
-    public static void CleanHiddenObjects()
+    [MenuItem("Tools/Darklight/Clean Hidden Documents")]
+    public static void CleanHiddenDocuments()
     {
-        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+        UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
         int count = 0;
 
-        foreach (GameObject obj in allObjects)
+        foreach (UIDocument doc in allDocuments)
         {
-            if ((obj.hideFlags & HideFlags.HideAndDontSave) != 0)
+            GameObject obj = doc.gameObject;
+            if ((obj.hideFlags & HideFlags.DontSaveInEditor) != 0)
             {
                 DestroyImmediate(obj);
                 count++;

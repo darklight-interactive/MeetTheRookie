@@ -9,26 +9,28 @@ namespace Darklight.UXML.Element
     [UxmlElement]
     public partial class SelectableButton : SelectableVisualElement<Button>
     {
-        private Button Button;
+        public new class UxmlFactory : UxmlFactory<SelectableButton> { }
+
 
         [UxmlAttribute]
         public string Text
         {
-            get => Button.text;
-            set => Button.text = value;
+            get { return Element.text; }
+            set { Element.text = value; }
         }
 
         public SelectableButton()
         {
-            Button = (Button)Element;
-            //Text = "selectable-button";
-            //this.clickable.clicked += ClickAction;
+            Element = new Button();
+            Element.text = Text;
+            this.Add(Element);
+            Element.clickable.clicked += ClickAction;
         }
 
         private void ClickAction()
         {
             Click();
-            Button.clickable.clicked -= ClickAction;
+            Element.clickable.clicked -= ClickAction;
         }
     }
     #endregion

@@ -14,12 +14,13 @@ using UnityEditor;
 #endif
 
 
-public class MenuUI : UXML_UIDocumentObject
+public class MenuController : UXML_UIDocumentObject
 {
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;
     bool lockSelection = false;
 
+    [EasyButtons.Button]
     public void Awake()
     {
         Initialize(preset);
@@ -27,13 +28,11 @@ public class MenuUI : UXML_UIDocumentObject
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
         selectableVectorField.Selectables.First().Select();
+        selectablesCount = selectableVectorField.Selectables.Count();
 
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-
-        SelectableButton quitButton = ElementQuery<SelectableButton>("quit-button");
-        quitButton.OnClick += Quit;
     }
 
     void OnMoveInputStartAction(Vector2 dir)

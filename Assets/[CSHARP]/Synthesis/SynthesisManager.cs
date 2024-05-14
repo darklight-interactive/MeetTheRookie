@@ -180,31 +180,3 @@ public class SynthesisManager : UXML_UIDocumentObject
         return null;
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(SynthesisManager))]
-public class SynthesisManagerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    SynthesisManager _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (SynthesisManager)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif
