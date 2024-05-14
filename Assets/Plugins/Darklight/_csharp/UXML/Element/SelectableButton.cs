@@ -7,12 +7,15 @@ namespace Darklight.UXML.Element
     #region ---- [[ SELECTABLE BUTTON ]] ----
     // Specific implementation for a Button element.
     [UxmlElement]
-    public partial class SelectableButton : SelectableUIElement<Button>, ISelectableUIElement
+    public partial class SelectableButton : SelectableVisualElement<Button>
     {
-        private Button Button;
+        private Button Button
+        {
+            get => Element;
+        }
 
         [UxmlAttribute]
-        public string Text
+        public string text
         {
             get => Button.text;
             set => Button.text = value;
@@ -20,8 +23,7 @@ namespace Darklight.UXML.Element
 
         public SelectableButton() : base()
         {
-            Button = (Button)Element;
-            Text = "selectable-button";
+            Button.text = "selectable-button";
             Button.clickable.clicked += ClickAction;
         }
 

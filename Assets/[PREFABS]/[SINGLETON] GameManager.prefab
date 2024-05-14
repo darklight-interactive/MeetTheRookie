@@ -190,8 +190,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4044813220143570186}
   - component: {fileID: 8429873552516134897}
-  - component: {fileID: 8132253246991246124}
-  - component: {fileID: 1924868131120430335}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -221,41 +219,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3658148113635171012}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseUI: {fileID: 0}
+  baseUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
+  interactableUI: {fileID: 0}
+  interactableUIPreset: {fileID: 11400000, guid: 9226c4690996f6c4e9191f30f4c6d257, type: 2}
+  synthesisManager: {fileID: 0}
   synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
---- !u!114 &8132253246991246124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3658148113635171012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d880318efe5a4a2dbc866010ce0739d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
---- !u!114 &1924868131120430335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3658148113635171012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 3bfa1e52c1c4745bd8e479ef40135cc0, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
-  m_SortingOrder: 0
 --- !u!1 &3700630360981046889
 GameObject:
   m_ObjectHideFlags: 0

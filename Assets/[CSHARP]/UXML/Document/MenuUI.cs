@@ -14,7 +14,7 @@ using UnityEditor;
 #endif
 
 
-public class MainMenuController : UXML_UIDocumentObject
+public class MenuUI : UXML_UIDocumentObject
 {
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;
@@ -84,38 +84,6 @@ public class MainMenuController : UXML_UIDocumentObject
 #endif
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(MainMenuController))]
-public class MainMenuControllerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    MainMenuController _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (MainMenuController)target;
-        _script.Awake();
-    }
-
-    private void OnDisable()
-    {
-    }
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif
 
 
 

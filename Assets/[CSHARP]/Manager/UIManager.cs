@@ -2,6 +2,10 @@ using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Editor;
+using System.Collections.Generic;
+using System.Linq;
+
+
 
 
 #if UNITY_EDITOR
@@ -35,6 +39,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public static UXML_UIDocumentObject CreateUIDocumentObject(UXML_UIDocumentPreset preset)
     {
         GameObject go = new GameObject($"UIDocument : {preset.name}");
+        go.hideFlags = HideFlags.DontSaveInEditor;
         UXML_UIDocumentObject uiDocument = go.AddComponent<UXML_UIDocumentObject>();
         uiDocument.Initialize(preset);
         return uiDocument;
@@ -86,19 +91,51 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
-    [ShowOnly] public UXML_UIDocumentObject interactionUIDocument;
-    [SerializeField] UXML_UIDocumentPreset interactionUIPreset;
+    [Header("Base UIDocument")]
+    [ShowOnly] public UXML_UIDocumentObject baseUI;
+    [SerializeField] UXML_UIDocumentPreset baseUIPreset;
 
+    [Header("Interactable UIDocument")]
+    [ShowOnly] public InteractableUI interactableUI;
+    [SerializeField] UXML_UIDocumentPreset interactableUIPreset;
 
+    [Header("Synthesis UIDocument")]
     [ShowOnly] public SynthesisManager synthesisManager;
     [SerializeField] UXML_UIDocumentPreset synthesisUIPreset;
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
+
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
         UpdateScreenSize();
+
+    }
+
+    [EasyButtons.Button]
+    public void Start()
+    {
+
+        List<UXML_UIDocumentObject> uiDocuments = FindObjectsByType<UXML_UIDocumentObject>(FindObjectsSortMode.None).ToList();
+        foreach (UXML_UIDocumentObject uiDocument in uiDocuments)
+        {
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                DestroyImmediate(uiDocument.gameObject);
+                continue;
+            }
+#endif
+            Destroy(uiDocument.gameObject);
+        }
+
+        baseUI = CreateUIDocumentObject(baseUIPreset);
+
+        interactableUI = CreateUIDocumentObject(interactableUIPreset) as InteractableUI;
+
+        synthesisManager = CreateUIDocumentObject(synthesisUIPreset) as SynthesisManager;
         synthesisManager.Prepare();
     }
 
@@ -106,7 +143,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         UpdateScreenSize();
 
-        VisualElement icon = interactionUIDocument.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         SetWorldToScreenPoint(icon, worldPos, true);
         ScaleElementToScreenSize(icon, 0.1f);
         icon.SetEnabled(true);
@@ -114,7 +151,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
     public void HideInteractIcon()
     {
-        VisualElement icon = interactionUIDocument.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         icon.visible = false;
     }
 
@@ -139,7 +176,15 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
 
 
-
+    [EasyButtons.Button]
+    public void DestroyAllUI()
+    {
+        List<UIDocument> uiDocuments = FindObjectsByType<UIDocument>(FindObjectsSortMode.None).ToList();
+        foreach (UIDocument uiDocument in uiDocuments)
+        {
+            Destroy(uiDocument.gameObject);
+        }
+    }
 
 
 

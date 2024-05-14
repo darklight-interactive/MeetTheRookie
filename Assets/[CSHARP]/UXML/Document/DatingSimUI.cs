@@ -9,7 +9,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using Darklight.Utility;
 
-public class MTR_DatingSimManager : UXML_UIDocumentObject
+public class DatingSimUI : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;
