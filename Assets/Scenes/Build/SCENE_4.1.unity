@@ -18158,6 +18158,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1350742221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1350742224}
+  - component: {fileID: 1350742223}
+  - component: {fileID: 1350742222}
+  m_Layer: 5
+  m_Name: 'UIDocument : InteractionUI'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1350742222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350742221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d880318efe5a4a2dbc866010ce0739d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
+--- !u!114 &1350742223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350742221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 2bc35637dfbc92044884f90c5d7f957d, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 4571fddec28a539468d56a7a8d2b57e6, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1350742224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350742221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1354561054
 GameObject:
   m_ObjectHideFlags: 0
@@ -18638,6 +18700,10 @@ PrefabInstance:
       propertyPath: 'scenesInBuild.Array.data[4]'
       value: 
       objectReference: {fileID: 102900000, guid: 767279bbbae75d745b6567f416c19b62, type: 3}
+    - target: {fileID: 4959384409519080637, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: currentStoryObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20918,7 +20984,7 @@ GameObject:
   - component: {fileID: 1650760818}
   - component: {fileID: 1650760817}
   m_Layer: 0
-  m_Name: Out of Business Sign - Wine Tasting_0
+  m_Name: einab_closed_sign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21006,7 +21072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  _interactionKey: scene1_2.vending_machine
+  _interactionKey: scene4_1.einab_closed_sign
   _sprite: {fileID: 7668350867315635259, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
   _isTarget: 0
   _isActive: 0
@@ -24892,6 +24958,75 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1059533646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1974181688
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2983785582193056432, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_Name
+      value: '[NPC] Misra'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247015523766141193, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: _storyParent
+      value: 
+      objectReference: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+    - target: {fileID: 7247015523766141193, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: _interactionKey
+      value: scene4_1.talk_to_misra
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
 --- !u!1 &1979713505
 GameObject:
   m_ObjectHideFlags: 0
@@ -26061,6 +26196,95 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2062682890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_global
+  m_EditorClassIdentifier: 
+  _inkFile: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _knotAndStitchKeys:
+  - SetSpeaker
+  - SetActiveQuestChain
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - DiscoverClue
+  - IsClueFound
+  - level1
+  - scene1_0
+  - scene1_1
+  - scene1_1.gas_pump
+  - scene1_1.car
+  - scene1_1.npc
+  - scene1_1.enter_store
+  - scene1_2
+  - scene1_2.vending_machine
+  - scene1_2.employee
+  - scene1_2.door_to_backroom
+  - scene1_2.door_to_outside
+  - scene1_3
+  - scene1_3.mel
+  - scene1_3.goop
+  - scene1_4
+  - scene1_4.fallen_tree
+  - level4
+  - scene4_1
+  - scene4_1.talk_to_misra
+  - scene4_1.strange_symbol_on_fountain
+  - scene4_1.goop_on_fountain
+  - scene4_1.the_rockin_kettle
+  - scene4_1.laundromat_closed_sign
+  - scene4_1.einab_closed_sign
+  - scene4_1.apartments_for_lease_sign
+  - scene4_1.diner_closed_sign
+  - scene4_1.clothing_store_closed_sign
+  - scene4_1.heart_of_kettle
+  - scene4_2
+  - scene4_2.4_2_roy_rogerson
+  - scene4_2.4_2_front_door
+  - scene4_3
+  - scene4_3.arcade
+  - scene4_3.teens
+  - teens_roulette
+  - teens_suspect
+  - scene4_4
+  - scene4_4.goop
+  - scene4_4.memorial_plaque
+  - Misra_Dialogue
+  - Misra_Dialogue.4_1
+  _variables:
+  - _key: Clues_1
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: QuestChain_1
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: current_npc
+    _valueAsString: 
+  - _key: closed_signs
+    _valueAsString: 0
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: 
+  - _key: Speaker
+    _valueAsString: 
+  - _key: curSpeaker
+    _valueAsString: Lupe
+  - _key: mainQuest
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  _globalTags: []
 --- !u!1 &2063962049
 GameObject:
   m_ObjectHideFlags: 0
@@ -26680,3 +26904,5 @@ SceneRoots:
   - {fileID: 785340001}
   - {fileID: 1414531473}
   - {fileID: 642954171}
+  - {fileID: 1350742224}
+  - {fileID: 1974181688}

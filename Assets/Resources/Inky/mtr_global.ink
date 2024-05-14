@@ -10,7 +10,9 @@
 // ====== INCLUDE == >>
 INCLUDE mtr_level1_melOmart.ink
 //INCLUDE mtr_level3_wineryMorning.ink
-//INCLUDE mtr_level4_mainstreet.ink
+INCLUDE mtr_level4_mainstreet.ink
+
+INCLUDE _characters/Misra.ink
 
 
 // ====== SCENE HANDLING == >>
@@ -18,6 +20,7 @@ INCLUDE mtr_level1_melOmart.ink
 === global_main ===
 #Meet The Rookie - Global Main
 * [Level 1] -> level1
+* [Level 4] -> level4
 
 
 // ====== SPEAKER HANDLING == >>

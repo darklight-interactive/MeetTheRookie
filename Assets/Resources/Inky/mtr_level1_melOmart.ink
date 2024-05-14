@@ -3,16 +3,14 @@
 //      - Scene 1.0 - 1.5
 // ---------------------------------------------- >>/^*
 
-LIST Clues_1_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
-LIST QuestChain_1_1 = (FIRST_INTERACT), PAY_FOR_GAS
+LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
+LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 === level1 ===
-~ SetActiveQuestChain(QuestChain_1_1)
 * [Scene1_0] -> scene1_0
 * [Scene1_1] -> scene1_1
 * [Scene1_2] -> scene1_2
 * [Scene1_3] -> scene1_3
-
 -> DONE
 
 
@@ -31,12 +29,11 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
+~ SetActiveQuestChain(QuestChain_1)
 ~ StartQuest(FIRST_INTERACT)
 -> DONE
 
-= fallen_tree
-#Lupe sees a tree has fallen and blocked the way out of town.
-* What the hell... -> npc
+
 
 = gas_pump
 ~ CompleteQuest(FIRST_INTERACT)
@@ -192,4 +189,9 @@ I guess I'll find someone to help me inside here.
     #Lupe pays. Suddenly, a loud crashing noise is heard from outside.
     ~ SetSpeaker(Speaker.Lupe)
     What was that? -> DONE
+    
+    = fallen_tree
+    #Lupe sees a tree has fallen and blocked the way out of town.
+    ->DONE
+    //* What the hell... -> npc
   

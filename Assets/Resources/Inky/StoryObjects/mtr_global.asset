@@ -24,7 +24,6 @@ MonoBehaviour:
   - level1
   - scene1_0
   - scene1_1
-  - scene1_1.fallen_tree
   - scene1_1.gas_pump
   - scene1_1.car
   - scene1_1.npc
@@ -38,11 +37,45 @@ MonoBehaviour:
   - scene1_3.mel
   - scene1_3.goop
   - scene1_4
+  - scene1_4.fallen_tree
+  - level4
+  - scene4_1
+  - scene4_1.talk_to_misra
+  - scene4_1.strange_symbol_on_fountain
+  - scene4_1.goop_on_fountain
+  - scene4_1.the_rockin_kettle
+  - scene4_1.laundromat_closed_sign
+  - scene4_1.einab_closed_sign
+  - scene4_1.apartments_for_lease_sign
+  - scene4_1.diner_closed_sign
+  - scene4_1.clothing_store_closed_sign
+  - scene4_1.heart_of_kettle
+  - scene4_2
+  - scene4_2.4_2_roy_rogerson
+  - scene4_2.4_2_front_door
+  - scene4_3
+  - scene4_3.arcade
+  - scene4_3.teens
+  - teens_roulette
+  - teens_suspect
+  - scene4_4
+  - scene4_4.goop
+  - scene4_4.memorial_plaque
+  - Misra_Dialogue
+  - Misra_Dialogue.4_1
   _variables:
-  - _key: Clues_1_1
+  - _key: Clues_1
     _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: QuestChain_1_1
-    _valueAsString: FIRST_INTERACT
+  - _key: QuestChain_1
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: current_npc
+    _valueAsString: 
+  - _key: closed_signs
+    _valueAsString: 0
+  - _key: QuestChain
+    _valueAsString: 
+  - _key: Clues
+    _valueAsString: 
   - _key: Speaker
     _valueAsString: 
   - _key: curSpeaker
