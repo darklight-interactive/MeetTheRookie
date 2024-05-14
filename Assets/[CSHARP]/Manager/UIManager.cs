@@ -15,6 +15,7 @@ using UnityEditor;
 /// The UIManager is a singleton class that handles the creation and management of 
 /// UIDocuments in the game.
 /// </summary>
+[ExecuteAlways]
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     const string INTERACT_PROMPT_TAG = "icon-interact";
@@ -73,8 +74,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
         icon.SetEnabled(true);
+        ScaleToScreenSize(icon, 0.2f);
         icon.visible = true;
-
     }
 
     void Update()
@@ -83,23 +84,24 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         {
             lastScreenWidth = Screen.width;
             lastScreenHeight = Screen.height;
-            AdjustVisualElements();
         }
     }
 
-    void AdjustVisualElements()
+    /// <summary>
+    /// Adjusts the size of the given VisualElement based on the current screen size.
+    /// </summary>
+    /// <param name="element">The VisualElement to adjust.</param>
+    void ScaleToScreenSize(VisualElement element, float scale = 1f)
     {
-        float aspectRatio = (float)Screen.width / Screen.height;
+        float minDimension = Mathf.Min(lastScreenWidth, lastScreenHeight);
 
-        // Adjust the content size based on the aspect ratio
+        // Adjust the size of the element based on the smaller dimension of the screen
+        float newSize = minDimension * scale;
+        element.style.width = new Length(newSize, LengthUnit.Pixel);
+        element.style.height = new Length(newSize, LengthUnit.Pixel);
 
-        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        icon.style.width = new Length(100 * aspectRatio, LengthUnit.Pixel);
-        icon.style.height = new Length(100 / aspectRatio, LengthUnit.Pixel);
-
-        Debug.Log($"Screen Size: {Screen.width}x{Screen.height}, Aspect Ratio: {aspectRatio}");
+        Debug.Log($"Screen Size: {lastScreenWidth}x{lastScreenHeight}, New Element Size: {newSize}");
     }
-
 
     public void HideInteractPrompt()
     {
@@ -107,32 +109,3 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         icon.visible = false;
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(UIManager))]
-public class UIManagerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    UIManager _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (UIManager)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

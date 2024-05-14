@@ -4381,6 +4381,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &360756589
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'scenesInBuild.Array.data[1]'
+      value: 
+      objectReference: {fileID: 102900000, guid: d7c203cc9db88234ab6cf55173c7b270, type: 3}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_Name
+      value: '[SINGLETON] GameManager'
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 5330460194198749337, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
 --- !u!43 &393260003
 Mesh:
   m_ObjectHideFlags: 0
@@ -12294,7 +12356,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4816572674808989152, guid: ba45dd439753d3d408567fd9f24b466c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -12302,7 +12364,7 @@ SpriteRenderer:
   m_Size: {x: 0.328125, y: 0.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &954588749
@@ -12317,7 +12379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyParent: {fileID: 11400000, guid: 2f6c86fbc7cb3864e93b8f46ee65bff6, type: 2}
+  _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene1_1.gas_pump
   _sprite: {fileID: 4816572674808989152, guid: ba45dd439753d3d408567fd9f24b466c, type: 3}
   _isTarget: 0
@@ -12546,7 +12608,7 @@ SpriteRenderer:
   m_Size: {x: 8, y: 5.33}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1013753657
@@ -34531,7 +34593,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 55b249349797cc34a8364715b4d8cf40, type: 2}
+  - {fileID: 2100000, guid: e0173ba726b93af4996f2e42d210abec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46718,7 +46780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyParent: {fileID: 11400000, guid: 2f6c86fbc7cb3864e93b8f46ee65bff6, type: 2}
+  _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene1_1.npc
   _sprite: {fileID: -3433175864039088387, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
   _isTarget: 0
@@ -46744,7 +46806,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 64
-  showGizmos: 1
+  showGizmos: 0
 --- !u!33 &6143264582024481468
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -46934,7 +46996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyParent: {fileID: 11400000, guid: 2f6c86fbc7cb3864e93b8f46ee65bff6, type: 2}
+  _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene1_1.car
   _sprite: {fileID: 8081776846125497721, guid: ebc6bcafd05494544946d90f78ec518a, type: 3}
   _isTarget: 0
@@ -47120,8 +47182,8 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9d260b3a4288bf64f86887ebc77c5bdd, type: 2}
-  - {fileID: 2100000, guid: 55b249349797cc34a8364715b4d8cf40, type: 2}
-  - {fileID: 2100000, guid: 4f26dd940eb98e545939c1b1e321ea10, type: 2}
+  - {fileID: 2100000, guid: f0cd977c66b85a34dae2679567cf5695, type: 2}
+  - {fileID: 2100000, guid: e0173ba726b93af4996f2e42d210abec, type: 2}
   - {fileID: 2100000, guid: 352379a5b5e02214087cf4d7b806491a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -47408,8 +47470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56ed29780db74a4c8efd2ee6fb3fce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyParent: {fileID: 11400000, guid: 2f6c86fbc7cb3864e93b8f46ee65bff6, type: 2}
-  _interactionKey: scene1_2.playtest_go_to_precinct
+  _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _interactionKey: scene1_1.enter_store
   _sprite: {fileID: 0}
   _isTarget: 0
   _isActive: 0
@@ -47670,3 +47732,4 @@ SceneRoots:
   - {fileID: 987175996433645435}
   - {fileID: 825759766}
   - {fileID: 101217506}
+  - {fileID: 360756589}

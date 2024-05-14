@@ -38,23 +38,12 @@ GroupBox {
     position: absolute;
 }
 
-#title.unity-text-element {
+.unity-text-element {
     flex-grow: 1;
-    color: rgb(0, 0, 0);
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
     align-self: center;
     justify-content: center;
-    font-size: 100px;
-    -unity-font-style: normal;
     -unity-text-align: middle-left;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    margin-top: 15%;
-    margin-right: 15%;
-    margin-bottom: 15%;
-    margin-left: 15%;
 }
 
 .unity-text-element.unity-button {
@@ -118,12 +107,4 @@ GroupBox {
     border-right-width: 10px;
     border-bottom-width: 10px;
     border-left-width: 10px;
-}
-
-.icon {
-    max-width: 128px;
-    max-height: 128px;
-    height: 128px;
-    width: 128px;
-    position: absolute;
 }

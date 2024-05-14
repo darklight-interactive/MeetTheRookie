@@ -17,7 +17,8 @@ namespace Darklight.UnityExt.Editor
 #if UNITY_EDITOR
 
     /// <summary>
-    /// A class that listens for editor reloads and notifies all MonoBehaviour instances that implement IUnityEditorListener.
+    /// A class that listens for editor reloads and notifies all 
+    /// MonoBehaviour instances that implement the interface: IUnityEditorListener.
     /// </summary>
     [InitializeOnLoad]
     public class EditorReloadHandler
