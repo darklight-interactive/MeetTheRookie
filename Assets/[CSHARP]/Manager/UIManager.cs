@@ -16,7 +16,6 @@ using UnityEditor;
 /// UIDocuments in the game.
 /// </summary>
 [ExecuteAlways]
-[RequireComponent(typeof(UXML_UIDocumentObject))]
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     const string INTERACT_PROMPT_TAG = "interact-icon";
@@ -25,6 +24,22 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #region ======= [[ STATIC METHODS ]] ============================================= >>>>
     private static int lastScreenWidth;
     private static int lastScreenHeight;
+
+
+
+    /// <summary>
+    /// Creates a new UIDocumentObject from a given preset.
+    /// </summary>
+    /// <param name="preset"></param>
+    /// <returns></returns>
+    public static UXML_UIDocumentObject CreateUIDocumentObject(UXML_UIDocumentPreset preset)
+    {
+        GameObject go = new GameObject($"UIDocument : {preset.name}");
+        UXML_UIDocumentObject uiDocument = go.AddComponent<UXML_UIDocumentObject>();
+        uiDocument.Initialize(preset);
+        return uiDocument;
+    }
+
     /// <summary>
     /// Sets the position of a UI Toolkit element to correspond to a world position.
     /// Optionally centers the element on the screen position.
@@ -71,25 +86,12 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
-    [Header("UXML Document Objects")]
-    public UXML_UIDocumentObject interactionUIDocument => GetComponent<UXML_UIDocumentObject>();
+    [ShowOnly] public UXML_UIDocumentObject interactionUIDocument;
+    [SerializeField] UXML_UIDocumentPreset interactionUIPreset;
 
 
-    [Space(10), Header("Synthesis UI")]
-    public UXML_UIDocumentPreset synthesisUIPreset;
-    private SynthesisManager _synthesisManager;
-    public SynthesisManager synthesisManager
-    {
-        get
-        {
-            if (_synthesisManager == null)
-            {
-                _synthesisManager = new GameObject("UIDocument : SynthesisManager").AddComponent<SynthesisManager>();
-                _synthesisManager.Initialize(synthesisUIPreset);
-            }
-            return _synthesisManager;
-        }
-    }
+    [ShowOnly] public SynthesisManager synthesisManager;
+    [SerializeField] UXML_UIDocumentPreset synthesisUIPreset;
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>

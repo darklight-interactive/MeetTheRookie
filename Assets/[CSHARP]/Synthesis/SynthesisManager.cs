@@ -5,8 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UXML;
-using Darklight.Game.Selectable;
-using Darklight.Selectable;
+using Darklight.Utility;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,7 +14,6 @@ using UnityEditor;
 /// <summary>
 /// Handle the UI and Synthesis objects.
 /// </summary>
-[RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject
 {
     protected Dictionary<string, VisualElement> synthesisItems = new Dictionary<string, VisualElement>();

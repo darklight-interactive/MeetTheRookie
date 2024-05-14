@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Darklight.Selectable;
 using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Darklight.Game.Selectable
+namespace Darklight.Utility
 {
     /// <summary>
     /// Not actually a vector field (https://en.wikipedia.org/wiki/Vector_field), but a sloppy interpretation of one.

@@ -7,11 +7,4 @@
             <engine:Button text="Toggle" class="icon" />
         </engine:VisualElement>
     </engine:VisualElement>
-    <engine:VisualElement name="body" style="flex-grow: 1; flex-direction: row; align-items: stretch; justify-content: space-between;">
-        <engine:VisualElement name="left-column" focusable="false" class="column-inactive" />
-        <engine:VisualElement name="middle-column" style="flex-grow: 1;" />
-        <SideColumn Active="true" focusable="true">
-            <engine:Label text="Hello this is a test label" />
-        </SideColumn>
-    </engine:VisualElement>
 </engine:UXML>

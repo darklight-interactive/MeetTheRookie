@@ -17,7 +17,8 @@ GroupBox {
 }
 
 #header {
-    flex-basis: 25%;
+    flex-basis: 10%;
+    background-color: rgba(2, 0, 0, 0.2);
 }
 
 #body {
@@ -40,6 +41,8 @@ GroupBox {
 
 #container {
     flex-grow: 1;
+    justify-content: center;
+    align-self: stretch;
 }
 
 .unity-text-element {

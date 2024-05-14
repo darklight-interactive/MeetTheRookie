@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UXML;
 
-public class SceneTransition : UXML_UIDocumentObject
+public class TransitionUI : UXML_UIDocumentObject
 {
     VisualElement blackOverlayElement;
     Label textlabel;

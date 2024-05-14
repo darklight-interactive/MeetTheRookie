@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UXML;
-using Darklight.Selectable;
 
 [UxmlElement]
 public partial class SpeechBubble : VisualElement

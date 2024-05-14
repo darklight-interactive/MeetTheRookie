@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Input;
 using Darklight.UXML;
-using Darklight.Game.Selectable;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using Darklight.Utility;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {

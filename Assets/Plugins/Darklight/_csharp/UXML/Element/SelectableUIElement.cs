@@ -6,9 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace Darklight.Selectable
+namespace Darklight.UXML.Element
 {
-    interface ISelectable
+    public interface ISelectableUIElement
     {
         public event Action OnSelect;
         public event Action OnClick;
@@ -24,7 +24,7 @@ namespace Darklight.Selectable
     /// <typeparam name="TElement">The Type of the </typeparam>
     // Base class for controlled elements that encapsulates common functionalities for UXML elements.
     [UxmlElement]
-    public partial class SelectableVisualElement<TElement> : VisualElement, ISelectable where TElement : VisualElement, new()
+    public partial class SelectableUIElement<TElement> : VisualElement, ISelectableUIElement where TElement : VisualElement, new()
     {
         // Publicly accessible element instance.
         public TElement Element { get; private set; }
@@ -32,7 +32,7 @@ namespace Darklight.Selectable
         public Vector2 CenterPosition => Element.worldBound.center;
         public event Action OnSelect;
         public event Action OnClick;
-        public SelectableVisualElement()
+        public SelectableUIElement()
         {
             Element = this as TElement;
             this.focusable = true;
@@ -62,61 +62,12 @@ namespace Darklight.Selectable
         /// Allows implicit conversion from SelectableElement to the generic class, typeof(TElement) : VisualElement.
         /// </summary>
         /// <param name="wrapper"></param>
-        public static implicit operator TElement(SelectableVisualElement<TElement> wrapper)
+        public static implicit operator TElement(SelectableUIElement<TElement> wrapper)
         {
             return wrapper.Element;
         }
     }
     #endregion
 
-    #region ---- [[ SELECTABLE BUTTON ]] ----
-    // Specific implementation for a Button element.
-    [UxmlElement]
-    public partial class SelectableButton : SelectableVisualElement<Button>, ISelectable
-    {
-        private Button Button;
 
-        [UxmlAttribute]
-        public string Text
-        {
-            get => Button.text;
-            set => Button.text = value;
-        }
-
-        public SelectableButton() : base()
-        {
-            Button = (Button)Element;
-            Text = "selectable-button";
-            Button.clickable.clicked += ClickAction;
-        }
-
-        private void ClickAction()
-        {
-            Click();
-            Button.clickable.clicked -= ClickAction;
-        }
-    }
-    #endregion
-
-    #region ---- [[ SELECTABLE SCENE CHANGE BUTTON ]] ----
-    [UxmlElement]
-    public partial class SelectableSceneChangeButton : SelectableButton
-    {
-        [UxmlAttribute]
-        public SceneAsset scene;
-        public SelectableSceneChangeButton()
-        {
-            OnClick += ChangeScene;
-        }
-
-        private void ChangeScene()
-        {
-            if (scene != null)
-            {
-                SceneManager.LoadScene(scene.name);
-                OnClick -= ChangeScene; // Ensure this is only called once
-            }
-        }
-    }
-    #endregion
 }
