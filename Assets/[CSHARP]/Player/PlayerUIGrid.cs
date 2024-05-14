@@ -25,20 +25,3 @@ public class PlayerUIGrid : OverlapGrid2D
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(PlayerUIGrid), true)]
-public class PlayerDialogueHandlerEditor : OverlapGrid2DEditor
-{
-    public override void OnInspectorGUI()
-    {
-        PlayerUIGrid handler = (PlayerUIGrid)target;
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button("New Dialogue Bubble"))
-        {
-            handler.NewSpeechBubble("Hello World!");
-        }
-    }
-}
-#endif
-
