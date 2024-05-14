@@ -86,13 +86,13 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.ShowInteractionPromptInWorld(transform.position);
+        UIManager.Instance.ShowInteractIcon(transform.position);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.HideInteractPrompt();
+        UIManager.Instance.HideInteractIcon();
     }
 
     public virtual void Interact()

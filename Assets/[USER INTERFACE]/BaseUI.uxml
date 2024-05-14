@@ -1,17 +1,12 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="header" style="padding-bottom: 10px; padding-top: 10px; padding-left: 10px; padding-right: 10px; align-self: auto; align-items: auto;">
-        <engine:VisualElement name="container" style="flex-grow: 1; flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; justify-content: space-evenly; align-self: center; max-width: 33%;">
-            <engine:Button text="Quests" class="icon" />
-            <engine:Button text="Items" class="icon" />
-            <engine:Button text="Toggle" class="icon" />
+    <engine:VisualElement name="header">
+        <engine:VisualElement name="container">
+            <engine:GroupBox style="flex-direction: row-reverse; align-self: flex-start; justify-content: space-between; align-items: center;">
+                <Darklight.UXML.Element.SelectableButton text="Sele" />
+                <Darklight.UXML.Element.SelectableButton text="Sele" />
+                <Darklight.UXML.Element.SelectableButton text="Sele" />
+            </engine:GroupBox>
         </engine:VisualElement>
-    </engine:VisualElement>
-    <engine:VisualElement name="body" style="flex-grow: 1; flex-direction: row; align-items: stretch; justify-content: space-between;">
-        <engine:VisualElement name="left-column" focusable="false" class="column-inactive" />
-        <engine:VisualElement name="middle-column" style="flex-grow: 1;" />
-        <SideColumn Active="true" focusable="true">
-            <engine:Label text="Hello this is a test label" />
-        </SideColumn>
     </engine:VisualElement>
 </engine:UXML>

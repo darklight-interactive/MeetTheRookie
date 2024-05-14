@@ -8,18 +8,19 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer), typeof(FrameAnimationPlayer))]
 public class PlayerAnimator : MonoBehaviour
 {
-    public PlayerState animationStateOverride = PlayerState.NONE;
-    public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
+
+    public List<SpriteSheet<PlayerStateType>> spriteSheets = new List<SpriteSheet<PlayerStateType>>();
 
     #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
     public FrameAnimationPlayer FrameAnimationPlayer => GetComponent<FrameAnimationPlayer>();
-    public void PlayStateAnimation(PlayerState state)
+
+    [EasyButtons.Button]
+    public void PlayStateAnimation(PlayerStateType state)
     {
         // If there is a sprite sheet with the state, load it
         if (spriteSheets.Find(x => x.state == state) != null)
         {
             FrameAnimationPlayer.LoadSpriteSheet(spriteSheets.Find(x => x.state == state).spriteSheet);
-            animationStateOverride = state;
         }
     }
 
@@ -32,7 +33,6 @@ public class PlayerAnimator : MonoBehaviour
         if (spriteSheets.Count > 0)
         {
             FrameAnimationPlayer.LoadSpriteSheet(spriteSheets[0].spriteSheet);
-            animationStateOverride = spriteSheets[0].state;
         }
     }
 

@@ -19,16 +19,14 @@ using UnityEditor;
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
 [RequireComponent(typeof(InkyStoryLoader))]
-public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
-{
+public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager> {
     const string PATH = "Inky/";
     public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
     public InkyKnotIterator currentKnotIterator { get; private set; }
 
     #region ----- [[ STATE MACHINE ]] ----- >>
     public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
-    public class StateMachine : StateMachine<State>
-    {
+    public class StateMachine : StateMachine<State> {
         public StateMachine(State initialState = State.INIT) : base(initialState) { }
     }
     StateMachine stateMachine = new StateMachine(State.INIT);
@@ -36,7 +34,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     #endregion
 
     public InkyStoryObject currentStoryObject;
-    private Story _story => currentStoryObject.CreateStory();
+
+    private Story storyRef;
+    private Story _story { get { if (storyRef == null) { storyRef = currentStoryObject.CreateStory(); } return storyRef; } }
 
     [Dropdown("currentStoryObject.knotAndStitchKeys")]
     public string currentKnot;
