@@ -50,6 +50,7 @@ namespace Darklight.UXML
             GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
             meshChild.transform.SetParent(this.transform);
             meshChild.transform.localPosition = Vector3.zero;
+
             _meshRenderer.enabled = false;
 
             OnElementChanged?.Invoke();

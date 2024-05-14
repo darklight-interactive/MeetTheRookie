@@ -71,14 +71,32 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     public void ShowInteractionPromptInWorld(Vector3 worldPos)
     {
+        UpdateScreenSize();
+
         VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
-        icon.SetEnabled(true);
         ScaleToScreenSize(icon, 0.05f);
+        icon.SetEnabled(true);
         icon.visible = true;
     }
 
+    public void ShowSpeechBubbleInWorld(Vector3 worldPos, string text)
+    {
+        UpdateScreenSize();
+
+        VisualElement bubble = interactionUI.ElementQuery<VisualElement>("speech-bubble");
+        interactionUI.SetWorldToScreenPoint(bubble, worldPos, true);
+        ScaleToScreenSize(bubble, 2f);
+        bubble.SetEnabled(true);
+        bubble.visible = true;
+    }
+
     void Update()
+    {
+        UpdateScreenSize();
+    }
+
+    void UpdateScreenSize()
     {
         if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
         {
@@ -91,7 +109,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// Adjusts the size of the given VisualElement based on the current screen size.
     /// </summary>
     /// <param name="element">The VisualElement to adjust.</param>
-    void ScaleToScreenSize(VisualElement element, float scale = 1f)
+    public void ScaleToScreenSize(VisualElement element, float scale = 1f)
     {
         float minDimension = Mathf.Min(lastScreenWidth, lastScreenHeight);
 
@@ -100,7 +118,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         element.style.width = new Length(newSize, LengthUnit.Pixel);
         element.style.height = new Length(newSize, LengthUnit.Pixel);
 
-        Debug.Log($"Screen Size: {lastScreenWidth}x{lastScreenHeight}, New Element Size: {newSize}");
+
+
+        Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
     }
 
     public void HideInteractPrompt()

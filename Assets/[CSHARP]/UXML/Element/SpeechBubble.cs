@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UXML;
+using Darklight.Selectable;
 
 [UxmlElement]
-public partial class SpeechBubble : VisualElement
+public partial class SpeechBubble : SelectableVisualElement<VisualElement>
 {
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
+
+    [UxmlAttribute("bubble-sprite")]
+    public Sprite bubbleSprite;
 
     [UxmlAttribute("text")]
     public string text
@@ -20,11 +25,8 @@ public partial class SpeechBubble : VisualElement
 
     public SpeechBubble()
     {
-        this.style.backgroundColor = new StyleColor(new Color(0.8f, 0.8f, 0.8f, 0.8f));
-
         this.Add(speechLabel);
-
-        this.AddToClassList("speech-bubble:active");
+        this.AddToClassList("speech-bubble");
     }
 
     public void SetBackgroundSprite(Sprite sprite)

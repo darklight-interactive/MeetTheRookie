@@ -7,7 +7,7 @@ using Darklight.UnityExt.Editor;
 public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
-    public PlayerDialogueHandler playerDialogueHandler;
+    public PlayerUIGrid playerDialogueHandler;
 
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
@@ -97,7 +97,7 @@ public class PlayerInteractor : MonoBehaviour
         else if (_activeInteraction is Interactable)
         {
             Interactable interactable = _activeInteraction as Interactable;
-            playerDialogueHandler.CreateDialogueBubble(text);
+            playerDialogueHandler.NewSpeechBubble(text);
         }
 
         Debug.Log($"Interacting with {_activeInteraction} => {text}");

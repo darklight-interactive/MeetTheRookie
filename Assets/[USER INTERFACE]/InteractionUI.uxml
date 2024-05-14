@@ -1,5 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Template name="InteractIcon" src="project://database/Assets/InteractIcon.uxml?fileID=9197481963319205126&amp;guid=a87f3a30f4694a147b2b6bef711a1376&amp;type=3#InteractIcon" />
+    <engine:Template name="InteractIcon" src="project://database/Assets/[USER%20INTERFACE]/InteractIcon.uxml?fileID=9197481963319205126&amp;guid=a87f3a30f4694a147b2b6bef711a1376&amp;type=3#InteractIcon" />
+    <engine:Template name="SpeechBubble" src="project://database/Assets/[USER%20INTERFACE]/SpeechBubble.uxml?fileID=9197481963319205126&amp;guid=dc0fbe5194682044eb0bf7f1c713c609&amp;type=3#SpeechBubble" />
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:Instance template="InteractIcon" name="InteractIcon" />
+    <engine:Instance template="InteractIcon" name="interact-icon" />
+    <engine:Instance template="SpeechBubble" name="speech-bubble" />
 </engine:UXML>
