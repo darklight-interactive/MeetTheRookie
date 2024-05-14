@@ -14,7 +14,7 @@ public class PlayerUIGrid : OverlapGrid2D
         OverlapGrid2D_Data data = this.GetBestData();
         Vector3 position = data.worldPosition;
 
-        UIManager.Instance.ShowSpeechBubbleInWorld(position, text);
+        //UIManager.Instance.ShowSpeechBubbleInWorld(position, text);
         Debug.Log($"Player Dialogue -> Grid Position: {data.positionKey} | World Position: {data.worldPosition}");
     }
 }

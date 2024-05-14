@@ -17,12 +17,8 @@ namespace Darklight.UXML
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
+    public class UXML_UIDocumentObject : MonoBehaviour
     {
-        public void OnEditorReloaded()
-        {
-            DestroyImmediate(this);
-        }
         // << SERIALIZED VALUES >> //
         [SerializeField] UXML_UIDocumentPreset _preset;
 

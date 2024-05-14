@@ -74,7 +74,7 @@ namespace Darklight.Selectable
     [UxmlElement]
     public partial class SelectableButton : SelectableVisualElement<Button>, ISelectable
     {
-        public Button Button => Element as Button;
+        private Button Button;
 
         [UxmlAttribute]
         public string Text
@@ -83,8 +83,9 @@ namespace Darklight.Selectable
             set => Button.text = value;
         }
 
-        public SelectableButton()
+        public SelectableButton() : base()
         {
+            Button = (Button)Element;
             Text = "selectable-button";
             Button.clickable.clicked += ClickAction;
         }

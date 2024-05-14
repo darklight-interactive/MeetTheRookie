@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     const string INTERACT_PROMPT_TAG = "interact-icon";
     const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
-    #region ======= [[ STATIC METHODS ]] ======= >>>>
+    #region ======= [[ STATIC METHODS ]] ============================================= >>>>
     private static int lastScreenWidth;
     private static int lastScreenHeight;
     /// <summary>
@@ -72,7 +72,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     [Header("UXML Document Objects")]
-    [SerializeField] UXML_UIDocumentPreset interactionUIPreset;
     public UXML_UIDocumentObject interactionUIDocument => GetComponent<UXML_UIDocumentObject>();
 
 
@@ -86,9 +85,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         base.Awake(); // << Update the Singleton instance
         UpdateScreenSize();
-
-        interactionUIDocument.Initialize(interactionUIPreset, new string[] { INTERACT_PROMPT_TAG, SPEECH_BUBBLE_TAG });
-
     }
 
     public void ShowInteractIcon(Vector3 worldPos)

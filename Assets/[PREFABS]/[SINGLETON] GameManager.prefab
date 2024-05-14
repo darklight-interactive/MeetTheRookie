@@ -58,13 +58,6 @@ MonoBehaviour:
       Data3: -62989660
       Data4: -619185197
     Path: event:/Music/investigateWIP
-  interactionEvent:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
 --- !u!1 &2227688496439687134
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +253,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4499979008374654216}
   - component: {fileID: 517871753729993483}
+  - component: {fileID: 8605153105857749991}
+  - component: {fileID: 7874691981871424166}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -295,10 +290,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionUIPreset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
-  worldSpaceUIPreset: {fileID: 11400000, guid: c0567e73f117547109442beb4df313db, type: 2}
-  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
-  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+  _interactionUI: {fileID: 0}
   synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
+--- !u!114 &8605153105857749991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 3bfa1e52c1c4745bd8e479ef40135cc0, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &7874691981871424166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d880318efe5a4a2dbc866010ce0739d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preset: {fileID: 0}
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
