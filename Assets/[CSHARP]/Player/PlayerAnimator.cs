@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Darklight.Game.SpriteAnimation;
+using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
 #endif
@@ -21,10 +22,10 @@ public class PlayerAnimator : MonoBehaviour
             animationStateOverride = state;
         }
     }
-    #endregion
 
-    public void Awake()
+    public void CreateFrameAnimationPlayer()
     {
+
         FrameAnimationPlayer.Clear();
 
         // Load the default sprite sheet
@@ -34,4 +35,58 @@ public class PlayerAnimator : MonoBehaviour
             animationStateOverride = spriteSheets[0].state;
         }
     }
+
+    public SpriteSheet GetSpriteSheetWithState(PlayerState state)
+    {
+        foreach (SpriteSheet<PlayerState> sheet in spriteSheets)
+        {
+            if (sheet.state == state)
+            {
+                return sheet.spriteSheet;
+            }
+        }
+        return null;
+    }
+
+    #endregion
+
+    public void Awake()
+    {
+        CreateFrameAnimationPlayer();
+    }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(PlayerAnimator)), CanEditMultipleObjects]
+public class PlayerAnimationEditor : Editor
+{
+    SerializedObject _serializedObject;
+    PlayerAnimator _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (PlayerAnimator)target;
+        _script.CreateFrameAnimationPlayer();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (_script.animationStateOverride != PlayerState.NONE)
+            {
+                _script.FrameAnimationPlayer.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
+            }
+
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
