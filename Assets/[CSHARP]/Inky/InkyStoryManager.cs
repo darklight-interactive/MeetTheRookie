@@ -26,7 +26,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     // ----- [[ SERIALIZED FIELDS ]] ----- >>
     [SerializeField] InkyStoryObject currentStoryObject;
-    [SerializeField] InkyKnotIterator currentKnotIterator;
+    [SerializeField] InkyStoryIterator currentKnotIterator;
 
     public void ContinueStory()
     {

@@ -5,12 +5,33 @@ using EasyButtons;
 using Ink.Runtime;
 using UnityEngine;
 
+
+// << KNOTS >>
+[System.Serializable]
+public class InkyKnot
+{
+    [ShowOnly] public string name;
+    [ShowOnly] public List<string> stitches;
+}
+
 /// <summary>
 /// Scriptable Object to store Ink stories and their associated data.
 /// </summary>
 [CreateAssetMenu(menuName = "Darklight/Inky/Story")]
 public class InkyStoryObject : ScriptableObject
 {
+    // << STORY >>
+    public Story Story
+    {
+        get
+        {
+            if (_story == null)
+            {
+                _story = CreateStory(_inkyTextAsset);
+            }
+            return _story;
+        }
+    }
 
     #region ----- [[ STATIC METHODS ]] ----- >>
 
@@ -83,36 +104,15 @@ public class InkyStoryObject : ScriptableObject
     }
     #endregion
 
-    // << STORY >>
+    // ------------------------------ [[ PRIVATE FIELDS ]] ------------------------------ >>
     private Story _story;
-    public Story Story
-    {
-        get
-        {
-            if (_story == null)
-            {
-                _story = CreateStory(_inkyTextAsset);
-            }
-            return _story;
-        }
-    }
-
     [SerializeField] private TextAsset _inkyTextAsset;
+    [SerializeField] private List<InkyKnot> _knots;
     [SerializeField] private List<InkyVariable> _variables;
     [SerializeField, ShowOnly] private List<string> _globalTags;
 
-    // << KNOTS >>
-    [System.Serializable]
-    public class InkyKnot
-    {
-        [ShowOnly] public string name;
-        [ShowOnly] public List<string> stitches;
-    }
-    [SerializeField] private List<InkyKnot> _knots;
-
-
     // ------------------------------ [[ PUBLIC METHODS ]] ------------------------------ >>
-    public void Initialize(TextAsset inkTextAsset)
+    public void Initialize(TextAsset inkTextAsset = null)
     {
         if (inkTextAsset == null)
         {
@@ -134,6 +134,20 @@ public class InkyStoryObject : ScriptableObject
         // Set up error handling
         _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
     }
+
+    public List<string> GetKnots()
+    {
+        return _knots.Select(knot => knot.name).ToList();
+    }
+
+    public List<string> GetStitches(string knot)
+    {
+        InkyKnot inkyKnot = _knots.Find(k => k.name == knot);
+        return inkyKnot.stitches;
+    }
+
+
+
 
 
 }

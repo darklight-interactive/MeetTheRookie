@@ -19,25 +19,22 @@ namespace Darklight.UXML
     [RequireComponent(typeof(UIDocument))]
     public class UXML_UIDocumentObject : MonoBehaviour
     {
-        // << SERIALIZED VALUES >> //
-        [SerializeField] UXML_UIDocumentPreset _preset;
-
         // << PUBLIC ACCESSORS >> //
-        public UXML_UIDocumentPreset preset => _preset;
+        [ShowOnly] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public Dictionary<string, VisualElement> uiElements { get; private set; } = new();
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
-            _preset = preset;
+            this.preset = preset;
             if (preset == null)
             {
                 Debug.LogError("No preset assigned to UIDocumentObject");
                 return;
             }
+
             document.visualTreeAsset = preset.VisualTreeAsset;
             document.panelSettings = preset.PanelSettings;
-
             gameObject.layer = LayerMask.NameToLayer("UI");
         }
 

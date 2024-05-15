@@ -90,7 +90,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             InteractableNPC npcInteractable = _activeInteraction as InteractableNPC;
             playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
-            npcInteractable.DialogueBubble.TextureUpdate();
+            //npcInteractable.DialogueBubble.TextureUpdate();
         }
 
         // Show the player's dialogue bubble

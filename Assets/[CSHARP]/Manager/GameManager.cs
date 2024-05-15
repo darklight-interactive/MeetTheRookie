@@ -24,9 +24,9 @@ public enum GameState { NULL, MAIN_MENU, LOADING_SCENE }
 public class GameStateMachine : StateMachine<GameState>
 {
     public GameStateMachine(GameState baseState) : base(baseState) { }
-    public override void ChangeActiveStateTo(GameState newState)
+    public override void GoToState(GameState newState)
     {
-        base.ChangeActiveStateTo(newState);
+        base.GoToState(newState);
     }
 
     public override void OnStateChanged(GameState previousState, GameState newState)

@@ -17,19 +17,40 @@ using UnityEditor;
 public class Interactable : OverlapGrid2D, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private InkyKnotIterator _knotIterator;
+    private InkyStoryIterator _iterator;
+    private List<string> _sceneKnots
+    {
+        get
+        {
+            if (_storyObject == null) return new List<string>();
+            return _storyObject.GetKnots();
+        }
+    }
+    private List<string> _interactionStitches
+    {
+        get
+        {
+            if (_storyObject == null) return new List<string>();
+            if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
+            return _storyObject.GetStitches(_sceneKnot);
+        }
+    }
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
     [HorizontalLine(color: EColor.Gray)]
     [Header("Interactable")]
-    [SerializeField] protected InkyStoryObject _storyParent;
-
-    [DropdownAttribute("_storyParent.knotAndStitchKeys")]
-    [SerializeField] protected string _interactionKey;
-
-    [Header("Components")]
     [SerializeField, ShowAssetPreview] Sprite _sprite;
+
+    [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
+    [SerializeField] protected InkyStoryObject _storyObject;
+
+    [Dropdown("_sceneKnots")]
+    [SerializeField] protected string _sceneKnot;
+
+    [Dropdown("_interactionStitches")]
+    [SerializeField] protected string _interactionStitch;
+
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -41,9 +62,9 @@ public class Interactable : OverlapGrid2D, IInteract
     [SerializeField] Color _interactionTint = Color.yellow;
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-    public InkyStoryObject storyParent { get => _storyParent; private set => _storyParent = value; }
-    public string interactionKey { get => _interactionKey; private set => _interactionKey = value; }
-    public InkyKnotIterator knotIterator { get => _knotIterator; private set => _knotIterator = value; }
+    public InkyStoryObject storyObject { get => _storyObject; private set => _storyObject = value; }
+    public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
+    public InkyStoryIterator knotIterator { get => _iterator; private set => _iterator = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
@@ -64,19 +85,19 @@ public class Interactable : OverlapGrid2D, IInteract
         _spriteRenderer.sprite = _sprite;
         _spriteRenderer.color = _defaultTint;
 
-        if (_storyParent == null)
+        if (_storyObject == null)
         {
             Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
             return;
         }
 
-        if (_interactionKey == null || _interactionKey == "")
+        if (_interactionStitch == null || _interactionStitch == "")
         {
             Debug.LogError("Interaction Key is null. Please assign a valid knot or stitch key.");
             return;
         }
 
-        _knotIterator = new InkyKnotIterator(_storyParent.Story, _interactionKey);
+        _iterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
     }
 
     public virtual void Reset()
@@ -120,13 +141,13 @@ public class Interactable : OverlapGrid2D, IInteract
 
         knotIterator.ContinueKnot();
 
-        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        if (knotIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
             return;
         }
 
-        OnInteraction?.Invoke(knotIterator.currentText);
+        OnInteraction?.Invoke(knotIterator.CurrentStoryTest);
     }
 
     public virtual void Complete()

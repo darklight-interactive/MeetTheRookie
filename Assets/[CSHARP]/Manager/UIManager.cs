@@ -146,9 +146,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
-
-        // Prepare the Synthesis Manager if it exists
-        synthesisManager?.Prepare();
+        gameUIController?.HideInteractIcon(); // Hide the interact icon if it's visible        
+        synthesisManager?.Prepare(); // Prepare the Synthesis Manager if it exists
     }
 
 
@@ -173,6 +172,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #if UNITY_EDITOR

@@ -4,25 +4,39 @@ using Darklight.Game;
 using Ink.Runtime;
 using UnityEngine;
 
-public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
+/// <summary>
+/// This class is responsible for iterating through the Ink story and handling the different states of the story.
+/// It implements a simple state machine to track the current state of the story.
+/// </summary>
+public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
 {
     public enum State { NULL, START, DIALOGUE, CHOICE, END }
-    string Prefix => "[InkyKnot] >> ";
-    Story story;
-    string knotName;
-    Dictionary<Choice, int> choiceMap = new Dictionary<Choice, int>();
-    List<string> tags;
-    List<Choice> Choices => story.currentChoices;
-    public string currentText => story.currentText.Trim();
+    private const string Prefix = "[InkyKnot] >> ";
+    private InkyStoryObject _storyObject;
+    private Story story => _storyObject.Story;
+    private Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
-    public InkyKnotIterator(Story story, string knotName, State initialState = State.NULL) : base(initialState)
+    // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
+    /// <summary>
+    /// This is the active text that is currently being displayed in the story, for easy reference.
+    /// </summary>
+    public string CurrentStoryTest => story.currentText.Trim();
+
+    // ------------------- [[ EVENTS ]] -------------------
+    public delegate void OnDialogue(string currentText);
+    public event OnDialogue OnKnotDialogue;
+
+    // ------------------- [[ CONSTRUCTORS ]] -------------------
+    public InkyStoryIterator(InkyStoryObject inkyStoryObject, State initialState = State.NULL) : base(initialState)
     {
-        this.story = story;
-        this.knotName = knotName;
+        _storyObject = inkyStoryObject;
+        //_storyObject.Initialize
+        GoToState(initialState);
+    }
 
-        if (story == null) { Debug.LogError($"{Prefix} Story is null"); return; }
 
-        // ( MOVE TO KNOT ) --------------- >>
+    public void GoToKnot(string knotName)
+    {
         try
         {
             story.ChoosePathString(knotName);
@@ -34,13 +48,10 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         }
         finally
         {
-            ChangeActiveStateTo(State.START);
+            GoToState(State.START);
             InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
         }
     }
-
-    public delegate void OnDialogue(string currentText);
-    public event OnDialogue OnKnotDialogue;
 
     public void ContinueKnot()
     {
@@ -64,25 +75,26 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // -- ( DIALOGUE STATE ) --------------- >>
         if (story.canContinue)
         {
-            ChangeActiveStateTo(State.DIALOGUE);
+            GoToState(State.DIALOGUE);
             story.Continue();
 
             // Invoke the Dialogue Event
-            OnKnotDialogue?.Invoke(currentText);
+            OnKnotDialogue?.Invoke(CurrentStoryTest);
 
             HandleTags();
 
-            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {currentText}");
+            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentStoryTest}");
         }
+
         // -- ( CHOICE STATE ) --------------- >>
         else if (story.currentChoices.Count > 0)
         {
-            ChangeActiveStateTo(State.CHOICE);
+            GoToState(State.CHOICE);
             InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
             foreach (Choice choice in story.currentChoices)
             {
-                choiceMap.Add(choice, choice.index);
+                _choiceMap.Add(choice, choice.index);
                 InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
@@ -90,7 +102,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
         // -- ( END STATE ) --------------- >>
         else
         {
-            ChangeActiveStateTo(State.END);
+            GoToState(State.END);
             InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }
@@ -109,7 +121,7 @@ public class InkyKnotIterator : StateMachine<InkyKnotIterator.State>
     {
         Choice choice = story.currentChoices[choiceIndex];
         story.ChooseChoiceIndex(choice.index);
-        choiceMap.Clear();
+        _choiceMap.Clear();
         ContinueKnot();
     }
 
