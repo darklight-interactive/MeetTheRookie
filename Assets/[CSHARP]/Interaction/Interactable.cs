@@ -12,10 +12,9 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
-public class Interactable : MonoBehaviour, IInteract
+public class Interactable : OverlapGrid2D, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private InkyStoryLoader _storyLoader => InkyStoryManager.Instance.storyLoader;
     private InkyKnotIterator _knotIterator;
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
@@ -49,8 +48,9 @@ public class Interactable : MonoBehaviour, IInteract
     public event IInteract.OnComplete OnCompleted;
 
     // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Initialize();
     }
 
@@ -85,13 +85,13 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.ShowInteractIcon(transform.position);
+        UIManager.Instance.gameUIController.ShowInteractIcon(transform.position);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.HideInteractIcon();
+        UIManager.Instance.gameUIController.HideInteractIcon();
     }
 
     public virtual void Interact()
@@ -166,7 +166,6 @@ public class InteractableCustomEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        base.OnInspectorGUI();
 
 
         GUILayout.Space(10);
@@ -181,6 +180,10 @@ public class InteractableCustomEditor : Editor
             _script.TargetClear();
         }
 
+        EditorGUILayout.Space();
+
+        // Draw the default inspector
+        base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())
         {

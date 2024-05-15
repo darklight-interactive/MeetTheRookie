@@ -13,8 +13,8 @@ public class InteractableNPC : Interactable, IInteract
 {
     [Header("NPC Speech Bubble Settings")]
     [SerializeField] private float speechBubbleScalar = 1.5f;
-    [SerializeField, ShowOnly] private UXML_WorldSpaceUI dialogueBubble;
-    public UXML_WorldSpaceUI DialogueBubble { get => dialogueBubble; set => dialogueBubble = value; }
+    [SerializeField, ShowOnly] private UXML_RenderTextureObject dialogueBubble;
+    public UXML_RenderTextureObject DialogueBubble { get => dialogueBubble; set => dialogueBubble = value; }
     public OverlapGrid2D overlapGrid2D => GetComponent<OverlapGrid2D>();
 
     public void Start()

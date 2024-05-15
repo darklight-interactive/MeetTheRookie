@@ -7,14 +7,14 @@ using System;
 using Darklight.Utility;
 using Darklight.UXML.Element;
 
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-
-public class MenuController : UXML_UIDocumentObject
+/// <summary>
+/// This is a Basic Representation of a Menu Controller that handles the selection of buttons.
+/// </summary>
+public class BasicMenuController : UXML_UIDocumentObject
 {
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     [SerializeField] int selectablesCount = 0;

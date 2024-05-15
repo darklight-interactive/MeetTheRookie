@@ -7,7 +7,7 @@ using Darklight.UnityExt.Editor;
 /// <summary>
 ///  This is the main singleton class that manages all FMOD audio events and buses.
 /// </summary>
-public class FMOD_SoundManager : MonoBehaviourSingleton<FMOD_SoundManager>
+public class SoundManager : MonoBehaviourSingleton<SoundManager>
 {
     [ShowOnly] public FMOD.RESULT busListOk;
     [ShowOnly] public FMOD.RESULT sysemIsOk;
@@ -73,7 +73,7 @@ public class FMOD_SoundManager : MonoBehaviourSingleton<FMOD_SoundManager>
     {
         while (true)
         {
-            FMOD_SoundManager.PlayEvent(eventReference);
+            SoundManager.PlayEvent(eventReference);
             yield return new WaitForSeconds(interval);
         }
     }
@@ -333,19 +333,19 @@ public class FMOD_SoundManager : MonoBehaviourSingleton<FMOD_SoundManager>
 }
 
 #if UNITY_EDITOR
-[UnityEditor.CustomEditor(typeof(FMOD_SoundManager))]
+[UnityEditor.CustomEditor(typeof(SoundManager))]
 public class FMODManagerEditor : UnityEditor.Editor
 {
     private void OnEnable()
     {
-        FMOD_SoundManager FMODManager = (FMOD_SoundManager)target;
+        SoundManager FMODManager = (SoundManager)target;
     }
 
     public override void OnInspectorGUI()
     {
-        FMOD_SoundManager FMODManager = (FMOD_SoundManager)target;
+        SoundManager FMODManager = (SoundManager)target;
 
-        FMOD_SoundManager.Console.DrawInEditor();
+        SoundManager.Console.DrawInEditor();
 
         DrawDefaultInspector();
     }

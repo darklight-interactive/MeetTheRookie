@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace Darklight.UXML
 {
-    public class UXML_WorldSpaceUI : UXML_UIDocumentObject
+    public class UXML_RenderTextureObject : UXML_UIDocumentObject
     {
         MeshRenderer _meshRenderer => GetComponentInChildren<MeshRenderer>();
         Material _material;

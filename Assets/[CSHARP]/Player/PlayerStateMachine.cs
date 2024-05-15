@@ -48,15 +48,15 @@ public class PlayerStateObject : FiniteState<PlayerStateType>
     public override void Enter()
     {
         // Debug.Log($"Entering State: {stateType}");
-        FMOD_SoundManager.PlayOneShot(soundOnEnter);
-        FMOD_SoundManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
+        SoundManager.PlayOneShot(soundOnEnter);
+        SoundManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
     }
 
     public override void Exit()
     {
         // Debug.Log($"Exiting State: {stateType}");
-        FMOD_SoundManager.PlayOneShot(soundOnExit);
-        FMOD_SoundManager.Instance.StopRepeatingEvent();
+        SoundManager.PlayOneShot(soundOnExit);
+        SoundManager.Instance.StopRepeatingEvent();
     }
 
     public override void Execute() { }

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camerasInChildren:
   - {fileID: 294617130321755958}
+  - {fileID: 0}
   _focusTarget: {fileID: 0}
   _offsetPosition: {x: 0, y: 0, z: -10}
   _offsetRotation: {x: 0, y: 0, z: 0}
@@ -103,7 +104,7 @@ Camera:
   m_GameObject: {fileID: 5947460541986450070}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.42352945, g: 0.46274513, b: 0.47058827, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -133,7 +134,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2007
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -161,7 +162,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2

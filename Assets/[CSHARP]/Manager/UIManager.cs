@@ -17,28 +17,35 @@ using UnityEditor;
 /// The UIManager is a singleton class that handles the creation and management of 
 /// UIDocuments in the game.
 /// </summary>
+[ExecuteAlways]
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-    const string INTERACT_PROMPT_TAG = "interact-icon";
-    const string SPEECH_BUBBLE_TAG = "speech-bubble";
-
     #region ======= [[ STATIC METHODS ]] ============================================= >>>>
-    private static int lastScreenWidth;
-    private static int lastScreenHeight;
 
     /// <summary>
     /// Creates a new UIDocumentObject from a given preset.
     /// </summary>
     /// <param name="preset"></param>
     /// <returns></returns>
+    [EasyButtons.Button]
     public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset) where TDocument : UXML_UIDocumentObject
     {
-        GameObject go = new GameObject($"UIDocument : {preset.name}");
+        GameObject go = new GameObject($"UXMLUIDocument : {preset.name}");
         go.hideFlags = HideFlags.DontSaveInEditor;
         TDocument uiDocument = go.AddComponent<TDocument>();
         uiDocument.Initialize(preset);
         return uiDocument;
     }
+
+    public static UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture)
+    {
+        GameObject go = new GameObject($"UXMLRenderTexture : {preset.name}");
+        go.hideFlags = HideFlags.DontSaveInEditor;
+        UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
+        renderTextureObject.Initialize(preset, null, material, renderTexture);
+        return renderTextureObject;
+    }
+
 
     /// <summary>
     /// Sets the position of a UI Toolkit element to correspond to a world position.
@@ -67,7 +74,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         // Set positions using left and top in style
         element.style.left = screenPosition.x;
         element.style.top = screenPosition.y;
+
+        Debug.Log($"Set Element Position: {screenPosition}");
     }
+
+
+    // ---------------- [[ SCREEN SCALING ]] ---------------->
+    private static int lastScreenWidth;
+    private static int lastScreenHeight;
 
     /// <summary>
     /// Adjusts the size of the given VisualElement based on the current screen size.
@@ -86,26 +100,45 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
-    [Header("Base UIDocument")]
-    private UXML_UIDocumentObject baseUI;
-    private InteractableUI _interactableUI;
-    [SerializeField] UXML_UIDocumentPreset interactableUIPreset;
-    public InteractableUI interactableUI
+    // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
+    private GameUIController _gameUI;
+    public GameUIController gameUIController
     {
         get
         {
-            _interactableUI = FindAnyObjectByType<InteractableUI>();
-            if (_interactableUI == null)
-            {
-                _interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
-            }
-            return _interactableUI;
+            // Find the GameUIController if it exists
+            if (_gameUI != null) return _gameUI;
+            _gameUI = FindAnyObjectByType<GameUIController>();
+            if (_gameUI != null) return _gameUI;
+
+            // Create a new GameUIController if it doesn't
+            _gameUI = CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            return _gameUI;
         }
     }
 
-    [Header("Synthesis UIDocument")]
-    [ShowOnly] public SynthesisManager synthesisManager;
-    [SerializeField] UXML_UIDocumentPreset synthesisUIPreset;
+    private SynthesisManager _synthesisManager;
+    public SynthesisManager synthesisManager
+    {
+        get
+        {
+            // Find the SynthesisManager if it exists
+            if (_synthesisManager != null) return _synthesisManager;
+            _synthesisManager = FindAnyObjectByType<SynthesisManager>();
+            if (_synthesisManager != null) return _synthesisManager;
+
+            // Create a new SynthesisManager if it doesn't
+            _synthesisManager = CreateUIDocumentObject<SynthesisManager>(_synthesisUIPreset);
+            return _synthesisManager;
+        }
+    }
+
+    // ----- [[ SERIALIZED FIELDS ]] ------------------------------------>
+    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
+    [SerializeField] UXML_UIDocumentPreset _synthesisUIPreset;
+    [SerializeField] Material _renderTextureMaterial;
+    [SerializeField] RenderTexture _renderTexture;
+
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
@@ -113,35 +146,12 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
-        UpdateScreenSize();
 
-
-        //menuUI = CreateUIDocumentObject<MenuUI>(menuUIPreset);
-
-        //interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
-
-
-        //synthesisManager = CreateUIDocumentObject<SynthesisManager>(synthesisUIPreset);
-
-        synthesisManager = FindAnyObjectByType<SynthesisManager>();
+        // Prepare the Synthesis Manager if it exists
         synthesisManager?.Prepare();
     }
 
-    public void ShowInteractIcon(Vector3 worldPos)
-    {
-        UpdateScreenSize();
 
-        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        SetWorldToScreenPoint(icon, worldPos);
-        ScaleElementToScreenSize(icon, 0.05f);
-        icon.SetEnabled(true);
-        icon.visible = true;
-    }
-    public void HideInteractIcon()
-    {
-        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        icon.visible = false;
-    }
 
     public void ShowSynthesis(bool visible)
     {
@@ -160,6 +170,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         {
             lastScreenWidth = Screen.width;
             lastScreenHeight = Screen.height;
+            Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
         }
     }
 
