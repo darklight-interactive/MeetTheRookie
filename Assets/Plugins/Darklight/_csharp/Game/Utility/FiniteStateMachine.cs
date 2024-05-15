@@ -32,6 +32,7 @@ namespace Darklight.Game.Utility
         void Execute();
     }
 
+    [System.Serializable]
     public abstract class FiniteState<TState> : IState where TState : Enum
     {
         protected FiniteStateMachine<TState> stateMachine;
@@ -51,32 +52,32 @@ namespace Darklight.Game.Utility
         public abstract void Execute();
     }
 
-    /// <summary>
-    /// A finite state machine that can be used to manage states in a game.
-    /// </summary>
-    /// <typeparam name="TState"></typeparam>
     public abstract class FiniteStateMachine<TState> where TState : Enum
     {
         protected TState initialState;
-        protected Dictionary<TState, FiniteState<TState>> stateDictionary;
+        protected Dictionary<TState, FiniteState<TState>> possibleStates;
         protected FiniteState<TState> currentState;
         protected object[] args;
 
-        [SerializeField] private List<FiniteState<TState>> allStates = new List<FiniteState<TState>>();
-
         public delegate void OnStateChange(TState state);
         public event OnStateChange OnStateChanged;
+
         public TState CurrentState { get { return currentState.StateType; } }
 
         public FiniteStateMachine() { }
-        public FiniteStateMachine(Dictionary<TState, FiniteState<TState>> stateDictionary, TState initialState, object[] args)
+
+        public FiniteStateMachine(Dictionary<TState, FiniteState<TState>> possibleStates, TState initialState, object[] args)
         {
             this.initialState = initialState;
-            this.stateDictionary = stateDictionary;
-            this.currentState = stateDictionary[initialState];
+            this.possibleStates = possibleStates;
+            this.currentState = possibleStates[initialState];
             this.args = args;
+        }
 
-            allStates = stateDictionary.Values.ToList();
+        public void AddState(FiniteState<TState> state)
+        {
+            if (possibleStates == null) { possibleStates = new Dictionary<TState, FiniteState<TState>>(); }
+            possibleStates.Add(state.StateType, state);
         }
 
         public virtual void Step()
@@ -85,10 +86,6 @@ namespace Darklight.Game.Utility
             else { GoToState(initialState); }
         }
 
-        /// <summary>
-        /// Change the current state of the state machine.
-        /// </summary>
-        /// <returns> True if the stat exists and was successfully changed. </returns>
         public virtual bool GoToState(TState state)
         {
             // Exit from the previous state
@@ -96,10 +93,10 @@ namespace Darklight.Game.Utility
             if (currentState != null) { currentState.Exit(); }
 
             // Check if the state exists
-            if (stateDictionary.ContainsKey(state))
+            if (possibleStates.ContainsKey(state))
             {
                 // Enter the new state
-                currentState = stateDictionary[state];
+                currentState = possibleStates[state];
                 currentState.Enter();
             }
             else

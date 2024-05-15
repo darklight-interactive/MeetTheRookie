@@ -1,10 +1,8 @@
 using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Editor;
-using System.Collections.Generic;
-using System.Linq;
-using System;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,160 +17,96 @@ using UnityEditor;
 /// </summary>
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {
-    const string INTERACT_PROMPT_TAG = "interact-icon";
-    const string SPEECH_BUBBLE_TAG = "speech-bubble";
+    const string INTERACT_PROMPT_TAG = "icon-interact";
 
-    #region ======= [[ STATIC METHODS ]] ============================================= >>>>
-    private static int lastScreenWidth;
-    private static int lastScreenHeight;
-
-    /// <summary>
-    /// Creates a new UIDocumentObject from a given preset.
-    /// </summary>
-    /// <param name="preset"></param>
-    /// <returns></returns>
-    public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset) where TDocument : UXML_UIDocumentObject
+    // ----- [[ INTERACTION UI ]] ----------------------------------->>
+    [Header("Interaction UI")]
+    public UXML_UIDocumentPreset interactionUIPreset;
+    private UXML_UIDocumentObject _interactionUI;
+    public UXML_UIDocumentObject interactionUI
     {
-        GameObject go = new GameObject($"UIDocument : {preset.name}");
-        go.hideFlags = HideFlags.DontSaveInEditor;
-        TDocument uiDocument = go.AddComponent<TDocument>();
-        uiDocument.Initialize(preset);
-        return uiDocument;
-    }
-
-    /// <summary>
-    /// Sets the position of a UI Toolkit element to correspond to a world position.
-    /// Optionally centers the element on the screen position.
-    /// </summary>
-    /// <param name="element">The UI Toolkit element to position.</param>
-    /// <param name="worldPosition">The world position to map to screen space.</param>
-    /// <param name="center">Optional parameter to center the element at the screen position (default false).</param>
-    public static void SetWorldToScreenPoint(VisualElement element, Vector3 worldPosition, bool center = false)
-    {
-        Camera cam = Camera.main;
-        if (cam == null) throw new System.Exception("No main camera found.");
-
-        // Convert world position to screen position
-        Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
-        screenPosition.y = cam.pixelHeight - screenPosition.y;  // UI Toolkit uses top-left origin
-        screenPosition.z = 0;
-
-        if (center)
+        get
         {
-            // Adjust position to center the element
-            screenPosition.x -= element.resolvedStyle.width / 2;
-            screenPosition.y -= element.resolvedStyle.height / 2;
+            if (_interactionUI == null)
+            {
+                _interactionUI = new GameObject("UIDocument : InteractionUI").AddComponent<UXML_UIDocumentObject>();
+                _interactionUI.Initialize(interactionUIPreset, new string[] { INTERACT_PROMPT_TAG });
+            }
+            return _interactionUI;
         }
-
-        // Set positions using left and top in style
-        element.style.left = screenPosition.x;
-        element.style.top = screenPosition.y;
     }
 
-    /// <summary>
-    /// Adjusts the size of the given VisualElement based on the current screen size.
-    /// </summary>
-    /// <param name="element">The VisualElement to adjust.</param>
-    public static void ScaleElementToScreenSize(VisualElement element, float scale = 1f)
+    // ----- [[ WORLD SPACE UI ]] -----------------------------------
+    [Space(10), Header("World Space UI")]
+    public UXML_UIDocumentPreset worldSpaceUIPreset;
+    public Material worldSpaceMaterial;
+    public RenderTexture worldSpaceRenderTexture;
+    private UXML_WorldSpaceUI _worldSpaceUI;
+    public UXML_WorldSpaceUI worldSpaceUI
     {
-        float maxDimension = Mathf.Max(lastScreenWidth, lastScreenHeight);
-
-        // Adjust the size of the element based on the smaller dimension of the screen
-        float newSize = maxDimension * scale;
-        element.style.width = new Length(newSize, LengthUnit.Pixel);
-        element.style.height = new Length(newSize, LengthUnit.Pixel);
-
-        Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
+        get
+        {
+            if (_worldSpaceUI == null)
+            {
+                _worldSpaceUI = new GameObject("UIDocument : WorldSpaceUI").AddComponent<UXML_WorldSpaceUI>();
+                _worldSpaceUI.Initialize(worldSpaceUIPreset, new string[] { "inkyLabel" }, worldSpaceMaterial, worldSpaceRenderTexture);
+            }
+            return _worldSpaceUI;
+        }
     }
-    #endregion <<< ======= [[ STATIC METHODS ]] =======
 
-    [Header("Base UIDocument")]
-    [ShowOnly] public MenuController menuUI;
-    [SerializeField] UXML_UIDocumentPreset menuUIPreset;
-
-    [Header("Interactable UIDocument")]
-    [ShowOnly] public InteractableUI interactableUI;
-    [SerializeField] UXML_UIDocumentPreset interactableUIPreset;
-
-    [Header("Synthesis UIDocument")]
-    [ShowOnly] public SynthesisManager synthesisManager;
-    [SerializeField] UXML_UIDocumentPreset synthesisUIPreset;
+    [Space(10), Header("Synthesis UI")]
+    public UXML_UIDocumentPreset synthesisUIPreset;
+    public SynthesisManager synthesisManager { get; private set; }
 
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
-
     public override void Awake()
     {
-        base.Awake(); // << Update the Singleton instance
-        UpdateScreenSize();
-
-
-        //menuUI = CreateUIDocumentObject<MenuUI>(menuUIPreset);
-
-        //interactableUI = CreateUIDocumentObject<InteractableUI>(interactableUIPreset);
-
-
-        //synthesisManager = CreateUIDocumentObject<SynthesisManager>(synthesisUIPreset);
-
-        synthesisManager = FindAnyObjectByType<SynthesisManager>();
-        synthesisManager?.Prepare();
+        base.Awake();
     }
 
-    public void ShowInteractIcon(Vector3 worldPos)
+    public void ShowInteractionPromptInWorld(Vector3 worldPos)
     {
-        UpdateScreenSize();
-
-        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
-        SetWorldToScreenPoint(icon, worldPos, true);
-        ScaleElementToScreenSize(icon, 0.1f);
+        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        interactionUI.SetWorldToScreenPoint(icon, worldPos, true);
         icon.SetEnabled(true);
         icon.visible = true;
+
     }
-    public void HideInteractIcon()
+
+    public void HideInteractPrompt()
     {
-        VisualElement icon = interactableUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
+        VisualElement icon = interactionUI.ElementQuery<VisualElement>(INTERACT_PROMPT_TAG);
         icon.visible = false;
     }
-
-    public void ShowSynthesis(bool visible)
-    {
-        synthesisManager.Show(visible);
-    }
-
-
-    void Update()
-    {
-        UpdateScreenSize();
-    }
-
-    void UpdateScreenSize()
-    {
-        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
-        {
-            lastScreenWidth = Screen.width;
-            lastScreenHeight = Screen.height;
-        }
-    }
-
+}
 
 #if UNITY_EDITOR
-    [MenuItem("Tools/Darklight/Clean Hidden Documents")]
-    public static void CleanHiddenDocuments()
+[CustomEditor(typeof(UIManager))]
+public class UIManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    UIManager _script;
+    private void OnEnable()
     {
-        UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
-        int count = 0;
-
-        foreach (UIDocument doc in allDocuments)
-        {
-            GameObject obj = doc.gameObject;
-            if ((obj.hideFlags & HideFlags.DontSaveInEditor) != 0)
-            {
-                DestroyImmediate(obj);
-                count++;
-            }
-        }
-
-        Debug.Log($"{count} hidden objects have been destroyed.");
+        _serializedObject = new SerializedObject(target);
+        _script = (UIManager)target;
+        _script.Awake();
     }
-#endif
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
 }
+#endif

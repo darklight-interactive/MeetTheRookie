@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &832334054098212198
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8463859307315277016}
-  - component: {fileID: 1623987632111311337}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8463859307315277016
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832334054098212198}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5054830795790530424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1623987632111311337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832334054098212198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuUI: {fileID: 0}
-  menuUIPreset: {fileID: 11400000, guid: d02b2b55e0f084e8596163b9197fea21, type: 2}
-  interactableUI: {fileID: 0}
-  interactableUIPreset: {fileID: 11400000, guid: 9226c4690996f6c4e9191f30f4c6d257, type: 2}
-  synthesisManager: {fileID: 0}
-  synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
 --- !u!1 &1472741176752297803
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,6 +58,13 @@ MonoBehaviour:
       Data3: -62989660
       Data4: -619185197
     Path: event:/Music/investigateWIP
+  interactionEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &2227688496439687134
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +234,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nameKeys:
   - mtr_global
+  - mtr_level1
+  - mtr_level3
+  - mtr_level5
   _storyValues:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &4959384409519080637
 MonoBehaviour:
@@ -291,8 +254,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  currentKnot: level1
+  currentStoryObject: {fileID: 0}
+  currentKnot: 
+--- !u!1 &5330460194198749337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4499979008374654216}
+  - component: {fileID: 517871753729993483}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4499979008374654216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054830795790530424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517871753729993483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330460194198749337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionUIPreset: {fileID: 11400000, guid: d26c608c4bc944fa1a0ce2bc04f6865e, type: 2}
+  worldSpaceUIPreset: {fileID: 11400000, guid: c0567e73f117547109442beb4df313db, type: 2}
+  worldSpaceMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
+  worldSpaceRenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+  synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,8 +340,8 @@ Transform:
   - {fileID: 7313103818091379476}
   - {fileID: 6914380045224247625}
   - {fileID: 7162846943886124095}
+  - {fileID: 4499979008374654216}
   - {fileID: 150005812677704816}
-  - {fileID: 8463859307315277016}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2927568867421027592
@@ -360,10 +372,10 @@ MonoBehaviour:
   currentScene: Assets/Scenes/Build/SCENE_1.1.unity
   scenesInBuild:
   - {fileID: 102900000, guid: a592b47d8bf5b4d45999c7e160d41f46, type: 3}
-  - {fileID: 102900000, guid: d7c203cc9db88234ab6cf55173c7b270, type: 3}
+  - {fileID: 102900000, guid: dec0233f10f64f342aa5bb6310fcb246, type: 3}
   - {fileID: 102900000, guid: dc4b8b818db9b2049b1ab0c869ec409f, type: 3}
   - {fileID: 102900000, guid: 69689f5ac1cb84bfda539d32a95238b7, type: 3}
-  - {fileID: 102900000, guid: 767279bbbae75d745b6567f416c19b62, type: 3}
+  - {fileID: 102900000, guid: 1518c46f984580d4eb70249f8d0ba859, type: 3}
   - {fileID: 102900000, guid: 501a8c988ea034a919b0576b7dc59ee5, type: 3}
   - {fileID: 102900000, guid: ba975b12f38e24506a5bc67460fe2aca, type: 3}
 --- !u!114 &5342227784319069846

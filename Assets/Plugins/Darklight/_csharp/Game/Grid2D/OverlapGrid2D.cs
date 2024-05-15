@@ -15,7 +15,7 @@ namespace Darklight.Game.Grid
     {
         [Header("Overlap Grid2D Properties")]
         [SerializeField] protected LayerMask layerMask;
-        [SerializeField] public bool editMode = true;
+        [SerializeField] public bool showGizmos = true;
 
         public override void Awake()
         {
@@ -125,6 +125,7 @@ namespace Darklight.Game.Grid
         public void OnSceneGUI()
         {
             if (grid2D == null) return;
+            if (grid2D.showGizmos == false) return;
             DrawGrid();
         }
 
@@ -142,9 +143,6 @@ namespace Darklight.Game.Grid
 
                 CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
                 CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
-
-                // Draw the button handle only if the grid is in edit mode
-                if (grid2D.editMode == false) return;
                 CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
                 {
                     data.CycleDataState();

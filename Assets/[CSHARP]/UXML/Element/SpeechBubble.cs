@@ -1,34 +1,16 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UXML;
 
 [UxmlElement]
 public partial class SpeechBubble : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
 
-    [UxmlAttribute("sprite")]
-    public Sprite bubbleSprite
-    {
-        get { return this.style.backgroundImage.value.sprite; }
-        set { SetBackgroundSprite(value); }
-    }
-
     [UxmlAttribute("text")]
     public string text
     {
         get { return speechLabel.text; }
         set { speechLabel.text = value; }
-    }
-
-    [UxmlAttribute("text-size")]
-    public int textSize
-    {
-        get
-        {
-            return (int)speechLabel.style.fontSize.value.value;
-        }
-        set { speechLabel.style.fontSize = value; }
     }
 
     public Label speechLabel = new Label
@@ -38,13 +20,11 @@ public partial class SpeechBubble : VisualElement
 
     public SpeechBubble()
     {
-        speechLabel.RemoveFromClassList("unity-label");
-        speechLabel.RemoveFromClassList("unity-text-element");
-        speechLabel.AddToClassList("speech-label");
+        this.style.backgroundColor = new StyleColor(new Color(0.8f, 0.8f, 0.8f, 0.8f));
+
         this.Add(speechLabel);
 
-        this.AddToClassList("speech-bubble");
-        SetBackgroundSprite(bubbleSprite);
+        this.AddToClassList("speech-bubble:active");
     }
 
     public void SetBackgroundSprite(Sprite sprite)
