@@ -47,6 +47,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
+    public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
@@ -108,6 +109,11 @@ public class Interactable : OverlapGrid2D, IInteract
 
     public virtual void ContinueKnot()
     {
+        if (!isActive)
+        {
+            OnFirstInteraction?.Invoke();
+        }
+
         isTarget = false;
         isActive = true;
         isComplete = false;
