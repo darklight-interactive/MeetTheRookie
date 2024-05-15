@@ -64,7 +64,7 @@ namespace Darklight.Game.Grid
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
@@ -95,7 +95,10 @@ namespace Darklight.Game.Grid
             return bestData;
         }
 
-
+        public override void OnDrawGizmosSelected()
+        {
+            OverlapGrid2DEditor.DrawOverlapGrid(this, transform.position);
+        }
 
     }
 
@@ -128,45 +131,40 @@ namespace Darklight.Game.Grid
             }
         }
 
-        /*
-            public void OnSceneGUI()
-            {
-                if (grid2D == null) return;
-                //DrawGrid();
-            }
+        public void OnSceneGUI()
+        {
 
-            public void DrawGrid()
-            {
-                if (grid2D == null) return;
+        }
 
-                foreach (Vector2Int positionKey in grid2D.PositionKeys)
+        public static void DrawOverlapGrid(OverlapGrid2D grid2D, Vector3 originWorldPosition, bool editMode = false)
+        {
+            Grid2D_Preset preset = grid2D.Preset;
+            if (preset == null) return;
+            if (originWorldPosition == null) originWorldPosition = Vector3.zero;
+            Vector3 origin = originWorldPosition + new Vector3(preset.originKeyX * preset.cellSize, preset.originKeyY * preset.cellSize, 0);
+            float cellSize = preset.cellSize;
+
+            for (int x = 0; x < preset.gridSizeX; x++)
+            {
+                for (int y = 0; y < preset.gridSizeY; y++)
                 {
+                    Vector2Int positionKey = new Vector2Int(x, y);
                     Grid2D_Data data = grid2D.GetData(positionKey);
                     if (data.initialized == false) continue; // Skip uninitialized data
 
-                    Vector3 worldPosition = data.worldPosition;
-                    float size = data.coordinateSize;
+                    Vector3 cellPos = origin + new Vector3(x * preset.cellSize, y * preset.cellSize, 0);
 
-                    CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
-                    CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
+                    CustomGizmos.DrawWireSquare(cellPos, cellSize, Vector3.forward, data.GetColor());
+                    CustomGizmos.DrawLabel($"{positionKey}", cellPos, CustomGUIStyles.CenteredStyle);
 
                     // Draw the button handle only if the grid is in edit mode
-                    CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
+                    CustomGizmos.DrawButtonHandle(cellPos, cellSize * 0.75f, Vector3.forward, data.GetColor(), () =>
                     {
                         data.CycleDataState();
                     }, Handles.RectangleHandleCap);
                 }
             }
-
-            public void UpdateGridPosition()
-            {
-                Vector2Int originKey = grid2D.OriginKey;
-                float cellSize = grid2D.Preset.cellSize;
-                Vector3 newPosition = new Vector3(originKey.x * cellSize, originKey.y * cellSize, 0);
-                //gridObject.transform.position = newPosition;
-            }
-            */
-
+        }
     }
 #endif
 

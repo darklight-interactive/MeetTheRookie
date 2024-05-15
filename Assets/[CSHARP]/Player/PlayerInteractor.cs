@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
+using Darklight.Game.Grid;
 
 [RequireComponent(typeof(PlayerController))]
-public class PlayerInteractor : MonoBehaviour
+public class PlayerInteractor : OverlapGrid2D
 {
     public PlayerController playerController => GetComponent<PlayerController>();
-    public PlayerDialogueHandler playerDialogueHandler;
 
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] IInteract _activeInteraction;
@@ -15,8 +15,9 @@ public class PlayerInteractor : MonoBehaviour
 
     public IInteract ActiveInteractable => _activeInteraction;
 
-    void Update()
+    public override void Update()
     {
+        base.Update();
         RefreshRadar();
 
         if (interactables.Count == 0) return;

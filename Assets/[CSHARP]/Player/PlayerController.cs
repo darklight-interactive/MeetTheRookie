@@ -76,7 +76,6 @@ public class PlayerController : MonoBehaviour
 
     public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
     public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
-    public PlayerDialogueHandler dialogueHandler => GetComponentInChildren<PlayerDialogueHandler>();
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
 

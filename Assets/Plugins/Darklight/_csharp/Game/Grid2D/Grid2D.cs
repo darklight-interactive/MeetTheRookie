@@ -88,7 +88,7 @@ namespace Darklight.Game.Grid
             }
         }
 
-        public void OnDrawGizmosSelected()
+        public virtual void OnDrawGizmosSelected()
         {
             DrawGrid2D(Preset, transform.position);
         }

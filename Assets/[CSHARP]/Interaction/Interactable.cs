@@ -97,6 +97,8 @@ public class Interactable : OverlapGrid2D, IInteract
 
     public virtual void Reset()
     {
+        isTarget = false;
+        isActive = false;
         isComplete = false;
         _spriteRenderer.color = _interactionTint;
     }
@@ -208,6 +210,12 @@ public class InteractableCustomEditor : OverlapGrid2DEditor
             {
                 if (GUILayout.Button("Continue Interaction"))
                     _script.Interact();
+
+                if (GUILayout.Button("Complete Interaction"))
+                    _script.Complete();
+
+                if (GUILayout.Button("Reset Interaction"))
+                    _script.Reset();
             }
         }
         else

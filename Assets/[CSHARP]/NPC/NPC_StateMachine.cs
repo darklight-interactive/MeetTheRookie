@@ -92,7 +92,7 @@ public class IdleState : FiniteState<NPCState>
 // WALK
 public class WalkState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
     private readonly float _maxDuration;
     private int _walkDirection = 1;
     private readonly float _leftBound;
@@ -187,7 +187,7 @@ public class WalkState : FiniteState<NPCState>
 
 public class SpeakState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
 
     public SpeakState(NPCState stateType, params object[] args) : base(stateType, args)
     {
@@ -218,7 +218,7 @@ public class SpeakState : FiniteState<NPCState>
 
 public class FollowState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
     private NPC_Animator _animator;
@@ -313,7 +313,7 @@ public class FollowState : FiniteState<NPCState>
 
 public class HideState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
 
@@ -439,7 +439,7 @@ public class HideState : FiniteState<NPCState>
 
 public class ChaseState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
 
     private float chaseSpeakDistance;
     private float chaseSpeed;
