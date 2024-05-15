@@ -149,7 +149,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Interactable), true)]
-public class InteractableCustomEditor : Editor
+public class InteractableCustomEditor : OverlapGrid2DEditor
 {
     SerializedObject _serializedObject;
     Interactable _script;
@@ -183,6 +183,7 @@ public class InteractableCustomEditor : Editor
         EditorGUILayout.Space();
 
         // Draw the default inspector
+        //CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(serializedObject);
         base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())

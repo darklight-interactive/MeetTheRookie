@@ -13,9 +13,11 @@ namespace Darklight.Game.Grid
     [ExecuteAlways]
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
-        [Header("Overlap Grid2D Properties")]
+
+        [Header("OverlapGrid2D Settings")]
         [SerializeField] protected LayerMask layerMask;
-        [SerializeField] public bool editMode = true;
+        public bool showGrid = true;
+
 
         public override void Awake()
         {
@@ -25,11 +27,7 @@ namespace Darklight.Game.Grid
 
         protected override void InitializeDataMap()
         {
-            if (preset == null)
-            {
-                Debug.LogError("The Grid2D preset is not set.", this);
-                return;
-            }
+            if (Preset == null) return;
 
             DataMap.Clear();
             for (int x = 0; x < GridArea.x; x++)
@@ -37,19 +35,19 @@ namespace Darklight.Game.Grid
                 for (int y = 0; y < GridArea.y; y++)
                 {
                     Vector2Int positionKey = new Vector2Int(x, y);
-                    Vector3 worldPosition = GetWorldSpacePosition(positionKey);
+                    Vector3 worldPosition = GetWorldPositionOfCell(positionKey);
 
                     OverlapGrid2D_Data newData = new OverlapGrid2D_Data();
-                    Grid2D_SerializedData existingData = preset.LoadData(positionKey);
+                    Grid2D_SerializedData existingData = Preset.LoadData(positionKey);
                     if (existingData != null)
                     {
-                        newData.Initialize(existingData, worldPosition, preset.coordinateSize);
+                        newData.Initialize(existingData, worldPosition, Preset.cellSize);
                         newData.layerMask = layerMask;
 
                     }
                     else
                     {
-                        newData.Initialize(positionKey, worldPosition, preset.coordinateSize, layerMask);
+                        newData.Initialize(positionKey, worldPosition, Preset.cellSize, layerMask);
                     }
 
                     // Set the data in the map
@@ -61,7 +59,7 @@ namespace Darklight.Game.Grid
                     // Notify listeners of the data change
                     newData.OnDataStateChanged += (data) =>
                     {
-                        preset.SaveData(data);
+                        Preset.SaveData(data);
                     };
                 }
             }
@@ -71,7 +69,7 @@ namespace Darklight.Game.Grid
         {
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
-                Vector3 worldPosition = GetWorldSpacePosition(data.positionKey);
+                Vector3 worldPosition = GetWorldPositionOfCell(data.positionKey);
                 data.worldPosition = worldPosition;
 
                 data.UpdateData();
@@ -97,6 +95,9 @@ namespace Darklight.Game.Grid
             }
             return bestData;
         }
+
+
+
     }
 
 #if UNITY_EDITOR
@@ -104,6 +105,7 @@ namespace Darklight.Game.Grid
     public class OverlapGrid2DEditor : Editor
     {
         private OverlapGrid2D grid2D;
+        private SerializedProperty presetProperty;
         private void OnEnable()
         {
             grid2D = (OverlapGrid2D)target;
@@ -112,45 +114,60 @@ namespace Darklight.Game.Grid
 
         public override void OnInspectorGUI()
         {
+
             serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
+
+
             base.OnInspectorGUI();
+
+
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
             }
         }
 
-        public void OnSceneGUI()
-        {
-            if (grid2D == null) return;
-            DrawGrid();
-        }
-
-        public void DrawGrid()
-        {
-            if (grid2D == null) return;
-
-            foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
+        /*
+            public void OnSceneGUI()
             {
-                Grid2D_Data data = grid2D.GetData(positionKey);
-                if (data.initialized == false) continue; // Skip uninitialized data
-
-                Vector3 worldPosition = data.worldPosition;
-                float size = data.coordinateSize;
-
-                CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
-                CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
-
-                // Draw the button handle only if the grid is in edit mode
-                if (grid2D.editMode == false) return;
-                CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
-                {
-                    data.CycleDataState();
-                }, Handles.RectangleHandleCap);
+                if (grid2D == null) return;
+                //DrawGrid();
             }
-        }
+
+            public void DrawGrid()
+            {
+                if (grid2D == null) return;
+
+                foreach (Vector2Int positionKey in grid2D.PositionKeys)
+                {
+                    Grid2D_Data data = grid2D.GetData(positionKey);
+                    if (data.initialized == false) continue; // Skip uninitialized data
+
+                    Vector3 worldPosition = data.worldPosition;
+                    float size = data.coordinateSize;
+
+                    CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
+                    CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
+
+                    // Draw the button handle only if the grid is in edit mode
+                    CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
+                    {
+                        data.CycleDataState();
+                    }, Handles.RectangleHandleCap);
+                }
+            }
+
+            public void UpdateGridPosition()
+            {
+                Vector2Int originKey = grid2D.OriginKey;
+                float cellSize = grid2D.Preset.cellSize;
+                Vector3 newPosition = new Vector3(originKey.x * cellSize, originKey.y * cellSize, 0);
+                //gridObject.transform.position = newPosition;
+            }
+            */
+
     }
 #endif
 

@@ -44,7 +44,9 @@ public interface IGrid2D_Data
     /// </summary>
     public event Action<Grid2D_Data> OnDataStateChanged;
 
-    public void Initialize(Grid2D_Data data);
+    public abstract void Initialize(Grid2D_Data data);
+
+    public abstract void Initialize(Grid2D_SerializedData serializedData, Vector3 worldPosition, float coordinateSize);
 
     /// <summary>
     /// Initializes the data with the given values.
@@ -192,6 +194,32 @@ public class Grid2D_Data : IGrid2D_Data
 }
 #endregion
 
+#region Grid2D_SerializedData : Class
+/// <summary>
+/// Serialized version of the Grid2DData class. This class is used to store the data in a serialized format.
+/// </summary>
+[System.Serializable]
+public class Grid2D_SerializedData
+{
+    [SerializeField] private Vector2Int _positionKey;
+    [SerializeField] private bool _disabled;
+    [SerializeField] private int _weight;
+
+    public Grid2D_SerializedData(Grid2D_Data input_data)
+    {
+        _positionKey = input_data.positionKey;
+        _disabled = input_data.disabled;
+        _weight = input_data.weight;
+    }
+
+    public Grid2D_Data ToData()
+    {
+        return new Grid2D_Data(_positionKey, _disabled, _weight, Vector3.zero, 1);
+    }
+}
+#endregion
+
+#region OverlapGrid2D_Data : Class
 /// <summary>
 /// Create and stores the data from a Physics2D.OverlapBoxAll call at the world position of the Grid2DData. 
 /// </summary>
@@ -227,6 +255,6 @@ public class OverlapGrid2D_Data : Grid2D_Data
         }
     }
 }
-
+#endregion
 
 
