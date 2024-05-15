@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyButtons;
 using UnityEngine.UIElements;
-using NaughtyAttributes;
 
 
 #if UNITY_EDITOR
@@ -17,7 +16,6 @@ using UnityEditor;
 public class Interactable : OverlapGrid2D, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private InkyStoryIterator _iterator;
 
     // private access to knots for dropdown
     private List<string> _sceneKnots
@@ -25,7 +23,7 @@ public class Interactable : OverlapGrid2D, IInteract
         get
         {
             if (_storyObject == null) return new List<string>();
-            return _storyObject.GetKnots();
+            return InkyStoryObject.GetAllKnots(_storyObject.Story);
         }
     }
 
@@ -36,25 +34,25 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             if (_storyObject == null) return new List<string>();
             if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
-            return _storyObject.GetStitches(_sceneKnot);
+            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.Story, _sceneKnot);
         }
     }
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
-    [HorizontalLine(color: EColor.Gray)]
+    //[HorizontalLine(color: EColor.Gray)]
     [Header("Interactable")]
-    [SerializeField, ShowAssetPreview] Sprite _sprite;
+    [SerializeField] Sprite _sprite;
 
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
     [SerializeField] protected InkyStoryObject _storyObject;
 
-    [Dropdown("_sceneKnots")]
-    [SerializeField] protected string _sceneKnot;
+    [DropdownAttribute("_sceneKnots")]
+    public string _sceneKnot;
 
-    [Dropdown("_interactionStitches")]
-    [SerializeField] protected string _interactionStitch;
-
+    [DropdownAttribute("_interactionStitches")]
+    public string _interactionStitch;
+    protected InkyStoryIterator _storyIterator;
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -68,7 +66,6 @@ public class Interactable : OverlapGrid2D, IInteract
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     public InkyStoryObject storyObject { get => _storyObject; private set => _storyObject = value; }
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
-    public InkyStoryIterator knotIterator { get => _iterator; private set => _iterator = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
@@ -100,7 +97,7 @@ public class Interactable : OverlapGrid2D, IInteract
             return;
         }
 
-        _iterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
+
     }
 
     public virtual void Reset()
@@ -119,7 +116,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.HideInteractIcon();
+        UIManager.Instance.RemoveInteractIcon();
     }
 
     // ====== [[ INTERACTION ]] ======================================
@@ -128,26 +125,33 @@ public class Interactable : OverlapGrid2D, IInteract
         // First Interaction
         if (!isActive)
         {
-            OnFirstInteraction?.Invoke();
+            TargetClear();
+
             isActive = true;
             isComplete = false;
 
+            _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
+            _storyIterator.GoToKnotOrStitch(_interactionStitch);
+
             // >> TEMPORARY COLOR CHANGE
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
+
+            OnFirstInteraction?.Invoke();
+            return;
         }
 
-        // Continue the Knot
-        knotIterator.ContinueKnot();
-
-        // Watch for the end of the knot
-        if (knotIterator.CurrentState == InkyStoryIterator.State.END)
+        // Last Interaction
+        if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
             return;
         }
 
+        // Continue the interaction
+        _storyIterator.ContinueKnot();
+
         // Send out the text event
-        OnInteraction?.Invoke(knotIterator.CurrentStoryText);
+        OnInteraction?.Invoke(_storyIterator.CurrentText);
     }
 
     public virtual void Complete()
@@ -155,7 +159,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isActive = false;
         isTarget = false;
         isComplete = true;
-        knotIterator = null;
+        _storyIterator = null;
 
         OnCompleted?.Invoke();
     }
@@ -196,35 +200,33 @@ public class InteractableCustomEditor : OverlapGrid2DEditor
         EditorGUI.BeginChangeCheck();
 
 
-
         GUILayout.Space(10);
         GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
-        if (!_script.isTarget && GUILayout.Button("Set Target"))
+
+        if (!_script.isTarget)
         {
-            _script.TargetSet();
+            if (GUILayout.Button("Set Target"))
+                _script.TargetSet();
+
+            if (_script.isActive)
+            {
+                if (GUILayout.Button("Continue Interaction"))
+                    _script.Interact();
+            }
+        }
+        else
+        {
+            if (GUILayout.Button("Clear Target"))
+                _script.TargetClear();
+
+            if (!_script.isActive)
+            {
+                if (GUILayout.Button("First Interact"))
+                    _script.Interact();
+            }
         }
 
-        if (_script.isTarget && GUILayout.Button("Clear Target"))
-        {
-            _script.TargetClear();
-        }
 
-        GUILayout.Space(10);
-        if (_script.isActive && GUILayout.Button("Interact"))
-        {
-            _script.Interact();
-        }
-
-        if (_script.isActive && GUILayout.Button("Complete"))
-        {
-            _script.Complete();
-        }
-
-
-        EditorGUILayout.Space();
-
-        // Draw the default inspector
-        //CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(serializedObject);
         base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())

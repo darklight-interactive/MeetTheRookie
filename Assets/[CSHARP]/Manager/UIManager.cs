@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
 
 #if UNITY_EDITOR
-    public static void CleanHiddenDocuments()
+    public static void CleanUpDocuments()
     {
         int count = 0;
         UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
@@ -104,6 +104,13 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
         UXML_UIDocumentObject[] allObjects = Resources.FindObjectsOfTypeAll<UXML_UIDocumentObject>();
         foreach (UXML_UIDocumentObject obj in allObjects)
+        {
+            DestroyImmediate(obj.gameObject);
+            count++;
+        }
+
+        UXML_RenderTextureObject[] allRenderTextures = Resources.FindObjectsOfTypeAll<UXML_RenderTextureObject>();
+        foreach (UXML_RenderTextureObject obj in allRenderTextures)
         {
             DestroyImmediate(obj.gameObject);
             count++;
@@ -164,6 +171,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
 
     // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
+    [Header("Render Texture")]
     public Material UXML_RenderTextureMaterial;
     public RenderTexture UXML_RenderTexture;
 
@@ -173,7 +181,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         base.Awake(); // << Update the Singleton instance
 
-        CleanHiddenDocuments(); // << Clean up hidden documents
+        CleanUpDocuments(); // << Clean up hidden documents
 
         gameUIController?.Initialize(_gameUIPreset);
     }
@@ -187,17 +195,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public void ShowInteractIcon(Vector3 worldPosition)
     {
         if (interactIcon == null)
-        {
             interactIcon = CreateRenderTextureObject(_interactIconPreset);
-        }
-
-        interactIcon.Show();
         interactIcon.transform.position = worldPosition;
     }
 
-    public void HideInteractIcon()
+    public void RemoveInteractIcon()
     {
-        interactIcon.Hide();
+        if (interactIcon == null) return;
+        if (Application.isPlaying)
+            interactIcon.Destroy();
+        else
+            DestroyImmediate(interactIcon.gameObject);
+        interactIcon = null;
     }
 
     public void CreateSpeechBubble(Vector3 worldPosition, string text)
@@ -208,16 +217,22 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         speechBubble.SetLocalScale(speechBubbleScalar);
 
         // Set the text of the speech bubble
-        speechBubble.ElementQueryAll<Label>().First().text = text;
+        speechBubble.ElementQuery<SpeechBubble>().text = text;
+
+        Debug.Log($"Created Speech Bubble at {worldPosition} ||| {text}");
     }
 
     public void DestroySpeechBubble()
     {
         if (speechBubble != null)
         {
-            Destroy(speechBubble.gameObject);
-            speechBubble = null;
+            if (Application.isPlaying)
+                Destroy(speechBubble.gameObject);
+            else
+                DestroyImmediate(speechBubble.gameObject);
         }
+        speechBubble = null;
+
     }
 
 
@@ -233,14 +248,10 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// <returns></returns>
     UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset)
     {
-        if (preset == null)
-        {
-            Debug.LogError("No preset assigned to RenderTextureObject", Instance.gameObject);
-            return null;
-        }
+        string name = $"UXMLRenderTexture : unknown";
+        if (preset != null) name = $"UXMLRenderTexture : {preset.name}";
+        GameObject go = new GameObject(name);
 
-
-        GameObject go = new GameObject($"UXMLRenderTexture : {preset.name}");
         //go.hideFlags = HideFlags.NotEditable;
         UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
         renderTextureObject.Initialize(preset, null, Instance.UXML_RenderTextureMaterial, Instance.UXML_RenderTexture);
@@ -278,6 +289,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
+
+            if (GUILayout.Button("Clean Up Documents"))
+            {
+                UIManager.CleanUpDocuments();
+            }
 
             if (EditorGUI.EndChangeCheck())
             {

@@ -10,10 +10,11 @@ using EasyButtons;
 using UnityEditor;
 #endif
 
+[RequireComponent(typeof(NPC_Controller))]
 public class NPC_Interactable : Interactable, IInteract
 {
     private NPCState stateBeforeTalkedTo = NPCState.NONE;
-    NPC_Controller controller => GetComponent<NPC_Controller>();
+    NPC_StateMachine stateMachine => GetComponent<NPC_Controller>().stateMachine;
 
 
     [Header("NPC : Speech Bubble")]
@@ -22,39 +23,43 @@ public class NPC_Interactable : Interactable, IInteract
 
     public void Start()
     {
-
         // >> ON FIRST INTERACTION -------------------------------
-        this.OnFirstInteraction += FirstInteraction;
+        this.OnFirstInteraction += () => stateBeforeTalkedTo = stateMachine.CurrentState;
 
-        // >> ON INTERACTION -------------------------------------
-        this.OnInteraction += Interaction;
-
-        // >> ON COMPLETED -------------------------------------
-        this.OnCompleted += Completed;
-    }
-
-    public void FirstInteraction()
-    {
-        stateBeforeTalkedTo = controller.stateMachine.CurrentState;
-    }
-
-    public void Interaction(string currentText)
-    {
-        // Create a speech bubble at the best data position
-        UIManager.Instance.CreateSpeechBubble(GetBestData().worldPosition, currentText);
-        if (controller)
+        // >> ON INTERACT ---------------------------------------
+        // NOTE :: This event is only called when an Interaction is confirmed
+        this.OnInteraction += (string text) =>
         {
-            controller.stateMachine.GoToState(NPCState.SPEAK);
-        }
+
+        };
     }
 
-    public void Completed()
+    public override void Interact()
     {
+        base.Interact();
+
+        if (isComplete) return;
+        if (_storyIterator == null) _storyIterator = new InkyStoryIterator(_storyObject);
+        if (_storyIterator.CurrentState != InkyStoryIterator.State.END)
+        {
+            // Create a speech bubble at the best data position
+            UIManager.Instance.CreateSpeechBubble(GetBestData().worldPosition, _storyIterator.CurrentText);
+
+            // If the statemachine is not null, go to the speak state
+            stateMachine?.GoToState(NPCState.SPEAK);
+        }
+
+    }
+
+    public override void Complete()
+    {
+        base.Complete();
+
+        // Destroy the speech bubble
         UIManager.Instance.DestroySpeechBubble();
-        if (controller)
-        {
-            controller.stateMachine.GoToState(stateBeforeTalkedTo);
-        }
+
+        // If the statemachine is not null, go to the state before talked to
+        stateMachine?.GoToState(stateBeforeTalkedTo);
     }
 }
 

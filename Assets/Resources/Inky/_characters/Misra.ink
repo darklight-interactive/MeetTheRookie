@@ -1,6 +1,14 @@
+-> Misra_Dialogue.default
 
 === Misra_Dialogue ===
--> 4_1
+#NPC tag
+-> DONE
+
+= default
+Woah .. something scary is going on
+I think you - you didnt set a proper stitch?
+Maybe you did it on purpose
+Idk to each their own , just take it away now. -> DONE
 
 = 4_1
 {IsQuestComplete(visited_misra) == false:

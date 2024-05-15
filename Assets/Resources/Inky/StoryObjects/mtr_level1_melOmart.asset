@@ -20,23 +20,23 @@ MonoBehaviour:
     stitches: []
   - name: scene1_1
     stitches:
-    - gas_pump
-    - car
-    - npc
-    - enter_store
+    - scene1_1.gas_pump
+    - scene1_1.car
+    - scene1_1.npc
+    - scene1_1.enter_store
   - name: scene1_2
     stitches:
-    - vending_machine
-    - employee
-    - door_to_backroom
-    - door_to_outside
+    - scene1_2.vending_machine
+    - scene1_2.employee
+    - scene1_2.door_to_backroom
+    - scene1_2.door_to_outside
   - name: scene1_3
     stitches:
-    - mel
-    - goop
+    - scene1_3.mel
+    - scene1_3.goop
   - name: scene1_4
     stitches:
-    - fallen_tree
+    - scene1_4.fallen_tree
   - name: SetSpeaker
     stitches: []
   - name: SetActiveQuestChain
@@ -53,7 +53,8 @@ MonoBehaviour:
     stitches: []
   - name: Misra_Dialogue
     stitches:
-    - 4_1
+    - Misra_Dialogue.default
+    - Misra_Dialogue.4_1
   - name: global decl
     stitches: []
   _variables:

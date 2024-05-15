@@ -38,9 +38,7 @@ public partial class SpeechBubble : VisualElement
 
     public SpeechBubble()
     {
-        speechLabel.RemoveFromClassList("unity-label");
-        speechLabel.RemoveFromClassList("unity-text-element");
-        speechLabel.AddToClassList("speech-label");
+
         this.Add(speechLabel);
 
         this.AddToClassList("speech-bubble");

@@ -75,7 +75,12 @@ public class InkyStoryObject : ScriptableObject
     public static List<string> GetAllStitchesInKnot(Story story, string knot)
     {
         Container container = story.KnotContainerWithName(knot);
-        return container.namedContent.Keys.ToList();
+        List<string> stitches = new List<string>();
+        foreach (string stitch in container.namedContent.Keys.ToList())
+        {
+            stitches.Add($"{knot}.{stitch}");
+        }
+        return stitches;
     }
 
     /// <summary>
@@ -134,20 +139,4 @@ public class InkyStoryObject : ScriptableObject
         // Set up error handling
         _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
     }
-
-    public List<string> GetKnots()
-    {
-        return _knots.Select(knot => knot.name).ToList();
-    }
-
-    public List<string> GetStitches(string knot)
-    {
-        InkyKnot inkyKnot = _knots.Find(k => k.name == knot);
-        return inkyKnot.stitches;
-    }
-
-
-
-
-
 }

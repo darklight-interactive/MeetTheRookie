@@ -56,15 +56,16 @@ namespace Darklight.UXML
             this.transform.localScale = new Vector3(scale, scale, scale);
         }
 
-        public void Show()
+        public void Destroy()
         {
-            _quad.SetActive(true);
-            TextureUpdate();
-        }
-
-        public void Hide()
-        {
-            _quad.SetActive(false);
+            if (Application.isPlaying)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                DestroyImmediate(this.gameObject);
+            }
         }
     }
 }

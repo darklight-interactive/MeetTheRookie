@@ -61,6 +61,16 @@ GroupBox {
     font-size: 41px;
 }
 
+.unity-text-element.unity-label {
+    flex-grow: 1;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+    align-self: center;
+    justify-content: center;
+    -unity-text-align: middle-left;
+    letter-spacing: 0;
+    white-space: normal;
+}
+
 .column-active {
     flex-grow: 1;
     visibility: visible;

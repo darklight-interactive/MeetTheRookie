@@ -33,8 +33,8 @@ namespace Darklight.UXML
                 return;
             }
 
-            document.visualTreeAsset = preset.VisualTreeAsset;
-            document.panelSettings = preset.PanelSettings;
+            document.visualTreeAsset = preset.visualTreeAsset;
+            document.panelSettings = preset.panelSettings;
             gameObject.layer = LayerMask.NameToLayer("UI");
         }
 
