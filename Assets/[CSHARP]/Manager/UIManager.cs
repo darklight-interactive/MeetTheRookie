@@ -5,6 +5,8 @@ using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using EasyButtons;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -31,21 +33,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset) where TDocument : UXML_UIDocumentObject
     {
         GameObject go = new GameObject($"UXMLUIDocument : {preset.name}");
-        go.hideFlags = HideFlags.DontSaveInEditor;
+        //go.hideFlags = HideFlags.NotEditable;
         TDocument uiDocument = go.AddComponent<TDocument>();
         uiDocument.Initialize(preset);
         return uiDocument;
     }
-
-    public static UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture)
-    {
-        GameObject go = new GameObject($"UXMLRenderTexture : {preset.name}");
-        go.hideFlags = HideFlags.DontSaveInEditor;
-        UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
-        renderTextureObject.Initialize(preset, null, material, renderTexture);
-        return renderTextureObject;
-    }
-
 
     /// <summary>
     /// Sets the position of a UI Toolkit element to correspond to a world position.
@@ -98,10 +90,35 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
         Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
     }
+
+#if UNITY_EDITOR
+    public static void CleanHiddenDocuments()
+    {
+        int count = 0;
+        UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
+        foreach (UIDocument doc in allDocuments)
+        {
+            DestroyImmediate(doc.gameObject);
+            count++;
+        }
+
+        UXML_UIDocumentObject[] allObjects = Resources.FindObjectsOfTypeAll<UXML_UIDocumentObject>();
+        foreach (UXML_UIDocumentObject obj in allObjects)
+        {
+            DestroyImmediate(obj.gameObject);
+            count++;
+        }
+
+        Debug.Log($"{count} hidden objects have been destroyed.");
+    }
+#endif
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
-    // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
+    // ----- [[ UI CONTROLLERS ]] ------------------------------------>
+
+    [Header("Game UI Controller")]
     private GameUIController _gameUI;
+    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
     public GameUIController gameUIController
     {
         get
@@ -117,7 +134,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         }
     }
 
+    [Header("Synthesis Manager")]
     private SynthesisManager _synthesisManager;
+    [SerializeField] UXML_UIDocumentPreset _synthesisUIPreset;
     public SynthesisManager synthesisManager
     {
         get
@@ -133,34 +152,100 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         }
     }
 
-    // ----- [[ SERIALIZED FIELDS ]] ------------------------------------>
-    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
-    [SerializeField] UXML_UIDocumentPreset _synthesisUIPreset;
-    [SerializeField] Material _renderTextureMaterial;
-    [SerializeField] RenderTexture _renderTexture;
+    [Header("Speech Bubble")]
+    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+    public float speechBubbleScalar = 1.5f;
+    [ShowOnly] public UXML_RenderTextureObject speechBubble;
 
 
+    [Header("Interact Icon")]
+    [SerializeField] UXML_UIDocumentPreset _interactIconPreset;
+    [ShowOnly] public UXML_RenderTextureObject interactIcon;
+
+
+    // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
+    public Material UXML_RenderTextureMaterial;
+    public RenderTexture UXML_RenderTexture;
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
 
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
-        gameUIController?.HideInteractIcon(); // Hide the interact icon if it's visible        
-        synthesisManager?.Prepare(); // Prepare the Synthesis Manager if it exists
+
+        CleanHiddenDocuments(); // << Clean up hidden documents
+
+        gameUIController?.Initialize(_gameUIPreset);
     }
-
-
-
-    public void ShowSynthesis(bool visible)
-    {
-        synthesisManager.Show(visible);
-    }
-
 
     void Update()
     {
         UpdateScreenSize();
+    }
+
+    // ----- [[ PUBLIC METHODS ]] ------------------------------------>
+    public void ShowInteractIcon(Vector3 worldPosition)
+    {
+        if (interactIcon == null)
+        {
+            interactIcon = CreateRenderTextureObject(_interactIconPreset);
+        }
+
+        interactIcon.Show();
+        interactIcon.transform.position = worldPosition;
+    }
+
+    public void HideInteractIcon()
+    {
+        interactIcon.Hide();
+    }
+
+    public void CreateSpeechBubble(Vector3 worldPosition, string text)
+    {
+        if (speechBubble == null)
+            speechBubble = CreateRenderTextureObject(_speechBubblePreset);
+        speechBubble.transform.position = worldPosition;
+        speechBubble.SetLocalScale(speechBubbleScalar);
+
+        // Set the text of the speech bubble
+        speechBubble.ElementQueryAll<Label>().First().text = text;
+    }
+
+    public void DestroySpeechBubble()
+    {
+        if (speechBubble != null)
+        {
+            Destroy(speechBubble.gameObject);
+            speechBubble = null;
+        }
+    }
+
+
+
+    // ----- [[ PRIVATE METHODS ]] ------------------------------------>
+    /// <summary>
+    /// Creates a new GameObject with a UXML_RenderTextureObject component.
+    /// This allows for the rendering of a UXML Element to a In-World RenderTexture.
+    /// </summary>
+    /// <param name="preset">
+    ///     The UXML_UIDocumentPreset to use for the RenderTextureObject.
+    /// </param>
+    /// <returns></returns>
+    UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset)
+    {
+        if (preset == null)
+        {
+            Debug.LogError("No preset assigned to RenderTextureObject", Instance.gameObject);
+            return null;
+        }
+
+
+        GameObject go = new GameObject($"UXMLRenderTexture : {preset.name}");
+        //go.hideFlags = HideFlags.NotEditable;
+        UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
+        renderTextureObject.Initialize(preset, null, Instance.UXML_RenderTextureMaterial, Instance.UXML_RenderTexture);
+        renderTextureObject.TextureUpdate();
+        return renderTextureObject;
     }
 
     void UpdateScreenSize()
@@ -173,37 +258,33 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #if UNITY_EDITOR
-    [MenuItem("Tools/Darklight/Clean Hidden Documents")]
-    public static void CleanHiddenDocuments()
+    [CustomEditor(typeof(UIManager))]
+    public class UIManagerCustomEditor : Editor
     {
-        UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
-        int count = 0;
-
-        foreach (UIDocument doc in allDocuments)
+        SerializedObject _serializedObject;
+        UIManager _script;
+        private void OnEnable()
         {
-            GameObject obj = doc.gameObject;
-            if ((obj.hideFlags & HideFlags.DontSaveInEditor) != 0)
-            {
-                DestroyImmediate(obj);
-                count++;
-            }
+            _serializedObject = new SerializedObject(target);
+            _script = (UIManager)target;
+            _script.Awake();
         }
 
-        Debug.Log($"{count} hidden objects have been destroyed.");
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
     }
 #endif
+
 }

@@ -20,7 +20,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     /// <summary>
     /// This is the active text that is currently being displayed in the story, for easy reference.
     /// </summary>
-    public string CurrentStoryTest => story.currentText.Trim();
+    public string CurrentStoryText => story.currentText.Trim();
 
     // ------------------- [[ EVENTS ]] -------------------
     public delegate void OnDialogue(string currentText);
@@ -79,11 +79,11 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             story.Continue();
 
             // Invoke the Dialogue Event
-            OnKnotDialogue?.Invoke(CurrentStoryTest);
+            OnKnotDialogue?.Invoke(CurrentStoryText);
 
             HandleTags();
 
-            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentStoryTest}");
+            InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentStoryText}");
         }
 
         // -- ( CHOICE STATE ) --------------- >>

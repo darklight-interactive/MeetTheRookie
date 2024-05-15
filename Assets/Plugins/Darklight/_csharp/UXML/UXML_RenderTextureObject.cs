@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt;
+using Darklight.UnityExt.Editor;
+
 
 
 #if UNITY_EDITOR
@@ -11,34 +13,21 @@ using UnityEditor;
 
 namespace Darklight.UXML
 {
+
+    /// <summary>
+    /// This class is used to create a GameObject with a RenderTexture that can be used to render a UXML Element.
+    /// </summary>
+    [ExecuteAlways]
     public class UXML_RenderTextureObject : UXML_UIDocumentObject
     {
-        MeshRenderer _meshRenderer => GetComponentInChildren<MeshRenderer>();
-        Material _material;
-        RenderTexture _renderTexture;
-        public bool isVisible => _meshRenderer.enabled;
+        [SerializeField, ShowOnly] GameObject _quad;
+        [SerializeField, ShowOnly] MeshRenderer _meshRenderer;
+        [SerializeField, ShowOnly] Material _material;
+        [SerializeField, ShowOnly] RenderTexture _renderTexture;
 
         // -- Element Changed Event --
         public delegate void OnChange();
         protected OnChange OnElementChanged;
-        void OnEnable()
-        {
-            OnElementChanged += TextureUpdate;
-        }
-
-        void OnDisable()
-        {
-            OnElementChanged -= TextureUpdate;
-        }
-
-        public void TextureUpdate()
-        {
-            // Set the material and texture
-            _meshRenderer.sharedMaterial = new Material(_material); // << clone the material
-            document.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
-            _meshRenderer.sharedMaterial.mainTexture = document.panelSettings.targetTexture; // << set the material texture
-            _meshRenderer.enabled = true;
-        }
 
         public void Initialize(UXML_UIDocumentPreset preset, string[] tags, Material material, RenderTexture renderTexture)
         {
@@ -47,13 +36,19 @@ namespace Darklight.UXML
             base.Initialize(preset, tags);
 
             // Create a quad mesh child
-            GameObject meshChild = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            meshChild.transform.SetParent(this.transform);
-            meshChild.transform.localPosition = Vector3.zero;
-
-            _meshRenderer.enabled = false;
-
+            _quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            _quad.transform.SetParent(this.transform);
+            _quad.transform.localPosition = Vector3.zero;
+            _meshRenderer = _quad.GetComponent<MeshRenderer>();
             OnElementChanged?.Invoke();
+        }
+
+        public void TextureUpdate()
+        {
+            // Set the material and texture
+            _meshRenderer.sharedMaterial = new Material(_material); // << clone the material
+            document.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
+            _meshRenderer.sharedMaterial.mainTexture = document.panelSettings.targetTexture; // << set the material texture
         }
 
         public void SetLocalScale(float scale)
@@ -63,12 +58,13 @@ namespace Darklight.UXML
 
         public void Show()
         {
-            _meshRenderer.enabled = true;
+            _quad.SetActive(true);
+            TextureUpdate();
         }
 
         public void Hide()
         {
-            _meshRenderer.enabled = false;
+            _quad.SetActive(false);
         }
     }
 }

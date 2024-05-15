@@ -34,35 +34,3 @@ public class GameStateMachine : StateMachine<GameState>
         base.OnStateChanged(previousState, newState);
     }
 }
-
-/*
-#if UNITY_EDITOR
-[CustomEditor(typeof(GameManager))]
-public class GameManagerEditor : Editor
-{
-
-    bool showThreader = true;
-    InkyKnotThreader threader;
-    public override void OnInspectorGUI()
-    {
-        GameManager gameManager = (GameManager)target;
-        threader = GameManager.InkyKnotThreader;
-
-        GameState gameState = GameManager.StateMachine.CurrentState;
-        CustomInspectorGUI.DrawEnumProperty(ref gameState, $"Game State");
-
-        CustomInspectorGUI.CreateFoldout(ref showThreader, "InkyKnotThreader", ShowThreader);
-
-        CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(this.serializedObject);
-
-    }
-
-    void ShowThreader()
-    {
-        InkyKnotThreader.State threadState = GameManager.InkyKnotThreader.currentState;
-        CustomInspectorGUI.DrawEnumProperty(ref threadState, $"InkyKnotThreader State");
-        InkyKnotThreader.Console.DrawInEditor();
-    }
-}
-
-#endif*/

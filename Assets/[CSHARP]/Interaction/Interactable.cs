@@ -18,6 +18,8 @@ public class Interactable : OverlapGrid2D, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
     private InkyStoryIterator _iterator;
+
+    // private access to knots for dropdown
     private List<string> _sceneKnots
     {
         get
@@ -26,6 +28,8 @@ public class Interactable : OverlapGrid2D, IInteract
             return _storyObject.GetKnots();
         }
     }
+
+    // private access to stitches for dropdown
     private List<string> _interactionStitches
     {
         get
@@ -72,28 +76,27 @@ public class Interactable : OverlapGrid2D, IInteract
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
-    // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
+    // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
     public override void Awake()
     {
         base.Awake();
         Initialize();
     }
 
-    // ====== [[ INITIALIZATION ]] ================================
     public virtual void Initialize()
     {
-        _spriteRenderer.sprite = _sprite;
+        // Prioritize the initial sprite that is set in the sprite renderer
+        // Its assumed that the sprtie renderer has a null sprite when the interactable is first created
+        if (_spriteRenderer.sprite == null)
+            _spriteRenderer.sprite = _sprite;
+        else
+            _sprite = _spriteRenderer.sprite;
+
         _spriteRenderer.color = _defaultTint;
 
         if (_storyObject == null)
         {
             Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
-            return;
-        }
-
-        if (_interactionStitch == null || _interactionStitch == "")
-        {
-            Debug.LogError("Interaction Key is null. Please assign a valid knot or stitch key.");
             return;
         }
 
@@ -110,50 +113,48 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.gameUIController.ShowInteractIcon(transform.position);
+        UIManager.Instance.ShowInteractIcon(transform.position);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.gameUIController.HideInteractIcon();
+        UIManager.Instance.HideInteractIcon();
     }
 
+    // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
-        // >> TEMPORARY COLOR CHANGE
-        StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
-
-        // >> CONTINUE KNOT
-        ContinueKnot();
-    }
-
-    public virtual void ContinueKnot()
-    {
+        // First Interaction
         if (!isActive)
         {
             OnFirstInteraction?.Invoke();
+            isActive = true;
+            isComplete = false;
+
+            // >> TEMPORARY COLOR CHANGE
+            StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
         }
 
-        isTarget = false;
-        isActive = true;
-        isComplete = false;
-
+        // Continue the Knot
         knotIterator.ContinueKnot();
 
+        // Watch for the end of the knot
         if (knotIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
             return;
         }
 
-        OnInteraction?.Invoke(knotIterator.CurrentStoryTest);
+        // Send out the text event
+        OnInteraction?.Invoke(knotIterator.CurrentStoryText);
     }
 
     public virtual void Complete()
     {
-        isComplete = true;
         isActive = false;
+        isTarget = false;
+        isComplete = true;
         knotIterator = null;
 
         OnCompleted?.Invoke();
@@ -198,7 +199,7 @@ public class InteractableCustomEditor : OverlapGrid2DEditor
 
         GUILayout.Space(10);
         GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
-        if (!_script.isTarget && GUILayout.Button("Target"))
+        if (!_script.isTarget && GUILayout.Button("Set Target"))
         {
             _script.TargetSet();
         }
@@ -207,6 +208,18 @@ public class InteractableCustomEditor : OverlapGrid2DEditor
         {
             _script.TargetClear();
         }
+
+        GUILayout.Space(10);
+        if (_script.isActive && GUILayout.Button("Interact"))
+        {
+            _script.Interact();
+        }
+
+        if (_script.isActive && GUILayout.Button("Complete"))
+        {
+            _script.Complete();
+        }
+
 
         EditorGUILayout.Space();
 

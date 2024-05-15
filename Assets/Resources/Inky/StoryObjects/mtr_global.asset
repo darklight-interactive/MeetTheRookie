@@ -13,6 +13,26 @@ MonoBehaviour:
   m_Name: mtr_global
   m_EditorClassIdentifier: 
   _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _knots:
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - 4_1
+  - name: global decl
+    stitches: []
   _variables:
   - _key: Speaker
     _valueAsString: Unkown
@@ -35,23 +55,3 @@ MonoBehaviour:
   - _key: Level4_Quests
     _valueAsString: 
   _globalTags: []
-  _knots:
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - 4_1
-  - name: global decl
-    stitches: []

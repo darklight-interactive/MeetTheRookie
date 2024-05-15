@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis()
     {
         synthesisEnabled = !synthesisEnabled;
-        UIManager.Instance.ShowSynthesis(synthesisEnabled);
+        UIManager.Instance.synthesisManager.Show(synthesisEnabled);
         stateMachine.GoToState(synthesisEnabled ? PlayerStateType.INTERACTION : PlayerStateType.IDLE);
     }
     #endregion

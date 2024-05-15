@@ -9,13 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5274619019409229800}
-  - component: {fileID: 7247015523766141193}
+  - component: {fileID: 2945277407265336810}
   - component: {fileID: 2912223000728981185}
   - component: {fileID: 2556373779886294289}
   - component: {fileID: 7923438984497505535}
   - component: {fileID: 5007469561755814138}
   - component: {fileID: 4369842979011664183}
-  - component: {fileID: 7692910416353583211}
   m_Layer: 0
   m_Name: '[NPC] Misra'
   m_TagString: Untagged
@@ -38,7 +37,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7247015523766141193
+--- !u!114 &2945277407265336810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,19 +46,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2983785582193056432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f3ed4274eea0b43b4238dfefec2773, type: 3}
+  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyParent: {fileID: 11400000, guid: 3cc4aca1b43bc7f4a9c2fcf84c0e7338, type: 2}
-  _interactionKey: scene4_1.Misra_dialogue
+  _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 192
   _sprite: {fileID: 0}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: Misra_Dialogue
+  _interactionStitch: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  speechBubbleScalar: 1
-  dialogueBubble: {fileID: 0}
+  speechBubble: {fileID: 0}
 --- !u!114 &2912223000728981185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,13 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
-    - {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
-  currentFrame: 0
 --- !u!61 &5007469561755814138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -257,20 +253,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7692910416353583211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2983785582193056432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  showGizmos: 0

@@ -9,7 +9,7 @@ using Darklight.Game.Utility;
 using Darklight.UnityExt.Editor;
 using System;
 
-[RequireComponent(typeof(NPC_Animator))]
+[RequireComponent(typeof(NPC_Animator), typeof(NPC_Interactable))]
 public class NPC_Controller : MonoBehaviour
 {
     public NPC_StateMachine stateMachine;

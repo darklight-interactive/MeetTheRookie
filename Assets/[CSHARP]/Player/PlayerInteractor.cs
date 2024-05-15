@@ -86,9 +86,9 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnInteraction(string text)
     {
-        if (_activeInteraction is InteractableNPC)
+        if (_activeInteraction is NPC_Interactable)
         {
-            InteractableNPC npcInteractable = _activeInteraction as InteractableNPC;
+            NPC_Interactable npcInteractable = _activeInteraction as NPC_Interactable;
             playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
             //npcInteractable.DialogueBubble.TextureUpdate();
         }
