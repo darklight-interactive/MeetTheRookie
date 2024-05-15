@@ -10,6 +10,13 @@ namespace Darklight.UXML.Element
     public partial class SelectableButton : SelectableVisualElement<Button>
     {
 
+        [UxmlAttribute]
+        public string text
+        {
+            get { return Element.text; }
+            set { Element.text = value; }
+        }
+
         public SelectableButton()
         {
             Element = (Button)this;

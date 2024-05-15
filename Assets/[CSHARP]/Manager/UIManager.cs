@@ -251,7 +251,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
         //go.hideFlags = HideFlags.NotEditable;
         UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
-        renderTextureObject.Initialize(preset, null, Instance.UXML_RenderTextureMaterial, Instance.UXML_RenderTexture);
+        renderTextureObject.Initialize(preset, null, UXML_RenderTextureMaterial, UXML_RenderTexture);
         renderTextureObject.TextureUpdate();
         return renderTextureObject;
     }
