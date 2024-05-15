@@ -19,11 +19,9 @@ public class PlayerInteractor : MonoBehaviour
     {
         RefreshRadar();
 
-        if (_activeInteraction == null && interactables.Count > 0)
-        {
-            // Because this method is called every frame, this line will keep the target at the correct position
-            interactables.First().TargetSet();
-        }
+        if (interactables.Count == 0) return;
+        // Because this method is called every frame, this line will keep the target at the correct position
+        interactables.First().TargetSet();
     }
 
     void RefreshRadar()

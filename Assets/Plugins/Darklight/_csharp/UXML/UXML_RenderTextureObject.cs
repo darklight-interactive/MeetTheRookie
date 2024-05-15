@@ -40,6 +40,10 @@ namespace Darklight.UXML
             _quad.transform.SetParent(this.transform);
             _quad.transform.localPosition = Vector3.zero;
             _meshRenderer = _quad.GetComponent<MeshRenderer>();
+
+            gameObject.layer = LayerMask.NameToLayer("UI");
+            _quad.layer = LayerMask.NameToLayer("UI");
+
             OnElementChanged?.Invoke();
         }
 

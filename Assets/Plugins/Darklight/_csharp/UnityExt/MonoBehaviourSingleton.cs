@@ -46,10 +46,13 @@ public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBe
                 DontDestroyOnLoad(this.gameObject);
         }
 
-        if (_instance != null && _instance != this)
-        {
-            Debug.LogWarning($"{Prefix} Singleton instance already exists. Disabling this instance.");
-            this.enabled = false;
-        }
+        /*
+                if (_instance != null && _instance != this)
+                {
+                    Debug.LogWarning($"{Prefix} Singleton instance already exists. Disabling this instance.");
+                    this.enabled = false;
+                }
+        */
+
     }
 }
