@@ -70,6 +70,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
     public event IInteract.OnFirstInteract OnFirstInteraction;
+    public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
@@ -110,7 +111,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.ShowInteractIcon(transform.position);
+        UIManager.Instance.ShowInteractionPromptInWorld(transform.position);
     }
 
     public virtual void TargetClear()

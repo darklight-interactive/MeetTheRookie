@@ -1,28 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.UnityExt.Editor;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace Darklight.Game.SpriteAnimation
 {
-    public static class GlobalFrameRate
-    {
-        private static int _frameRate = 4;  // Global frame rate for all animations
-
-        public static int FrameRate
-        {
-            get => _frameRate;
-            set => _frameRate = Mathf.Max(1, value); // Ensure framerate is at least 1
-        }
-
-        public static float TimePerFrame => 1f / FrameRate; // Time each frame should be displayed
-    }
-
-
 
     /// <summary>
     /// Plays a frame animation on a sprite renderer
@@ -30,10 +14,13 @@ namespace Darklight.Game.SpriteAnimation
     [RequireComponent(typeof(SpriteRenderer))]
     public class FrameAnimationPlayer : MonoBehaviour
     {
+        public int frameRate = 4; // Global frame rate for all animations
+        private float _timePerFrame => 1 / (float)frameRate; // Time each frame should be displayed
         private float _timer = 0f; // Timer to track when to switch to the next frame
+
         private SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
-        private SpriteSheet currentSpriteSheet = null;
-        private int currentFrame = 0;
+        public SpriteSheet spriteSheet = null;
+        public int currentFrame = 0;
 
         private void Start()
         {
@@ -47,39 +34,34 @@ namespace Darklight.Game.SpriteAnimation
 
         private void InitializeSprite()
         {
-            if (currentSpriteSheet != null && currentSpriteSheet.Length > 0)
+            if (spriteSheet != null && spriteSheet.Length > 0)
             {
-                _spriteRenderer.sprite = currentSpriteSheet.GetSpriteAtFrame(currentFrame);
+                _spriteRenderer.sprite = spriteSheet.GetSpriteAtFrame(currentFrame);
             }
         }
 
         public void UpdateAnimation()
         {
-            if (currentSpriteSheet == null) return;
-            if (currentFrame + 1 == currentSpriteSheet.Length && !currentSpriteSheet.loop) return;
+            if (spriteSheet == null) return;
+            if (currentFrame + 1 == spriteSheet.Length && !spriteSheet.loop) return;
 
             _timer += Time.deltaTime; // Update Timer
 
             // Check if it's time to update to the next frame
-            if (_timer >= GlobalFrameRate.TimePerFrame)
+            if (_timer >= _timePerFrame)
             {
-                currentFrame = (currentFrame + 1) % currentSpriteSheet.Length;
-                _spriteRenderer.sprite = currentSpriteSheet.GetSpriteAtFrame(currentFrame);
+                currentFrame = (currentFrame + 1) % spriteSheet.Length;
+                _spriteRenderer.sprite = spriteSheet.GetSpriteAtFrame(currentFrame);
 
                 // Reset the timer, accounting for any "overflow" time past the expected frame duration
-                _timer -= GlobalFrameRate.TimePerFrame;
+                _timer -= _timePerFrame;
             }
-        }
-
-        public Sprite GetCurrentSprite()
-        {
-            return currentSpriteSheet.GetSpriteAtFrame(currentFrame);
         }
 
         // Timer to track when to switch to the next frame
         public void LoadSpriteSheet(SpriteSheet spriteSheet)
         {
-            this.currentSpriteSheet = spriteSheet;
+            this.spriteSheet = spriteSheet;
             try
             {
                 Sprite sprite = spriteSheet.GetSpriteAtFrame(0);
@@ -96,7 +78,7 @@ namespace Darklight.Game.SpriteAnimation
 
         public void Clear()
         {
-            currentSpriteSheet = null;
+            spriteSheet = null;
             _spriteRenderer.sprite = null;
         }
 
@@ -155,16 +137,31 @@ namespace Darklight.Game.SpriteAnimation
         {
             _serializedObject.Update();
 
-            DrawDefaultInspector();
-
             // Ensure there's a Spritesheet and it has frames
             if (_script == null) return;
-            Sprite currentSprite = _script.GetCurrentSprite();
+
+            SerializedProperty frameRateProp = _serializedObject.FindProperty("frameRate");
+            EditorGUILayout.PropertyField(frameRateProp);
+            _script.frameRate = frameRateProp.intValue;
+
+            Sprite currentSprite = _script.spriteSheet.GetSpriteAtFrame(_script.currentFrame);
             if (currentSprite == null) return;
+
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
 
             Texture2D texture = AssetPreview.GetAssetPreview(currentSprite);
             GUILayout.Label(texture);
 
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField($"Global Frame Rate: {_script.frameRate.ToString()}");
+            EditorGUILayout.LabelField($"Current Frame: {_script.currentFrame}");
+            EditorGUILayout.LabelField($"Sprite: {currentSprite.name}");
+            EditorGUILayout.LabelField($"Loop: {_script.spriteSheet.loop}");
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
 
             _serializedObject.ApplyModifiedProperties();
         }

@@ -176,7 +176,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public RenderTexture UXML_RenderTexture;
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
-
     public override void Awake()
     {
         base.Awake(); // << Update the Singleton instance
