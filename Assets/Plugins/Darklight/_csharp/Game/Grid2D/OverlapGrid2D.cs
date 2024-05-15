@@ -14,10 +14,9 @@ namespace Darklight.Game.Grid
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
 
-        [Header("OverlapGrid2D Settings")]
-        [SerializeField] protected LayerMask layerMask;
-        public bool showGrid = true;
-
+        [SerializeField,
+        Tooltip("OverlapGrid2D uses OverlapBoxAll to detect colliders in the grid. This is the layer mask used to filter which colliders are detected.")]
+        private LayerMask layerMask;
 
         public override void Awake()
         {

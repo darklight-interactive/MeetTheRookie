@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_global
+  m_Name: mtr_level4_mainstreet
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _inkyTextAsset: {fileID: 4900000, guid: 5a06435c192207c4cac4e40e9380edf2, type: 3}
   _variables:
   - _key: Speaker
     _valueAsString: Unkown
   - _key: CURRENT_SPEAKER
     _valueAsString: Lupe
+  - _key: closed_signs
+    _valueAsString: 0
   - _key: MAIN_QUEST
     _valueAsString: 
   - _key: ACTIVE_QUEST_CHAIN
@@ -36,6 +38,20 @@ MonoBehaviour:
     _valueAsString: 
   _globalTags: []
   _knots:
+  - name: debug_level4
+    stitches: []
+  - name: scene4_1
+    stitches:
+    - talk_to_misra
+    - strange_symbol_on_fountain
+    - goop_on_fountain
+    - the_rockin_kettle
+    - laundromat_closed_sign
+    - einab_closed_sign
+    - apartments_for_lease_sign
+    - diner_closed_sign
+    - clothing_store_closed_sign
+    - heart_of_kettle
   - name: SetSpeaker
     stitches: []
   - name: SetActiveQuestChain

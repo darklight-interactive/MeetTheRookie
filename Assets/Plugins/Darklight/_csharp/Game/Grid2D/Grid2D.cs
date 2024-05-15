@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,14 +14,14 @@ namespace Darklight.Game.Grid
     #region ---- [[ GRID2D ]] -----------------------------------------------------------
     public abstract class Grid2D : MonoBehaviour
     {
-        [Header("Grid2D Settings")]
+        private const string DEFAULT_PRESET_PATH = "Grid2D/Simple_1x3";
+
+        [Header("Grid2D")]
+        [Expandable, Tooltip("A scriptable object that contains the preset settings for a Grid2D instance.")]
         [SerializeField] private Grid2D_Preset _preset; // The settings for the grid
-        [SerializeField, ShowOnly] private Vector2Int _gridArea; // The size of the grid2D
-        [SerializeField, ShowOnly] private Vector2Int _originKey; // The origin key of the grid2D
-        [SerializeField] public bool showGizmos = true;
+
 
         // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-        private const string DEFAULT_PRESET_PATH = "Grid2D/Simple_1x3";
         public Grid2D_Preset Preset
         {
             get
@@ -35,8 +37,8 @@ namespace Darklight.Game.Grid
                 return _preset;
             }
         }
-        public Vector2Int GridArea => new Vector2Int(_preset.gridSizeX, _preset.gridSizeY);
-        public Vector2Int OriginKey => new Vector2Int(_preset.originKeyX, _preset.originKeyY);
+        public Vector2Int GridArea => new Vector2Int(_preset.gridSizeX, _preset.gridSizeY); // The Vect2Int size of the grid
+        public Vector2Int OriginKey => new Vector2Int(_preset.originKeyX, _preset.originKeyY); // The origin key of the grid
 
 
         /// <summary>
@@ -88,10 +90,7 @@ namespace Darklight.Game.Grid
 
         public void OnDrawGizmosSelected()
         {
-            if (showGizmos)
-            {
-                DrawGrid2D(Preset, transform.position);
-            }
+            DrawGrid2D(Preset, transform.position);
         }
     }
 

@@ -1,10 +1,12 @@
 // ------------------------------------------------------------------ //
-//      MEET THE ROOKIE
+// MEET THE ROOKIE
 //      - Scene 1.0 - 1.5
+//
+// Last Edited By : Sky 5/15
 // ---------------------------------------------- >>/^*
+INCLUDE mtr_global.ink
 
-LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
-LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
+
 
 === level1 ===
 * [Scene1_0] -> scene1_0
@@ -12,8 +14,6 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 * [Scene1_2] -> scene1_2
 * [Scene1_3] -> scene1_3
 -> DONE
-
-
 
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
@@ -29,7 +29,7 @@ Hey, it's Lupe. Had to change my route; tank was running low. I pit stopped outs
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
-~ SetActiveQuestChain(QuestChain_1)
+~ SetActiveQuestChain(Level1_Quests)
 ~ StartQuest(FIRST_INTERACT)
 -> DONE
 

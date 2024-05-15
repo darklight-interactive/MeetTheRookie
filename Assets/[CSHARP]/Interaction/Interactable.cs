@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyButtons;
 using UnityEngine.UIElements;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,14 +21,15 @@ public class Interactable : OverlapGrid2D, IInteract
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
-    [Header("Interaction Settings")]
+    [HorizontalLine(color: EColor.Gray)]
+    [Header("Interactable")]
     [SerializeField] protected InkyStoryObject _storyParent;
 
     [DropdownAttribute("_storyParent.knotAndStitchKeys")]
     [SerializeField] protected string _interactionKey;
 
     [Header("Components")]
-    [SerializeField] Sprite _sprite;
+    [SerializeField, ShowAssetPreview] Sprite _sprite;
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -72,7 +75,7 @@ public class Interactable : OverlapGrid2D, IInteract
             return;
         }
 
-        _knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
+        _knotIterator = new InkyKnotIterator(_storyParent.Story, _interactionKey);
     }
 
     public virtual void Reset()
@@ -100,8 +103,6 @@ public class Interactable : OverlapGrid2D, IInteract
         StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
         // >> CONTINUE KNOT
-        if (knotIterator == null)
-            knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
         ContinueKnot();
     }
 

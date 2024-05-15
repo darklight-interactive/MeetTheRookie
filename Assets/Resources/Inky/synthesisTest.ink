@@ -1,4 +1,4 @@
-﻿EXTERNAL playerAddItem(type, id, value)
+EXTERNAL playerAddItem(type, id, value)
 
 ~ playerAddItem("Scrap", "scrap1", "Sample Scrap Text")
 ~ playerAddItem("Polaroid", "polaroidDoor", "backdoor")

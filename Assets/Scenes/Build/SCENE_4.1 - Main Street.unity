@@ -4731,13 +4731,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
-  _gridArea: {x: 0, y: 0}
-  _originKey: {x: 0, y: 0}
-  showGizmos: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  showGrid: 1
   _storyParent: {fileID: 0}
   _interactionKey: 
   _sprite: {fileID: 0}
@@ -10962,13 +10958,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
-  _gridArea: {x: 0, y: 0}
-  _originKey: {x: 0, y: 0}
-  showGizmos: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  showGrid: 1
   _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene4_2
   _sprite: {fileID: 8841562180652977627, guid: f1a1596efcd647844bb8fd7525cb5629, type: 3}
@@ -22062,17 +22054,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
-  _gridArea: {x: 0, y: 0}
-  _originKey: {x: 0, y: 0}
-  showGizmos: 1
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
-  showGrid: 1
+    m_Bits: 64
   _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene4_1.goop_on_fountain
   _sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
-  _isTarget: 1
+  _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
@@ -22765,6 +22753,77 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1460177283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level4_mainstreet
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 5a06435c192207c4cac4e40e9380edf2, type: 3}
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: closed_signs
+    _valueAsString: 0
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
+  _knots:
+  - name: debug_level4
+    stitches: []
+  - name: scene4_1
+    stitches:
+    - talk_to_misra
+    - strange_symbol_on_fountain
+    - goop_on_fountain
+    - the_rockin_kettle
+    - laundromat_closed_sign
+    - einab_closed_sign
+    - apartments_for_lease_sign
+    - diner_closed_sign
+    - clothing_store_closed_sign
+    - heart_of_kettle
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - 4_1
+  - name: global decl
+    stitches: []
 --- !u!1 &1460861919
 GameObject:
   m_ObjectHideFlags: 0
@@ -24413,14 +24472,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 0}
-  _gridArea: {x: 0, y: 0}
-  _originKey: {x: 0, y: 0}
-  showGizmos: 1
+  _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  showGrid: 1
   _storyParent: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _interactionKey: scene4_1.einab_closed_sign
   _sprite: {fileID: 7668350867315635259, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
@@ -25520,6 +25575,61 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1804390599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_global
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
+  _knots:
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - 4_1
+  - name: global decl
+    stitches: []
 --- !u!1 &1808973823
 GameObject:
   m_ObjectHideFlags: 0
@@ -25606,6 +25716,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1815321017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: synthesisTest
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _variables: []
+  _globalTags: []
+  _knots:
+  - name: nada
+    stitches: []
+  - name: combine
+    stitches: []
 --- !u!43 &1819885009
 Mesh:
   m_ObjectHideFlags: 0
@@ -28383,6 +28513,84 @@ Transform:
   - {fileID: 665142892}
   m_Father: {fileID: 1059533646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2025994539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level1_melOmart
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
+  _knots:
+  - name: level1
+    stitches: []
+  - name: scene1_0
+    stitches: []
+  - name: scene1_1
+    stitches:
+    - gas_pump
+    - car
+    - npc
+    - enter_store
+  - name: scene1_2
+    stitches:
+    - vending_machine
+    - employee
+    - door_to_backroom
+    - door_to_outside
+  - name: scene1_3
+    stitches:
+    - mel
+    - goop
+  - name: scene1_4
+    stitches:
+    - fallen_tree
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - 4_1
+  - name: global decl
+    stitches: []
 --- !u!1 &2033708382
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,41 +19,21 @@ using UnityEditor;
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
 [RequireComponent(typeof(InkyStoryLoader))]
-public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager> {
-    const string PATH = "Inky/";
-    public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
-    public InkyKnotIterator currentKnotIterator { get; private set; }
+public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
+{
+    // ----- [[ STATIC FIELDS ]] ----- >>
+    public static Story currentStory;
 
-    #region ----- [[ STATE MACHINE ]] ----- >>
-    public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
-    public class StateMachine : StateMachine<State> {
-        public StateMachine(State initialState = State.INIT) : base(initialState) { }
-    }
-    StateMachine stateMachine = new StateMachine(State.INIT);
-    public State currentState => stateMachine.CurrentState;
-    #endregion
+    // ----- [[ SERIALIZED FIELDS ]] ----- >>
+    [SerializeField] InkyStoryObject currentStoryObject;
+    [SerializeField] InkyKnotIterator currentKnotIterator;
 
-    public InkyStoryObject currentStoryObject;
-
-    private Story storyRef;
-    private Story _story { get { if (storyRef == null) { storyRef = currentStoryObject.CreateStory(); } return storyRef; } }
-
-    [Dropdown("currentStoryObject.knotAndStitchKeys")]
-    public string currentKnot;
-
-    public override void Awake()
-    {
-        base.Awake();
-        stateMachine.ChangeActiveStateTo(State.INIT);
-        storyLoader.Load();
-    }
-
-    [Button("Continue Story")]
     public void ContinueStory()
     {
-        if (_story.canContinue)
+        Story story = currentStoryObject.Story;
+
+        if (story.canContinue)
         {
-            stateMachine.ChangeActiveStateTo(State.CONTINUE);
             if (currentKnotIterator != null)
             {
                 currentKnotIterator.ContinueKnot();
@@ -61,38 +41,36 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager> {
             else
             {
                 // Continue the main story thread
-                string text = _story.Continue();
+                string text = story.Continue();
                 text = text.TrimEnd('\n');
                 Console.Log($"{Prefix} ContinueStory -> {text}");
             }
         }
-        else if (_story.currentChoices.Count > 0)
+        else if (story.currentChoices.Count > 0)
         {
-            stateMachine.ChangeActiveStateTo(State.CHOICE);
-            Console.Log($"{Prefix} Choices: {_story.currentChoices.Count}", 1);
+            Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
 
-            foreach (Choice choice in _story.currentChoices)
+            foreach (Choice choice in story.currentChoices)
             {
                 Console.Log($"{Prefix} Choice: {choice.text}", 1);
             }
         }
         else
         {
-            stateMachine.ChangeActiveStateTo(State.END);
             Console.Log($"{Prefix} End of Story");
         }
     }
 
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
-        _story.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+        currentStory.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
     }
 
     public object RunExternalFunction(string func, object[] args)
     {
-        if (_story.HasFunction(func))
+        if (currentStory.HasFunction(func))
         {
-            return _story.EvaluateFunction(func, args);
+            return currentStory.EvaluateFunction(func, args);
         }
         else
         {

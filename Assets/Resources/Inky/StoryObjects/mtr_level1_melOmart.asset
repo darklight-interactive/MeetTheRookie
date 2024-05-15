@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_global
+  m_Name: mtr_level1_melOmart
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
   _variables:
   - _key: Speaker
     _valueAsString: Unkown
@@ -36,6 +36,29 @@ MonoBehaviour:
     _valueAsString: 
   _globalTags: []
   _knots:
+  - name: level1
+    stitches: []
+  - name: scene1_0
+    stitches: []
+  - name: scene1_1
+    stitches:
+    - gas_pump
+    - car
+    - npc
+    - enter_store
+  - name: scene1_2
+    stitches:
+    - vending_machine
+    - employee
+    - door_to_backroom
+    - door_to_outside
+  - name: scene1_3
+    stitches:
+    - mel
+    - goop
+  - name: scene1_4
+    stitches:
+    - fallen_tree
   - name: SetSpeaker
     stitches: []
   - name: SetActiveQuestChain
