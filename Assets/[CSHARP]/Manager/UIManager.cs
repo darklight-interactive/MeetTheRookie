@@ -2,10 +2,8 @@ using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Editor;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using EasyButtons;
+using Darklight.UnityExt;
+
 
 
 #if UNITY_EDITOR

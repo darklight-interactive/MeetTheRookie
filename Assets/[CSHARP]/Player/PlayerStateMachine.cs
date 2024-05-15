@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using FMODUnity;
 using UnityEngine;
 
-public enum PlayerStateType { NONE, IDLE, WALK, INTERACTION, HIDE }
-public class PlayerStateMachine : FiniteStateMachine<PlayerStateType>
+public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 {
     private PlayerController _controller;
     private PlayerAnimator _animator => _controller.animator;
@@ -12,7 +11,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerStateType>
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )
     /// </param>
-    public PlayerStateMachine(Dictionary<PlayerStateType, FiniteState<PlayerStateType>> possibleStates, PlayerStateType initialState, params object[] args) : base(possibleStates, initialState, args)
+    public PlayerStateMachine(Dictionary<PlayerState, FiniteState<PlayerState>> possibleStates, PlayerState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
         _controller = (PlayerController)args[0];
     }
@@ -22,7 +21,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerStateType>
         base.Step();
     }
 
-    public override bool GoToState(PlayerStateType stateType)
+    public override bool GoToState(PlayerState stateType)
     {
         bool result = base.GoToState(stateType);
         if (result)
@@ -35,7 +34,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerStateType>
 }
 
 [System.Serializable]
-public class PlayerStateObject : FiniteState<PlayerStateType>
+public class PlayerStateObject : FiniteState<PlayerState>
 {
     [Header("Sound Events")]
     public EventReference soundOnEnter;
@@ -43,7 +42,7 @@ public class PlayerStateObject : FiniteState<PlayerStateType>
     public EventReference repeatingSound;
     [SerializeField, Range(0.1f, 1f)] private float repeatingSoundInterval = 1f;
 
-    public PlayerStateObject(PlayerStateType stateType, params object[] args) : base(stateType, args) { }
+    public PlayerStateObject(PlayerState stateType, params object[] args) : base(stateType, args) { }
 
     public override void Enter()
     {

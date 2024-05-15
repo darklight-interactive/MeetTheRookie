@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Darklight.Game;
 using System.Collections.Generic;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 using static Darklight.UnityExt.Editor.CustomInspectorGUI;
 

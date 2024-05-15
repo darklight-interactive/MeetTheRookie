@@ -1,8 +1,4 @@
 using UnityEngine;
-using Darklight.UnityExt.Editor;
-using Darklight.UXML;
-using UnityEngine.UIElements;
-using Darklight.Game.Grid;
 using UnityEngine.SceneManagement;
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Darklight.UnityExt;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager> {
     async void Start()
     {
 #if UNITY_EDITOR || DEBUG
-        Debug.Log("GAKSK");
         Profiler.logFile = "profilerLog";
         Profiler.enabled = true;
         Profiler.enableBinaryLog = true;

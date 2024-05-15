@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 using System;
 

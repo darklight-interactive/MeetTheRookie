@@ -5,8 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UXML;
-using Darklight.Game.Selectable;
-using Darklight.Selectable;
+using Darklight.Utility;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,8 +28,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
-        document.visualTreeAsset = _preset.VisualTreeAsset;
-        document.panelSettings = _preset.PanelSettings;
+        document.visualTreeAsset = _preset.visualTreeAsset;
+        document.panelSettings = _preset.panelSettings;
     }
 
     bool synthesisActive = false;
@@ -169,6 +169,11 @@ public class SynthesisManager : UXML_UIDocumentObject
             }
         }
         return null;
+    }
+
+    public void Show(bool visible)
+    {
+        document.rootVisualElement.visible = visible;
     }
 }
 

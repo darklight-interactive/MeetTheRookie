@@ -95,7 +95,7 @@ public class PlayerInteractor : MonoBehaviour
         else if (_activeInteraction is Interactable)
         {
             Interactable interactable = _activeInteraction as Interactable;
-            playerDialogueHandler.CreateDialogueBubble(text);
+            //playerDialogueHandler.Sh
         }
 
         Debug.Log($"Interacting with {_activeInteraction} => {text}");
@@ -103,7 +103,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void OnComplete()
     {
-        playerDialogueHandler.HideDialogueBubble();
+        //playerDialogueHandler.HideDialogueBubble();
         playerController.ExitInteraction();
         interactables.Remove(_activeInteraction);
     }

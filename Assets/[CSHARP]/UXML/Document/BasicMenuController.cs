@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections.Generic;
 using Darklight.UnityExt.Input;
 using System.Linq;
 using Darklight.UXML;
-using System;
 using Darklight.Utility;
 using Darklight.UXML.Element;
 

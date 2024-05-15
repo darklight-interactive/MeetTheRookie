@@ -3,9 +3,6 @@ using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using EasyButtons;
-using UnityEngine.UIElements;
 
 
 #if UNITY_EDITOR
@@ -70,7 +67,6 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
     public event IInteract.OnFirstInteract OnFirstInteraction;
-    public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
@@ -94,11 +90,9 @@ public class Interactable : OverlapGrid2D, IInteract
 
         if (_storyObject == null)
         {
-            Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
+            Debug.LogError($"INTERACTABLE ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
             return;
         }
-
-
     }
 
     public virtual void Reset()
@@ -111,7 +105,8 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.ShowInteractionPromptInWorld(transform.position);
+        Vector3 targetPosition = GetBestData().worldPosition;
+        UIManager.Instance.ShowInteractIcon(targetPosition);
     }
 
     public virtual void TargetClear()

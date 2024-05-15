@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-
-using Darklight.Game;
-using Darklight.Console;
 
 using Ink.Runtime;
 
 using UnityEngine;
-using Darklight.UnityExt.Editor;
-using System.Linq;
-using EasyButtons;
+using Darklight.UnityExt;
 
 #if UNITY_EDITOR
 using UnityEditor;

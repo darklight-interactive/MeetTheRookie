@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Darklight.Game.Camera;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using UnityEngine;
 
 public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE }
@@ -46,7 +46,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
 // IDLE
 public class IdleState : FiniteState<NPCState>
 {
-    public new NPC_StateMachine _stateMachine;
+    public NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
     private readonly float _maxDuration;

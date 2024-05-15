@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 
 using UnityEngine;

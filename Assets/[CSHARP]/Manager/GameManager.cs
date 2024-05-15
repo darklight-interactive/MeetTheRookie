@@ -1,9 +1,8 @@
 using UnityEngine;
 using Darklight.UnityExt.Input;
-using Darklight.Game;
+using Darklight.Utility;
+using Darklight.UnityExt;
 
-#if UNITY_EDITOR
-#endif
 
 
 [RequireComponent(typeof(UniversalInputManager))]

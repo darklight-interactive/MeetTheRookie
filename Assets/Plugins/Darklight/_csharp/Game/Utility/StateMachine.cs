@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Darklight.Game
+namespace Darklight.Utility
 {
     public abstract class StateMachine<TState> where TState : Enum
     {

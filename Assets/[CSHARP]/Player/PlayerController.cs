@@ -4,8 +4,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Game.Utility;
-
+using Darklight.Utility;
 
 #if UNITY_EDITOR
 #endif
@@ -215,7 +214,7 @@ public class PlayerController : MonoBehaviour
     {
         synthesisEnabled = !synthesisEnabled;
         UIManager.Instance.synthesisManager.Show(synthesisEnabled);
-        stateMachine.GoToState(synthesisEnabled ? PlayerStateType.INTERACTION : PlayerStateType.IDLE);
+        stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion
 
