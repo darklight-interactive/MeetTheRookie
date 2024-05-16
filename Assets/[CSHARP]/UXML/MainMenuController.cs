@@ -29,9 +29,6 @@ public class MainMenuController : UXML_UIDocumentObject
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-
-        SelectableButton quitButton = ElementQuery<SelectableButton>("quit-button");
-        quitButton.OnClick += Quit;
     }
 
     void OnMoveInputStartAction(Vector2 dir)

@@ -186,16 +186,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     {
         base.Awake(); // << Update the Singleton instance
 
-        CleanUpDocuments(); // << Clean up hidden documents
-
-#if UNITY_EDITOR
-        if (EditorSceneManager.GetActiveScene().name == _mainMenuScene.name)
+        //CleanUpDocuments(); // << Clean up hidden documents
+        /*
+        if (SceneManager.GetActiveScene().name == _mainMenuScene.name)
         {
             _mainMenu = CreateUIDocumentObject<MainMenuController>(_mainMenuPreset);
+            _mainMenu.Initialize(_mainMenuPreset);
         }
-#endif
-
-
+        */
         //gameUIController?.Initialize(_gameUIPreset);
     }
 

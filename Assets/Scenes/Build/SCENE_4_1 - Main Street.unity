@@ -566,7 +566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -614,7 +614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1148548231494987092, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1745187316690392914, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_IsActive
@@ -666,15 +666,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6029335792472997658, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _baseFOV
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _currentFOV
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTarget
@@ -698,7 +698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _camerasInChildren.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: '_camerasInChildren.Array.data[3]'
@@ -1326,12 +1326,33 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.idahome_and_goods
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  sceneAsset: {fileID: 102900000, guid: 501a8c988ea034a919b0576b7dc59ee5, type: 3}
+  sceneAsset: {fileID: 102900000, guid: f2f40d719c0e59c4ab90748c1adb5f30, type: 3}
 --- !u!43 &551174176
 Mesh:
   m_ObjectHideFlags: 0
@@ -1611,6 +1632,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.apartments_for_lease_sign
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -1717,6 +1759,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.strange_symbol_on_fountain
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -2096,12 +2159,33 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.the_rockin_kettle
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  sceneAsset: {fileID: 102900000, guid: 00244261b044dba48a30efb76028c861, type: 3}
+  sceneAsset: {fileID: 102900000, guid: c8653d8be9c2df7428c2bb8d63c91bbf, type: 3}
 --- !u!61 &722363332
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2581,6 +2665,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.diner_closed_sign
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -3526,6 +3631,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.laundromat_closed_sign
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -3631,11 +3757,11 @@ PrefabInstance:
       objectReference: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.015686275
       objectReference: {fileID: 0}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.92156863
       objectReference: {fileID: 0}
     - target: {fileID: 5007469561755814138, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -4026,12 +4152,33 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.powerup_arcade
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  sceneAsset: {fileID: 102900000, guid: ba975b12f38e24506a5bc67460fe2aca, type: 3}
+  sceneAsset: {fileID: 102900000, guid: 17f16897cc8084646a39475ff74ecdb2, type: 3}
 --- !u!43 &1276364369
 Mesh:
   m_ObjectHideFlags: 0
@@ -4252,6 +4399,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.goop_on_fountain
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -5126,6 +5294,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.einab_closed_sign
+  _onFirstInteraction:
+    Guid:
+      Data1: -1644116464
+      Data2: 1275719455
+      Data3: 105296063
+      Data4: -420808258
+    Path: event:/SFX/Generic/NPCs/NPC_Interact
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -5616,6 +5805,27 @@ MonoBehaviour:
   _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.clothing_store_closed_sign
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
