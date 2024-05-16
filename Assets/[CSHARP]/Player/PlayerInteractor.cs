@@ -11,6 +11,7 @@ public class PlayerInteractor : OverlapGrid2D
     protected HashSet<IInteract> interactables = new HashSet<IInteract>();
     [SerializeField, ShowOnly] int _interactablesCount;
 
+    [ShowOnly] public Interactable targetInteractable;
 
     public override void Update()
     {
@@ -19,7 +20,7 @@ public class PlayerInteractor : OverlapGrid2D
 
         if (interactables.Count == 0) return;
         // Because this method is called every frame, this line will keep the target at the correct position
-        interactables.First().TargetSet();
+        //interactables.First().TargetSet();
     }
 
     void RefreshRadar()
@@ -57,6 +58,7 @@ public class PlayerInteractor : OverlapGrid2D
         // Get the Target Interactable
         IInteract targetInteractable = interactables.First();
         targetInteractable.TargetClear();
+
         if (targetInteractable.isComplete) return false;
 
         targetInteractable.Interact(); // << MAIN INTERACTION
@@ -100,6 +102,8 @@ public class PlayerInteractor : OverlapGrid2D
         if (interactable == null) return;
         if (interactable.isComplete) return;
         interactables.Add(interactable);
+        interactable.TargetSet();
+
     }
 
 

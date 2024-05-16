@@ -211,6 +211,9 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             interactIcon = CreateRenderTextureObject(_interactIconPreset);
         interactIcon.transform.position = worldPosition;
         interactIcon.SetLocalScale(scale);
+
+        //VisualElement icon = interactIcon.ElementQuery<VisualElement>();
+        //ScaleElementToScreenSize(icon, scale);
     }
 
     public void RemoveInteractIcon()

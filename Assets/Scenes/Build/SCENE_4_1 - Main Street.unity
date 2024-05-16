@@ -550,7 +550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 166098557136862557, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 166098557136862557, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_BackGroundColor.b
@@ -566,7 +566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -614,7 +614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1148548231494987092, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1745187316690392914, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_IsActive
@@ -663,14 +663,18 @@ PrefabInstance:
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: '_camerasInChildren.Array.data[3]'
       value: 
-      objectReference: {fileID: 192130459}
+      objectReference: {fileID: 0}
     - target: {fileID: 6029335792472997658, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 10
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _baseFOV
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _currentFOV
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTarget
@@ -699,17 +703,12 @@ PrefabInstance:
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: '_camerasInChildren.Array.data[3]'
       value: 
-      objectReference: {fileID: 192130459}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
---- !u!20 &192130459 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 166098557136862557, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
-  m_PrefabInstance: {fileID: 192130458}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &215484469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3389,6 +3388,26 @@ PrefabInstance:
       propertyPath: '_storyObjects.Array.data[5]'
       value: 
       objectReference: {fileID: 2063581499}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Path
+      value: event:/Music/townSomber
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data1
+      value: 147986987
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data2
+      value: 1285635400
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data3
+      value: -1874987639
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data4
+      value: 1898160848
+      objectReference: {fileID: 0}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_Name
       value: '[SINGLETON] GameManager'
@@ -5978,7 +5997,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.5

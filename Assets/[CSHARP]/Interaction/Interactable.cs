@@ -20,7 +20,7 @@ public class Interactable : OverlapGrid2D, IInteract
         get
         {
             if (_storyObject == null) return new List<string>();
-            return InkyStoryObject.GetAllKnots(_storyObject.Story);
+            return InkyStoryObject.GetAllKnots(_storyObject.story);
         }
     }
 
@@ -31,7 +31,7 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             if (_storyObject == null) return new List<string>();
             if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
-            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.Story, _sceneKnot);
+            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.story, _sceneKnot);
         }
     }
 
@@ -110,7 +110,7 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         isTarget = true;
         OverlapGrid2D_Data targetData = GetBestData();
-        UIManager.Instance.ShowInteractIcon(targetData.worldPosition, targetData.cellSize);
+        UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public virtual void TargetClear()
@@ -150,7 +150,7 @@ public class Interactable : OverlapGrid2D, IInteract
         }
 
         // Continue the interaction
-        _storyIterator.ContinueKnot();
+        _storyIterator.ContinueStory();
         OnInteraction?.Invoke(_storyIterator.CurrentText);
         Debug.Log($"INTERACT :: {name} >> Continue Interaction");
     }
