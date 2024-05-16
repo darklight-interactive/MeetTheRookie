@@ -578,11 +578,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9999969
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.0024999764
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
@@ -633,18 +633,43 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 602280144}
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusOffsetY
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusOffset.y
+      value: 0.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _offsetPosition.y
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _offsetPosition.z
       value: -20
       objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTargetPositionOffset.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _camerasInChildren.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745983072295719817, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: '_camerasInChildren.Array.data[3]'
+      value: 
+      objectReference: {fileID: 192130459}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+--- !u!20 &192130459 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 166098557136862557, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+  m_PrefabInstance: {fileID: 192130458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &215484469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -942,85 +967,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38304228282b84249a6f62fad6149e74, type: 3}
---- !u!114 &218309671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level1_melOmart
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
-  _knots:
-  - name: debug_level1
-    stitches: []
-  - name: scene1_0
-    stitches: []
-  - name: scene1_1
-    stitches:
-    - scene1_1.gas_pump
-    - scene1_1.car
-    - scene1_1.npc
-    - scene1_1.enter_store
-  - name: scene1_2
-    stitches:
-    - scene1_2.vending_machine
-    - scene1_2.employee
-    - scene1_2.door_to_backroom
-    - scene1_2.door_to_outside
-  - name: scene1_3
-    stitches:
-    - scene1_3.mel
-    - scene1_3.goop
-  - name: scene1_4
-    stitches:
-    - scene1_4.fallen_tree
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!43 &278893473
 Mesh:
   m_ObjectHideFlags: 0
@@ -1347,62 +1293,6 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   sceneAsset: {fileID: 102900000, guid: 501a8c988ea034a919b0576b7dc59ee5, type: 3}
---- !u!114 &372883975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_global
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
-  _knots:
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!43 &551174176
 Mesh:
   m_ObjectHideFlags: 0
@@ -1573,68 +1463,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
   m_PrefabInstance: {fileID: 2100603243}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &613934806
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 613934809}
-  - component: {fileID: 613934808}
-  - component: {fileID: 613934807}
-  m_Layer: 5
-  m_Name: 'UXMLUIDocument : GameUIPreset'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &613934807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613934806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
---- !u!114 &613934808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613934806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 0}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
-  m_SortingOrder: 0
---- !u!4 &613934809
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613934806}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &665142891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,7 +1726,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1906,7 +1734,7 @@ SpriteRenderer:
   m_Size: {x: 0.6640625, y: 0.1640625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &669871784
@@ -3445,6 +3273,68 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1053217996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053217999}
+  - component: {fileID: 1053217998}
+  - component: {fileID: 1053217997}
+  m_Layer: 5
+  m_Name: 'UXMLUIDocument : GameUIPreset'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1053217997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053217996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
+--- !u!114 &1053217998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053217996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 0}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &1053217999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053217996}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1116847433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6024,100 +5914,6 @@ MonoBehaviour:
   - _key: Level4_Quests
     _valueAsString: 
   _globalTags: []
---- !u!114 &1931043088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: synthesisTest
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
-  _knots:
-  - name: nada
-    stitches: []
-  - name: combine
-    stitches: []
-  _variables: []
-  _globalTags: []
---- !u!114 &2034167769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level4_mainstreet
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 5a06435c192207c4cac4e40e9380edf2, type: 3}
-  _knots:
-  - name: debug_level4
-    stitches: []
-  - name: scene4_1
-    stitches:
-    - scene4_1.talk_to_misra
-    - scene4_1.idahome_and_goods
-    - scene4_1.powerup_arcade
-    - scene4_1.strange_symbol_on_fountain
-    - scene4_1.goop_on_fountain
-    - scene4_1.the_rockin_kettle
-    - scene4_1.laundromat_closed_sign
-    - scene4_1.einab_closed_sign
-    - scene4_1.apartments_for_lease_sign
-    - scene4_1.diner_closed_sign
-    - scene4_1.clothing_store_closed_sign
-    - scene4_1.heart_of_kettle
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: closed_signs
-    _valueAsString: 0
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!114 &2063581499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6437,4 +6233,4 @@ SceneRoots:
   - {fileID: 2100603243}
   - {fileID: 192130458}
   - {fileID: 215484469}
-  - {fileID: 613934809}
+  - {fileID: 1053217999}
