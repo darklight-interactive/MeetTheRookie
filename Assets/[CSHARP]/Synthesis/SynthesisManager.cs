@@ -35,7 +35,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         document.rootVisualElement.visible = false;
         objects = document.rootVisualElement.Q("objects");
 
-        synthesizeButton = ElementQuery<VisualElement>("synthesizeButton");
+        synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
     }
 
@@ -59,21 +59,23 @@ public class SynthesisManager : UXML_UIDocumentObject
 
     void SelectMove(Vector2 move)
     {
-        move.y = -move.y;
-        if (itemsSelection.CurrentSelection != null)
-        {
-            itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
-        }
-        var selected = itemsSelection.getFromDir(move);
-        if (selected != null) {
-            selected.AddToClassList("highlight");
+        if (synthesisActive){
+            move.y = -move.y;
+            if (itemsSelection.CurrentSelection != null)
+            {
+                itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
+            }
+            var selected = itemsSelection.getFromDir(move);
+            if (selected != null) {
+                selected.AddToClassList("highlight");
+            }
         }
     }
 
-    HashSet<SynthesisObject> toSynthesize = new HashSet<SynthesisObject>();
+    HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
     void Select()
     {
-        if (itemsSelection.CurrentSelection != null)
+        if (synthesisActive && itemsSelection.CurrentSelection != null)
         {
             var s = itemsSelection.CurrentSelection;
             if (s == synthesizeButton) {
@@ -83,10 +85,10 @@ public class SynthesisManager : UXML_UIDocumentObject
 
             if (s.ClassListContains("selected")) {
                 s.RemoveFromClassList("selected");
-                toSynthesize.Remove((SynthesisObject)s);
+                toSynthesize.Remove((VisualElement)s);
             } else if (toSynthesize.Count < 3) { // Don't allow us to select more than three.
                 s.AddToClassList("selected");
-                toSynthesize.Add((SynthesisObject)s);
+                toSynthesize.Add((VisualElement)s);
             }
         }
     }
@@ -156,12 +158,17 @@ public class SynthesisManager : UXML_UIDocumentObject
         }
         objects.Add(newObj);
         itemsSelection.Add(newObj);
-        return synthesisItems.TryAdd(name, newObj);
+        return synthesisItems.TryAdd(newObj.name, newObj);
     }
 
     public object RemoveItem(object[] args) {
+        Debug.Log(args[0]);
+        Debug.Log(HasItem(args));
         if ((bool)HasItem(args)) {
             var name = (string)args[0];
+            Debug.Log(name);
+            Debug.Log(synthesisItems[name]);
+            synthesisItems[name].visible = false;
             synthesisItems[name].RemoveFromHierarchy();
             itemsSelection.Remove(synthesisItems[name]);
             return synthesisItems.Remove(name);

@@ -67,8 +67,9 @@ namespace Darklight.Game.Selectable
         public TSelectable getFromDir(Vector2 dir)
         {
             if (_selectables.Count == 0) return null;
-            if (this.CurrentSelection == null)
-                return _selectables.First();
+            if (this.CurrentSelection == null) {
+                return this.CurrentSelection;
+            }
 
             // If we have a direction, we can try to find the next element.
             if (dir != Vector2.zero)
@@ -97,7 +98,7 @@ namespace Darklight.Game.Selectable
         /// <param name="direction">Any direction relative to the position.</param>
         /// <param name="threshhold">The maximum distance a given Selectable from `from` can have to be selected.</param>
         /// <returns>Index of closest selectable from raycast.</returns>
-        TSelectable raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 100)
+        TSelectable raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 1000)
         {
             float closestDir = -1;
             TSelectable selected = null;
