@@ -14,12 +14,13 @@ using UnityEditor;
 public class MainMenuController : UXML_UIDocumentObject
 {
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    [SerializeField] UXML_UIDocumentPreset _preset;
     [SerializeField] int selectablesCount = 0;
     bool lockSelection = false;
 
     public void Awake()
     {
-        Initialize(preset);
+        Initialize(_preset);
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
