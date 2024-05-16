@@ -1,8 +1,10 @@
 ﻿EXTERNAL playerAddItem(type, id, value)
 
-~ playerAddItem("Scrap", "scrap1", "Sample Scrap Text")
-~ playerAddItem("Polaroid", "polaroidDoor", "backdoor")
-~ playerAddItem("MediumPaper1", "mp1", "Test")
+~ playerAddItem("MediumPaper1", "cutfence", "Cut Fence")
+~ playerAddItem("MediumPaper2", "brokenwindow", "Broken Windows")
+~ playerAddItem("MediumPaper2", "strangefootsteps", "Strange Footsteps")
+~ playerAddItem("MediumPaper3", "clawmarks", "Claw Marks on Wine Barrels")
+~ playerAddItem("MediumPaper1", "damagedequipment", "Damaged Equipment")
 
 ->END
 

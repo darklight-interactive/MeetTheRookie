@@ -1,6 +1,6 @@
 .synthesis-object {
     color: rgb(255, 255, 255);
-    -unity-text-align: upper-center;
+    -unity-text-align: upper-left;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.4);
     transition-duration: 0.2s;
@@ -11,7 +11,7 @@
     align-self: flex-start;
 }
 .selected {
-    background-color: rgb(255, 0, 0);
+    background-color: rgba(1, 0, 0, 0.5);
 }
 .highlight {
     background-color: rgb(255, 255, 0);
@@ -19,4 +19,8 @@
 
 .selected.highlight {
     background-color: rgb(125, 0, 0);
+}
+
+.hover {
+    background-color: rgb(255, 0, 0);
 }
