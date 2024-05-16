@@ -2,6 +2,7 @@
 
 ~ playerAddItem("Scrap", "scrap1", "Sample Scrap Text")
 ~ playerAddItem("Polaroid", "polaroidDoor", "backdoor")
+~ playerAddItem("MediumPaper1", "mp1", "Test")
 
 ->END
 

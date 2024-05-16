@@ -146,11 +146,13 @@ public class SynthesisManager : UXML_UIDocumentObject
         newObj.AddToClassList("synthesis-object");
 
         foreach (var child in newObj.Children()) {
-            var source = (SynthesisBinding)((SynthesisBinding)child.dataSource).Clone();
-            if (args.Length == 3) {
-                source.setValue((string)args[2]);
+            if (child.dataSource != null && child.dataSource is SynthesisBinding b) {
+                var source = (SynthesisBinding)b.Clone();
+                if (args.Length == 3) {
+                    source.setValue((string)args[2]);
+                }
+                child.dataSource = source;
             }
-            child.dataSource = source;
         }
         objects.Add(newObj);
         itemsSelection.Add(newObj);
