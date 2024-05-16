@@ -7,13 +7,14 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Profiling;
 
-public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager> {
+public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager>
+{
     // Start is called before the first frame update
     async void Start()
     {
 #if UNITY_EDITOR || DEBUG
         Profiler.logFile = "profilerLog";
-        Profiler.enabled = true;
+        Profiler.enabled = false;
         Profiler.enableBinaryLog = true;
 
         await UnityServices.InitializeAsync();
@@ -22,4 +23,13 @@ public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager> {
         PerformanceReporting.enabled = true;
 #endif
     }
+
+    void OnDestroy()
+    {
+#if UNITY_EDITOR || DEBUG
+        Profiler.enabled = false;
+        Profiler.enableBinaryLog = false;
+#endif
+    }
+
 }
