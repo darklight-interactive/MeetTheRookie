@@ -24,9 +24,10 @@ public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager>
 #endif
     }
 
-    void OnDestroy()
+    void OnApplicationQuit()
     {
 #if UNITY_EDITOR || DEBUG
+        Debug.Log("Profiler stopped");
         Profiler.enabled = false;
         Profiler.enableBinaryLog = false;
 #endif
