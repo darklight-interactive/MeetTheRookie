@@ -4,6 +4,7 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.Editor
 {
+#if UNITY_EDITOR    
     public class ShowOnlyAttribute : PropertyAttribute { }
 
     [CustomPropertyDrawer(typeof(ShowOnlyAttribute))]
@@ -118,4 +119,5 @@ namespace Darklight.UnityExt.Editor
             return prop.objectReferenceValue.ToString();
         }
     }
+#endif
 }
