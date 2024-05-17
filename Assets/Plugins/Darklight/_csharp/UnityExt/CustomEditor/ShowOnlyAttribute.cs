@@ -4,9 +4,9 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.Editor
 {
-#if UNITY_EDITOR    
     public class ShowOnlyAttribute : PropertyAttribute { }
 
+#if UNITY_EDITOR    
     [CustomPropertyDrawer(typeof(ShowOnlyAttribute))]
     public class ShowOnlyDrawer : PropertyDrawer
     {
