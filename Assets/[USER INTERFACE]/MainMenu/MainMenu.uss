@@ -1,0 +1,30 @@
+.panel {
+    background-color: rgb(48, 44, 41);
+    flex-grow: 1;
+}
+
+.unity-button {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 512px;
+    height: 64px;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 64px;
+    -unity-text-align: middle-center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.unity-text-element {
+}
+
+.unity-button:hover {
+    background-color: rgb(221, 156, 0);
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-property: scale;
+}

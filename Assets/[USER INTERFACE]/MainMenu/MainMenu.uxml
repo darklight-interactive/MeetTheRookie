@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=8058b8da24596504c83f0ab0062694b8&amp;type=3#MainMenu" />
+    <engine:VisualElement name="container" style="flex-grow: 1; flex-direction: row;">
+        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column;" />
+        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column;">
+            <MenuButton key="play-button" select-word-by-double-click="false" focusable="false" name="play-button" text="Play" />
+            <MenuButton key="options-button" name="options-button" style="visibility: hidden;" />
+            <MenuButton key="quit-button" name="quit-button" style="visibility: hidden;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="Panel" class="panel" style="justify-content: center; flex-direction: column;" />
+    </engine:VisualElement>
+</engine:UXML>
