@@ -38,6 +38,9 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] Color _defaultTint = Color.white;
     [SerializeField] Color _interactionTint = Color.yellow;
 
+    [Header("Outline")]
+    [SerializeField] Material _outlineMaterial;
+
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     public InkyStoryObject storyParent { get => _storyParent; private set => _storyParent = value; }
     public string interactionKey { get => _interactionKey; private set => _interactionKey = value; }
@@ -151,7 +154,22 @@ public class Interactable : MonoBehaviour, IInteract
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
     }
+       private void EnableOutline(bool enable)
+    {
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.material = enable ? _outlineMaterial : null;
+        }
+    }
+
+    private IEnumerator FlashOutlineRoutine()
+    {
+        EnableOutline(true);
+        yield return new WaitForSeconds(0.25f);
+        EnableOutline(false);
+    }
 }
+
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Interactable), true)]
