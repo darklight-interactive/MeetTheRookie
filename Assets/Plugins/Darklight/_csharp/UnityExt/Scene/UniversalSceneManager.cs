@@ -8,12 +8,10 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 #endif

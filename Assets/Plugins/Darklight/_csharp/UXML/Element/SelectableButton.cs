@@ -1,4 +1,4 @@
-using UnityEditor;
+using Darklight.UnityExt.Editor;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -46,7 +46,7 @@ namespace Darklight.UXML.Element
         public class SelectableSceneChangeButtonFactory : UxmlFactory<SelectableSceneChangeButton> { }
 
         [UxmlAttribute]
-        public SceneAsset scene;
+        public SceneObject scene;
         public SelectableSceneChangeButton()
         {
             OnClick += ChangeScene;
@@ -56,7 +56,7 @@ namespace Darklight.UXML.Element
         {
             if (scene != null)
             {
-                SceneManager.LoadScene(scene.name);
+                SceneManager.LoadScene(scene);
                 OnClick -= ChangeScene; // Ensure this is only called once
             }
         }
