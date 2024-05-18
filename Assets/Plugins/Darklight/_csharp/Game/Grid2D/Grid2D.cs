@@ -58,6 +58,8 @@ namespace Darklight.Game.Grid
             return cellPos;
         }
 
+
+#if UNITY_EDITOR
         /// <summary>
         /// Draws the grid in the scene view from the given preset and origin position.
         /// </summary>
@@ -84,6 +86,8 @@ namespace Darklight.Game.Grid
         {
             DrawGrid2D(this);
         }
+#endif
+
     }
 
 #if UNITY_EDITOR

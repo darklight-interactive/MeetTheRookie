@@ -46,7 +46,7 @@ namespace Darklight.UXML.Element
         public class SelectableSceneChangeButtonFactory : UxmlFactory<SelectableSceneChangeButton> { }
 
         [UxmlAttribute]
-        public SceneObject scene;
+        public string scene;
         public SelectableSceneChangeButton()
         {
             OnClick += ChangeScene;
