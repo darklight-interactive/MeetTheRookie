@@ -35,7 +35,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-      - run: git submodule update --init --recursive
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -76,7 +76,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-      - run: git submodule update --init --recursive
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
