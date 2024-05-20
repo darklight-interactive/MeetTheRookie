@@ -56,9 +56,6 @@ jobs:
           targetPlatform: WebGL
           buildName: MeetTheRookie
 
-      - name: List build directory contents
-        run: ls -R Build/WebGL
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
@@ -103,6 +100,12 @@ jobs:
           name: build-Windows
           path: Build/Windows
           if-no-files-found: warn
+
+      - name: Download Windows build artifact
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: build-Windows
+          path: Build/Windows
 
   # ----- Deploy to Github Pages -----
   deployPages:
