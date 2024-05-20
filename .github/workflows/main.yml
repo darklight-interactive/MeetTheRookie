@@ -57,13 +57,13 @@ jobs:
           buildName: MeetTheRookie
 
       - name: List build directory contents
-        run: ls -R build/WebGL
+        run: ls -R Build/WebGL
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
           name: build-WebGL
-          path: build/WebGL
+          path: Build/WebGL
           if-no-files-found: warn
 
   # ----- Build for Windows -----
@@ -98,13 +98,13 @@ jobs:
           buildName: MeetTheRookie
 
       - name: List build directory contents
-        run: ls -R build/Windows
+        run: ls -R Build/Windows
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
           name: build-Windows
-          path: build/Windows
+          path: Build/Windows
           if-no-files-found: warn
 
   # ----- Deploy to Github Pages -----
@@ -113,17 +113,29 @@ jobs:
     name: Deploy to Github Pages 🚀
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v4.1.4
+        with:
+          ref: gh-pages
 
-      - name: Download artifact
+      - name: Download WebGL build artifact
         uses: actions/download-artifact@v4.1.7
         with:
           name: build-WebGL
-          path: build/WebGL
+          path: Build/WebGL
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: build/WebGL
+      - name: Copy WebGL build to gh-pages
+        run: |
+          mkdir -p ./
+          cp -r Build/WebGL/* ./
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and Push changes
+        run: |
+          git add .
+          git commit -m "Update WebGL build"
+          git push origin gh-pages
