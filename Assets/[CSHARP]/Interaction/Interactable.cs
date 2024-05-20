@@ -100,7 +100,9 @@ public class Interactable : OverlapGrid2D, IInteract
 
         if (_storyObject == null)
         {
+#if UNITY_EDITOR
             Debug.LogError($"INTERACTABLE ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
+#endif
             return;
         }
     }
