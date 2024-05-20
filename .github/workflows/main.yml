@@ -97,9 +97,6 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildName: MeetTheRookie
 
-      - name: List build directory contents
-        run: ls -R Build/Windows
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
