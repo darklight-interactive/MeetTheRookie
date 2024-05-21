@@ -95,6 +95,12 @@ namespace Darklight.Game.Grid
             }
             return bestData;
         }
+
+        public override void OnDrawGizmosSelected()
+        {
+            //OverlapGrid2DEditor.DrawOverlapGrid(this, transform.position);
+        }
+
     }
 
 #if UNITY_EDITOR
