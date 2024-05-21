@@ -1,24 +1,26 @@
-using System;
 using System.Collections.Generic;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Input;
-using Darklight.UXML;
+using Darklight.UXML.Element;
 using UnityEngine.SceneManagement;
 using Darklight.Utility;
 using Darklight.UnityExt.Editor;
+using Darklight.UXML;
+using System.Linq;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
-    [Tooltip("Ink file for this scene")] public TextAsset inkFile;
-    public SelectableVectorField<Button> choiceMap = new SelectableVectorField<Button>();
-    public SceneObject scene;
-    // Global variables
-    public InkyStoryObject storyObject;
-    bool choicesActive;
+    [Tooltip("Next scene to load")] public SceneObject nextScene;
+    [Tooltip("The Dating Sim Story Object")] public InkyStoryObject storyObject;
+    [SerializeField] private DatingSimEmotes emotes;
 
+    // Global variables
+    bool choicesActive;
+    // The Field to navigate buttons
+    SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
     // Variables for all the visual elements
     VisualElement misraImage;
     VisualElement lupeImage;
@@ -27,19 +29,32 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement nameTag;
     TextElement dialogueText;
     VisualElement choiceParent;
-    List<Button> choiceButtons = new List<Button>(4);
+    List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
     public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
     {
         base.Initialize(preset, tags);
     }
 
+    void Awake()
+    {
+        base.Initialize(preset);
+
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+        UniversalInputManager.OnMoveInputStarted += Move;
+        UniversalInputManager.OnPrimaryInteract += Select;
+
+        // Get the emotes
+        //emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-        UniversalInputManager.OnMoveInput += Move;
-        UniversalInputManager.OnPrimaryInteract += Select;
+        IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
+        choiceButtons = temp.OrderBy(x => x.name).ToList();
+        choiceMap.Load(temp);
+
 
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
@@ -49,17 +64,17 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         dialogueBox = root.Q<VisualElement>("DialogueBox");
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = root.Q<TextElement>("DialogueText");
-
         choiceParent = root.Q<VisualElement>("ChoiceParent");
-        for (int i = 0; i < choiceButtons.Capacity; i++)
-        {
-            choiceButtons.Add(root.Q<Button>("Choice" + i));
-            choiceMap.Add(choiceButtons[i]);
-        }
 
         // Start story
         ContinueStory();
         MoveTriangle(); // Cool dialogue triangle movement
+    }
+
+    private void OnDestroy()
+    {
+        UniversalInputManager.OnMoveInputStarted -= Move;
+        UniversalInputManager.OnPrimaryInteract -= Select;
     }
 
     /// <summary>
@@ -76,10 +91,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                 PopulateChoices();
             }
         }
-        // else if (currentStory.currentChoices.Count > 0)
-        // {
-        //     PopulateChoices();
-        // }
         else if (currentStory.currentChoices.Count <= 0)
         {
             EndStory();
@@ -100,20 +111,21 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceButtons[index].style.display = DisplayStyle.Flex;
             choiceButtons[index].text = choice.text;
             choiceButtons[index].style.fontSize = textSize.y;
+            choiceButtons[index].RemoveFromClassList("Highlight");
             index++;
         }
 
-        float approxHeight = choiceParent.resolvedStyle.height;
-        float approxWidth = choiceParent.resolvedStyle.width / index;
-        for (int i = 0; i < index; i++)
-        {
-            var tempMeasure = choiceButtons[i].MeasureTextSize(choiceButtons[i].text, approxWidth, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
-            if (tempMeasure.y > approxHeight)
-            {
-                dialogueText.style.fontSize = Mathf.Min(Mathf.Max(textSize.y * (textSize.y * 3 / approxHeight), textSize.x), textSize.y);
-            }
-            choiceButtons[i].RemoveFromClassList("Highlight");
-        }
+        // float approxHeight = choiceParent.resolvedStyle.height;
+        // float approxWidth = choiceParent.resolvedStyle.width / index;
+        // for (int i = 0; i < index; i++)
+        // {
+        //     var tempMeasure = choiceButtons[i].Text.MeasureTextSize(choiceButtons[i].Text, approxWidth, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
+        //     if (tempMeasure.y > approxHeight)
+        //     {
+        //         dialogueText.style.fontSize = Mathf.Min(Mathf.Max(textSize.y * (textSize.y * 3 / approxHeight), textSize.x), textSize.y);
+        //     }
+        //     choiceButtons[i].RemoveFromClassList("Highlight");
+        // }
         for (int i = index; i < choiceButtons.Count; i++)
         {
             choiceButtons[i].style.display = DisplayStyle.None;
@@ -126,15 +138,14 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         misraImage.AddToClassList("Inactive");
 
         choicesActive = true;
-        //TODO : Fix this
-        //choiceMap.resetSelected(); 
+
+        choiceMap.Select(choiceButtons[0]);
         choiceMap.CurrentSelection.AddToClassList("Highlight");
     }
 
     /// <summary>
     /// Selects the choice at the given index
     /// </summary>
-    /// <param name="index">The index of the choice</param>
     void SelectChoice()
     {
         Story currentStory = storyObject.story;
@@ -152,13 +163,12 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     {
         UpdateDialogue("END OF STORY");
         Debug.Log("END OF STORY");
-        SceneManager.LoadScene(scene);
+        SceneManager.LoadScene(nextScene);
     }
 
     /// <summary>
     /// The function to select choice via input
     /// </summary>
-    /// <param name="context">IDK man</param>
     void Select()
     {
         if (choicesActive)
@@ -174,7 +184,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <summary>
     /// The function to change choice via input
     /// </summary>
-    /// <param name="context">IDK man</param>
+    /// <param name="move">The movement vector</param>
     void Move(Vector2 move)
     {
         move.y = -move.y;
@@ -200,19 +210,20 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
         {
-            string[] splitTag = tag.Split(":");
+            Debug.Log(tag);
+            string[] splitTag = tag.ToLower().Split(":");
             if (splitTag[0].Trim() == "name")
             {
                 nameTag.style.visibility = Visibility.Visible;
-                string name = splitTag[1].Trim();
-                if (name == "Lupe")
+                if (splitTag[1].Trim() == "lupe")
                 {
+                    lupeImage.style.visibility = Visibility.Visible;
                     nameTag.AddToClassList("NameTagLupe");
                     nameTag.RemoveFromClassList("NameTagMisra");
                     lupeImage.RemoveFromClassList("Inactive");
                     misraImage.AddToClassList("Inactive");
                 }
-                else if (name == "Misra")
+                else if (splitTag[1].Trim() == "misra")
                 {
                     misraImage.style.visibility = Visibility.Visible;
                     nameTag.AddToClassList("NameTagMisra");
@@ -220,14 +231,23 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     misraImage.RemoveFromClassList("Inactive");
                     lupeImage.AddToClassList("Inactive");
                 }
-                break;
             }
-            // Code for image changeing when it's supported
-            /* else if(splitTag[0].Trim()=="Emote"){ // Change with correct tag
-                // Find emote
-                // Change character based on emote
-            } */
-
+            else if (splitTag[0].Trim() == "emote")
+            {
+                string[] content = splitTag[1].Split("|");
+                emotes.SetEmote(content[0].Trim(), content[1].Trim());
+            }
+            else if (splitTag[0].Trim() == "hide")
+            {
+                if (splitTag[1].Trim() == "lupe")
+                {
+                    lupeImage.style.visibility = Visibility.Hidden;
+                }
+                else if (splitTag[1].Trim() == "misra")
+                {
+                    misraImage.style.visibility = Visibility.Hidden;
+                }
+            }
         }
         dialogueText.text = dialogue;
         UpdateBoxNTextSize();
@@ -242,7 +262,10 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         float width = (!float.IsNaN(dialogueText.resolvedStyle.width)) ? dialogueText.resolvedStyle.width : 1000;
         Vector2 newBoxSize = dialogueText.MeasureTextSize(dialogueText.text, width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
         dialogueBox.style.height = newBoxSize.y * 1.2f;
-        dialogueText.style.fontSize = Mathf.Min(Mathf.Max(textSize.y * (textSize.y * 7 / newBoxSize.y), textSize.x), textSize.y);
+        float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
+        Debug.Log("Height: " + dialogueText.resolvedStyle.height + "; Adjusted: " + newBoxSize.y);
+        dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
+        Debug.Log(dialogueText.style.fontSize);
     }
 
     /// <summary>

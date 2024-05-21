@@ -351,8 +351,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1316734656}
-  - component: {fileID: 1316734654}
   - component: {fileID: 1316734655}
+  - component: {fileID: 1316734657}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -360,24 +360,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1316734654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316734653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1103f4e4d4fa474c9c9dd0b57026e3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: d27c31d010fec7542bdc073f39bed53f, type: 2}
-  textSize: {x: 20, y: 30}
-  inkFile: {fileID: 4900000, guid: 8f744c054a16c454f895f968d12156d0, type: 3}
-  scene:
-    m_SceneName: SCENE_4_1 - Main Street
-  storyObject: {fileID: 11400000, guid: 13b164275281b78489f4cf09289273d9, type: 2}
 --- !u!114 &1316734655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +391,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1316734657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316734653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb704c2ec0ca3e54d942057f97e0531e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: d27c31d010fec7542bdc073f39bed53f, type: 2}
+  textSize: {x: 20, y: 48}
+  nextScene:
+    m_SceneName: SCENE_4_1 - Main Street
+  storyObject: {fileID: 11400000, guid: 13b164275281b78489f4cf09289273d9, type: 2}
+  emotes: {fileID: 11400000, guid: a64166c2fdcc660428683bdb0e087b06, type: 2}
 --- !u!1001 &1847173572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -417,6 +417,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _mainMenuScene.m_SceneName
+      value: MAIN_MENU
+      objectReference: {fileID: 0}
     - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentScene
       value: Assets/Scenes/Build/SCENE_1.1.unity
