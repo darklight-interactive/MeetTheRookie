@@ -37,9 +37,6 @@ jobs:
 
       #- run: git submodule update --init --recursive
 
-      - name: Create required directories
-        run: mkdir -p Build/WebGL
-
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
         with:
@@ -61,8 +58,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
-          name: build-WebGL
-          path: Build/WebGL
+          name: Build-WebGL
+          path: build
           if-no-files-found: warn
 
   # ----- Build for Windows -----
@@ -76,9 +73,6 @@ jobs:
         uses: actions/checkout@v4.1.4
 
       #- run: git submodule update --init --recursive
-      
-      - name: Create required directories
-        run: mkdir -p Build/Windows
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -101,8 +95,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.3
         with:
-          name: build-Windows
-          path: Build/Windows
+          name: Build-Windows
+          path: build
           if-no-files-found: warn
 
   # ----- Deploy to Github Pages -----
