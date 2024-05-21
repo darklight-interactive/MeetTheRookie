@@ -19,10 +19,10 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="ChoiceParent" style="top: 5%; align-items: center; justify-content: center; align-self: center; flex-direction: column; width: 70%; height: 50%; opacity: 1; display: flex;">
-            <Darklight.Selectable.SelectableButton name="Choice_0" text="Choice 1" focusable="false" class="Choice" />
-            <Darklight.Selectable.SelectableButton name="Choice_1" text="Choice 2" focusable="false" class="Choice" />
-            <Darklight.Selectable.SelectableButton name="Choice_2" text="Choice 3" focusable="false" class="Choice" />
-            <Darklight.Selectable.SelectableButton name="Choice_4" text="Choice 4" focusable="false" class="Choice" />
+            <Darklight.UXML.Element.SelectableButton class="Choice" />
+            <Darklight.UXML.Element.SelectableButton class="Choice" />
+            <Darklight.UXML.Element.SelectableButton class="Choice" />
+            <Darklight.UXML.Element.SelectableButton name="SelectableButton" class="Choice" />
         </ui:VisualElement>
         <ui:VisualElement name="DialogueBoxParent" class="DialogueBoxParent">
             <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;);">

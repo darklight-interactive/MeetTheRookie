@@ -13,12 +13,11 @@ using System.Linq;
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
-    [Tooltip("Ink file for this scene")] public TextAsset inkFile;
     [Tooltip("Next scene to load")] public SceneObject nextScene;
+    [Tooltip("The Dating Sim Story Object")] public InkyStoryObject storyObject;
     [SerializeField] private DatingSimEmotes emotes;
 
     // Global variables
-    public InkyStoryObject storyObject;
     bool choicesActive;
     // The Field to navigate buttons
     SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();

@@ -342,6 +342,278 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &474330876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level4_mainstreet
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 5a06435c192207c4cac4e40e9380edf2, type: 3}
+  _knots:
+  - name: debug_level4
+    stitches: []
+  - name: scene4_1
+    stitches:
+    - scene4_1.talk_to_misra
+    - scene4_1.idahome_and_goods
+    - scene4_1.powerup_arcade
+    - scene4_1.strange_symbol_on_fountain
+    - scene4_1.goop_on_fountain
+    - scene4_1.the_rockin_kettle
+    - scene4_1.laundromat_closed_sign
+    - scene4_1.einab_closed_sign
+    - scene4_1.apartments_for_lease_sign
+    - scene4_1.diner_closed_sign
+    - scene4_1.clothing_store_closed_sign
+    - scene4_1.heart_of_kettle
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - Misra_Dialogue.default
+    - Misra_Dialogue.4_1
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: closed_signs
+    _valueAsString: 0
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
+--- !u!114 &570738968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: synthesisTest
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _knots:
+  - name: nada
+    stitches: []
+  - name: combine
+    stitches: []
+  _variables: []
+  _globalTags: []
+--- !u!114 &1057299346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: '[DS]Precinct_1_old'
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: c1944403cdb51b04391d37d6e51c6410, type: 3}
+  _knots:
+  - name: intro
+    stitches:
+    - intro.ding
+    - intro.hello
+    - intro.soul
+    - intro.chastise
+    - intro.scared
+    - intro.introductions
+    - intro.silence
+    - intro.niceToMeet
+    - intro.precinct
+    - intro.Company
+    - intro.treeFell
+    - intro.snoop
+    - intro.peek
+    - intro.wait
+    - intro.solo
+    - intro.transition_to_case
+    - intro.time
+    - intro.police_report
+    - intro.theRest
+    - intro.nothingHere
+    - intro.Evidence
+    - intro.Witnesses
+    - intro.Help
+    - intro.We
+    - intro.phone_call
+    - intro.voicemail
+    - intro.JokeBack
+    - intro.door
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
+  _globalTags:
+  - 'hide : Misra'
+--- !u!114 &1242627631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_global
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _knots:
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - Misra_Dialogue.default
+    - Misra_Dialogue.4_1
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
+--- !u!114 &1314435708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: DS_Stakeout_1
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: a2475a40c6c921e40941109cca9f7731, type: 3}
+  _knots:
+  - name: intro
+    stitches:
+    - intro.usedToIt
+    - intro.music
+    - intro.classical
+    - intro.pop
+    - intro.youCool
+    - intro.turnOffRadio
+  - name: questions
+    stitches: []
+  - name: goats
+    stitches:
+    - goats.didntKnowBetter
+    - goats.insulted
+    - goats.misguided
+    - goats.yeah
+    - goats.no
+    - goats.Preserving
+    - goats.couldBe
+    - goats.allTheBest
+    - goats.realistic
+    - goats.leave
+    - goats.leave2
+    - goats.strangeQuestion
+    - goats.homeYes
+    - goats.scary
+    - goats.hard
+    - goats.normal
+    - goats.preSound
+    - goats.homeNo
+  - name: teens
+    stitches:
+    - teens.ratherNot
+  - name: RuhRoah
+    stitches: []
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  _globalTags: []
 --- !u!1 &1316734653
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,8 +623,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1316734656}
-  - component: {fileID: 1316734654}
   - component: {fileID: 1316734655}
+  - component: {fileID: 1316734657}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -360,24 +632,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1316734654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316734653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1103f4e4d4fa474c9c9dd0b57026e3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: d27c31d010fec7542bdc073f39bed53f, type: 2}
-  textSize: {x: 20, y: 30}
-  inkFile: {fileID: 4900000, guid: 8f744c054a16c454f895f968d12156d0, type: 3}
-  scene:
-    m_SceneName: SCENE_4_1 - Main Street
-  storyObject: {fileID: 11400000, guid: 13b164275281b78489f4cf09289273d9, type: 2}
 --- !u!114 &1316734655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +663,190 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1316734657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316734653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb704c2ec0ca3e54d942057f97e0531e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: d27c31d010fec7542bdc073f39bed53f, type: 2}
+  textSize: {x: 20, y: 48}
+  nextScene:
+    m_SceneName: SCENE_4_1 - Main Street
+  storyObject: {fileID: 11400000, guid: 13b164275281b78489f4cf09289273d9, type: 2}
+  emotes: {fileID: 11400000, guid: a64166c2fdcc660428683bdb0e087b06, type: 2}
+--- !u!114 &1473363260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: DS_Bar_1
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 62a77f92152716e428fe049dea3532c7, type: 3}
+  _knots:
+  - name: intro
+    stitches:
+    - intro.MisraConfused
+    - intro.Sweet
+    - intro.DontKnow
+    - intro.bet
+    - intro.wrong
+    - intro.color
+    - intro.GuessMisras
+    - intro.CorrectColor
+    - intro.IncorrectColor
+    - intro.MisraOrderReminder
+    - intro.ShockedNo
+    - intro.MisraOrder
+    - intro.offerToPay
+    - intro.MisraOrdersForThemselves
+    - intro.GuessMisrasOrder
+    - intro.guessDrinkRight
+    - intro.guessDrinkWrong
+  - name: questions
+    stitches: []
+  - name: Roy
+    stitches:
+    - Roy.RoyQuestions
+    - Roy.close
+    - Roy.yourOwn
+    - Roy.old
+    - Roy.leaveWithThem
+    - Roy.buisness
+    - Roy.itsAlright
+    - Roy.buyOut
+    - Roy.town
+    - Roy.RoySister
+    - Roy.RoySisterExplination
+    - Roy.maybe
+    - Roy.doingWell
+  - name: Bachitan
+    stitches:
+    - Bachitan.sacrifice
+    - Bachitan.club
+    - Bachitan.prank
+    - Bachitan.legendExplination
+  - name: Thelton
+    stitches:
+    - Thelton.hometown1
+    - Thelton.dontGiveLocation
+    - Thelton.GiveLocation
+    - Thelton.hometown2
+  - name: Teens
+    stitches:
+    - Teens.LieDetector
+    - Teens.justTell
+  - name: WhatNow
+    stitches:
+    - WhatNow.NotEvenClose
+    - WhatNow.KiddingMe
+    - WhatNow.Stakeout
+    - WhatNow.stationCars
+    - WhatNow.LupeCar
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  _globalTags: []
+--- !u!114 &1566488477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level1_melOmart
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
+  _knots:
+  - name: debug_level1
+    stitches: []
+  - name: scene1_0
+    stitches: []
+  - name: scene1_1
+    stitches:
+    - scene1_1.gas_pump
+    - scene1_1.car
+    - scene1_1.npc
+    - scene1_1.enter_store
+  - name: scene1_2
+    stitches:
+    - scene1_2.vending_machine
+    - scene1_2.employee
+    - scene1_2.door_to_backroom
+    - scene1_2.door_to_outside
+  - name: scene1_3
+    stitches:
+    - scene1_3.mel
+    - scene1_3.goop
+  - name: scene1_4
+    stitches:
+    - scene1_4.fallen_tree
+  - name: SetSpeaker
+    stitches: []
+  - name: SetActiveQuestChain
+    stitches: []
+  - name: StartQuest
+    stitches: []
+  - name: CompleteQuest
+    stitches: []
+  - name: IsQuestComplete
+    stitches: []
+  - name: DiscoverClue
+    stitches: []
+  - name: IsClueFound
+    stitches: []
+  - name: Misra_Dialogue
+    stitches:
+    - Misra_Dialogue.default
+    - Misra_Dialogue.4_1
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: Speaker
+    _valueAsString: Unkown
+  - _key: CURRENT_SPEAKER
+    _valueAsString: Lupe
+  - _key: MAIN_QUEST
+    _valueAsString: 
+  - _key: ACTIVE_QUEST_CHAIN
+    _valueAsString: 
+  - _key: COMPLETED_QUESTS
+    _valueAsString: 
+  - _key: GLOBAL_KNOWLEDGE
+    _valueAsString: 
+  - _key: Level1_Clues
+    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
+  - _key: Level1_Quests
+    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
+  - _key: Level4_Clues
+    _valueAsString: 
+  - _key: Level4_Quests
+    _valueAsString: 
+  _globalTags: []
 --- !u!1001 &1847173572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -417,6 +855,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _mainMenuScene.m_SceneName
+      value: MAIN_MENU
+      objectReference: {fileID: 0}
     - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentScene
       value: Assets/Scenes/Build/SCENE_1.1.unity
@@ -478,6 +920,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+--- !u!114 &2132483869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: DS_Precinct_1
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 8f744c054a16c454f895f968d12156d0, type: 3}
+  _knots:
+  - name: intro
+    stitches:
+    - intro.ding
+    - intro.hello
+    - intro.soul
+    - intro.chastise
+    - intro.scared
+    - intro.introductions
+    - intro.silence
+    - intro.niceToMeet
+    - intro.precinct
+    - intro.Company
+    - intro.treeFell
+    - intro.snoop
+    - intro.peek
+    - intro.wait
+    - intro.solo
+    - intro.transition_to_case
+    - intro.time
+    - intro.police_report
+    - intro.theRest
+    - intro.nothingHere
+    - intro.Evidence
+    - intro.Witnesses
+    - intro.Help
+    - intro.We
+    - intro.phone_call
+    - intro.voicemail
+    - intro.JokeBack
+    - intro.door
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
+  _globalTags: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
