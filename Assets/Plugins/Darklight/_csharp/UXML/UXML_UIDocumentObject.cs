@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,25 +19,24 @@ namespace Darklight.UXML
     [RequireComponent(typeof(UIDocument))]
     public class UXML_UIDocumentObject : MonoBehaviour
     {
-        // << SERIALIZED VALUES >> //
-        [SerializeField] UXML_UIDocumentPreset _preset;
-
         // << PUBLIC ACCESSORS >> //
-        public UXML_UIDocumentPreset preset => _preset;
+        [SerializeField] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public Dictionary<string, VisualElement> uiElements { get; private set; } = new();
+
+        [EasyButtons.Button("Initialize")]
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
-            _preset = preset;
+            this.preset = preset;
             if (preset == null)
             {
                 Debug.LogError("No preset assigned to UIDocumentObject");
                 return;
             }
-            document.visualTreeAsset = preset.VisualTreeAsset;
-            document.panelSettings = preset.PanelSettings;
 
+            document.visualTreeAsset = preset.visualTreeAsset;
+            document.panelSettings = preset.panelSettings;
             gameObject.layer = LayerMask.NameToLayer("UI");
         }
 
@@ -63,34 +64,21 @@ namespace Darklight.UXML
             root.Query<T>(tagOrClass).ForEach(element => elements.Add(element));
             return elements;
         }
+    }
 
-        /// <summary>
-        /// Sets the position of a UI Toolkit element to correspond to a world position.
-        /// Optionally centers the element on the screen position.
-        /// </summary>
-        /// <param name="element">The UI Toolkit element to position.</param>
-        /// <param name="worldPosition">The world position to map to screen space.</param>
-        /// <param name="center">Optional parameter to center the element at the screen position (default false).</param>
-        public void SetWorldToScreenPoint(VisualElement element, Vector3 worldPosition, bool center = false)
+#if UNITY_EDITOR
+    [CustomEditor(typeof(UXML_UIDocumentObject), true)]
+    public class UXML_UIDocumentObjectCustomEditor : Editor
+    {
+        SerializedObject _serializedObject;
+        UXML_UIDocumentObject _script;
+        private void OnEnable()
         {
-            Camera cam = Camera.main;
-            if (cam == null) throw new System.Exception("No main camera found.");
-
-            // Convert world position to screen position
-            Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
-            screenPosition.y = cam.pixelHeight - screenPosition.y;  // UI Toolkit uses top-left origin
-            screenPosition.z = 0;
-
-            if (center)
-            {
-                // Adjust position to center the element
-                screenPosition.x -= element.resolvedStyle.width / 2;
-                screenPosition.y -= element.resolvedStyle.height / 2;
-            }
-
-            // Set positions using left and top in style
-            element.style.left = screenPosition.x;
-            element.style.top = screenPosition.y;
+            _serializedObject = new SerializedObject(target);
+            _script = (UXML_UIDocumentObject)target;
+            _script.Initialize(_script.preset);
         }
     }
+#endif
+
 }

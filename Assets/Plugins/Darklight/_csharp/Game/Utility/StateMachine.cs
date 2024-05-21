@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Darklight.Game
+namespace Darklight.Utility
 {
     public abstract class StateMachine<TState> where TState : Enum
     {
@@ -25,12 +25,12 @@ namespace Darklight.Game
         /// </summary>
         public StateMachine(TState initialState)
         {
-            ChangeActiveStateTo(initialState);
+            GoToState(initialState);
         }
         /// <summary>
         /// Update the current state of the machine
         /// </summary>
-        public virtual void ChangeActiveStateTo(TState newState)
+        public virtual void GoToState(TState newState)
         {
             if (newState.Equals(CurrentState)) return;
             CurrentState = newState;

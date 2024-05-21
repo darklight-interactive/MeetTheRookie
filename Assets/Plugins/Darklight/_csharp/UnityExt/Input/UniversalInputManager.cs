@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 

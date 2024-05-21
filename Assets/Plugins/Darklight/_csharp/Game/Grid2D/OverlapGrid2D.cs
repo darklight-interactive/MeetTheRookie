@@ -13,9 +13,11 @@ namespace Darklight.Game.Grid
     [ExecuteAlways]
     public class OverlapGrid2D : Grid2D<OverlapGrid2D_Data>
     {
-        [Header("Overlap Grid2D Properties")]
-        [SerializeField] protected LayerMask layerMask;
-        [SerializeField] public bool showGizmos = true;
+
+        [SerializeField,
+        Tooltip("OverlapGrid2D uses OverlapBoxAll to detect colliders in the grid. This is the layer mask used to filter which colliders are detected.")]
+        private LayerMask layerMask;
+        public bool editMode = false;
 
         public override void Awake()
         {
@@ -25,11 +27,7 @@ namespace Darklight.Game.Grid
 
         protected override void InitializeDataMap()
         {
-            if (preset == null)
-            {
-                Debug.LogError("The Grid2D preset is not set.", this);
-                return;
-            }
+            if (Preset == null) return;
 
             DataMap.Clear();
             for (int x = 0; x < GridArea.x; x++)
@@ -37,19 +35,19 @@ namespace Darklight.Game.Grid
                 for (int y = 0; y < GridArea.y; y++)
                 {
                     Vector2Int positionKey = new Vector2Int(x, y);
-                    Vector3 worldPosition = GetWorldSpacePosition(positionKey);
+                    Vector3 worldPosition = GetWorldPositionOfCell(positionKey);
 
                     OverlapGrid2D_Data newData = new OverlapGrid2D_Data();
-                    Grid2D_SerializedData existingData = preset.LoadData(positionKey);
+                    Grid2D_SerializedData existingData = Preset.LoadData(positionKey);
                     if (existingData != null)
                     {
-                        newData.Initialize(existingData, worldPosition, preset.coordinateSize);
+                        newData.Initialize(existingData, worldPosition, Preset.cellSize);
                         newData.layerMask = layerMask;
 
                     }
                     else
                     {
-                        newData.Initialize(positionKey, worldPosition, preset.coordinateSize, layerMask);
+                        newData.Initialize(positionKey, worldPosition, Preset.cellSize, layerMask);
                     }
 
                     // Set the data in the map
@@ -61,17 +59,17 @@ namespace Darklight.Game.Grid
                     // Notify listeners of the data change
                     newData.OnDataStateChanged += (data) =>
                     {
-                        preset.SaveData(data);
+                        Preset.SaveData(data);
                     };
                 }
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
-                Vector3 worldPosition = GetWorldSpacePosition(data.positionKey);
+                Vector3 worldPosition = GetWorldPositionOfCell(data.positionKey);
                 data.worldPosition = worldPosition;
 
                 data.UpdateData();
@@ -104,6 +102,7 @@ namespace Darklight.Game.Grid
     public class OverlapGrid2DEditor : Editor
     {
         private OverlapGrid2D grid2D;
+        private SerializedProperty presetProperty;
         private void OnEnable()
         {
             grid2D = (OverlapGrid2D)target;
@@ -112,10 +111,15 @@ namespace Darklight.Game.Grid
 
         public override void OnInspectorGUI()
         {
+
             serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
+
+
             base.OnInspectorGUI();
+
+
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
@@ -124,29 +128,37 @@ namespace Darklight.Game.Grid
 
         public void OnSceneGUI()
         {
-            if (grid2D == null) return;
-            if (grid2D.showGizmos == false) return;
-            DrawGrid();
+            grid2D = (OverlapGrid2D)target;
+            DrawOverlapGrid(grid2D, grid2D.editMode);
         }
 
-        public void DrawGrid()
+        public static void DrawOverlapGrid(OverlapGrid2D grid2D, bool editMode = false)
         {
-            if (grid2D == null) return;
+            Grid2D_Preset preset = grid2D.Preset;
+            float cellSize = preset.cellSize;
 
-            foreach (Vector2Int positionKey in grid2D.GetPositionKeys())
+            for (int x = 0; x < preset.gridSizeX; x++)
             {
-                Grid2D_Data data = grid2D.GetData(positionKey);
-                if (data.initialized == false) continue; // Skip uninitialized data
-
-                Vector3 worldPosition = data.worldPosition;
-                float size = data.coordinateSize;
-
-                CustomGizmos.DrawWireSquare(worldPosition, size, Vector3.forward, data.GetColor());
-                CustomGizmos.DrawLabel($"{positionKey}", worldPosition, CustomGUIStyles.CenteredStyle);
-                CustomGizmos.DrawButtonHandle(worldPosition, size * 0.75f, Vector3.forward, data.GetColor(), () =>
+                for (int y = 0; y < preset.gridSizeY; y++)
                 {
-                    data.CycleDataState();
-                }, Handles.RectangleHandleCap);
+                    Vector2Int positionKey = new Vector2Int(x, y);
+                    Grid2D_Data data = grid2D.GetData(positionKey);
+                    if (data.initialized == false) continue; // Skip uninitialized data
+
+                    Vector3 cellPos = grid2D.GetWorldPositionOfCell(positionKey);
+
+                    CustomGizmos.DrawWireSquare(cellPos, preset.cellSize, Vector3.forward, data.GetColor());
+                    CustomGizmos.DrawLabel($"{positionKey}", cellPos, CustomGUIStyles.CenteredStyle);
+
+                    if (editMode)
+                    {
+                        // Draw the button handle only if the grid is in edit mode
+                        CustomGizmos.DrawButtonHandle(cellPos, cellSize * 0.75f, Vector3.forward, data.GetColor(), () =>
+                        {
+                            data.CycleDataState();
+                        }, Handles.RectangleHandleCap);
+                    }
+                }
             }
         }
     }

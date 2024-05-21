@@ -5,8 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UXML;
-using Darklight.Game.Selectable;
-using Darklight.Selectable;
+using Darklight.Utility;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,8 +28,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     VisualElement synthesizeButton;
     public void Awake()
     {
-        document.visualTreeAsset = _preset.VisualTreeAsset;
-        document.panelSettings = _preset.PanelSettings;
+        document.visualTreeAsset = _preset.visualTreeAsset;
+        document.panelSettings = _preset.panelSettings;
     }
 
     bool synthesisActive = false;
@@ -50,9 +50,9 @@ public class SynthesisManager : UXML_UIDocumentObject
 
         //UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
-        InkyStoryManager.Instance.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.BindExternalFunction("playerHasItem", HasItem);
+        InkyStoryManager.Instance.globalStoryObject.BindExternalFunction("playerAddItem", AddItem);
+        InkyStoryManager.Instance.globalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.Instance.globalStoryObject.BindExternalFunction("playerHasItem", HasItem);
     }
 
     /*public void Show(bool visible) {
@@ -109,7 +109,7 @@ public class SynthesisManager : UXML_UIDocumentObject
             args.Add("");
         }
 
-        InkyStoryManager.Instance.RunExternalFunction("synthesize", args.ToArray());
+        InkyStoryManager.Instance.globalStoryObject.RunExternalFunction("synthesize", args.ToArray());
     }
 
     [Obsolete("Synthesis is handled by Synthesize instead.")]
@@ -125,7 +125,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         sortArr.Sort();
         sortArr.Reverse();
         var final = sortArr.ToArray<object>();
-        object newItem = InkyStoryManager.Instance.RunExternalFunction("combine", final);
+        object newItem = InkyStoryManager.Instance.globalStoryObject.RunExternalFunction("combine", final);
         if (newItem.GetType() == typeof(string)) {
 
             RemoveItem(new[] { a });
@@ -169,6 +169,11 @@ public class SynthesisManager : UXML_UIDocumentObject
             }
         }
         return null;
+    }
+
+    public void Show(bool visible)
+    {
+        document.rootVisualElement.visible = visible;
     }
 }
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using UnityEngine;
+using Darklight.Game.Grid;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -36,14 +38,14 @@ public class Grid2D_Preset : ScriptableObject
     [Header("Grid Layout Settings")]
     [Range(MIN, MAX)] public int gridSizeX = 3;
     [Range(MIN, MAX)] public int gridSizeY = 3;
-    [Range(0.1f, 1f)] public float coordinateSize = 1;
+    [Range(0.1f, 10f)] public float cellSize = 1;
     [Range(-MAX, MAX)] public int originKeyX = 1;
     [Range(-MAX, MAX)] public int originKeyY = 1;
     #endregion
 
     [Header("Serialized Data Values")]
-    [SerializeField] private List<Vector2Int> keys = new List<Vector2Int>();
-    [SerializeField] private List<Grid2D_SerializedData> values = new List<Grid2D_SerializedData>();
+    [SerializeField, ShowOnly] private List<Vector2Int> keys = new List<Vector2Int>();
+    [SerializeField, ShowOnly] private List<Grid2D_SerializedData> values = new List<Grid2D_SerializedData>();
 
     // Not serialized, rebuilt on load
     private Dictionary<Vector2Int, Grid2D_SerializedData> dataMap = new Dictionary<Vector2Int, Grid2D_SerializedData>();
@@ -97,27 +99,87 @@ public class Grid2D_Preset : ScriptableObject
         AssetDatabase.SaveAssets();
 #endif
     }
-}
 
-/// <summary>
-/// Serialized version of the Grid2DData class. This class is used to store the data in a serialized format.
-/// </summary>
-[System.Serializable]
-public class Grid2D_SerializedData
-{
-    [SerializeField] private Vector2Int _positionKey;
-    [SerializeField] private bool _disabled;
-    [SerializeField] private int _weight;
+#if UNITY_EDITOR
 
-    public Grid2D_SerializedData(Grid2D_Data input_data)
+    // Custom Editor for the Grid2D_Preset ScriptableObject
+    [CustomEditor(typeof(Grid2D_Preset))]
+    public class Grid2DPresetEditor : Editor
     {
-        _positionKey = input_data.positionKey;
-        _disabled = input_data.disabled;
-        _weight = input_data.weight;
+        GameObject selectedGameObject;
+
+        void OnEnable()
+        {
+            // Subscribe to the Scene GUI event
+            SceneView.duringSceneGui += Draw;
+        }
+
+        void OnDisable()
+        {
+            // Unsubscribe to prevent memory leaks
+            SceneView.duringSceneGui -= Draw;
+        }
+
+        void Draw(SceneView sceneView)
+        {
+            Grid2D_Preset preset = target as Grid2D_Preset;
+            if (preset != null && selectedGameObject != null)
+            {
+                //Grid2D.DrawGrid2D(preset);
+            }
+        }
+
+        public override void OnInspectorGUI()
+        {
+
+            Grid2D_Preset script = (Grid2D_Preset)target;
+
+            serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            #region ---- [[ SELECT GAMEOBJECT FROM SCENE ]] ----
+
+            // Inspector Button to select a GameObject from the scene
+            if (selectedGameObject == null && GUILayout.Button("Select Temporary Origin GameObject"))
+            {
+                EditorGUIUtility.ShowObjectPicker<GameObject>(null, true, "", 0);
+            }
+            else if (selectedGameObject != null && GUILayout.Button("Clear Selected GameObject"))
+            {
+                selectedGameObject = null;
+            }
+
+            // Check if the object picker has been closed
+            if (Event.current.commandName == "ObjectSelectorClosed" && EditorGUIUtility.GetObjectPickerControlID() == 0)
+            {
+                // Get the selected GameObject
+                selectedGameObject = EditorGUIUtility.GetObjectPickerObject() as GameObject;
+                if (selectedGameObject != null)
+                {
+                    EditorUtility.SetDirty(script);
+                }
+            }
+
+            // Display the selected GameObject
+            if (selectedGameObject)
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Selected GameObject:", selectedGameObject.name);
+                EditorGUILayout.LabelField("Position:", selectedGameObject.transform.position.ToString());
+            }
+            #endregion
+
+            // Draw the default inspector
+            CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(serializedObject);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
     }
 
-    public Grid2D_Data ToData()
-    {
-        return new Grid2D_Data(_positionKey, _disabled, _weight, Vector3.zero, 1);
-    }
+#endif
+
 }

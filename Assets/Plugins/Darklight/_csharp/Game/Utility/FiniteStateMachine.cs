@@ -9,7 +9,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-namespace Darklight.Game.Utility
+namespace Darklight.Utility
 {
     public interface IState
     {

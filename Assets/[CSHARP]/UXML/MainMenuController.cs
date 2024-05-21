@@ -1,14 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic;
 using Darklight.UnityExt.Input;
 using System.Linq;
-using Darklight.Game.Selectable;
 using Darklight.UXML;
-using Darklight.Selectable;
-using System;
-
-
-
+using Darklight.Utility;
+using Darklight.UXML.Element;
 
 
 #if UNITY_EDITOR
@@ -19,12 +14,13 @@ using UnityEditor;
 public class MainMenuController : UXML_UIDocumentObject
 {
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    [SerializeField] UXML_UIDocumentPreset _preset;
     [SerializeField] int selectablesCount = 0;
     bool lockSelection = false;
 
     public void Awake()
     {
-        Initialize(preset);
+        Initialize(_preset);
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
@@ -33,9 +29,6 @@ public class MainMenuController : UXML_UIDocumentObject
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-
-        SelectableButton quitButton = ElementQuery<SelectableButton>("quit-button");
-        quitButton.OnClick += Quit;
     }
 
     void OnMoveInputStartAction(Vector2 dir)

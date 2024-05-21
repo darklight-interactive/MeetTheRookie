@@ -3,22 +3,22 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Input;
-using Darklight.UXML;
-using Darklight.Game.Selectable;
-using Darklight.Selectable;
-using UnityEditor;
+using Darklight.UXML.Element;
 using UnityEngine.SceneManagement;
+using Darklight.Utility;
+using Darklight.UnityExt.Editor;
+using Darklight.UXML;
 using System.Linq;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Ink file for this scene")] public TextAsset inkFile;
-    [Tooltip("Next scene to load")] public SceneAsset nextScene;
+    [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField] private DatingSimEmotes emotes;
 
     // Global variables
-    Story currentStory;
+    public InkyStoryObject storyObject;
     bool choicesActive;
     // The Field to navigate buttons
     SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
@@ -32,18 +32,15 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
-    // void Initialize()
-    // {
-    //     if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-    //     UniversalInputManager.OnMoveInputStarted += Move;
-    //     UniversalInputManager.OnPrimaryInteract += Select;
-    // }
+    public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+    {
+        base.Initialize(preset, tags);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        // I think this stalls the initialize function
-        // Invoke("Initialize", 0.1f);
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
         UniversalInputManager.OnMoveInputStarted += Move;
         UniversalInputManager.OnPrimaryInteract += Select;
 
@@ -54,6 +51,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choiceButtons = temp.OrderBy(x => x.name).ToList();
         choiceMap.Load(temp);
 
+
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
         lupeImage = root.Q<VisualElement>("LupeImage");
@@ -63,9 +61,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = root.Q<TextElement>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
-
-        // Get Ink story
-        currentStory = new Story(inkFile.text);
+        for (int i = 0; i < choiceButtons.Capacity; i++)
+        {
+            choiceButtons.Add(root.Q<SelectableButton>("Choice" + i));
+            choiceMap.Add(choiceButtons[i]);
+        }
 
         // Start story
         ContinueStory();
@@ -83,6 +83,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
+        Story currentStory = storyObject.story;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
@@ -102,13 +103,14 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void PopulateChoices()
     {
+        Story currentStory = storyObject.story;
         choiceParent.style.display = DisplayStyle.Flex;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
         foreach (Choice choice in currentStory.currentChoices)
         {
             choiceButtons[index].style.display = DisplayStyle.Flex;
-            choiceButtons[index].Text = choice.text;
+            choiceButtons[index].text = choice.text;
             choiceButtons[index].style.fontSize = textSize.y;
             choiceButtons[index].RemoveFromClassList("Highlight");
             index++;
@@ -147,6 +149,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void SelectChoice()
     {
+        Story currentStory = storyObject.story;
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
@@ -161,7 +164,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     {
         UpdateDialogue("END OF STORY");
         Debug.Log("END OF STORY");
-        SceneManager.LoadScene(nextScene.name);
+        SceneManager.LoadScene(nextScene);
     }
 
     /// <summary>
@@ -203,6 +206,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
+        Story currentStory = storyObject.story;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
@@ -260,7 +264,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         Vector2 newBoxSize = dialogueText.MeasureTextSize(dialogueText.text, width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
         dialogueBox.style.height = newBoxSize.y * 1.2f;
         float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
-        Debug.Log("Height: "+dialogueText.resolvedStyle.height+"; Adjusted: "+newBoxSize.y);
+        Debug.Log("Height: " + dialogueText.resolvedStyle.height + "; Adjusted: " + newBoxSize.y);
         dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
         Debug.Log(dialogueText.style.fontSize);
     }

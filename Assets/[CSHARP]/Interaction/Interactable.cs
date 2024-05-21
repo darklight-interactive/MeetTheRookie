@@ -3,31 +3,61 @@ using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using EasyButtons;
-using UnityEngine.UIElements;
+using FMODUnity;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
-public class Interactable : MonoBehaviour, IInteract
+public class Interactable : OverlapGrid2D, IInteract
 {
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private InkyStoryLoader _storyLoader => InkyStoryManager.Instance.storyLoader;
-    private InkyKnotIterator _knotIterator;
+
+    // private access to knots for dropdown
+    private List<string> _sceneKnots
+    {
+        get
+        {
+            if (_storyObject == null) return new List<string>();
+            return InkyStoryObject.GetAllKnots(_storyObject.story);
+        }
+    }
+
+    // private access to stitches for dropdown
+    private List<string> _interactionStitches
+    {
+        get
+        {
+            if (_storyObject == null) return new List<string>();
+            if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
+            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.story, _sceneKnot);
+        }
+    }
 
     // ------------------- [[ SERIALIZED FIELDS ]] -------------------
 
-    [Header("Interaction Settings")]
-    [SerializeField] protected InkyStoryObject _storyParent;
+    //[HorizontalLine(color: EColor.Gray)]
+    [Header("Interactable")]
+    [SerializeField, ShowAssetPreview] Sprite _sprite;
 
-    [DropdownAttribute("_storyParent.knotAndStitchKeys")]
-    [SerializeField] protected string _interactionKey;
+    [Header("InkyStory")]
+    [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
+    [SerializeField] protected InkyStoryObject _storyObject;
 
-    [Header("Components")]
-    [SerializeField] Sprite _sprite;
+    [DropdownAttribute("_sceneKnots")]
+    public string _sceneKnot;
+
+    [DropdownAttribute("_interactionStitches")]
+    public string _interactionStitch;
+    protected InkyStoryIterator _storyIterator;
+
+    [Header("FMOD One Shots")]
+    [SerializeField] EventReference _onFirstInteraction;
+    [SerializeField] EventReference _onContinuedInteraction;
+    [SerializeField] EventReference _onCompleteInteraction;
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -39,44 +69,48 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] Color _interactionTint = Color.yellow;
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-    public InkyStoryObject storyParent { get => _storyParent; private set => _storyParent = value; }
-    public string interactionKey { get => _interactionKey; private set => _interactionKey = value; }
-    public InkyKnotIterator knotIterator { get => _knotIterator; private set => _knotIterator = value; }
+    public InkyStoryObject storyObject { get => _storyObject; private set => _storyObject = value; }
+    public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
+    public string currentText => _storyIterator.CurrentText;
+
+    public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
     public event IInteract.OnComplete OnCompleted;
 
-    // ====== [[ MONOBEHAVIOUR METHODS ]] =========================
-    public void Awake()
+    // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
+    public override void Awake()
     {
+        base.Awake();
         Initialize();
     }
 
-    // ====== [[ INITIALIZATION ]] ================================
     public virtual void Initialize()
     {
-        _spriteRenderer.sprite = _sprite;
+        // Prioritize the initial sprite that is set in the sprite renderer
+        // Its assumed that the sprtie renderer has a null sprite when the interactable is first created
+        if (_spriteRenderer.sprite == null)
+            _spriteRenderer.sprite = _sprite;
+        else
+            _sprite = _spriteRenderer.sprite;
+
         _spriteRenderer.color = _defaultTint;
 
-        if (_storyParent == null)
+        if (_storyObject == null)
         {
-            Debug.LogError("Story Parent is null. Please assign a valid InkyStory object.");
+#if UNITY_EDITOR
+            Debug.LogWarning($"INTERACTABLE ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
+#endif
             return;
         }
-
-        if (_interactionKey == null || _interactionKey == "")
-        {
-            Debug.LogError("Interaction Key is null. Please assign a valid knot or stitch key.");
-            return;
-        }
-
-        _knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
     }
 
     public virtual void Reset()
     {
+        isTarget = false;
+        isActive = false;
         isComplete = false;
         _spriteRenderer.color = _interactionTint;
     }
@@ -85,48 +119,67 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        UIManager.Instance.ShowInteractionPromptInWorld(transform.position);
+        OverlapGrid2D_Data targetData = GetBestData();
+        UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.HideInteractPrompt();
+        UIManager.Instance.RemoveInteractIcon();
     }
 
+    // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
-        // >> TEMPORARY COLOR CHANGE
-        StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
-
-        // >> CONTINUE KNOT
-        if (knotIterator == null)
-            knotIterator = new InkyKnotIterator(_storyParent.CreateStory(), _interactionKey);
-        ContinueKnot();
-    }
-
-    public virtual void ContinueKnot()
-    {
-        isTarget = false;
-        isActive = true;
-        isComplete = false;
-
-        knotIterator.ContinueKnot();
-
-        if (knotIterator.CurrentState == InkyKnotIterator.State.END)
+        // First Interaction
+        if (!isActive)
         {
-            Complete();
+            TargetClear();
+
+            isActive = true;
+            isComplete = false;
+
+            // Go To the Interaction Stitch
+            _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
+            _storyIterator.GoToKnotOrStitch(_interactionStitch);
+
+            // >> TEMPORARY COLOR CHANGE
+            StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
+
+            // Play FMOD One Shot
+            SoundManager.PlayOneShot(_onFirstInteraction);
+
+            OnFirstInteraction?.Invoke();
+            Debug.Log($"INTERACT :: {name} >> First Interaction");
             return;
         }
 
-        OnInteraction?.Invoke(knotIterator.currentText);
+        // Last Interaction
+        if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
+        {
+            Complete();
+            Debug.Log($"INTERACT :: {name} >> Complete");
+            return;
+        }
+
+        // Continue the interaction
+        _storyIterator.ContinueStory();
+
+        SoundManager.PlayOneShot(_onContinuedInteraction);
+
+        OnInteraction?.Invoke(_storyIterator.CurrentText);
+        Debug.Log($"INTERACT :: {name} >> Continue Interaction");
     }
 
     public virtual void Complete()
     {
-        isComplete = true;
         isActive = false;
-        knotIterator = null;
+        isTarget = false;
+        isComplete = true;
+        _storyIterator = null;
+
+        SoundManager.PlayOneShot(_onCompleteInteraction);
 
         OnCompleted?.Invoke();
     }
@@ -149,7 +202,7 @@ public class Interactable : MonoBehaviour, IInteract
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Interactable), true)]
-public class InteractableCustomEditor : Editor
+public class InteractableCustomEditor : OverlapGrid2DEditor
 {
     SerializedObject _serializedObject;
     Interactable _script;
@@ -166,21 +219,41 @@ public class InteractableCustomEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        base.OnInspectorGUI();
-
 
         GUILayout.Space(10);
         GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
-        if (!_script.isTarget && GUILayout.Button("Target"))
+
+        if (!_script.isTarget)
         {
-            _script.TargetSet();
+            if (GUILayout.Button("Set Target"))
+                _script.TargetSet();
+
+            if (_script.isActive)
+            {
+                if (GUILayout.Button("Continue Interaction"))
+                    _script.Interact();
+
+                if (GUILayout.Button("Complete Interaction"))
+                    _script.Complete();
+
+                if (GUILayout.Button("Reset Interaction"))
+                    _script.Reset();
+            }
+        }
+        else
+        {
+            if (GUILayout.Button("Clear Target"))
+                _script.TargetClear();
+
+            if (!_script.isActive)
+            {
+                if (GUILayout.Button("First Interact"))
+                    _script.Interact();
+            }
         }
 
-        if (_script.isTarget && GUILayout.Button("Clear Target"))
-        {
-            _script.TargetClear();
-        }
 
+        base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())
         {
