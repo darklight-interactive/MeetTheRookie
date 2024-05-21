@@ -16,7 +16,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     public SelectableVectorField<Button> choiceMap = new SelectableVectorField<Button>();
     public SceneObject scene;
     // Global variables
-    Story currentStory;
+    public InkyStoryObject storyObject;
     bool choicesActive;
 
     // Variables for all the visual elements
@@ -29,18 +29,17 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<Button> choiceButtons = new List<Button>(4);
 
-    void Initialize()
+    public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
     {
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
-        UniversalInputManager.OnMoveInput += Move;
-        UniversalInputManager.OnPrimaryInteract += Select;
+        base.Initialize(preset, tags);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        // I think this stalls the initialize function
-        Invoke("Initialize", 0.1f);
+        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+        UniversalInputManager.OnMoveInput += Move;
+        UniversalInputManager.OnPrimaryInteract += Select;
 
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
@@ -57,8 +56,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceButtons.Add(root.Q<Button>("Choice" + i));
             choiceMap.Add(choiceButtons[i]);
         }
-        // Get Ink story
-        currentStory = new Story(inkFile.text);
 
         // Start story
         ContinueStory();
@@ -70,6 +67,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
+        Story currentStory = storyObject.story;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
@@ -93,6 +91,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void PopulateChoices()
     {
+        Story currentStory = storyObject.story;
         choiceParent.style.display = DisplayStyle.Flex;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
@@ -138,6 +137,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="index">The index of the choice</param>
     void SelectChoice()
     {
+        Story currentStory = storyObject.story;
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
@@ -195,6 +195,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
+        Story currentStory = storyObject.story;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)

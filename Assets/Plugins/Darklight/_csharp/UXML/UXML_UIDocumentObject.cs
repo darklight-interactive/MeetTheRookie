@@ -20,10 +20,12 @@ namespace Darklight.UXML
     public class UXML_UIDocumentObject : MonoBehaviour
     {
         // << PUBLIC ACCESSORS >> //
-        [ShowOnly] public UXML_UIDocumentPreset preset;
+        [SerializeField] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public Dictionary<string, VisualElement> uiElements { get; private set; } = new();
+
+        [EasyButtons.Button("Initialize")]
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
             this.preset = preset;
