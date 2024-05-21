@@ -1,10 +1,13 @@
 Button {
-    font-size: 25px;
     background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=-7972535721337346317&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_1");
-    margin-top: 8px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    margin-left: 8px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 2.5%;
+    padding-right: 2.5%;
+    padding-bottom: 2.5%;
+    padding-left: 2.5%;
 }
 
 GroupBox {
@@ -58,7 +61,18 @@ GroupBox {
 }
 
 .unity-text-element.unity-button {
-    font-size: 48px;
+    font-size: 41px;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+}
+
+.unity-text-element.unity-label {
+    flex-grow: 1;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+    align-self: center;
+    justify-content: center;
+    -unity-text-align: middle-left;
+    letter-spacing: 0;
+    white-space: normal;
 }
 
 .column-active {

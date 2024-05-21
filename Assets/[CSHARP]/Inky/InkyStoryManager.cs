@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-
-using Darklight.Game;
-using Darklight.Console;
 
 using Ink.Runtime;
 
 using UnityEngine;
-using Darklight.UnityExt.Editor;
-using System.Linq;
-using EasyButtons;
+using Darklight.UnityExt;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,83 +15,21 @@ using UnityEditor;
 [RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
-    const string PATH = "Inky/";
     public InkyStoryLoader storyLoader => GetComponent<InkyStoryLoader>();
-    public InkyKnotIterator currentKnotIterator { get; private set; }
 
-    #region ----- [[ STATE MACHINE ]] ----- >>
-    public enum State { INIT, LOAD, CONTINUE, CHOICE, END, ERROR }
-    public class StateMachine : StateMachine<State>
-    {
-        public StateMachine(State initialState = State.INIT) : base(initialState) { }
-    }
-    StateMachine stateMachine = new StateMachine(State.INIT);
-    public State currentState => stateMachine.CurrentState;
-    #endregion
+    public InkyStoryObject globalStoryObject;
 
-    public InkyStoryObject currentStoryObject;
-    private Story _story => currentStoryObject.CreateStory();
-
-    [Dropdown("currentStoryObject.knotAndStitchKeys")]
-    public string currentKnot;
+    [SerializeField] private string _currentSpeaker;
 
     public override void Awake()
     {
         base.Awake();
-        stateMachine.ChangeActiveStateTo(State.INIT);
-        storyLoader.Load();
-    }
 
-    [Button("Continue Story")]
-    public void ContinueStory()
-    {
-        if (_story.canContinue)
+        if (globalStoryObject != null)
         {
-            stateMachine.ChangeActiveStateTo(State.CONTINUE);
-            if (currentKnotIterator != null)
-            {
-                currentKnotIterator.ContinueKnot();
-            }
-            else
-            {
-                // Continue the main story thread
-                string text = _story.Continue();
-                text = text.TrimEnd('\n');
-                Console.Log($"{Prefix} ContinueStory -> {text}");
-            }
-        }
-        else if (_story.currentChoices.Count > 0)
-        {
-            stateMachine.ChangeActiveStateTo(State.CHOICE);
-            Console.Log($"{Prefix} Choices: {_story.currentChoices.Count}", 1);
-
-            foreach (Choice choice in _story.currentChoices)
-            {
-                Console.Log($"{Prefix} Choice: {choice.text}", 1);
-            }
-        }
-        else
-        {
-            stateMachine.ChangeActiveStateTo(State.END);
-            Console.Log($"{Prefix} End of Story");
-        }
-    }
-
-    public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
-    {
-        _story.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
-    }
-
-    public object RunExternalFunction(string func, object[] args)
-    {
-        if (_story.HasFunction(func))
-        {
-            return _story.EvaluateFunction(func, args);
-        }
-        else
-        {
-            Debug.LogError("Could not find function: " + func);
-            return null;
+            InkyVariable currentSpeaker = globalStoryObject.GetVariable("CURRENT_SPEAKER");
+            if (currentSpeaker != null)
+                _currentSpeaker = currentSpeaker.Value.ToString();
         }
     }
 }
@@ -121,11 +53,10 @@ public class InkyStoryManagerCustomEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        base.DrawDefaultInspector();
+        base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())
         {
-            _script.Awake();
             _serializedObject.ApplyModifiedProperties();
         }
     }

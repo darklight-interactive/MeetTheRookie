@@ -1,8 +1,4 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="container" style="flex-grow: 1;">
-        <engine:VisualElement name="bubble" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/speech_bubble.png?fileID=21300000&amp;guid=af3bb8e943ecb9e4ca5183a11a92d568&amp;type=3#speech_bubble&quot;); align-items: center;">
-            <engine:Label text="Here is a full sentence to test if this bubble is working. If you can see this, hello. " name="inky-label" style="-unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/DigitalDisco.ttf?fileID=12800000&amp;guid=243d7d35991cc1c4ab3ad9c627faab37&amp;type=3#DigitalDisco&quot;); white-space: normal; padding-top: 5%; padding-right: 5%; padding-bottom: 5%; padding-left: 5%; font-size: 100px;" />
-        </engine:VisualElement>
-    </engine:VisualElement>
+    <SpeechBubble sprite="project://database/Assets/[SPRITES]/_ui/speech_bubble.png?fileID=21300000&amp;guid=af3bb8e943ecb9e4ca5183a11a92d568&amp;type=3#speech_bubble" text-size="64" style="padding-top: 5%; padding-right: 5%; padding-bottom: 10%; padding-left: 5%; margin-top: 1%; margin-right: 1%; margin-bottom: 1%; margin-left: 1%; background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/speech_bubble.png?fileID=2800000&amp;guid=af3bb8e943ecb9e4ca5183a11a92d568&amp;type=3#speech_bubble&quot;); position: absolute; top: 0; left: 0; right: 0; bottom: 0;" />
 </engine:UXML>

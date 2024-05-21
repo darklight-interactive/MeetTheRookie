@@ -1,19 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Darklight.Game.Utility;
+using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 #endif
@@ -26,16 +24,24 @@ namespace Darklight.UnityExt.Scene
     /// </summary>
     public class UniversalSceneManager : MonoBehaviourSingleton<UniversalSceneManager>
     {
-        [SerializeField, ShowOnly] string sceneBuildDirectory = "Assets/Scenes/Build"; // Updated path to be relative to the Assets folder
-        [SerializeField, ShowOnly] string currentScene;
-        [SerializeField, ShowOnly] private List<SceneAsset> scenesInBuild = new List<SceneAsset>();
+        [SerializeField] string sceneBuildDirectory = "Assets/Scenes/Build"; // Path relative to Assets folder
+        [SerializeField] string currentScene;
+        [SerializeField, ShowOnly] private List<string> scenesInBuild = new List<string>();
+
         public string SceneDirectory => sceneBuildDirectory;
-        public List<SceneAsset> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
+        public List<string> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
         public string CurrentScene { get => currentScene; set => currentScene = value; }
 
-        public bool IsSceneInBuild(SceneAsset scene)
+        public override void Awake()
         {
-            return scenesInBuild.Contains(scene);
+            base.Awake();
+            LoadBuildScenes();
+            currentScene = SceneManager.GetActiveScene().name;
+        }
+
+        public bool IsSceneInBuild(string scenePath)
+        {
+            return scenesInBuild.Contains(scenePath);
         }
 
         public bool GoToScene(string sceneName)
@@ -46,19 +52,27 @@ namespace Darklight.UnityExt.Scene
                 return false;
             }
 
-            SceneAsset scene = scenesInBuild.Find(s => s.name == sceneName);
-            if (scene == null)
+            string scenePath = scenesInBuild.Find(s => Path.GetFileNameWithoutExtension(s) == sceneName);
+            if (string.IsNullOrEmpty(scenePath))
             {
                 Debug.LogError($"Scene {sceneName} not found in build settings");
                 return false;
             }
 
-            //Addressables.LoadScene(sceneName);
             SceneManager.LoadScene(sceneName);
             currentScene = sceneName;
             return true;
         }
+
+        private void LoadBuildScenes()
+        {
+#if UNITY_EDITOR
+            string[] scenePaths = Directory.GetFiles(sceneBuildDirectory, "*.unity", SearchOption.AllDirectories);
+            scenesInBuild = scenePaths.ToList();
+#endif
+        }
     }
+
 
 #if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(UniversalSceneManager))]
@@ -90,11 +104,11 @@ namespace Darklight.UnityExt.Scene
                 LoadBuildScenes();
             }
 
-            SceneSelector();
 
             // Save changes
             if (GUI.changed)
             {
+                SceneSelector();
                 EditorUtility.SetDirty(_script);
                 EditorSceneManager.MarkSceneDirty(_script.gameObject.scene);
             }
@@ -125,13 +139,7 @@ namespace Darklight.UnityExt.Scene
         private void LoadBuildScenes()
         {
             string[] scenePaths = Directory.GetFiles(_script.SceneDirectory, "*.unity", SearchOption.AllDirectories);
-            List<SceneAsset> scenes = new List<SceneAsset>();
-            foreach (string scenePath in scenePaths)
-            {
-                SceneAsset scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
-                scenes.Add(scene);
-            }
-            _script.ScenesInBuild = scenes;
+            _script.ScenesInBuild = scenePaths.ToList();
         }
     }
 #endif

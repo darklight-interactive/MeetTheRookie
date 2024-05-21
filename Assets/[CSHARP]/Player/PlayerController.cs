@@ -4,8 +4,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Game.Utility;
-
+using Darklight.Utility;
 
 #if UNITY_EDITOR
 #endif
@@ -77,7 +76,6 @@ public class PlayerController : MonoBehaviour
 
     public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
     public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
-    public PlayerDialogueHandler dialogueHandler => GetComponentInChildren<PlayerDialogueHandler>();
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
 
@@ -197,11 +195,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Interact()
     {
-        if (stateMachine.CurrentState != PlayerState.INTERACTION)
+
+        bool result = interactor.InteractWithTarget();
+        if (result && stateMachine.CurrentState != PlayerState.INTERACTION)
         {
             stateMachine.GoToState(PlayerState.INTERACTION);
         }
-        interactor.InteractWithTarget();
     }
 
     public void ExitInteraction()
@@ -214,7 +213,7 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis()
     {
         synthesisEnabled = !synthesisEnabled;
-        //SynthesisManager.Instance.Show(synthesisEnabled);
+        UIManager.Instance.synthesisManager.Show(synthesisEnabled);
         stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion

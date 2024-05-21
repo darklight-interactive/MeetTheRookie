@@ -7,7 +7,7 @@ using Darklight.Console;
 using UnityEditor;
 #endif
 
-namespace Darklight.Game.Utility
+namespace Darklight.Utility
 {
     /// <summary>
     /// Defines a basic, thread-safe singleton pattern for a data type T.
