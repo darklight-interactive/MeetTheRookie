@@ -28,7 +28,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         if (globalStoryObject != null)
         {
             InkyVariable currentSpeaker = globalStoryObject.GetVariable("CURRENT_SPEAKER");
-            if (currentSpeaker != null)
+            if (currentSpeaker.Value != null)
                 _currentSpeaker = currentSpeaker.Value.ToString();
         }
     }

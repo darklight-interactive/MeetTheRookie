@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Darklight.UnityExt.Editor;
+
 
 
 #if UNITY_EDITOR
@@ -9,17 +11,16 @@ using UnityEditor;
 public class InteractableSceneChange : Interactable, IInteract
 {
     [Header("Scene Change Settings")]
-    [SerializeField] private SceneAsset sceneAsset;
+    [SerializeField] private SceneObject sceneObject;
 
     public void Start()
     {
         this.OnCompleted += () =>
         {
-            if (sceneAsset)
+            if (SceneManager.GetActiveScene().name != sceneObject)
             {
-                SceneManager.LoadScene(sceneAsset.name);
+                SceneManager.LoadScene(sceneObject);
             }
         };
     }
-
 }

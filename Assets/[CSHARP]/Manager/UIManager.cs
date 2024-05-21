@@ -4,11 +4,6 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -127,7 +122,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     [Header("Main Menu Controller")]
     private MainMenuController _mainMenu;
     [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
-    [SerializeField] SceneAsset _mainMenuScene;
+    [SerializeField] SceneObject _mainMenuScene;
 
 
     [Header("Game UI Controller")]
