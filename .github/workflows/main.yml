@@ -16,7 +16,7 @@ env:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true # cancel if a new push is made
-      
+
 permissions:
   actions: read
   pull-requests: write
@@ -35,15 +35,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-      - run: git submodule update --init --recursive
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
         with:
           path: Library
-          key: Library-build-WebGL
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-build-
             Library-
 
       - name: Build project
@@ -53,13 +52,15 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: WebGL
           buildName: MeetTheRookie
 
-      - uses: actions/upload-artifact@v4.3.3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.3.3
         with:
-          name: build-WebGL
-          path: build/WebGL
+          name: Build-WebGL
+          path: build
+          if-no-files-found: warn
 
   # ----- Build for Windows -----
   buildWindows:
@@ -71,15 +72,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-      - run: git submodule update --init --recursive
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
         with:
           path: Library
-          key: Library-build-WebGL
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-build-
             Library-
 
       - name: Build project
@@ -92,27 +92,42 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildName: MeetTheRookie
 
-      - uses: actions/download-artifact@v4.1.7
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.3.3
         with:
-          name: build-Windows
-          path: build/Windows
+          name: Build-Windows
+          path: build
+          if-no-files-found: warn
 
-
-  # ----- Deploy to Github Pages -----  
+  # ----- Deploy to Github Pages -----
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v4.1.4
-      - uses: actions/download-artifact@v4.1.7
         with:
-          name: build-WebGL
-          path: build/WebGL
+          ref: gh-pages
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Download WebGL build artifact
+        uses: actions/download-artifact@v4.1.7
         with:
-          branch: gh-pages
-          folder: build/WebGL
+          name: Build-WebGL
+          path: build
+
+      - name: Copy WebGL build to gh-pages
+        run: |
+          mkdir -p ./
+          cp -r Build/WebGL/* ./
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and Push changes
+        run: |
+          git add .
+          git commit -m "Update WebGL build"
+          git push origin gh-pages
