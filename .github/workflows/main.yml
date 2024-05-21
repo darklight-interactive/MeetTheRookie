@@ -25,42 +25,6 @@ permissions:
   contents: write
 
 jobs:
-  # ----- Build for WebGL -----
-  buildWebGL:
-    name: Build for WebGL 🖥️
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.4
-
-      #- run: git submodule update --init --recursive
-
-      - name: Restore Library cache
-        uses: actions/cache@v4.0.2
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
-      - name: Build project
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
-          buildName: MeetTheRookie
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: Build-WebGL
-          path: build
-          if-no-files-found: warn
 
   # ----- Build for Windows -----
   buildWindows:
@@ -99,6 +63,46 @@ jobs:
           path: build
           if-no-files-found: warn
 
+  # -------------------------------------------------------------- //
+  # ----- Build for WebGL ----- //
+  buildWebGL:
+    name: Build for WebGL 🖥️
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.4
+
+      #- run: git submodule update --init --recursive
+
+      - name: Restore Library cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          buildName: MeetTheRookie
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: Build-WebGL
+          path: build
+          if-no-files-found: warn
+      
+
+
   # ----- Deploy to Github Pages -----
   deployPages:
     needs: buildWebGL
@@ -114,20 +118,54 @@ jobs:
         uses: actions/download-artifact@v4.1.7
         with:
           name: build-WebGL
-          path: Build/WebGL
-
-      - name: Copy WebGL build to gh-pages
-        run: |
-          mkdir -p ./
-          cp -r Build/WebGL/* ./
+          path: build
 
       - name: Configure Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Commit and Push changes
+# Deployment
+      - name: Stash build result and reset local changes
         run: |
-          git add .
-          git commit -m "Update WebGL build"
-          git push origin gh-pages
+          echo "Applying initial configs"
+          sudo chown -R $USER:$USER ${{ vars.BUILD_PATH }}
+          echo "Stash and reset"
+          git add ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
+          git stash push ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
+          git stash list
+          git reset --hard
+          sudo git clean -d -x -f
+    # Deployment
+      - name: Cleaning gh-pages branch
+        run: |
+          echo "Switch to ${{ vars.DEPLOYMENT_BRANCH }}"
+          git switch -f ${{ vars.DEPLOYMENT_BRANCH }}
+          git reset --hard
+          sudo git clean -d -x -f
+          rm -r *
+          git add *
+          git commit -m "cleaning branch"
+          git push
+      - name: Applying stashed files to ${{ vars.DEPLOYMENT_BRANCH }}
+        run: |
+          echo "Applying stash"
+          git stash apply stash@{0}
+      - name: Copying files to root directory
+        run: |
+          cd ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}/${{ vars.TARGET_PLATFORM }}
+          ls
+          cp -r * ../../../
+          cd ../../../
+          rm -r ${{ vars.BUILD_PATH }}
+          ls
+          pwd
+      - name: Pushing deployment to gh-pages branch
+        run: |
+          pwd
+          git status
+          git add *
+          git commit -m "Deployment"
+          git push
+          git reset --hard
+          sudo git clean -d -x -f
