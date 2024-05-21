@@ -12,8 +12,6 @@
 //
 // **** NOTES:
 // ---------------------------------------------- >>/^*
-INCLUDE mtr_global.ink
-
 // ---- [[ LOCAL VARIABLES ]] ---- >>
 VAR closed_signs = 0
 
@@ -54,11 +52,8 @@ VAR closed_signs = 0
 
 = talk_to_misra
     -> Misra_Dialogue
-
 = idahome_and_goods
-    -> DONE
-    
-
+    -> scene4_2
 = powerup_arcade
     -> DONE
 
@@ -104,7 +99,7 @@ VAR closed_signs = 0
    
 
 = the_rockin_kettle
-    {IsQuestComplete(visited_gen_store) && IsQuestComplete(visited_arcade):
+    {IsQuestComplete(visited_roy) && IsQuestComplete(visited_arcade):
         ~ SetSpeaker(Speaker.Misra)
         [Misra] Looks like the Bar is open! Shall we?
         ~ SetSpeaker(Speaker.Lupe)

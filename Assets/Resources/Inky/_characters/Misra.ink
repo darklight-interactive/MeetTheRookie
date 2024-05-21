@@ -18,7 +18,7 @@ Idk to each their own , just take it away now. -> DONE
     [Misra] There's bound to be some locals around - where do you want to start?
     ~ SetSpeaker(Speaker.Lupe)
 -else: 
-    {IsQuestComplete(visited_gen_store):
+    {IsQuestComplete(visited_roy):
         ~ SetSpeaker(Speaker.Misra)
         [Misra] I'm sorry if Roy seems like a bit of a downer.
         [Misra] He has no faith.
@@ -30,7 +30,7 @@ Idk to each their own , just take it away now. -> DONE
         ~ SetSpeaker(Speaker.Lupe)
     }
 }
-{IsQuestComplete(visited_gen_store) && IsQuestComplete(visited_arcade):
+{IsQuestComplete(visited_roy) && IsQuestComplete(visited_arcade):
     ~ SetSpeaker(Speaker.Misra)
      [Misra] Those guys are the worst.
     ~ SetSpeaker(Speaker.Lupe)
