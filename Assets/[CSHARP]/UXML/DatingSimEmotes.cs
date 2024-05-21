@@ -70,7 +70,7 @@ public class DatingSimEmotes : ScriptableObject
 
     private void OnValidate()
     {
-        MakeEmotes();
+        //MakeEmotes();
     }
 }
 
