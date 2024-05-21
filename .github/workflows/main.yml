@@ -44,9 +44,8 @@ jobs:
         uses: actions/cache@v4.0.2
         with:
           path: Library
-          key: Library-build-WebGL
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-build-
             Library-
 
       - name: Build project
@@ -85,9 +84,8 @@ jobs:
         uses: actions/cache@v4.0.2
         with:
           path: Library
-          key: Library-build-Windows
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-build-
             Library-
 
       - name: Build project
