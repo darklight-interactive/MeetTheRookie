@@ -36,17 +36,22 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         base.Initialize(preset, tags);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        base.Initialize(preset);
+
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
         UniversalInputManager.OnMoveInputStarted += Move;
         UniversalInputManager.OnPrimaryInteract += Select;
 
         // Get the emotes
-        emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
+        //emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
+    }
 
-        var temp = ElementQueryAll<SelectableButton>();
+    // Start is called before the first frame update
+    void Start()
+    {
+        IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
         choiceButtons = temp.OrderBy(x => x.name).ToList();
         choiceMap.Load(temp);
 
@@ -60,11 +65,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = root.Q<TextElement>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
-        for (int i = 0; i < choiceButtons.Capacity; i++)
-        {
-            choiceButtons.Add(root.Q<SelectableButton>("Choice" + i));
-            choiceMap.Add(choiceButtons[i]);
-        }
 
         // Start story
         ContinueStory();

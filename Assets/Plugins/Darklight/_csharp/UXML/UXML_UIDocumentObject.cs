@@ -25,7 +25,6 @@ namespace Darklight.UXML
         public VisualElement root => document.rootVisualElement;
         public Dictionary<string, VisualElement> uiElements { get; private set; } = new();
 
-        [EasyButtons.Button("Initialize")]
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
             this.preset = preset;
@@ -38,6 +37,8 @@ namespace Darklight.UXML
             document.visualTreeAsset = preset.visualTreeAsset;
             document.panelSettings = preset.panelSettings;
             gameObject.layer = LayerMask.NameToLayer("UI");
+
+            Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Darklight.UXML
         /// <returns>The first matching element, or null if no match is found.</returns>
         public T ElementQuery<T>(string tagOrClass = null) where T : VisualElement
         {
-            var query = root.Query<T>(tagOrClass);
+            UQueryBuilder<T> query = root.Query<T>(tagOrClass);
             return query.First();
         }
 
