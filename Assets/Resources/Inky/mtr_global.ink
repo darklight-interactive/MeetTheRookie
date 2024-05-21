@@ -9,11 +9,16 @@
 
 // ====== INCLUDE == >>
 INCLUDE _characters/Misra.ink
+INCLUDE _characters/Roy Rodgerson.ink
+
+INCLUDE mtr_level4.1_mainstreet.ink
+INCLUDE mtr_level4.2_genstore.ink
 
 // ====== SPEAKER HANDLING == >>
 LIST Speaker = (Unkown), Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
 VAR CURRENT_SPEAKER = Speaker.Lupe
 == function SetSpeaker(value)
+    # SetSpeaker >> {value}
     ~ CURRENT_SPEAKER = value
 
 // ====== QUEST HANDLING == >>
@@ -21,7 +26,7 @@ VAR MAIN_QUEST = () // <- highest priority quest
 LIST ACTIVE_QUEST_CHAIN = DEFAULTQUEST // <- overwrite this list
 LIST COMPLETED_QUESTS = DEFAULTQUEST // <- all completed quests
 === function SetActiveQuestChain(chain)
-    #SetActiveQuestChain >> {chain}
+    # SetActiveQuestChain >> {chain}
     ~ ACTIVE_QUEST_CHAIN = chain
 === function StartQuest(quest)
     #StartQuest >> {quest}
@@ -57,7 +62,7 @@ LIST Level1_Quests = (FIRST_INTERACT), (PAY_FOR_GAS)
 // ----------------------------------------------------
 LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing, golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies, HOSI_calvin, jenny_suspects, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned, KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned, sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence
 
-LIST Level4_Quests = visited_goop, visited_symbol, visited_misra, visited_gen_store, interact_first_store, visited_arcade, interact_first_arcade, visited_machines, visited_jenny, visited_calvin, visited_josh, irene_intro, memorial_plaque_visited, irene_convo_1, irene_convo_2, jenkins_wakes_up
+LIST Level4_Quests = visited_misra, visited_roy, visited_goop, visited_symbol,  visited_arcade, interact_first_arcade, visited_machines, visited_jenny, visited_calvin, visited_josh, irene_intro, memorial_plaque_visited, irene_convo_1, irene_convo_2, jenkins_wakes_up
 
 
 
