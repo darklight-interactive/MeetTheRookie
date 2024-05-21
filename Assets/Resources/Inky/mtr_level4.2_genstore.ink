@@ -1,6 +1,6 @@
 === scene4_2 ===
 # Location: IdaHome and Goods, General Store
-    * [talk_to_roy] -> talk_to_roy    
+    * [talk_to_roy] -> Roy_Dialogue   
     * [store_window] -> store_window
     * [merch_shirt] -> merch_shirt
     * [merch_sticker] -> merch_sticker
@@ -13,9 +13,6 @@
 
 
 // + {questions}[front_door]
-
-= talk_to_roy
-    -> Roy_Dialogue
     
 = store_window
     -> Roy_Dialogue.window
