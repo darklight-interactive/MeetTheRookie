@@ -113,8 +113,8 @@ jobs:
       - name: Download WebGL build artifact
         uses: actions/download-artifact@v4.1.7
         with:
-          name: build-WebGL
-          path: Build/WebGL
+          name: Build-WebGL
+          path: build
 
       - name: Copy WebGL build to gh-pages
         run: |
