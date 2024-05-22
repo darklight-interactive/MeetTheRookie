@@ -1,4 +1,11 @@
 === Roy_Dialogue ===
+-> default
+
+= default
+~ SetActiveQuestChain(Level4_Quests)
+Hello i am roy
+This is me testing my text
+
 { IsQuestComplete(visited_roy) == false:
     ~ CompleteQuest(visited_roy)
     ~ SetSpeaker(Speaker.Misra)

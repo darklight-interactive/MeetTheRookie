@@ -4,6 +4,8 @@ using Ink.Runtime;
 
 using UnityEngine;
 using Darklight.UnityExt;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,18 +21,23 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     public InkyStoryObject globalStoryObject;
 
-    [SerializeField] private string _currentSpeaker;
+    [ShowOnly] public string _currentSpeaker;
 
     public override void Awake()
     {
         base.Awake();
 
-        if (globalStoryObject != null)
+        if (globalStoryObject == null) return;
+        globalStoryObject.story.ObserveVariable("CURRENT_SPEAKER", (string varName, object newValue) =>
         {
-            InkyVariable currentSpeaker = globalStoryObject.GetVariable("CURRENT_SPEAKER");
-            if (currentSpeaker.Value != null)
-                _currentSpeaker = currentSpeaker.Value.ToString();
-        }
+            _currentSpeaker = newValue.ToString();
+            Debug.Log($"[InkyStoryManager] >> Current Speaker: {_currentSpeaker}");
+        });
+
+        globalStoryObject.story.ObserveVariable("ACTIVE_QUEST_CHAIN", (string varName, object newValue) =>
+        {
+            Debug.Log($"[InkyStoryManager] >> Active Quest Chain: {newValue}");
+        });
     }
 }
 

@@ -21,8 +21,11 @@ INCLUDE mtr_level4.2_genstore.ink
 INCLUDE mtr_level4.3_arcade.ink
 
 
+// ===== EXTERNAL == >>
+EXTERNAL QuestStarted(quest)
+
 // ====== SPEAKER HANDLING == >>
-LIST Speaker = (Unkown), Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
+LIST Speaker = (Unkown), (Misra), (Lupe), Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
 VAR CURRENT_SPEAKER = Speaker.Lupe
 == function SetSpeaker(value)
     # SetSpeaker >> {value}
@@ -38,6 +41,8 @@ LIST COMPLETED_QUESTS = DEFAULTQUEST // <- all completed quests
 === function StartQuest(quest)
     #StartQuest >> {quest}
     ~ ACTIVE_QUEST_CHAIN += quest
+    ~ MAIN_QUEST = quest
+    ~ QuestStarted(quest)
 === function CompleteQuest(quest)
     #CompleteQuest >> {quest}
     ~ ACTIVE_QUEST_CHAIN -= quest

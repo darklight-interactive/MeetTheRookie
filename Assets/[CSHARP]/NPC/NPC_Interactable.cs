@@ -37,14 +37,14 @@ public class NPC_Interactable : Interactable, IInteract
         base.Interact();
 
         if (isComplete) return;
-        if (_storyIterator == null) _storyIterator = new InkyStoryIterator(_storyObject);
+        //if (_storyIterator == null) _storyIterator = new InkyStoryIterator(_storyObject);
         if (_storyIterator.CurrentState != InkyStoryIterator.State.END)
         {
             // Create a speech bubble at the best data position
             Grid2D_Data bestData = GetBestData();
             Vector3 worldPosition = bestData.worldPosition;
             float cellSize = bestData.cellSize;
-            UIManager.Instance.CreateSpeechBubble(worldPosition, _storyIterator.CurrentText, cellSize);
+            UIManager.Instance.CreateSpeechBubble(worldPosition, _storyIterator.CurrentText);
 
             // If the statemachine is not null, go to the speak state
             stateMachine?.GoToState(NPCState.SPEAK);

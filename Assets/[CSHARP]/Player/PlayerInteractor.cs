@@ -9,7 +9,6 @@ public class PlayerInteractor : OverlapGrid2D
 {
     public PlayerController playerController => GetComponent<PlayerController>();
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
-
     [ShowOnly] public Interactable targetInteractable;
 
     public override void Update()
@@ -63,17 +62,15 @@ public class PlayerInteractor : OverlapGrid2D
             //playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
             //npcInteractable.DialogueBubble.TextureUpdate();
         }
+
         // Show the player's dialogue bubble
         else if (targetInteractable is Interactable)
         {
-            Interactable interactable = targetInteractable as Interactable;
             OverlapGrid2D_Data targetData = GetBestData();
-
-            if (interactable != null) {
-                UIManager.Instance.CreateSpeechBubble(targetData.worldPosition, interactable.currentText, targetData.cellSize);
-            }
+            UIManager.Instance.CreateSpeechBubble(targetData.worldPosition, targetInteractable.currentText);
         }
 
+        // Check if interactable is complete
         if (targetInteractable.isComplete)
         {
             ExitInteraction();
@@ -88,7 +85,6 @@ public class PlayerInteractor : OverlapGrid2D
         UIManager.Instance.DestroySpeechBubble();
         playerController.ExitInteraction();
     }
-
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
     {

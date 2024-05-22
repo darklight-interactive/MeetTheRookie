@@ -13,14 +13,13 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     public enum State { NULL, START, DIALOGUE, CHOICE, END }
     private const string Prefix = "[InkyKnot] >> ";
     private InkyStoryObject _storyObject;
-    private Story story => _storyObject.story;
     private Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     /// <summary>
     /// This is the active text that is currently being displayed in the story, for easy reference.
     /// </summary>
-    public string CurrentText => story.currentText.Trim();
+    public string CurrentText => _storyObject.story.currentText;
 
     // ------------------- [[ EVENTS ]] -------------------
     public delegate void OnDialogue(string currentText);
@@ -39,7 +38,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     {
         try
         {
-            story.ChoosePathString(knotName);
+            _storyObject.story.ChoosePathString(knotName);
         }
         catch (System.Exception e)
         {
@@ -52,18 +51,22 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
             Debug.Log($"{Prefix} Moved to Knot: {knotName}");
         }
+
     }
 
     public void ContinueStory()
     {
 
         // Check if null
-        if (story == null || CurrentState == State.NULL)
+        if (_storyObject == null || CurrentState == State.NULL)
         {
             InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: Story is null");
             return;
         }
+
+        // Get the story
+        Story story = _storyObject.story;
 
         // Check if end
         if (CurrentState == State.END)
@@ -120,8 +123,8 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
 
     public void ChooseChoice(int choiceIndex)
     {
-        Choice choice = story.currentChoices[choiceIndex];
-        story.ChooseChoiceIndex(choice.index);
+        Choice choice = _storyObject.story.currentChoices[choiceIndex];
+        _storyObject.story.ChooseChoiceIndex(choice.index);
         _choiceMap.Clear();
         ContinueStory();
     }
@@ -129,7 +132,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
 
     private void HandleTags()
     {
-        List<string> currentTags = story.currentTags;
+        List<string> currentTags = _storyObject.story.currentTags;
         // loop through each tag and handle it accordingly
         foreach (string tag in currentTags)
         {

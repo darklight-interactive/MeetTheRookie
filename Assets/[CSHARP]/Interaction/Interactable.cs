@@ -14,6 +14,7 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class Interactable : OverlapGrid2D, IInteract
 {
+    private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
 
     // private access to knots for dropdown
@@ -61,8 +62,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
-    [ShowOnly, SerializeField] bool _isActive;
-    [ShowOnly, SerializeField] bool _isComplete;
+    [ShowOnly, SerializeField] bool _isActive; [ShowOnly, SerializeField] bool _isComplete;
 
     [Header("Colors")]
     [SerializeField] Color _defaultTint = Color.white;
@@ -153,9 +153,10 @@ public class Interactable : OverlapGrid2D, IInteract
             // Go To the Interaction Stitch
             _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
             _storyIterator.GoToKnotOrStitch(_interactionStitch);
+            _storyIterator.ContinueStory();
 
             // >> TEMPORARY COLOR CHANGE
-            StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
+            //StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onFirstInteraction);

@@ -78,7 +78,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// <param name="element">The VisualElement to adjust.</param>
     public static void ScaleElementToScreenSize(VisualElement element, float scale = 1f)
     {
-        float maxDimension = Mathf.Max(lastScreenWidth, lastScreenHeight);
+        float maxDimension = GetMaxScreenDimension();
 
         // Adjust the size of the element based on the smaller dimension of the screen
         float newSize = maxDimension * scale;
@@ -86,6 +86,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         element.style.height = new Length(newSize, LengthUnit.Pixel);
 
         Debug.Log($"Screen Size: {lastScreenWidth} x {lastScreenHeight}, New Element Size: {newSize}");
+    }
+
+    public static int GetMaxScreenDimension()
+    {
+        return Mathf.Max(lastScreenWidth, lastScreenHeight);
     }
 
 #if UNITY_EDITOR
@@ -163,7 +168,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     [Header("Speech Bubble")]
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
-    [ShowOnly] public UXML_RenderTextureObject speechBubble;
+    [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
 
 
     [Header("Interact Icon")]
@@ -219,33 +224,34 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         interactIcon = null;
     }
 
-    public void CreateSpeechBubble(Vector3 worldPosition, string text, float scale = 1f)
+    public void CreateSpeechBubble(Vector3 worldPosition, string text)
     {
-        if (speechBubble == null)
-            speechBubble = CreateRenderTextureObject(_speechBubblePreset);
-        speechBubble.transform.position = worldPosition;
-        speechBubble.SetLocalScale(scale);
+        if (speechBubbleObject == null)
+            speechBubbleObject = CreateRenderTextureObject(_speechBubblePreset);
+        speechBubbleObject.transform.position = worldPosition;
+        speechBubbleObject.SetLocalScale(0.5f);
 
         // Set the text of the speech bubble
-        speechBubble.ElementQuery<SpeechBubble>().text = text;
+        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        speechBubble.text = text;
+        speechBubble.textSize = Mathf.CeilToInt(GetMaxScreenDimension() * 0.1f);
 
-        Debug.Log($"Created Speech Bubble at {worldPosition} ||| {text}");
+        speechBubbleObject.TextureUpdate();
+
+        Debug.Log($"Created Speech Bubble at {worldPosition} with textSize {speechBubble.textSize} ||| {text}");
     }
 
     public void DestroySpeechBubble()
     {
-        if (speechBubble != null)
+        if (speechBubbleObject != null)
         {
             if (Application.isPlaying)
-                Destroy(speechBubble.gameObject);
+                Destroy(speechBubbleObject.gameObject);
             else
-                DestroyImmediate(speechBubble.gameObject);
+                DestroyImmediate(speechBubbleObject.gameObject);
         }
-        speechBubble = null;
-
+        speechBubbleObject = null;
     }
-
-
 
     // ----- [[ PRIVATE METHODS ]] ------------------------------------>
     /// <summary>
@@ -256,6 +262,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     ///     The UXML_UIDocumentPreset to use for the RenderTextureObject.
     /// </param>
     /// <returns></returns>
+    /// 
     UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset)
     {
         string name = $"UXMLRenderTexture : unknown";

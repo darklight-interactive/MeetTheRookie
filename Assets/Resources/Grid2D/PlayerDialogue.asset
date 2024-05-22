@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PlayerDialogue
   m_EditorClassIdentifier: 
   uniqueID: 6c86621f-fb29-4f07-8fe1-d8dc89977950
-  gridSizeX: 5
+  gridSizeX: 3
   gridSizeY: 2
   cellSize: 0.25
-  originKeyX: -2
+  originKeyX: -1
   originKeyY: 1
   keys:
   - {x: 0, y: 0}
@@ -35,16 +35,16 @@ MonoBehaviour:
   values:
   - _positionKey: {x: 0, y: 0}
     _disabled: 0
-    _weight: 1
+    _weight: 2
   - _positionKey: {x: 0, y: 1}
     _disabled: 0
-    _weight: 2
+    _weight: 3
   - _positionKey: {x: 0, y: 2}
     _disabled: 0
     _weight: 3
   - _positionKey: {x: 1, y: 0}
-    _disabled: 0
-    _weight: 2
+    _disabled: 1
+    _weight: 0
   - _positionKey: {x: 1, y: 1}
     _disabled: 0
     _weight: 3
@@ -52,8 +52,8 @@ MonoBehaviour:
     _disabled: 0
     _weight: 2
   - _positionKey: {x: 2, y: 0}
-    _disabled: 1
-    _weight: 0
+    _disabled: 0
+    _weight: 2
   - _positionKey: {x: 2, y: 1}
     _disabled: 0
     _weight: 3
