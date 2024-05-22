@@ -1,6 +1,6 @@
 === scene4_2 ===
 # Location: IdaHome and Goods, General Store
-    * [talk_to_roy] -> Roy_Dialogue   
+    * [talk_to_roy] -> Roy_Dialogue  
     * [store_window] -> store_window
     * [merch_shirt] -> merch_shirt
     * [merch_sticker] -> merch_sticker
@@ -10,9 +10,6 @@
     -> DONE
    
    * {IsClueFound(merch_pamphlet)} Do you mind explaining this pamphlet a bit? -> DONE
-
-
-// + {questions}[front_door]
     
 = store_window
     -> Roy_Dialogue.window
@@ -21,7 +18,7 @@
     -> Roy_Dialogue.merch_shirt
     
 = merch_sticker
-    ->Roy_Dialogue.merch_sticker
+    -> Roy_Dialogue.merch_sticker
 
 = front_door
     ~ SetSpeaker(Speaker.Lupe)

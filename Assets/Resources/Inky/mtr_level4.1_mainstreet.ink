@@ -20,6 +20,8 @@ VAR closed_signs = 0
 -> debug_level4
 === debug_level4 ===
 * [Scene 4_1 - Main Street] -> scene4_1
+* [Scene 4_2 - General Store] -> scene4_2
+* [Scene 4_3 - Arcade] -> scene4_3
 
 
 // ===================================== SCENE 4_1 ======================= //
@@ -99,7 +101,7 @@ VAR closed_signs = 0
    
 
 = the_rockin_kettle
-    {IsQuestComplete(visited_roy) && IsQuestComplete(visited_arcade):
+    {IsQuestComplete(complete_gen_store) && IsQuestComplete(complete_arcade):
         ~ SetSpeaker(Speaker.Misra)
         [Misra] Looks like the Bar is open! Shall we?
         ~ SetSpeaker(Speaker.Lupe)

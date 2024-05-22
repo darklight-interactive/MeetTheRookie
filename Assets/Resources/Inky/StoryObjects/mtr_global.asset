@@ -24,6 +24,8 @@ MonoBehaviour:
     stitches: []
   - name: IsQuestComplete
     stitches: []
+  - name: IsQuestActive
+    stitches: []
   - name: DiscoverClue
     stitches: []
   - name: IsClueFound
@@ -44,6 +46,28 @@ MonoBehaviour:
     - Roy_Dialogue.pamphlet
     - Roy_Dialogue.potential_suspects
     - Roy_Dialogue.teenagers
+  - name: Jenny_Dialogue
+    stitches:
+    - Jenny_Dialogue.interogate
+    - Jenny_Dialogue.hosi
+    - Jenny_Dialogue.4_3_jenny_questions
+  - name: Calvin_Dialogue
+    stitches:
+    - Calvin_Dialogue.4_3
+    - Calvin_Dialogue.4_3_calvin_questions
+    - Calvin_Dialogue.cal_hosi
+    - Calvin_Dialogue.HOSI_questions
+    - Calvin_Dialogue.HOSI_questions2
+    - Calvin_Dialogue.personal_info_calvin
+    - Calvin_Dialogue.winery_calvin
+    - Calvin_Dialogue.KR_calvin
+  - name: Josh_Dialogue
+    stitches:
+    - Josh_Dialogue.4_3
+    - Josh_Dialogue.4_3_josh_questions
+    - Josh_Dialogue.4_3_josh_personal_info
+    - Josh_Dialogue.4_3_KR_josh
+    - Josh_Dialogue.4_3_winery_josh
   - name: debug_level4
     stitches: []
   - name: scene4_1
@@ -66,6 +90,13 @@ MonoBehaviour:
     - scene4_2.merch_shirt
     - scene4_2.merch_sticker
     - scene4_2.front_door
+  - name: scene4_3
+    stitches:
+    - scene4_3.arcade_machines
+    - scene4_3.teens
+    - scene4_3.teens_roulette
+    - scene4_3.teens_suspect
+    - scene4_3.exit_scene
   - name: global decl
     stitches: []
   _variables:
@@ -87,8 +118,12 @@ MonoBehaviour:
     _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
   - _key: Level1_Quests
     _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
+  - _key: Level3_Clues
+    _valueAsString: 
+  - _key: Level3_Quests
     _valueAsString: 
   - _key: Level4_Quests
+    _valueAsString: 
+  - _key: Level4_Clues
     _valueAsString: 
   _globalTags: []
