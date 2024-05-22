@@ -132,11 +132,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceButtons[i].RemoveFromClassList("Highlight");
         }
 
-        nameTag.AddToClassList("NameTagLupe");
-        nameTag.RemoveFromClassList("NameTagMisra");
-        lupeImage.RemoveFromClassList("Inactive");
-        misraImage.AddToClassList("Inactive");
-
         choicesActive = true;
 
         choiceMap.Select(choiceButtons[0]);
