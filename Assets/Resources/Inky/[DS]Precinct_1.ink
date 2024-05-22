@@ -51,7 +51,7 @@ VAR snooped = false
 # emote : Misra \| Neutral_1
 "Hey!"
 
-#name:Misra
+#name: Lupe
 # emote : Lupe \| Fright_1
 "AYE! DIOS MIO!"
 
