@@ -1,12 +1,15 @@
-using Darklight.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Editor;
+
 using Darklight.UnityExt;
-using UnityEngine.SceneManagement;
+using Darklight.UnityExt.Editor;
+using Darklight.UXML;
+
+using NaughtyAttributes;
 
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 // the InputSystemProvider throws an error if a UIDocument is destroyed.
@@ -126,12 +129,12 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
     [SerializeField, ShowOnly] Vector2Int _screenSize;
 
-
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
+    [HorizontalLine(color: EColor.Gray)]
     [Header("Main Menu Controller")]
-    private MainMenuController _mainMenu;
     [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
     [SerializeField] SceneObject _mainMenuScene;
+    private MainMenuController _mainMenuController;
 
 
     [Header("Game UI Controller")]
@@ -173,12 +176,100 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     [Header("Speech Bubble")]
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
     [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
+    [SerializeField, Range(0.1f, 1f)] float _textScale = 0.25f;
+
+    public void CreateSpeechBubbleAtCurrentSpeaker(string text)
+    {
+        // Destroy the current speech bubble if it exists
+        if (speechBubbleObject != null)
+        {
+            DestroySpeechBubble();
+            speechBubbleObject = null;
+        }
+
+        // Create a new Bubble
+        speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
+        speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
+        speechBubbleObject.SetLocalScale(0.5f);
+
+        // Set the text of the speech bubble
+        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        speechBubble.text = text;
+        speechBubble.textSize = Mathf.CeilToInt(GetMaxScreenDimension() * _textScale);
+
+        speechBubbleObject.TextureUpdate();
+    }
+
+    public void DestroySpeechBubble()
+    {
+        if (speechBubbleObject != null)
+        {
+            if (Application.isPlaying)
+                Destroy(speechBubbleObject.gameObject);
+            else
+                DestroyImmediate(speechBubbleObject.gameObject);
+        }
+        speechBubbleObject = null;
+    }
+
+    Vector3 GetSpeakerSpeechBubblePosition()
+    {
+        string currentSpeaker = InkyStoryManager.Instance.CurrentSpeaker;
+
+        // Set the Camera Target to the Player
+        if (currentSpeaker.Contains("Lupe"))
+        {
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            if (playerInteractor == null)
+            {
+                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
+                return Vector3.zero;
+            }
+
+            return playerInteractor.GetBestOverlapGridData().worldPosition;
+        }
+
+        // Set the Camera Target to a NPC
+        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
+        foreach (NPC_Interactable interactable in interactables)
+        {
+            if (interactable.speakerTag.Contains(currentSpeaker))
+            {
+                return interactable.GetBestOverlapGridData().worldPosition;
+            }
+        }
+
+        Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
+        return Vector3.zero;
+    }
 
 
+
+    #region ------ [[ INTERACT ICON ]] ------------------------
     [Header("Interact Icon")]
     [SerializeField] UXML_UIDocumentPreset _interactIconPreset;
     [ShowOnly] public UXML_RenderTextureObject interactIcon;
+    public void ShowInteractIcon(Vector3 worldPosition, float scale = 1)
+    {
+        if (interactIcon == null)
+            interactIcon = CreateUXMLRenderTextureObject(_interactIconPreset);
+        interactIcon.transform.position = worldPosition;
+        interactIcon.SetLocalScale(scale);
 
+        //VisualElement icon = interactIcon.ElementQuery<VisualElement>();
+        //ScaleElementToScreenSize(icon, scale);
+    }
+
+    public void RemoveInteractIcon()
+    {
+        if (interactIcon == null) return;
+        if (Application.isPlaying)
+            interactIcon.Destroy();
+        else
+            DestroyImmediate(interactIcon.gameObject);
+        interactIcon = null;
+    }
+    #endregion
 
     // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
     [Header("Render Texture")]
@@ -206,56 +297,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         UpdateScreenSize();
     }
 
-    // ----- [[ PUBLIC METHODS ]] ------------------------------------>
-    public void ShowInteractIcon(Vector3 worldPosition, float scale = 1)
-    {
-        if (interactIcon == null)
-            interactIcon = CreateRenderTextureObject(_interactIconPreset);
-        interactIcon.transform.position = worldPosition;
-        interactIcon.SetLocalScale(scale);
 
-        //VisualElement icon = interactIcon.ElementQuery<VisualElement>();
-        //ScaleElementToScreenSize(icon, scale);
-    }
 
-    public void RemoveInteractIcon()
-    {
-        if (interactIcon == null) return;
-        if (Application.isPlaying)
-            interactIcon.Destroy();
-        else
-            DestroyImmediate(interactIcon.gameObject);
-        interactIcon = null;
-    }
-
-    public void CreateSpeechBubble(Vector3 worldPosition, string text)
-    {
-        if (speechBubbleObject == null)
-            speechBubbleObject = CreateRenderTextureObject(_speechBubblePreset);
-        speechBubbleObject.transform.position = worldPosition;
-        speechBubbleObject.SetLocalScale(0.5f);
-
-        // Set the text of the speech bubble
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.text = text;
-        speechBubble.textSize = Mathf.CeilToInt(GetMaxScreenDimension() * 0.1f);
-
-        speechBubbleObject.TextureUpdate();
-
-        Debug.Log($"Created Speech Bubble at {worldPosition} with textSize {speechBubble.textSize} ||| {text}");
-    }
-
-    public void DestroySpeechBubble()
-    {
-        if (speechBubbleObject != null)
-        {
-            if (Application.isPlaying)
-                Destroy(speechBubbleObject.gameObject);
-            else
-                DestroyImmediate(speechBubbleObject.gameObject);
-        }
-        speechBubbleObject = null;
-    }
 
     // ----- [[ PRIVATE METHODS ]] ------------------------------------>
     /// <summary>
@@ -267,7 +310,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// </param>
     /// <returns></returns>
     /// 
-    UXML_RenderTextureObject CreateRenderTextureObject(UXML_UIDocumentPreset preset)
+    UXML_RenderTextureObject CreateUXMLRenderTextureObject(UXML_UIDocumentPreset preset)
     {
         string name = $"UXMLRenderTexture : unknown";
         if (preset != null) name = $"UXMLRenderTexture : {preset.name}";
@@ -290,39 +333,4 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(UIManager))]
-    public class UIManagerCustomEditor : Editor
-    {
-        SerializedObject _serializedObject;
-        UIManager _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (UIManager)target;
-            _script.Awake();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("Clean Up Documents"))
-            {
-                UIManager.CleanUpDocuments();
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
-
 }

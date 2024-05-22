@@ -82,7 +82,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
@@ -102,7 +102,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void PopulateChoices()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         choiceParent.style.display = DisplayStyle.Flex;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
@@ -148,7 +148,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void SelectChoice()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
@@ -205,7 +205,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)

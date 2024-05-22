@@ -23,7 +23,7 @@ public class Interactable : OverlapGrid2D, IInteract
         get
         {
             if (_storyObject == null) return new List<string>();
-            return InkyStoryObject.GetAllKnots(_storyObject.story);
+            return InkyStoryObject.GetAllKnots(_storyObject.StoryValue);
         }
     }
 
@@ -34,7 +34,7 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             if (_storyObject == null) return new List<string>();
             if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
-            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.story, _sceneKnot);
+            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.StoryValue, _sceneKnot);
         }
     }
 
@@ -137,10 +137,6 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             //Debug.Log($"{Prefix}  ( {name} ) >> Found {_interactionStitches.Count} Stitches in the Knot.");
         }
-
-
-
-
     }
 
     public virtual void Reset()
@@ -155,7 +151,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        OverlapGrid2D_Data targetData = GetBestData();
+        OverlapGrid2D_Data targetData = GetBestOverlapGridData();
         UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
@@ -175,6 +171,19 @@ public class Interactable : OverlapGrid2D, IInteract
 
             isActive = true;
             isComplete = false;
+
+            // Subscribe to OnInteraction
+            OnInteraction += (string text) =>
+            {
+                UIManager.Instance.CreateSpeechBubbleAtCurrentSpeaker(text);
+            };
+
+            // Subscribe to OnComplete
+            OnCompleted += () =>
+            {
+                // Destroy the speech bubble
+                UIManager.Instance.DestroySpeechBubble();
+            };
 
             // Go To the Interaction Stitch
             _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
@@ -203,6 +212,7 @@ public class Interactable : OverlapGrid2D, IInteract
         // Continue the interaction
         _storyIterator.ContinueStory();
 
+        // Play FMOD One Shot
         SoundManager.PlayOneShot(_onContinuedInteraction);
 
         OnInteraction?.Invoke(_storyIterator.CurrentText);
@@ -218,7 +228,12 @@ public class Interactable : OverlapGrid2D, IInteract
 
         SoundManager.PlayOneShot(_onCompleteInteraction);
 
-        OnCompleted?.Invoke();
+        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
+        OnInteraction = delegate { }; // Reset OnInteraction
+
+        OnCompleted?.Invoke(); // Invoke OnCompleted
+        OnCompleted = delegate { }; // Reset OnCompleted
+
     }
 
     public virtual void OnDestroy()
@@ -235,7 +250,7 @@ public class Interactable : OverlapGrid2D, IInteract
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
     }
-       private void EnableOutline(bool enable)
+    private void EnableOutline(bool enable)
     {
         if (_spriteRenderer != null)
         {

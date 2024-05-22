@@ -3537,6 +3537,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _speakerList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: '_speakers.Array.data[0]'
       value: '[Speaker.Unkown, 1]'
       objectReference: {fileID: 0}
@@ -3547,6 +3555,42 @@ PrefabInstance:
     - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: '_speakers.Array.data[2]'
       value: '[Speaker.Lupe, 3]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[0]'
+      value: Speaker.Unkown
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[1]'
+      value: Speaker.Misra
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[2]'
+      value: Speaker.Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[0].knotName
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[1].knotName
+      value: scene4_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[2].knotName
+      value: scene4_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[0].sceneName.m_SceneName
+      value: SCENE_4_1 - Main Street
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[1].sceneName.m_SceneName
+      value: SCENE_4_2 - The General Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: sceneData.Array.data[2].sceneName.m_SceneName
+      value: SCENE_4_3 - The Arcade
       objectReference: {fileID: 0}
     - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: backgroundMusicEvent.Path
@@ -3780,8 +3824,16 @@ PrefabInstance:
       value: Misra_Dialogue
       objectReference: {fileID: 0}
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: speakerTag
+      value: Speaker.Misra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _isComplete
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: _speakerTag
+      value: '[Speaker.Misra, 2]'
       objectReference: {fileID: 0}
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _storyObject
@@ -3810,14 +3862,14 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
+      objectReference: {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.015686275
       objectReference: {fileID: 0}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.92156863
       objectReference: {fileID: 0}
     - target: {fileID: 5007469561755814138, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x

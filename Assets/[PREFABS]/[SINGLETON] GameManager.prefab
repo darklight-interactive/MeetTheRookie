@@ -299,19 +299,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneKnots:
-  - sceneName:
-      m_SceneName: SCENE_4_1 - Main Street
-    knotName: scene4_1
-  - sceneName:
-      m_SceneName: SCENE_4_2 - The General Store
-    knotName: scene4_2
-  - sceneName:
-      m_SceneName: SCENE_4_3 - The Arcade
-    knotName: scene4_3
-  globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _currentSpeaker: Lupe
-  _speakers: []
+  _speakerList: []
+  sceneData: []
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +323,7 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
+  _textScale: 0.15
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}

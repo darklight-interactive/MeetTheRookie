@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         base.Awake();
     }
+
+    public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
+    {
+        return (point1 + point2) * 0.5f;
+    }
 }
 
 // ================================================================================================= //

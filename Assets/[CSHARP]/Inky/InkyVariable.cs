@@ -50,7 +50,7 @@ public class InkyVariable
             List<string> list = new List<string>();
             foreach (KeyValuePair<InkListItem, int> item in inkList)
             {
-                list.Add(item.ToString());
+                list.Add(item.Key.ToString());
             }
             return list;
         }
