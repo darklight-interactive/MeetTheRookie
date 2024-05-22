@@ -101,6 +101,7 @@ public class InkyStoryObject : ScriptableObject
     [SerializeField] private List<InkyKnot> _knots;
     [SerializeField] private List<InkyVariable> _variables;
     [SerializeField, ShowOnly] private List<string> _globalTags;
+    private List<string> _boundFunctions = new List<string>();
 
     // ------------------------------ [[ PUBLIC METHODS ]] ------------------------------ >>
 
@@ -164,6 +165,12 @@ public class InkyStoryObject : ScriptableObject
     /// <param name="lookaheadSafe"></param>
     public void BindExternalFunction(string funcName, Story.ExternalFunction function, bool lookaheadSafe = false)
     {
+        if (_boundFunctions.Contains(funcName))
+        {
+            Debug.LogWarning($"Function {funcName} is already bound.");
+            return;
+        }
+        _boundFunctions.Add(funcName);
         StoryValue.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
     }
 

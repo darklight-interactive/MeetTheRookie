@@ -86,8 +86,36 @@ MonoBehaviour:
     - Irene_Dialogue.irene_kettle_rock
     - Irene_Dialogue.irene_winery
     - Irene_Dialogue.irene_still_standing
-  - name: debug_level4
-    stitches: []
+  - name: scene2
+    stitches:
+    - scene2.ding
+    - scene2.hello
+    - scene2.soul
+    - scene2.chastise
+    - scene2.scared
+    - scene2.introductions
+    - scene2.silence
+    - scene2.niceToMeet
+    - scene2.precinct
+    - scene2.Company
+    - scene2.treeFell
+    - scene2.snoop
+    - scene2.peek
+    - scene2.wait
+    - scene2.solo
+    - scene2.transition_to_case
+    - scene2.time
+    - scene2.police_report
+    - scene2.theRest
+    - scene2.nothingHere
+    - scene2.Evidence
+    - scene2.Witnesses
+    - scene2.Help
+    - scene2.We
+    - scene2.phone_call
+    - scene2.voicemail
+    - scene2.JokeBack
+    - scene2.door
   - name: scene4_1
     stitches:
     - scene4_1.talk_to_misra
@@ -124,6 +152,20 @@ MonoBehaviour:
   - name: global decl
     stitches: []
   _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
   - _key: closed_signs
     _valueAsString: 0
   - _key: Speaker

@@ -14,14 +14,12 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Next scene to load")] public SceneObject nextScene;
-    [Tooltip("The Dating Sim Story Object")] public InkyStoryObject storyObject;
     [SerializeField] private DatingSimEmotes emotes;
 
-    // Global variables
+    InkyStoryObject storyObject;
+    InkyStoryIterator storyIterator;
     bool choicesActive;
-    // The Field to navigate buttons
     SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
-    // Variables for all the visual elements
     VisualElement misraImage;
     VisualElement lupeImage;
     VisualElement continueTriangle;
@@ -44,6 +42,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         UniversalInputManager.OnMoveInputStarted += Move;
         UniversalInputManager.OnPrimaryInteract += Select;
 
+
+
         // Get the emotes
         //emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
     }
@@ -55,7 +55,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choiceButtons = temp.OrderBy(x => x.name).ToList();
         choiceMap.Load(temp);
 
-
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
         lupeImage = root.Q<VisualElement>("LupeImage");
@@ -65,6 +64,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = root.Q<TextElement>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
+
+        // Get the story object
+        storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+        storyIterator = new InkyStoryIterator(storyObject);
+        storyIterator.GoToKnotOrStitch("scene2");
 
         // Start story
         ContinueStory();

@@ -11,12 +11,9 @@ VAR sincerity_level = 0
 VAR spooked = false
 VAR snooped = false
 
+* [Scene 2 - The Precinct] -> scene2
 
-
-
-* [BEGIN] -> intro
-
-=== intro ===
+=== scene2 ===
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2
