@@ -19,7 +19,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     /// <summary>
     /// This is the active text that is currently being displayed in the story, for easy reference.
     /// </summary>
-    public string CurrentText => _storyObject.StoryValue.currentText;
+    public string CurrentText => _storyObject.StoryValue.currentText.Trim();
 
     // ------------------- [[ EVENTS ]] -------------------
     public delegate void OnDialogue(string currentText);
@@ -51,7 +51,6 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
             Debug.Log($"{Prefix} Moved to Knot: {knotName}");
         }
-
     }
 
     public void ContinueStory()
@@ -81,6 +80,13 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
         {
             GoToState(State.DIALOGUE);
             story.Continue();
+
+            // Check if empty, if so, continue
+            if (CurrentText == null || CurrentText == "")
+            {
+                ContinueStory();
+                return;
+            }
 
             // Invoke the Dialogue Event
             OnKnotDialogue?.Invoke(CurrentText);

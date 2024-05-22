@@ -141,26 +141,9 @@ public class InkyStoryManagerCustomEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        _script = (InkyStoryManager)target;
-
-        // Draw the Story Manager Console
-        ConsoleGUI consoleGUI = InkyStoryManager.Console;
-        consoleGUI.DrawInEditor();
-
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
         if (GUILayout.Button("Show Editor Window"))
         {
             InkyStoryManagerEditorWindow.ShowWindow();
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
         }
     }
 }
@@ -205,14 +188,22 @@ public class InkyStoryManagerEditorWindow : EditorWindow
 
         serializedStoryManager.Update();
 
+        // << GET PROPERTIES >>
         SerializedProperty globalStoryObjectProperty = serializedStoryManager.FindProperty("_globalStoryObject");
         sceneDataProperty = serializedStoryManager.FindProperty("sceneData");
 
+        // << DRAW CONSOLE >>>
+        ConsoleGUI consoleGUI = InkyStoryManager.Console;
+        consoleGUI.DrawInEditor();
+
+        // << DRAW STORY MANAGER >>
         EditorGUILayout.LabelField("Inky Story Manager", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
+        // >> Global Story Object
         EditorGUILayout.PropertyField(globalStoryObjectProperty);
 
+        // >> Scene Data
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Scene Data", EditorStyles.boldLabel);
 
@@ -226,6 +217,7 @@ public class InkyStoryManagerEditorWindow : EditorWindow
             EditorGUILayout.EndVertical();
         }
 
+        GUILayout.Space(10);
         if (GUILayout.Button("Add Scene Knot"))
         {
             sceneDataProperty.InsertArrayElementAtIndex(sceneDataProperty.arraySize);

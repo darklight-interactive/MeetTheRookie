@@ -62,20 +62,21 @@ VAR closed_signs = 0
 
 = strange_symbol_on_fountain
     {IsQuestComplete(visited_symbol):
-    ~ SetSpeaker(Speaker.Misra)
-    [Misra]{It's probably just some historical symbol. | I don't think it's anything important. | We should move on. | Where to next?}
-    ~ SetSpeaker(Speaker.Lupe)
-    // Add to Synthesis - The Town of KR
-    -> DONE
+        ~ SetSpeaker(Speaker.Misra)
+        {It's probably just some historical symbol. | I don't think it's anything important. | We should move on. | Where to next?}
+        ~ SetSpeaker(Speaker.Lupe)
+        #Add to Synthesis - The Town of KR
+        -> DONE
     - else:
-    [Lupe] What's this?
-    ~ SetSpeaker(Speaker.Misra)
-    [Misra] Hm. Looks like some sort of silly engravement.
-    ~ SetSpeaker(Speaker.Lupe)
-    ~  DiscoverClue(symbol_evidence)
+        ~ SetSpeaker(Speaker.Lupe)
+        What's this?
+        ~ SetSpeaker(Speaker.Misra)
+        Hm. Looks like some sort of silly engravement.
+        ~ SetSpeaker(Speaker.Lupe)
+        ~ DiscoverClue(symbol_evidence)
         ~ CompleteQuest(visited_symbol)
-    # ADD TO SYNTHESIS
-    -> DONE
+        # ADD TO SYNTHESIS
+        -> DONE
     }
 
 = goop_on_fountain

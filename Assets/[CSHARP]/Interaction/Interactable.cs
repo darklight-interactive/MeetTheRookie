@@ -188,7 +188,6 @@ public class Interactable : OverlapGrid2D, IInteract
             // Go To the Interaction Stitch
             _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
             _storyIterator.GoToKnotOrStitch(_interactionStitch);
-            _storyIterator.ContinueStory();
 
             // >> TEMPORARY COLOR CHANGE
             //StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
