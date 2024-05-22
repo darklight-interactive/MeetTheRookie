@@ -449,85 +449,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &144259801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level1_melOmart
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
-  _knots:
-  - name: debug_level1
-    stitches: []
-  - name: scene1_0
-    stitches: []
-  - name: scene1_1
-    stitches:
-    - scene1_1.gas_pump
-    - scene1_1.car
-    - scene1_1.npc
-    - scene1_1.enter_store
-  - name: scene1_2
-    stitches:
-    - scene1_2.vending_machine
-    - scene1_2.employee
-    - scene1_2.door_to_backroom
-    - scene1_2.door_to_outside
-  - name: scene1_3
-    stitches:
-    - scene1_3.mel
-    - scene1_3.goop
-  - name: scene1_4
-    stitches:
-    - scene1_4.fallen_tree
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!114 &174544167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,7 +1323,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -5254192346949721912, guid: bd7650f900493dd4497b914e4e998811, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.idahome_and_goods
   _onFirstInteraction:
@@ -1431,6 +1352,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
   sceneObject:
     m_SceneName: 
 --- !u!43 &551174176
@@ -1709,7 +1631,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 0}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.apartments_for_lease_sign
   _onFirstInteraction:
@@ -1738,6 +1660,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!61 &665142895
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1836,7 +1759,7 @@ MonoBehaviour:
     m_Bits: 64
   editMode: 0
   _sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.strange_symbol_on_fountain
   _onFirstInteraction:
@@ -1865,6 +1788,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!212 &669871783
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2236,7 +2160,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 8841562180652977627, guid: f1a1596efcd647844bb8fd7525cb5629, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.the_rockin_kettle
   _onFirstInteraction:
@@ -2265,6 +2189,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
   sceneObject:
     m_SceneName: 
 --- !u!61 &722363332
@@ -2743,7 +2668,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 0}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.diner_closed_sign
   _onFirstInteraction:
@@ -2772,6 +2697,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!61 &797665658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3148,26 +3074,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &899965550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: synthesisTest
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
-  _knots:
-  - name: nada
-    stitches: []
-  - name: combine
-    stitches: []
-  _variables: []
-  _globalTags: []
 --- !u!43 &913496688
 Mesh:
   m_ObjectHideFlags: 0
@@ -3518,62 +3424,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1045604096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_global
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
-  _knots:
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!1001 &1116847433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3813,7 +3663,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 0}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.laundromat_closed_sign
   _onFirstInteraction:
@@ -3842,6 +3692,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!61 &1184809261
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3903,14 +3754,14 @@ PrefabInstance:
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _sprite
       value: 
-      objectReference: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
+      objectReference: {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _sceneKnot
-      value: Misra_Dialogue
+      value: scene4_2
       objectReference: {fileID: 0}
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _isComplete
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: _storyObject
@@ -3939,7 +3790,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
+      objectReference: {fileID: 3796690502395988420, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
       value: 0.015686275
@@ -4334,7 +4185,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -8708412444254385339, guid: d61dfe5d30384f848a92130347079233, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.powerup_arcade
   _onFirstInteraction:
@@ -4363,6 +4214,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
   sceneObject:
     m_SceneName: 
 --- !u!43 &1276364369
@@ -4582,7 +4434,7 @@ MonoBehaviour:
     m_Bits: 64
   editMode: 0
   _sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.goop_on_fountain
   _onFirstInteraction:
@@ -4611,6 +4463,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!212 &1418021170
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5477,7 +5330,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 7668350867315635259, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.einab_closed_sign
   _onFirstInteraction:
@@ -5506,6 +5359,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!61 &1650760818
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5882,80 +5736,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1811607938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level4_mainstreet
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 5a06435c192207c4cac4e40e9380edf2, type: 3}
-  _knots:
-  - name: debug_level4
-    stitches: []
-  - name: scene4_1
-    stitches:
-    - scene4_1.talk_to_misra
-    - scene4_1.idahome_and_goods
-    - scene4_1.powerup_arcade
-    - scene4_1.strange_symbol_on_fountain
-    - scene4_1.goop_on_fountain
-    - scene4_1.the_rockin_kettle
-    - scene4_1.laundromat_closed_sign
-    - scene4_1.einab_closed_sign
-    - scene4_1.apartments_for_lease_sign
-    - scene4_1.diner_closed_sign
-    - scene4_1.clothing_store_closed_sign
-    - scene4_1.heart_of_kettle
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.4_1
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: Speaker
-    _valueAsString: Unkown
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: closed_signs
-    _valueAsString: 0
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: Level1_Quests
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
-    _valueAsString: 
-  - _key: Level4_Quests
-    _valueAsString: 
-  _globalTags: []
 --- !u!1 &1829425227
 GameObject:
   m_ObjectHideFlags: 0
@@ -6062,7 +5842,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 0}
-  _storyObject: {fileID: 11400000, guid: 709a47ad8ccaffc468040e10d42072d6, type: 2}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.clothing_store_closed_sign
   _onFirstInteraction:
@@ -6091,6 +5871,7 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
 --- !u!61 &1829425231
 BoxCollider2D:
   m_ObjectHideFlags: 0

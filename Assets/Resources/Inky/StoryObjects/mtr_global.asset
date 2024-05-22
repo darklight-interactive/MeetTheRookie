@@ -24,6 +24,8 @@ MonoBehaviour:
     stitches: []
   - name: IsQuestComplete
     stitches: []
+  - name: IsQuestActive
+    stitches: []
   - name: DiscoverClue
     stitches: []
   - name: IsClueFound
@@ -32,9 +34,74 @@ MonoBehaviour:
     stitches:
     - Misra_Dialogue.default
     - Misra_Dialogue.4_1
+  - name: Roy_Dialogue
+    stitches:
+    - Roy_Dialogue.interogate
+    - Roy_Dialogue.personal_info
+    - Roy_Dialogue.town_history
+    - Roy_Dialogue.winery_closing
+    - Roy_Dialogue.window
+    - Roy_Dialogue.merch_shirt
+    - Roy_Dialogue.merch_sticker
+    - Roy_Dialogue.pamphlet
+    - Roy_Dialogue.potential_suspects
+    - Roy_Dialogue.teenagers
+  - name: Jenny_Dialogue
+    stitches:
+    - Jenny_Dialogue.interogate
+    - Jenny_Dialogue.hosi
+    - Jenny_Dialogue.4_3_jenny_questions
+  - name: Calvin_Dialogue
+    stitches:
+    - Calvin_Dialogue.4_3
+    - Calvin_Dialogue.4_3_calvin_questions
+    - Calvin_Dialogue.cal_hosi
+    - Calvin_Dialogue.HOSI_questions
+    - Calvin_Dialogue.HOSI_questions2
+    - Calvin_Dialogue.personal_info_calvin
+    - Calvin_Dialogue.winery_calvin
+    - Calvin_Dialogue.KR_calvin
+  - name: Josh_Dialogue
+    stitches:
+    - Josh_Dialogue.4_3
+    - Josh_Dialogue.4_3_josh_questions
+    - Josh_Dialogue.4_3_josh_personal_info
+    - Josh_Dialogue.4_3_KR_josh
+    - Josh_Dialogue.4_3_winery_josh
+  - name: debug_level4
+    stitches: []
+  - name: scene4_1
+    stitches:
+    - scene4_1.talk_to_misra
+    - scene4_1.idahome_and_goods
+    - scene4_1.powerup_arcade
+    - scene4_1.strange_symbol_on_fountain
+    - scene4_1.goop_on_fountain
+    - scene4_1.the_rockin_kettle
+    - scene4_1.laundromat_closed_sign
+    - scene4_1.einab_closed_sign
+    - scene4_1.apartments_for_lease_sign
+    - scene4_1.diner_closed_sign
+    - scene4_1.clothing_store_closed_sign
+    - scene4_1.heart_of_kettle
+  - name: scene4_2
+    stitches:
+    - scene4_2.store_window
+    - scene4_2.merch_shirt
+    - scene4_2.merch_sticker
+    - scene4_2.front_door
+  - name: scene4_3
+    stitches:
+    - scene4_3.arcade_machines
+    - scene4_3.teens
+    - scene4_3.teens_roulette
+    - scene4_3.teens_suspect
+    - scene4_3.exit_scene
   - name: global decl
     stitches: []
   _variables:
+  - _key: closed_signs
+    _valueAsString: 0
   - _key: Speaker
     _valueAsString: Unkown
   - _key: CURRENT_SPEAKER
@@ -51,8 +118,12 @@ MonoBehaviour:
     _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
   - _key: Level1_Quests
     _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: Level4_Clues
+  - _key: Level3_Clues
+    _valueAsString: 
+  - _key: Level3_Quests
     _valueAsString: 
   - _key: Level4_Quests
+    _valueAsString: 
+  - _key: Level4_Clues
     _valueAsString: 
   _globalTags: []
