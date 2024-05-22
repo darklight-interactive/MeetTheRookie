@@ -157,7 +157,7 @@ Someone's got to try and turn things around.
         ~ SetSpeaker(Speaker.Roy_Rodgerson)
          Aha!
         ~ SetSpeaker(Speaker.Lupe)
--> DONE
+        -> DONE
 
 = pamphlet
 * The Rocky Years?
