@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Darklight.Utility;
 using UnityEngine;
 
-public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE }
+public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMATION }
 
 public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
@@ -480,6 +480,31 @@ public class ChaseState : FiniteState<NPCState>
         // move the character
         npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
         _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-chaseDirection, 0));
+    }
+}
+
+#endregion
+
+#region ================== [ PLAY ANIMATION STATE ] ==================
+public class PlayAnimationState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+    public NPCState _returnState;
+
+    public PlayAnimationState(NPCState stateType, params object[] args) : base(stateType, args)
+    {
+        _stateMachine = (NPC_StateMachine)args[0];
+        _returnState = (NPCState)args[1];
+    }
+
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Execute()
+    {
+        if ( _stateMachine.animator.FrameAnimationPlayer.AnimationIsOver() ) {
+            _stateMachine.GoToState(_returnState);
+        }
+
     }
 }
 

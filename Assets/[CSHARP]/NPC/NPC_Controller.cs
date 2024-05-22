@@ -19,6 +19,7 @@ public class NPC_Controller : MonoBehaviour
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player => FindFirstObjectByType<PlayerController>().gameObject;
     public NPCState startingState = NPCState.IDLE;
+    public NPCState stateAfterAnimation = NPCState.IDLE;
     [Range(0.1f, 1f)] public float npcSpeed = .2f;
     [Range(0.1f, 1f)] public float followSpeed = .5f;
     [Range(0.1f, 1f)] public float hideSpeed = .5f;
@@ -40,6 +41,7 @@ public class NPC_Controller : MonoBehaviour
         FollowState followState = new(NPCState.FOLLOW, new object[] { stateMachine, this, followDistance, followSpeed });
         HideState hideState = new(NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
         ChaseState chaseState = new(NPCState.CHASE, new object[] { stateMachine, chaseSpeakDistance, chaseSpeed });
+        PlayAnimationState playAnimationState= new(NPCState.PLAY_ANIMATION, new object[] { stateMachine, stateAfterAnimation});
 
         // Create dictionary to hold the possible states
         Dictionary<NPCState, FiniteState<NPCState>> possibleStates = new()
@@ -50,6 +52,7 @@ public class NPC_Controller : MonoBehaviour
             { NPCState.FOLLOW, followState },
             { NPCState.HIDE, hideState },
             { NPCState.CHASE, chaseState },
+            { NPCState.PLAY_ANIMATION, playAnimationState}, 
         };
 
         // Create the NPCStateMachine
@@ -63,6 +66,7 @@ public class NPC_Controller : MonoBehaviour
         followState._stateMachine = stateMachine;
         hideState._stateMachine = stateMachine;
         chaseState._stateMachine = stateMachine;
+        playAnimationState._stateMachine = stateMachine;
     }
 
     // Update is called once per frame
