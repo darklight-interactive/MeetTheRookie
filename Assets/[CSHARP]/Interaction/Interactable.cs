@@ -100,7 +100,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void Initialize()
     {
         // Prioritize the initial sprite that is set in the sprite renderer
-        // Its assumed that the sprtie renderer has a null sprite when the interactable is first created
+        // Its assumed that the sprite renderer has a null sprite when the interactable is first created
         if (_spriteRenderer.sprite == null)
             _spriteRenderer.sprite = _sprite;
         else
@@ -111,10 +111,36 @@ public class Interactable : OverlapGrid2D, IInteract
         if (_storyObject == null)
         {
 #if UNITY_EDITOR
-            Debug.LogWarning($"INTERACTABLE ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
+            Debug.LogWarning($"{Prefix}  ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
 #endif
             return;
         }
+
+        if (_sceneKnots.Count == 0)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"{Prefix}  ( {name} ) >> No Knots found in the Story Object. Please add a knot to the story.", this);
+#endif
+        }
+        else
+        {
+            Debug.Log($"{Prefix}  ( {name} ) >> Found {_sceneKnots.Count} Knots in the Story Object.");
+        }
+
+        if (_interactionStitches.Count == 0)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"{Prefix}  ( {name} ) >> No Stitches found in the Knot. Please add a stitch to the knot.", this);
+#endif
+        }
+        else
+        {
+            Debug.Log($"{Prefix}  ( {name} ) >> Found {_interactionStitches.Count} Stitches in the Knot.");
+        }
+
+
+
+
     }
 
     public virtual void Reset()

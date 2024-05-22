@@ -123,6 +123,10 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 #endif
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
+    // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
+    [SerializeField, ShowOnly] Vector2Int _screenSize;
+
+
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [Header("Main Menu Controller")]
     private MainMenuController _mainMenu;
@@ -282,6 +286,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         {
             lastScreenWidth = Screen.width;
             lastScreenHeight = Screen.height;
+            _screenSize = new Vector2Int(lastScreenWidth, lastScreenHeight);
             Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
         }
     }
