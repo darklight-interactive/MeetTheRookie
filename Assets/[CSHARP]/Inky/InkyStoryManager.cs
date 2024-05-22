@@ -6,6 +6,8 @@ using UnityEngine;
 using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
+using Darklight.UnityExt.Scene;
+
 
 
 
@@ -71,6 +73,14 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         {
             Debug.Log($"[InkyStoryManager] >> Active Quest Chain: {newValue}");
         });
+
+        // TODO : Make this more dynamic
+        if (UniversalSceneManager.Instance.CurrentScene.Contains("SCENE_4_1"))
+        {
+            InkyStoryIterator iterator = new InkyStoryIterator(globalStoryObject);
+            iterator.GoToKnotOrStitch("scene4_1.enter");
+            iterator.ContinueStory();
+        }
     }
 
     public object GoToScene(object[] args)
