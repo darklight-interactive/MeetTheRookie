@@ -77,7 +77,14 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string currentText => _storyIterator.CurrentText;
+    public string currentText
+    {
+        get
+        {
+            if (_storyIterator == null) return "";
+            return _storyIterator.CurrentText;
+        }
+    }
 
     public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
