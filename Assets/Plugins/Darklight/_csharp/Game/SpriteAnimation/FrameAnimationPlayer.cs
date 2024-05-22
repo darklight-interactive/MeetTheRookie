@@ -100,6 +100,11 @@ namespace Darklight.Game.SpriteAnimation
 
             //_spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0, 180 * _flipMultiplier, 0));
         }
+
+        public bool AnimationIsOver() {
+            // TODO: make variable and change it in update and load spritesheet
+            return false;
+        }
     }
 
 #if UNITY_EDITOR

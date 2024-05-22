@@ -484,3 +484,26 @@ public class ChaseState : FiniteState<NPCState>
 }
 
 #endregion
+
+#region ================== [ GRAB STATE ] ==================
+
+public class GrabState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+
+    public GrabState(NPCState stateType, params object[] args) : base(stateType, args)
+    {
+        _stateMachine = (NPC_StateMachine)args[0];
+    }
+
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Execute()
+    {
+
+
+    }
+}
+
+#endregion
+

@@ -31,7 +31,7 @@ public class NPC_Controller : MonoBehaviour
     [Range(0f, 10f)] public float walkMaxDuration = 3f;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
-    void Start()
+    public virtual void Start()
     {
         // Create instances of the states
         IdleState idleState = new(NPCState.IDLE, new object[] { stateMachine, this, idleMaxDuration });
