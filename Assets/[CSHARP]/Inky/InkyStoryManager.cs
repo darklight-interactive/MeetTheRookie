@@ -32,7 +32,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     [Tooltip("The global Inky Story Object.")]
     [SerializeField] InkyStoryObject _globalStoryObject;
-    public InkyStoryObject GlobalStory => _globalStoryObject;
+    public InkyStoryObject GlobalStoryObject => _globalStoryObject;
 
     [Tooltip("The current speaker in the story.")]
     [ShowOnly, SerializeField] string _currentSpeaker;
@@ -46,7 +46,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     [System.Serializable]
     public class InkySceneData
     {
-        public SceneObject sceneName;
+        public SceneObject sceneObject;
 
         [Dropdown("storyKnots")]
         public string knotName;
@@ -100,14 +100,6 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         {
             Debug.Log($"[InkyStoryManager] >> Active Quest Chain: {newValue}");
         });
-
-        // TODO : Make this more dynamic
-        if (UniversalSceneManager.Instance.CurrentScene.Contains("SCENE_4_1"))
-        {
-            InkyStoryIterator iterator = new InkyStoryIterator(_globalStoryObject);
-            iterator.GoToKnotOrStitch("scene4_1.enter");
-            iterator.ContinueStory();
-        }
     }
 
 
@@ -141,6 +133,11 @@ public class InkyStoryManagerCustomEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        if (GUILayout.Button("Reload InkyStoryObjects"))
+        {
+            _script.loader.LoadAllStories();
+        }
+
         if (GUILayout.Button("Show Editor Window"))
         {
             InkyStoryManagerEditorWindow.ShowWindow();
@@ -212,7 +209,7 @@ public class InkyStoryManagerEditorWindow : EditorWindow
             SerializedProperty dataProperty = sceneDataProperty.GetArrayElementAtIndex(i);
 
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.PropertyField(dataProperty.FindPropertyRelative("sceneName"));
+            EditorGUILayout.PropertyField(dataProperty.FindPropertyRelative("sceneObject"));
             EditorGUILayout.PropertyField(dataProperty.FindPropertyRelative("knotName"));
             EditorGUILayout.EndVertical();
         }

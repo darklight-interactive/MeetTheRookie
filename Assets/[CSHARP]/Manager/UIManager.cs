@@ -330,7 +330,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             lastScreenWidth = Screen.width;
             lastScreenHeight = Screen.height;
             _screenSize = new Vector2Int(lastScreenWidth, lastScreenHeight);
-            Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
+            //Debug.Log($"Screen Size Updated: {lastScreenWidth} x {lastScreenHeight}");
         }
     }
 }

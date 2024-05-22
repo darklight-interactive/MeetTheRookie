@@ -1,8 +1,4 @@
 === Roy_Dialogue ===
-~ SetActiveQuestChain(Level4_Quests)
-Hello i am roy
-This is me testing my text
-
 { IsQuestComplete(visited_roy) == false:
     ~ CompleteQuest(visited_roy)
     ~ SetSpeaker(Speaker.Misra)
@@ -41,7 +37,7 @@ This is me testing my text
         ~ SetSpeaker(Speaker.Roy_Rodgerson)
         Of course. 
         Feel free to look around, if it helps any.
-            -> DONE
+        -> DONE
         }
 
 = personal_info

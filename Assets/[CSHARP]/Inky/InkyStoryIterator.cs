@@ -29,7 +29,6 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     public InkyStoryIterator(InkyStoryObject inkyStoryObject, State initialState = State.NULL) : base(initialState)
     {
         _storyObject = inkyStoryObject;
-        //_storyObject.Initialize
         GoToState(initialState);
     }
 

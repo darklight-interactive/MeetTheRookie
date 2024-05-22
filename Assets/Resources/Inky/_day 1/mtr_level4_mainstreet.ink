@@ -22,7 +22,7 @@ VAR closed_signs = 0
 * [Scene 4_1 - Main Street] -> scene4_1
 * [Scene 4_2 - General Store] -> scene4_2
 * [Scene 4_3 - Arcade] -> scene4_3
-
+* [Scene 4_4 - Bar] -> scene4_4
 
 // ===================================== SCENE 4_1 ======================= //
 === scene4_1 === 
@@ -32,7 +32,9 @@ VAR closed_signs = 0
 # The Bar is not.
 # Any store marked with a closed sign is not accessible.
 
-+ [talk to misra] -> Misra_Dialogue
+~ SetActiveQuestChain(Level4_Quests)
+
++ [talk to misra] -> talk_to_misra
 
 + [go to gen store] -> idahome_and_goods
 + [go to arcade] -> powerup_arcade
@@ -50,33 +52,29 @@ VAR closed_signs = 0
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 
-= enter
-    ~ StartQuest(visited_misra)
-    ->DONE
-
+= talk_to_misra
+    -> Misra_Dialogue
 = idahome_and_goods
-    -> scene4_2.enter
-    
+    -> scene4_2
 = powerup_arcade
     -> DONE
 
 = strange_symbol_on_fountain
     {IsQuestComplete(visited_symbol):
-        ~ SetSpeaker(Speaker.Misra)
-        {It's probably just some historical symbol. | I don't think it's anything important. | We should move on. | Where to next?}
-        ~ SetSpeaker(Speaker.Lupe)
-        #Add to Synthesis - The Town of KR
-        -> DONE
+    ~ SetSpeaker(Speaker.Misra)
+    [Misra]{It's probably just some historical symbol. | I don't think it's anything important. | We should move on. | Where to next?}
+    ~ SetSpeaker(Speaker.Lupe)
+    // Add to Synthesis - The Town of KR
+    -> DONE
     - else:
-        ~ SetSpeaker(Speaker.Lupe)
-        What's this?
-        ~ SetSpeaker(Speaker.Misra)
-        Hm. Looks like some sort of silly engravement.
-        ~ SetSpeaker(Speaker.Lupe)
-        ~ DiscoverClue(symbol_evidence)
+    [Lupe] What's this?
+    ~ SetSpeaker(Speaker.Misra)
+    [Misra] Hm. Looks like some sort of silly engravement.
+    ~ SetSpeaker(Speaker.Lupe)
+    ~  DiscoverClue(symbol_evidence)
         ~ CompleteQuest(visited_symbol)
-        # ADD TO SYNTHESIS
-        -> DONE
+    # ADD TO SYNTHESIS
+    -> DONE
     }
 
 = goop_on_fountain

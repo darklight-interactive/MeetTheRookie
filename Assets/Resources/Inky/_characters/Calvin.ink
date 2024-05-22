@@ -18,7 +18,7 @@
     ~ SetSpeaker(Speaker.Lupe)
      ...what??
     ~ CompleteQuest(calvin_first_interact)
-        -> DONE
+    -> DONE
 }
 
 // second interaction
@@ -31,7 +31,7 @@
     ~ SetSpeaker(Speaker.Calvin)
      ...
     ~ SetSpeaker(Speaker.Lupe)
-        -> DONE
+    -> DONE
 }
 
 // Suspects
@@ -42,7 +42,7 @@
     ~ SetSpeaker(Speaker.Lupe)
     // Add to Synthesis: Who Broke into the Old Winery?
     ~ DiscoverClue(calvin_suspects)
-        -> DONE
+    -> DONE
 }
     
 = 4_3_calvin_questions
@@ -79,7 +79,7 @@
      being a hamster, in space.
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(HOSI_calvin)
-        -> DONE
+    -> DONE
 
 = HOSI_questions2
     ~ SetSpeaker(Speaker.Calvin)
@@ -88,7 +88,7 @@
      I don't like being a bad guy, so I'm the hamster.
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(HOSI_calvin)
-        -> DONE
+    -> DONE
 
 = personal_info_calvin
     ~ SetSpeaker(Speaker.Calvin)
@@ -110,7 +110,7 @@
     ~ SetSpeaker(Lupe)
      Thanks, Calvin.
     ~ DiscoverClue(personal_info_calvin)
-        -> DONE
+    -> DONE
 
 = winery_calvin
     ~ SetSpeaker(Speaker.Calvin)
@@ -133,10 +133,10 @@
          Ihavenoideawhatyou'retalkingaboutIwasathome.
         ~ SetSpeaker(Speaker.Lupe)
         ~ DiscoverClue(winery_calvin)
-            -> DONE
+        -> DONE
     - else:
         ~ DiscoverClue(winery_calvin)
-            -> DONE
+        -> DONE
 }
 
 = KR_calvin
@@ -148,4 +148,4 @@
     ~ SetSpeaker(Speaker.Calvin)
      Er, nothing.
     ~ DiscoverClue(KR_calvin)
-        -> DONE
+    -> DONE

@@ -16,8 +16,6 @@ MonoBehaviour:
   _knots:
   - name: SetSpeaker
     stitches: []
-  - name: GoToScene
-    stitches: []
   - name: SetActiveQuestChain
     stitches: []
   - name: StartQuest
@@ -70,11 +68,29 @@ MonoBehaviour:
     - Josh_Dialogue.4_3_josh_personal_info
     - Josh_Dialogue.4_3_KR_josh
     - Josh_Dialogue.4_3_winery_josh
+  - name: Jenkins_Dialogue
+    stitches:
+    - Jenkins_Dialogue.jenkins_questions
+    - Jenkins_Dialogue.jenkins_winery_
+    - Jenkins_Dialogue.jenkins_last_night
+    - Jenkins_Dialogue.jenkins_kettle_rock
+    - Jenkins_Dialogue.jenkins_council
+    - Jenkins_Dialogue.jenkins_sarah
+    - Jenkins_Dialogue.jenkins_sacrifice
+  - name: Irene_Dialogue
+    stitches:
+    - Irene_Dialogue.irene_questions
+    - Irene_Dialogue.irene_goats
+    - Irene_Dialogue.irene_plaque
+    - Irene_Dialogue.irene_sacrifice
+    - Irene_Dialogue.irene_kettle_rock
+    - Irene_Dialogue.irene_winery
+    - Irene_Dialogue.irene_still_standing
   - name: debug_level4
     stitches: []
   - name: scene4_1
     stitches:
-    - scene4_1.enter
+    - scene4_1.talk_to_misra
     - scene4_1.idahome_and_goods
     - scene4_1.powerup_arcade
     - scene4_1.strange_symbol_on_fountain
@@ -88,7 +104,6 @@ MonoBehaviour:
     - scene4_1.heart_of_kettle
   - name: scene4_2
     stitches:
-    - scene4_2.enter
     - scene4_2.store_window
     - scene4_2.merch_shirt
     - scene4_2.merch_sticker
@@ -100,17 +115,22 @@ MonoBehaviour:
     - scene4_3.teens_roulette
     - scene4_3.teens_suspect
     - scene4_3.exit_scene
+  - name: scene4_4
+    stitches:
+    - scene4_4.irene_text
+    - scene4_4.man
+    - scene4_4.goop
+    - scene4_4.memorial_plaque
   - name: global decl
     stitches: []
   _variables:
   - _key: closed_signs
     _valueAsString: 0
   - _key: Speaker
-    _valueAsString: Unkown, Misra, Lupe
+    _valueAsString: Unkown, Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson,
+      Jenny, Calvin, Josh, Irene, Jenkins
   - _key: CURRENT_SPEAKER
     _valueAsString: Lupe
-  - _key: SceneID
-    _valueAsString: 1
   - _key: MAIN_QUEST
     _valueAsString: 
   - _key: ACTIVE_QUEST_CHAIN
