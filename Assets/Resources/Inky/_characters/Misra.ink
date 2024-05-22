@@ -30,7 +30,7 @@ Idk to each their own , just take it away now. -> DONE
         ~ SetSpeaker(Speaker.Lupe)
     }
 }
-{IsQuestComplete(visited_roy) && IsQuestComplete(visited_arcade):
+{IsQuestComplete(visited_jenny) && IsQuestComplete(complete_arcade):
     ~ SetSpeaker(Speaker.Misra)
      [Misra] Those guys are the worst.
     ~ SetSpeaker(Speaker.Lupe)

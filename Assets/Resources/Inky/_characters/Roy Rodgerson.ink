@@ -219,7 +219,7 @@ Someone's got to try and turn things around.
  //* {golden_age && tragedy && rocky_years} -> scene4_2  
 
 = potential_suspects
-{IsQuestComplete(visited_arcade):
+{IsQuestComplete(complete_arcade):
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      If I had to place blame,
      Those delinquents at Power Up.
