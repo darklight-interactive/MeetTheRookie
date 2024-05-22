@@ -6,41 +6,43 @@
 
 * [talk_to_misra] -> Misra_Dialogue
 * [talk_to_jenny] -> Jenny_Dialogue
+* [machines] -> arcade_machines
+* [exit_door] -> exit_scene
 
 = arcade_machines
     {IsQuestComplete(visited_machines):
-        [Lupe]{"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
+        {"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
     - else:
-    [Lupe] I don't recognize any of these games.
+     I don't recognize any of these games.
     ~ SetSpeaker(Speaker.Misra)
-    [Misra] Yeah...
-    [Misra] They're all knock offs of knock offs.
-    [Misra] They're cheaper that way.
-    [Misra] And twice the fun!
--> DONE
+     Yeah...
+     They're all knock offs of knock offs.
+     They're cheaper that way.
+     And twice the fun!
+    -> DONE
 }
     
 = teens
-[Lupe] Is that...
-[Lupe] Who you were talking about...?
+ Is that...
+ Who you were talking about...?
 ~ SetSpeaker(Speaker.Misra)
-[Misra] Yes.
-[Misra] Don't be fooled.
-[Misra] They're vicious.
+ Yes.
+ Don't be fooled.
+ They're vicious.
 ~ SetSpeaker(Speaker.Lupe)
-[Lupe] They're....
-[Lupe] ...fourteen year olds.
+ They're....
+ ...fourteen year olds.
 ~ SetSpeaker(Speaker.Misra)
-[Misra] I know.
+ I know.
 ~ SetSpeaker(Speaker.Lupe)
-[Lupe] They're barely five feet tall.
+ They're barely five feet tall.
 ~ SetSpeaker(Speaker.Misra)
-[Misra] <i> I know </i>.
+ <i> I know </i>.
 ~ SetSpeaker(Speaker.Lupe)
-[Lupe] They--
+ They--
 ~ SetSpeaker(Speaker.Jenny)
-[Jenny] Hey Nimrods. 
-[Jenny] We can hear you.
+ Hey Nimrods. 
+ We can hear you.
 ~ SetSpeaker(Speaker.Lupe)
     -> DONE
     
@@ -63,16 +65,17 @@
     
 = teens_suspect
     ~ StartQuest(suspects)
-    * [Jenny] -> Jenny_Dialogue
+    *  -> Jenny_Dialogue
     * [Calvin] -> Calvin_Dialogue
     * [Josh] -> Josh_Dialogue
     
     * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
+    
 = exit_scene
     ~ SetSpeaker(Speaker.Jenny)
-    [Jenny] Unless the Rookie Sheriff wants to conceit their HO:SI score, no.
-    [Jenny] We're done talking with you losers.
+     Unless the Rookie Sheriff wants to conceit their HO:SI score, no.
+     We're done talking with you losers.
     ~ SetSpeaker(Speaker.Lupe)
     ~ CompleteQuest(complete_arcade)
     ~ CompleteQuest(suspects)
-        -> DONE
+    -> DONE
