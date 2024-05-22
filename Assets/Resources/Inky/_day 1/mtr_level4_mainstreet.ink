@@ -22,7 +22,7 @@ VAR closed_signs = 0
 * [Scene 4_1 - Main Street] -> scene4_1
 * [Scene 4_2 - General Store] -> scene4_2
 * [Scene 4_3 - Arcade] -> scene4_3
-
+* [Scene 4_4 - Bar] -> scene4_4
 
 // ===================================== SCENE 4_1 ======================= //
 === scene4_1 === 
