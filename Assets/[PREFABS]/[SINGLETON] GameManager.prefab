@@ -247,12 +247,12 @@ MonoBehaviour:
   sceneBuildDirectory: Assets/Scenes/Build
   currentScene: SCENE_4_1 - Main Street
   scenesInBuild:
-  - {fileID: 102900000, guid: a592b47d8bf5b4d45999c7e160d41f46, type: 3}
-  - {fileID: 102900000, guid: 69689f5ac1cb84bfda539d32a95238b7, type: 3}
-  - {fileID: 102900000, guid: 938279deb4ab77d4596376237e2dadaa, type: 3}
-  - {fileID: 102900000, guid: f2f40d719c0e59c4ab90748c1adb5f30, type: 3}
-  - {fileID: 102900000, guid: 17f16897cc8084646a39475ff74ecdb2, type: 3}
-  - {fileID: 102900000, guid: c8653d8be9c2df7428c2bb8d63c91bbf, type: 3}
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,8 +299,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3c4e64aa07ea74e9045f25b7ec0e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneKnots:
+  - sceneName:
+      m_SceneName: SCENE_4_1 - Main Street
+    knotName: scene4_1
+  - sceneName:
+      m_SceneName: SCENE_4_2 - The General Store
+    knotName: scene4_2
+  - sceneName:
+      m_SceneName: SCENE_4_3 - The Arcade
+    knotName: scene4_3
   globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _currentSpeaker: Lupe
+  _speakers: []
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,12 +324,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _screenSize: {x: 0, y: 0}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
-  _mainMenuScene: {fileID: 102900000, guid: a592b47d8bf5b4d45999c7e160d41f46, type: 3}
+  _mainMenuScene:
+    m_SceneName: 
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
-  speechBubble: {fileID: 0}
+  speechBubbleObject: {fileID: 0}
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}

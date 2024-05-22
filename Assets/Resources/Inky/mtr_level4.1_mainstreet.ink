@@ -32,9 +32,7 @@ VAR closed_signs = 0
 # The Bar is not.
 # Any store marked with a closed sign is not accessible.
 
-~ SetActiveQuestChain(Level4_Quests)
-
-+ [talk to misra] -> talk_to_misra
++ [talk to misra] -> Misra_Dialogue
 
 + [go to gen store] -> idahome_and_goods
 + [go to arcade] -> powerup_arcade
@@ -52,10 +50,13 @@ VAR closed_signs = 0
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 
-= talk_to_misra
-    -> Misra_Dialogue
+= enter
+    ~ StartQuest(visited_misra)
+    ->DONE
+
 = idahome_and_goods
-    -> scene4_2
+    -> scene4_2.enter
+    
 = powerup_arcade
     -> DONE
 

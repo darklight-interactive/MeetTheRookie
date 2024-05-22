@@ -10,7 +10,12 @@
     -> DONE
    
    * {IsClueFound(merch_pamphlet)} Do you mind explaining this pamphlet a bit? -> DONE
-    
+   
+= enter
+    ~ SetActiveQuestChain(Level4_Quests)
+    ~ StartQuest(visited_roy) 
+    -> DONE
+
 = store_window
     -> Roy_Dialogue.window
     

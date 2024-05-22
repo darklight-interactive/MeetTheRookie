@@ -23,6 +23,7 @@ INCLUDE mtr_level4.3_arcade.ink
 
 // ===== EXTERNAL == >>
 EXTERNAL QuestStarted(quest)
+EXTERNAL GoToScene(id)
 
 // ====== SPEAKER HANDLING == >>
 LIST Speaker = (Unkown), (Misra), (Lupe), Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
@@ -30,6 +31,20 @@ VAR CURRENT_SPEAKER = Speaker.Lupe
 == function SetSpeaker(value)
     # SetSpeaker >> {value}
     ~ CURRENT_SPEAKER = value
+
+// ===== SCENE HANDLING == >>
+VAR SceneID = 1.0
+=== GoToScene(level, scene)
+    {level == 4:
+        ~SetActiveQuestChain(Level4_Quests)
+        {scene == 1:
+            -> scene4_1
+        }
+    
+        {scene == 2:
+            -> scene4_2.enter
+        }
+    }
 
 // ====== QUEST HANDLING == >>
 VAR MAIN_QUEST = () // <- highest priority quest

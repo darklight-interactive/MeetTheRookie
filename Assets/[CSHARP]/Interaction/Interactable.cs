@@ -124,7 +124,7 @@ public class Interactable : OverlapGrid2D, IInteract
         }
         else
         {
-            Debug.Log($"{Prefix}  ( {name} ) >> Found {_sceneKnots.Count} Knots in the Story Object.");
+            //Debug.Log($"{Prefix}  ( {name} ) >> Found {_sceneKnots.Count} Knots in the Story Object.");
         }
 
         if (_interactionStitches.Count == 0)
@@ -135,7 +135,7 @@ public class Interactable : OverlapGrid2D, IInteract
         }
         else
         {
-            Debug.Log($"{Prefix}  ( {name} ) >> Found {_interactionStitches.Count} Stitches in the Knot.");
+            //Debug.Log($"{Prefix}  ( {name} ) >> Found {_interactionStitches.Count} Stitches in the Knot.");
         }
 
 

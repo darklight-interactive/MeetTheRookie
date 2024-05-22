@@ -139,7 +139,12 @@ public class InkyStoryObject : ScriptableObject
         _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
     }
 
-    public InkyVariable GetVariable(string variableName)
+    public void UpdateVariables()
+    {
+        _variables = GetVariables(_story);
+    }
+
+    public InkyVariable GetVariableByName(string variableName)
     {
         return _variables.Find(variable => variable.Key == variableName);
     }

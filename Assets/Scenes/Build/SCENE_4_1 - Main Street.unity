@@ -570,7 +570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.5
+      value: 15.625
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1328,7 +1328,7 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: -5254192346949721912, guid: bd7650f900493dd4497b914e4e998811, type: 3}
   _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  _sceneKnot: scene4_1
+  _sceneKnot: scene4_2
   _interactionStitch: scene4_1.idahome_and_goods
   _onFirstInteraction:
     Guid:
@@ -1358,7 +1358,7 @@ MonoBehaviour:
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
   sceneObject:
-    m_SceneName: 
+    m_SceneName: SCENE_4_2 - The General Store
 --- !u!43 &551174176
 Mesh:
   m_ObjectHideFlags: 0
@@ -3532,6 +3532,22 @@ PrefabInstance:
       propertyPath: '_storyObjects.Array.data[5]'
       value: 
       objectReference: {fileID: 2063581499}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _speakers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakers.Array.data[0]'
+      value: '[Speaker.Unkown, 1]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakers.Array.data[1]'
+      value: '[Speaker.Misra, 2]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakers.Array.data[2]'
+      value: '[Speaker.Lupe, 3]'
+      objectReference: {fileID: 0}
     - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: backgroundMusicEvent.Path
       value: event:/Music/townSomber
@@ -3797,11 +3813,11 @@ PrefabInstance:
       objectReference: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
-      value: 0.015686275
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.g
-      value: 0.92156863
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5007469561755814138, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -6255,7 +6271,7 @@ PrefabInstance:
       objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.5
+      value: 15.625
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.y

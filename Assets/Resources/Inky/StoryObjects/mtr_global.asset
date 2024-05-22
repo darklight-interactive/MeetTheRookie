@@ -16,6 +16,8 @@ MonoBehaviour:
   _knots:
   - name: SetSpeaker
     stitches: []
+  - name: GoToScene
+    stitches: []
   - name: SetActiveQuestChain
     stitches: []
   - name: StartQuest
@@ -72,7 +74,7 @@ MonoBehaviour:
     stitches: []
   - name: scene4_1
     stitches:
-    - scene4_1.talk_to_misra
+    - scene4_1.enter
     - scene4_1.idahome_and_goods
     - scene4_1.powerup_arcade
     - scene4_1.strange_symbol_on_fountain
@@ -86,6 +88,7 @@ MonoBehaviour:
     - scene4_1.heart_of_kettle
   - name: scene4_2
     stitches:
+    - scene4_2.enter
     - scene4_2.store_window
     - scene4_2.merch_shirt
     - scene4_2.merch_sticker
@@ -106,6 +109,8 @@ MonoBehaviour:
     _valueAsString: Unkown, Misra, Lupe
   - _key: CURRENT_SPEAKER
     _valueAsString: Lupe
+  - _key: SceneID
+    _valueAsString: 1
   - _key: MAIN_QUEST
     _valueAsString: 
   - _key: ACTIVE_QUEST_CHAIN

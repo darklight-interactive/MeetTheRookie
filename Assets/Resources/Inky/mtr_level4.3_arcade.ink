@@ -7,6 +7,8 @@
 * [talk_to_misra] -> Misra_Dialogue
 * [talk_to_jenny] -> Jenny_Dialogue
 
+
+
 = arcade_machines
     {IsQuestComplete(visited_machines):
         [Lupe]{"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
