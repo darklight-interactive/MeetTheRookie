@@ -9,12 +9,12 @@ using System;
 public class DatingSimEmotes : ScriptableObject
 {
     [Serializable]
-    private struct ExposedDictionary
+    private class TrueDatingSimEmotes
     {
         [HideInInspector] public string key;
         public Texture2D value;
 
-        public ExposedDictionary(string k, Texture2D v)
+        public TrueDatingSimEmotes(string k, Texture2D v)
         {
             key = k;
             value = v;
@@ -29,33 +29,29 @@ public class DatingSimEmotes : ScriptableObject
     [SerializeField] private List<Texture2D> lupeImages = new List<Texture2D>();
     [SerializeField] private List<Texture2D> misraImages = new List<Texture2D>();
 
-    [SerializeField] private List<ExposedDictionary> lupeEmotesReadOnly = new List<ExposedDictionary>();
-    [SerializeField] private List<ExposedDictionary> misraEmotesReadOnly = new List<ExposedDictionary>();
+    [SerializeField] private List<TrueDatingSimEmotes> lupeEmotes = new List<TrueDatingSimEmotes>();
+    [SerializeField] private List<TrueDatingSimEmotes> misraEmotes = new List<TrueDatingSimEmotes>();
 
 
-    private Dictionary<string, Texture2D> lupeEmotes = new Dictionary<string, Texture2D>();
-    private Dictionary<string, Texture2D> misraEmotes = new Dictionary<string, Texture2D>();
+    // private Dictionary<string, Texture2D> old_lupeEmotes = new Dictionary<string, Texture2D>();
+    // private Dictionary<string, Texture2D> old_misraEmotes = new Dictionary<string, Texture2D>();
 
     public void MakeEmotes()
     {
         lupeEmotes.Clear();
         misraEmotes.Clear();
-        lupeEmotesReadOnly.Clear();
-        misraEmotesReadOnly.Clear();
 
         foreach (Texture2D image in lupeImages)
         {
             string emote = Regex.Match(image.name.ToLower(), @"\((.*)\)").Groups[1].Value;
             emote = string.IsNullOrEmpty(emote) ? "404_INVALID_IMAGE_NAME" : emote;
-            lupeEmotes.Add(emote, image);
-            lupeEmotesReadOnly.Add(new ExposedDictionary(emote, image));
+            lupeEmotes.Add(new TrueDatingSimEmotes(emote, image));
         }
         foreach (Texture2D image in misraImages)
         {
             string emote = Regex.Match(image.name.ToLower(), @"\((.*)\)").Groups[1].Value;
             emote = string.IsNullOrEmpty(emote) ? "404_INVALID_IMAGE_NAME" : emote;
-            misraEmotes.Add(emote, image);
-            misraEmotesReadOnly.Add(new ExposedDictionary(emote, image));
+            misraEmotes.Add(new TrueDatingSimEmotes(emote, image));
         }
         SetEmote("lupe", lupeDefaultEmoteName);
         SetEmote("misra", misraDefaultEmoteName);
@@ -63,8 +59,17 @@ public class DatingSimEmotes : ScriptableObject
 
     public bool SetEmote(string name, string emote)
     {
-        if (name == "lupe" && lupeEmotes.TryGetValue(emote, out currLupeEmote)) { return true; }
-        else if (name == "misra" && misraEmotes.TryGetValue(emote, out currMisraEmote)) { return true; }
+        if (name == "lupe" && lupeEmotes.Find(x => x.key == emote) != null)
+        {
+            currLupeEmote = lupeEmotes.Find(x => x.key == emote).value;
+            return true;
+        }
+        else if (name == "misra" && misraEmotes.Find(x => x.key == emote) != null)
+        {
+            currMisraEmote = misraEmotes.Find(x => x.key == emote).value;
+            return true;
+        }
+        Debug.LogError("DatingSimEmotes: Could not get emote \"" + emote + "\" of character \"" + name + "\"");
         return false;
     }
 

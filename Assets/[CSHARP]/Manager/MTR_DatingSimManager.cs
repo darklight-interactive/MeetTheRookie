@@ -263,9 +263,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         Vector2 newBoxSize = dialogueText.MeasureTextSize(dialogueText.text, width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
         dialogueBox.style.height = newBoxSize.y * 1.2f;
         float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
-        Debug.Log("Height: " + dialogueText.resolvedStyle.height + "; Adjusted: " + newBoxSize.y);
         dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
-        Debug.Log(dialogueText.style.fontSize);
     }
 
     /// <summary>
