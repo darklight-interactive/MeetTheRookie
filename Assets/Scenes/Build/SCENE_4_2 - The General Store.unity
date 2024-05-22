@@ -1420,7 +1420,7 @@ Transform:
   m_GameObject: {fileID: 342745390}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42690778, y: -2.7627099, z: -14.743819}
+  m_LocalPosition: {x: 0.6769078, y: -2.7627099, z: -14.743819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1498,9 +1498,9 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -2216054076922620744, guid: 40addf8b4aea62841b28fc8d77f59c60, type: 3}
-  _storyObject: {fileID: 11400000, guid: d616cb643cc6b6948bbddb6b15dd00f6, type: 2}
-  _sceneKnot: merch_shirt
-  _interactionStitch: 
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: scene4_2
+  _interactionStitch: scene4_2.merch_shirt
   _onFirstInteraction:
     Guid:
       Data1: 0
@@ -1562,7 +1562,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.22, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2880,7 +2880,7 @@ Transform:
   m_GameObject: {fileID: 655767991}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.9269079, y: -2.47471, z: -14.57482}
+  m_LocalPosition: {x: 2.176908, y: -2.47471, z: -14.57482}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2958,9 +2958,9 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -1209069836793153283, guid: 2eee9d8531da7854c809dd8d84dccf5c, type: 3}
-  _storyObject: {fileID: 11400000, guid: d616cb643cc6b6948bbddb6b15dd00f6, type: 2}
-  _sceneKnot: pamphlet
-  _interactionStitch: 
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: Roy_Dialogue
+  _interactionStitch: Roy_Dialogue.pamphlet
   _onFirstInteraction:
     Guid:
       Data1: 0
@@ -3477,9 +3477,9 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 7753926934034645661, guid: 3afe42f6f1ddb6546b42ce5a8630abe8, type: 3}
-  _storyObject: {fileID: 11400000, guid: d616cb643cc6b6948bbddb6b15dd00f6, type: 2}
-  _sceneKnot: merch_sticker
-  _interactionStitch: 
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: scene4_2
+  _interactionStitch: scene4_2.merch_sticker
   _onFirstInteraction:
     Guid:
       Data1: 0
@@ -3541,7 +3541,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.39, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3551,7 +3551,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.95, y: 2.93}
+  m_Size: {x: 1, y: 2.93}
   m_EdgeRadius: 0
 --- !u!43 &814126764
 Mesh:
@@ -7213,8 +7213,8 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 5774215906461734223, guid: 71eb22be177b7a840b8d78209b00ca44, type: 3}
-  _storyObject: {fileID: 11400000, guid: d616cb643cc6b6948bbddb6b15dd00f6, type: 2}
-  _sceneKnot: 
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: scene4_2
   _interactionStitch: 
   _onFirstInteraction:
     Guid:
@@ -7611,12 +7611,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2236245743877035675, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: _sceneKnot
-      value: first_interact_roy
+      value: Roy_Dialogue
       objectReference: {fileID: 0}
     - target: {fileID: 2236245743877035675, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: _storyObject
       value: 
-      objectReference: {fileID: 11400000, guid: d616cb643cc6b6948bbddb6b15dd00f6, type: 2}
+      objectReference: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
     - target: {fileID: 4138829041031667111, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: layerMask.m_Bits
       value: 64
@@ -7724,7 +7724,7 @@ PrefabInstance:
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      objectReference: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - target: {fileID: 8403832537613495249, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
       propertyPath: m_Color.b
       value: 0.015686275

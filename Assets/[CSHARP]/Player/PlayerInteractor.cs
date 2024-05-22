@@ -68,7 +68,10 @@ public class PlayerInteractor : OverlapGrid2D
         {
             Interactable interactable = targetInteractable as Interactable;
             OverlapGrid2D_Data targetData = GetBestData();
-            UIManager.Instance.CreateSpeechBubble(targetData.worldPosition, interactable.currentText, targetData.cellSize);
+
+            if (interactable != null) {
+                UIManager.Instance.CreateSpeechBubble(targetData.worldPosition, interactable.currentText, targetData.cellSize);
+            }
         }
 
         if (targetInteractable.isComplete)
