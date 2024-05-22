@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/StackSynthUI.uss?fileID=7433441132597879392&amp;guid=161d545512230e642ba8fb65b5118381&amp;type=3#StackSynthUI" />
-    <ui:VisualElement name="Background" style="flex-grow: 1;">
-        <ui:VisualElement name="Stack" class="StackBase">
-            <ui:VisualElement name="Irene" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/IreneChar.png?fileID=2800000&amp;guid=ae0051634c8164082968816bea566aaf&amp;type=3#IreneChar&quot;);">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uss?fileID=7433441132597879392&amp;guid=161d545512230e642ba8fb65b5118381&amp;type=3#StackSynthUI" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; margin-top: auto; margin-right: auto; margin-bottom: auto; margin-left: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; left: auto; right: 400px; top: 125px;">
+        <ui:VisualElement name="Stack" class="StackBase" style="top: 0; left: 0;">
+            <ui:VisualElement name="Irene" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/IreneChar.png?fileID=2800000&amp;guid=ae0051634c8164082968816bea566aaf&amp;type=3#IreneChar&quot;);">
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
@@ -10,7 +10,7 @@
                 <ui:Label text="Irene" name="Name" class="StackName" />
                 <ui:Label text="Bar" name="Location" class="StackLocation" />
             </ui:VisualElement>
-            <ui:VisualElement name="Misra" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/MisraChar.png?fileID=2800000&amp;guid=8fa0b4efb7be140f29731a14d5d6ca38&amp;type=3#MisraChar&quot;);">
+            <ui:VisualElement name="Misra" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/MisraChar.png?fileID=2800000&amp;guid=8fa0b4efb7be140f29731a14d5d6ca38&amp;type=3#MisraChar&quot;);">
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
@@ -18,7 +18,7 @@
                 <ui:Label text="Misra" name="Name" class="StackName" />
                 <ui:Label text="Precinct" name="Location" class="StackLocation" />
             </ui:VisualElement>
-            <ui:VisualElement name="Roy" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/RoyChar.png?fileID=2800000&amp;guid=05853c580637b4d3fae9b9b0024751e9&amp;type=3#RoyChar&quot;); background-color: rgba(133, 109, 44, 0);">
+            <ui:VisualElement name="Roy" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/RoyChar.png?fileID=2800000&amp;guid=05853c580637b4d3fae9b9b0024751e9&amp;type=3#RoyChar&quot;); background-color: rgba(133, 109, 44, 0);">
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
@@ -26,7 +26,7 @@
                 <ui:Label text="Roy" name="Name" class="StackName" />
                 <ui:Label text="General&#10;Store" name="Location" class="StackLocation" />
             </ui:VisualElement>
-            <ui:VisualElement name="Teens" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/TeensPaper.png?fileID=2800000&amp;guid=6cae97545344642439c388711540336b&amp;type=3#TeensPaper&quot;); background-color: rgba(133, 109, 44, 0);">
+            <ui:VisualElement name="Teens" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/TeensPaper.png?fileID=2800000&amp;guid=6cae97545344642439c388711540336b&amp;type=3#TeensPaper&quot;); background-color: rgba(133, 109, 44, 0);">
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="Selected" class="StackTextHolderSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />

@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public override void Awake()
     {
         base.Awake();
-        synthesisManager.Prepare();
+        //synthesisManager.Prepare();
     }
 
     public void ShowInteractionPromptInWorld(Vector3 worldPos)

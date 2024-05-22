@@ -6,7 +6,7 @@ EXTERNAL playerRemoveItem(id)
 ~ playerAddItem("MediumPaper2", "strangefootsteps", "Strange Footsteps")
 ~ playerAddItem("MediumPaper3", "clawmarks", "Claw Marks on Wine Barrels")
 ~ playerAddItem("MediumPaper1", "damagedequipment", "Damaged Equipment")
-
+~ playerAddItem("BigPaper", "abc", "aaaaaaaaaa")
 
 
 ->END
@@ -23,4 +23,5 @@ Unreachable
 		~ playerRemoveItem("strangefootsteps")
 		~ playerAddItem("MediumPaper2", "who", "Who Broke into the Winery?")
 }
+
 	~ return
