@@ -14,14 +14,12 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Next scene to load")] public SceneObject nextScene;
-    [Tooltip("The Dating Sim Story Object")] public InkyStoryObject storyObject;
     [SerializeField] private DatingSimEmotes emotes;
 
-    // Global variables
+    InkyStoryObject storyObject;
+    InkyStoryIterator storyIterator;
     bool choicesActive;
-    // The Field to navigate buttons
     SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
-    // Variables for all the visual elements
     VisualElement misraImage;
     VisualElement lupeImage;
     VisualElement continueTriangle;
@@ -44,6 +42,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         UniversalInputManager.OnMoveInputStarted += Move;
         UniversalInputManager.OnPrimaryInteract += Select;
 
+
+
         // Get the emotes
         //emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
     }
@@ -55,7 +55,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choiceButtons = temp.OrderBy(x => x.name).ToList();
         choiceMap.Load(temp);
 
-
         // Get all the UXML elements
         misraImage = root.Q<VisualElement>("MisraImage");
         lupeImage = root.Q<VisualElement>("LupeImage");
@@ -65,6 +64,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = root.Q<TextElement>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
+
+        // Get the story object
+        storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+        storyIterator = InkyStoryManager.Instance.Iterator;
+        storyIterator.GoToKnotOrStitch("scene2");
 
         // Start story
         ContinueStory();
@@ -82,7 +86,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
@@ -102,7 +106,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void PopulateChoices()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         choiceParent.style.display = DisplayStyle.Flex;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
@@ -132,11 +136,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceButtons[i].RemoveFromClassList("Highlight");
         }
 
-        nameTag.AddToClassList("NameTagLupe");
-        nameTag.RemoveFromClassList("NameTagMisra");
-        lupeImage.RemoveFromClassList("Inactive");
-        misraImage.AddToClassList("Inactive");
-
         choicesActive = true;
 
         choiceMap.Select(choiceButtons[0]);
@@ -148,7 +147,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void SelectChoice()
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
@@ -205,7 +204,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
-        Story currentStory = storyObject.story;
+        Story currentStory = storyObject.StoryValue;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
@@ -263,9 +262,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         Vector2 newBoxSize = dialogueText.MeasureTextSize(dialogueText.text, width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
         dialogueBox.style.height = newBoxSize.y * 1.2f;
         float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
-        Debug.Log("Height: " + dialogueText.resolvedStyle.height + "; Adjusted: " + newBoxSize.y);
         dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
-        Debug.Log(dialogueText.style.fontSize);
     }
 
     /// <summary>

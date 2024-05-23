@@ -14,6 +14,7 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class Interactable : OverlapGrid2D, IInteract
 {
+    private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
 
     // private access to knots for dropdown
@@ -22,7 +23,7 @@ public class Interactable : OverlapGrid2D, IInteract
         get
         {
             if (_storyObject == null) return new List<string>();
-            return InkyStoryObject.GetAllKnots(_storyObject.story);
+            return InkyStoryObject.GetAllKnots(_storyObject.StoryValue);
         }
     }
 
@@ -33,7 +34,7 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             if (_storyObject == null) return new List<string>();
             if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
-            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.story, _sceneKnot);
+            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.StoryValue, _sceneKnot);
         }
     }
 
@@ -45,7 +46,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [Header("InkyStory")]
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
-    [SerializeField] protected InkyStoryObject _storyObject;
+    protected InkyStoryObject _storyObject;
 
     [DropdownAttribute("_sceneKnots")]
     public string _sceneKnot;
@@ -61,8 +62,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
-    [ShowOnly, SerializeField] bool _isActive;
-    [ShowOnly, SerializeField] bool _isComplete;
+    [ShowOnly, SerializeField] bool _isActive; [ShowOnly, SerializeField] bool _isComplete;
 
     [Header("Colors")]
     [SerializeField] Color _defaultTint = Color.white;
@@ -77,7 +77,14 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string currentText => _storyIterator.CurrentText;
+    public string currentText
+    {
+        get
+        {
+            if (_storyIterator == null) return "";
+            return _storyIterator.CurrentText;
+        }
+    }
 
     public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
@@ -92,21 +99,20 @@ public class Interactable : OverlapGrid2D, IInteract
 
     public virtual void Initialize()
     {
+
+        // << SET THE INITIAL SPRITE >> ------------------------------------
         // Prioritize the initial sprite that is set in the sprite renderer
-        // Its assumed that the sprtie renderer has a null sprite when the interactable is first created
+        // Its assumed that the sprite renderer has a null sprite when the interactable is first created
         if (_spriteRenderer.sprite == null)
             _spriteRenderer.sprite = _sprite;
         else
             _sprite = _spriteRenderer.sprite;
-
         _spriteRenderer.color = _defaultTint;
 
+        // << SET THE STORY OBJECT >> ------------------------------------
         if (_storyObject == null)
         {
-#if UNITY_EDITOR
-            Debug.LogWarning($"INTERACTABLE ( {name} ) >> Story Parent is null. Please assign a valid InkyStory object.", this);
-#endif
-            return;
+            _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
         }
     }
 
@@ -122,7 +128,7 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        OverlapGrid2D_Data targetData = GetBestData();
+        OverlapGrid2D_Data targetData = GetBestOverlapGridData();
         UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
@@ -143,12 +149,24 @@ public class Interactable : OverlapGrid2D, IInteract
             isActive = true;
             isComplete = false;
 
+            // Subscribe to OnInteraction
+            OnInteraction += (string text) =>
+            {
+                UIManager.Instance.CreateSpeechBubbleAtCurrentSpeaker(text);
+            };
+
+            // Subscribe to OnComplete
+            OnCompleted += () =>
+            {
+                // Destroy the speech bubble
+                UIManager.Instance.DestroySpeechBubble();
+            };
+
             // Go To the Interaction Stitch
-            _storyIterator = new InkyStoryIterator(storyObject, InkyStoryIterator.State.NULL);
             _storyIterator.GoToKnotOrStitch(_interactionStitch);
 
             // >> TEMPORARY COLOR CHANGE
-            StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
+            //StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onFirstInteraction);
@@ -169,6 +187,7 @@ public class Interactable : OverlapGrid2D, IInteract
         // Continue the interaction
         _storyIterator.ContinueStory();
 
+        // Play FMOD One Shot
         SoundManager.PlayOneShot(_onContinuedInteraction);
 
         OnInteraction?.Invoke(_storyIterator.CurrentText);
@@ -184,7 +203,12 @@ public class Interactable : OverlapGrid2D, IInteract
 
         SoundManager.PlayOneShot(_onCompleteInteraction);
 
-        OnCompleted?.Invoke();
+        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
+        OnInteraction = delegate { }; // Reset OnInteraction
+
+        OnCompleted?.Invoke(); // Invoke OnCompleted
+        OnCompleted = delegate { }; // Reset OnCompleted
+
     }
 
     public virtual void OnDestroy()
@@ -201,7 +225,7 @@ public class Interactable : OverlapGrid2D, IInteract
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
     }
-       private void EnableOutline(bool enable)
+    private void EnableOutline(bool enable)
     {
         if (_spriteRenderer != null)
         {

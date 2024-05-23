@@ -8,7 +8,8 @@ using UnityEditor;
 namespace Darklight.Game.SpriteAnimation
 {
     /// <summary>
-    /// Stores a collection of sprites for frame animation
+    /// The Base Class of Spritesheets.
+    /// It holds a collection of sprites for frame animation
     /// </summary>
     [System.Serializable]
     public class SpriteSheet
@@ -35,6 +36,7 @@ namespace Darklight.Game.SpriteAnimation
     }
 
     /// <summary>
+    /// A Wr
     /// Stores a collection of sprites for frame animation
     /// </summary>
     /// <typeparam name="TState"></typeparam>

@@ -68,9 +68,9 @@ public interface IInteract
 
     // ===================== [[ EVENTS ]] =====================
     // Delegate Events
-    delegate void OnFirstInteract();
-    delegate void OnInteract(string currentText);
-    delegate void OnComplete();
+    public delegate void OnFirstInteract();
+    public delegate void OnInteract(string currentText);
+    public delegate void OnComplete();
 
     /// <summary>
     /// Event for the first time the player interacts with an object, resets on OnCompleted

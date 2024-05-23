@@ -24,6 +24,8 @@ public class AnalyticsManager : MonoBehaviourSingleton<AnalyticsManager>
 #endif
     }
 
+    public override void Initialize() { }
+
     void OnApplicationQuit()
     {
 #if UNITY_EDITOR || DEBUG

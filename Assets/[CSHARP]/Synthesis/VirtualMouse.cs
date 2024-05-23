@@ -14,7 +14,7 @@ using UnityEngine.UIElements;
 /// I tried to revise these to be PointerDown, then PointerMove, then PointerUp (per the documentation), but maybe that's wrong.
 /// Maybe I just need to follow this tutorial? https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-Events-Synthesizing.html
 /// </remarks>
-public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
+public class VirtualMouse : IPointerEvent
 {
     #region Interface Stuff We Need
     public Vector3 position { get; protected set; }
@@ -38,14 +38,13 @@ public class VirtualMouse : MonoBehaviourSingleton<VirtualMouse>, IPointerEvent
     public int clickCount => 0;
     #endregion
 
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
         position = Vector2.zero;
     }
 
     protected void Start() {
-        Invoke("Initialize", 0.1f);
+        //Invoke("Initialize", 0.1f);
     }
 
     void Initialize() {
