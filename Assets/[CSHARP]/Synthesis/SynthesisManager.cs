@@ -42,26 +42,16 @@ public class SynthesisManager : UXML_UIDocumentObject
         itemsSelection.Add(synthesizeButton);
     }
 
-    bool synthesisActive = false;
-    void Start()
-    {
-        Invoke("Init", 0.1f);
-    }
     ///oijqwdoijqwodijqwd
     void Initialize() {
         if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
 
         //UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
-        InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
+        //InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
         InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
     }
-
-    /*public void Show(bool visible) {
-        synthesisActive = visible;
-        synthesisUI.rootVisualElement.visible = synthesisActive;
-    }*/
 
     void SelectMove(Vector2 move)
     {
@@ -117,6 +107,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         InkyStoryManager.Instance.GlobalStoryObject.RunExternalFunction("synthesize", args.ToArray());
     }
 
+    /*
     [Obsolete("Synthesis is handled by Synthesize instead.")]
     public object CombineItems(object[] args) {
         if (args.Length != 2) {
@@ -140,7 +131,9 @@ public class SynthesisManager : UXML_UIDocumentObject
             return newItem;
         }
     }
+    */
 
+    /*
     public object AddItem(object[] args) {
         if (args.Length < 2) {
             Debug.LogError("Invalid number of args for AddItem: " + args.Length + " minimum of 2 needed.");
@@ -166,6 +159,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         itemsSelection.Add(newObj);
         return synthesisItems.TryAdd(newObj.name, newObj);
     }
+    */
 
     public object RemoveItem(object[] args) {
         Debug.Log(args[0]);

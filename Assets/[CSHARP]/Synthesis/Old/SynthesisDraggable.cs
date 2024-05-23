@@ -80,7 +80,7 @@ public class SynthesisDraggable : PointerManipulator
             isDragging = false;
             target.ReleasePointer(evt.pointerId);
             if (wantToCombine != null) {
-                synthesisManager.CombineItems(new[] { target.name, wantToCombine.name });
+                //synthesisManager.CombineItems(new[] { target.name, wantToCombine.name });
                 wantToCombine.RemoveFromClassList("combine-target");
                 target.RemoveFromClassList("combine-target");
             }
