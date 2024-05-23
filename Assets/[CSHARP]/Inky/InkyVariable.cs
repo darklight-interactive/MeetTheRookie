@@ -1,6 +1,7 @@
 using UnityEngine;
 using Ink.Runtime;
 using Darklight.UnityExt.Editor;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class InkyVariable
@@ -40,6 +41,20 @@ public class InkyVariable
         {
             _valueAsString = _value?.ToString() ?? "null";  // General handling for other types
         }
+    }
+
+    public List<string> ToStringList()
+    {
+        if (_value is InkList inkList)
+        {
+            List<string> list = new List<string>();
+            foreach (KeyValuePair<InkListItem, int> item in inkList)
+            {
+                list.Add(item.Key.ToString());
+            }
+            return list;
+        }
+        return new List<string> { _valueAsString };
     }
 
     public override string ToString()

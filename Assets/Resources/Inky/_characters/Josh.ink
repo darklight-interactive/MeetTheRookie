@@ -13,7 +13,7 @@
     ~ SetSpeaker(Speaker.Lupe)
      ...
     ~ CompleteQuest(josh_first_interact)
-        -> DONE
+    -> DONE
 }
 
 // second interact
@@ -40,7 +40,7 @@
     # Josh turns down the music a bit.
      What do you wanna know?
     ~ SetSpeaker(Speaker.Lupe)
-        -> DONE
+    -> DONE
 }
     
 // Suspects
@@ -49,7 +49,7 @@
     I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
     ~ DiscoverClue(josh_suspects)
     // Add to Synthesis: Who broke into the Old Winery?
-        -> DONE
+    -> DONE
 }
 
 = 4_3_josh_questions
@@ -86,7 +86,7 @@
     ~ SetSpeaker(Speaker.Lupe)
      I, uh...
     ~ DiscoverClue(personal_info_josh)
-        -> DONE
+    -> DONE
 
 = 4_3_KR_josh
     ~ SetSpeaker(Speaker.Josh)
@@ -104,7 +104,7 @@
      Yawwwnnnn. Boring.
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(KR_josh)
-        -> DONE
+    -> DONE
 
 = 4_3_winery_josh
     ~ SetSpeaker(Speaker.Josh)
@@ -128,10 +128,10 @@
          THIS IS A REALLY GOOD SONG.
         ~ DiscoverClue(winery_josh)
         ~ CompleteQuest(winery_josh_quest)
-            -> DONE
+        -> DONE
     -else:
         ~ DiscoverClue(winery_josh)
         ~ CompleteQuest(winery_josh_quest)
-            -> DONE
+        -> DONE
     }
 

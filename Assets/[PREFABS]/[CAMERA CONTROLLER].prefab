@@ -81,6 +81,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348082412807241120}
+  - component: {fileID: 2456542461274326303}
   - component: {fileID: 7167559734855225826}
   m_Layer: 0
   m_Name: '[CAMERA CONTROLLER]'
@@ -105,6 +106,19 @@ Transform:
   - {fileID: 5314045156112960354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2456542461274326303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2895742502396242152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08998afcf6cc38647a4cfe7993bd4742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentSpeaker: 
 --- !u!114 &7167559734855225826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,8 +134,8 @@ MonoBehaviour:
   _camerasInChildren:
   - {fileID: 294617130321755958}
   - {fileID: 1148548231494987092}
-  - {fileID: 5663657954300164996}
   - {fileID: 6029335792472997658}
+  - {fileID: 5663657954300164996}
   _focusTarget: {fileID: 0}
   _focusTargetPosition: {x: 0, y: 0, z: 0}
   _focusTargetPositionOffset: {x: 0, y: 0.5, z: 0}
@@ -207,7 +221,7 @@ Camera:
   m_Depth: 2
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 192
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -295,8 +309,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2752063185994480251}
-  - {fileID: 3768953934943051033}
   - {fileID: 5409168742065500744}
+  - {fileID: 3768953934943051033}
   m_Father: {fileID: 348082412807241120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &294617130321755958
@@ -338,7 +352,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 257
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -367,8 +381,8 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras:
-  - {fileID: 5663657954300164996}
   - {fileID: 1148548231494987092}
+  - {fileID: 5663657954300164996}
   - {fileID: 6029335792472997658}
   m_RendererIndex: 0
   m_VolumeLayerMask:

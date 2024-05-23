@@ -60,9 +60,6 @@ public class NPC_Animator : MonoBehaviour
     {
         CreateFrameAnimationPlayer();
     }
-
-
-
 }
 
 #if UNITY_EDITOR

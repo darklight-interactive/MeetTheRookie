@@ -51,7 +51,7 @@ namespace Darklight.Console
 			public LogEntry(int indentLevel, string message, LogSeverity severity = LogSeverity.Info)
 			{
 				_indentLevel = indentLevel;
-				_message = message;
+				_message = message.Trim();
 				_severity = severity;
 				_timeStamp = DateTime.Now;
 			}

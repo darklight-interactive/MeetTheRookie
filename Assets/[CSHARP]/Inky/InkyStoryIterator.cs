@@ -13,14 +13,13 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     public enum State { NULL, START, DIALOGUE, CHOICE, END }
     private const string Prefix = "[InkyKnot] >> ";
     private InkyStoryObject _storyObject;
-    private Story story => _storyObject.story;
     private Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     /// <summary>
     /// This is the active text that is currently being displayed in the story, for easy reference.
     /// </summary>
-    public string CurrentText => story.currentText.Trim();
+    public string CurrentText => _storyObject.StoryValue.currentText.Trim();
 
     // ------------------- [[ EVENTS ]] -------------------
     public delegate void OnDialogue(string currentText);
@@ -30,7 +29,6 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     public InkyStoryIterator(InkyStoryObject inkyStoryObject, State initialState = State.NULL) : base(initialState)
     {
         _storyObject = inkyStoryObject;
-        //_storyObject.Initialize
         GoToState(initialState);
     }
 
@@ -39,7 +37,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     {
         try
         {
-            story.ChoosePathString(knotName);
+            _storyObject.StoryValue.ChoosePathString(knotName);
         }
         catch (System.Exception e)
         {
@@ -58,12 +56,15 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
     {
 
         // Check if null
-        if (story == null || CurrentState == State.NULL)
+        if (_storyObject == null || CurrentState == State.NULL)
         {
             InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
             Debug.LogError($"{Prefix} Error: Story is null");
             return;
         }
+
+        // Get the story
+        Story story = _storyObject.StoryValue;
 
         // Check if end
         if (CurrentState == State.END)
@@ -78,6 +79,13 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
         {
             GoToState(State.DIALOGUE);
             story.Continue();
+
+            // Check if empty, if so, continue
+            if (CurrentText == null || CurrentText == "")
+            {
+                ContinueStory();
+                return;
+            }
 
             // Invoke the Dialogue Event
             OnKnotDialogue?.Invoke(CurrentText);
@@ -120,8 +128,8 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
 
     public void ChooseChoice(int choiceIndex)
     {
-        Choice choice = story.currentChoices[choiceIndex];
-        story.ChooseChoiceIndex(choice.index);
+        Choice choice = _storyObject.StoryValue.currentChoices[choiceIndex];
+        _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
         _choiceMap.Clear();
         ContinueStory();
     }
@@ -129,7 +137,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
 
     private void HandleTags()
     {
-        List<string> currentTags = story.currentTags;
+        List<string> currentTags = _storyObject.StoryValue.currentTags;
         // loop through each tag and handle it accordingly
         foreach (string tag in currentTags)
         {

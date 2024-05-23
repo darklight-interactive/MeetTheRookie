@@ -76,7 +76,7 @@ namespace Darklight.Game.Grid
             }
         }
 
-        public OverlapGrid2D_Data GetBestData()
+        public OverlapGrid2D_Data GetBestOverlapGridData()
         {
             OverlapGrid2D_Data bestData = null;
 
@@ -95,12 +95,6 @@ namespace Darklight.Game.Grid
             }
             return bestData;
         }
-
-        public override void OnDrawGizmosSelected()
-        {
-            //OverlapGrid2DEditor.DrawOverlapGrid(this, transform.position);
-        }
-
     }
 
 #if UNITY_EDITOR

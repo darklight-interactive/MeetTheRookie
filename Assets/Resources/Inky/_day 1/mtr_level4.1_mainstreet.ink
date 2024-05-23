@@ -16,15 +16,14 @@
 VAR closed_signs = 0
 
 
-// Debug Knot for Inky Testing
--> debug_level4
-=== debug_level4 ===
+// ---- [[ TEST CHOICES ]] ---- >>
 * [Scene 4_1 - Main Street] -> scene4_1
 * [Scene 4_2 - General Store] -> scene4_2
 * [Scene 4_3 - Arcade] -> scene4_3
+* [Scene 4_4 - Bar] -> scene4_4
 
-
-// ===================================== SCENE 4_1 ======================= //
+// ============================================================
+// ========================== SCENE 4.1 =======================
 === scene4_1 === 
 # Location: Main Street
 # Lupe and Misra find themselves on the Main Street of Kettle Rock, in front of a Fountain. 
@@ -35,7 +34,6 @@ VAR closed_signs = 0
 ~ SetActiveQuestChain(Level4_Quests)
 
 + [talk to misra] -> talk_to_misra
-
 + [go to gen store] -> idahome_and_goods
 + [go to arcade] -> powerup_arcade
 + [go to bar] -> the_rockin_kettle
@@ -96,9 +94,6 @@ VAR closed_signs = 0
 
      -> DONE
     }
-
-
-   
 
 = the_rockin_kettle
     {IsQuestComplete(complete_gen_store) && IsQuestComplete(complete_arcade):
