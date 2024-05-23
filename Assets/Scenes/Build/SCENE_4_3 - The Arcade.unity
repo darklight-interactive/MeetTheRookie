@@ -124,6 +124,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7152001243824678401, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
   m_PrefabInstance: {fileID: 745073121}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1342342 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7152001243824678401, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+  m_PrefabInstance: {fileID: 745073121}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &37181216
 GameObject:
   m_ObjectHideFlags: 0
@@ -6807,7 +6812,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 296168923467016266, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
       propertyPath: currentFrame
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 949951112859401814, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
       propertyPath: m_Sprite
@@ -6898,8 +6903,65 @@ PrefabInstance:
     - {fileID: 2333247472725621624, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6664196745688733946, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 733879026}
   m_SourcePrefab: {fileID: 100100000, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
+--- !u!1 &733879016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6664196745688733946, guid: 87e52de097739084ca9c3b783fb0bb50, type: 3}
+  m_PrefabInstance: {fileID: 668587694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &733879026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733879016}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  editMode: 0
+  _sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: scene4_3
+  _interactionStitch: scene4_3.teens
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
+  speechBubble: {fileID: 0}
 --- !u!1001 &745073121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12640,6 +12702,60 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1148181034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7152001243824678401, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+  m_PrefabInstance: {fileID: 1350467074}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1148181044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148181034}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  editMode: 0
+  _sprite: {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: scene4_3
+  _interactionStitch: scene4_3.teens
+  _onFirstInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onContinuedInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _onCompleteInteraction:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
+  speechBubble: {fileID: 0}
 --- !u!43 &1163492741
 Mesh:
   m_ObjectHideFlags: 0
@@ -14765,7 +14881,10 @@ PrefabInstance:
     - {fileID: 4138829041031667111, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7152001243824678401, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1148181044}
   m_SourcePrefab: {fileID: 100100000, guid: b14c70e91196741f9ab2b79af77ec54d, type: 3}
 --- !u!43 &1386261190
 Mesh:

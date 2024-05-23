@@ -68,8 +68,55 @@ MonoBehaviour:
     - Josh_Dialogue.4_3_josh_personal_info
     - Josh_Dialogue.4_3_KR_josh
     - Josh_Dialogue.4_3_winery_josh
-  - name: debug_level4
-    stitches: []
+  - name: Jenkins_Dialogue
+    stitches:
+    - Jenkins_Dialogue.jenkins_questions
+    - Jenkins_Dialogue.jenkins_winery_
+    - Jenkins_Dialogue.jenkins_last_night
+    - Jenkins_Dialogue.jenkins_kettle_rock
+    - Jenkins_Dialogue.jenkins_council
+    - Jenkins_Dialogue.jenkins_sarah
+    - Jenkins_Dialogue.jenkins_sacrifice
+  - name: Irene_Dialogue
+    stitches:
+    - Irene_Dialogue.irene_questions
+    - Irene_Dialogue.irene_goats
+    - Irene_Dialogue.irene_plaque
+    - Irene_Dialogue.irene_sacrifice
+    - Irene_Dialogue.irene_kettle_rock
+    - Irene_Dialogue.irene_winery
+    - Irene_Dialogue.irene_still_standing
+  - name: scene2
+    stitches:
+    - scene2.intro
+    - scene2.ding
+    - scene2.hello
+    - scene2.soul
+    - scene2.chastise
+    - scene2.scared
+    - scene2.introductions
+    - scene2.silence
+    - scene2.niceToMeet
+    - scene2.precinct
+    - scene2.Company
+    - scene2.treeFell
+    - scene2.snoop
+    - scene2.peek
+    - scene2.wait
+    - scene2.solo
+    - scene2.transition_to_case
+    - scene2.time
+    - scene2.police_report
+    - scene2.theRest
+    - scene2.nothingHere
+    - scene2.Evidence
+    - scene2.Witnesses
+    - scene2.Help
+    - scene2.We
+    - scene2.phone_call
+    - scene2.voicemail
+    - scene2.JokeBack
+    - scene2.door
   - name: scene4_1
     stitches:
     - scene4_1.talk_to_misra
@@ -97,13 +144,34 @@ MonoBehaviour:
     - scene4_3.teens_roulette
     - scene4_3.teens_suspect
     - scene4_3.exit_scene
+  - name: scene4_4
+    stitches:
+    - scene4_4.irene_text
+    - scene4_4.man
+    - scene4_4.goop
+    - scene4_4.memorial_plaque
   - name: global decl
     stitches: []
   _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
   - _key: closed_signs
     _valueAsString: 0
   - _key: Speaker
-    _valueAsString: Unkown
+    _valueAsString: Unkown, Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson,
+      Jenny, Calvin, Josh, Irene, Jenkins
   - _key: CURRENT_SPEAKER
     _valueAsString: Lupe
   - _key: MAIN_QUEST

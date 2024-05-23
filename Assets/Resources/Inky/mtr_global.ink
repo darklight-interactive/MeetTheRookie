@@ -16,16 +16,21 @@ INCLUDE _characters/Josh.ink
 INCLUDE _characters/Jenkins.ink
 INCLUDE _characters/Irene.ink
 
-//INCLUDE mtr_level3_wineryMorning.ink
+//INCLUDE _day 1/mtr_level1_melOmart.ink
 
 INCLUDE _day 1/mtr_level4_mainstreet.ink
 INCLUDE _day 1/mtr_level4.4_bar.ink
 INCLUDE _day 1/mtr_level4.3_arcade.ink
 INCLUDE _day 1/mtr_level4.2_genstore.ink
 
+INCLUDE _day 1/mtr_level4.1_mainstreet.ink
+INCLUDE _day 1/mtr_level4.2_genstore.ink
+INCLUDE _day 1/mtr_level4.3_arcade.ink
+INCLUDE _day 1/mtr_level4.4_bar.ink
 
 // ====== SPEAKER HANDLING == >>
-LIST Speaker = (Unkown), Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
+LIST Speaker = (Unkown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
+
 VAR CURRENT_SPEAKER = Speaker.Lupe
 == function SetSpeaker(value)
     # SetSpeaker >> {value}
