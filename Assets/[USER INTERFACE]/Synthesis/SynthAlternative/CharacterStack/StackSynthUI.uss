@@ -1,7 +1,7 @@
 VisualElement.StackBase {
     position: absolute;
-    top: 50px;
-    left: 50px;
+    top: 125px;
+    left: 25px;
     width: 250px;
     height: 250px;
     background-color: rgba(0, 0, 0, 0);
@@ -102,4 +102,6 @@ Label.StackText {
     align-items: center;
     align-self: center;
     -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/pixelplay.ttf?fileID=12800000&guid=e2cb29917e71d184a9ea0469322749c1&type=3#pixelplay");
+    font-size: 16px;
 }
