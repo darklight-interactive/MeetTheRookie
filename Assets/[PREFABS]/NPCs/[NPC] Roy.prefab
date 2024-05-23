@@ -19,7 +19,7 @@ GameObject:
   m_Layer: 0
   m_Name: '[NPC] Roy'
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -31,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6879612917963182113}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.159, y: 1.437, z: 3.425796}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6730921, y: -2.71271, z: -14.568819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  m_Sprite: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -114,8 +114,8 @@ MonoBehaviour:
   rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  idleMaxDuration: 10
+  walkMaxDuration: 0
 --- !u!114 &772944247808649281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,31 +136,7 @@ MonoBehaviour:
       frames:
       - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
       - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  - state: 2
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   - state: 3
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  - state: 4
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  - state: 5
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  - state: 6
     spriteSheet:
       loop: 1
       frames:
@@ -184,7 +160,7 @@ MonoBehaviour:
     frames:
     - {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  currentFrame: 0
+  currentFrame: 1
 --- !u!61 &963346328399781227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -219,17 +195,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4140625, y: 0.9140625}
+    oldSize: {x: 0.4296875, y: 0.90625}
     newSize: {x: 0.4140625, y: 0.9140625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.45, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &583002462353374174
 MonoBehaviour:
@@ -246,7 +222,7 @@ MonoBehaviour:
   _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   editMode: 0
 --- !u!114 &4445833556569712823
 MonoBehaviour:
@@ -260,14 +236,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  _storyObject: {fileID: 0}
-  _sceneKnot: 
+  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _sceneKnot: Roy_Dialogue
   _interactionStitch: 
   _onFirstInteraction:
     Guid:
@@ -295,4 +271,5 @@ MonoBehaviour:
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
   speechBubble: {fileID: 0}

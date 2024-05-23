@@ -18,23 +18,21 @@ using UnityEditor.AddressableAssets.Settings;
 
 namespace Darklight.UnityExt.Scene
 {
-
     /// <summary>
     /// Universal Scene Manager, used to manage scenes in all aspects
     /// </summary>
     public class UniversalSceneManager : MonoBehaviourSingleton<UniversalSceneManager>
     {
-        [SerializeField] string sceneBuildDirectory = "Assets/Scenes/Build"; // Path relative to Assets folder
-        [SerializeField] string currentScene;
+        [SerializeField, ShowOnly] string sceneBuildDirectory = "Assets/Scenes/Build"; // Path relative to Assets folder
+        [SerializeField, ShowOnly] string currentScene;
         [SerializeField, ShowOnly] private List<string> scenesInBuild = new List<string>();
 
         public string SceneDirectory => sceneBuildDirectory;
         public List<string> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
         public string CurrentScene { get => currentScene; set => currentScene = value; }
 
-        public override void Awake()
+        public override void Initialize()
         {
-            base.Awake();
             LoadBuildScenes();
             currentScene = SceneManager.GetActiveScene().name;
         }

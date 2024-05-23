@@ -1,5 +1,7 @@
 using UnityEngine;
 using Darklight.UnityExt.Editor;
+using System.Collections.Generic;
+
 
 
 #if UNITY_EDITOR
@@ -9,13 +11,15 @@ using UnityEditor;
 [RequireComponent(typeof(NPC_Controller))]
 public class NPC_Interactable : Interactable, IInteract
 {
-    private NPCState stateBeforeTalkedTo = NPCState.NONE;
+    private NPCState stateBeforeTalkedTo = NPCState.IDLE;
     NPC_StateMachine stateMachine => GetComponent<NPC_Controller>().stateMachine;
 
 
     [Header("NPC : Speech Bubble")]
-    [SerializeField, ShowOnly] private GameObject speechBubble;
+    private List<string> _speakerOptions => InkyStoryManager.Instance.SpeakerList;
 
+    [DropdownAttribute("_speakerOptions")]
+    public string speakerTag;
 
     public void Start()
     {
@@ -37,15 +41,8 @@ public class NPC_Interactable : Interactable, IInteract
         base.Interact();
 
         if (isComplete) return;
-        if (_storyIterator == null) _storyIterator = new InkyStoryIterator(_storyObject);
         if (_storyIterator.CurrentState != InkyStoryIterator.State.END)
         {
-            // Create a speech bubble at the best data position
-            Grid2D_Data bestData = GetBestData();
-            Vector3 worldPosition = bestData.worldPosition;
-            float cellSize = bestData.cellSize;
-            UIManager.Instance.CreateSpeechBubble(worldPosition, _storyIterator.CurrentText, cellSize);
-
             // If the statemachine is not null, go to the speak state
             stateMachine?.GoToState(NPCState.SPEAK);
         }
@@ -55,8 +52,7 @@ public class NPC_Interactable : Interactable, IInteract
     {
         base.Complete();
 
-        // Destroy the speech bubble
-        UIManager.Instance.DestroySpeechBubble();
+
 
         // If the statemachine is not null, go to the state before talked to
         stateMachine?.GoToState(stateBeforeTalkedTo);

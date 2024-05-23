@@ -18,6 +18,8 @@ namespace Darklight.Game.SpriteAnimation
         private float _timePerFrame => 1 / (float)frameRate; // Time each frame should be displayed
         private float _timer = 0f; // Timer to track when to switch to the next frame
 
+        private bool _animationDone = false; 
+
         private SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
         public SpriteSheet spriteSheet = null;
         public int currentFrame = 0;
@@ -43,7 +45,10 @@ namespace Darklight.Game.SpriteAnimation
         public void UpdateAnimation()
         {
             if (spriteSheet == null) return;
-            if (currentFrame + 1 == spriteSheet.Length && !spriteSheet.loop) return;
+            if (currentFrame + 1 == spriteSheet.Length && !spriteSheet.loop) {
+                _animationDone = true;
+                return;
+            }
 
             _timer += Time.deltaTime; // Update Timer
 
@@ -72,6 +77,7 @@ namespace Darklight.Game.SpriteAnimation
             }
             catch { }
 
+            _animationDone = false;
             currentFrame = 0;
             _timer = 0f;
         }
@@ -102,8 +108,7 @@ namespace Darklight.Game.SpriteAnimation
         }
 
         public bool AnimationIsOver() {
-            // TODO: make variable and change it in update and load spritesheet
-            return false;
+            return _animationDone;
         }
     }
 

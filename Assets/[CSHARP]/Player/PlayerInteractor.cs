@@ -10,16 +10,18 @@ public class PlayerInteractor : OverlapGrid2D
     public PlayerController playerController => GetComponent<PlayerController>();
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
-    [ShowOnly] public Interactable targetInteractable;
+    [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
+    public Interactable targetInteractable;
+
+    [ShowOnly, Tooltip("The Interactable that the player is currently interacting with. Can be null.")]
+    public Interactable activeInteractable;
+
+    #region -- [[ UPDATE THE INTERACTABLE RADAR ]] ------------------------------------- >> 
 
     public override void Update()
     {
         base.Update();
         RefreshRadar();
-
-        if (_foundInteractables.Count == 0) return;
-        // Because this method is called every frame, this line will keep the target at the correct position
-        //interactables.First().TargetSet();
     }
 
     void RefreshRadar()
@@ -29,6 +31,7 @@ public class PlayerInteractor : OverlapGrid2D
         // Temporary list to hold items to be removed
         List<Interactable> toRemove = new List<Interactable>();
 
+        // Iterate through the found interactables
         foreach (Interactable interactable in _foundInteractables)
         {
             if (interactable == null) continue;
@@ -45,32 +48,35 @@ public class PlayerInteractor : OverlapGrid2D
         {
             _foundInteractables.Remove(completedInteraction);
         }
+
+        // Get the Target Interactable 
+        // TODO :: Find the best interactable
+        if (targetInteractable == null)
+            targetInteractable = _foundInteractables.First();
+
+        // Only set the target if the interactable is not the active target
+        if (targetInteractable != activeInteractable)
+        {
+            targetInteractable.TargetSet();
+        }
+        else
+        {
+            targetInteractable.TargetClear();
+        }
     }
+    #endregion
 
     public bool InteractWithTarget()
     {
         if (_foundInteractables.Count == 0) return false;
-
-        // Get the Target Interactable
-        Interactable targetInteractable = _foundInteractables.First();
         if (targetInteractable == null) return false;
         targetInteractable.TargetClear();
-        targetInteractable.Interact(); // << MAIN INTERACTION
 
-        if (targetInteractable is NPC_Interactable)
-        {
-            NPC_Interactable npcInteractable = targetInteractable as NPC_Interactable;
-            //playerController.cameraController.SetOffsetRotation(playerController.transform, npcInteractable.transform);
-            //npcInteractable.DialogueBubble.TextureUpdate();
-        }
-        // Show the player's dialogue bubble
-        else if (targetInteractable is Interactable)
-        {
-            Interactable interactable = targetInteractable as Interactable;
-            OverlapGrid2D_Data targetData = GetBestData();
-            UIManager.Instance.CreateSpeechBubble(targetData.worldPosition, interactable.currentText, targetData.cellSize);
-        }
+        // Set the active interactable
+        activeInteractable = targetInteractable;
+        activeInteractable.Interact(); // << MAIN INTERACTION
 
+        // Check if interactable is complete
         if (targetInteractable.isComplete)
         {
             ExitInteraction();
@@ -80,17 +86,15 @@ public class PlayerInteractor : OverlapGrid2D
         return true;
     }
 
-    public void ExitInteraction()
+    void ExitInteraction()
     {
         UIManager.Instance.DestroySpeechBubble();
         playerController.ExitInteraction();
+        targetInteractable = null;
+        activeInteractable = null;
     }
 
 
-    public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
-    {
-        return (point1 + point2) * 0.5f;
-    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

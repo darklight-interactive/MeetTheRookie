@@ -57,9 +57,8 @@ namespace Darklight.UnityExt.Input
         public static event OnInput_Trigger OnSecondaryInteract;
         public static event OnInput_Trigger OnSecondaryInteractCanceled;
 
-        public override void Awake()
+        public override void Initialize()
         {
-            base.Awake(); // Initialize the singleton instance
             if (DetectAndEnableInputDevice())
             {
                 Debug.Log($"{Prefix}Found Input: {DeviceInputType}");
@@ -67,7 +66,42 @@ namespace Darklight.UnityExt.Input
             _inputActionAsset.Enable();
         }
 
+        public void Reset()
+        {
+            Debug.Log($"{Prefix} Resetting Inputs ");
+
+            // Unsubscribe from all input actions
+            if (_move != null)
+            {
+                _move.started -= HandleMoveStarted;
+                _move.performed -= HandleMovePerformed;
+                _move.canceled -= HandleMoveCanceled;
+            }
+
+            if (_primary != null)
+            {
+                _primary.performed -= HandlePrimaryPerformed;
+                _primary.canceled -= HandlePrimaryCanceled;
+            }
+
+            if (_secondary != null)
+            {
+                _secondary.performed -= HandleSecondaryPerformed;
+                _secondary.canceled -= HandleSecondaryCanceled;
+            }
+
+            DisableAllActionMaps();
+        }
+
+        public void OnDestroy()
+        {
+            //Reset();
+        }
+
+
+
         #region ---- [[ DEVICE INPUT DETECTION ]] ---->>
+
         bool DetectAndEnableInputDevice()
         {
             DisableAllActionMaps();
@@ -136,32 +170,7 @@ namespace Darklight.UnityExt.Input
         }
         #endregion
 
-        void OnDestroy()
-        {
-            Debug.Log($"{Prefix}Destroying Input Manager");
 
-            // Unsubscribe from all input actions
-            if (_move != null)
-            {
-                _move.started -= HandleMoveStarted;
-                _move.performed -= HandleMovePerformed;
-                _move.canceled -= HandleMoveCanceled;
-            }
-
-            if (_primary != null)
-            {
-                _primary.performed -= HandlePrimaryPerformed;
-                _primary.canceled -= HandlePrimaryCanceled;
-            }
-
-            if (_secondary != null)
-            {
-                _secondary.performed -= HandleSecondaryPerformed;
-                _secondary.canceled -= HandleSecondaryCanceled;
-            }
-
-            DisableAllActionMaps();
-        }
 
 
         private void HandleMoveStarted(InputAction.CallbackContext ctx)
