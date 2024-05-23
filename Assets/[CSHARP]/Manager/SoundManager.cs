@@ -39,14 +39,14 @@ public class SoundManager : MonoBehaviourSingleton<SoundManager>
     public override void Awake()
     {
         // This will need to be the same file path as where you are building the AssetBundles too.
-        var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAsset/Sound", "banks"));
+        AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAsset/Sound", "banks"));
         if (assetBundle == null)
         {
             Debug.LogError("Failed to load AssetBundle!");
             return;
         }
 
-        foreach (var name in assetBundle.GetAllAssetNames())
+        foreach (string name in assetBundle.GetAllAssetNames())
         {
             FMODUnity.RuntimeManager.LoadBank(assetBundle.LoadAsset<TextAsset>(name));
         }
@@ -56,6 +56,7 @@ public class SoundManager : MonoBehaviourSingleton<SoundManager>
         assetBundle.Unload(false);
     }
 
+    public override void Initialize() { }
 
     private void Start()
     {

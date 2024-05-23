@@ -118,23 +118,33 @@ public class InkyStoryObject : ScriptableObject
             }
             return _story;
         }
+        set
+        {
+            _story = value;
+        }
     }
 
     /// <summary>
     /// Initializes the story object with data from the given Inky TextAsset.
     /// </summary>
-    /// <param name="inkTextAsset">The Inky TextAsset containing the Ink story.</param>
-    public void Initialize(TextAsset inkTextAsset = null)
+    /// <param name="textAsset">The Inky TextAsset containing the Ink story.</param>
+    public void Initialize(TextAsset textAsset = null)
     {
-        if (inkTextAsset == null)
+        // Set the ink text asset if the parameter is not null
+        if (textAsset != null)
         {
-            Debug.LogError("Ink TextAsset is null.");
+            this._inkyTextAsset = textAsset;
+        }
+
+        // return if no ink story set
+        if (this._inkyTextAsset == null)
+        {
+            Debug.LogError("InkyStoryObject: Ink story not set.");
             return;
         }
 
-        this._inkyTextAsset = inkTextAsset;
-        this.name = inkTextAsset.name; // << set ScriptableObject name
-        this._story = CreateStory(inkTextAsset);
+        this.name = _inkyTextAsset.name; // << set ScriptableObject name
+        this._story = CreateStory(_inkyTextAsset);
         this._knots = GetAllKnots(_story).Select(knot => new InkyKnot
         {
             name = knot,

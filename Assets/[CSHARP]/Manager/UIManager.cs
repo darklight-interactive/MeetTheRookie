@@ -277,20 +277,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public RenderTexture UXML_RenderTexture;
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
-    public override void Awake()
-    {
-        base.Awake(); // << Update the Singleton instance
-
-        //CleanUpDocuments(); // << Clean up hidden documents
-        /*
-        if (SceneManager.GetActiveScene().name == _mainMenuScene.name)
-        {
-            _mainMenu = CreateUIDocumentObject<MainMenuController>(_mainMenuPreset);
-            _mainMenu.Initialize(_mainMenuPreset);
-        }
-        */
-        //gameUIController?.Initialize(_gameUIPreset);
-    }
+    public override void Initialize() { }
 
     void Update()
     {

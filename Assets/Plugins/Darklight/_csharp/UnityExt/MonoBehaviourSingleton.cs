@@ -45,17 +45,34 @@ namespace Darklight.UnityExt
             {
                 _instance = this as T;
                 if (Application.isPlaying)
+                {
                     DontDestroyOnLoad(this.gameObject);
+                }
+            }
+            else if (_instance != this)
+            {
+                Debug.LogWarning($"{Prefix} Singleton instance already exists. Destroying this instance.");
+
+                if (Application.isPlaying)
+                {
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    DestroyImmediate(this.gameObject);
+#endif          
+                }
+                return;
             }
 
-            /*
-                    if (_instance != null && _instance != this)
-                    {
-                        Debug.LogWarning($"{Prefix} Singleton instance already exists. Disabling this instance.");
-                        this.enabled = false;
-                    }
-            */
-
+            // Call the Initialize method to run logic after confirming the singleton instance.
+            Initialize();
         }
+
+        /// <summary>
+        /// This method is called after the singleton instance is confirmed.
+        /// </summary>
+        public abstract void Initialize();
     }
 }

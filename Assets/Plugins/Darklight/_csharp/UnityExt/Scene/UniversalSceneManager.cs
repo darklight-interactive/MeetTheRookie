@@ -31,9 +31,8 @@ namespace Darklight.UnityExt.Scene
         public List<string> ScenesInBuild { get => scenesInBuild; set => scenesInBuild = value; }
         public string CurrentScene { get => currentScene; set => currentScene = value; }
 
-        public override void Awake()
+        public override void Initialize()
         {
-            base.Awake();
             LoadBuildScenes();
             currentScene = SceneManager.GetActiveScene().name;
         }

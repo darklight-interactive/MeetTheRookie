@@ -9,6 +9,8 @@ using Darklight.UnityExt.Scene;
 
 using Ink.Runtime;
 using Darklight.Console;
+using UnityEngine.SceneManagement;
+
 
 
 #if UNITY_EDITOR
@@ -27,20 +29,32 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
     public List<string> storyKnots => InkyStoryObject.GetAllKnots(_globalStoryObject.StoryValue);
 
-
-    // -------------------- [[ SERIALIZED FIELDS ]] ------------------- >>
-
     [Tooltip("The global Inky Story Object.")]
     [SerializeField] InkyStoryObject _globalStoryObject;
     public InkyStoryObject GlobalStoryObject => _globalStoryObject;
+
 
     [Tooltip("The current speaker in the story.")]
     [ShowOnly, SerializeField] string _currentSpeaker;
     public string CurrentSpeaker => _currentSpeaker;
 
+
     [Tooltip("The list of speakers in the story.")]
     [ShowOnly, SerializeField] List<string> _speakerList;
     public List<string> SpeakerList => _speakerList;
+
+    private InkyStoryIterator _storyIterator;
+    public InkyStoryIterator Iterator
+    {
+        get
+        {
+            if (_storyIterator == null)
+            {
+                _storyIterator = new InkyStoryIterator(_globalStoryObject);
+            }
+            return _storyIterator;
+        }
+    }
 
     // --------------------- [[ INKY SCENE DATA ]] --------------------- >>
     [System.Serializable]
@@ -52,6 +66,17 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         public string knotName;
     }
     [HideInInspector] public List<InkySceneData> sceneData = new List<InkySceneData>();
+    public string GetSceneKnot(string sceneName)
+    {
+        foreach (InkySceneData data in sceneData)
+        {
+            if (data.sceneObject == sceneName)
+            {
+                return data.knotName;
+            }
+        }
+        return null;
+    }
 
 
     #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
@@ -70,15 +95,20 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     // ------------------------ [[ METHODS ]] ------------------------ >>
 
-    public override void Awake()
+    public override void Initialize()
     {
-        base.Awake();
-
         if (_globalStoryObject == null) return;
+        _globalStoryObject.Initialize(); // << INITIALIZE STORY DATA >>
+        _storyIterator = new InkyStoryIterator(_globalStoryObject);
 
         // << GET VARIABLES >>
         _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
+
+        // << LOAD SCENE DATA >>
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Iterator.GoToKnotOrStitch(GetSceneKnot(currentSceneName));
     }
+
 
     void Start()
     {
@@ -102,15 +132,13 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         });
     }
 
-
-
-    public object GoToScene(object[] args)
+    object GoToScene(object[] args)
     {
         Debug.Log("Go To Scene! >> " + args[0].ToString());
         return false;
     }
 
-    public object QuestStarted(object[] args)
+    object QuestStarted(object[] args)
     {
         Debug.Log("Quest Started! >> " + args[0].ToString());
         return false;
