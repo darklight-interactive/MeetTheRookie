@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,6 +105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
+  idleWalkLoop: 0
+  stateAfterAnimation: 1
   npcSpeed: 0.5
   followSpeed: 0.5
   hideSpeed: 0.5
@@ -149,7 +151,7 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-  currentFrame: 1
+  currentFrame: 2
 --- !u!61 &963346328399781227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -208,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 0}
+  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 0

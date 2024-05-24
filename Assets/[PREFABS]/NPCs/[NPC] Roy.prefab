@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89,7 +89,7 @@ SpriteRenderer:
   m_Size: {x: 0.4140625, y: 0.9140625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &2528446817011783710
@@ -106,6 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
+  idleWalkLoop: 0
+  stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
@@ -242,7 +244,6 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: Roy_Dialogue
   _interactionStitch: 
   _onFirstInteraction:
@@ -272,4 +273,4 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
-  speechBubble: {fileID: 0}
+  speakerTag: 

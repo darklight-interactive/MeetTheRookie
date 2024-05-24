@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+  m_Sprite: {fileID: 8609721151305637149, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.44, y: 1.28}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -106,6 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
+  idleWalkLoop: 0
+  stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
@@ -219,7 +221,7 @@ MonoBehaviour:
     - {fileID: 8609721151305637149, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
     - {fileID: 5484843246563276747, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
     - {fileID: 8615295126695275498, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-  currentFrame: 0
+  currentFrame: 4
 --- !u!61 &4165984020649371347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -258,8 +260,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.44, y: 1.28}
-    newSize: {x: 0.44, y: 1.28}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -301,7 +303,6 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-  _storyObject: {fileID: 0}
   _sceneKnot: 
   _interactionStitch: 
   _onFirstInteraction:
@@ -331,4 +332,4 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
-  speechBubble: {fileID: 0}
+  speakerTag: 
