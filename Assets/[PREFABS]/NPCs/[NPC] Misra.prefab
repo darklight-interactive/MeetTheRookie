@@ -55,7 +55,6 @@ MonoBehaviour:
     m_Bits: 192
   editMode: 0
   _sprite: {fileID: 4064383543977762312, guid: 0ca2d1e0635aa194f8661738a48e7455, type: 3}
-  _storyObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _sceneKnot: Misra_Dialogue
   _interactionStitch: 
   _onFirstInteraction:
@@ -85,7 +84,7 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
-  speechBubble: {fileID: 0}
+  speakerTag: 
 --- !u!114 &2912223000728981185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,6 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 4
+  idleWalkLoop: 0
+  stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
