@@ -114,6 +114,12 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
         }
+
+        // << SET THE STORY ITERATOR >> ------------------------------------
+        if (_storyIterator == null)
+        {
+            _storyIterator = new InkyStoryIterator(_storyObject);
+        }
     }
 
     public virtual void Reset()

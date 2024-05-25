@@ -156,7 +156,7 @@ public class InkyStoryManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (InkyStoryManager)target;
-        _script.Awake();
+        //_script.Awake();
     }
 
     public override void OnInspectorGUI()
