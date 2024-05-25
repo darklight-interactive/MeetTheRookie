@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Darklight.Utility;
 using UnityEngine;
 
-public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMATION }
+public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMATION, GRABBED, STRUGGLE, DRAGGED }
 
 public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
@@ -512,6 +512,71 @@ public class PlayAnimationState : FiniteState<NPCState>
     {
         if ( _stateMachine.animator.FrameAnimationPlayer.AnimationIsOver() ) {
             _stateMachine.GoToState(_returnState);
+        }
+
+    }
+}
+
+#endregion
+
+#region ================== [ GRABBED STATE ] ==================
+public class GrabbedState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+
+    public GrabbedState(NPCState stateType, params object[] args) : base(stateType, args)
+    {
+        _stateMachine = (NPC_StateMachine)args[0];
+    }
+
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Execute()
+    {
+        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        {
+            _stateMachine.GoToState(NPCState.STRUGGLE);
+        }
+
+    }
+}
+
+#endregion
+
+#region ================== [ STRUGGLE STATE ] ==================
+public class StruggleState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+
+    public StruggleState(NPCState stateType, params object[] args) : base(stateType, args)
+    {
+        _stateMachine = (NPC_StateMachine)args[0];
+    }
+
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Execute() { }
+}
+
+#endregion
+
+#region ================== [ DRAGGED STATE ] ==================
+public class DraggedState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+
+    public DraggedState(NPCState stateType, params object[] args) : base(stateType, args)
+    {
+        _stateMachine = (NPC_StateMachine)args[0];
+    }
+
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Execute()
+    {
+        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        {
+            _stateMachine.GoToState(NPCState.IDLE);
         }
 
     }

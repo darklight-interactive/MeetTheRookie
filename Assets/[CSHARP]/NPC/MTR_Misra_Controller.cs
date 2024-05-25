@@ -10,8 +10,14 @@ public class MTR_Misra_Controller : NPC_Controller {
     public override void Start()
     {
         base.Start();
-        
 
-        // stateMachine.AddState();
+        // ADD MISRA-SPECIFIC STATES
+        GrabbedState grabbedState = new(NPCState.GRABBED, new object[] { this.stateMachine });
+        StruggleState struggleState = new(NPCState.STRUGGLE, new object[] { this.stateMachine });
+        DraggedState draggedState = new(NPCState.DRAGGED, new object[] { this.stateMachine });
+
+        stateMachine.AddState(grabbedState);
+        stateMachine.AddState(struggleState);
+        stateMachine.AddState(draggedState);
     }
 }
