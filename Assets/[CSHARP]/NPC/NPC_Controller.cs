@@ -1,8 +1,3 @@
-/*
- * Last Edited by Garrett Blake
- * 4/10/2024
- */
-
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.Utility;
@@ -52,7 +47,7 @@ public class NPC_Controller : MonoBehaviour
     [Range(0f, 10f)] public float walkMaxDuration = 3f;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
-    void Start()
+    public virtual void Start()
     {
         // Create instances of the states
         IdleState idleState = new(NPCState.IDLE, new object[] { stateMachine, this, idleMaxDuration, idleWalkLoop });
