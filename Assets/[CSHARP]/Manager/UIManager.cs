@@ -93,7 +93,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     public static int GetMaxScreenDimension()
     {
+        Instance.UpdateScreenSize();
         return Mathf.Max(lastScreenWidth, lastScreenHeight);
+    }
+
+    public static int GetScreenWidth()
+    {
+        Instance.UpdateScreenSize();
+        return lastScreenWidth;
     }
 
 #if UNITY_EDITOR
