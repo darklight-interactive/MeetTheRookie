@@ -158,7 +158,7 @@ public class Interactable : OverlapGrid2D, IInteract
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
             {
-                UIManager.Instance.CreateSpeechBubbleAtCurrentSpeaker(text);
+                UIManager.Instance.CreateNewSpeechBubble(text);
             };
 
             // Subscribe to OnComplete

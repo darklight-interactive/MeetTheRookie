@@ -57,12 +57,6 @@ namespace Darklight.UnityExt
                 {
                     Destroy(this.gameObject);
                 }
-                else
-                {
-#if UNITY_EDITOR
-                    DestroyImmediate(this.gameObject);
-#endif          
-                }
                 return;
             }
 

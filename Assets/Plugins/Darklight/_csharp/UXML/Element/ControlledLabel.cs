@@ -3,16 +3,21 @@ using UnityEngine.UIElements;
 
 namespace Darklight.UXML.Element
 {
-    #region ---- [[ CONTROLLED LABEL ]] ----
     [UxmlElement]
     public partial class ControlledLabel : VisualElement
     {
         public class ControlledSizeLabelFactory : UxmlFactory<ControlledLabel> { }
+        private VisualElement _container;
+        private Label _label;
+        private float _rollingTextPercentValue = 1;
+        private int _currentIndex;
 
-        [UxmlAttribute, TextArea(1, 10)]
-        public string fullText;
+
+        [UxmlAttribute, TextArea(3, 10)]
+        public string fullText = "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
 
         [UxmlAttribute]
+        [Range(8, 128)]
         public float fontSize
         {
             get { return _label.style.fontSize.value.value; }
@@ -21,45 +26,52 @@ namespace Darklight.UXML.Element
 
         public string text
         {
-            get { return _label.text; }
-            set { _label.text = value; }
+            get{ return _label.text; }
+            set { _label.text = value;}
         }
 
-
-        private VisualElement _container;
-        private Label _label;
-        private int _currentIndex;
+        [UxmlAttribute, Range(0, 1)] 
+        public float rollingTextPercentage
+        {
+            get
+            {
+                return _rollingTextPercentValue;
+            }
+            set
+            {
+                _rollingTextPercentValue = value;
+                _currentIndex = Mathf.FloorToInt(fullText.Length * _rollingTextPercentValue);
+                SetTextToIndex(_currentIndex);
+            }
+        }
 
         public ControlledLabel()
         {
             _container = new VisualElement();
-            _container.style.backgroundColor = Color.white;
-            _container.style.width = new Length(500, LengthUnit.Pixel);
-            _container.style.height = new Length(500, LengthUnit.Pixel);
+            _container.style.overflow = Overflow.Hidden;
             _container.style.flexWrap = Wrap.Wrap;
 
             _label = new Label();
+            
             _container.Add(_label);
             Add(_container);
         }
 
-        public void InitializeRollingText(string fullText)
+        public void Initialize(string fullText)
         {
             this.fullText = fullText;
-            _currentIndex = 0;
-            UpdateText();
+            SetTextToIndex(0);
         }
 
-        public void Step()
+        public void RollingTextStep()
         {
-            _currentIndex = (_currentIndex + 1) % fullText.Length;
-            UpdateText();
+            SetTextToIndex(_currentIndex + 1);
         }
 
-        private void UpdateText()
+        void SetTextToIndex(int index)
         {
-            this.text = fullText.Substring(_currentIndex) + fullText.Substring(0, _currentIndex);
+            _currentIndex = Mathf.Min(index, fullText.Length);
+            this.text = fullText.Substring(0, _currentIndex);
         }
     }
-    #endregion
 }

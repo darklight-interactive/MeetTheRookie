@@ -44,10 +44,10 @@ public class GameUIController : UXML_UIDocumentObject
 
     private IEnumerator RollTextCoroutine(ControlledLabel label, string fullText, float interval)
     {
-        label.InitializeRollingText(fullText);
+        label.fullText = fullText;
         for (int i = 0; i < fullText.Length; i++)
         {
-            label.text = fullText.Substring(0, i);
+            label.rollingTextPercentage += interval;
             yield return new WaitForSeconds(interval);
         }
 
