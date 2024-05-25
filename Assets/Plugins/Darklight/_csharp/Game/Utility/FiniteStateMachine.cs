@@ -70,7 +70,10 @@ namespace Darklight.Utility
         {
             this.initialState = initialState;
             this.possibleStates = possibleStates;
-            this.currentState = possibleStates[initialState];
+            if (possibleStates.ContainsKey(initialState))
+            {
+                this.currentState = possibleStates[initialState];
+            }
             this.args = args;
         }
 
