@@ -1,22 +1,12 @@
 
 === Misra_Dialogue ===
-#NPC tag
--> DONE
-
-= default
-Woah .. something scary is going on
-I think you - you didnt set a proper stitch?
-Maybe you did it on purpose
-Idk to each their own , just take it away now. -> DONE
-
-= 4_1
 {IsQuestComplete(visited_misra) == false:
     ~ CompleteQuest(visited_misra)
     ~ SetSpeaker(Speaker.Misra)
-    [Misra] Here we are! 
-    [Misra] Kettle Rock, Main Street. Heart of the Downtown. 
-    [Misra] There's bound to be some locals around - where do you want to start?
-    ~ SetSpeaker(Speaker.Lupe)
+    Here we are! 
+    Kettle Rock, Main Street. Heart of the Downtown. 
+    There's bound to be some locals around - where do you want to start?
+    -> DONE
 -else: 
     {IsQuestComplete(visited_roy):
         ~ SetSpeaker(Speaker.Misra)
@@ -27,8 +17,8 @@ Idk to each their own , just take it away now. -> DONE
         [Lupe] From what I can tell.
         ~ SetSpeaker(Speaker.Misra)
         [Misra] Well, you've only been here a day...
-        ~ SetSpeaker(Speaker.Lupe)
     }
+    -> DONE
 }
 {IsQuestComplete(visited_jenny) && IsQuestComplete(complete_arcade):
     ~ SetSpeaker(Speaker.Misra)
@@ -39,6 +29,7 @@ Idk to each their own , just take it away now. -> DONE
      [Misra] Good luck getting anything out of them.
     ~ SetSpeaker(Speaker.Lupe)
      // Add to Synthesis: Who broke into the Winery?
-}
     -> DONE
+}
+-> DONE
 
