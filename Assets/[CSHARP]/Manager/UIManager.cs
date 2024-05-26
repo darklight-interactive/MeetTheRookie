@@ -175,7 +175,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             // Create a new Bubble
             speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
             speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
-            speechBubbleObject.SetLocalScale(0.5f);
         }
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
