@@ -49,10 +49,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 9cafa6e0000d62c4a8dbcbe247128212, type: 2}
+  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
   layerMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 64
   editMode: 0
   _sprite: {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
   _sceneKnot: Misra_Dialogue
@@ -205,7 +205,7 @@ MonoBehaviour:
     frames:
     - {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
     - {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!61 &5007469561755814138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -244,7 +244,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4453125, y: 0.9375}
+    oldSize: {x: 0.4453125, y: 0.921875}
     newSize: {x: 0.4453125, y: 0.921875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -295,14 +295,14 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_Sprite: {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.4453125, y: 0.921875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
