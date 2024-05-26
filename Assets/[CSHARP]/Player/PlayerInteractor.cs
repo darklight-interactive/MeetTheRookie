@@ -51,22 +51,19 @@ public class PlayerInteractor : OverlapGrid2D
 
         // Get the Target Interactable 
         // TODO :: Find the best interactable
-        if (targetInteractable == null && _foundInteractables.Count > 0)
-        {
+        if (targetInteractable == null)
             targetInteractable = _foundInteractables.First();
-        }
 
         // Only set the target if the interactable is not the active target
         if (targetInteractable != activeInteractable)
         {
             targetInteractable.TargetSet();
         }
-        else if (targetInteractable != null)
+        else
         {
             targetInteractable.TargetClear();
         }
     }
-    
     #endregion
 
     public bool InteractWithTarget()

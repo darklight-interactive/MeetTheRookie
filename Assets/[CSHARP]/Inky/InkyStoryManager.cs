@@ -107,7 +107,11 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         // << LOAD SCENE DATA >>
         string currentSceneName = SceneManager.GetActiveScene().name;
         Iterator.GoToKnotOrStitch(GetSceneKnot(currentSceneName));
+    }
 
+
+    void Start()
+    {
         // << BINDING FUNCTIONS >>
         _globalStoryObject.BindExternalFunction("QuestStarted", QuestStarted);
         _globalStoryObject.BindExternalFunction("GoToScene", GoToScene);
@@ -152,6 +156,7 @@ public class InkyStoryManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (InkyStoryManager)target;
+        //_script.Awake();
     }
 
     public override void OnInspectorGUI()

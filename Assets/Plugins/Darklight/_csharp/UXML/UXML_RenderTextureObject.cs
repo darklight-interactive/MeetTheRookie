@@ -17,6 +17,7 @@ namespace Darklight.UXML
     /// <summary>
     /// This class is used to create a GameObject with a RenderTexture that can be used to render a UXML Element.
     /// </summary>
+    [ExecuteAlways]
     public class UXML_RenderTextureObject : UXML_UIDocumentObject
     {
         [SerializeField, ShowOnly] GameObject _quad;

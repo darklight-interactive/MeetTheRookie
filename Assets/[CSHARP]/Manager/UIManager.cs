@@ -6,8 +6,6 @@ using Darklight.UnityExt.Editor;
 using Darklight.UXML;
 
 using NaughtyAttributes;
-using System.Collections;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -95,15 +93,37 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
 
     public static int GetMaxScreenDimension()
     {
-        Instance.UpdateScreenSize();
         return Mathf.Max(lastScreenWidth, lastScreenHeight);
     }
 
-    public static int GetScreenWidth()
+#if UNITY_EDITOR
+    public static void CleanUpDocuments()
     {
-        Instance.UpdateScreenSize();
-        return lastScreenWidth;
+        int count = 0;
+        UIDocument[] allDocuments = Resources.FindObjectsOfTypeAll<UIDocument>();
+        foreach (UIDocument doc in allDocuments)
+        {
+            DestroyImmediate(doc.gameObject);
+            count++;
+        }
+
+        UXML_UIDocumentObject[] allObjects = Resources.FindObjectsOfTypeAll<UXML_UIDocumentObject>();
+        foreach (UXML_UIDocumentObject obj in allObjects)
+        {
+            DestroyImmediate(obj.gameObject);
+            count++;
+        }
+
+        UXML_RenderTextureObject[] allRenderTextures = Resources.FindObjectsOfTypeAll<UXML_RenderTextureObject>();
+        foreach (UXML_RenderTextureObject obj in allRenderTextures)
+        {
+            DestroyImmediate(obj.gameObject);
+            count++;
+        }
+
+        Debug.Log($"{count} UIDocuments have been destroyed.");
     }
+#endif
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
@@ -158,38 +178,26 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
     [SerializeField, Range(0.1f, 1f)] float _textScale = 0.25f;
 
-    public void CreateNewSpeechBubble(string text)
+    public void CreateSpeechBubbleAtCurrentSpeaker(string text)
     {
+        // Destroy the current speech bubble if it exists
         if (speechBubbleObject != null)
         {
             DestroySpeechBubble();
+            speechBubbleObject = null;
         }
 
-        StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
-    }
+        // Create a new Bubble
+        speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
+        speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
+        speechBubbleObject.SetLocalScale(0.5f);
 
-    IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
-    {
-        if (speechBubbleObject == null)
-        {
-            // Create a new Bubble
-            speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
-            speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
-            speechBubbleObject.SetLocalScale(0.5f);
-        }
-
+        // Set the text of the speech bubble
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.Initialize(fullText);
+        speechBubble.text = text;
+        speechBubble.textSize = Mathf.CeilToInt(GetMaxScreenDimension() * _textScale);
 
-        while (true)
-        {
-            for (int i = 0; i < speechBubble.fullText.Length; i ++)
-            {
-                speechBubble.RollingTextStep();
-                yield return new WaitForSeconds(interval);
-            }
-            yield return null;
-        }
+        speechBubbleObject.TextureUpdate();
     }
 
     public void DestroySpeechBubble()
