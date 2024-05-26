@@ -37,9 +37,7 @@ public class GameUIController : UXML_UIDocumentObject
 
         Coroutine rollingTextRoutine = StartCoroutine(RollTextCoroutine(label, fullText, 0.01f));
 
-        label.fontSize = UIManager.GetScreenWidth() * textScale;
 
-        Debug.Log("Game UI Controller Initialized! Font Size: " + label.fontSize);
     }
 
     private IEnumerator RollTextCoroutine(ControlledLabel label, string fullText, float interval)

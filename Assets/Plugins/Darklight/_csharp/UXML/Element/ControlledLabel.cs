@@ -11,26 +11,37 @@ namespace Darklight.UXML.Element
         private Label _label;
         private float _rollingTextPercentValue = 1;
         private int _currentIndex;
+        private float _ratio;
+
 
 
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText = "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
 
-        [UxmlAttribute]
-        [Range(8, 128)]
-        public float fontSize
+        private float fontSize
         {
             get { return _label.style.fontSize.value.value; }
             set { _label.style.fontSize = value; }
         }
 
-        public string text
+        [UxmlAttribute, Range(0.01f, 0.5f)]
+        public float fontSizeToScreenRatio
         {
-            get{ return _label.text; }
-            set { _label.text = value;}
+            get { return _ratio; }
+            set
+            {
+                _ratio = value;
+                fontSize = Screen.width * _ratio;
+            }
         }
 
-        [UxmlAttribute, Range(0, 1)] 
+        public string text
+        {
+            get { return _label.text; }
+            set { _label.text = value; }
+        }
+
+        [UxmlAttribute, Range(0, 1)]
         public float rollingTextPercentage
         {
             get
@@ -52,7 +63,7 @@ namespace Darklight.UXML.Element
             _container.style.flexWrap = Wrap.Wrap;
 
             _label = new Label();
-            
+
             _container.Add(_label);
             Add(_container);
         }
