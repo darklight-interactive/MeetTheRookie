@@ -975,7 +975,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+      objectReference: {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
       value: 0.015686275
@@ -1461,10 +1461,14 @@ PrefabInstance:
       objectReference: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - target: {fileID: 3694512486796848693, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.015686275
       objectReference: {fileID: 0}
     - target: {fileID: 3694512486796848693, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: m_Color.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694512486796848693, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3925044959927029659, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
@@ -1510,11 +1514,11 @@ PrefabInstance:
     - target: {fileID: 5290514216680339203, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: 'spriteSheets.Array.data[0].spriteSheet.frames.Array.data[0]'
       value: 
-      objectReference: {fileID: -3766639757957820002, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      objectReference: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - target: {fileID: 5290514216680339203, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: 'spriteSheets.Array.data[0].spriteSheet.frames.Array.data[1]'
       value: 
-      objectReference: {fileID: 7597982200651353323, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      objectReference: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - target: {fileID: 5384406280402492061, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -1567,6 +1571,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 92418779}
+    - target: {fileID: 7225005523493472872, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
+      propertyPath: _sceneKnot
+      value: Roy_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225005523493472872, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
+      propertyPath: _interactionStitch
+      value: Roy_Dialogue.pamphlet
+      objectReference: {fileID: 0}
     - target: {fileID: 7358804629257296808, guid: 0c7eabd2c8fd1a14385ed5dbf72895e1, type: 3}
       propertyPath: m_Mesh
       value: 
