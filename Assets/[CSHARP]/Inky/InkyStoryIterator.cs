@@ -81,7 +81,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             story.Continue();
 
             // Check if empty, if so, continue
-            if (CurrentText == null || CurrentText == "")
+            if (CurrentText == null || CurrentText == "" || CurrentText == "\n")
             {
                 ContinueStory();
                 return;

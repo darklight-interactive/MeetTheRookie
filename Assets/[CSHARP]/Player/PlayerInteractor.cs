@@ -107,6 +107,9 @@ public class PlayerInteractor : OverlapGrid2D
         if (interactable == null) return;
         if (interactable.isComplete) return;
         _foundInteractables.Add(interactable);
+
+        // Set as target
+        targetInteractable = interactable;
         interactable.TargetSet();
 
     }

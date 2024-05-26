@@ -112,6 +112,7 @@ public class Interactable : OverlapGrid2D, IInteract
         // << SET THE STORY OBJECT >> ------------------------------------
         if (_storyObject == null)
         {
+            if (InkyStoryManager.Instance == null) {Debug.LogError("Could not find InkyStoryManager");}
             _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
         }
 
@@ -170,8 +171,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
             // Go To the Interaction Stitch
             _storyIterator.GoToKnotOrStitch(_interactionStitch);
-            _storyIterator.ContinueStory();
-
 
             // >> TEMPORARY COLOR CHANGE
             //StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
@@ -180,8 +179,8 @@ public class Interactable : OverlapGrid2D, IInteract
             SoundManager.PlayOneShot(_onFirstInteraction);
 
             OnFirstInteraction?.Invoke();
+            
             Debug.Log($"INTERACT :: {name} >> First Interaction");
-            return;
         }
 
         // Last Interaction

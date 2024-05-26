@@ -1,4 +1,4 @@
-﻿EXTERNAL playerAddItem(type, id, value)
+EXTERNAL playerAddItem(type, id, value)
 EXTERNAL playerRemoveItem(id)
 
 ~ playerAddItem("MediumPaper1", "cutfence", "Cut Fence")
