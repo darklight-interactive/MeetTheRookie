@@ -25,10 +25,7 @@ namespace Darklight.UnityExt
                 if (_instance != null)
                     return _instance;
 
-                // Create a new GameObject with the value of T.
-                GameObject singletonObject = new GameObject($"MonoBehaviourSingleton :: {typeof(T).Name}");
-                _instance = singletonObject.AddComponent<T>();
-                DontDestroyOnLoad(singletonObject);
+                Debug.LogError($"{Prefix} Could not find instance of {typeof(T)}");
                 return _instance;
             }
         }

@@ -197,7 +197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1947608037653172071
 Transform:
   m_ObjectHideFlags: 0
@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
+  textScale: 0.01
 --- !u!114 &4479749985469832793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,14 +309,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneBuildDirectory: Assets/Scenes/Build
-  currentScene: SCENE_4_2 - The General Store
+  currentScene: SCENE_4_5 - DrinksAndDiscussions
   scenesInBuild:
-  - Assets/Scenes/Build\MAIN_MENU.unity
-  - Assets/Scenes/Build\SCENE_2 - The Precinct.unity
-  - Assets/Scenes/Build\SCENE_4_1 - Main Street.unity
-  - Assets/Scenes/Build\SCENE_4_2 - The General Store.unity
-  - Assets/Scenes/Build\SCENE_4_3 - The Arcade.unity
-  - Assets/Scenes/Build\SCENE_4_4 - The Bar.unity
+  - Assets/Scenes/Build/MAIN_MENU.unity
+  - Assets/Scenes/Build/SCENE_2 - The Precinct.unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+  - Assets/Scenes/Build/SCENE_4_5 - DrinksAndDiscussions.unity
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
