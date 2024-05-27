@@ -10,13 +10,16 @@
 -else: 
     {IsQuestComplete(visited_roy):
         ~ SetSpeaker(Speaker.Misra)
-        [Misra] I'm sorry if Roy seems like a bit of a downer.
-        [Misra] He has no faith.
+        I'm sorry if Roy seems like a bit of a downer.
+        He has no faith.
         ~ SetSpeaker(Speaker.Lupe)
-        [Lupe] He seems like he's got a pretty good acceptance of the situation.
-        [Lupe] From what I can tell.
+        He seems like he's got a pretty good acceptance of the situation.
+        From what I can tell.
         ~ SetSpeaker(Speaker.Misra)
-        [Misra] Well, you've only been here a day...
+        Well, you've only been here a day...
+    -else:
+        ~SetSpeaker(Speaker.Misra)
+        There's bound to be some locals around - where do you want to start?
     }
     -> DONE
 }

@@ -156,7 +156,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     [Header("Speech Bubble")]
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
     [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
-    [SerializeField, Range(0.1f, 1f)] float _textScale = 0.25f;
+    [SerializeField, Range(0.01f, 0.5f)] float _textScale = 0.025f;
 
     public void CreateNewSpeechBubble(string text)
     {
@@ -175,10 +175,11 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             // Create a new Bubble
             speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
             speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
-            speechBubbleObject.SetLocalScale(0.5f);
+            //speechBubbleObject.SetLocalScale(0.5f);
         }
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        speechBubble.fontSizeToScreenRatio = _textScale;
         speechBubble.Initialize(fullText);
 
         while (true)

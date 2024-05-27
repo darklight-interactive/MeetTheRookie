@@ -9,6 +9,7 @@ using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 using Darklight.UXML;
 using System.Linq;
+using System.Collections;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
@@ -25,7 +26,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement continueTriangle;
     VisualElement dialogueBox;
     VisualElement nameTag;
-    TextElement dialogueText;
+    ControlledLabel dialogueText;
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
@@ -62,7 +63,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         continueTriangle = root.Q<VisualElement>("DialogueTriangle");
         dialogueBox = root.Q<VisualElement>("DialogueBox");
         nameTag = root.Q<VisualElement>("NameTag");
-        dialogueText = root.Q<TextElement>("DialogueText");
+        dialogueText = ElementQuery<ControlledLabel>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
 
         // Get the story object
@@ -248,13 +249,31 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                 }
             }
         }
-        dialogueText.text = dialogue;
-        UpdateBoxNTextSize();
+
+        StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
+
+        //UpdateBoxNTextSize();
+    }
+
+    IEnumerator RollingTextRoutine(string fullText, float interval)
+    {
+        dialogueText.Initialize(fullText); // << Initialized for rolling text
+
+        while (true)
+        {
+            for (int i = 0; i < dialogueText.fullText.Length; i ++)
+            {
+                dialogueText.RollingTextStep();
+                yield return new WaitForSeconds(interval);
+            }
+            yield return null;
+        }
     }
 
     /// <summary>
     /// Updates the text box size and text size
     /// </summary>
+    /*
     void UpdateBoxNTextSize()
     {
         dialogueText.style.fontSize = textSize.y;
@@ -264,6 +283,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
         dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
     }
+    */
 
     /// <summary>
     /// Moves the cool dialogue triangle up and down
