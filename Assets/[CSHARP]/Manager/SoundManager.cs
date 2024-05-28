@@ -73,6 +73,32 @@ public class SoundManager : MonoBehaviourSingleton<SoundManager>
     {
         RuntimeManager.PlayOneShot(eventReference);
     }
+
+    public static void PlayEventWithParameters(EventReference eventReference, params (string name, float value)[] parameters)
+    {
+        if (eventReference.IsNull) return;
+
+        EventInstance instance = RuntimeManager.CreateInstance(eventReference);
+        foreach (var (name, value) in parameters)
+        {
+            instance.setParameterByName(name, value);
+        }
+        instance.start();
+        instance.release();
+    }
+
+    public static void PlayEventWithParametersByName(EventReference eventReference, params (string name, string value)[] parameters)
+    {
+        if (eventReference.IsNull) return;
+
+        EventInstance instance = RuntimeManager.CreateInstance(eventReference);
+        foreach (var (name, value) in parameters)
+        {
+            instance.setParameterByNameWithLabel(name, value);
+        }
+        instance.start();
+        instance.release();
+    }
     #endregion
 
     // Coroutine to handle the repeated playing of an event

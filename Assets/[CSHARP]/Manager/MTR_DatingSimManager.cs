@@ -222,6 +222,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagMisra");
                     lupeImage.RemoveFromClassList("Inactive");
                     misraImage.AddToClassList("Inactive");
+                    //Debug.Log("Lupe In Class List 'Inactive': " + lupeImage.ClassListContains("Inactive"));
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
@@ -230,22 +231,32 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagLupe");
                     misraImage.RemoveFromClassList("Inactive");
                     lupeImage.AddToClassList("Inactive");
+                    //Debug.Log("Misra In Class List 'Inactive': " + misraImage.ClassListContains("Inactive"));
                 }
             }
             else if (splitTag[0].Trim() == "emote")
             {
                 string[] content = splitTag[1].Split("|");
-                emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                if(content[0].Trim() == "lupe")
+                {
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim(), !lupeImage.ClassListContains("Inactive"));
+                }
+                else if (content[0].Trim() == "misra")
+                {
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim(), !misraImage.ClassListContains("Inactive"));
+                }
             }
             else if (splitTag[0].Trim() == "hide")
             {
                 if (splitTag[1].Trim() == "lupe")
                 {
                     lupeImage.style.visibility = Visibility.Hidden;
+                    lupeImage.AddToClassList("Inactive");
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
                     misraImage.style.visibility = Visibility.Hidden;
+                    misraImage.AddToClassList("Inactive");
                 }
             }
         }
