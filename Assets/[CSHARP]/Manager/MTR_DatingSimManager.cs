@@ -10,6 +10,7 @@ using Darklight.UnityExt.Editor;
 using Darklight.UXML;
 using System.Linq;
 using System.Collections;
+using FMODUnity;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
@@ -29,6 +30,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     ControlledLabel dialogueText;
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
+
+    [SerializeField] public EventReference voiceLupeEvent;
+    [SerializeField] public EventReference voiceMisraEvent;
+    public string fmodLupeParameterName;
+    public string fmodMisraParameterName;
 
     public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
     {
@@ -222,7 +228,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagMisra");
                     lupeImage.RemoveFromClassList("Inactive");
                     misraImage.AddToClassList("Inactive");
-                    //Debug.Log("Lupe In Class List 'Inactive': " + lupeImage.ClassListContains("Inactive"));
+                    //SoundManager.PlayEvent(voiceLupeEvent);
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
@@ -231,7 +237,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagLupe");
                     misraImage.RemoveFromClassList("Inactive");
                     lupeImage.AddToClassList("Inactive");
-                    //Debug.Log("Misra In Class List 'Inactive': " + misraImage.ClassListContains("Inactive"));
+                    //SoundManager.PlayEvent(voiceMisraEvent);
                 }
             }
             else if (splitTag[0].Trim() == "emote")
@@ -239,11 +245,19 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                 string[] content = splitTag[1].Split("|");
                 if(content[0].Trim() == "lupe")
                 {
-                    emotes.SetEmote(content[0].Trim(), content[1].Trim(), !lupeImage.ClassListContains("Inactive"));
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                    if (!lupeImage.ClassListContains("Inactive"))
+                    {
+                        SoundManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
+                    }
                 }
                 else if (content[0].Trim() == "misra")
                 {
-                    emotes.SetEmote(content[0].Trim(), content[1].Trim(), !misraImage.ClassListContains("Inactive"));
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                    if (!misraImage.ClassListContains("Inactive"))
+                    {
+                        SoundManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
+                    }
                 }
             }
             else if (splitTag[0].Trim() == "hide")
