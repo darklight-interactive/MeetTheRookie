@@ -32,7 +32,6 @@ public class DatingSimEmotes : ScriptableObject
     [SerializeField] private List<TrueDatingSimEmotes> lupeEmotes = new List<TrueDatingSimEmotes>();
     [SerializeField] private List<TrueDatingSimEmotes> misraEmotes = new List<TrueDatingSimEmotes>();
 
-
     // private Dictionary<string, Texture2D> old_lupeEmotes = new Dictionary<string, Texture2D>();
     // private Dictionary<string, Texture2D> old_misraEmotes = new Dictionary<string, Texture2D>();
 

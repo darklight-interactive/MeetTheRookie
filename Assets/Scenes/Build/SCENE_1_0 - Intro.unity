@@ -461,6 +461,22 @@ MonoBehaviour:
   nextScene:
     m_SceneName: MAIN_MENU
   emotes: {fileID: 11400000, guid: a64166c2fdcc660428683bdb0e087b06, type: 2}
+  voiceLupeEvent:
+    Guid:
+      Data1: 1188000359
+      Data2: 1185011646
+      Data3: 639124641
+      Data4: 950700048
+    Path: event:/SFX/Lupe_VoiceLines
+  voiceMisraEvent:
+    Guid:
+      Data1: 1860634249
+      Data2: 1277005257
+      Data3: 1079493796
+      Data4: 1248227267
+    Path: event:/SFX/Misra_VoiceLines
+  fmodLupeParameterName: emoteLupe
+  fmodMisraParameterName: emoteMisra
 --- !u!1001 &1847173572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,6 +601,26 @@ PrefabInstance:
     - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: sceneData.Array.data[5].sceneObject.m_SceneName
       value: MAIN_MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Path
+      value: event:/Music/investigate
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data1
+      value: 1009970235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data2
+      value: 1170209264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data3
+      value: -62989660
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543411428099516457, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: backgroundMusicEvent.Guid.Data4
+      value: -619185197
       objectReference: {fileID: 0}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_Name
