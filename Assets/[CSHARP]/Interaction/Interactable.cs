@@ -184,7 +184,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
             OnFirstInteraction?.Invoke();
 
-            Debug.Log($"INTERACT :: {name} >> First Interaction");
+            Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
 
         // << CONTINUE INTERACTION >> ------------------------------------
@@ -194,39 +194,35 @@ public class Interactable : OverlapGrid2D, IInteract
         if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
-            Debug.Log($"INTERACT :: {name} >> Complete");
         }
         else
         {
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onContinuedInteraction);
-
             OnInteraction?.Invoke(_storyIterator.CurrentText);
-            Debug.Log($"INTERACT :: {name} >> Continue Interaction");
+            
+            Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
-
-
     }
 
     public virtual void Complete()
     {
+        OnCompleted?.Invoke(); // Invoke OnCompleted
+        Debug.Log($"INTERACTABLE :: {name} >> Complete");
+
         isActive = false;
         isTarget = false;
         isComplete = true;
         _storyIterator = null;
 
         SoundManager.PlayOneShot(_onCompleteInteraction);
-
-        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
-        OnInteraction = delegate { }; // Reset OnInteraction
-
-        OnCompleted?.Invoke(); // Invoke OnCompleted
-        OnCompleted = delegate { }; // Reset OnCompleted
     }
 
     public virtual void OnDestroy()
     {
-        //throw new System.NotImplementedException();
+        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
+        OnInteraction = delegate { }; // Reset OnInteraction
+        OnCompleted = delegate { }; // Reset OnCompleted
     }
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)

@@ -16,7 +16,21 @@ public class NPC_Interactable : Interactable, IInteract
 
 
     [Header("NPC : Speech Bubble")]
-    private List<string> _speakerOptions => InkyStoryManager.Instance.SpeakerList;
+
+    // This is just a getter for the speaker tag options
+    private List<string> _speakerOptions
+    {
+        get
+        {
+            List<string> speakers = InkyStoryManager.SpeakerList;
+            if (speakers == null || speakers.Count == 0)
+            {
+                InkyStoryManager.Instance.Initialize();
+                speakers = InkyStoryManager.SpeakerList;
+            }
+            return speakers;
+        }
+    }
 
     [DropdownAttribute("_speakerOptions")]
     public string speakerTag;

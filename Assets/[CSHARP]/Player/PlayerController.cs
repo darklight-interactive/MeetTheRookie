@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
         UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract += Interact;
+        UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
 
 
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
         UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract -= Interact;
+        UniversalInputManager.OnPrimaryInteract -= () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
     }
 
@@ -191,21 +191,21 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Interaction Input has been pressed
+    /// Moves the player into the interaction state
     /// </summary>
-    void Interact()
+    public void EnterInteraction()
     {
-
-        bool result = interactor.InteractWithTarget();
-        if (result && stateMachine.CurrentState != PlayerState.INTERACTION)
-        {
-            stateMachine.GoToState(PlayerState.INTERACTION);
-        }
+        stateMachine.GoToState(PlayerState.INTERACTION);
+        //Debug.Log("Player Controller :: Enter Interaction");
     }
 
+    /// <summary>
+    /// Removes the player from the interaction state
+    /// </summary>
     public void ExitInteraction()
     {
         stateMachine.GoToState(PlayerState.IDLE);
+        //Debug.Log("Player Controller :: Exit Interaction");
     }
 
     #region Synthesis Management

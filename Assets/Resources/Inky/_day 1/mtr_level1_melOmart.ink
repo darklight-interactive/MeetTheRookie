@@ -75,18 +75,18 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = marlowe
     {IsQuestComplete(PAY_FOR_GAS):
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
         ~ SetSpeaker(Speaker.Lupe)
         ...great. Any way I can get this fixed?
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         Got a chainsaw on ya? 
         Heheheheh. 
         Ah, don't look so grumpy. 
         If you put in a complaint with the local Police I'm sure you'll be out of here in no time.
         -> DONE
     - else :
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right?
         -> DONE
     }

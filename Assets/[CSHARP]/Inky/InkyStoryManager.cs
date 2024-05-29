@@ -26,22 +26,14 @@ using UnityEditor;
 [RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
+
+
     public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
     public List<string> storyKnots => InkyStoryObject.GetAllKnots(_globalStoryObject.StoryValue);
 
     [Tooltip("The global Inky Story Object.")]
     [SerializeField] InkyStoryObject _globalStoryObject;
     public InkyStoryObject GlobalStoryObject => _globalStoryObject;
-
-
-    [Tooltip("The current speaker in the story.")]
-    [ShowOnly, SerializeField] string _currentSpeaker;
-    public string CurrentSpeaker => _currentSpeaker;
-
-
-    [Tooltip("The list of speakers in the story.")]
-    [ShowOnly, SerializeField] List<string> _speakerList;
-    public List<string> SpeakerList => _speakerList;
 
     private InkyStoryIterator _storyIterator;
     public InkyStoryIterator Iterator
@@ -56,7 +48,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
     }
 
-    // --------------------- [[ INKY SCENE DATA ]] --------------------- >>
+#region ---------------- [[ SCENE DATA ]] ---------------- >>
     [System.Serializable]
     public class InkySceneData
     {
@@ -65,6 +57,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         [Dropdown("storyKnots")]
         public string knotName;
     }
+
     [HideInInspector] public List<InkySceneData> sceneData = new List<InkySceneData>();
     public string GetSceneKnot(string sceneName)
     {
@@ -77,11 +70,24 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
         return null;
     }
-
+#endregion
 
     #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
+    /// <summary>
+    /// List of all the speakers in the Inky Story.
+    /// </summary>
+    public static List<string> SpeakerList;
+
+    [Tooltip("The current speaker in the story.")]
+    [ShowOnly, SerializeField] string _currentSpeaker;
+    public string CurrentSpeaker => _currentSpeaker;
+
     public delegate void SpeakerSet(string speaker);
     public event SpeakerSet OnSpeakerSet;
+
+    /// <summary>
+    /// This is the external function that is called from the Ink story to set the current speaker.
+    /// </summary>
     public object SetSpeaker(object[] args)
     {
         string speaker = (string)args[0];
@@ -90,6 +96,17 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         Debug.Log($"{Prefix} >> Set Speaker: {speaker}");
         return false;
     }
+
+    /// <summary>
+    /// This is the forceful way to set the speaker value.
+    /// </summary>
+    /// <param name="speaker"></param>
+    public void SetSpeaker(string speaker)
+    {
+        _currentSpeaker = speaker;
+        OnSpeakerSet?.Invoke(speaker);
+    }
+
     #endregion
 
 
@@ -102,7 +119,8 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         _storyIterator = new InkyStoryIterator(_globalStoryObject);
 
         // << GET VARIABLES >>
-        _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
+        SpeakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
+        Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
         // << LOAD SCENE DATA >>
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -166,6 +184,8 @@ public class InkyStoryManagerCustomEditor : Editor
         {
             InkyStoryManagerEditorWindow.ShowWindow();
         }
+
+        base.OnInspectorGUI();
     }
 }
 
