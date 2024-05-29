@@ -153,7 +153,6 @@ namespace Darklight.UnityExt.SceneManagement
                 // If the scene name is not null or empty, log an error.
                 if (sceneName != null && sceneName != "")
                 {
-                    Debug.LogError($"{Prefix} Build Scene data for '{sceneName}' not found. Is the scene in the build directory?");
                     return null;
                 }
 

@@ -81,8 +81,12 @@ public class MTR_SceneManagerCustomEditor : Editor
 
         // Display the active scene name.
         MTR_SceneData activeScene = _script.GetActiveSceneData();
-        CustomInspectorGUI.CreateTwoColumnLabel("Active Scene", activeScene.name);
-        CustomInspectorGUI.CreateTwoColumnLabel("Active Knot", activeScene.knot);
+        if (activeScene != null)
+        {
+            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.name);
+            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Knot", activeScene.knot);
+        }
+
 
 
         base.OnInspectorGUI();
