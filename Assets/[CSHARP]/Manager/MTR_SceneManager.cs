@@ -32,9 +32,21 @@ public class MTR_SceneData : BuildSceneData
 
 public class MTR_SceneManager : BuildSceneManager<MTR_SceneData>
 {
+    private Dictionary<string, MTR_SceneData> _sceneDataByKnot = new Dictionary<string, MTR_SceneData>();
+
     public override void Initialize()
     {
         base.Initialize();
+
+        foreach (MTR_SceneData scene in buildScenes)
+        {
+            _sceneDataByKnot.Add(scene.knot, scene);
+        }
+    }
+
+    public MTR_SceneData GetSceneDataByKnot(string knot)
+    {
+        return _sceneDataByKnot[knot];
     }
 }
 

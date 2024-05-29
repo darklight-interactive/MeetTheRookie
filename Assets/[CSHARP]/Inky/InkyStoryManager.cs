@@ -68,18 +68,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     }
 
     // ----------- [[ STORY ITERATOR ]] ------------ >>
-    private InkyStoryIterator _storyIterator;
-    public InkyStoryIterator Iterator
-    {
-        get
-        {
-            if (_storyIterator == null)
-            {
-                _storyIterator = new InkyStoryIterator(_globalStoryObject);
-            }
-            return _storyIterator;
-        }
-    }
+    public InkyStoryIterator Iterator { get; private set; }
 
     public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
 
@@ -125,7 +114,6 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     {
         if (_globalStoryObject == null) return;
         _globalStoryObject.Initialize(); // << INITIALIZE STORY DATA >>
-        _storyIterator = new InkyStoryIterator(_globalStoryObject);
 
         // << GET VARIABLES >>
         SpeakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
@@ -136,7 +124,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
         // << BINDING FUNCTIONS >>
         _globalStoryObject.BindExternalFunction("QuestStarted", QuestStarted);
-        _globalStoryObject.BindExternalFunction("GoToScene", GoToScene);
+        _globalStoryObject.BindExternalFunction("ChangeGameScene", ChangeGameScene);
         _globalStoryObject.BindExternalFunction("SetSpeaker", SetSpeaker);
 
         // << OBSERVE VARIABLES >>
@@ -152,12 +140,25 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         {
             Debug.Log($"[InkyStoryManager] >> Active Quest Chain: {newValue}");
         });
+
+
+        // << INITIALIZE STORY ITERATOR >>
+        Iterator = new InkyStoryIterator(_globalStoryObject);
+
     }
 
-    object GoToScene(object[] args)
+    object ChangeGameScene(object[] args)
     {
-        Debug.Log("Go To Scene! >> " + args[0].ToString());
-        return false;
+        string knotName = (string)args[0];
+        MTR_SceneData data = GameManager.BuildSceneManager.GetSceneDataByKnot(knotName);
+
+        if (data == null) return false;
+
+        // << LOAD SCENE >>
+        GameManager.BuildSceneManager.LoadScene(data.name);
+        Debug.Log($"{Prefix} >> EXTERNAL FUNCTION: ChangeGameScene: {knotName}");
+
+        return true;
     }
 
     object QuestStarted(object[] args)

@@ -53,7 +53,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [DropdownAttribute("_interactionStitches")]
     public string _interactionStitch;
-    protected InkyStoryIterator _storyIterator;
 
     [Header("FMOD One Shots")]
     [SerializeField] EventReference _onFirstInteraction;
@@ -77,14 +76,6 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string currentText
-    {
-        get
-        {
-            if (_storyIterator == null) return "";
-            return _storyIterator.CurrentText;
-        }
-    }
 
     public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
@@ -140,6 +131,8 @@ public class Interactable : OverlapGrid2D, IInteract
     // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
+        InkyStoryIterator StoryIterator = InkyStoryManager.Instance.Iterator;
+
         // << FIRST INTERACTION >>
         if (!isActive)
         {
@@ -148,9 +141,6 @@ public class Interactable : OverlapGrid2D, IInteract
             // Set the active flags
             isActive = true;
             isComplete = false;
-
-            // Create a new story iterator
-            _storyIterator = new InkyStoryIterator(_storyObject);
 
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
@@ -166,7 +156,7 @@ public class Interactable : OverlapGrid2D, IInteract
             };
 
             // Go To the Interaction Stitch
-            _storyIterator.GoToKnotOrStitch(_interactionStitch);
+            StoryIterator.GoToKnotOrStitch(_interactionStitch);
 
             // Color Flash
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
@@ -180,10 +170,10 @@ public class Interactable : OverlapGrid2D, IInteract
         }
 
         // << CONTINUE INTERACTION >> ------------------------------------
-        _storyIterator.ContinueStory();
+        StoryIterator.ContinueStory();
 
         // << LAST INTERACTION >> ----------------------------------------
-        if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
+        if (StoryIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
         }
@@ -191,7 +181,7 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onContinuedInteraction);
-            OnInteraction?.Invoke(_storyIterator.CurrentText);
+            OnInteraction?.Invoke(StoryIterator.CurrentText);
 
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
@@ -221,7 +211,6 @@ public class Interactable : OverlapGrid2D, IInteract
         isTarget = false;
         isActive = false;
         isComplete = false;
-        _storyIterator = null;
 
         _spriteRenderer.color = _defaultTint;
     }

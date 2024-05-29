@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         Cursor.visible = false;
 
         BuildSceneManager.OnSceneChange += OnSceneChanged;
+
+        StoryManager.Initialize();
     }
 
     public void OnSceneChanged(MTR_SceneData oldSceneData, MTR_SceneData newSceneData)

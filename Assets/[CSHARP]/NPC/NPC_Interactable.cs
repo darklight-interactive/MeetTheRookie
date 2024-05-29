@@ -40,7 +40,13 @@ public class NPC_Interactable : Interactable, IInteract
         Reset();
 
         // >> ON FIRST INTERACTION -------------------------------
-        this.OnFirstInteraction += () => stateBeforeTalkedTo = stateMachine.CurrentState;
+        this.OnFirstInteraction += () => 
+        {
+            stateBeforeTalkedTo = stateMachine.CurrentState;
+
+            // If the statemachine is not null, go to the speak state
+            stateMachine?.GoToState(NPCState.SPEAK);
+        };
 
         // >> ON INTERACT ---------------------------------------
         // NOTE :: This event is only called when an Interaction is confirmed
@@ -48,28 +54,12 @@ public class NPC_Interactable : Interactable, IInteract
         {
 
         };
-    }
 
-    public override void Interact()
-    {
-        base.Interact();
-
-        if (isComplete) return;
-        if (_storyIterator.CurrentState != InkyStoryIterator.State.END)
+        this.OnCompleted += () =>
         {
-            // If the statemachine is not null, go to the speak state
-            stateMachine?.GoToState(NPCState.SPEAK);
-        }
-    }
-
-    public override void Complete()
-    {
-        base.Complete();
-
-
-
-        // If the statemachine is not null, go to the state before talked to
-        stateMachine?.GoToState(stateBeforeTalkedTo);
+            // If the statemachine is not null, go to the state before talked to
+            stateMachine?.GoToState(stateBeforeTalkedTo);
+        };
     }
 }
 

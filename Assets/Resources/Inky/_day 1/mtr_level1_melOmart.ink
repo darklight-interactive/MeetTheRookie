@@ -94,6 +94,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 = enter_store
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
+    ~ ChangeGameScene("scene1_2")
     -> DONE
 
 // ------------- SCENE1.2 MelOMarket Store
