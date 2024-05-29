@@ -19,7 +19,7 @@ namespace Darklight.UnityExt.SceneManagement
 {
     interface IBuildSceneManager
     {
-        void LoadBuildScenesFromDirectory();
+        void LoadBuildScenes();
         void OnActiveSceneChanged(Scene oldScene, Scene newScene);
         void OnSceneLoaded(Scene scene, LoadSceneMode mode);
         void OnSceneUnloaded(Scene scene);
@@ -31,9 +31,12 @@ namespace Darklight.UnityExt.SceneManagement
     public abstract class BuildSceneManager : MonoBehaviourSingleton<BuildSceneManager>, IBuildSceneManager
     {
         protected const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
-        protected Scene[] buildScenes = new Scene[0]; // Unity Scenes
+        [SerializeField] protected Scene[] buildScenes = new Scene[0]; // Unity Scenes
+        [SerializeField] protected BuildSceneData[] buildSceneData = new BuildSceneData[0];
 
         public Scene ActiveScene => SceneManager.GetActiveScene();
+        public List<Scene> BuildScenes => buildScenes.ToList();
+        public List<BuildSceneData> BuildSceneData => buildSceneData.ToList();
 
         public delegate void ActiveSceneChanged(Scene oldScene, Scene newScene);
         public event ActiveSceneChanged OnSceneChanged;
@@ -97,7 +100,7 @@ namespace Darklight.UnityExt.SceneManagement
 
 
 #if UNITY_EDITOR
-        public virtual void LoadBuildScenesFromDirectory()
+        public void LoadBuildScenes()
         {
             // Get all scene paths in the specified directory.
             string[] scenePaths = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
@@ -111,11 +114,32 @@ namespace Darklight.UnityExt.SceneManagement
             {
                 string scenePath = scenePaths[i];
                 buildScenes[i] = SceneManager.GetSceneByPath(scenePath);
-                editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);   
+                SaveBuildSceneData(buildScenes[i]);
+                editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
             }
 
             EditorBuildSettings.scenes = editorBuildSettingsScenes; // Update the editor build settings scenes.
             this.buildScenes = buildScenes; // Update the build scenes array.
+        }
+
+        /// <summary>
+        /// Saves serialized build scene data for the specified scene.
+        /// </summary>
+        /// <param name="scene"></param>
+        public virtual void SaveBuildSceneData(Scene scene)
+        {
+            if (scene == null)
+            {
+                Debug.LogWarning($"{Prefix} Cannot save build scene data for null scene.");
+                return;
+            }
+
+            BuildSceneData data = new BuildSceneData(scene);
+            if (!BuildSceneData.Contains(data))
+            {
+                buildSceneData = buildSceneData.Append(data).ToArray();
+                EditorUtility.SetDirty(this);
+            }
         }
 #endif
     }

@@ -12,7 +12,6 @@ using UnityEditor;
 
 public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneData : BuildSceneData, new()
 {
-    protected TSceneData[] buildSceneData = new TSceneData[0];
 
     public override void Awake()
     {
@@ -23,7 +22,7 @@ public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneD
     {
 
 #if UNITY_EDITOR
-        LoadBuildScenesFromDirectory();
+        LoadBuildScenes();
 #endif
     }
 
@@ -60,7 +59,10 @@ public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneD
             return null;
         }
 
-        return buildSceneData.FirstOrDefault(scene => scene.Name == sceneName);
+        // Get the scene data of the specified data type.
+        List<TSceneData> list = BuildSceneData.OfType<TSceneData>().ToList();
+        TSceneData data = list.Find(x => x.Name == sceneName);
+        return data;
     }
 
     /// <summary>
@@ -83,19 +85,13 @@ public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneD
     }
 
 #if UNITY_EDITOR
-    public override void LoadBuildScenesFromDirectory()
+    public override void SaveBuildSceneData(Scene scene)
     {
-        base.LoadBuildScenesFromDirectory();
-
-        List<Scene> buildScenes = this.buildScenes.ToList();
-        List<TSceneData> sceneData = new List<TSceneData>();
-        foreach (Scene scene in buildScenes)
+        TSceneData data = new TSceneData();
+        if (!BuildSceneData.Contains(data))
         {
-            TSceneData data = new TSceneData
-            {
-                UnityScene = scene
-            };
-            sceneData.Add(data);
+            buildSceneData = buildSceneData.Append(data).ToArray();
+            EditorUtility.SetDirty(this);
         }
     }
 
