@@ -156,9 +156,10 @@ public class InkyStoryManagerCustomEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Reload InkyStoryObjects"))
+        if (GUILayout.Button("Initialize InkyStoryObjects"))
         {
             _script.loader.LoadAllStories();
+            _script.Awake(); // << InitializeSingleton
         }
 
         if (GUILayout.Button("Show Editor Window"))

@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
     {
-        Debug.Log($"{Prefix} Scene changed to {newScene.name}");
         InputManager.Reset();
         InputManager.Awake();
 
@@ -38,8 +37,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         {
             StoryManager.Initialize();
         }
+        
         string sceneKnot = StoryManager.GetSceneKnot(newScene.name);
         StoryManager.Iterator.GoToKnotOrStitch(sceneKnot);
+
+        Debug.Log($"{Prefix} Scene changed to {newScene.name}, Knot: {sceneKnot}");
     }
 
 

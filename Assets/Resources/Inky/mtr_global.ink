@@ -27,7 +27,7 @@ INCLUDE _day 1/mtr_level4.2_genstore.ink
 
 
 // ====== SPEAKER HANDLING == >>
-LIST Speaker = (Unknown), Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson, Jenny, Calvin, Josh, Irene, Jenkins
+LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
 VAR CURRENT_SPEAKER = Speaker.Lupe
 == function SetSpeaker(value)
     # SetSpeaker >> {value}
