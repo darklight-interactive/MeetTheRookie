@@ -23,33 +23,8 @@ namespace Darklight.UnityExt.SceneManagement
     {
         const string SCENE_DIRECTORY = "Assets/Scenes/Build";
 
-        #region [[ STATIC METHODS ]] ====================== >>>>        
-#if UNITY_EDITOR
-        public void LoadBuildScenesFromDirectory(string directoryPath)
-        {
-            string[] scenePaths = Directory.GetFiles(directoryPath, "*.unity", SearchOption.AllDirectories);
-            TSceneData[] buildScenes = new TSceneData[scenePaths.Length];
-            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[scenePaths.Length];
-
-            for (int i = 0; i < scenePaths.Length; i++)
-            {
-                string scenePath = scenePaths[i];
-                string sceneName = scenePath.Replace($"{directoryPath}\\", "").Replace(".unity", "");
-                buildScenes[i] = new TSceneData()
-                {
-                    path = scenePath,
-                    name = sceneName
-                };
-                editorBuildSettingsScenes[i] = buildScenes[i].CreateEditorBuildSettingsScene();
-            }
-
-            _buildScenes = buildScenes;
-        }
-#endif
-        #endregion
-
-        [SerializeField, ShowOnly] TSceneData _activeScene;
-        [SerializeField] TSceneData[] _buildScenes = new TSceneData[0];
+        protected TSceneData activeScene;
+        [SerializeField] protected TSceneData[] buildScenes = new TSceneData[0];
 
         /// <summary>
         /// Delegate for handling scene changes.
@@ -61,9 +36,20 @@ namespace Darklight.UnityExt.SceneManagement
 
         public override void Initialize()
         {
+            OnSceneChange += (TSceneData oldScene, TSceneData newScene) => 
+            {
+                activeScene = newScene;
+            };
+
 #if UNITY_EDITOR
             LoadBuildScenesFromDirectory(SCENE_DIRECTORY);
 #endif
+        }
+
+        public virtual void Reset()
+        {
+            activeScene = null;
+            buildScenes = new TSceneData[0];
         }
 
         /// <summary>
@@ -151,7 +137,54 @@ namespace Darklight.UnityExt.SceneManagement
         /// <returns>The scene data for the specified scene name.</returns>
         private TSceneData GetSceneData(string sceneName)
         {
-            return _buildScenes.FirstOrDefault(scene => scene.name == sceneName);
+            return buildScenes.FirstOrDefault(scene => scene.name == sceneName);
         }
+
+#if UNITY_EDITOR
+        public void LoadBuildScenesFromDirectory(string directoryPath)
+        {
+            // Get all scene paths in the specified directory.
+            string[] scenePaths = Directory.GetFiles(directoryPath, "*.unity", SearchOption.AllDirectories);
+            // Store a copy of the build scenes array.
+            List<TSceneData> buildScenes = new List<TSceneData>(this.buildScenes);
+
+            // Remove any scenes that are not in the directory.
+            for (int i = 0; i < buildScenes.Count; i++)
+            {
+                if (!scenePaths.Contains(buildScenes[i].path))
+                {
+                    buildScenes.RemoveAt(i);
+                }
+            }
+
+            // Create a new editor build settings scenes array.
+            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[scenePaths.Length]; 
+
+            // Iterate through the scene paths.
+            for (int i = 0; i < scenePaths.Length; i++)
+            {
+                string scenePath = scenePaths[i];
+                string sceneName = scenePath.Replace($"{directoryPath}\\", "").Replace(".unity", "");
+
+                // If the scene data object does not exist, create a new one.
+                if (buildScenes[i].path != scenePath)
+                {
+                    // Create a new scene data object and add it to the build scenes array.
+                    buildScenes[i] = new TSceneData()
+                    {
+                        path = scenePath,
+                        name = sceneName
+                    };
+                }
+
+                // Create an editor build settings scene object and add it to the editor build settings scenes array.
+                editorBuildSettingsScenes[i] = buildScenes[i].CreateEditorBuildSettingsScene();
+            }
+
+            EditorBuildSettings.scenes = editorBuildSettingsScenes; // Update the editor build settings scenes.
+            this.buildScenes = buildScenes.ToArray(); // Update the build scenes array.
+        }
+#endif
+
     }
 }

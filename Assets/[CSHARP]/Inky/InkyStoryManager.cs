@@ -26,13 +26,44 @@ using UnityEditor;
 [RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
-    // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
     [SerializeField] InkyStoryObject _globalStoryObject;
+    [SerializeField, ShowOnly] List<string> _speakerList;
+    [SerializeField, ShowOnly] List<string> _globalKnots;
+
+    // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
+
     public static InkyStoryObject GlobalStoryObject
     {
         get
         {
             return Instance._globalStoryObject;
+        }
+    }
+
+    /// <summary>
+    /// List of all the speakers in the Inky Story.
+    /// </summary>
+    public static List<string> SpeakerList
+    {
+        get
+        {
+            return Instance._speakerList;
+        }
+        set
+        {
+            Instance._speakerList = value;
+        }
+    }
+
+    public static List<string> GlobalKnots
+    {
+        get
+        {
+            return Instance._globalKnots;
+        }
+        set
+        {
+            Instance._globalKnots = value;
         }
     }
 
@@ -54,10 +85,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
 
     #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
-    /// <summary>
-    /// List of all the speakers in the Inky Story.
-    /// </summary>
-    public static List<string> SpeakerList;
+
 
     [Tooltip("The current speaker in the story.")]
     [ShowOnly, SerializeField] string _currentSpeaker;
@@ -102,6 +130,8 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         // << GET VARIABLES >>
         SpeakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
         Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
+
+        GlobalKnots = _globalStoryObject.KnotNames;
 
         // << LOAD SCENE DATA >>
         string currentSceneName = SceneManager.GetActiveScene().name;
