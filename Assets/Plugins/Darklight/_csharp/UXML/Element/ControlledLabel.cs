@@ -31,7 +31,7 @@ namespace Darklight.UXML.Element
             set
             {
                 _ratio = value;
-                fontSize = Screen.width * _ratio;
+                fontSize = Screen.height * _ratio;
             }
         }
 
