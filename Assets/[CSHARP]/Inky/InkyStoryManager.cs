@@ -5,7 +5,7 @@ using UnityEngine;
 
 using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Scene;
+using Darklight.UnityExt.SceneManagement;
 
 using Ink.Runtime;
 using Darklight.Console;
@@ -26,15 +26,17 @@ using UnityEditor;
 [RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
-
-
-    public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
-    public List<string> storyKnots => InkyStoryObject.GetAllKnots(_globalStoryObject.StoryValue);
-
-    [Tooltip("The global Inky Story Object.")]
+    // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
     [SerializeField] InkyStoryObject _globalStoryObject;
-    public InkyStoryObject GlobalStoryObject => _globalStoryObject;
+    public static InkyStoryObject GlobalStoryObject
+    {
+        get
+        {
+            return Instance._globalStoryObject;
+        }
+    }
 
+    // ----------- [[ STORY ITERATOR ]] ------------ >>
     private InkyStoryIterator _storyIterator;
     public InkyStoryIterator Iterator
     {
@@ -48,29 +50,8 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         }
     }
 
-#region ---------------- [[ SCENE DATA ]] ---------------- >>
-    [System.Serializable]
-    public class InkySceneData
-    {
-        public SceneObject sceneObject;
+    public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
 
-        [Dropdown("storyKnots")]
-        public string knotName;
-    }
-
-    [HideInInspector] public List<InkySceneData> sceneData = new List<InkySceneData>();
-    public string GetSceneKnot(string sceneName)
-    {
-        foreach (InkySceneData data in sceneData)
-        {
-            if (data.sceneObject == sceneName)
-            {
-                return data.knotName;
-            }
-        }
-        return null;
-    }
-#endregion
 
     #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
     /// <summary>
@@ -124,7 +105,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
         // << LOAD SCENE DATA >>
         string currentSceneName = SceneManager.GetActiveScene().name;
-        Iterator.GoToKnotOrStitch(GetSceneKnot(currentSceneName));
+        Debug.Log($"{Prefix} >> Current Scene: {currentSceneName}");
+
+        //Iterator.GoToKnotOrStitch(GetSceneKnot(currentSceneName));
 
         // << BINDING FUNCTIONS >>
         _globalStoryObject.BindExternalFunction("QuestStarted", QuestStarted);
@@ -158,6 +141,9 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         return false;
     }
 }
+
+
+
 
 #if UNITY_EDITOR
 
@@ -243,42 +229,6 @@ public class InkyStoryManagerEditorWindow : EditorWindow
 
         // >> Global Story Object
         EditorGUILayout.PropertyField(globalStoryObjectProperty);
-
-        // >> Scene Data
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Scene Data", EditorStyles.boldLabel);
-
-        for (int i = 0; i < sceneDataProperty.arraySize; i++)
-        {
-            SerializedProperty dataProperty = sceneDataProperty.GetArrayElementAtIndex(i);
-
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.PropertyField(dataProperty.FindPropertyRelative("sceneObject"));
-            EditorGUILayout.PropertyField(dataProperty.FindPropertyRelative("knotName"));
-            EditorGUILayout.EndVertical();
-        }
-
-        GUILayout.Space(10);
-        if (GUILayout.Button("Add Scene Knot"))
-        {
-            sceneDataProperty.InsertArrayElementAtIndex(sceneDataProperty.arraySize);
-        }
-
-        if (GUILayout.Button("Remove Last Scene Knot"))
-        {
-            if (sceneDataProperty.arraySize > 0)
-            {
-                sceneDataProperty.DeleteArrayElementAtIndex(sceneDataProperty.arraySize - 1);
-            }
-        }
-
-        serializedStoryManager.ApplyModifiedProperties();
-
-        // Save changes
-        if (GUI.changed)
-        {
-            EditorUtility.SetDirty(storyManager);
-        }
     }
 }
 #endif

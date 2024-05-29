@@ -2,7 +2,7 @@ using UnityEngine;
 using Darklight.UnityExt.Input;
 using Darklight.Utility;
 using Darklight.UnityExt;
-using Darklight.UnityExt.Scene;
+using Darklight.UnityExt.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
@@ -12,7 +12,7 @@ using UnityEditor;
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static UniversalSceneManager UnivSceneManager => UniversalSceneManager.Instance;
+    public static BuildSceneManager<MTR_SceneData> MTR_SceneManager => BuildSceneManager<MTR_SceneData>.Instance;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
@@ -25,10 +25,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         Cursor.visible = false;
 
-        SceneManager.activeSceneChanged += OnSceneChanged;
+        MTR_SceneManager.OnSceneChange += OnSceneChanged;
     }
 
-    public void OnSceneChanged(Scene oldScene, Scene newScene)
+    public void OnSceneChanged(MTR_SceneData oldScene, MTR_SceneData newScene)
     {
         InputManager.Reset();
         InputManager.Awake();
@@ -38,10 +38,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
             StoryManager.Initialize();
         }
         
-        string sceneKnot = StoryManager.GetSceneKnot(newScene.name);
-        StoryManager.Iterator.GoToKnotOrStitch(sceneKnot);
+        //string sceneKnot = StoryManager.GetSceneKnot(newScene.name);
+        //StoryManager.Iterator.GoToKnotOrStitch(sceneKnot);
 
-        Debug.Log($"{Prefix} Scene changed to {newScene.name}, Knot: {sceneKnot}");
+        //Debug.Log($"{Prefix} Scene changed to {newScene.name}, Knot: {sceneKnot}");
     }
 
 

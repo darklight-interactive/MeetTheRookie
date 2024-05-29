@@ -124,6 +124,8 @@ public class InkyStoryObject : ScriptableObject
         }
     }
 
+    public List<InkyKnot> Knots => _knots;
+
     /// <summary>
     /// Initializes the story object with data from the given Inky TextAsset.
     /// </summary>
@@ -155,6 +157,11 @@ public class InkyStoryObject : ScriptableObject
 
         // Set up error handling
         _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
+    }
+
+    public List<string> GetKnots()
+    {
+        return GetAllKnots(_story);
     }
 
     public void UpdateVariables()

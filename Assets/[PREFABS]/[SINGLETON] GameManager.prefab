@@ -253,7 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
-  - component: {fileID: 3935851452667166986}
+  - component: {fileID: 5155693147541508910}
   - component: {fileID: 5342227784319069846}
   - component: {fileID: 5953019589017212419}
   - component: {fileID: 7427744868763189831}
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04eafa7f7e814847b6fb7eb2a7f019e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3935851452667166986
+--- !u!114 &5155693147541508910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,31 +305,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8875938405744345426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0dbd76607f79040806a0ceee308384, type: 3}
+  m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneBuildDirectory: Assets/Scenes/Build
-  currentScene: SCENE_4_1 - Main Street
-  scenesInBuild:
-  - Assets/Scenes/Build/MAIN_MENU.unity
-  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
-  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int. Bathroom.unity
-  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
-  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
-  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
-  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
-  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
-  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+  _sceneDirectory: Assets/Scenes/Build
+  _currentScene: 
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,8 +358,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _currentSpeaker: Lupe
-  _speakerList: []
-  sceneData: []
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0

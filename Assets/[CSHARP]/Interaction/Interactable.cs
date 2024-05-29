@@ -113,7 +113,7 @@ public class Interactable : OverlapGrid2D, IInteract
         if (_storyObject == null)
         {
             if (InkyStoryManager.Instance == null) { Debug.LogError("Could not find InkyStoryManager"); }
-            _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+            _storyObject = InkyStoryManager.GlobalStoryObject;
         }
 
 

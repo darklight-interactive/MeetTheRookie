@@ -11,27 +11,29 @@ namespace Darklight.UnityExt
     /// <typeparam name="T"></typeparam>
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
+        public static string Prefix => $"[{typeof(T).Name}]";
+        public static ConsoleGUI Console = new ConsoleGUI();
+
         private static T _instance;
         public static T Instance
         {
             get
             {
                 // If the instance is already set, return it.
-                if (_instance != null)
-                    return _instance;
+                if (_instance != null) return _instance;
 
                 // Check if an instance of T already exists in the scene.
                 _instance = FindFirstObjectByType<T>();
                 if (_instance != null)
+                {
+                    Debug.Log($"{Prefix} Found & set existing instance of {typeof(T)}");
                     return _instance;
+                }
 
                 Debug.LogError($"{Prefix} Could not find instance of {typeof(T)}");
                 return _instance;
             }
         }
-
-        public static string Prefix => $"[{typeof(T).Name}]";
-        public static ConsoleGUI Console = new ConsoleGUI();
 
         /// <summary>
         /// On Awake, check is this GameObject is the singleton instance.
@@ -48,11 +50,14 @@ namespace Darklight.UnityExt
             }
             else if (_instance != this)
             {
-                Debug.LogWarning($"{Prefix} Singleton instance already exists. Destroying this instance.");
-
                 if (Application.isPlaying)
                 {
                     Destroy(this.gameObject);
+                    Debug.LogWarning($"{Prefix} Singleton instance already exists. Destroying this instance.");
+                }
+                else
+                {
+                    Debug.LogError($"{Prefix} Singleton instance already exists. Please check the scene for duplicates.");
                 }
                 return;
             }

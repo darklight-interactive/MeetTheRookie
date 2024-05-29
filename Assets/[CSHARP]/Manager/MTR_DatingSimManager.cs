@@ -67,7 +67,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choiceParent = root.Q<VisualElement>("ChoiceParent");
 
         // Get the story object
-        storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+        storyObject = InkyStoryManager.GlobalStoryObject;
         storyIterator = InkyStoryManager.Instance.Iterator;
         storyIterator.GoToKnotOrStitch("scene2");
 
