@@ -4,6 +4,9 @@ using EasyButtons;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
+using UnityEngine.SceneManagement;
+
+
 
 
 
@@ -23,14 +26,12 @@ public class MTR_SceneData : BuildSceneData
     }
 
     [NaughtyAttributes.Dropdown("_knotNames")]
-    public string knotName;
+    public string knot;
 }
 
 
 public class MTR_SceneManager : BuildSceneManager<MTR_SceneData>
 {
-
-
     public override void Initialize()
     {
         base.Initialize();
@@ -48,7 +49,6 @@ public class MTR_SceneManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (MTR_SceneManager)target;
-        _script.Awake();
     }
 
     public override void OnInspectorGUI()
@@ -56,7 +56,6 @@ public class MTR_SceneManagerCustomEditor : Editor
         _serializedObject.Update();
 
         EditorGUI.BeginChangeCheck();
-
 
         if (GUILayout.Button("Initialize"))
         {
@@ -66,8 +65,12 @@ public class MTR_SceneManagerCustomEditor : Editor
         if (GUILayout.Button("Reset"))
         {
             _script.Reset();
-        
         }
+
+        // Display the active scene name.
+        MTR_SceneData activeScene = _script.GetActiveSceneData();
+        CustomInspectorGUI.CreateTwoColumnLabel("Active Scene", activeScene.name);
+        CustomInspectorGUI.CreateTwoColumnLabel("Active Knot", activeScene.knot);
 
 
         base.OnInspectorGUI();

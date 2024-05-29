@@ -132,12 +132,7 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
         GlobalKnots = _globalStoryObject.KnotNames;
-
-        // << LOAD SCENE DATA >>
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        Debug.Log($"{Prefix} >> Current Scene: {currentSceneName}");
-
-        //Iterator.GoToKnotOrStitch(GetSceneKnot(currentSceneName));
+        Debug.Log($"{Prefix} >> Global Knots Count : {GlobalKnots.Count}");
 
         // << BINDING FUNCTIONS >>
         _globalStoryObject.BindExternalFunction("QuestStarted", QuestStarted);

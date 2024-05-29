@@ -82,6 +82,16 @@ namespace Darklight.UnityExt.SceneManagement
             TSceneData oldSceneData = GetSceneData(oldScene.name);
             TSceneData newSceneData = GetSceneData(newScene.name);
             OnSceneChange?.Invoke(oldSceneData, newSceneData);
+
+            // Log the active scene change.
+            if (oldSceneData != null)
+            {
+                Debug.Log($"{Prefix} Active scene changed from {oldScene.name} to {newScene.name}.");
+            }
+            else
+            {
+                Debug.Log($"{Prefix} Active scene changed to {newScene.name}.");
+            }
         }
 
         /// <summary>
@@ -91,7 +101,7 @@ namespace Darklight.UnityExt.SceneManagement
         /// <param name="mode">The load scene mode.</param>
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"Scene {scene.name} loaded.");
+            Debug.Log($"{Prefix} Scene {scene.name} loaded.");
         }
 
         /// <summary>
@@ -100,7 +110,7 @@ namespace Darklight.UnityExt.SceneManagement
         /// <param name="scene">The unloaded scene.</param>
         private void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log($"Scene {scene.name} unloaded.");
+            Debug.Log($"{Prefix} Scene {scene.name} unloaded.");
         }
 
         /// <summary>
@@ -135,9 +145,32 @@ namespace Darklight.UnityExt.SceneManagement
         /// </summary>
         /// <param name="sceneName">The name of the scene.</param>
         /// <returns>The scene data for the specified scene name.</returns>
-        private TSceneData GetSceneData(string sceneName)
+        public TSceneData GetSceneData(string sceneName)
         {
-            return buildScenes.FirstOrDefault(scene => scene.name == sceneName);
+            TSceneData data = buildScenes.FirstOrDefault(scene => scene.name == sceneName);
+            if (data == null)
+            {
+                // If the scene name is not null or empty, log an error.
+                if (sceneName != null && sceneName != "")
+                {
+                    Debug.LogError($"{Prefix} Build Scene data for '{sceneName}' not found. Is the scene in the build directory?");
+                    return null;
+                }
+
+                // If the scene name is null or empty, log a warning.
+                Debug.LogWarning($"{Prefix} Cannot get scene data for null or empty scene name.");
+                return null;
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Retrieves the data for the active scene.
+        /// </summary>
+        public TSceneData GetActiveSceneData()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            return GetSceneData(scene.name);
         }
 
 #if UNITY_EDITOR

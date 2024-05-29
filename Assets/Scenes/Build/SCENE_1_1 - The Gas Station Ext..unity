@@ -284,6 +284,26 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &72336514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: synthesisTest
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _knots:
+  - name: nada
+    stitches: []
+  - name: synthesize
+    stitches: []
+  _variables: []
+  _globalTags: []
 --- !u!43 &164486710
 Mesh:
   m_ObjectHideFlags: 0
@@ -2021,6 +2041,182 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _globalKnots.Array.size
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _speakerList.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[0]'
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[1]'
+      value: SetActiveQuestChain
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[2]'
+      value: StartQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[3]'
+      value: CompleteQuest
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[4]'
+      value: IsQuestComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[5]'
+      value: IsQuestActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[6]'
+      value: DiscoverClue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[7]'
+      value: IsClueFound
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[8]'
+      value: Misra_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[9]'
+      value: Roy_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[0]'
+      value: Speaker.Unknown
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[1]'
+      value: Speaker.Misra
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[2]'
+      value: Speaker.Lupe
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[3]'
+      value: Speaker.Chief_Thelton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[4]'
+      value: Speaker.Marlowe
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[5]'
+      value: Speaker.Beth
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[6]'
+      value: Speaker.Mel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[7]'
+      value: Speaker.Roy_Rodgerson
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[8]'
+      value: Speaker.Jenny
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[9]'
+      value: Speaker.Calvin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[10]'
+      value: Jenny_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[11]'
+      value: Calvin_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[12]'
+      value: Josh_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[13]'
+      value: Jenkins_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[14]'
+      value: Irene_Dialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[15]'
+      value: level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[16]'
+      value: scene1_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[17]'
+      value: scene1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[18]'
+      value: scene1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[19]'
+      value: scene1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[20]'
+      value: scene1_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[21]'
+      value: level3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[22]'
+      value: scene3_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[23]'
+      value: scene3_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[24]'
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[25]'
+      value: scene4_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[26]'
+      value: scene4_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[27]'
+      value: scene4_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_globalKnots.Array.data[28]'
+      value: global decl
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[10]'
+      value: Speaker.Josh
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[11]'
+      value: Speaker.Irene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_speakerList.Array.data[12]'
+      value: Speaker.Jenkins
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427744868763189831, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: sceneData.Array.data[0].knotName
       value: scene1_1
       objectReference: {fileID: 0}
@@ -2645,26 +2841,6 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   sceneObject:
     m_SceneName: 
---- !u!114 &508699565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: synthesisTest
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
-  _knots:
-  - name: nada
-    stitches: []
-  - name: synthesize
-    stitches: []
-  _variables: []
-  _globalTags: []
 --- !u!43 &558863577
 Mesh:
   m_ObjectHideFlags: 0
@@ -4017,7 +4193,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.945
@@ -5211,6 +5387,68 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1153142667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_level2_precinct
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 56d5c002448d20e4597414021daff05c, type: 3}
+  _knots:
+  - name: scene2
+    stitches:
+    - scene2.ding
+    - scene2.hello
+    - scene2.soul
+    - scene2.chastise
+    - scene2.scared
+    - scene2.introductions
+    - scene2.silence
+    - scene2.niceToMeet
+    - scene2.precinct
+    - scene2.Company
+    - scene2.treeFell
+    - scene2.snoop
+    - scene2.peek
+    - scene2.wait
+    - scene2.solo
+    - scene2.transition_to_case
+    - scene2.time
+    - scene2.police_report
+    - scene2.theRest
+    - scene2.nothingHere
+    - scene2.Evidence
+    - scene2.Witnesses
+    - scene2.Help
+    - scene2.We
+    - scene2.phone_call
+    - scene2.voicemail
+    - scene2.JokeBack
+    - scene2.door
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
+  _globalTags: []
 --- !u!114 &1175551190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5907,69 +6145,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1502748002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_scene2_precinctDEMO
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 128483559616cef4b9002c3e7c1d7d52, type: 3}
-  _knots:
-  - name: scene2
-    stitches:
-    - scene2.intro
-    - scene2.ding
-    - scene2.hello
-    - scene2.soul
-    - scene2.chastise
-    - scene2.scared
-    - scene2.introductions
-    - scene2.silence
-    - scene2.niceToMeet
-    - scene2.precinct
-    - scene2.Company
-    - scene2.treeFell
-    - scene2.snoop
-    - scene2.peek
-    - scene2.wait
-    - scene2.solo
-    - scene2.transition_to_case
-    - scene2.time
-    - scene2.police_report
-    - scene2.theRest
-    - scene2.nothingHere
-    - scene2.Evidence
-    - scene2.Witnesses
-    - scene2.Help
-    - scene2.We
-    - scene2.phone_call
-    - scene2.voicemail
-    - scene2.JokeBack
-    - scene2.door
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: reported_incident
-    _valueAsString: False
-  - _key: case_file_received
-    _valueAsString: False
-  - _key: love_points
-    _valueAsString: 0
-  - _key: tease_level
-    _valueAsString: 0
-  - _key: sincerity_level
-    _valueAsString: 0
-  - _key: spooked
-    _valueAsString: False
-  - _key: snooped
-    _valueAsString: False
-  _globalTags: []
 --- !u!43 &1533311844
 Mesh:
   m_ObjectHideFlags: 0
@@ -6135,6 +6310,69 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1546511389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: mtr_scene2_precinctDEMO
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 128483559616cef4b9002c3e7c1d7d52, type: 3}
+  _knots:
+  - name: scene2
+    stitches:
+    - scene2.intro
+    - scene2.ding
+    - scene2.hello
+    - scene2.soul
+    - scene2.chastise
+    - scene2.scared
+    - scene2.introductions
+    - scene2.silence
+    - scene2.niceToMeet
+    - scene2.precinct
+    - scene2.Company
+    - scene2.treeFell
+    - scene2.snoop
+    - scene2.peek
+    - scene2.wait
+    - scene2.solo
+    - scene2.transition_to_case
+    - scene2.time
+    - scene2.police_report
+    - scene2.theRest
+    - scene2.nothingHere
+    - scene2.Evidence
+    - scene2.Witnesses
+    - scene2.Help
+    - scene2.We
+    - scene2.phone_call
+    - scene2.voicemail
+    - scene2.JokeBack
+    - scene2.door
+  - name: global decl
+    stitches: []
+  _variables:
+  - _key: reported_incident
+    _valueAsString: False
+  - _key: case_file_received
+    _valueAsString: False
+  - _key: love_points
+    _valueAsString: 0
+  - _key: tease_level
+    _valueAsString: 0
+  - _key: sincerity_level
+    _valueAsString: 0
+  - _key: spooked
+    _valueAsString: False
+  - _key: snooped
+    _valueAsString: False
+  _globalTags: []
 --- !u!43 &1645305394
 Mesh:
   m_ObjectHideFlags: 0
@@ -6789,7 +7027,192 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1785403543
+--- !u!43 &1952187343
+Mesh:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pb_Mesh-57002
+  serializedVersion: 11
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 60
+    topology: 0
+    baseVertex: 0
+    firstVertex: 0
+    vertexCount: 34
+    localAABB:
+      m_Center: {x: 0.3125, y: 0.5, z: -0.1875}
+      m_Extent: {x: 0.3125, y: 0.5, z: 0.1875}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_BonesAABB: []
+  m_VariableBoneCountWeights:
+    m_Data: 
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexFormat: 0
+  m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a000b0008000a000b000a000c000d000b000c000e000f00100011000e0010001100100012001300110012001400150016001400170015001800160019001800140016001a001b001c001a001d001b001e001f0020001e0021001f00
+  m_VertexData:
+    serializedVersion: 3
+    m_VertexCount: 34
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 4
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 40
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 1632
+    _typelessdata: 0000803e0000803f00000000000000000000803f000000000000803f0000000000000000000080bf0000803e000000000000203f0000803f00000000000000000000803f000000000000803f0000000000000000000080bf0000203f000000000000803e0000803f0000c0be000000000000803f000000000000803f0000000000000000000080bf0000803e0000c0be0000203f0000803f0000c0be000000000000803f000000000000803f0000000000000000000080bf0000203f0000c0be00000000000000000000c0be00000000000080bf00000000000080bf0000000000000000000080bf000000000000c0be0000203f000000000000c0be00000000000080bf00000000000080bf0000000000000000000080bf000020bf0000c0be00000000000000000000000000000000000080bf00000000000080bf0000000000000000000080bf00000000000000000000203f000000000000000000000000000080bf00000000000080bf0000000000000000000080bf000020bf0000000000000000000000000000000000000000000000000000803f000080bf0000000000000000000080bf00000000000000000000203f000000000000000000000000000000000000803f000080bf0000000000000000000080bf000020bf000000000000203f0000103f0000000000000000000000000000803f000080bf0000000000000000000080bf000020bf0000103f000000000000103f0000000000000000000000000000803f000080bf0000000000000000000080bf000000000000103f0000203f0000803f0000000000000000000000000000803f000080bf0000000000000000000080bf000020bf0000803f0000803e0000803f0000000000000000000000000000803f000080bf0000000000000000000080bf000080be0000803f0000203f00000000000000000000803f000000000000000000000000000000000000803f000080bf00000000000000000000203f000000000000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be000000000000203f0000103f0000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be0000103f0000203f0000103f000000000000803f000000000000000000000000000000000000803f000080bf000000000000103f0000203f0000803f0000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be0000803f0000203f0000803f000000000000803f000000000000000000000000000000000000803f000080bf000000000000803f0000203f0000103f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f0000103f00000000000000000000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000000000000000000000000000103f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf000000000000103f0000203f000000000000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f000000000000203f0000803f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f0000803f0000803e0000803f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000803e0000803f000000000000103f0000c0be000080bf00000000000000000000000000000000000080bf000080bf0000c03e0b2d0b3f000000000000000000000000000080bf00000000000000000000000000000000000080bf000080bf0000000000000000000000000000103f00000000000080bf00000000000000000000000000000000000080bf000080bf000000000b2d0b3f00000000000000000000c0be000080bf00000000000000000000000000000000000080bf000080bf0000c03e000000000000803e0000803f0000c0be2f455ebfec05fe3e000000000000000000000000000080bf000080bf0000c03ee2ec833f000000000000103f000000002f455ebfec05fe3e000000000000000000000000000080bf000080bf000000000b2d0b3f0000803e0000803f000000002f455ebfec05fe3e000000000000000000000000000080bf000080bf00000000e2ec833f000000000000103f0000c0be2f455ebfec05fe3e000000000000000000000000000080bf000080bf0000c03e0b2d0b3f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0.3125, y: 0.5, z: -0.1875}
+    m_Extent: {x: 0.3125, y: 0.5, z: 0.1875}
+  m_MeshUsageFlags: 0
+  m_CookingOptions: 30
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  'm_MeshMetrics[0]': 1.0346615
+  'm_MeshMetrics[1]': 1
+  m_MeshOptimizationFlags: 1
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
+--- !u!114 &1955360112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
+  m_Name: synthesisTest
+  m_EditorClassIdentifier: 
+  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _knots:
+  - name: nada
+    stitches: []
+  - name: synthesize
+    stitches: []
+  _variables: []
+  _globalTags: []
+--- !u!114 &1963769954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6989,253 +7412,6 @@ MonoBehaviour:
     _valueAsString: 
   - _key: Level4_Clues
     _valueAsString: 
-  _globalTags: []
---- !u!43 &1952187343
-Mesh:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-57002
-  serializedVersion: 11
-  m_SubMeshes:
-  - serializedVersion: 2
-    firstByte: 0
-    indexCount: 60
-    topology: 0
-    baseVertex: 0
-    firstVertex: 0
-    vertexCount: 34
-    localAABB:
-      m_Center: {x: 0.3125, y: 0.5, z: -0.1875}
-      m_Extent: {x: 0.3125, y: 0.5, z: 0.1875}
-  m_Shapes:
-    vertices: []
-    shapes: []
-    channels: []
-    fullWeights: []
-  m_BindPose: []
-  m_BoneNameHashes: 
-  m_RootBoneNameHash: 0
-  m_BonesAABB: []
-  m_VariableBoneCountWeights:
-    m_Data: 
-  m_MeshCompression: 0
-  m_IsReadable: 1
-  m_KeepVertices: 1
-  m_KeepIndices: 1
-  m_IndexFormat: 0
-  m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a000b0008000a000b000a000c000d000b000c000e000f00100011000e0010001100100012001300110012001400150016001400170015001800160019001800140016001a001b001c001a001d001b001e001f0020001e0021001f00
-  m_VertexData:
-    serializedVersion: 3
-    m_VertexCount: 34
-    m_Channels:
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 12
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 24
-      format: 0
-      dimension: 4
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 40
-      format: 0
-      dimension: 2
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    m_DataSize: 1632
-    _typelessdata: 0000803e0000803f00000000000000000000803f000000000000803f0000000000000000000080bf0000803e000000000000203f0000803f00000000000000000000803f000000000000803f0000000000000000000080bf0000203f000000000000803e0000803f0000c0be000000000000803f000000000000803f0000000000000000000080bf0000803e0000c0be0000203f0000803f0000c0be000000000000803f000000000000803f0000000000000000000080bf0000203f0000c0be00000000000000000000c0be00000000000080bf00000000000080bf0000000000000000000080bf000000000000c0be0000203f000000000000c0be00000000000080bf00000000000080bf0000000000000000000080bf000020bf0000c0be00000000000000000000000000000000000080bf00000000000080bf0000000000000000000080bf00000000000000000000203f000000000000000000000000000080bf00000000000080bf0000000000000000000080bf000020bf0000000000000000000000000000000000000000000000000000803f000080bf0000000000000000000080bf00000000000000000000203f000000000000000000000000000000000000803f000080bf0000000000000000000080bf000020bf000000000000203f0000103f0000000000000000000000000000803f000080bf0000000000000000000080bf000020bf0000103f000000000000103f0000000000000000000000000000803f000080bf0000000000000000000080bf000000000000103f0000203f0000803f0000000000000000000000000000803f000080bf0000000000000000000080bf000020bf0000803f0000803e0000803f0000000000000000000000000000803f000080bf0000000000000000000080bf000080be0000803f0000203f00000000000000000000803f000000000000000000000000000000000000803f000080bf00000000000000000000203f000000000000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be000000000000203f0000103f0000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be0000103f0000203f0000103f000000000000803f000000000000000000000000000000000000803f000080bf000000000000103f0000203f0000803f0000c0be0000803f000000000000000000000000000000000000803f000080bf0000c0be0000803f0000203f0000803f000000000000803f000000000000000000000000000000000000803f000080bf000000000000803f0000203f0000103f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f0000103f00000000000000000000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000000000000000000000000000103f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf000000000000103f0000203f000000000000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f000000000000203f0000803f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000203f0000803f0000803e0000803f0000c0be0000000000000000000080bf0000803f0000000000000000000080bf0000803e0000803f000000000000103f0000c0be000080bf00000000000000000000000000000000000080bf000080bf0000c03e0b2d0b3f000000000000000000000000000080bf00000000000000000000000000000000000080bf000080bf0000000000000000000000000000103f00000000000080bf00000000000000000000000000000000000080bf000080bf000000000b2d0b3f00000000000000000000c0be000080bf00000000000000000000000000000000000080bf000080bf0000c03e000000000000803e0000803f0000c0be2f455ebfec05fe3e000000000000000000000000000080bf000080bf0000c03ee2ec833f000000000000103f000000002f455ebfec05fe3e000000000000000000000000000080bf000080bf000000000b2d0b3f0000803e0000803f000000002f455ebfec05fe3e000000000000000000000000000080bf000080bf00000000e2ec833f000000000000103f0000c0be2f455ebfec05fe3e000000000000000000000000000080bf000080bf0000c03e0b2d0b3f
-  m_CompressedMesh:
-    m_Vertices:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UV:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Normals:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Tangents:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Weights:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_NormalSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_TangentSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_FloatColors:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_BoneIndices:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Triangles:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UVInfo: 0
-  m_LocalAABB:
-    m_Center: {x: 0.3125, y: 0.5, z: -0.1875}
-    m_Extent: {x: 0.3125, y: 0.5, z: 0.1875}
-  m_MeshUsageFlags: 0
-  m_CookingOptions: 30
-  m_BakedConvexCollisionMesh: 
-  m_BakedTriangleCollisionMesh: 
-  'm_MeshMetrics[0]': 1.0346615
-  'm_MeshMetrics[1]': 1
-  m_MeshOptimizationFlags: 1
-  m_StreamData:
-    serializedVersion: 2
-    offset: 0
-    size: 0
-    path: 
---- !u!114 &1955360112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: synthesisTest
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
-  _knots:
-  - name: nada
-    stitches: []
-  - name: synthesize
-    stitches: []
-  _variables: []
-  _globalTags: []
---- !u!114 &2068604671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level2_precinct
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 56d5c002448d20e4597414021daff05c, type: 3}
-  _knots:
-  - name: scene2
-    stitches:
-    - scene2.ding
-    - scene2.hello
-    - scene2.soul
-    - scene2.chastise
-    - scene2.scared
-    - scene2.introductions
-    - scene2.silence
-    - scene2.niceToMeet
-    - scene2.precinct
-    - scene2.Company
-    - scene2.treeFell
-    - scene2.snoop
-    - scene2.peek
-    - scene2.wait
-    - scene2.solo
-    - scene2.transition_to_case
-    - scene2.time
-    - scene2.police_report
-    - scene2.theRest
-    - scene2.nothingHere
-    - scene2.Evidence
-    - scene2.Witnesses
-    - scene2.Help
-    - scene2.We
-    - scene2.phone_call
-    - scene2.voicemail
-    - scene2.JokeBack
-    - scene2.door
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: reported_incident
-    _valueAsString: False
-  - _key: case_file_received
-    _valueAsString: False
-  - _key: love_points
-    _valueAsString: 0
-  - _key: tease_level
-    _valueAsString: 0
-  - _key: sincerity_level
-    _valueAsString: 0
-  - _key: spooked
-    _valueAsString: False
-  - _key: snooped
-    _valueAsString: False
   _globalTags: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
