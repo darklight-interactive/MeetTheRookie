@@ -116,19 +116,7 @@ public class Interactable : OverlapGrid2D, IInteract
             _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
         }
 
-        // << SET THE STORY ITERATOR >> ------------------------------------
-        if (_storyIterator == null)
-        {
-            _storyIterator = new InkyStoryIterator(_storyObject);
-        }
-    }
 
-    public virtual void Reset()
-    {
-        isTarget = false;
-        isActive = false;
-        isComplete = false;
-        _spriteRenderer.color = _defaultTint;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -157,8 +145,12 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             TargetClear();
 
+            // Set the active flags
             isActive = true;
             isComplete = false;
+
+            // Create a new story iterator
+            _storyIterator = new InkyStoryIterator(_storyObject);
 
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
@@ -200,7 +192,7 @@ public class Interactable : OverlapGrid2D, IInteract
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onContinuedInteraction);
             OnInteraction?.Invoke(_storyIterator.CurrentText);
-            
+
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
     }
@@ -210,12 +202,28 @@ public class Interactable : OverlapGrid2D, IInteract
         OnCompleted?.Invoke(); // Invoke OnCompleted
         Debug.Log($"INTERACTABLE :: {name} >> Complete");
 
+        // Set the flags to complete
         isActive = false;
         isTarget = false;
         isComplete = true;
-        _storyIterator = null;
 
         SoundManager.PlayOneShot(_onCompleteInteraction);
+
+        // Reset the interactable after 1 second
+        Invoke(nameof(Reset), 1.0f);
+    }
+
+    /// <summary>
+    /// Reset all flags and values
+    /// </summary>
+    public virtual void Reset()
+    {
+        isTarget = false;
+        isActive = false;
+        isComplete = false;
+        _storyIterator = null;
+
+        _spriteRenderer.color = _defaultTint;
     }
 
     public virtual void OnDestroy()

@@ -113,7 +113,6 @@ public class PlayerInteractor : OverlapGrid2D
     }
 
 
-
     void OnTriggerEnter2D(Collider2D other)
     {
         Interactable interactable = other.GetComponent<Interactable>();
@@ -126,7 +125,6 @@ public class PlayerInteractor : OverlapGrid2D
         // Set as target
         targetInteractable = interactable;
         interactable.TargetSet();
-
     }
 
 
