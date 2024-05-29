@@ -81,7 +81,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             story.Continue();
 
             // Check if empty, if so, continue
-            if (CurrentText == null || CurrentText == "")
+            if (CurrentText == null || CurrentText == "" || CurrentText == "\n")
             {
                 ContinueStory();
                 return;
@@ -115,7 +115,8 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
             InkyStoryManager.Console.Log($"{Prefix} End of Knot");
             Debug.Log($"{Prefix} End of Knot");
         }
-        // Get Tags
+
+        // -- ( TAG HANDLING ) ------------------ >>
         List<string> tags = story.currentTags;
         if (tags != null && tags.Count > 0)
         {
@@ -160,10 +161,7 @@ public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
                         break;
                 }
             }
-
         }
     }
-
-
 }
 

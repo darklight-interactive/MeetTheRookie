@@ -180,6 +180,69 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!1 &3513152671404423977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1947608037653172071}
+  - component: {fileID: 2676971201111950006}
+  - component: {fileID: 4479749985469832793}
+  m_Layer: 5
+  m_Name: 'UIManager :: GameUIController'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1947608037653172071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3513152671404423977}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.885586, y: -0.1640172, z: 3.461239}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054830795790530424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2676971201111950006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3513152671404423977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
+  textScale: 0.01
+--- !u!114 &4479749985469832793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3513152671404423977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 9b3a92b9a918eea40b11e9a8e06da64b, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
+  m_SortingOrder: 0
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +281,7 @@ Transform:
   - {fileID: 7313103818091379476}
   - {fileID: 6914380045224247625}
   - {fileID: 150005812677704816}
+  - {fileID: 1947608037653172071}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2927568867421027592
@@ -247,12 +311,25 @@ MonoBehaviour:
   sceneBuildDirectory: Assets/Scenes/Build
   currentScene: SCENE_4_1 - Main Street
   scenesInBuild:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Assets/Scenes/Build/MAIN_MENU.unity
+  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext..unity
+  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int..unity
+  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int. Bathroom.unity
+  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +400,7 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  _textScale: 0.15
+  _textScale: 0.075
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}

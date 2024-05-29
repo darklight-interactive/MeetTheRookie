@@ -1,22 +1,88 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Darklight.UXML.Element
 {
-    #region ---- [[ CONTROLLED LABEL ]] ----
     [UxmlElement]
-    public partial class ControlledLabel : Label
+    public partial class ControlledLabel : VisualElement
     {
-        public class ControlledLabelFactory : UxmlFactory<ControlledLabel> { }
+        public class ControlledSizeLabelFactory : UxmlFactory<ControlledLabel> { }
+        private VisualElement _container;
+        private Label _label;
+        private float _rollingTextPercentValue = 1;
+        private int _currentIndex;
+        private float _ratio;
 
-        [UxmlAttribute]
-        public float fontSize
+
+
+        [UxmlAttribute, TextArea(3, 10)]
+        public string fullText = "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
+
+        private float fontSize
         {
-            get { return style.fontSize.value.value; }
-            set { style.fontSize = value; }
+            get { return _label.style.fontSize.value.value; }
+            set { _label.style.fontSize = value; }
+        }
+
+        [UxmlAttribute, Range(0.01f, 0.5f)]
+        public float fontSizeToScreenRatio
+        {
+            get { return _ratio; }
+            set
+            {
+                _ratio = value;
+                fontSize = Screen.width * _ratio;
+            }
+        }
+
+        public string text
+        {
+            get { return _label.text; }
+            set { _label.text = value; }
+        }
+
+        [UxmlAttribute, Range(0, 1)]
+        public float rollingTextPercentage
+        {
+            get
+            {
+                return _rollingTextPercentValue;
+            }
+            set
+            {
+                _rollingTextPercentValue = value;
+                _currentIndex = Mathf.FloorToInt(fullText.Length * _rollingTextPercentValue);
+                SetTextToIndex(_currentIndex);
+            }
+        }
+
+        public ControlledLabel()
+        {
+            _container = new VisualElement();
+            _container.style.overflow = Overflow.Hidden;
+            _container.style.flexWrap = Wrap.Wrap;
+
+            _label = new Label();
+
+            _container.Add(_label);
+            Add(_container);
+        }
+
+        public void Initialize(string fullText)
+        {
+            this.fullText = fullText;
+            SetTextToIndex(0);
+        }
+
+        public void RollingTextStep()
+        {
+            SetTextToIndex(_currentIndex + 1);
+        }
+
+        void SetTextToIndex(int index)
+        {
+            _currentIndex = Mathf.Min(index, fullText.Length);
+            this.text = fullText.Substring(0, _currentIndex);
         }
     }
-    #endregion
 }

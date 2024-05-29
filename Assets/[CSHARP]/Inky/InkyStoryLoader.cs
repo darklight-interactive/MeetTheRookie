@@ -34,7 +34,7 @@ public class InkyStoryLoader : MonoBehaviour
         foreach (TextAsset storyAsset in storyAssets)
         {
             InkyStoryObject inkyStory = ScriptableObject.CreateInstance<InkyStoryObject>();
-            inkyStory.Initialize();
+            inkyStory.Initialize(storyAsset);
 
 #if UNITY_EDITOR
             SaveInkyStoryObject(storyAsset);

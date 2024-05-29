@@ -112,7 +112,14 @@ public class Interactable : OverlapGrid2D, IInteract
         // << SET THE STORY OBJECT >> ------------------------------------
         if (_storyObject == null)
         {
+            if (InkyStoryManager.Instance == null) { Debug.LogError("Could not find InkyStoryManager"); }
             _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+        }
+
+        // << SET THE STORY ITERATOR >> ------------------------------------
+        if (_storyIterator == null)
+        {
+            _storyIterator = new InkyStoryIterator(_storyObject);
         }
     }
 
@@ -121,7 +128,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isTarget = false;
         isActive = false;
         isComplete = false;
-        _spriteRenderer.color = _interactionTint;
+        _spriteRenderer.color = _defaultTint;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -129,19 +136,23 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         isTarget = true;
         OverlapGrid2D_Data targetData = GetBestOverlapGridData();
-        UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
-        UIManager.Instance.RemoveInteractIcon();
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.RemoveInteractIcon();
     }
 
     // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
-        // First Interaction
+        // << FIRST INTERACTION >>
         if (!isActive)
         {
             TargetClear();
@@ -152,7 +163,7 @@ public class Interactable : OverlapGrid2D, IInteract
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
             {
-                UIManager.Instance.CreateSpeechBubbleAtCurrentSpeaker(text);
+                UIManager.Instance.CreateNewSpeechBubble(text);
             };
 
             // Subscribe to OnComplete
@@ -165,33 +176,36 @@ public class Interactable : OverlapGrid2D, IInteract
             // Go To the Interaction Stitch
             _storyIterator.GoToKnotOrStitch(_interactionStitch);
 
-            // >> TEMPORARY COLOR CHANGE
-            //StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
+            // Color Flash
+            StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onFirstInteraction);
 
             OnFirstInteraction?.Invoke();
+
             Debug.Log($"INTERACT :: {name} >> First Interaction");
-            return;
         }
 
-        // Last Interaction
+        // << CONTINUE INTERACTION >> ------------------------------------
+        _storyIterator.ContinueStory();
+
+        // << LAST INTERACTION >> ----------------------------------------
         if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
             Debug.Log($"INTERACT :: {name} >> Complete");
-            return;
+        }
+        else
+        {
+            // Play FMOD One Shot
+            SoundManager.PlayOneShot(_onContinuedInteraction);
+
+            OnInteraction?.Invoke(_storyIterator.CurrentText);
+            Debug.Log($"INTERACT :: {name} >> Continue Interaction");
         }
 
-        // Continue the interaction
-        _storyIterator.ContinueStory();
 
-        // Play FMOD One Shot
-        SoundManager.PlayOneShot(_onContinuedInteraction);
-
-        OnInteraction?.Invoke(_storyIterator.CurrentText);
-        Debug.Log($"INTERACT :: {name} >> Continue Interaction");
     }
 
     public virtual void Complete()
@@ -208,7 +222,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
         OnCompleted?.Invoke(); // Invoke OnCompleted
         OnCompleted = delegate { }; // Reset OnCompleted
-
     }
 
     public virtual void OnDestroy()
@@ -225,6 +238,7 @@ public class Interactable : OverlapGrid2D, IInteract
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
     }
+
     private void EnableOutline(bool enable)
     {
         if (_spriteRenderer != null)

@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     public override void Initialize()
     {
+        Cursor.visible = false;
+
         SceneManager.activeSceneChanged += OnSceneChanged;
     }
 
