@@ -143,12 +143,12 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     object ChangeGameScene(object[] args)
     {
         string knotName = (string)args[0];
-        MTR_SceneData data = GameManager.BuildSceneManager.GetSceneDataByKnot(knotName);
+        MTR_SceneData data = GameManager.GameSceneManager.GetSceneDataByKnot(knotName);
 
         if (data == null) return false;
 
         // << LOAD SCENE >>
-        GameManager.BuildSceneManager.LoadScene(data.name);
+        GameManager.GameSceneManager.LoadScene(data.Name);
         Debug.Log($"{Prefix} >> EXTERNAL FUNCTION: ChangeGameScene: {knotName}");
 
         return true;

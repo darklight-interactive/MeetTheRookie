@@ -30,7 +30,7 @@ public class MTR_SceneData : BuildSceneData
 }
 
 
-public class MTR_SceneManager : BuildSceneManager<MTR_SceneData>
+public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
     private Dictionary<string, MTR_SceneData> _sceneDataByKnot = new Dictionary<string, MTR_SceneData>();
 
@@ -38,7 +38,7 @@ public class MTR_SceneManager : BuildSceneManager<MTR_SceneData>
     {
         base.Initialize();
 
-        foreach (MTR_SceneData scene in buildScenes)
+        foreach (MTR_SceneData scene in buildSceneData)
         {
             _sceneDataByKnot.Add(scene.knot, scene);
         }
@@ -83,7 +83,7 @@ public class MTR_SceneManagerCustomEditor : Editor
         MTR_SceneData activeScene = _script.GetActiveSceneData();
         if (activeScene != null)
         {
-            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.name);
+            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.Name);
             CustomInspectorGUI.CreateTwoColumnLabel("Active Build Knot", activeScene.knot);
         }
 
