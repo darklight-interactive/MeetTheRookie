@@ -65,21 +65,7 @@ namespace Darklight.UnityExt.Scene
         public void LoadBuildScenes()
         {
 #if UNITY_EDITOR
-            string[] scenePaths = Directory.GetFiles(sceneBuildDirectory, "*.unity", SearchOption.AllDirectories);
-            scenesInBuild = scenePaths.ToList();
-
-
-            // Update the build settings with the found scenes
-            List<EditorBuildSettingsScene> editorBuildSettingsScenes = new List<EditorBuildSettingsScene>();
-            foreach (string scenePath in scenesInBuild)
-            {
-                if (File.Exists(scenePath))
-                {
-                    editorBuildSettingsScenes.Add(new EditorBuildSettingsScene(scenePath, true));
-                }
-            }
-
-            EditorBuildSettings.scenes = editorBuildSettingsScenes.ToArray();
+            scenesInBuild = SceneBuilderUtility.BuildScenesFromDirectory(sceneBuildDirectory);
 #endif
         }
     }
