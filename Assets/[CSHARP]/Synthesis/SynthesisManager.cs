@@ -49,8 +49,8 @@ public class SynthesisManager : UXML_UIDocumentObject
         //UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
         //InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
-        InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
+        InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
+        InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
     }
 
     void SelectMove(Vector2 move)
@@ -104,7 +104,7 @@ public class SynthesisManager : UXML_UIDocumentObject
             args.Add("");
         }
 
-        InkyStoryManager.Instance.GlobalStoryObject.RunExternalFunction("synthesize", args.ToArray());
+        InkyStoryManager.GlobalStoryObject.RunExternalFunction("synthesize", args.ToArray());
     }
 
     /*

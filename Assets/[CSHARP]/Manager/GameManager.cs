@@ -2,7 +2,7 @@ using UnityEngine;
 using Darklight.UnityExt.Input;
 using Darklight.Utility;
 using Darklight.UnityExt;
-using Darklight.UnityExt.Scene;
+using Darklight.UnityExt.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
@@ -12,7 +12,9 @@ using UnityEditor;
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static UniversalSceneManager UnivSceneManager => UniversalSceneManager.Instance;
+
+    // This instance points to the abstract BuildSceneManager class, so we need to cast it to the custom class.
+    public static MTR_SceneManager BuildSceneManager => MTR_SceneManager.Instance as MTR_SceneManager; 
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
@@ -25,21 +27,24 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         Cursor.visible = false;
 
-        SceneManager.activeSceneChanged += OnSceneChanged;
+        BuildSceneManager.OnSceneChange += OnSceneChanged;
+
+        StoryManager.Initialize();
     }
 
-    public void OnSceneChanged(Scene oldScene, Scene newScene)
+    public void OnSceneChanged(MTR_SceneData oldSceneData, MTR_SceneData newSceneData)
     {
-        Debug.Log($"{Prefix} Scene changed to {newScene.name}");
         InputManager.Reset();
         InputManager.Awake();
 
-        if (newScene.name == "MAIN_MENU")
+        if (newSceneData.name == "MAIN_MENU")
         {
             StoryManager.Initialize();
         }
-        string sceneKnot = StoryManager.GetSceneKnot(newScene.name);
-        StoryManager.Iterator.GoToKnotOrStitch(sceneKnot);
+
+        StoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
+
+
     }
 
 

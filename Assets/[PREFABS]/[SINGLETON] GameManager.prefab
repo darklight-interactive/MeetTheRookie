@@ -253,11 +253,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
-  - component: {fileID: 3935851452667166986}
   - component: {fileID: 5342227784319069846}
   - component: {fileID: 5953019589017212419}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
+  - component: {fileID: 5155693147541508910}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -296,40 +296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04eafa7f7e814847b6fb7eb2a7f019e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3935851452667166986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0dbd76607f79040806a0ceee308384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneBuildDirectory: Assets/Scenes/Build
-  currentScene: SCENE_4_1 - Main Street
-  scenesInBuild:
-  - Assets/Scenes/Build/MAIN_MENU.unity
-  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
-  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int. Bathroom.unity
-  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
-  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
-  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
-  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
-  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
-  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,9 +343,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  _currentSpeaker: Lupe
   _speakerList: []
-  sceneData: []
+  _globalKnots: []
+  _currentSpeaker: Lupe
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,8 +366,78 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  _textScale: 0.075
+  _textScale: 0.25
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
   UXML_RenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+--- !u!114 &5155693147541508910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildScenes:
+  - name: MAIN_MENU
+    path: Assets/Scenes/Build\MAIN_MENU.unity
+    knot: 
+  - name: SCENE_1_0 - Intro
+    path: Assets/Scenes/Build\SCENE_1_0 - Intro.unity
+    knot: scene1_0
+  - name: SCENE_1_1 - The Gas Station Ext.
+    path: Assets/Scenes/Build\SCENE_1_1 - The Gas Station Ext..unity
+    knot: scene1_1
+  - name: SCENE_1_2 - The Gas Station Int.
+    path: Assets/Scenes/Build\SCENE_1_2 - The Gas Station Int..unity
+    knot: SetSpeaker
+  - name: SCENE_1_3 - The Gas Station Int. Bathroom
+    path: Assets/Scenes/Build\SCENE_1_3 - The Gas Station Int. Bathroom.unity
+    knot: scene1_3
+  - name: SCENE_1_4 - The Gas Station Int.
+    path: Assets/Scenes/Build\SCENE_1_4 - The Gas Station Int..unity
+    knot: SetSpeaker
+  - name: SCENE_1_5 - The Gas Station Ext.
+    path: Assets/Scenes/Build\SCENE_1_5 - The Gas Station Ext..unity
+    knot: 
+  - name: SCENE_2_0 - The Precinct - Dating Sim
+    path: Assets/Scenes/Build\SCENE_2_0 - The Precinct - Dating Sim.unity
+    knot: 
+  - name: SCENE_3_1 - The Winery Ext.
+    path: Assets/Scenes/Build\SCENE_3_1 - The Winery Ext..unity
+    knot: 
+  - name: SCENE_3_2 - The Winery Int.
+    path: Assets/Scenes/Build\SCENE_3_2 - The Winery Int..unity
+    knot: 
+  - name: SCENE_3_3 - The Winery Ext.
+    path: Assets/Scenes/Build\SCENE_3_3 - The Winery Ext..unity
+    knot: 
+  - name: SCENE_4_1 - Main Street
+    path: Assets/Scenes/Build\SCENE_4_1 - Main Street.unity
+    knot: 
+  - name: SCENE_4_2 - The General Store
+    path: Assets/Scenes/Build\SCENE_4_2 - The General Store.unity
+    knot: 
+  - name: SCENE_4_3 - The Arcade
+    path: Assets/Scenes/Build\SCENE_4_3 - The Arcade.unity
+    knot: 
+  - name: SCENE_4_4 - The Bar
+    path: Assets/Scenes/Build\SCENE_4_4 - The Bar.unity
+    knot: 
+  - name: SCENE_4_5 - The Bar - Dating Sim
+    path: Assets/Scenes/Build\SCENE_4_5 - The Bar - Dating Sim.unity
+    knot: 
+  - name: SCENE_5_1 - Stakeout - Dating Sim
+    path: Assets/Scenes/Build\SCENE_5_1 - Stakeout - Dating Sim.unity
+    knot: 
+  - name: SCENE_5_2 - The Winery Ext.
+    path: Assets/Scenes/Build\SCENE_5_2 - The Winery Ext..unity
+    knot: 
+  - name: SCENE_5_3 - The Winery Int.
+    path: Assets/Scenes/Build\SCENE_5_3 - The Winery Int..unity
+    knot: 

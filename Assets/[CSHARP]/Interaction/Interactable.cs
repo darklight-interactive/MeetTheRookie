@@ -53,7 +53,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [DropdownAttribute("_interactionStitches")]
     public string _interactionStitch;
-    protected InkyStoryIterator _storyIterator;
 
     [Header("FMOD One Shots")]
     [SerializeField] EventReference _onFirstInteraction;
@@ -77,14 +76,6 @@ public class Interactable : OverlapGrid2D, IInteract
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
-    public string currentText
-    {
-        get
-        {
-            if (_storyIterator == null) return "";
-            return _storyIterator.CurrentText;
-        }
-    }
 
     public event IInteract.OnFirstInteract OnFirstInteraction;
     public event IInteract.OnInteract OnInteraction;
@@ -113,22 +104,10 @@ public class Interactable : OverlapGrid2D, IInteract
         if (_storyObject == null)
         {
             if (InkyStoryManager.Instance == null) { Debug.LogError("Could not find InkyStoryManager"); }
-            _storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+            _storyObject = InkyStoryManager.GlobalStoryObject;
         }
 
-        // << SET THE STORY ITERATOR >> ------------------------------------
-        if (_storyIterator == null)
-        {
-            _storyIterator = new InkyStoryIterator(_storyObject);
-        }
-    }
 
-    public virtual void Reset()
-    {
-        isTarget = false;
-        isActive = false;
-        isComplete = false;
-        _spriteRenderer.color = _defaultTint;
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -152,11 +131,14 @@ public class Interactable : OverlapGrid2D, IInteract
     // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
+        InkyStoryIterator StoryIterator = InkyStoryManager.Instance.Iterator;
+
         // << FIRST INTERACTION >>
         if (!isActive)
         {
             TargetClear();
 
+            // Set the active flags
             isActive = true;
             isComplete = false;
 
@@ -174,7 +156,7 @@ public class Interactable : OverlapGrid2D, IInteract
             };
 
             // Go To the Interaction Stitch
-            _storyIterator.GoToKnotOrStitch(_interactionStitch);
+            StoryIterator.GoToKnotOrStitch(_interactionStitch);
 
             // Color Flash
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
@@ -184,49 +166,60 @@ public class Interactable : OverlapGrid2D, IInteract
 
             OnFirstInteraction?.Invoke();
 
-            Debug.Log($"INTERACT :: {name} >> First Interaction");
+            Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
 
         // << CONTINUE INTERACTION >> ------------------------------------
-        _storyIterator.ContinueStory();
+        StoryIterator.ContinueStory();
 
         // << LAST INTERACTION >> ----------------------------------------
-        if (_storyIterator.CurrentState == InkyStoryIterator.State.END)
+        if (StoryIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
-            Debug.Log($"INTERACT :: {name} >> Complete");
         }
         else
         {
             // Play FMOD One Shot
             SoundManager.PlayOneShot(_onContinuedInteraction);
+            OnInteraction?.Invoke(StoryIterator.CurrentText);
 
-            OnInteraction?.Invoke(_storyIterator.CurrentText);
-            Debug.Log($"INTERACT :: {name} >> Continue Interaction");
+            Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
-
-
     }
 
     public virtual void Complete()
     {
+        OnCompleted?.Invoke(); // Invoke OnCompleted
+        Debug.Log($"INTERACTABLE :: {name} >> Complete");
+
+        // Set the flags to complete
         isActive = false;
         isTarget = false;
         isComplete = true;
-        _storyIterator = null;
 
         SoundManager.PlayOneShot(_onCompleteInteraction);
 
-        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
-        OnInteraction = delegate { }; // Reset OnInteraction
+        // Reset the interactable after 1 second
+        Invoke(nameof(Reset), 1.0f);
+    }
 
-        OnCompleted?.Invoke(); // Invoke OnCompleted
-        OnCompleted = delegate { }; // Reset OnCompleted
+    /// <summary>
+    /// Reset all flags and values
+    /// </summary>
+    public virtual void Reset()
+    {
+        isTarget = false;
+        isActive = false;
+        isComplete = false;
+
+        _spriteRenderer.color = _defaultTint;
     }
 
     public virtual void OnDestroy()
     {
-        //throw new System.NotImplementedException();
+        OnFirstInteraction = delegate { }; // Reset OnFirstInteraction
+        OnInteraction = delegate { }; // Reset OnInteraction
+        OnCompleted = delegate { }; // Reset OnCompleted
     }
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
