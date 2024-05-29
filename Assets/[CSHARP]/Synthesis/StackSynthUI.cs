@@ -38,20 +38,6 @@ public class SynthStackUI : MonoBehaviour
                 child.style.unityBackgroundImageTintColor = new StyleColor(new Color(colorchanger, colorchanger, colorchanger, 1));
             }
         childcounter = 0;
-        AddText("Irene", "yomama");
-        AddText("Irene", "I'm Irene");
-        AddText("Irene", "shiminy");
-        AddText("Irene", "biminy");
-        AddText("Irene", "bop");
-        AddText("Irene", "the kids went down to the store");
-        AddText("Irene", "hi my name is bob and I approve this message");
-        AddText("Roy", "yomama");
-        AddText("Roy", "I'm Roy");
-        AddText("Roy", "shiminy");
-        AddText("Roy", "biminy");
-        AddText("Roy", "bop");
-        AddText("Roy", "the kids went down to the store");
-        AddText("Roy", "hi my name is bob and I approve this message");
         TextFix(Stack[^1].name);
         CurrentFile = Stack[^1];
         //Make sure to comment this out later!
@@ -189,5 +175,15 @@ public class SynthStackUI : MonoBehaviour
         VisualElement textholder = file.Q<VisualElement>("TextHolder");
         textholder.Add(label);
         TextFix(filename);
+    }
+    public void SetScale(float xdir, float ydir)
+    {
+        stackBase.style.scale = new StyleScale(new Scale(new Vector2(xdir, ydir)));
+    }
+    public void Move(float xdir, float ydir)
+    {
+        Vector2 move = new Vector2(xdir, ydir);
+        stackBase.style.top = ydir;
+        stackBase.style.left = xdir;
     }
 }
