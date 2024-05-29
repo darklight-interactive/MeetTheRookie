@@ -254,7 +254,6 @@ GameObject:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
   - component: {fileID: 5342227784319069846}
-  - component: {fileID: 5953019589017212419}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
   - component: {fileID: 5155693147541508910}
@@ -313,23 +312,6 @@ MonoBehaviour:
   _moveInput: {x: 0, y: 0}
   _primaryInteract: 0
   _secondaryInteract: 0
---- !u!114 &5953019589017212419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b486296396653634187305e1a8d85f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _storyObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &7427744868763189831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,8 +325,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  _speakerList: []
-  _globalKnots: []
+  _speakerList:
+  - Speaker.Unknown
+  - Speaker.Misra
+  - Speaker.Lupe
+  - Speaker.Chief_Thelton
+  - Speaker.Marlowe
+  - Speaker.Beth
+  - Speaker.Mel
+  - Speaker.Roy_Rodgerson
+  - Speaker.Jenny
+  - Speaker.Calvin
+  - Speaker.Josh
+  - Speaker.Irene
+  - Speaker.Jenkins
+  _globalKnots:
+  - SetSpeaker
+  - SetActiveQuestChain
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - IsQuestActive
+  - DiscoverClue
+  - IsClueFound
+  - Misra_Dialogue
+  - Roy_Dialogue
+  - Jenny_Dialogue
+  - Calvin_Dialogue
+  - Josh_Dialogue
+  - Jenkins_Dialogue
+  - Irene_Dialogue
+  - level1
+  - scene1_0
+  - scene1_1
+  - scene1_2
+  - scene1_3
+  - scene1_4
+  - level3
+  - scene3_1
+  - scene3_2
+  - scene4_1
+  - scene4_4
+  - scene4_3
+  - scene4_2
+  - global decl
   _currentSpeaker: Lupe
 --- !u!114 &2433518505442435673
 MonoBehaviour:
@@ -358,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 0, y: 0}
+  _screenSize: {x: 1861, y: 1163}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -386,7 +410,7 @@ MonoBehaviour:
   buildScenes:
   - name: MAIN_MENU
     path: Assets/Scenes/Build\MAIN_MENU.unity
-    knot: 
+    knot: SetSpeaker
   - name: SCENE_1_0 - Intro
     path: Assets/Scenes/Build\SCENE_1_0 - Intro.unity
     knot: scene1_0

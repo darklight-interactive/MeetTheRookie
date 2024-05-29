@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,9 +24,8 @@ namespace Darklight.UnityExt.SceneManagement
     public abstract class BuildSceneManager<TSceneData> : MonoBehaviourSingleton<BuildSceneManager<TSceneData>> where TSceneData : BuildSceneData, new()
     {
         const string SCENE_DIRECTORY = "Assets/Scenes/Build";
-
         protected TSceneData activeScene;
-        [SerializeField] protected TSceneData[] buildScenes = new TSceneData[0];
+        protected TSceneData[] buildScenes = new TSceneData[0];
 
         /// <summary>
         /// Delegate for handling scene changes.
@@ -199,7 +200,7 @@ namespace Darklight.UnityExt.SceneManagement
                 string sceneName = scenePath.Replace($"{directoryPath}\\", "").Replace(".unity", "");
 
                 // If the scene data object does not exist, create a new one.
-                if (buildScenes[i].path != scenePath)
+                if (buildScenes[i] == null || buildScenes[i].path != scenePath)
                 {
                     // Create a new scene data object and add it to the build scenes array.
                     buildScenes[i] = new TSceneData()
@@ -217,6 +218,120 @@ namespace Darklight.UnityExt.SceneManagement
             this.buildScenes = buildScenes.ToArray(); // Update the build scenes array.
         }
 #endif
-
     }
+
+#if UNITY_EDITOR
+
+public class BuildSceneManagementWindow : EditorWindow
+{
+    private Type sceneManagerType;
+    private object sceneManagerInstance;
+    private FieldInfo buildScenesField;
+    private MethodInfo loadBuildScenesFromDirectoryMethod;
+    private MethodInfo loadSceneMethod;
+    private MethodInfo unloadSceneAsyncMethod;
+
+    [MenuItem("Darklight/BuildSceneManagement")]
+    public static void ShowWindow()
+    {
+        GetWindow<BuildSceneManagementWindow>("Scene Management");
+    }
+
+    private void OnEnable()
+    {
+        FindSceneManagerType();
+        if (sceneManagerType != null)
+        {
+            sceneManagerInstance = FindFirstObjectByType(sceneManagerType);
+            if (sceneManagerInstance != null)
+            {
+                buildScenesField = sceneManagerType.GetField("_buildScenes", BindingFlags.NonPublic | BindingFlags.Instance);
+                loadBuildScenesFromDirectoryMethod = sceneManagerType.GetMethod("LoadBuildScenesFromDirectory", BindingFlags.Public | BindingFlags.Instance);
+                loadSceneMethod = sceneManagerType.GetMethod("LoadScene", BindingFlags.Public | BindingFlags.Instance);
+                unloadSceneAsyncMethod = sceneManagerType.GetMethod("UnloadSceneAsync", BindingFlags.Public | BindingFlags.Instance);
+            }
+        }
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label("Scene Management", EditorStyles.boldLabel);
+
+        if (sceneManagerInstance == null)
+        {
+            GUILayout.Label("Scene Manager not found.");
+            return;
+        }
+
+        if (GUILayout.Button("Load Scenes from Directory"))
+        {
+            string path = EditorUtility.OpenFolderPanel("Select Scene Directory", "Assets", "");
+            if (!string.IsNullOrEmpty(path))
+            {
+                loadBuildScenesFromDirectoryMethod.Invoke(sceneManagerInstance, new object[] { path });
+            }
+        }
+
+        var buildScenes = (Array)buildScenesField.GetValue(sceneManagerInstance);
+        if (buildScenes.Length > 0)
+        {
+            GUILayout.Label("Scenes in Build Settings:", EditorStyles.boldLabel);
+
+            foreach (object sceneData in buildScenes)
+            {
+                string sceneName = sceneData.GetType().GetField("sceneName").GetValue(sceneData).ToString();
+                string scenePath = sceneData.GetType().GetField("scenePath").GetValue(sceneData).ToString();
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label($"Scene Name: {sceneName}", GUILayout.Width(200));
+                GUILayout.Label($"Path: {scenePath}", GUILayout.Width(400));
+                if (GUILayout.Button("Load", GUILayout.Width(50)))
+                {
+                    loadSceneMethod.Invoke(sceneManagerInstance, new object[] { sceneName });
+                }
+                if (GUILayout.Button("Unload", GUILayout.Width(50)))
+                {
+                    unloadSceneAsyncMethod.Invoke(sceneManagerInstance, new object[] { sceneName });
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+        else
+        {
+            GUILayout.Label("No scenes loaded.");
+        }
+    }
+
+    /// <summary>
+    /// Finds the type of the scene manager by scanning all loaded assemblies and identifying a subclass of BuildSceneManager.
+    /// </summary>
+    private void FindSceneManagerType()
+    {
+        // Get all loaded assemblies in the current application domain.
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        // Iterate through each assembly.
+        foreach (Assembly assembly in assemblies)
+        {
+            // Get all types defined in the current assembly.
+            Type[] types = assembly.GetTypes();
+
+            // Iterate through each type.
+            foreach (Type type in types)
+            {
+                // Check if the type is a subclass of BuildSceneManager<T> by using a generic type definition.
+                if (type.BaseType != null && type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(BuildSceneManager<>))
+                {
+                    // Set the found type to the sceneManagerType variable.
+                    sceneManagerType = type;
+                    return;
+                }
+            }
+        }
+    }
+
+}
+
+#endif
+
 }

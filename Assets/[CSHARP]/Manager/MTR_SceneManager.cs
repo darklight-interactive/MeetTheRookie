@@ -1,14 +1,14 @@
-using UnityEngine;
-using Darklight.UnityExt.SceneManagement;
-using EasyButtons;
-using NaughtyAttributes;
 using System.Collections.Generic;
+
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.SceneManagement;
+
+using EasyButtons;
+
+using NaughtyAttributes;
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -74,9 +74,9 @@ public class MTR_SceneManagerCustomEditor : Editor
             _script.Initialize();
         }
 
-        if (GUILayout.Button("Reset"))
+        if (GUILayout.Button("Show Editor Window"))
         {
-            _script.Reset();
+            BuildSceneManagementWindow.ShowWindow();
         }
 
         // Display the active scene name.
@@ -87,14 +87,12 @@ public class MTR_SceneManagerCustomEditor : Editor
             CustomInspectorGUI.CreateTwoColumnLabel("Active Build Knot", activeScene.knot);
         }
 
-
-
-        base.OnInspectorGUI();
-
         if (EditorGUI.EndChangeCheck())
         {
             _serializedObject.ApplyModifiedProperties();
         }
     }
 }
+
+
 #endif

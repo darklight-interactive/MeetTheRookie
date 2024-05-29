@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Darklight.UnityExt.Editor;
+using EasyButtons;
 using Ink.Runtime;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 // << KNOTS >>
 [System.Serializable]
@@ -97,10 +100,10 @@ public class InkyStoryObject : ScriptableObject
 
     // ------------------------------ [[ PRIVATE FIELDS ]] ------------------------------ >>
     private Story _story;
-    [SerializeField] private TextAsset _inkyTextAsset;
+    [SerializeField] private TextAsset _textAsset;
     [SerializeField] private List<InkyKnot> _knots;
     [SerializeField] private List<InkyVariable> _variables;
-    [SerializeField, ShowOnly] private List<string> _globalTags;
+    private List<string> _globalTags;
 
     // ------------------------------ [[ PUBLIC METHODS ]] ------------------------------ >>
 
@@ -113,7 +116,7 @@ public class InkyStoryObject : ScriptableObject
         {
             if (_story == null)
             {
-                _story = CreateStory(_inkyTextAsset);
+                _story = CreateStory(_textAsset);
             }
             return _story;
         }
@@ -129,23 +132,16 @@ public class InkyStoryObject : ScriptableObject
     /// Initializes the story object with data from the given Inky TextAsset.
     /// </summary>
     /// <param name="textAsset">The Inky TextAsset containing the Ink story.</param>
-    public void Initialize(TextAsset textAsset = null)
+    public void Initialize()
     {
-        // Set the ink text asset if the parameter is not null
-        if (textAsset != null)
-        {
-            this._inkyTextAsset = textAsset;
-        }
-
         // return if no ink story set
-        if (this._inkyTextAsset == null)
+        if (this._textAsset == null)
         {
             Debug.LogError("InkyStoryObject: Ink story not set.");
             return;
         }
 
-        this.name = _inkyTextAsset.name; // << set ScriptableObject name
-        this._story = CreateStory(_inkyTextAsset);
+        this._story = CreateStory(_textAsset);
         this._knots = GetAllKnots(_story).Select(knot => new InkyKnot
         {
             name = knot,
@@ -156,11 +152,9 @@ public class InkyStoryObject : ScriptableObject
 
         // Set up error handling
         _story.onError += (message, lineNum) => Debug.LogError($"Ink Error: {message} at line {lineNum}");
-    }
-
-    public void UpdateVariables()
-    {
-        _variables = GetVariables(_story);
+    
+        Debug.Log($"InkyStoryObject: Initialized {this.name} with {_textAsset.name}." + 
+            $"Found {_knots.Count} knots and {_variables.Count} variables.");
     }
 
     public InkyVariable GetVariableByName(string variableName)
@@ -197,4 +191,35 @@ public class InkyStoryObject : ScriptableObject
             return null;
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(InkyStoryObject))]
+    public class InkyStoryObjectCustomEditor : Editor
+    {
+        SerializedObject _serializedObject;
+        InkyStoryObject _script;
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (InkyStoryObject)target;
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            if (GUILayout.Button("Initialize"))
+            {
+                _script.Initialize();
+            }
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
 }

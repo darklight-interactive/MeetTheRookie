@@ -18,12 +18,9 @@ using UnityEditor;
 #endif
 
 
-
-
 /// <summary>
 ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data. 
 /// </summary>
-[RequireComponent(typeof(InkyStoryLoader))]
 public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 {
     [SerializeField] InkyStoryObject _globalStoryObject;
@@ -49,33 +46,24 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         {
             return Instance._speakerList;
         }
-        set
-        {
-            Instance._speakerList = value;
-        }
     }
 
+    /// <summary>
+    /// List of all of the knot names in the Inky Story.
+    /// </summary>
     public static List<string> GlobalKnots
     {
         get
         {
             return Instance._globalKnots;
         }
-        set
-        {
-            Instance._globalKnots = value;
-        }
     }
 
     // ----------- [[ STORY ITERATOR ]] ------------ >>
     public InkyStoryIterator Iterator { get; private set; }
 
-    public InkyStoryLoader loader => GetComponent<InkyStoryLoader>();
-
 
     #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
-
-
     [Tooltip("The current speaker in the story.")]
     [ShowOnly, SerializeField] string _currentSpeaker;
     public string CurrentSpeaker => _currentSpeaker;
@@ -116,10 +104,10 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
         _globalStoryObject.Initialize(); // << INITIALIZE STORY DATA >>
 
         // << GET VARIABLES >>
-        SpeakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
+        _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
         Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
-        GlobalKnots = _globalStoryObject.KnotNames;
+        _globalKnots = _globalStoryObject.KnotNames;
         Debug.Log($"{Prefix} >> Global Knots Count : {GlobalKnots.Count}");
 
         // << BINDING FUNCTIONS >>
@@ -147,6 +135,11 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
 
     }
 
+    /// <summary>
+    /// This is the main external function that is called from the Ink story to change the game scene.
+    /// </summary>
+    /// <param name="args">0 : The name of the sceneKnot</param>
+    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     object ChangeGameScene(object[] args)
     {
         string knotName = (string)args[0];
@@ -168,9 +161,6 @@ public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     }
 }
 
-
-
-
 #if UNITY_EDITOR
 
 [CustomEditor(typeof(InkyStoryManager))]
@@ -182,79 +172,7 @@ public class InkyStoryManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (InkyStoryManager)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        if (GUILayout.Button("Initialize InkyStoryObjects"))
-        {
-            _script.loader.LoadAllStories();
-            _script.Awake(); // << InitializeSingleton
-        }
-
-        if (GUILayout.Button("Show Editor Window"))
-        {
-            InkyStoryManagerEditorWindow.ShowWindow();
-        }
-
-        base.OnInspectorGUI();
-    }
-}
-
-public class InkyStoryManagerEditorWindow : EditorWindow
-{
-    private InkyStoryManager storyManager;
-    private SerializedObject serializedStoryManager;
-    private SerializedProperty sceneDataProperty;
-
-    [MenuItem("Window/Inky Story Manager")]
-    public static void ShowWindow()
-    {
-        GetWindow<InkyStoryManagerEditorWindow>("Inky Story Manager");
-    }
-
-    private void OnEnable()
-    {
-        storyManager = FindFirstObjectByType<InkyStoryManager>();
-        if (storyManager != null)
-        {
-            serializedStoryManager = new SerializedObject(storyManager);
-            sceneDataProperty = serializedStoryManager.FindProperty("sceneData");
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (storyManager == null)
-        {
-            EditorGUILayout.HelpBox("InkyStoryManager not found in the scene.", MessageType.Warning);
-            if (GUILayout.Button("Retry"))
-            {
-                storyManager = FindFirstObjectByType<InkyStoryManager>();
-                if (storyManager != null)
-                {
-                    serializedStoryManager = new SerializedObject(storyManager);
-                }
-            }
-            return;
-        }
-
-        serializedStoryManager.Update();
-
-        // << GET PROPERTIES >>
-        SerializedProperty globalStoryObjectProperty = serializedStoryManager.FindProperty("_globalStoryObject");
-        sceneDataProperty = serializedStoryManager.FindProperty("sceneData");
-
-        // << DRAW CONSOLE >>>
-        ConsoleGUI consoleGUI = InkyStoryManager.Console;
-        consoleGUI.DrawInEditor();
-
-        // << DRAW STORY MANAGER >>
-        EditorGUILayout.LabelField("Inky Story Manager", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-
-        // >> Global Story Object
-        EditorGUILayout.PropertyField(globalStoryObjectProperty);
+        _script.Initialize();
     }
 }
 #endif
