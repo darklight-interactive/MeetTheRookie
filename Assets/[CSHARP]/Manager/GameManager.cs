@@ -1,3 +1,4 @@
+using Darklight.UnityExt.Audio;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.Utility;
@@ -10,8 +11,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-
-    // This instance points to the abstract BuildSceneManager class, so we need to cast it to the custom class.
     public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager; 
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
@@ -36,6 +35,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
         MTR_SceneData newSceneData = GameSceneManager.GetSceneData(newScene);
         StoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
+
+        FMODEventManager.PlayEvent(newSceneData.backgroundMusicEvent);
     }
 
 

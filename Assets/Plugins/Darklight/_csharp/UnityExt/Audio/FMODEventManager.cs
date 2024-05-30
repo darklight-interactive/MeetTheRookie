@@ -1,34 +1,28 @@
 using System.Collections;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Utility;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 namespace Darklight.UnityExt.Audio
 {
     /// <summary>
     ///  This is the main singleton class that manages all FMOD audio events and buses.
     /// </summary>
+    [RequireComponent(typeof(StudioEventEmitter))]
     public class FMODEventManager : MonoBehaviourSingleton<FMODEventManager>
     {
-        [ShowOnly]
-        public FMOD.RESULT busListOk;
+        private StudioEventEmitter _studioEventEmitter => GetComponent<StudioEventEmitter>();
 
-        [ShowOnly]
-        public FMOD.RESULT sysemIsOk;
+        [ShowOnly] public FMOD.RESULT busListOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
+        [ShowOnly] public FMOD.RESULT systemIsOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
+        [ShowOnly] public bool allBanksLoaded = false;
+        [ShowOnly] public bool allBusesLoaded = false;
 
-        [ShowOnly]
-        public bool allBanksLoaded = false;
-
-        [ShowOnly]
-        public bool allBusesLoaded = false;
-
-        [SerializeField]
-        FMOD.Studio.Bus[] myBuses;
+        [SerializeField] FMOD.Studio.Bus[] myBuses;
 
         [Space(10), Header("Buses")]
         [SerializeField]
@@ -40,27 +34,9 @@ namespace Darklight.UnityExt.Audio
         [SerializeField, Range(-80f, 10.0f)]
         private float masterBusVolume;
 
-        [Space(10), Header("Background Music Event")]
-        [SerializeField]
-        private StudioEventEmitter backgroundEmitter;
-        public EventReference backgroundMusicEvent;
-        public EventInstance backgroundMusicInstance;
-
-        public EventInstance currentPlaying;
-        protected FMOD.Studio.PLAYBACK_STATE playbackState;
-
-        public override void Initialize() { }
-
-        private void Start()
+        public override void Initialize()
         {
-            backgroundEmitter = GetComponent<StudioEventEmitter>();
-
-            backgroundMusicInstance = RuntimeManager.CreateInstance(backgroundMusicEvent);
-            backgroundMusicInstance.start();
-
             LoadBanksAndBuses();
-
-            Console.Log($"{Prefix} Initialized.");
         }
 
         void Update()
@@ -74,7 +50,6 @@ namespace Darklight.UnityExt.Audio
         {
             if (eventReference.IsNull)
                 return;
-
             EventInstance instance = RuntimeManager.CreateInstance(eventReference);
             instance.start();
             instance.release();
@@ -92,7 +67,6 @@ namespace Darklight.UnityExt.Audio
         {
             if (eventReference.IsNull)
                 return;
-
             EventInstance instance = RuntimeManager.CreateInstance(eventReference);
             foreach (var (name, value) in parameters)
             {
@@ -109,7 +83,6 @@ namespace Darklight.UnityExt.Audio
         {
             if (eventReference.IsNull)
                 return;
-
             EventInstance instance = RuntimeManager.CreateInstance(eventReference);
             foreach (var (name, value) in parameters)
             {
@@ -119,7 +92,6 @@ namespace Darklight.UnityExt.Audio
             instance.release();
         }
         #endregion
-
         // Coroutine to handle the repeated playing of an event
         private IEnumerator RepeatEventRoutine(EventReference eventReference, float interval)
         {
@@ -141,7 +113,6 @@ namespace Darklight.UnityExt.Audio
         {
             StopAllCoroutines(); // This stops all coroutines; consider a more targeted approach if using multiple coroutines
         }
-
         #region == old code ===========================================================
         /*
         //plays a one shot given the fmod event path
@@ -159,10 +130,8 @@ namespace Darklight.UnityExt.Audio
             instance.release();
             Debug.Log("[Audio Manager] playing one shot: " + path);
         }
-    
         public EventInstance Play(string path)
         {
-    
             EventDescription eventDescription;
             FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
             if (result != FMOD.RESULT.OK)
@@ -170,16 +139,12 @@ namespace Darklight.UnityExt.Audio
                 Debug.LogWarning("FMOD event path does not exist: " + path);
                 return RuntimeManager.CreateInstance(path); //NEEDS TO BE CHANGED
             }
-    
             EventInstance instance = RuntimeManager.CreateInstance(path);
             instance.start();
             instance.release();
             //Debug.Log("[Audio Manager] playing one shot: " + path);
             return instance;
         }
-    
-    
-    
         public void PlaySong(string path)
         {
             Debug.Log("[Audio Manager] Playing Song: " + path);
@@ -196,14 +161,12 @@ namespace Darklight.UnityExt.Audio
                     Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
                     return;
                 }
-    
                 EventInstance song = RuntimeManager.CreateInstance(path);
                 currentPlaying = song;
                 song.start();
                 song.release();
             }
         }
-    
         public IEnumerator RestOfPlaySong(string path)
         {
             Debug.Log(currentPlaying);
@@ -214,7 +177,6 @@ namespace Darklight.UnityExt.Audio
                 currentPlaying.getPlaybackState(out playbackState);
                 yield return null;
             }
-    
             EventDescription eventDescription;
             FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
             if (result != FMOD.RESULT.OK)
@@ -230,12 +192,10 @@ namespace Darklight.UnityExt.Audio
                 song.release();
             }
         }
-    
         public void StopCurrentSong()
         {
             StartCoroutine(StopCurrentSongRoutine());
         }
-    
         public IEnumerator StopCurrentSongRoutine()
         {
             Debug.Log(currentPlaying);
@@ -249,12 +209,7 @@ namespace Darklight.UnityExt.Audio
         }
     */
         #endregion
-
-
-
-
         #region == [[ LOAD BANKS AND BUSES ]] ========================================
-
         public void LoadBanksAndBuses()
         {
             StartCoroutine(LoadBanksAndBusesRoutine());
@@ -263,24 +218,19 @@ namespace Darklight.UnityExt.Audio
         public IEnumerator LoadBanksAndBusesRoutine()
         {
             Console.Log($"{Prefix} Loading.");
-
             // ============================================= LOAD ============================
             FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] loadedBanks);
             foreach (FMOD.Studio.Bank bank in loadedBanks)
             {
                 // Get the path of the bank
                 bank.getPath(out string bankPath);
-
                 // Load the bank
                 FMOD.RESULT bankLoadResult = bank.loadSampleData();
                 Console.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
-
                 // Retrieve the list of buses associated with the bank
                 busListOk = bank.getBusList(out myBuses);
-
                 // Get the number of buses in the bank
                 bank.getBusCount(out int busCount);
-
                 if (busCount > 0)
                 {
                     // Iterate through the buses in the bank
@@ -288,13 +238,11 @@ namespace Darklight.UnityExt.Audio
                     {
                         // Get the path of each bus
                         bus.getPath(out string busPath);
-
                         // Load the bus
                         FMOD.RESULT busLoadResult = bus.lockChannelGroup();
                         Console.Log(
                             $"{Prefix} Bus Load Result: " + bankPath + " -> " + bankLoadResult
                         );
-
                         // Save the bus to the appropriate variable
                         if (busPath == masterBusPath)
                         {
@@ -306,19 +254,16 @@ namespace Darklight.UnityExt.Audio
                         {
                             musBus = bus;
                             musBus.setVolume(musicVolume);
-    
                         }
                         else if (busPath == sfxVolBusPath)
                         {
                             sfxBus = bus;
                             sfxBus.setVolume(sfxVolume);
-    
                         }
                         else if (busPath == diaVolBusPath)
                         {
                             diaBus = bus;
                             diaBus.setVolume(dialogueVolume);
-    
                         }
                         else if (busPath == ambiVolBusPath)
                         {
@@ -329,26 +274,20 @@ namespace Darklight.UnityExt.Audio
                     }
                 }
             }
-
             // ========================================== CONFIRM LOAD =======================
-
             foreach (FMOD.Studio.Bank bank in loadedBanks)
             {
                 // Load each bank
                 bank.loadSampleData();
-
                 // Check if all banks are loaded
                 FMOD.Studio.LOADING_STATE bankLoadingState;
                 bank.getLoadingState(out bankLoadingState);
-
                 if (!allBanksLoaded && bankLoadingState == FMOD.Studio.LOADING_STATE.LOADED)
                 {
                     allBanksLoaded = true;
                 }
-
                 // Retrieve the list of buses associated with the bank
                 bank.getBusList(out FMOD.Studio.Bus[] buses);
-
                 foreach (FMOD.Studio.Bus bus in buses)
                 {
                     /*
@@ -359,7 +298,6 @@ namespace Darklight.UnityExt.Audio
                         bus.lockChannelGroup();
                     }
                     */
-
                     // Check if all buses are loaded
                     if (!allBusesLoaded && bus.isValid())
                     {
@@ -367,10 +305,8 @@ namespace Darklight.UnityExt.Audio
                     }
                 }
             }
-
             Debug.Log("AudioManager : All Banks Loaded " + allBanksLoaded);
             Debug.Log("AudioManager : All Buses Loaded " + allBusesLoaded);
-
             if (!allBanksLoaded || !allBusesLoaded)
             {
                 yield return new WaitForSeconds(1);
@@ -379,24 +315,4 @@ namespace Darklight.UnityExt.Audio
         }
         #endregion
     }
-
-#if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(FMODEventManager))]
-    public class FMODManagerEditor : UnityEditor.Editor
-    {
-        private void OnEnable()
-        {
-            FMODEventManager FMODManager = (FMODEventManager)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            FMODEventManager FMODManager = (FMODEventManager)target;
-
-            FMODEventManager.Console.DrawInEditor();
-
-            DrawDefaultInspector();
-        }
-    }
-#endif
 }
