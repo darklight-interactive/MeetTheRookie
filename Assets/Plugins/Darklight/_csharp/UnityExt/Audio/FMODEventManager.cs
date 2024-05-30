@@ -16,13 +16,26 @@ namespace Darklight.UnityExt.Audio
     public class FMODEventManager : MonoBehaviourSingleton<FMODEventManager>
     {
         private StudioEventEmitter _studioEventEmitter => GetComponent<StudioEventEmitter>();
+        public static EventInstance CurrentSongInstance { get; private set; }
 
-        [ShowOnly] public FMOD.RESULT busListOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
-        [ShowOnly] public FMOD.RESULT systemIsOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
-        [ShowOnly] public bool allBanksLoaded = false;
-        [ShowOnly] public bool allBusesLoaded = false;
 
-        [SerializeField] FMOD.Studio.Bus[] myBuses;
+
+        #region == [[ BUSES & BANKS ]] ========================================================
+
+        [ShowOnly]
+        public FMOD.RESULT busListOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
+
+        [ShowOnly]
+        public FMOD.RESULT systemIsOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
+
+        [ShowOnly]
+        public bool allBanksLoaded = false;
+
+        [ShowOnly]
+        public bool allBusesLoaded = false;
+
+        [SerializeField]
+        FMOD.Studio.Bus[] myBuses;
 
         [Space(10), Header("Buses")]
         [SerializeField]
@@ -33,31 +46,18 @@ namespace Darklight.UnityExt.Audio
 
         [SerializeField, Range(-80f, 10.0f)]
         private float masterBusVolume;
-
-        public override void Initialize()
-        {
-            LoadBanksAndBuses();
-        }
-
-        void Update()
-        {
-            float volume = Mathf.Pow(10.0f, masterBusVolume / 20f);
-            masterBus.setVolume(volume);
-        }
-
-        #region == [[ PLAY EVENTS ]] ==================================================
-        public static void PlayEvent(EventReference eventReference)
-        {
-            if (eventReference.IsNull)
-                return;
-            EventInstance instance = RuntimeManager.CreateInstance(eventReference);
-            instance.start();
-            instance.release();
-        }
+        #endregion
 
         public static void PlayOneShot(EventReference eventReference)
         {
             RuntimeManager.PlayOneShot(eventReference);
+        }
+
+        public static PLAYBACK_STATE PlaybackState(EventInstance instance)
+        {
+            PLAYBACK_STATE pS;
+            instance.getPlaybackState(out pS);
+            return pS;
         }
 
         public static void PlayEventWithParameters(
@@ -91,13 +91,25 @@ namespace Darklight.UnityExt.Audio
             instance.start();
             instance.release();
         }
-        #endregion
+
+
+        public override void Initialize()
+        {
+            LoadBanksAndBuses();
+        }
+
+        void Update()
+        {
+            float volume = Mathf.Pow(10.0f, masterBusVolume / 20f);
+            masterBus.setVolume(volume);
+        }
+
         // Coroutine to handle the repeated playing of an event
         private IEnumerator RepeatEventRoutine(EventReference eventReference, float interval)
         {
             while (true)
             {
-                FMODEventManager.PlayEvent(eventReference);
+                FMODEventManager.PlayOneShot(eventReference);
                 yield return new WaitForSeconds(interval);
             }
         }
@@ -113,102 +125,81 @@ namespace Darklight.UnityExt.Audio
         {
             StopAllCoroutines(); // This stops all coroutines; consider a more targeted approach if using multiple coroutines
         }
-        #region == old code ===========================================================
-        /*
-        //plays a one shot given the fmod event path
-        public void Play(string path, Dictionary<string, float> parameters = null)
+
+
+
+        public void PlaySong(EventReference newSongEventRef)
         {
-            EventInstance instance = RuntimeManager.CreateInstance(path);
-            if (parameters != null)
+            if (newSongEventRef.IsNull)
             {
-                foreach (KeyValuePair<string, float> val in parameters)
-                {
-                    instance.setParameterByName(val.Key, val.Value);
-                }
+                Debug.LogWarning(
+                    $"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef
+                );
+                return;
             }
-            instance.start();
-            instance.release();
-            Debug.Log("[Audio Manager] playing one shot: " + path);
-        }
-        public EventInstance Play(string path)
-        {
-            EventDescription eventDescription;
-            FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-            if (result != FMOD.RESULT.OK)
+
+            // If the current background music is playing, fade it out and start the new song
+            if (CurrentSongInstance.isValid())
             {
-                Debug.LogWarning("FMOD event path does not exist: " + path);
-                return RuntimeManager.CreateInstance(path); //NEEDS TO BE CHANGED
-            }
-            EventInstance instance = RuntimeManager.CreateInstance(path);
-            instance.start();
-            instance.release();
-            //Debug.Log("[Audio Manager] playing one shot: " + path);
-            return instance;
-        }
-        public void PlaySong(string path)
-        {
-            Debug.Log("[Audio Manager] Playing Song: " + path);
-            if (currentPlaying.isValid())
-            {
-                StartCoroutine(RestOfPlaySong(path));
+                StartCoroutine(EventTransitionRoutine(newSongEventRef));
             }
             else
             {
-                EventDescription eventDescription;
-                FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-                if (result != FMOD.RESULT.OK)
-                {
-                    Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
-                    return;
-                }
-                EventInstance song = RuntimeManager.CreateInstance(path);
-                currentPlaying = song;
-                song.start();
-                song.release();
+                // Create a new instance of the song and start it
+                EventInstance newSongInstance = RuntimeManager.CreateInstance(newSongEventRef);
+                CurrentSongInstance = newSongInstance;
+                newSongInstance.start();
+                newSongInstance.release();
             }
         }
-        public IEnumerator RestOfPlaySong(string path)
+
+        IEnumerator EventTransitionRoutine(EventReference newSongEventRef)
         {
-            Debug.Log(currentPlaying);
-            currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            currentPlaying.getPlaybackState(out playbackState);
+            if (newSongEventRef.IsNull)
+            {
+                Debug.LogWarning(
+                    $"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef
+                );
+                yield break;
+            }
+
+            // Begin fading out the current song
+            CurrentSongInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+            // Wait for the song to stop playing
+            PLAYBACK_STATE playbackState = PlaybackState(CurrentSongInstance);
             while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
             {
-                currentPlaying.getPlaybackState(out playbackState);
+                CurrentSongInstance.getPlaybackState(out playbackState);
                 yield return null;
             }
-            EventDescription eventDescription;
-            FMOD.RESULT result = RuntimeManager.StudioSystem.getEvent(path, out eventDescription);
-            if (result != FMOD.RESULT.OK)
-            {
-                Debug.LogWarning("[Audio Manager] FMOD SONG event path does not exist: " + path);
-            }
-            else
-            {
-                yield return new WaitForSeconds(1);
-                EventInstance song = RuntimeManager.CreateInstance(path);
-                currentPlaying = song;
-                song.start();
-                song.release();
-            }
+
+            // Create a new instance of the song and start it
+            EventInstance newSongInstance = RuntimeManager.CreateInstance(newSongEventRef);
+            CurrentSongInstance = newSongInstance;
+            newSongInstance.start();
+            newSongInstance.release();
         }
+
         public void StopCurrentSong()
         {
             StartCoroutine(StopCurrentSongRoutine());
         }
+
         public IEnumerator StopCurrentSongRoutine()
         {
-            Debug.Log(currentPlaying);
-            currentPlaying.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            currentPlaying.getPlaybackState(out playbackState);
+            Debug.Log(CurrentSongInstance);
+            CurrentSongInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            PLAYBACK_STATE playbackState = PlaybackState(CurrentSongInstance);
             while (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED)
             {
-                currentPlaying.getPlaybackState(out playbackState);
+                CurrentSongInstance.getPlaybackState(out playbackState);
                 yield return null;
             }
+
+            CurrentSongInstance.release();
         }
-    */
-        #endregion
+
         #region == [[ LOAD BANKS AND BUSES ]] ========================================
         public void LoadBanksAndBuses()
         {
@@ -274,7 +265,8 @@ namespace Darklight.UnityExt.Audio
                     }
                 }
             }
-            // ========================================== CONFIRM LOAD =======================
+
+            // ------- Confirm Load -------
             foreach (FMOD.Studio.Bank bank in loadedBanks)
             {
                 // Load each bank
@@ -305,8 +297,8 @@ namespace Darklight.UnityExt.Audio
                     }
                 }
             }
-            Debug.Log("AudioManager : All Banks Loaded " + allBanksLoaded);
-            Debug.Log("AudioManager : All Buses Loaded " + allBusesLoaded);
+
+            // If banks and buses are not loaded, try again in 1 second
             if (!allBanksLoaded || !allBusesLoaded)
             {
                 yield return new WaitForSeconds(1);
