@@ -76,8 +76,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
-    [SerializeField, ShowOnly]
-    Vector2 _screenSize;
+    [SerializeField, ShowOnly] Vector2 _screenSize;
+    [SerializeField, ShowOnly] float _screenAspectRatio;
 
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
@@ -290,6 +290,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         SerializedObject _serializedObject;
         UIManager _script;
         SerializedProperty _screenSizeProperty;
+        SerializedProperty _screenAspectRatioProperty;
 
         private void OnEnable()
         {
@@ -297,6 +298,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             _script = (UIManager)target;
 
             _screenSizeProperty = _serializedObject.FindProperty("_screenSize");
+            _screenAspectRatioProperty = _serializedObject.FindProperty("_screenAspectRatio");
         }
 
         public override void OnInspectorGUI()
@@ -304,7 +306,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             _serializedObject.Update();
 
             // Set the Screen Size Property value
-            _screenSizeProperty.vector2Value = ScreenUtility.ScreenSize;
+            _screenSizeProperty.vector2Value = ScreenUtility.GameViewSize;
+            _screenAspectRatioProperty.floatValue = ScreenUtility.ScreenAspectRatio;
 
             base.OnInspectorGUI();
 

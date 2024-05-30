@@ -4,29 +4,23 @@ namespace Darklight.UnityExt.Editor
 {
     public static class ScreenUtility
     {
-        private static Vector2Int _screenSize;
+        public static Vector2 GameViewSize => GetScreenSize();
+        public static float ScreenAspectRatio => GetScreenAspectRatio();
 
-        public static Vector2 ScreenSize
+        /// <summary>
+        /// Retrieves the size of the main game view.
+        /// </summary>
+        /// <returns>A Vector2 representing the size of the main game view.</returns>
+        public static Vector2 GetScreenSize()
         {
-            get
-            {
-                return GetMainGameViewSize();
-            }
+#if UNITY_EDITOR
+            return GetGameViewSizeInEditor();
+#else
+            return new Vector2(Screen.width, Screen.height);
+#endif
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
-        {
-            UpdateScreenSize();
-        }
-
-        private static void UpdateScreenSize()
-        {
-            Display mainDisplay = Display.main;
-            _screenSize = new Vector2Int(mainDisplay.systemWidth, mainDisplay.systemHeight);
-        }
-
-        public static Vector2 GetMainGameViewSize()
+        private static Vector2 GetGameViewSizeInEditor()
         {
             System.Type T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
             System.Reflection.MethodInfo GetSizeOfMainGameView = T.GetMethod(
@@ -35,6 +29,16 @@ namespace Darklight.UnityExt.Editor
             );
             System.Object Res = GetSizeOfMainGameView.Invoke(null, null);
             return (Vector2)Res;
+        }
+
+        /// <summary>
+        /// Retrieves the aspect ratio value of the screen.
+        /// </summary>
+        /// <returns>The aspect ratio value of the screen.</returns>
+        public static float GetScreenAspectRatio()
+        {
+            Vector2 gameViewSize = GetScreenSize();
+            return gameViewSize.x / gameViewSize.y;
         }
     }
 }

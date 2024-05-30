@@ -1,8 +1,8 @@
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,41 +15,30 @@ namespace Darklight.UXML.Element
 
         private VisualElement _container;
         private Label _label;
-        private Vector2 _screenSize;
-        private float _ratio;
-        private float _rollingTextPercentValue = 1;
+        private float _rollingTextPercentValue;
         private int _currentIndex;
 
         [UxmlAttribute, ShowOnly]
         public Vector2 screenSize
         {
-            get
-            {
-                _screenSize = ScreenUtility.ScreenSize;
-                return _screenSize;
-            }
-            set
-            {
-                _screenSize = value;
-            }
+            get { return ScreenUtility.GameViewSize; }
+            set { }
         }
 
         [UxmlAttribute, ShowOnly]
         public int fontSize
         {
-            get { return (int)_label.style.fontSize.value.value; }
+            get
+            {
+                int size = GetDynamicFontSize();
+                _label.style.fontSize = size;
+                return size;
+            }
             set { _label.style.fontSize = value; }
         }
 
-        [UxmlAttribute, Range(0.01f, 0.5f)]
-        public float screenSizeRatio
-        {
-            get { return _ratio; }
-            set { 
-                _ratio = value; 
-                fontSize = GetScreenFontSize(_ratio);
-            }
-        }
+        [UxmlAttribute, MinMaxSlider(12, 128)]
+        public Vector2Int fontSizeRange = new Vector2Int(48, 64);
 
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText =
@@ -74,15 +63,6 @@ namespace Darklight.UXML.Element
             }
         }
 
-
-        public int GetScreenFontSize(float ratio)
-        {
-            screenSize = ScreenUtility.ScreenSize;
-            float minScreenSize = Mathf.Min(screenSize.x, screenSize.y);
-            int screenFontSize = Mathf.FloorToInt(minScreenSize * ratio);
-            return screenFontSize;
-        }
-
         public ControlledLabel()
         {
             _container = new VisualElement();
@@ -93,14 +73,30 @@ namespace Darklight.UXML.Element
 
             _container.Add(_label);
             Add(_container);
-        
-            fontSize = GetScreenFontSize(_ratio);
+
+            fontSize = GetDynamicFontSize();
         }
 
         public void Initialize(string fullText)
         {
             this.fullText = fullText;
             SetTextToIndex(0);
+        }
+
+        public int GetDynamicFontSize()
+        {
+            screenSize = ScreenUtility.GameViewSize;
+
+            // Get the font size based on the screen size
+            int fontSizeMin = (int)fontSizeRange.x;
+            int fontSizeMax = (int)fontSizeRange.y;
+
+            // Divide the max font size by the aspect ratio
+            float fontSizeByAspectRatio = fontSizeMax / ScreenUtility.ScreenAspectRatio;
+
+            // Clamp the font size to the set range
+            int result = (int)Mathf.Clamp(fontSizeByAspectRatio, fontSizeRange.x, fontSizeRange.y);
+            return result;
         }
 
         public void RollingTextStep()
