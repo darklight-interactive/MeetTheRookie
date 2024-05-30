@@ -16,12 +16,9 @@ public partial class SpeechBubble : ControlledLabel
         set { SetBackgroundSprite(value); }
     }
 
-
-
     public SpeechBubble()
     {
         SetBackgroundSprite(bubbleSprite);
-        fontSizeToScreenRatio = 0.25f;
     }
 
     public void SetBackgroundSprite(Sprite sprite)
