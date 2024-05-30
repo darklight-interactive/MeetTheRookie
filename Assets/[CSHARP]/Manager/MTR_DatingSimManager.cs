@@ -1,14 +1,20 @@
+using System.Collections;
 using System.Collections.Generic;
-using Ink.Runtime;
-using UnityEngine;
-using UnityEngine.UIElements;
-using Darklight.UnityExt.Input;
-using Darklight.UXML.Element;
-using UnityEngine.SceneManagement;
-using Darklight.Utility;
-using Darklight.UnityExt.Editor;
-using Darklight.UXML;
 using System.Linq;
+
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Input;
+using Darklight.UnityExt.UXML;
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Audio;
+using FMODUnity;
+
+using Ink.Runtime;
+
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
@@ -25,9 +31,14 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement continueTriangle;
     VisualElement dialogueBox;
     VisualElement nameTag;
-    TextElement dialogueText;
+    ControlledLabel dialogueText;
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
+
+    [SerializeField] public EventReference voiceLupeEvent;
+    [SerializeField] public EventReference voiceMisraEvent;
+    public string fmodLupeParameterName;
+    public string fmodMisraParameterName;
 
     public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
     {
@@ -62,11 +73,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         continueTriangle = root.Q<VisualElement>("DialogueTriangle");
         dialogueBox = root.Q<VisualElement>("DialogueBox");
         nameTag = root.Q<VisualElement>("NameTag");
-        dialogueText = root.Q<TextElement>("DialogueText");
+        dialogueText = ElementQuery<ControlledLabel>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
 
         // Get the story object
-        storyObject = InkyStoryManager.Instance.GlobalStoryObject;
+        storyObject = InkyStoryManager.GlobalStoryObject;
         storyIterator = InkyStoryManager.Instance.Iterator;
         storyIterator.GoToKnotOrStitch("scene2");
 
@@ -221,6 +232,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagMisra");
                     lupeImage.RemoveFromClassList("Inactive");
                     misraImage.AddToClassList("Inactive");
+                    //SoundManager.PlayEvent(voiceLupeEvent);
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
@@ -229,32 +241,68 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagLupe");
                     misraImage.RemoveFromClassList("Inactive");
                     lupeImage.AddToClassList("Inactive");
+                    //SoundManager.PlayEvent(voiceMisraEvent);
                 }
             }
             else if (splitTag[0].Trim() == "emote")
             {
                 string[] content = splitTag[1].Split("|");
-                emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                if(content[0].Trim() == "lupe")
+                {
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                    if (!lupeImage.ClassListContains("Inactive"))
+                    {
+                        FMODEventManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
+                    }
+                }
+                else if (content[0].Trim() == "misra")
+                {
+                    emotes.SetEmote(content[0].Trim(), content[1].Trim());
+                    if (!misraImage.ClassListContains("Inactive"))
+                    {
+                        FMODEventManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
+                    }
+                }
             }
             else if (splitTag[0].Trim() == "hide")
             {
                 if (splitTag[1].Trim() == "lupe")
                 {
                     lupeImage.style.visibility = Visibility.Hidden;
+                    lupeImage.AddToClassList("Inactive");
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
                     misraImage.style.visibility = Visibility.Hidden;
+                    misraImage.AddToClassList("Inactive");
                 }
             }
         }
-        dialogueText.text = dialogue;
-        UpdateBoxNTextSize();
+
+        StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
+
+        //UpdateBoxNTextSize();
+    }
+
+    IEnumerator RollingTextRoutine(string fullText, float interval)
+    {
+        dialogueText.Initialize(fullText); // << Initialized for rolling text
+
+        while (true)
+        {
+            for (int i = 0; i < dialogueText.fullText.Length; i ++)
+            {
+                dialogueText.RollingTextStep();
+                yield return new WaitForSeconds(interval);
+            }
+            yield return null;
+        }
     }
 
     /// <summary>
     /// Updates the text box size and text size
     /// </summary>
+    /*
     void UpdateBoxNTextSize()
     {
         dialogueText.style.fontSize = textSize.y;
@@ -264,6 +312,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
         dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
     }
+    */
 
     /// <summary>
     /// Moves the cool dialogue triangle up and down

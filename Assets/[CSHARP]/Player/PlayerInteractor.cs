@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
+using Darklight.UnityExt.Inky;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : OverlapGrid2D
@@ -51,49 +52,66 @@ public class PlayerInteractor : OverlapGrid2D
 
         // Get the Target Interactable 
         // TODO :: Find the best interactable
-        if (targetInteractable == null)
+        if (targetInteractable == null && _foundInteractables.Count > 0)
+        {
             targetInteractable = _foundInteractables.First();
+        }
 
         // Only set the target if the interactable is not the active target
         if (targetInteractable != activeInteractable)
         {
             targetInteractable.TargetSet();
         }
-        else
+        else if (targetInteractable != null)
         {
             targetInteractable.TargetClear();
         }
     }
+
     #endregion
 
     public bool InteractWithTarget()
     {
         if (_foundInteractables.Count == 0) return false;
         if (targetInteractable == null) return false;
+        if (targetInteractable.isComplete) return false;
+
         targetInteractable.TargetClear();
 
-        // Set the active interactable
-        activeInteractable = targetInteractable;
-        activeInteractable.Interact(); // << MAIN INTERACTION
-
-        // Check if interactable is complete
-        if (targetInteractable.isComplete)
+        // If first interaction
+        if (activeInteractable != targetInteractable)
         {
-            ExitInteraction();
-            return false;
+            // Set the active interactable
+            activeInteractable = targetInteractable;
+
+            // Subscribe to the OnComplete event
+            activeInteractable.OnCompleted += ExitInteraction;
+
+            // Set the player controller state to Interaction
+            playerController.EnterInteraction();
         }
+
+        activeInteractable.Interact(); // << MAIN INTERACTION
 
         return true;
     }
 
     void ExitInteraction()
     {
-        UIManager.Instance.DestroySpeechBubble();
+        Debug.Log("Player Interactor :: Exit Interaction");
+
+        // Clean up
+        MTR_UIManager.Instance.DestroySpeechBubble();
         playerController.ExitInteraction();
+
+        // Force set the speaker to Lupe
+        InkyStoryManager.Instance.SetSpeaker("Lupe");
+
+        // Unsubscribe from the OnComplete event
+        activeInteractable.OnCompleted -= ExitInteraction;
         targetInteractable = null;
         activeInteractable = null;
     }
-
 
 
     void OnTriggerEnter2D(Collider2D other)
@@ -104,8 +122,10 @@ public class PlayerInteractor : OverlapGrid2D
         if (interactable == null) return;
         if (interactable.isComplete) return;
         _foundInteractables.Add(interactable);
-        interactable.TargetSet();
 
+        // Set as target
+        targetInteractable = interactable;
+        interactable.TargetSet();
     }
 
 
