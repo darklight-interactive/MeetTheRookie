@@ -113,15 +113,27 @@ namespace Darklight.UnityExt.SceneManagement
         void SaveBuildSceneData()
         {
             string[] buildScenePaths = this.buildScenePaths;
-            TSceneData[] buildSceneData = new TSceneData[buildScenePaths.Length];
+
+            List<TSceneData> currentData = this.buildSceneData.ToList();
+            TSceneData[] newData = new TSceneData[buildScenePaths.Length];
             for (int i = 0; i < buildScenePaths.Length; i++)
             {
                 string scenePath = buildScenePaths[i];
-                buildSceneData[i] = new TSceneData();
-                buildSceneData[i].InitializeData(scenePath);
+                
+                // If the scene path exists in the current data, use it.
+                if (currentData.Exists(x => x.Path == scenePath))
+                {
+                    newData[i] = currentData.Find(x => x.Path == scenePath);
+                    continue;
+                }
+
+                // Create a new BuildSceneData object and initialize it with the scene path.
+                newData[i] = new TSceneData();
+                newData[i].InitializeData(scenePath);
             }
 
-            this.buildSceneData = buildSceneData;
+            // Overwrite the build scene data.
+            this.buildSceneData = newData;
             EditorUtility.SetDirty(this);
             Debug.Log($"{Prefix} Saved build scene data.");
         }
