@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(UniversalInputManager))]
-public class GameManager : MonoBehaviourSingleton<GameManager>
+public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
     public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager; 

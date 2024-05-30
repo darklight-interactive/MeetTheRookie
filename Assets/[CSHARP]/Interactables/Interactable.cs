@@ -122,16 +122,16 @@ public class Interactable : OverlapGrid2D, IInteract
         isTarget = true;
         OverlapGrid2D_Data targetData = GetBestOverlapGridData();
 
-        if (UIManager.Instance != null)
-            UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
+        if (MTR_UIManager.Instance != null)
+            MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public virtual void TargetClear()
     {
         isTarget = false;
 
-        if (UIManager.Instance != null)
-            UIManager.Instance.RemoveInteractIcon();
+        if (MTR_UIManager.Instance != null)
+            MTR_UIManager.Instance.RemoveInteractIcon();
     }
 
     // ====== [[ INTERACTION ]] ======================================
@@ -151,14 +151,14 @@ public class Interactable : OverlapGrid2D, IInteract
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
             {
-                UIManager.Instance.CreateNewSpeechBubble(text);
+                MTR_UIManager.Instance.CreateNewSpeechBubble(text);
             };
 
             // Subscribe to OnComplete
             OnCompleted += () =>
             {
                 // Destroy the speech bubble
-                UIManager.Instance.DestroySpeechBubble();
+                MTR_UIManager.Instance.DestroySpeechBubble();
             };
 
             // Go To the Interaction Stitch
