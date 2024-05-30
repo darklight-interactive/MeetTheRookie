@@ -78,7 +78,7 @@ public class MTR_SceneManagerCustomEditor : Editor
 
         if (GUILayout.Button("Show Editor Window"))
         {
-            BuildSceneManagementWindow.ShowWindow();
+            BuildSceneManagerWindow.ShowWindow();
         }
 
         // Display the active scene name.

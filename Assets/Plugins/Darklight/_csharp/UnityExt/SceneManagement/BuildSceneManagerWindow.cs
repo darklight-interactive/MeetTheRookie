@@ -13,7 +13,7 @@ namespace Darklight.UnityExt.Editor
 {
 #if UNITY_EDITOR
 
-    public class BuildSceneManagementWindow : EditorWindow
+    public class BuildSceneManagerWindow : EditorWindow
     {
         private BuildSceneManager buildSceneManager => BuildSceneManager.Instance;
         private Type _dataManagerType;
@@ -24,10 +24,10 @@ namespace Darklight.UnityExt.Editor
 
         private MethodInfo getAllScenesMethod;
 
-        [MenuItem("DarklightExt/BuildScene Management")]
+        [MenuItem("DarklightExt/BuildSceneManager")]
         public static void ShowWindow()
         {
-            GetWindow<BuildSceneManagementWindow>("BuildScene Management");
+            GetWindow<BuildSceneManagerWindow>("BuildSceneManager");
         }
 
         void OnEnable()
@@ -78,7 +78,7 @@ namespace Darklight.UnityExt.Editor
 
             GUILayout.Space(10);
 
-            GUILayout.Label("BuildScene Data", EditorStyles.boldLabel);
+            GUILayout.Label("BuildSceneData", EditorStyles.boldLabel);
 
             EditorGUI.BeginChangeCheck();
 

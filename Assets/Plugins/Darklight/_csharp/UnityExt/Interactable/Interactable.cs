@@ -162,7 +162,7 @@ public class Interactable : OverlapGrid2D, IInteract
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             // Play FMOD One Shot
-            SoundManager.PlayOneShot(_onFirstInteraction);
+            FMODEventManager.PlayOneShot(_onFirstInteraction);
 
             OnFirstInteraction?.Invoke();
 
@@ -180,7 +180,7 @@ public class Interactable : OverlapGrid2D, IInteract
         else
         {
             // Play FMOD One Shot
-            SoundManager.PlayOneShot(_onContinuedInteraction);
+            FMODEventManager.PlayOneShot(_onContinuedInteraction);
             OnInteraction?.Invoke(StoryIterator.CurrentText);
 
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
@@ -197,7 +197,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isTarget = false;
         isComplete = true;
 
-        SoundManager.PlayOneShot(_onCompleteInteraction);
+        FMODEventManager.PlayOneShot(_onCompleteInteraction);
 
         // Reset the interactable after 1 second
         Invoke(nameof(Reset), 1.0f);

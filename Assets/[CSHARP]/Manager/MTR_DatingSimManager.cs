@@ -248,7 +248,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     emotes.SetEmote(content[0].Trim(), content[1].Trim());
                     if (!lupeImage.ClassListContains("Inactive"))
                     {
-                        SoundManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
+                        FMODEventManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
                     }
                 }
                 else if (content[0].Trim() == "misra")
@@ -256,7 +256,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     emotes.SetEmote(content[0].Trim(), content[1].Trim());
                     if (!misraImage.ClassListContains("Inactive"))
                     {
-                        SoundManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
+                        FMODEventManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
                     }
                 }
             }

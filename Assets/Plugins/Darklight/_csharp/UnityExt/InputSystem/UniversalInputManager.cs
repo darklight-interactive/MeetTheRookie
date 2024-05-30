@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
+
+using Darklight.UnityExt.Editor;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Darklight.Utility;
-using System.Collections.Generic;
-using Darklight.UnityExt.Editor;
 
 namespace Darklight.UnityExt.Input
 {
