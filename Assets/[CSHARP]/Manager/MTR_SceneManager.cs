@@ -64,7 +64,6 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-
     public override List<MTR_SceneData> GetAllBuildSceneData()
     {
         return base.GetAllBuildSceneData();
@@ -75,6 +74,11 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return GetAllBuildSceneData().Find(x => x.knot == knot);
     }
 
+    public EventReference GetActiveBackgroundMusicEvent()
+    {
+        MTR_SceneData data = GetActiveSceneData();
+        return data.backgroundMusicEvent;
+    }
 
 }
 

@@ -18,7 +18,7 @@ using UnityEditor;
 /// The UIManager is a singleton class that handles the creation and management of
 /// UIDocuments in the game.
 /// </summary>
-public class UIManager : MonoBehaviourSingleton<UIManager>
+public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
     #region ======= [[ STATIC METHODS ]] ============================================= >>>>
 
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset)
         where TDocument : UXML_UIDocumentObject
     {
-        GameObject go = new GameObject($"UXMLUIDocument : {preset.name}");
+        GameObject go = new GameObject($"UXML_UIDocument : {preset.name}");
         //go.hideFlags = HideFlags.NotEditable;
         TDocument uiDocument = go.AddComponent<TDocument>();
         uiDocument.Initialize(preset);
@@ -284,18 +284,18 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(UIManager))]
+    [CustomEditor(typeof(MTR_UIManager))]
     public class UIManagerCustomEditor : Editor
     {
         SerializedObject _serializedObject;
-        UIManager _script;
+        MTR_UIManager _script;
         SerializedProperty _screenSizeProperty;
         SerializedProperty _screenAspectRatioProperty;
 
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (UIManager)target;
+            _script = (MTR_UIManager)target;
 
             _screenSizeProperty = _serializedObject.FindProperty("_screenSize");
             _screenAspectRatioProperty = _serializedObject.FindProperty("_screenAspectRatio");

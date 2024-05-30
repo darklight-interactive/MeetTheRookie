@@ -101,7 +101,7 @@ public class PlayerInteractor : OverlapGrid2D
         Debug.Log("Player Interactor :: Exit Interaction");
 
         // Clean up
-        UIManager.Instance.DestroySpeechBubble();
+        MTR_UIManager.Instance.DestroySpeechBubble();
         playerController.ExitInteraction();
 
         // Force set the speaker to Lupe
