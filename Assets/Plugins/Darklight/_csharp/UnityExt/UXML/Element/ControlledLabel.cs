@@ -73,6 +73,8 @@ namespace Darklight.UnityExt.UXML
             _container.style.flexWrap = Wrap.Wrap;
 
             _label = new Label();
+            _label.style.unityTextAlign = TextAnchor.MiddleLeft;
+            _label.style.alignSelf = Align.FlexStart;
 
             _container.Add(_label);
             Add(_container);

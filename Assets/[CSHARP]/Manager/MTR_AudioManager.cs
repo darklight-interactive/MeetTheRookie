@@ -13,6 +13,11 @@ public class MTR_AudioManager : FMODEventManager
         StartRepeatingEvent(footstepEventReference, 0.25f);
     }
 
+    public void StopFootstepEvent()
+    {
+        StopRepeatingEvent();
+    }
+
     public EventReference firstInteractionEventReference;
     public void PlayFirstInteractionEvent()
     {
