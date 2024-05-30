@@ -9,7 +9,7 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-namespace Darklight.Console
+namespace Darklight.UnityExt.Editor
 {
 	public enum LogSeverity { Info, Warning, Error }
 

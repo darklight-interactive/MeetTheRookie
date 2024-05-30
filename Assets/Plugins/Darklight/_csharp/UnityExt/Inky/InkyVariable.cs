@@ -1,64 +1,76 @@
-using UnityEngine;
-using Ink.Runtime;
-using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
+using Ink.Runtime;
+using UnityEngine;
 
-[System.Serializable]
-public class InkyVariable
+namespace Darklight.UnityExt.Inky
 {
-    [SerializeField, ShowOnly] private string _key;
-    // Hide in Inspector because Unity cannot display 'object' directly
-    [SerializeField, HideInInspector] private object _value;
-    // For inspector display and possibly for serialization   
-    [SerializeField, ShowOnly] private string _valueAsString;
-
-    public string Key { get => _key; set => _key = value; }
-    public object Value
+    [System.Serializable]
+    public class InkyVariable
     {
-        get => _value;
-        set
+        [SerializeField, ShowOnly]
+        private string _key;
+
+        // Hide in Inspector because Unity cannot display 'object' directly
+        [SerializeField, HideInInspector]
+        private object _value;
+
+        // For inspector display and possibly for serialization
+        [SerializeField, ShowOnly]
+        private string _valueAsString;
+
+        public string Key
         {
-            _value = value;
-            UpdateValueAsString();
+            get => _key;
+            set => _key = value;
         }
-    }
-
-    // Constructor for general use
-    public InkyVariable(string key, object value)
-    {
-        _key = key;
-        Value = value;
-    }
-
-    // Updates the string representation for the Inspector
-    private void UpdateValueAsString()
-    {
-        if (_value is InkList inkList)
+        public object Value
         {
-            _valueAsString = inkList.ToString().Trim();  // Custom handling for InkList
-        }
-        else
-        {
-            _valueAsString = _value?.ToString() ?? "null";  // General handling for other types
-        }
-    }
-
-    public List<string> ToStringList()
-    {
-        if (_value is InkList inkList)
-        {
-            List<string> list = new List<string>();
-            foreach (KeyValuePair<InkListItem, int> item in inkList)
+            get => _value;
+            set
             {
-                list.Add(item.Key.ToString());
+                _value = value;
+                UpdateValueAsString();
             }
-            return list;
         }
-        return new List<string> { _valueAsString };
-    }
 
-    public override string ToString()
-    {
-        return $"{_key} = {_valueAsString}";
+        // Constructor for general use
+        public InkyVariable(string key, object value)
+        {
+            _key = key;
+            Value = value;
+        }
+
+        // Updates the string representation for the Inspector
+        private void UpdateValueAsString()
+        {
+            if (_value is InkList inkList)
+            {
+                _valueAsString = inkList.ToString().Trim(); // Custom handling for InkList
+            }
+            else
+            {
+                _valueAsString = _value?.ToString() ?? "null"; // General handling for other types
+            }
+        }
+
+        public List<string> ToStringList()
+        {
+            if (_value is InkList inkList)
+            {
+                List<string> list = new List<string>();
+                foreach (KeyValuePair<InkListItem, int> item in inkList)
+                {
+                    list.Add(item.Key.ToString());
+                }
+                return list;
+            }
+            return new List<string> { _valueAsString };
+        }
+
+        public override string ToString()
+        {
+            return $"{_key} = {_valueAsString}";
+        }
     }
 }

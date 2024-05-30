@@ -2,13 +2,9 @@ using System.Collections.Generic;
 
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.SceneManagement;
-
-using EasyButtons;
-
-using NaughtyAttributes;
+using Darklight.UnityExt.Inky;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using FMODUnity;
 
 
@@ -41,6 +37,13 @@ public class MTR_SceneData : BuildSceneData
 
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        InkyStoryManager.GlobalStoryObject.BindExternalFunction("ChangeGameScene", ChangeGameScene);
+    }
+
     public override List<MTR_SceneData> GetAllBuildSceneData()
     {
         return base.GetAllBuildSceneData();
@@ -49,6 +52,25 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
         return GetAllBuildSceneData().Find(x => x.knot == knot);
+    }
+
+        /// <summary>
+    /// This is the main external function that is called from the Ink story to change the game scene.
+    /// </summary>
+    /// <param name="args">0 : The name of the sceneKnot</param>
+    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
+    object ChangeGameScene(object[] args)
+    {
+        string knotName = (string)args[0];
+        MTR_SceneData data = GetSceneDataByKnot(knotName);
+
+        if (data == null) return false;
+
+        // << LOAD SCENE >>
+        LoadScene(data.Name);
+        Debug.Log($"{Prefix} >> EXTERNAL FUNCTION: ChangeGameScene: {knotName}");
+
+        return true;
     }
 }
 

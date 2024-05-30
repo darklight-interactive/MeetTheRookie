@@ -9,7 +9,7 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-namespace Darklight.UXML
+namespace Darklight.UnityExt.UXML
 {
     /// <summary>
     /// A MonoBehaviour that handles the initialization of a UIDocument and manages its elements.
@@ -69,7 +69,7 @@ namespace Darklight.UXML
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(UXML_UIDocumentObject), true)]
-    public class UXML_UIDocumentObjectCustomEditor : Editor
+    public class UXML_UIDocumentObjectCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
         UXML_UIDocumentObject _script;

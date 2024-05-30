@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.Utility
 {
-    public static class ScreenUtility
+    public static class ScreenInfoUtility
     {
-        public static Vector2 GameViewSize => GetScreenSize();
+        public static Vector2 ScreenSize => GetScreenSize();
         public static float ScreenAspectRatio => GetScreenAspectRatio();
 
         /// <summary>

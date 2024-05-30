@@ -1,15 +1,21 @@
-using UnityEngine;
-using Darklight.UnityExt.Editor;
-using Darklight.Game.Grid;
 using System.Collections;
 using System.Collections.Generic;
+
+using Darklight.Game.Grid;
+using Darklight.UnityExt.Audio;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+
 using FMODUnity;
+
 using NaughtyAttributes;
 
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class Interactable : OverlapGrid2D, IInteract

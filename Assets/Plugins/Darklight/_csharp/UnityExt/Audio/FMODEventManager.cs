@@ -1,6 +1,5 @@
 using System.Collections;
-using System.IO;
-using Darklight.UnityExt;
+using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Editor;
 using FMOD.Studio;
 using FMODUnity;

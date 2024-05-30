@@ -1,12 +1,10 @@
-using UnityEngine;
+using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
+using Darklight.UnityExt.Utility;
 using Darklight.Utility;
-using Darklight.UnityExt;
-using Darklight.UnityExt.SceneManagement;
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-
-
 
 [RequireComponent(typeof(UniversalInputManager))]
 public class GameManager : MonoBehaviourSingleton<GameManager>
@@ -28,8 +26,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         Cursor.visible = false;
 
         GameSceneManager.OnSceneChanged += OnSceneChanged;
-
-        StoryManager.Initialize();
     }
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)

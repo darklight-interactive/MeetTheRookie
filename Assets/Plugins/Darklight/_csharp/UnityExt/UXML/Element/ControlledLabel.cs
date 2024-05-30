@@ -1,12 +1,15 @@
-using Darklight.UnityExt.Editor;
-using NaughtyAttributes;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-namespace Darklight.UXML.Element
+
+namespace Darklight.UnityExt.UXML
 {
     [UxmlElement]
     public partial class ControlledLabel : VisualElement
@@ -21,7 +24,7 @@ namespace Darklight.UXML.Element
         [UxmlAttribute, ShowOnly]
         public Vector2 screenSize
         {
-            get { return ScreenUtility.GameViewSize; }
+            get { return ScreenInfoUtility.ScreenSize; }
             set { }
         }
 
@@ -85,14 +88,14 @@ namespace Darklight.UXML.Element
 
         public int GetDynamicFontSize()
         {
-            screenSize = ScreenUtility.GameViewSize;
+            screenSize = ScreenInfoUtility.ScreenSize;
 
             // Get the font size based on the screen size
             int fontSizeMin = (int)fontSizeRange.x;
             int fontSizeMax = (int)fontSizeRange.y;
 
             // Divide the max font size by the aspect ratio
-            float fontSizeByAspectRatio = fontSizeMax / ScreenUtility.ScreenAspectRatio;
+            float fontSizeByAspectRatio = fontSizeMax / ScreenInfoUtility.ScreenAspectRatio;
 
             // Clamp the font size to the set range
             int result = (int)Mathf.Clamp(fontSizeByAspectRatio, fontSizeRange.x, fontSizeRange.y);

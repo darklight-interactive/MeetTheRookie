@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace Darklight.UXML.Element
+namespace Darklight.UnityExt.UXML
 {
     public interface ISelectableUIElement<TElement> where TElement : VisualElement, new()
     {

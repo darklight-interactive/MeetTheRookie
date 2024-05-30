@@ -11,7 +11,7 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-namespace Darklight.UXML
+namespace Darklight.UnityExt.UXML
 {
 
     /// <summary>

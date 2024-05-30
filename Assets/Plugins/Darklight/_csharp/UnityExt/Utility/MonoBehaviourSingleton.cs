@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using Darklight.Console;
+using Darklight.UnityExt.Editor;
 
-namespace Darklight.UnityExt
+namespace Darklight.UnityExt.Utility
 {
 
     /// <summary>

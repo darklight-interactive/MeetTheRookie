@@ -2,7 +2,7 @@ using Darklight.UnityExt.Editor;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-namespace Darklight.UXML.Element
+namespace Darklight.UnityExt.UXML
 {
     #region ---- [[ SELECTABLE BUTTON ]] ----
     // Specific implementation for a Button element.

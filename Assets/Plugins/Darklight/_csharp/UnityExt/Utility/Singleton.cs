@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Darklight.Console;
+using Darklight.UnityExt.Editor;
 
 
 #if UNITY_EDITOR

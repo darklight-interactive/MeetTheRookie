@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UXML;
-using Darklight.UXML.Element;
+using Darklight.UnityExt.UXML;
 
 [UxmlElement]
 public partial class SpeechBubble : ControlledLabel
