@@ -1,12 +1,9 @@
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-using Darklight.Utility;
-using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Utility;
 
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using System.IO;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
@@ -15,83 +12,34 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.SceneManagement
 {
-    /// <summary>
-    /// An abstract class for managing build scenes and related custom game data.
-    /// </summary>
-    /// <typeparam name="TSceneData"></typeparam>
-    public abstract class BuildSceneManager<TSceneData> : MonoBehaviourSingleton<BuildSceneManager<TSceneData>> where TSceneData : BuildSceneData, new()
+    interface IBuildSceneManager
     {
-        const string SCENE_DIRECTORY = "Assets/Scenes/Build";
+        void LoadBuildScenes();
+        void OnActiveSceneChanged(Scene oldScene, Scene newScene);
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode);
+        void OnSceneUnloaded(Scene scene);
+        void LoadScene(string sceneName);
+        void LoadSceneAsync(string sceneName);
+        void UnloadSceneAsync(string sceneName);
+    }
 
-        protected TSceneData activeScene;
-        [SerializeField] protected TSceneData[] buildScenes = new TSceneData[0];
+    public abstract class BuildSceneManager : MonoBehaviourSingleton<BuildSceneManager>, IBuildSceneManager
+    {
+        public const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
+        public delegate void ActiveSceneChanged(Scene oldScene, Scene newScene);
+        public event ActiveSceneChanged OnSceneChanged;
 
-        /// <summary>
-        /// Delegate for handling scene changes.
-        /// </summary>
-        /// <param name="oldScene">The old active scene data.</param>
-        /// <param name="newScene">The new active scene data.</param>
-        public delegate void SceneChanged(TSceneData oldScene, TSceneData newScene);
-        public event SceneChanged OnSceneChange;
-
-        public override void Initialize()
-        {
-            OnSceneChange += (TSceneData oldScene, TSceneData newScene) => 
-            {
-                activeScene = newScene;
-            };
-
-#if UNITY_EDITOR
-            LoadBuildScenesFromDirectory(SCENE_DIRECTORY);
-#endif
-        }
-
-        public virtual void Reset()
-        {
-            activeScene = null;
-            buildScenes = new TSceneData[0];
-        }
-
-        /// <summary>
-        /// Subscribes to SceneManager events.
-        /// </summary>
-        void OnEnable()
-        {
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
-            SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
-        }
-
-        /// <summary>
-        /// Unsubscribes from SceneManager events.
-        /// </summary>
-        void OnDisable()
-        {
-            SceneManager.activeSceneChanged -= OnActiveSceneChanged;
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-            SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        }
+        [SerializeField] protected string[] buildScenePaths = new string[0];
 
         /// <summary>
         /// Handles the active scene change event.
         /// </summary>
         /// <param name="oldScene">The old active scene.</param>
         /// <param name="newScene">The new active scene.</param>
-        private void OnActiveSceneChanged(Scene oldScene, Scene newScene)
+        public virtual void OnActiveSceneChanged(Scene oldScene, Scene newScene)
         {
-            TSceneData oldSceneData = GetSceneData(oldScene.name);
-            TSceneData newSceneData = GetSceneData(newScene.name);
-            OnSceneChange?.Invoke(oldSceneData, newSceneData);
-
-            // Log the active scene change.
-            if (oldSceneData != null)
-            {
-                Debug.Log($"{Prefix} Active scene changed from {oldScene.name} to {newScene.name}.");
-            }
-            else
-            {
-                Debug.Log($"{Prefix} Active scene changed to {newScene.name}.");
-            }
+            Debug.Log($"{Prefix} Active scene changed from {oldScene.name} to {newScene.name}.");
+            OnSceneChanged?.Invoke(oldScene, newScene);
         }
 
         /// <summary>
@@ -99,7 +47,7 @@ namespace Darklight.UnityExt.SceneManagement
         /// </summary>
         /// <param name="scene">The loaded scene.</param>
         /// <param name="mode">The load scene mode.</param>
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        public virtual void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Debug.Log($"{Prefix} Scene {scene.name} loaded.");
         }
@@ -108,7 +56,7 @@ namespace Darklight.UnityExt.SceneManagement
         /// Handles the scene unloaded event.
         /// </summary>
         /// <param name="scene">The unloaded scene.</param>
-        private void OnSceneUnloaded(Scene scene)
+        public virtual void OnSceneUnloaded(Scene scene)
         {
             Debug.Log($"{Prefix} Scene {scene.name} unloaded.");
         }
@@ -119,7 +67,14 @@ namespace Darklight.UnityExt.SceneManagement
         /// <param name="sceneName">The name of the scene to load.</param>
         public void LoadScene(string sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            if (!string.IsNullOrEmpty(sceneName))
+            {
+                SceneManager.LoadScene(sceneName);
+            }
+            else
+            {
+                Debug.LogWarning("Scene name is empty or null.");
+            }
         }
 
         /// <summary>
@@ -140,83 +95,44 @@ namespace Darklight.UnityExt.SceneManagement
             SceneManager.UnloadSceneAsync(sceneName);
         }
 
-        /// <summary>
-        /// Retrieves the scene data for a given scene name.
-        /// </summary>
-        /// <param name="sceneName">The name of the scene.</param>
-        /// <returns>The scene data for the specified scene name.</returns>
-        public TSceneData GetSceneData(string sceneName)
-        {
-            TSceneData data = buildScenes.FirstOrDefault(scene => scene.name == sceneName);
-            if (data == null)
-            {
-                // If the scene name is not null or empty, log an error.
-                if (sceneName != null && sceneName != "")
-                {
-                    return null;
-                }
 
-                // If the scene name is null or empty, log a warning.
-                Debug.LogWarning($"{Prefix} Cannot get scene data for null or empty scene name.");
-                return null;
-            }
-            return data;
-        }
-
-        /// <summary>
-        /// Retrieves the data for the active scene.
-        /// </summary>
-        public TSceneData GetActiveSceneData()
-        {
-            Scene scene = SceneManager.GetActiveScene();
-            return GetSceneData(scene.name);
-        }
 
 #if UNITY_EDITOR
-        public void LoadBuildScenesFromDirectory(string directoryPath)
+        public virtual void LoadBuildScenes()
         {
-            // Get all scene paths in the specified directory.
-            string[] scenePaths = Directory.GetFiles(directoryPath, "*.unity", SearchOption.AllDirectories);
-            // Store a copy of the build scenes array.
-            List<TSceneData> buildScenes = new List<TSceneData>(this.buildScenes);
+            // Get all unity scene paths in the specified directory.
+            string[] buildScenePaths = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
 
-            // Remove any scenes that are not in the directory.
-            for (int i = 0; i < buildScenes.Count; i++)
+            // Create an array of EditorBuildSettingsScene objects.
+            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[buildScenePaths.Length];
+            for (int i = 0; i < buildScenePaths.Length; i++)
             {
-                if (!scenePaths.Contains(buildScenes[i].path))
-                {
-                    buildScenes.RemoveAt(i);
-                }
+                string scenePath = buildScenePaths[i];
+                editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
             }
 
-            // Create a new editor build settings scenes array.
-            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[scenePaths.Length]; 
+            // Assign the array to the editor build settings.
+            EditorBuildSettings.scenes = editorBuildSettingsScenes;
+            EditorUtility.SetDirty(this);
 
-            // Iterate through the scene paths.
-            for (int i = 0; i < scenePaths.Length; i++)
-            {
-                string scenePath = scenePaths[i];
-                string sceneName = scenePath.Replace($"{directoryPath}\\", "").Replace(".unity", "");
+            this.buildScenePaths = buildScenePaths;
+            //Debug.Log($"{Prefix} Found {buildScenePaths.Length} scenes in the build directory {BUILD_SCENE_DIRECTORY}.");
+        }
 
-                // If the scene data object does not exist, create a new one.
-                if (buildScenes[i].path != scenePath)
-                {
-                    // Create a new scene data object and add it to the build scenes array.
-                    buildScenes[i] = new TSceneData()
-                    {
-                        path = scenePath,
-                        name = sceneName
-                    };
-                }
+        public virtual void ClearBuildScenes()
+        {
+            buildScenePaths = new string[0];
+            EditorBuildSettings.scenes = new EditorBuildSettingsScene[0];
+            EditorUtility.SetDirty(this);
 
-                // Create an editor build settings scene object and add it to the editor build settings scenes array.
-                editorBuildSettingsScenes[i] = buildScenes[i].CreateEditorBuildSettingsScene();
-            }
+            Debug.Log($"{Prefix} Cleared build scenes.");
+        }
 
-            EditorBuildSettings.scenes = editorBuildSettingsScenes; // Update the editor build settings scenes.
-            this.buildScenes = buildScenes.ToArray(); // Update the build scenes array.
+        public static bool IsSceneInBuild(string path)
+        {
+            bool result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
+            return result;
         }
 #endif
-
     }
 }

@@ -1,15 +1,11 @@
-using UnityEngine;
-using Darklight.UnityExt.SceneManagement;
-using EasyButtons;
-using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using UnityEngine.SceneManagement;
-
-
-
-
-
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.SceneManagement;
+using FMODUnity;
+using Ink.Runtime;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,35 +17,66 @@ public class MTR_SceneData : BuildSceneData
     {
         get
         {
-            return InkyStoryManager.GlobalStoryObject.KnotNames;
+            List<string> names = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                return InkyStoryManager.GlobalStoryObject.KnotNames;
+            }
+            return names;
         }
     }
 
     [NaughtyAttributes.Dropdown("_knotNames")]
     public string knot;
+
+    public EventReference backgroundMusicEvent;
 }
 
-
-public class MTR_SceneManager : BuildSceneManager<MTR_SceneData>
+public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    private Dictionary<string, MTR_SceneData> _sceneDataByKnot = new Dictionary<string, MTR_SceneData>();
-
     public override void Initialize()
     {
         base.Initialize();
 
-        foreach (MTR_SceneData scene in buildScenes)
-        {
-            _sceneDataByKnot.Add(scene.knot, scene);
-        }
+        InkyStoryManager.GlobalStoryObject.OnStoryInitialized += OnStoryInitialized;
+    }
+
+    public void OnStoryInitialized(Story story)
+    {
+        Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
+        story.BindExternalFunction("ChangeGameScene", (string knotName) => ChangeGameScene(knotName));
+    }
+
+    /// <summary>
+    /// This is the main external function that is called from the Ink story to change the game scene.
+    /// </summary>
+    /// <param name="args">0 : The name of the sceneKnot</param>
+    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
+    public object ChangeGameScene(string knotName)
+    {
+        MTR_SceneData data = GetSceneDataByKnot(knotName);
+
+        if (data == null)
+            return false;
+
+        // << LOAD SCENE >>
+        LoadScene(data.Name);
+        return true;
+    }
+
+
+    public override List<MTR_SceneData> GetAllBuildSceneData()
+    {
+        return base.GetAllBuildSceneData();
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return _sceneDataByKnot[knot];
+        return GetAllBuildSceneData().Find(x => x.knot == knot);
     }
-}
 
+
+}
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(MTR_SceneManager))]
@@ -57,6 +84,7 @@ public class MTR_SceneManagerCustomEditor : Editor
 {
     SerializedObject _serializedObject;
     MTR_SceneManager _script;
+
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
@@ -74,22 +102,18 @@ public class MTR_SceneManagerCustomEditor : Editor
             _script.Initialize();
         }
 
-        if (GUILayout.Button("Reset"))
+        if (GUILayout.Button("Show Editor Window"))
         {
-            _script.Reset();
+            BuildSceneManagerWindow.ShowWindow();
         }
 
         // Display the active scene name.
         MTR_SceneData activeScene = _script.GetActiveSceneData();
         if (activeScene != null)
         {
-            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.name);
+            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.Name);
             CustomInspectorGUI.CreateTwoColumnLabel("Active Build Knot", activeScene.knot);
         }
-
-
-
-        base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -97,4 +121,6 @@ public class MTR_SceneManagerCustomEditor : Editor
         }
     }
 }
+
+
 #endif

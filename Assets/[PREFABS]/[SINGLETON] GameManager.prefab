@@ -254,7 +254,6 @@ GameObject:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
   - component: {fileID: 5342227784319069846}
-  - component: {fileID: 5953019589017212419}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
   - component: {fileID: 5155693147541508910}
@@ -313,23 +312,6 @@ MonoBehaviour:
   _moveInput: {x: 0, y: 0}
   _primaryInteract: 0
   _secondaryInteract: 0
---- !u!114 &5953019589017212419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b486296396653634187305e1a8d85f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _storyObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &7427744868763189831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,8 +325,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
-  _speakerList: []
-  _globalKnots: []
+  _speakerList:
+  - Speaker.Unknown
+  - Speaker.Misra
+  - Speaker.Lupe
+  - Speaker.Chief_Thelton
+  - Speaker.Marlowe
+  - Speaker.Beth
+  - Speaker.Mel
+  - Speaker.Roy_Rodgerson
+  - Speaker.Jenny
+  - Speaker.Calvin
+  - Speaker.Josh
+  - Speaker.Irene
+  - Speaker.Jenkins
+  _globalKnots:
+  - SetSpeaker
+  - SetActiveQuestChain
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - IsQuestActive
+  - DiscoverClue
+  - IsClueFound
+  - Misra_Dialogue
+  - Roy_Dialogue
+  - Jenny_Dialogue
+  - Calvin_Dialogue
+  - Josh_Dialogue
+  - Jenkins_Dialogue
+  - Irene_Dialogue
+  - level1
+  - scene1_0
+  - scene1_1
+  - scene1_2
+  - scene1_3
+  - scene1_4
+  - level3
+  - scene3_1
+  - scene3_2
+  - scene4_1
+  - scene4_4
+  - scene4_3
+  - scene4_2
+  - global decl
   _currentSpeaker: Lupe
 --- !u!114 &2433518505442435673
 MonoBehaviour:
@@ -358,7 +382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 0, y: 0}
+  _screenSize: {x: 1861, y: 1163}
+  _screenAspectRatio: 0
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -366,7 +391,6 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  _textScale: 0.25
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
@@ -383,61 +407,233 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildScenes:
-  - name: MAIN_MENU
-    path: Assets/Scenes/Build\MAIN_MENU.unity
-    knot: 
-  - name: SCENE_1_0 - Intro
-    path: Assets/Scenes/Build\SCENE_1_0 - Intro.unity
-    knot: scene1_0
-  - name: SCENE_1_1 - The Gas Station Ext.
-    path: Assets/Scenes/Build\SCENE_1_1 - The Gas Station Ext..unity
-    knot: scene1_1
-  - name: SCENE_1_2 - The Gas Station Int.
-    path: Assets/Scenes/Build\SCENE_1_2 - The Gas Station Int..unity
-    knot: scene1_2
-  - name: SCENE_1_3 - The Gas Station Int. Bathroom
-    path: Assets/Scenes/Build\SCENE_1_3 - The Gas Station Int. Bathroom.unity
-    knot: scene1_3
-  - name: SCENE_1_4 - The Gas Station Int.
-    path: Assets/Scenes/Build\SCENE_1_4 - The Gas Station Int..unity
+  buildScenePaths:
+  - Assets/Scenes/Build/MAIN_MENU.unity
+  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+  buildSceneData:
+  - _name: MAIN_MENU
+    _path: Assets/Scenes/Build/MAIN_MENU.unity
+    _sceneFound: 1
     knot: SetSpeaker
-  - name: SCENE_1_5 - The Gas Station Ext.
-    path: Assets/Scenes/Build\SCENE_1_5 - The Gas Station Ext..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_0 - Intro
+    _path: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+    _sceneFound: 1
+    knot: scene1_0
+    backgroundMusicEvent:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - _name: SCENE_1_1 - The Gas Station Ext
+    _path: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+    _sceneFound: 1
+    knot: scene1_1
+    backgroundMusicEvent:
+      Guid:
+        Data1: 1009970235
+        Data2: 1170209264
+        Data3: -62989660
+        Data4: -619185197
+      Path: event:/Music/investigate
+  - _name: SCENE_1_2 - The Gas Station Int
+    _path: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+    _sceneFound: 1
+    knot: scene1_2
+    backgroundMusicEvent:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - _name: SCENE_1_3 - The Gas Station Int Bathroom
+    _path: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+    _sceneFound: 1
+    knot: SetSpeaker
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_4 - The Gas Station Int.
+    _path: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+    _sceneFound: 1
+    knot: SetSpeaker
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_5 - The Gas Station Ext.
+    _path: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_2_0 - The Precinct - Dating Sim
-    path: Assets/Scenes/Build\SCENE_2_0 - The Precinct - Dating Sim.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_2_0 - The Precinct - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_3_1 - The Winery Ext.
-    path: Assets/Scenes/Build\SCENE_3_1 - The Winery Ext..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_1 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_3_2 - The Winery Int.
-    path: Assets/Scenes/Build\SCENE_3_2 - The Winery Int..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_2 - The Winery Int.
+    _path: Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_3_3 - The Winery Ext.
-    path: Assets/Scenes/Build\SCENE_3_3 - The Winery Ext..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_3 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_4_1 - Main Street
-    path: Assets/Scenes/Build\SCENE_4_1 - Main Street.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_1 - Main Street
+    _path: Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_4_2 - The General Store
-    path: Assets/Scenes/Build\SCENE_4_2 - The General Store.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_2 - The General Store
+    _path: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_4_3 - The Arcade
-    path: Assets/Scenes/Build\SCENE_4_3 - The Arcade.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_3 - The Arcade
+    _path: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_4_4 - The Bar
-    path: Assets/Scenes/Build\SCENE_4_4 - The Bar.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_4 - The Bar
+    _path: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_4_5 - The Bar - Dating Sim
-    path: Assets/Scenes/Build\SCENE_4_5 - The Bar - Dating Sim.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_5 - The Bar - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_5_1 - Stakeout - Dating Sim
-    path: Assets/Scenes/Build\SCENE_5_1 - Stakeout - Dating Sim.unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_1 - Stakeout - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_5_2 - The Winery Ext.
-    path: Assets/Scenes/Build\SCENE_5_2 - The Winery Ext..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_2 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+    _sceneFound: 1
     knot: 
-  - name: SCENE_5_3 - The Winery Int.
-    path: Assets/Scenes/Build\SCENE_5_3 - The Winery Int..unity
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_3 - The Winery Int.
+    _path: Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+    _sceneFound: 1
     knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
