@@ -114,16 +114,18 @@ namespace Darklight.UnityExt.Audio
             }
         }
 
+
+        Coroutine repeatEventCoroutine;
         // Method to start repeating an event
         public void StartRepeatingEvent(EventReference eventReference, float interval)
         {
-            StartCoroutine(RepeatEventRoutine(eventReference, interval));
+            repeatEventCoroutine = StartCoroutine(RepeatEventRoutine(eventReference, interval));
         }
 
         // Method to stop repeating an event
         public void StopRepeatingEvent()
         {
-            StopAllCoroutines(); // This stops all coroutines; consider a more targeted approach if using multiple coroutines
+            StopCoroutine(repeatEventCoroutine);
         }
 
 

@@ -30,7 +30,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset)
         where TDocument : UXML_UIDocumentObject
     {
-        GameObject go = new GameObject($"UXMLUIDocument : {preset.name}");
+        GameObject go = new GameObject($"UXML_UIDocument : {preset.name}");
         //go.hideFlags = HideFlags.NotEditable;
         TDocument uiDocument = go.AddComponent<TDocument>();
         uiDocument.Initialize(preset);

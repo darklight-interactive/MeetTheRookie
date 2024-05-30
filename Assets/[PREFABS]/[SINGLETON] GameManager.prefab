@@ -92,8 +92,9 @@ GameObject:
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
   - component: {fileID: 5155693147541508910}
-  - component: {fileID: 7122041257329067993}
+  - component: {fileID: 1103200859854054853}
   - component: {fileID: 6736551505315507451}
+  - component: {fileID: 255471297845677017}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -216,8 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1861, y: 1163}
-  _screenAspectRatio: 0
+  _screenSize: {x: 1065, y: 599}
+  _screenAspectRatio: 1.7779633
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -471,7 +472,7 @@ MonoBehaviour:
         Data3: 0
         Data4: 0
       Path: 
---- !u!114 &7122041257329067993
+--- !u!114 &1103200859854054853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -480,23 +481,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 8875938405744345426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308fed9e8ee569e4fb1ccd264e153750, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c189080abee24146b2eacaf9afcb28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  busListOk: 0
-  sysemIsOk: 0
+  busListOk: 66
+  systemIsOk: 66
   allBanksLoaded: 0
   allBusesLoaded: 0
   masterBusPath: bus:/MasterVolume
   masterBusVolume: 0
-  backgroundEmitter: {fileID: 0}
-  backgroundMusicEvent:
+  footstepEventReference:
     Guid:
-      Data1: -676630717
-      Data2: 1282898668
-      Data3: -783550817
-      Data4: 2002162249
-    Path: event:/Music/townEmpty
+      Data1: 915613544
+      Data2: 1106373728
+      Data3: -1806035556
+      Data4: 1946811942
+    Path: event:/SFX/Generic/Footsteps1
+  firstInteractionEventReference:
+    Guid:
+      Data1: -1644116464
+      Data2: 1275719455
+      Data3: 105296063
+      Data4: -420808258
+    Path: event:/SFX/Generic/NPC_InteractStart
 --- !u!114 &6736551505315507451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,3 +516,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1569de5e917f38a46abf739a3e621edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &255471297845677017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: -1
+  OverrideMaxDistance: -1

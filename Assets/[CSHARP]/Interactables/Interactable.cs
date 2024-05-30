@@ -28,8 +28,9 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         get
         {
-            if (_storyObject == null) return new List<string>();
-            return InkyStoryObject.GetAllKnots(_storyObject.StoryValue);
+            InkyStoryManager storyManager = InkyStoryManager.Instance;
+            if (storyManager == null) return new List<string>();
+            return InkyStoryManager.GlobalStoryObject.KnotNames;
         }
     }
 
@@ -59,11 +60,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [DropdownAttribute("_interactionStitches")]
     public string _interactionStitch;
-
-    [Header("FMOD One Shots")]
-    [SerializeField] EventReference _onFirstInteraction;
-    [SerializeField] EventReference _onContinuedInteraction;
-    [SerializeField] EventReference _onCompleteInteraction;
 
     [Header("State Flags")]
     [ShowOnly, SerializeField] bool _isTarget;
@@ -114,6 +110,10 @@ public class Interactable : OverlapGrid2D, IInteract
         }
 
 
+        OnFirstInteraction += () => 
+        {
+            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
+        };
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -167,9 +167,6 @@ public class Interactable : OverlapGrid2D, IInteract
             // Color Flash
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
-            // Play FMOD One Shot
-            FMODEventManager.PlayOneShot(_onFirstInteraction);
-
             OnFirstInteraction?.Invoke();
 
             Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
@@ -185,8 +182,6 @@ public class Interactable : OverlapGrid2D, IInteract
         }
         else
         {
-            // Play FMOD One Shot
-            FMODEventManager.PlayOneShot(_onContinuedInteraction);
             OnInteraction?.Invoke(StoryIterator.CurrentText);
 
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
@@ -202,8 +197,6 @@ public class Interactable : OverlapGrid2D, IInteract
         isActive = false;
         isTarget = false;
         isComplete = true;
-
-        FMODEventManager.PlayOneShot(_onCompleteInteraction);
 
         // Reset the interactable after 1 second
         Invoke(nameof(Reset), 1.0f);
