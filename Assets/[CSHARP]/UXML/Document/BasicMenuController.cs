@@ -1,9 +1,8 @@
 using UnityEngine;
 using Darklight.UnityExt.Input;
 using System.Linq;
-using Darklight.UXML;
-using Darklight.Utility;
-using Darklight.UXML.Element;
+using Darklight.UnityExt.UXML;
+using Darklight.UnityExt.Utility;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,7 +17,6 @@ public class BasicMenuController : UXML_UIDocumentObject
     [SerializeField] int selectablesCount = 0;
     bool lockSelection = false;
 
-    [EasyButtons.Button]
     public void Awake()
     {
         Initialize(preset);
