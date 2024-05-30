@@ -17,8 +17,6 @@ namespace Darklight.UnityExt.SceneManagement
     public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneData : BuildSceneData, new()
     {
         [SerializeField] protected TSceneData[] buildSceneData = new TSceneData[0];
-        public List<TSceneData> BuildSceneDataList => buildSceneData.ToList();
-
         public override void Awake()
         {
             base.Awake();
@@ -71,7 +69,7 @@ namespace Darklight.UnityExt.SceneManagement
             }
 
             // Get the scene data of the specified data type.
-            TSceneData data = BuildSceneDataList.Find(x => x.Name == sceneName);
+            TSceneData data = buildSceneData.ToList().Find(x => x.Name == sceneName);
             return data;
         }
 

@@ -41,18 +41,6 @@ public class MTR_SceneData : BuildSceneData
 
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    private Dictionary<string, MTR_SceneData> _sceneDataByKnot = new Dictionary<string, MTR_SceneData>();
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        foreach (MTR_SceneData scene in BuildSceneDataList)
-        {
-            _sceneDataByKnot.Add(scene.knot, scene);
-        }
-    }
-
     public override List<MTR_SceneData> GetAllBuildSceneData()
     {
         return base.GetAllBuildSceneData();
@@ -60,7 +48,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return _sceneDataByKnot[knot];
+        return GetAllBuildSceneData().Find(x => x.knot == knot);
     }
 }
 
