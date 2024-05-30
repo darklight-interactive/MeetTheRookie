@@ -1,17 +1,10 @@
-using System;
-using System.Reflection;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-using Darklight.Utility;
-using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Utility;
 
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -123,8 +116,7 @@ namespace Darklight.UnityExt.SceneManagement
             EditorUtility.SetDirty(this);
 
             this.buildScenePaths = buildScenePaths;
-            Debug.Log($"{Prefix} Found {buildScenePaths.Length} scenes in the build directory {BUILD_SCENE_DIRECTORY}.");
-
+            //Debug.Log($"{Prefix} Found {buildScenePaths.Length} scenes in the build directory {BUILD_SCENE_DIRECTORY}.");
         }
 
         public virtual void ClearBuildScenes()

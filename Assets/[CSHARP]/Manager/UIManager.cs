@@ -1,13 +1,14 @@
 using System.Collections;
-using Darklight.UnityExt;
+using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Editor;
-using Darklight.UXML;
+using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Inky;
+
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 // the InputSystemProvider throws an error if a UIDocument is destroyed.
@@ -26,7 +27,6 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
     /// </summary>
     /// <param name="preset"></param>
     /// <returns></returns>
-    [EasyButtons.Button]
     public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset)
         where TDocument : UXML_UIDocumentObject
     {
@@ -306,8 +306,8 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
             _serializedObject.Update();
 
             // Set the Screen Size Property value
-            _screenSizeProperty.vector2Value = ScreenUtility.GameViewSize;
-            _screenAspectRatioProperty.floatValue = ScreenUtility.ScreenAspectRatio;
+            _screenSizeProperty.vector2Value = ScreenInfoUtility.ScreenSize;
+            _screenAspectRatioProperty.floatValue = ScreenInfoUtility.ScreenAspectRatio;
 
             base.OnInspectorGUI();
 

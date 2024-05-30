@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UXML;
-using Darklight.Utility;
+using Darklight.UnityExt.UXML;
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Inky;
+
 
 #if UNITY_EDITOR
 using UnityEditor;

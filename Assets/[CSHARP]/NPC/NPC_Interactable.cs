@@ -1,6 +1,10 @@
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
+using Darklight.UnityExt.Inky;
+using NaughtyAttributes;
+
+
 
 
 
@@ -23,16 +27,11 @@ public class NPC_Interactable : Interactable, IInteract
         get
         {
             List<string> speakers = InkyStoryManager.SpeakerList;
-            if (speakers == null || speakers.Count == 0)
-            {
-                InkyStoryManager.Instance.Initialize();
-                speakers = InkyStoryManager.SpeakerList;
-            }
             return speakers;
         }
     }
 
-    [DropdownAttribute("_speakerOptions")]
+    [Dropdown("_speakerOptions")]
     public string speakerTag;
 
     public void Start()

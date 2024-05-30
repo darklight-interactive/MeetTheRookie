@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.Game.Grid;
+using Darklight.UnityExt.Inky;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInteractor : OverlapGrid2D
