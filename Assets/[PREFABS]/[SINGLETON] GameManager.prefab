@@ -1,107 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1472741176752297803
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6914380045224247625}
-  - component: {fileID: 7543411428099516457}
-  m_Layer: 0
-  m_Name: SoundManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6914380045224247625
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472741176752297803}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5054830795790530424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7543411428099516457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472741176752297803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308fed9e8ee569e4fb1ccd264e153750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  busListOk: 0
-  sysemIsOk: 0
-  allBanksLoaded: 0
-  allBusesLoaded: 0
-  masterBusPath: bus:/MasterVolume
-  masterBusVolume: 0
-  backgroundEmitter: {fileID: 0}
-  backgroundMusicEvent:
-    Guid:
-      Data1: -676630717
-      Data2: 1282898668
-      Data3: -783550817
-      Data4: 2002162249
-    Path: event:/Music/townEmpty
---- !u!1 &2227688496439687134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 150005812677704816}
-  - component: {fileID: 4050680957668553028}
-  m_Layer: 0
-  m_Name: AnalyticsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &150005812677704816
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2227688496439687134}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5054830795790530424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4050680957668553028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2227688496439687134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1569de5e917f38a46abf739a3e621edf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3169731501728990774
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,69 +78,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!1 &3513152671404423977
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1947608037653172071}
-  - component: {fileID: 2676971201111950006}
-  - component: {fileID: 4479749985469832793}
-  m_Layer: 5
-  m_Name: 'UIManager :: GameUIController'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1947608037653172071
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3513152671404423977}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.885586, y: -0.1640172, z: 3.461239}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5054830795790530424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2676971201111950006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3513152671404423977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
-  textScale: 0.01
---- !u!114 &4479749985469832793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3513152671404423977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 9b3a92b9a918eea40b11e9a8e06da64b, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
-  m_SortingOrder: 0
 --- !u!1 &8875938405744345426
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,11 +88,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
-  - component: {fileID: 3935851452667166986}
   - component: {fileID: 5342227784319069846}
-  - component: {fileID: 5953019589017212419}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
+  - component: {fileID: 5155693147541508910}
+  - component: {fileID: 1103200859854054853}
+  - component: {fileID: 6736551505315507451}
+  - component: {fileID: 255471297845677017}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -279,9 +116,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7313103818091379476}
-  - {fileID: 6914380045224247625}
-  - {fileID: 150005812677704816}
-  - {fileID: 1947608037653172071}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2927568867421027592
@@ -296,40 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04eafa7f7e814847b6fb7eb2a7f019e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3935851452667166986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0dbd76607f79040806a0ceee308384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneBuildDirectory: Assets/Scenes/Build
-  currentScene: SCENE_4_1 - Main Street
-  scenesInBuild:
-  - Assets/Scenes/Build/MAIN_MENU.unity
-  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
-  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int. Bathroom.unity
-  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
-  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
-  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
-  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
-  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
-  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
-  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,23 +147,6 @@ MonoBehaviour:
   _moveInput: {x: 0, y: 0}
   _primaryInteract: 0
   _secondaryInteract: 0
---- !u!114 &5953019589017212419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b486296396653634187305e1a8d85f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _storyObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &7427744868763189831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,9 +160,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
+  _speakerList:
+  - Speaker.Unknown
+  - Speaker.Misra
+  - Speaker.Lupe
+  - Speaker.Chief_Thelton
+  - Speaker.Marlowe
+  - Speaker.Beth
+  - Speaker.Mel
+  - Speaker.Roy_Rodgerson
+  - Speaker.Jenny
+  - Speaker.Calvin
+  - Speaker.Josh
+  - Speaker.Irene
+  - Speaker.Jenkins
+  _globalKnots:
+  - SetSpeaker
+  - SetActiveQuestChain
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - IsQuestActive
+  - DiscoverClue
+  - IsClueFound
+  - Misra_Dialogue
+  - Roy_Dialogue
+  - Jenny_Dialogue
+  - Calvin_Dialogue
+  - Josh_Dialogue
+  - Jenkins_Dialogue
+  - Irene_Dialogue
+  - level1
+  - scene1_0
+  - scene1_1
+  - scene1_2
+  - scene1_3
+  - scene1_4
+  - level3
+  - scene3_1
+  - scene3_2
+  - scene4_1
+  - scene4_4
+  - scene4_3
+  - scene4_2
+  - global decl
   _currentSpeaker: Lupe
-  _speakerList: []
-  sceneData: []
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 0, y: 0}
+  _screenSize: {x: 1065, y: 599}
+  _screenAspectRatio: 1.7779633
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -400,8 +226,324 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  _textScale: 0.075
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
   UXML_RenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
+--- !u!114 &5155693147541508910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildScenePaths:
+  - Assets/Scenes/Build/MAIN_MENU.unity
+  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+  - Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+  - Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+  buildSceneData:
+  - _name: MAIN_MENU
+    _path: Assets/Scenes/Build/MAIN_MENU.unity
+    _sceneFound: 1
+    knot: SetSpeaker
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_0 - Intro
+    _path: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+    _sceneFound: 1
+    knot: scene1_0
+    backgroundMusicEvent:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - _name: SCENE_1_1 - The Gas Station Ext
+    _path: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+    _sceneFound: 1
+    knot: scene1_1
+    backgroundMusicEvent:
+      Guid:
+        Data1: 1009970235
+        Data2: 1170209264
+        Data3: -62989660
+        Data4: -619185197
+      Path: event:/Music/investigate
+  - _name: SCENE_1_2 - The Gas Station Int
+    _path: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+    _sceneFound: 1
+    knot: scene1_2
+    backgroundMusicEvent:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - _name: SCENE_1_3 - The Gas Station Int Bathroom
+    _path: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+    _sceneFound: 1
+    knot: SetSpeaker
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_4 - The Gas Station Int.
+    _path: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+    _sceneFound: 1
+    knot: SetSpeaker
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_1_5 - The Gas Station Ext.
+    _path: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_2_0 - The Precinct - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_1 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_2 - The Winery Int.
+    _path: Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_3_3 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_1 - Main Street
+    _path: Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_2 - The General Store
+    _path: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_3 - The Arcade
+    _path: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_4 - The Bar
+    _path: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_4_5 - The Bar - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_1 - Stakeout - Dating Sim
+    _path: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_2 - The Winery Ext.
+    _path: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - _name: SCENE_5_3 - The Winery Int.
+    _path: Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+    _sceneFound: 1
+    knot: 
+    backgroundMusicEvent:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+--- !u!114 &1103200859854054853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c189080abee24146b2eacaf9afcb28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  busListOk: 66
+  systemIsOk: 66
+  allBanksLoaded: 0
+  allBusesLoaded: 0
+  masterBusPath: bus:/MasterVolume
+  masterBusVolume: 0
+  footstepEventReference:
+    Guid:
+      Data1: 915613544
+      Data2: 1106373728
+      Data3: -1806035556
+      Data4: 1946811942
+    Path: event:/SFX/Generic/Footsteps1
+  firstInteractionEventReference:
+    Guid:
+      Data1: -1644116464
+      Data2: 1275719455
+      Data3: 105296063
+      Data4: -420808258
+    Path: event:/SFX/Generic/NPC_InteractStart
+--- !u!114 &6736551505315507451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1569de5e917f38a46abf739a3e621edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &255471297845677017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: -1
+  OverrideMaxDistance: -1

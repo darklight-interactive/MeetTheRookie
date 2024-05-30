@@ -13,7 +13,7 @@ VAR snooped = false
 
 === scene2 ===
 # hide : Lupe
-Hello! Welcome to our Early Access of Meet the Rookie! We greatly appreciate your support in the development of this game, and hope to bring you more content in the nearby future. Before we begin...
+Hello! Welcome to our Early Access Release of Meet the Rookie! We greatly appreciate your support in the development of this game, and hope to bring you more content in the nearby future. Before we begin...
 
 *[Here is some context] 
 
