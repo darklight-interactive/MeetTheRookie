@@ -38,7 +38,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     {
         base.Initialize();
 
-        foreach (MTR_SceneData scene in buildSceneData)
+        foreach (MTR_SceneData scene in BuildSceneDataList)
         {
             _sceneDataByKnot.Add(scene.knot, scene);
         }

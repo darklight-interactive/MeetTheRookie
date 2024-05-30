@@ -10,6 +10,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -30,13 +32,9 @@ namespace Darklight.UnityExt.SceneManagement
 
     public abstract class BuildSceneManager : MonoBehaviourSingleton<BuildSceneManager>, IBuildSceneManager
     {
-        protected const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
-        [SerializeField] protected Scene[] buildScenes = new Scene[0]; // Unity Scenes
-        [SerializeField] protected BuildSceneData[] buildSceneData = new BuildSceneData[0];
-
-        public Scene ActiveScene => SceneManager.GetActiveScene();
-        public List<Scene> BuildScenes => buildScenes.ToList();
-        public List<BuildSceneData> BuildSceneData => buildSceneData.ToList();
+        public const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
+        [SerializeField] private BuildSceneData[] _buildSceneData = new BuildSceneData[0];
+        public List<BuildSceneData> BuildSceneDataList => _buildSceneData.ToList();
 
         public delegate void ActiveSceneChanged(Scene oldScene, Scene newScene);
         public event ActiveSceneChanged OnSceneChanged;
@@ -102,44 +100,64 @@ namespace Darklight.UnityExt.SceneManagement
 #if UNITY_EDITOR
         public void LoadBuildScenes()
         {
-            // Get all scene paths in the specified directory.
+            // Get all unity scene paths in the specified directory.
             string[] scenePaths = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
+            Debug.Log($"{Prefix} Found {scenePaths.Length} scenes in the build directory {BUILD_SCENE_DIRECTORY}.");
 
-            // Create arrays for the build scenes and the editor build settings scenes.
-            Scene[] buildScenes = new Scene[scenePaths.Length];
+            // Create an array of EditorBuildSettingsScene objects.
             EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[scenePaths.Length];
-
-            // Iterate through the scene paths.
             for (int i = 0; i < scenePaths.Length; i++)
             {
                 string scenePath = scenePaths[i];
-                buildScenes[i] = SceneManager.GetSceneByPath(scenePath);
-                SaveBuildSceneData(buildScenes[i]);
                 editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
             }
 
-            EditorBuildSettings.scenes = editorBuildSettingsScenes; // Update the editor build settings scenes.
-            this.buildScenes = buildScenes; // Update the build scenes array.
+            // Assign the array to the editor build settings.
+            EditorBuildSettings.scenes = editorBuildSettingsScenes;
+            EditorUtility.SetDirty(this);
+
+            SaveBuildSceneData();
         }
 
         /// <summary>
-        /// Saves serialized build scene data for the specified scene.
+        /// Saves the build scene data by updating the paths of the BuildSceneData objects
+        /// based on the paths in the EditorBuildSettingsScene array.
         /// </summary>
-        /// <param name="scene"></param>
-        public virtual void SaveBuildSceneData(Scene scene)
+        void SaveBuildSceneData()
         {
-            if (scene == null)
+            // Get the EditorBuildSettingsScene array
+            EditorBuildSettingsScene[] editorBuildSettingsScenes = EditorBuildSettings.scenes;
+            
+            // Create a new list of BuildSceneData objects from _buildSceneData
+            BuildSceneData[] buildSceneData = new BuildSceneData[editorBuildSettingsScenes.Length];
+            
+            // Iterate through each EditorBuildSettingsScene
+            for (int i = 0; i < editorBuildSettingsScenes.Length; i++)
             {
-                Debug.LogWarning($"{Prefix} Cannot save build scene data for null scene.");
-                return;
+                EditorBuildSettingsScene editorBuildSettingsScene = editorBuildSettingsScenes[i];
+                buildSceneData[i] = new BuildSceneData(editorBuildSettingsScene.path);
             }
 
-            BuildSceneData data = new BuildSceneData(scene);
-            if (!BuildSceneData.Contains(data))
-            {
-                buildSceneData = buildSceneData.Append(data).ToArray();
-                EditorUtility.SetDirty(this);
-            }
+            this._buildSceneData = buildSceneData;
+            EditorUtility.SetDirty(this);
+            Debug.Log($"{Prefix} Saved build scene data.");
+        }
+
+        public void ClearBuildScenes()
+        {
+            EditorBuildSettings.scenes = new EditorBuildSettingsScene[0];
+            this._buildSceneData = new BuildSceneData[0];
+            EditorUtility.SetDirty(this);
+
+            Debug.Log($"{Prefix} Cleared build scenes.");
+        }
+
+        public static bool IsSceneInBuild(string path)
+        {
+            bool result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
+            if (result) Debug.Log($"{Prefix} {path} is a build scene.");
+            else Debug.LogWarning($"{Prefix} {path} is not a build scene.");
+            return result;
         }
 #endif
     }

@@ -13,11 +13,13 @@ namespace Darklight.UnityExt.Editor
     public class BuildSceneManagementWindow : EditorWindow
     {
         private BuildSceneManager buildSceneManager => BuildSceneManager.Instance;
+        private Vector2 scrollPosition;
+        private SerializedObject serializedObject;
 
-        [MenuItem("DarklightExt/Build Scene Management")]
+        [MenuItem("DarklightExt/BuildScene Management")]
         public static void ShowWindow()
         {
-            GetWindow<BuildSceneManagementWindow>("Scene Management");
+            GetWindow<BuildSceneManagementWindow>("BuildScene Management");
         }
 
         void OnEnable()
@@ -27,12 +29,36 @@ namespace Darklight.UnityExt.Editor
 
         void OnGUI()
         {
-            GUILayout.Label("Build Scenes", EditorStyles.boldLabel);
-            
+            serializedObject = new SerializedObject(buildSceneManager);
+            serializedObject.Update();
 
+            GUILayout.Label("BuildScene Data", EditorStyles.boldLabel);
+
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Refresh"))
+            {
+                buildSceneManager.LoadBuildScenes();
+            }
+
+            if (GUILayout.Button("Clear"))
+            {
+                buildSceneManager.ClearBuildScenes();
+            }
+
+            if (GUILayout.Button("Open Build Settings"))
+            {
+                EditorApplication.ExecuteMenuItem("File/Build Settings...");
+            }
+            EditorGUILayout.EndHorizontal();
+
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true);
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_buildSceneData"));
+
+            GUILayout.EndScrollView();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 #endif
-
 }
-

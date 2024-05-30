@@ -60,7 +60,7 @@ public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneD
         }
 
         // Get the scene data of the specified data type.
-        List<TSceneData> list = BuildSceneData.OfType<TSceneData>().ToList();
+        List<TSceneData> list = BuildSceneDataList.OfType<TSceneData>().ToList();
         TSceneData data = list.Find(x => x.Name == sceneName);
         return data;
     }
@@ -83,17 +83,4 @@ public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneD
         Scene scene = SceneManager.GetActiveScene();
         return GetSceneData(scene.name);
     }
-
-#if UNITY_EDITOR
-    public override void SaveBuildSceneData(Scene scene)
-    {
-        TSceneData data = new TSceneData();
-        if (!BuildSceneData.Contains(data))
-        {
-            buildSceneData = buildSceneData.Append(data).ToArray();
-            EditorUtility.SetDirty(this);
-        }
-    }
-
-#endif
 }

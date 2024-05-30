@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_scene2_precinctDEMO
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 128483559616cef4b9002c3e7c1d7d52, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: scene2
     stitches:
@@ -1112,7 +1112,6 @@ MonoBehaviour:
     _valueAsString: False
   - _key: snooped
     _valueAsString: False
-  _globalTags: []
 --- !u!1001 &272971159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2001,8 +2000,180 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildScenes.Array.size
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.size
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: buildScenes.Array.data[3].knot
       value: scene1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[0]._name
+      value: Assets/Scenes/Build/MAIN_MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[0]._path
+      value: Assets/Scenes/Build/MAIN_MENU.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1]._name
+      value: Assets/Scenes/Build/SCENE_1_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1]._path
+      value: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2]._name
+      value: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2]._path
+      value: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3]._name
+      value: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3]._path
+      value: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[4]._name
+      value: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[4]._path
+      value: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[5]._name
+      value: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[5]._path
+      value: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[6]._name
+      value: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[6]._path
+      value: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[7]._name
+      value: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[7]._path
+      value: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[8]._name
+      value: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[8]._path
+      value: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[9]._name
+      value: Assets/Scenes/Build/SCENE_3_2 - The Winery Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[9]._path
+      value: Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildScenes.Array.data[2].m_Handle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[10]._name
+      value: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[10]._path
+      value: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[11]._name
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[11]._path
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[12]._name
+      value: Assets/Scenes/Build/SCENE_4_2 - The General Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[12]._path
+      value: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[13]._name
+      value: Assets/Scenes/Build/SCENE_4_3 - The Arcade
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[13]._path
+      value: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[14]._name
+      value: Assets/Scenes/Build/SCENE_4_4 - The Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[14]._path
+      value: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[15]._name
+      value: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[15]._path
+      value: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[16]._name
+      value: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[16]._path
+      value: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[17]._name
+      value: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[17]._path
+      value: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[18]._name
+      value: Assets/Scenes/Build/SCENE_5_3 - The Winery Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[18]._path
+      value: Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2]._scene.m_Handle
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5953019589017212419, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: '_storyObjects.Array.data[0]'
@@ -2435,7 +2606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_level2_precinct
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 56d5c002448d20e4597414021daff05c, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: scene2
     stitches:
@@ -2484,7 +2655,6 @@ MonoBehaviour:
     _valueAsString: False
   - _key: snooped
     _valueAsString: False
-  _globalTags: []
 --- !u!43 &444205513
 Mesh:
   m_ObjectHideFlags: 0
@@ -5389,7 +5559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_global
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: SetSpeaker
     stitches: []
@@ -5577,7 +5747,6 @@ MonoBehaviour:
     _valueAsString: 
   - _key: Level4_Clues
     _valueAsString: 
-  _globalTags: []
 --- !u!43 &1224824436
 Mesh:
   m_ObjectHideFlags: 0
@@ -7069,14 +7238,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: synthesisTest
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: nada
     stitches: []
   - name: synthesize
     stitches: []
   _variables: []
-  _globalTags: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

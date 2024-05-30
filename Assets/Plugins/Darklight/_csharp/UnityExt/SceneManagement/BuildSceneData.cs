@@ -2,13 +2,14 @@
 
 #if UNITY_EDITOR
 using UnityEditor;
-
+using UnityEditor.SceneManagement;
 #endif
 
 using Darklight.UnityExt.Editor;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace Darklight.UnityExt.SceneManagement
 {
@@ -18,45 +19,27 @@ namespace Darklight.UnityExt.SceneManagement
     [System.Serializable]
     public class BuildSceneData
     {
-        [SerializeField] private Scene _scene;
-        [SerializeField, ShowOnly] private string _name;
+        [SerializeField, ShowOnly] private string _name = "default";
         [SerializeField, ShowOnly] private string _path;
-        public Scene UnityScene
-        {
-            get { return _scene; }
-            set { _scene = value; }
-        }
-        public string Name
-        {
-            get
-            {
-                if (_name == null)
-                {
-                    _name = _scene.name;
-                }
-                return _name;
-            }
-        }
-        public string Path
-        {
-            get
-            {
-                if (_path == null)
-                {
-                    _path = _scene.path;
-                }
-                return _path;
-            }
-        }
+        [SerializeField] private bool _sceneFound;
+        private Scene _scene;
 
+        public string Name => _name;
+        public string Path => _path;
         public BuildSceneData(){}
         public BuildSceneData(string path)
         {
-            this._scene = SceneManager.GetSceneByPath(path);
-        }
-        public BuildSceneData(Scene scene)
-        {
-            this._scene = scene;
+            this._path = path.Replace("\\", "/"); // Replace all backslashes with forward slashes
+            this._name = _path.Replace(BuildSceneManager.BUILD_SCENE_DIRECTORY + "/", "").Replace(".unity", "");
+            
+            // Check if the scene is in the build settings
+            bool isLocatedInBuildSettings = BuildSceneManager.IsSceneInBuild(this._path);
+            if (isLocatedInBuildSettings)
+            {
+                // Get the scene
+                this._scene = SceneManager.GetSceneByPath(this._path);
+                this._sceneFound = this._scene != null;
+            }
         }
     }
 }
