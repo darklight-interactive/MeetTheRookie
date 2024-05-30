@@ -106,6 +106,9 @@ namespace Darklight.UnityExt.Inky
         }
         #endregion
 
+        public delegate void StoryInitialized(Story story);
+        public event StoryInitialized OnStoryInitialized;
+
         // ------------------------------ [[ PRIVATE FIELDS ]] ------------------------------ >>
         private Story _story;
 
@@ -124,19 +127,7 @@ namespace Darklight.UnityExt.Inky
         /// <summary>
         /// Public reference to the Ink story inside the StoryObject.
         /// </summary>
-        public Story StoryValue
-        {
-            get
-            {
-                if (_story == null)
-                {
-                    _story = CreateStory(_textAsset);
-                }
-                return _story;
-            }
-            set { _story = value; }
-        }
-
+        public Story StoryValue => this._story;
         public List<string> KnotNames => _knots.Select(knot => knot.name).ToList();
 
         /// <summary>
@@ -167,10 +158,10 @@ namespace Darklight.UnityExt.Inky
             _story.onError += (message, lineNum) =>
                 Debug.LogError($"Ink Error: {message} at line {lineNum}");
 
-            Debug.Log(
-                $"InkyStoryObject: Initialized {this.name} with {_textAsset.name}."
-                    + $"Found {_knots.Count} knots and {_variables.Count} variables."
-            );
+            Debug.Log($"InkyStoryObject: Initialized {this.name} with {_textAsset.name}."
+                    + $" Found {_knots.Count} knots and {_variables.Count} variables.");
+
+            OnStoryInitialized?.Invoke(_story);
         }
 
         public InkyVariable GetVariableByName(string variableName)
@@ -191,6 +182,7 @@ namespace Darklight.UnityExt.Inky
         )
         {
             StoryValue.BindExternalFunctionGeneral(funcName, function, lookaheadSafe);
+            //Debug.Log($"{name} >> Bound external function: {funcName}");
         }
 
         /// <summary>
