@@ -9,6 +9,8 @@ using NaughtyAttributes;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,12 +23,19 @@ public class MTR_SceneData : BuildSceneData
     {
         get
         {
-            return InkyStoryManager.GlobalStoryObject.KnotNames;
+            List<string> names = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                return InkyStoryManager.GlobalStoryObject.KnotNames;
+            }
+            return names;
         }
     }
 
     [NaughtyAttributes.Dropdown("_knotNames")]
     public string knot;
+
+    public EventReference backgroundMusicEvent;
 }
 
 
@@ -42,6 +51,11 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         {
             _sceneDataByKnot.Add(scene.knot, scene);
         }
+    }
+
+    public override List<MTR_SceneData> GetAllBuildSceneData()
+    {
+        return base.GetAllBuildSceneData();
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)

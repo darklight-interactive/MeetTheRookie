@@ -26,8 +26,12 @@ namespace Darklight.UnityExt.SceneManagement
 
         public string Name => _name;
         public string Path => _path;
+
+        // ------------------- [[ CONSTRUCTORS ]] -------------------
         public BuildSceneData(){}
-        public BuildSceneData(string path)
+        public BuildSceneData(string path) => InitializeData(path);
+
+        public void InitializeData(string path)
         {
             this._path = path.Replace("\\", "/"); // Replace all backslashes with forward slashes
             this._name = _path.Replace(BuildSceneManager.BUILD_SCENE_DIRECTORY + "/", "").Replace(".unity", "");
