@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Utility;
+using Ink.Runtime;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -48,7 +49,10 @@ namespace Darklight.UnityExt.Inky
         }
 
         // ----------- [[ STORY ITERATOR ]] ------------ >>
-        public InkyStoryIterator Iterator { get; private set; }
+        public static InkyStoryIterator Iterator { get; private set; }
+
+        public delegate void StoryInitialized(Story story);
+        public event StoryInitialized OnStoryInitialized;
 
         #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
         [Tooltip("The current speaker in the story.")]
@@ -85,7 +89,6 @@ namespace Darklight.UnityExt.Inky
 
 
         // ------------------------ [[ METHODS ]] ------------------------ >>
-
         public override void Initialize()
         {
             if (_globalStoryObject == null)
@@ -114,6 +117,9 @@ namespace Darklight.UnityExt.Inky
 
             // << INITIALIZE STORY ITERATOR >>
             Iterator = new InkyStoryIterator(_globalStoryObject);
+
+            Debug.Log($"{Prefix} >> Initialized Inky Story Manager.");
+            OnStoryInitialized?.Invoke(_globalStoryObject.StoryValue);
         }
 
         object QuestStarted(object[] args)
@@ -122,4 +128,37 @@ namespace Darklight.UnityExt.Inky
             return false;
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(InkyStoryManager))]
+    public class InkyStoryManagerCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        InkyStoryManager _script;
+
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (InkyStoryManager)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            if (GUILayout.Button("Initialize"))
+            {
+                _script.Initialize();
+            }
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }

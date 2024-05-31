@@ -30,6 +30,7 @@ namespace Darklight.UnityExt.Inky
         /// This is the active text that is currently being displayed in the story, for easy reference.
         /// </summary>
         public string CurrentText => _storyObject.StoryValue.currentText.Trim();
+        public string CurrentKnot {get; private set;}
 
         // ------------------- [[ EVENTS ]] -------------------
         public delegate void OnDialogue(string currentText);
@@ -48,6 +49,7 @@ namespace Darklight.UnityExt.Inky
             try
             {
                 _storyObject.StoryValue.ChoosePathString(knotName);
+                CurrentKnot = knotName;
             }
             catch (System.Exception e)
             {
@@ -98,6 +100,7 @@ namespace Darklight.UnityExt.Inky
 
                 // Invoke the Dialogue Event
                 OnKnotDialogue?.Invoke(CurrentText);
+                Debug.Log($"Current Text {CurrentText}");
 
                 HandleTags();
 
