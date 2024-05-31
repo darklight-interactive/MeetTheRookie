@@ -4,11 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class PlayerAudioController : MonoBehaviour
 {
-    public PlayerController playerController => GetComponent<PlayerController>();
+    private PlayerController playerController;
 
 
-    public void Awake()
+    public void Start()
     {
+        playerController = GetComponent<PlayerController>();
         playerController.stateMachine.OnStateChanged += OnStateChanged;     
     }
 
