@@ -81,15 +81,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -306486465807924004, guid: b0f9c0340c74038408c4db223af64289, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.68, y: 1.14}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8703908369491067701
@@ -136,7 +136,8 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -306486465807924004, guid: b0f9c0340c74038408c4db223af64289, type: 3}
+      - {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: -4836672685443199150, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
@@ -146,7 +147,8 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -6439925600209740072, guid: b0f9c0340c74038408c4db223af64289, type: 3}
+      - {fileID: 8562495904423021863, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: -7808102639066312934, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   - state: 4
     spriteSheet:
       loop: 1
@@ -183,8 +185,9 @@ MonoBehaviour:
   spriteSheet:
     loop: 1
     frames:
-    - {fileID: -306486465807924004, guid: b0f9c0340c74038408c4db223af64289, type: 3}
-  currentFrame: 0
+    - {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+    - {fileID: -4836672685443199150, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+  currentFrame: 1
 --- !u!61 &6562033029251709814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -223,8 +226,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.53125, y: 0.890625}
+    newSize: {x: 0.68, y: 1.14}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -265,30 +268,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   editMode: 0
-  _sprite: {fileID: -306486465807924004, guid: b0f9c0340c74038408c4db223af64289, type: 3}
-  _sceneKnot: 
+  _sprite: {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+  _sceneKnot: SetSpeaker
   _interactionStitch: 
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
