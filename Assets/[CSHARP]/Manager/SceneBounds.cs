@@ -18,7 +18,7 @@ public class SceneBounds : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawLine(new Vector3(leftBound, -5, 10), new Vector3(leftBound, 5, 10));
-        Gizmos.DrawLine(new Vector3(rightBound, -5, 10), new Vector3(rightBound, 5, 10));
+        Gizmos.DrawLine(new Vector3(leftBound, -5, transform.position.z), new Vector3(leftBound, 5, transform.position.z));
+        Gizmos.DrawLine(new Vector3(rightBound, -5, transform.position.z), new Vector3(rightBound, 5, transform.position.z));
     }
 }
