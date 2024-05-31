@@ -109,10 +109,8 @@ public class Interactable : OverlapGrid2D, IInteract
             _storyObject = InkyStoryManager.GlobalStoryObject;
         }
 
-
         OnFirstInteraction += () => 
         {
-            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
         };
     }
 
