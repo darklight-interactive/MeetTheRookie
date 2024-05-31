@@ -64,7 +64,6 @@ LIST GLOBAL_KNOWLEDGE = DEFAULTCLUE
 === function DiscoverClue(clue)
     #DiscoverClue >> {clue}
     ~ GLOBAL_KNOWLEDGE += clue
-    ~ AddSynthesisClue(clue)
 === function IsClueFound(clue)
     { LIST_ALL(GLOBAL_KNOWLEDGE) ? clue:
         // clues are either found, or not

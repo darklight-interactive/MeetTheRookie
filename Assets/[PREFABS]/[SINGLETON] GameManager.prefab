@@ -217,8 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1065, y: 599}
-  _screenAspectRatio: 1.7779633
+  _screenSize: {x: 1266, y: 712}
+  _screenAspectRatio: 1.7780899
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -226,6 +226,7 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
+  speechBubbleFontSizeRange: {x: 100, y: 128}
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
   interactIcon: {fileID: 0}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
@@ -497,6 +498,7 @@ MonoBehaviour:
       Data3: -1806035556
       Data4: 1946811942
     Path: event:/SFX/Generic/Footsteps1
+  footstepInterval: 0.5
   firstInteractionEventReference:
     Guid:
       Data1: -1644116464
@@ -504,6 +506,20 @@ MonoBehaviour:
       Data3: 105296063
       Data4: -420808258
     Path: event:/SFX/Generic/NPC_InteractStart
+  continuedInteractionEventReference:
+    Guid:
+      Data1: 578235714
+      Data2: 1129925695
+      Data3: 1721045160
+      Data4: 1683552288
+    Path: event:/SFX/Generic/NPC_InteractContinue
+  endInteractionEventReference:
+    Guid:
+      Data1: -90580480
+      Data2: 1277235747
+      Data3: 1133846155
+      Data4: -246206366
+    Path: event:/SFX/Generic/NPC_InteractStop
 --- !u!114 &6736551505315507451
 MonoBehaviour:
   m_ObjectHideFlags: 0

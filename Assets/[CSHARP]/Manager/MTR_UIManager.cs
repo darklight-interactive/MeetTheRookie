@@ -134,11 +134,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     }
 
     [Header("Speech Bubble")]
-    [SerializeField]
-    UXML_UIDocumentPreset _speechBubblePreset;
-
-    [ShowOnly]
-    public UXML_RenderTextureObject speechBubbleObject;
+    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+    [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
+    [MinMaxSlider(24, 128)] public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
 
     public void CreateNewSpeechBubble(string text)
     {
@@ -158,6 +156,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.Initialize(fullText);
+        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
+        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
 
         while (true)
         {

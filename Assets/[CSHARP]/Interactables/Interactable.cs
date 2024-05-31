@@ -135,7 +135,7 @@ public class Interactable : OverlapGrid2D, IInteract
     // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
-        InkyStoryIterator StoryIterator = InkyStoryManager.Instance.Iterator;
+        InkyStoryIterator StoryIterator = InkyStoryManager.Iterator;
 
         // << FIRST INTERACTION >>
         if (!isActive)

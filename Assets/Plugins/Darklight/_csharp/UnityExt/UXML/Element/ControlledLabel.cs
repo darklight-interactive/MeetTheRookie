@@ -28,20 +28,18 @@ namespace Darklight.UnityExt.UXML
             set { }
         }
 
-        [UxmlAttribute, ShowOnly]
+        [UxmlAttribute]
         public int fontSize
         {
             get
             {
-                int size = GetDynamicFontSize();
-                _label.style.fontSize = size;
-                return size;
+                return (int)_label.style.fontSize.value.value;
             }
             set { _label.style.fontSize = value; }
         }
 
         [UxmlAttribute, MinMaxSlider(12, 128)]
-        public Vector2Int fontSizeRange = new Vector2Int(48, 64);
+        public Vector2Int fontSizeRange;
 
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText =
@@ -75,11 +73,10 @@ namespace Darklight.UnityExt.UXML
             _label = new Label();
             _label.style.unityTextAlign = TextAnchor.MiddleLeft;
             _label.style.alignSelf = Align.FlexStart;
+            _label.style.fontSize = GetDynamicFontSize();
 
             _container.Add(_label);
             Add(_container);
-
-            fontSize = GetDynamicFontSize();
         }
 
         public void Initialize(string fullText)
