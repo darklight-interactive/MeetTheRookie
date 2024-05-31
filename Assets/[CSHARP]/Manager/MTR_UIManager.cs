@@ -1,12 +1,11 @@
 using System.Collections;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Inky;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -76,8 +75,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
-    [SerializeField, ShowOnly] Vector2 _screenSize;
-    [SerializeField, ShowOnly] float _screenAspectRatio;
+    [SerializeField, ShowOnly]
+    Vector2 _screenSize;
+
+    [SerializeField, ShowOnly]
+    float _screenAspectRatio;
 
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
@@ -134,9 +136,20 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     }
 
     [Header("Speech Bubble")]
-    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
-    [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
-    [MinMaxSlider(24, 128)] public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
+    [SerializeField]
+    UXML_UIDocumentPreset _speechBubblePreset;
+
+    [ShowOnly]
+    public UXML_RenderTextureObject speechBubbleObject;
+
+    [MinMaxSlider(24, 128)]
+    public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
+
+    [SerializeField]
+    Sprite LTick_SpeechBubble;
+
+    [SerializeField]
+    Sprite RTick_SpeechBubble;
 
     public void CreateNewSpeechBubble(string text)
     {
@@ -147,7 +160,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
-        speechBubbleObject.transform.position = GetSpeakerSpeechBubblePosition();
+        (Vector3, Vector2Int) bubbleData = GetSpeakerSpeechBubblePositionAndDirection();
+        speechBubbleObject.transform.position = bubbleData.Item1;
+        Vector2Int bubbleDirection = bubbleData.Item2;
+        Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
+        Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
+
+        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
+        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
+        speechBubble.SetBackgroundSprite(bubbleSprite);
 
         StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
     }
@@ -156,8 +178,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.Initialize(fullText);
-        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
-        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
 
         while (true)
         {
@@ -182,9 +202,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubbleObject = null;
     }
 
-    Vector3 GetSpeakerSpeechBubblePosition()
+    (Vector3, Vector2Int) GetSpeakerSpeechBubblePositionAndDirection()
     {
         string currentSpeaker = InkyStoryManager.Instance.CurrentSpeaker;
+        Vector3 bubblePosition = Vector3.zero;
+        Vector2Int bubbleDirection = Vector2Int.zero;
 
         // Set the Camera Target to the Player
         if (currentSpeaker.Contains("Lupe"))
@@ -193,10 +215,19 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             if (playerInteractor == null)
             {
                 Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-                return Vector3.zero;
+                return (bubblePosition, bubbleDirection);
             }
 
-            return playerInteractor.GetBestOverlapGridData().worldPosition;
+            bubblePosition = playerInteractor.GetBestOverlapGridData().worldPosition;
+            if (bubblePosition.x < playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.left;
+            }
+            else if (bubblePosition.x > playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.right;
+            }
+            return (bubblePosition, bubbleDirection);
         }
 
         // Set the Camera Target to a NPC
@@ -207,12 +238,21 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         {
             if (interactable.speakerTag.Contains(currentSpeaker))
             {
-                return interactable.GetBestOverlapGridData().worldPosition;
+                bubblePosition = interactable.GetBestOverlapGridData().worldPosition;
+                if (bubblePosition.x < interactable.transform.position.x)
+                {
+                    bubbleDirection = Vector2Int.left;
+                }
+                else if (bubblePosition.x > interactable.transform.position.x)
+                {
+                    bubbleDirection = Vector2Int.right;
+                }
+                return (bubblePosition, bubbleDirection);
             }
         }
 
         Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
-        return Vector3.zero;
+        return (bubblePosition, bubbleDirection);
     }
 
     #region ------ [[ INTERACT ICON ]] ------------------------
