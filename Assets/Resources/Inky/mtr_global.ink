@@ -28,6 +28,7 @@ INCLUDE _day 1/mtr_level4.2_genstore.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
+EXTERNAL AddSynthesisClue(clue)
 
 
 // ====== SPEAKER HANDLING == >>

@@ -67,6 +67,11 @@ namespace Darklight.UnityExt.Inky
         /// </returns>
         public static List<string> GetAllStitchesInKnot(Story story, string knot)
         {
+            if (story == null)
+            {
+                Debug.LogError("InkyStoryObject: Story is null.");
+                return new List<string>();
+            }
             Container container = story.KnotContainerWithName(knot);
             List<string> stitches = new List<string>();
             foreach (string stitch in container.namedContent.Keys.ToList())
@@ -106,8 +111,6 @@ namespace Darklight.UnityExt.Inky
         }
         #endregion
 
-        public delegate void StoryInitialized(Story story);
-        public event StoryInitialized OnStoryInitialized;
 
         // ------------------------------ [[ PRIVATE FIELDS ]] ------------------------------ >>
         private Story _story;
@@ -160,8 +163,6 @@ namespace Darklight.UnityExt.Inky
 
             Debug.Log($"InkyStoryObject: Initialized {this.name} with {_textAsset.name}."
                     + $" Found {_knots.Count} knots and {_variables.Count} variables.");
-
-            OnStoryInitialized?.Invoke(_story);
         }
 
         public InkyVariable GetVariableByName(string variableName)

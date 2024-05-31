@@ -109,10 +109,8 @@ public class Interactable : OverlapGrid2D, IInteract
             _storyObject = InkyStoryManager.GlobalStoryObject;
         }
 
-
         OnFirstInteraction += () => 
         {
-            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
         };
     }
 
@@ -137,7 +135,7 @@ public class Interactable : OverlapGrid2D, IInteract
     // ====== [[ INTERACTION ]] ======================================
     public virtual void Interact()
     {
-        InkyStoryIterator StoryIterator = InkyStoryManager.Instance.Iterator;
+        InkyStoryIterator StoryIterator = InkyStoryManager.Iterator;
 
         // << FIRST INTERACTION >>
         if (!isActive)
@@ -152,6 +150,7 @@ public class Interactable : OverlapGrid2D, IInteract
             OnInteraction += (string text) =>
             {
                 MTR_UIManager.Instance.CreateNewSpeechBubble(text);
+                MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
             };
 
             // Subscribe to OnComplete
@@ -159,6 +158,7 @@ public class Interactable : OverlapGrid2D, IInteract
             {
                 // Destroy the speech bubble
                 MTR_UIManager.Instance.DestroySpeechBubble();
+                MTR_AudioManager.Instance.PlayEndInteractionEvent();
             };
 
             // Go To the Interaction Stitch
@@ -168,7 +168,7 @@ public class Interactable : OverlapGrid2D, IInteract
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             OnFirstInteraction?.Invoke();
-
+            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
             Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
 

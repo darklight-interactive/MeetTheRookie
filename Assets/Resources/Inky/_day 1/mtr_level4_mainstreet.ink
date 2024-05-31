@@ -81,11 +81,10 @@ VAR closed_signs = 0
         ~ SetSpeaker(Speaker.Lupe)
         Yeah. 
         It was at the Gas Station near the edge of town. 
-     ~ CompleteQuest(visited_goop)
-     ~ DiscoverClue(goop_evidence)
-    // Add to Synthesis - The Town of KR
-
-     -> DONE
+         ~ CompleteQuest(visited_goop)
+         ~ DiscoverClue(goop_evidence)
+        // Add to Synthesis - The Town of KR
+         -> DONE
     }
 
 = the_rockin_kettle
