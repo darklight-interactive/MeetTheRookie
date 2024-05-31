@@ -2,7 +2,7 @@
 //      MEET THE ROOKIE
 //      - Scene 1.0 - 1.5
 // ---------------------------------------------- >>/^*
-
+// ====== INCLUDE == >>
 VAR gas_pumps = 0
 LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
 LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
@@ -53,12 +53,20 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
     - else:
         ~ SetSpeaker(Speaker.Lupe)
-        {gas_pumps == 1} "Out of order. Pay inside." Of course. Just my luck. -> DONE
-        {gas_pumps == 2} Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
-        {gas_pumps == 3} ... Why am I still looking at this gas pump? -> DONE
-        {gas_pumps < 6} ... -> DONE
-        {gas_pumps == 7} .. This gas pump is kind of freaky. -> DONE
-        {gas_pumps > 7} I should really go pay for gas. -> DONE
+        {
+        	- gas_pumps == 1:
+        		"Out of order. Pay inside." Of course. Just my luck. -> DONE
+            - gas_pumps == 2: 
+                Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
+            - gas_pumps == 3: 
+                ... Why am I still looking at this gas pump? -> DONE
+            - gas_pumps < 6: 
+                ... -> DONE
+            - gas_pumps == 7: 
+                .. This gas pump is kind of freaky. -> DONE
+            - else: 
+                I should really go pay for gas. -> DONE
+	    }
     }
 
 = car
