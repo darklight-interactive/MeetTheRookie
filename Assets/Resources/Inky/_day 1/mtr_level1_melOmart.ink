@@ -206,6 +206,8 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         No idea, it was here when I unlocked this morning. 
         Darn stuff won't scrub off. ->DONE
 
+= door_back_to_interior
+    ~ ChangeGameScene("scene1_2")
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
 
