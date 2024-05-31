@@ -20,6 +20,20 @@ public class MTR_AudioManager : FMODEventManager
     public EventReference continuedInteractionEventReference;
     public EventReference endInteractionEventReference;
 
+    public void PlayFirstInteractionEvent()
+    {
+        PlayOneShot(firstInteractionEventReference);
+    }
+
+    public void PlayContinuedInteractionEvent()
+    {
+        PlayOneShot(continuedInteractionEventReference);
+    }
+
+    public void PlayEndInteractionEvent()
+    {
+        PlayOneShot(endInteractionEventReference);
+    }
 
 
 }
