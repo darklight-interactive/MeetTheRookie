@@ -38,7 +38,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     {
         base.Initialize();
 
-        InkyStoryManager.GlobalStoryObject.OnStoryInitialized += OnStoryInitialized;
+        InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
     }
 
     public void OnStoryInitialized(Story story)

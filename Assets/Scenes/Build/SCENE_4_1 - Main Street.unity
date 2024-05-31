@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: '[DS]Bar_1'
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 9b85df92c3de1b740b64e8ac1b2f0585, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: intro
     stitches:
@@ -700,7 +700,6 @@ MonoBehaviour:
     _valueAsString: 0
   - _key: sincerity_level
     _valueAsString: 0
-  _globalTags: []
 --- !u!1001 &192130458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -851,7 +850,7 @@ PrefabInstance:
       objectReference: {fileID: 602280144}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTargetPosition.x
-      value: -9.5
+      value: -8.75
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTargetPosition.y
@@ -863,21 +862,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTargetPositionOffset.y
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _camerasInChildren.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: '_camerasInChildren.Array.data[3]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 192130459}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+--- !u!20 &192130459 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5663657954300164996, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+  m_PrefabInstance: {fileID: 192130458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &215484469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2493,27 +2497,6 @@ MonoBehaviour:
   _sprite: {fileID: 0}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.apartments_for_lease_sign
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -2620,27 +2603,6 @@ MonoBehaviour:
   _sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.strange_symbol_on_fountain
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -3272,7 +3234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_global
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: SetSpeaker
     stitches: []
@@ -3315,7 +3277,6 @@ MonoBehaviour:
     _valueAsString: 
   - _key: Level4_Quests
     _valueAsString: 
-  _globalTags: []
 --- !u!43 &775505881
 Mesh:
   m_ObjectHideFlags: 0
@@ -3534,7 +3495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: '[DS]Precinct_1'
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 24523e61df377144ab40540e8fcb27f5, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: intro
     stitches:
@@ -3583,7 +3544,6 @@ MonoBehaviour:
     _valueAsString: False
   - _key: snooped
     _valueAsString: False
-  _globalTags: []
 --- !u!1 &797665654
 GameObject:
   m_ObjectHideFlags: 0
@@ -3692,27 +3652,6 @@ MonoBehaviour:
   _sprite: {fileID: 0}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.diner_closed_sign
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -4437,14 +4376,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: synthesisTest
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: nada
     stitches: []
   - name: combine
     stitches: []
   _variables: []
-  _globalTags: []
 --- !u!43 &1044010163
 Mesh:
   m_ObjectHideFlags: 0
@@ -4931,27 +4869,6 @@ MonoBehaviour:
   _sprite: {fileID: -2047507908, guid: 9519f6411d5d1074abb99a9ad71d3886, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.laundromat_closed_sign
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -5571,27 +5488,6 @@ MonoBehaviour:
   _sprite: {fileID: 9073935357443152132, guid: 4401bafa78919cc43988ffbca896c150, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.goop_on_fountain
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -6631,27 +6527,6 @@ MonoBehaviour:
   _sprite: {fileID: 7668350867315635259, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.einab_closed_sign
-  _onFirstInteraction:
-    Guid:
-      Data1: -1644116464
-      Data2: 1275719455
-      Data3: 105296063
-      Data4: -420808258
-    Path: event:/SFX/Generic/NPCs/NPC_Interact
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -7472,27 +7347,6 @@ MonoBehaviour:
   _sprite: {fileID: 0}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.clothing_store_closed_sign
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -7887,7 +7741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: mtr_level1_melOmart
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: e65680929613ccb44bac06bb6e1e4789, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: level1
     stitches: []
@@ -7953,7 +7807,6 @@ MonoBehaviour:
     _valueAsString: 
   - _key: Level4_Quests
     _valueAsString: 
-  _globalTags: []
 --- !u!43 &2015073185
 Mesh:
   m_ObjectHideFlags: 0
@@ -8131,7 +7984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: '[DS]Stakeout_1'
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d2797144259c001469726dc7da86c883, type: 3}
+  _textAsset: {fileID: 0}
   _knots:
   - name: intro
     stitches:
@@ -8181,7 +8034,6 @@ MonoBehaviour:
     _valueAsString: 0
   - _key: sincerity_level
     _valueAsString: 0
-  _globalTags: []
 --- !u!1001 &2100603243
 PrefabInstance:
   m_ObjectHideFlags: 0

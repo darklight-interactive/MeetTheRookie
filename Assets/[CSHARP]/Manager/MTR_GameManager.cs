@@ -34,7 +34,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 
 
         MTR_SceneData newSceneData = GameSceneManager.GetSceneData(newScene);
-        StoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
+        InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
 
         FMODEventManager.Instance.PlaySong(newSceneData.backgroundMusicEvent);
     }

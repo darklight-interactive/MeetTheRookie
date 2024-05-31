@@ -5,7 +5,6 @@ using Darklight.UnityExt.UXML;
 [UxmlElement]
 public partial class SpeechBubble : ControlledLabel
 {
-
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
 
     [UxmlAttribute]
@@ -18,6 +17,7 @@ public partial class SpeechBubble : ControlledLabel
     public SpeechBubble()
     {
         SetBackgroundSprite(bubbleSprite);
+        fontSize = GetDynamicFontSize();
     }
 
     public void SetBackgroundSprite(Sprite sprite)

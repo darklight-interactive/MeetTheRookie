@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Net.NetworkInformation;
-using System.Linq;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Darklight.Utility
+namespace Darklight.UnityExt.Utility
 {
     public interface IState
     {
@@ -35,16 +32,10 @@ namespace Darklight.Utility
     [System.Serializable]
     public abstract class FiniteState<TState> : IState where TState : Enum
     {
-        protected FiniteStateMachine<TState> stateMachine;
-        protected TState stateType;
-        protected object[] args;
-
-        public TState StateType { get { return stateType; } }
-
-        public FiniteState(TState stateType, params object[] args)
+        public TState stateType {get; private set;}
+        public FiniteState(TState stateType)
         {
             this.stateType = stateType;
-            this.args = args;
         }
 
         public abstract void Enter();
@@ -56,13 +47,13 @@ namespace Darklight.Utility
     {
         protected TState initialState;
         protected Dictionary<TState, FiniteState<TState>> possibleStates;
-        protected FiniteState<TState> currentState;
+        protected FiniteState<TState> currentFiniteState;
         protected object[] args;
 
         public delegate void OnStateChange(TState state);
         public event OnStateChange OnStateChanged;
 
-        public TState CurrentState { get { return currentState.StateType; } }
+        public TState CurrentState { get { return currentFiniteState.stateType; } }
 
         public FiniteStateMachine() { }
 
@@ -72,35 +63,35 @@ namespace Darklight.Utility
             this.possibleStates = possibleStates;
             if (possibleStates.ContainsKey(initialState))
             {
-                this.currentState = possibleStates[initialState];
+                this.currentFiniteState = possibleStates[initialState];
             }
             this.args = args;
         }
 
-        public void AddState(FiniteState<TState> state)
+        public void AddState(FiniteState<TState> finiteState)
         {
             if (possibleStates == null) { possibleStates = new Dictionary<TState, FiniteState<TState>>(); }
-            possibleStates.Add(state.StateType, state);
+            possibleStates.Add(finiteState.stateType, finiteState);
         }
 
         public virtual void Step()
         {
-            if (currentState != null) { currentState.Execute(); }
+            if (currentFiniteState != null) { currentFiniteState.Execute(); }
             else { GoToState(initialState); }
         }
 
         public virtual bool GoToState(TState state)
         {
             // Exit from the previous state
-            if (currentState != null && currentState.StateType.Equals(state)) { return false; }
-            if (currentState != null) { currentState.Exit(); }
+            if (currentFiniteState != null && currentFiniteState.stateType.Equals(state)) { return false; }
+            if (currentFiniteState != null) { currentFiniteState.Exit(); }
 
             // Check if the state exists
             if (possibleStates.ContainsKey(state))
             {
                 // Enter the new state
-                currentState = possibleStates[state];
-                currentState.Enter();
+                currentFiniteState = possibleStates[state];
+                currentFiniteState.Enter();
             }
             else
             {

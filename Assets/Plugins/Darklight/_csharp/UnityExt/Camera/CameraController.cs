@@ -1,7 +1,5 @@
-using Darklight.Game;
-using Darklight.Game.Camera;
 using UnityEngine;
-using Darklight.Utility;
+using Darklight.UnityExt.Utility;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 
@@ -37,7 +35,7 @@ namespace Darklight.Game.Camera
             ///     args[0] = CameraRig ( cameraRig )
             ///     args[1] = float ( FOVOffset )
             /// </param>
-            public CameraState(CameraStateKey stateType, params object[] args) : base(stateType, args)
+            public CameraState(CameraStateKey stateType, params object[] args) : base(stateType)
             {
                 _cameraRig = (CameraRig)args[0];
                 _offsetFOV = (float)args[1];
