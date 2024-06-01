@@ -49,12 +49,8 @@ public class PlayerInteractor : OverlapGrid2D
             _foundInteractables.Remove(completedInteraction);
         }
 
-        // Get the Target Interactable 
-        // TODO :: Find the best interactable
-        if (targetInteractable == null && _foundInteractables.Count > 0)
-        {
-            targetInteractable = _foundInteractables.First();
-        }
+        // Update the target interactable
+        targetInteractable = GetClosestInteractable();
 
         // Only set the target if the interactable is not the active target
         if (targetInteractable != activeInteractable)
@@ -68,6 +64,26 @@ public class PlayerInteractor : OverlapGrid2D
     }
 
     #endregion
+
+    Interactable GetClosestInteractable()
+    {
+        if (_foundInteractables.Count == 0) return null;
+
+        Interactable closest = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (Interactable interactable in _foundInteractables)
+        {
+            float distance = Vector2.Distance(transform.position, interactable.transform.position);
+            if (distance < closestDistance)
+            {
+                closest = interactable;
+                closestDistance = distance;
+            }
+        }
+
+        return closest;
+    }
 
     public bool InteractWithTarget()
     {
