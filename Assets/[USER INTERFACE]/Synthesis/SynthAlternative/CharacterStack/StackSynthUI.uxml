@@ -1,52 +1,40 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-<<<<<<<< HEAD:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/SynthStackUI.uxml
-    <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/CharacterStack/SynthStackUI.uss?fileID=7433441132597879392&amp;guid=161d545512230e642ba8fb65b5118381&amp;type=3#SynthStackUI" />
-    <ui:VisualElement name="Background" style="flex-grow: 1;">
-        <ui:VisualElement name="Stack" class="StackBase">
-            <ui:VisualElement name="Irene" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/CharacterStack/IreneChar.png?fileID=2800000&amp;guid=ae0051634c8164082968816bea566aaf&amp;type=3#IreneChar&quot;);">
-========
     <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uss?fileID=7433441132597879392&amp;guid=161d545512230e642ba8fb65b5118381&amp;type=3#StackSynthUI" />
     <ui:VisualElement name="Background" style="flex-grow: 1; margin-top: auto; margin-right: auto; margin-bottom: auto; margin-left: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; left: auto; right: 400px; top: 125px;">
         <ui:VisualElement name="Stack" class="StackBase" style="top: 0; left: 0;">
             <ui:VisualElement name="Irene" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/IreneChar.png?fileID=2800000&amp;guid=ae0051634c8164082968816bea566aaf&amp;type=3#IreneChar&quot;);">
->>>>>>>> 32-synthesis-expanded-ui:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uxml
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
                 <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
                 <ui:Label text="Irene" name="Name" class="StackName" />
                 <ui:Label text="Bar" name="Location" class="StackLocation" />
             </ui:VisualElement>
-<<<<<<<< HEAD:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/SynthStackUI.uxml
-            <ui:VisualElement name="Misra" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/CharacterStack/MisraChar.png?fileID=2800000&amp;guid=8fa0b4efb7be140f29731a14d5d6ca38&amp;type=3#MisraChar&quot;);">
-========
             <ui:VisualElement name="Misra" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/MisraChar.png?fileID=2800000&amp;guid=8fa0b4efb7be140f29731a14d5d6ca38&amp;type=3#MisraChar&quot;);">
->>>>>>>> 32-synthesis-expanded-ui:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uxml
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
                 <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
                 <ui:Label text="Misra" name="Name" class="StackName" />
                 <ui:Label text="Precinct" name="Location" class="StackLocation" />
             </ui:VisualElement>
-<<<<<<<< HEAD:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/SynthStackUI.uxml
-            <ui:VisualElement name="Roy" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/CharacterStack/RoyChar.png?fileID=2800000&amp;guid=05853c580637b4d3fae9b9b0024751e9&amp;type=3#RoyChar&quot;); background-color: rgba(133, 109, 44, 0);">
-========
             <ui:VisualElement name="Roy" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/RoyChar.png?fileID=2800000&amp;guid=05853c580637b4d3fae9b9b0024751e9&amp;type=3#RoyChar&quot;); background-color: rgba(133, 109, 44, 0);">
->>>>>>>> 32-synthesis-expanded-ui:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uxml
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
                 <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
                 <ui:Label text="Roy" name="Name" class="StackName" />
                 <ui:Label text="General&#10;Store" name="Location" class="StackLocation" />
             </ui:VisualElement>
-<<<<<<<< HEAD:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/SynthStackUI.uxml
-            <ui:VisualElement name="Teens" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthUITest/CharacterStack/TeensPaper.png?fileID=2800000&amp;guid=6cae97545344642439c388711540336b&amp;type=3#TeensPaper&quot;); background-color: rgba(133, 109, 44, 0);">
-========
             <ui:VisualElement name="Teens" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/TeensPaper.png?fileID=2800000&amp;guid=6cae97545344642439c388711540336b&amp;type=3#TeensPaper&quot;); background-color: rgba(133, 109, 44, 0);">
->>>>>>>> 32-synthesis-expanded-ui:Assets/[USER INTERFACE]/Synthesis/SynthAlternative/CharacterStack/StackSynthUI.uxml
                 <ui:VisualElement name="Hovered" class="StackSelected" />
                 <ui:VisualElement name="TextHolder" class="StackTextHolder" />
                 <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
                 <ui:Label text="Teens" name="Name" class="StackName" />
+                <ui:Label text="Arcade" name="Location" class="StackLocation" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Jenkins" class="StackFile" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/CharacterStack/JenkinsChar.png?fileID=2800000&amp;guid=d6f49c2df5ae1984581af5f48016dfcb&amp;type=3#JenkinsChar&quot;); background-color: rgba(133, 109, 44, 0);">
+                <ui:VisualElement name="Hovered" class="StackSelected" />
+                <ui:VisualElement name="TextHolder" class="StackTextHolder" />
+                <ui:VisualElement name="TextSelected" class="StackTextSelected" style="flex-grow: 1;" />
+                <ui:Label text="Jenkins" name="Name" class="StackName" />
                 <ui:Label text="Arcade" name="Location" class="StackLocation" />
             </ui:VisualElement>
         </ui:VisualElement>

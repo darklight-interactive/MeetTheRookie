@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{63716430-f3bc-48c9-8ee2-d688c403ccde}">
+		<property name="name">
+			<value>emoteLupe</value>
+		</property>
+		<relationship name="folder">
+			<destination>{bd3b7d8a-7e03-4a9a-82d0-9646f8093adc}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{6aa38ae6-23ca-4489-bdc3-aba5b3f70a87}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{6aa38ae6-23ca-4489-bdc3-aba5b3f70a87}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>6</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>neutral_2</value>
+			<value>inquisitive_1</value>
+			<value>fright_1</value>
+			<value>fluster_1</value>
+			<value>serious_2</value>
+			<value>annoyed_1</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

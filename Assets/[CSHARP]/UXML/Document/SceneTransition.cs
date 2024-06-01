@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UXML;
+using Darklight.UnityExt.UXML;
 
 public class SceneTransition : UXML_UIDocumentObject
 {
