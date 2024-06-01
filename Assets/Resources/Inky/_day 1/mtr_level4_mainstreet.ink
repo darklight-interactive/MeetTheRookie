@@ -8,13 +8,6 @@
 // ---- [[ LOCAL VARIABLES ]] ---- >>
 VAR closed_signs = 0
 
-
-// ---- [[ TEST CHOICES ]] ---- >>
-* [Scene 4_1 - Main Street] -> scene4_1
-* [Scene 4_2 - General Store] -> scene4_2
-* [Scene 4_3 - Arcade] -> scene4_3
-* [Scene 4_4 - Bar] -> scene4_4
-
 // ============================================================
 // ========================== SCENE 4.1 =======================
 === scene4_1 === 
@@ -46,7 +39,8 @@ VAR closed_signs = 0
 = talk_to_misra
     -> Misra_Dialogue
 = idahome_and_goods
-    -> scene4_2
+    ~ ChangeGameScene("scene4_2")
+    -> DONE
 = powerup_arcade
     -> DONE
 
