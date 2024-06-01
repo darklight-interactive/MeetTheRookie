@@ -163,6 +163,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             DestroySpeechBubble();
         }
 
+        // Return if the application is not playing
+        if (!Application.isPlaying) { return; }
+
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
         (Vector3, Vector2Int) bubbleData = GetSpeakerSpeechBubblePositionAndDirection();

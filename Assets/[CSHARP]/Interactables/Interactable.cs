@@ -99,9 +99,17 @@ public class Interactable : OverlapGrid2D, IInteract
             _sprite = _spriteRenderer.sprite;
         _spriteRenderer.color = _defaultTint;
 
+        Invoke(nameof(OnStart), 0.1f);
+    }
+
+    void OnStart()
+    {
         if (onStart)
         {
-            Interact();
+            this.Reset();
+
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            playerInteractor.ForceInteract(this);
         }
     }
 
