@@ -32,11 +32,20 @@ public class MTR_SceneData : BuildSceneData
     public EventReference backgroundMusicEvent;
 }
 
+/// <summary>
+/// Custom Scriptable object to hold MTR_SceneData.
+/// </summary>
+public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData> { }
+
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
     public override void Initialize()
     {
         base.Initialize();
+
+#if UNITY_EDITOR
+
+#endif
 
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
     }
@@ -44,7 +53,10 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     public void OnStoryInitialized(Story story)
     {
         Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
-        story.BindExternalFunction("ChangeGameScene", (string knotName) => ChangeGameScene(knotName));
+        story.BindExternalFunction(
+            "ChangeGameScene",
+            (string knotName) => ChangeGameScene(knotName)
+        );
     }
 
     /// <summary>
@@ -79,7 +91,6 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         MTR_SceneData data = GetActiveSceneData();
         return data.backgroundMusicEvent;
     }
-
 }
 
 #if UNITY_EDITOR

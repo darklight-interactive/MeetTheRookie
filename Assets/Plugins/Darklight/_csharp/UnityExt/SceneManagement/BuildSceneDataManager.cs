@@ -1,22 +1,25 @@
-
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Darklight.UnityExt.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace Darklight.UnityExt.SceneManagement
 {
-    public class BuildSceneDataManager<TSceneData> : BuildSceneManager where TSceneData : BuildSceneData, new()
+    public class BuildSceneDataManager<TSceneData> : BuildSceneManager
+        where TSceneData : BuildSceneData, new()
     {
-        [SerializeField] protected TSceneData[] buildSceneData = new TSceneData[0];
+        public const string DATA_PATH = "Assets/Resources/BuildSceneData";
+        public const string DATA_FILENAME = "BuildSceneDataObject";
+
+        [SerializeField]
+        protected TSceneData[] buildSceneData = new TSceneData[0];
+
         public override void Awake()
         {
             base.Awake();
@@ -24,9 +27,16 @@ namespace Darklight.UnityExt.SceneManagement
 
         public override void Initialize()
         {
-
 #if UNITY_EDITOR
             LoadBuildScenes();
+
+            Type dataObjectType = typeof(BuildSceneDataObject<TSceneData>);
+            BuildSceneDataObject<TSceneData> buildSceneDataSO =
+                ScriptableObjectUtility.CreateOrLoadScriptableObject(
+                    dataObjectType,
+                    DATA_PATH,
+                    DATA_FILENAME
+                ) as BuildSceneDataObject<TSceneData>;
 #endif
         }
 
@@ -113,27 +123,28 @@ namespace Darklight.UnityExt.SceneManagement
         void SaveBuildSceneData()
         {
             string[] buildScenePaths = this.buildScenePaths;
-
-            List<TSceneData> currentData = this.buildSceneData.ToList();
-            TSceneData[] newData = new TSceneData[buildScenePaths.Length];
             for (int i = 0; i < buildScenePaths.Length; i++)
             {
                 string scenePath = buildScenePaths[i];
-                
-                // If the scene path exists in the current data, use it.
-                if (currentData.Exists(x => x.Path == scenePath))
+
+                // If the build scene data array is null or the index is out of range, resize the array and initialize the data.
+                if (this.buildSceneData.Length < i + 1)
                 {
-                    newData[i] = currentData.Find(x => x.Path == scenePath);
+                    Array.Resize(ref this.buildSceneData, i + 1);
+                    this.buildSceneData[i] = new TSceneData();
+                    this.buildSceneData[i].InitializeData(scenePath);
                     continue;
                 }
 
-                // Create a new BuildSceneData object and initialize it with the scene path.
-                newData[i] = new TSceneData();
-                newData[i].InitializeData(scenePath);
+                // If the scene path is different from the path in the build scene data, initialize the data.
+                if (this.buildSceneData[i].Path != scenePath)
+                {
+                    this.buildSceneData[i].InitializeData(scenePath);
+                    continue;
+                }
             }
 
             // Overwrite the build scene data.
-            this.buildSceneData = newData;
             EditorUtility.SetDirty(this);
             Debug.Log($"{Prefix} Saved build scene data.");
         }

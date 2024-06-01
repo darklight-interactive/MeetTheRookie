@@ -849,6 +849,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 602280144}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _rotationLerpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTargetPosition.x
       value: -8.75
       objectReference: {fileID: 0}
@@ -1843,7 +1847,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.75
@@ -4631,6 +4635,90 @@ PrefabInstance:
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildScenePaths.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[0]'
+      value: Assets/Scenes/Build\MAIN_MENU.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[1]'
+      value: Assets/Scenes/Build\SCENE_1_0 - Intro.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[2]'
+      value: Assets/Scenes/Build\SCENE_1_1 - The Gas Station Ext.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[3]'
+      value: Assets/Scenes/Build\SCENE_1_2 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[4]'
+      value: Assets/Scenes/Build\SCENE_1_3 - The Gas Station Int Bathroom.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[5]'
+      value: Assets/Scenes/Build\SCENE_1_4 - The Gas Station Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[6]'
+      value: Assets/Scenes/Build\SCENE_1_5 - The Gas Station Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[7]'
+      value: Assets/Scenes/Build\SCENE_2_0 - The Precinct - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[8]'
+      value: Assets/Scenes/Build\SCENE_3_1 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[9]'
+      value: Assets/Scenes/Build\SCENE_3_2 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[10]'
+      value: Assets/Scenes/Build\SCENE_3_3 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[11]'
+      value: Assets/Scenes/Build\SCENE_4_1 - Main Street.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[12]'
+      value: Assets/Scenes/Build\SCENE_4_2 - The General Store.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[13]'
+      value: Assets/Scenes/Build\SCENE_4_3 - The Arcade.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[14]'
+      value: Assets/Scenes/Build\SCENE_4_4 - The Bar.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[15]'
+      value: Assets/Scenes/Build\SCENE_4_5 - The Bar - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[16]'
+      value: Assets/Scenes/Build\SCENE_5_1 - Stakeout - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[17]'
+      value: Assets/Scenes/Build\SCENE_5_2 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[18]'
+      value: Assets/Scenes/Build\SCENE_5_3 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[19]'
+      value: Assets/Scenes/Build\SYNTHESIS_DEMO.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5953019589017212419, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _storyObjects.Array.size
