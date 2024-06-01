@@ -20,9 +20,9 @@ VAR closed_signs = 0
 ~ SetActiveQuestChain(Level4_Quests)
 
 + [talk to misra] -> talk_to_misra
-+ [go to gen store] -> idahome_and_goods
-+ [go to arcade] -> powerup_arcade
-+ [go to bar] -> the_rockin_kettle
++ [go to gen store] -> door_idahome_and_goods
++ [go to arcade] -> door_powerup_arcade
++ [go to bar] -> door_the_rockin_kettle
 
 + [laundromat sign] -> laundromat_closed_sign
 + [einab sign] -> einab_closed_sign
@@ -38,10 +38,10 @@ VAR closed_signs = 0
 
 = talk_to_misra
     -> Misra_Dialogue
-= idahome_and_goods
+= door_idahome_and_goods
     ~ ChangeGameScene("scene4_2")
     -> DONE
-= powerup_arcade
+= door_powerup_arcade
     ~ ChangeGameScene("scene4_3")
     -> DONE
 
@@ -82,7 +82,7 @@ VAR closed_signs = 0
          -> DONE
     }
 
-= the_rockin_kettle
+= door_the_rockin_kettle
     {IsQuestComplete(complete_gen_store) && IsQuestComplete(complete_arcade):
         ~ SetSpeaker(Speaker.Misra)
         Looks like the Bar is open! Shall we?
@@ -102,7 +102,8 @@ VAR closed_signs = 0
         Think of it this way...we get more time to crack this case!
         But in the meantime, let's take a bit of a break...
         ~ SetSpeaker(Speaker.Lupe)
-        //-> scene4_4
+         ~ ChangeGameScene("scene4_4")
+         ->DONE
         
     - else:
         ~ SetSpeaker(Speaker.Misra)

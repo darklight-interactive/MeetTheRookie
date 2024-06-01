@@ -6,6 +6,10 @@ using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+using Ink.Runtime;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -109,6 +113,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Create a new GameUIController if it doesn't
             _gameUI = CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            _gameUI.transform.SetParent(transform);
             return _gameUI;
         }
     }
@@ -255,6 +260,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
         return (bubblePosition, bubbleDirection);
     }
+
+
+
 
     #region ------ [[ INTERACT ICON ]] ------------------------
     [Header("Interact Icon")]

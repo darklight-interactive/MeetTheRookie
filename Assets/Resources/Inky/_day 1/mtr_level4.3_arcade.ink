@@ -9,7 +9,7 @@
 //* [machines] -> arcade_machines
 //* [exit_door] -> exit_scene
 
-    -> teens
+    -> DONE
 
 = arcade_machines
     {IsQuestComplete(visited_machines):
@@ -24,6 +24,7 @@
     -> DONE
     }
 = teens 
+~ SetSpeaker(Speaker.Lupe)
 Is that...
  ~ SetSpeaker(Speaker.Jenny)
  DIE SNAKES, DIE!

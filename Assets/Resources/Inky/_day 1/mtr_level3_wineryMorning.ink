@@ -12,16 +12,18 @@ Level 3
 * [cut fence] -> fence
 * [window] -> window
 * [tracks] -> strange_footsteps
-* [door] -> door
+* [door] -> door_main_room
 * [misra] -> Misra_Dialogue.3_1
 // QUEST OBJECTIVE: What Happened at the Winery?
 // Needed evidence to progress to inside the Winery: window evidence, fence evidence, footsteps evidence
-
-= door
+= misra 
+-> Misra_Dialogue.3_1
+= door_main_room
 {IsQuestComplete(discover_outside_clues):
     ~ SetSpeaker(Speaker.Lupe)
     In we go.
-    -> scene3_2
+    ~ ChangeGameScene("scene3_2")
+    -> DONE
 - else:
     ~ SetSpeaker(Speaker.Lupe)
     This door must lead inside.
@@ -98,18 +100,20 @@ Level 3
 * [claw marks] -> claw_marks
 * [damaged equipment] -> equipment
 * [floor wine] -> floor_splatters
-* [backroom door] -> backroom_door
-* [winery front door] -> Winery_front_door
+* [backroom door] -> door_office
+* [winery front door] -> door_winery_exterior
 * [handprint] -> handprint
 * [inside_window] ->inside_window
-
-=inside_window
+= misra 
+    -> Misra_Dialogue.3_2
+    
+= inside_window
     ~ SetSpeaker(Speaker.Lupe)
     Something about this broken window doesn't make sense to me...
     ~ CompleteQuest(visit_inside_window)
     -> DONE
 
-=handprint
+= handprint
     ~ SetSpeaker(Speaker.Lupe)
      Well, someone didn't care about leaving behind evidence.
     ~ SetSpeaker(Speaker.Misra)
@@ -169,7 +173,7 @@ Level 3
     I know, I know. Professional, as always.
     -> DONE
 
-=backroom_door
+= door_office
     ~ CompleteQuest(visit_backroom_door)
     ~ SetSpeaker(Speaker.Lupe)
     Where does this lead?
@@ -179,10 +183,12 @@ Level 3
     So they wouldn't have been able to access that room?
     ~ SetSpeaker(Speaker.Misra)
     Not unless they had a key.
+    //DON'T GO INTO OFFICE
     -> DONE
 
-= Winery_front_door
+= door_winery_exterior
     {IsQuestComplete(discover_inside_clues):
+        ~ ChangeGameScene("scene4_1")
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Misra)

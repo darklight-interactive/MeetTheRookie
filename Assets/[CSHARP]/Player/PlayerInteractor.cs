@@ -111,7 +111,7 @@ public class PlayerInteractor : OverlapGrid2D
         return true;
     }
 
-    void ExitInteraction()
+    public void ExitInteraction()
     {
         Debug.Log("Player Interactor :: Exit Interaction");
 
@@ -126,6 +126,18 @@ public class PlayerInteractor : OverlapGrid2D
         activeInteractable.OnCompleted -= ExitInteraction;
         targetInteractable = null;
         activeInteractable = null;
+    }
+
+    /// <summary>
+    /// Remove interactables from the local list and clear their target state. 
+    /// </summary>
+    public void ClearInteractables()
+    {
+        foreach (Interactable interactable in _foundInteractables)
+        {
+            interactable.TargetClear();
+        }
+        _foundInteractables.Clear();
     }
 
 
