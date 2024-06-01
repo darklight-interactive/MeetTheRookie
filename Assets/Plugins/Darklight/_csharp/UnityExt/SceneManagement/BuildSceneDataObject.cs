@@ -33,7 +33,7 @@ namespace Darklight.UnityExt.SceneManagement
                 // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
                 if (this.buildSceneData.Length < i + 1 || this.buildSceneData[i].Path != scenePath)
                 {
-                    Debug.Log($"{this.name} {this.buildSceneData[i].Path} Creating new scene data for {scenePath}.");
+                    Debug.Log($"{this.name} -> Creating new scene data for {scenePath}.");
                     tempData[i] = new TSceneData();
                     tempData[i].InitializeData(scenePath);
                 }

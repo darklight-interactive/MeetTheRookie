@@ -160,7 +160,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = door_to_backroom
 {IsClueFound(broken_cash_reg):
-    -> scene1_3
+    ~ ChangeGameScene("scene1_3")
     - else:
         ~ SetSpeaker(Speaker.Lupe)
         I've got no reason to poke around. -> DONE
