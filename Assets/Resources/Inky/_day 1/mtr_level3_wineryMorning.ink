@@ -99,6 +99,29 @@ Level 3
 * [floor wine] -> floor_splatters
 * [backroom door] -> backroom_door
 * [winery front door] -> Winery_front_door
+* [handprint] -> handprint
+* [inside_window] ->inside_window
+
+=inside_window
+    ~ SetSpeaker(Speaker.Lupe)
+    Something about this broken window doesn't make sense to me...
+    ~ CompleteQuest(visit_inside_window)
+    -> DONE
+
+=handprint
+    ~ SetSpeaker(Speaker.Lupe)
+     Well, someone didn't care about leaving behind evidence.
+    ~ SetSpeaker(Speaker.Misra)
+     Could we use that for prints?
+     ~ SetSpeaker(Speaker.Lupe)
+     Do you have a lab here in Kettle Rock?
+    ~ SetSpeaker(Speaker.Misra) 
+    ...
+    Erm, no.
+     ~ SetSpeaker(Speaker.Lupe)
+     Then, no.
+     ~ DiscoverClue(evidence_handprint)
+     -> DONE
 
 
 = claw_marks
