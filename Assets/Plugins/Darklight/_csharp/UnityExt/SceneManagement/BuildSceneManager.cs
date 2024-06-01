@@ -5,6 +5,8 @@ using Darklight.UnityExt.Utility;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -23,7 +25,8 @@ namespace Darklight.UnityExt.SceneManagement
         void UnloadSceneAsync(string sceneName);
     }
 
-    public abstract class BuildSceneManager : MonoBehaviourSingleton<BuildSceneManager>, IBuildSceneManager
+    public abstract class BuildSceneManager : MonoBehaviourSingleton<BuildSceneManager>,
+        IBuildSceneManager
     {
         public const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
         public delegate void ActiveSceneChanged(Scene oldScene, Scene newScene);
@@ -107,6 +110,8 @@ namespace Darklight.UnityExt.SceneManagement
             EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[buildScenePaths.Length];
             for (int i = 0; i < buildScenePaths.Length; i++)
             {
+                buildScenePaths[i] = buildScenePaths[i].Replace("\\", "/"); // Replace all backslashes with forward slashes
+
                 string scenePath = buildScenePaths[i];
                 editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
             }

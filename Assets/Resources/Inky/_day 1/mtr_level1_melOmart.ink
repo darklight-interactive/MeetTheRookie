@@ -2,7 +2,7 @@
 //      MEET THE ROOKIE
 //      - Scene 1.0 - 1.5
 // ---------------------------------------------- >>/^*
-
+// ====== INCLUDE == >>
 VAR gas_pumps = 0
 LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
 LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
@@ -23,7 +23,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = thelton
     ~ SetSpeaker(Speaker.Chief_Thelton)
-    You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do.
+    You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do!
     // We hear a generic voicemail beep.
     
     ~ SetSpeaker(Speaker.Lupe)
@@ -53,12 +53,20 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
     - else:
         ~ SetSpeaker(Speaker.Lupe)
-        {gas_pumps == 1} "Out of order. Pay inside." Of course. Just my luck. -> DONE
-        {gas_pumps == 2} Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
-        {gas_pumps == 3} ... Why am I still looking at this gas pump? -> DONE
-        {gas_pumps < 6} ... -> DONE
-        {gas_pumps == 7} .. This gas pump is kind of freaky. -> DONE
-        {gas_pumps > 7} I should really go pay for gas. -> DONE
+        {
+        	- gas_pumps == 1:
+        		"Out of order. Pay inside." Of course. Just my luck. -> DONE
+            - gas_pumps == 2: 
+                Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
+            - gas_pumps == 3: 
+                ... Why am I still looking at this gas pump? -> DONE
+            - gas_pumps < 6: 
+                ... -> DONE
+            - gas_pumps == 7: 
+                .. This gas pump is kind of freaky. -> DONE
+            - else: 
+                I should really go pay for gas. -> DONE
+	    }
     }
 
 = car
@@ -152,7 +160,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = door_to_backroom
 {IsClueFound(broken_cash_reg):
-    -> scene1_3
+    ~ ChangeGameScene("scene1_3")
     - else:
         ~ SetSpeaker(Speaker.Lupe)
         I've got no reason to poke around. -> DONE
@@ -198,6 +206,9 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         No idea, it was here when I unlocked this morning. 
         Darn stuff won't scrub off. ->DONE
 
+= door_back_to_interior
+    ~ ChangeGameScene("scene1_2") 
+    ->DONE
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
 

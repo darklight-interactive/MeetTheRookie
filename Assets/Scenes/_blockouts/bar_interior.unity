@@ -461,10 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 0}
+  _textAsset: {fileID: 0}
   _knots: []
   _variables: []
-  _globalTags: []
 --- !u!43 &365039546
 Mesh:
   m_ObjectHideFlags: 0
@@ -807,10 +806,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 0}
+  _textAsset: {fileID: 0}
   _knots: []
   _variables: []
-  _globalTags: []
 --- !u!43 &532123669
 Mesh:
   m_ObjectHideFlags: 0
@@ -1328,19 +1326,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.999688
+      value: 0.9999219
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.024976602
+      value: -0.012497072
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1756,10 +1754,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 0}
+  _textAsset: {fileID: 0}
   _knots: []
   _variables: []
-  _globalTags: []
 --- !u!43 &1078307390
 Mesh:
   m_ObjectHideFlags: 0
@@ -2354,6 +2351,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 658315215}
+    - target: {fileID: 4980102277619773995, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
+      propertyPath: _sceneKnot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
     - target: {fileID: 5010748729650362834, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2370,6 +2371,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 52871269}
+    - target: {fileID: 6250550231425151287, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6336406747265866653, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2420,11 +2425,11 @@ PrefabInstance:
       objectReference: {fileID: 1199005855}
     - target: {fileID: 7686493402453570104, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7686493402453570104, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Color.g
-      value: 0.9203187
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7694249382206730271, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Name
@@ -2799,10 +2804,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 0}
+  _textAsset: {fileID: 0}
   _knots: []
   _variables: []
-  _globalTags: []
 --- !u!43 &1436842018
 Mesh:
   m_ObjectHideFlags: 0
