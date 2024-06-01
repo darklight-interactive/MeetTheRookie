@@ -23,33 +23,15 @@
      And twice the fun!
     -> DONE
     }
-= teens 
-~ SetSpeaker(Speaker.Lupe)
-Is that...
- ~ SetSpeaker(Speaker.Jenny)
- DIE SNAKES, DIE!
-  ~ SetSpeaker(Speaker.Lupe)
- Who you were talking about...?
-~ SetSpeaker(Speaker.Misra)
- Yes.
- Don't be fooled.
- They're vicious.
-~ SetSpeaker(Speaker.Lupe)
- They're....
- ...fourteen year olds.
-~ SetSpeaker(Speaker.Misra)
- I know.
-~ SetSpeaker(Speaker.Lupe)
- They're barely five feet tall.
-~ SetSpeaker(Speaker.Misra)
- <i> I know </i>.
-~ SetSpeaker(Speaker.Lupe)
- They--
-~ SetSpeaker(Speaker.Jenny)
- Hey Nimrods. 
- We can hear you.
-~ SetSpeaker(Speaker.Lupe)
-->DONE
+= teens
+    -> Teens_Dialogue.teens
+    
+= jenny
+    -> Teens_Dialogue.jenny
+= calvin
+    -> Teens_Dialogue.calvin
+= josh 
+    -> Teens_Dialogue.josh
     
 = teens_roulette
 

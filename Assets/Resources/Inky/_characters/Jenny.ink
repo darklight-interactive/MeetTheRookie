@@ -21,14 +21,15 @@
         ~ SetSpeaker(Speaker.Lupe)
          HO:SI...?
         ~ DiscoverClue(HOSI_mentioned)
+        {IsQuestComplete() && IsQuestComplete() && IsQuestComplete():
+            -> hosi
+        }
         -> DONE
 }
 
-= interogate
-* [Whats HO:SI?] -> hosi
-
 = hosi
-{IsClueFound(HOSI_mentioned) == true && IsClueFound(HOSI_highscore) == false:
+    ~ SetSpeaker(Speaker.Lupe)
+    What's "HO:SI?"
     ~ SetSpeaker(Speaker.Jenny)
      Hamster Origins: Space Invaders.
     ~ SetSpeaker(Speaker.Misra)
@@ -45,7 +46,6 @@
      Because <i>I</i> have the high score.
     ~ DiscoverClue(HOSI_highscore)
         -> DONE
-}
 
 // Secondary Dialogue
 

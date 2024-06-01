@@ -10,6 +10,7 @@
 // ====== INCLUDE == >>
 INCLUDE _characters/Misra.ink
 INCLUDE _characters/Roy Rodgerson.ink
+INCLUDE _characters/Teens.ink
 INCLUDE _characters/Jenny.ink
 INCLUDE _characters/Calvin.ink
 INCLUDE _characters/Josh.ink
