@@ -1,4 +1,5 @@
 === Roy_Dialogue ===
+= intro
 { IsQuestComplete(visited_roy) == false:
     ~ CompleteQuest(visited_roy)
     ~ SetSpeaker(Speaker.Misra)

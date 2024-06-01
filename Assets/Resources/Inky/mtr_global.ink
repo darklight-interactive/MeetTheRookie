@@ -78,8 +78,8 @@ LIST Level1_Quests = (first_interact), (pay_for_gas)
 // ----------------------------------------------------
 //  LEVEL 3 : Quests and Clues
 // ----------------------------------------------------
-LIST Level3_Clues = (evidence_broken_window) , (evidence_footsteps), (evidence_fence), (evidence_claw_marks), (evidence_damages)
-LIST Level3_Quests = (talk_to_misra_quest), (visit_fence), (visit_window), (discover_outside_clues), (discuss_misra), (visit_footsteps), (visit_floor), (visit_barrels), (visit_backroom_door), (discover_inside_clues)
+LIST Level3_Clues = (evidence_broken_window) , (evidence_footsteps), (evidence_fence), (evidence_claw_marks), (evidence_damages), (evidence_handprint)
+LIST Level3_Quests = (talk_to_misra_quest), (visit_fence), (visit_window), (discover_outside_clues), (discuss_misra), (visit_footsteps), (visit_floor), (visit_barrels), (visit_backroom_door), (discover_inside_clues), (visit_inside_window)
 
 
 // ----------------------------------------------------
