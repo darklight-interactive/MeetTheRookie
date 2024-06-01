@@ -4,10 +4,12 @@
 # Location: Power Up Arcade
 //+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
 
-* [talk_to_misra] -> Misra_Dialogue
-* [talk_to_jenny] -> Jenny_Dialogue
-* [machines] -> arcade_machines
-* [exit_door] -> exit_scene
+//* [talk_to_misra] -> Misra_Dialogue
+//* [talk_to_jenny] -> Jenny_Dialogue
+//* [machines] -> arcade_machines
+//* [exit_door] -> exit_scene
+
+    -> teens
 
 = arcade_machines
     {IsQuestComplete(visited_machines):
@@ -20,10 +22,12 @@
      They're cheaper that way.
      And twice the fun!
     -> DONE
-}
-    
-= teens
- Is that...
+    }
+= teens 
+Is that...
+ ~ SetSpeaker(Speaker.Jenny)
+ DIE SNAKES, DIE!
+  ~ SetSpeaker(Speaker.Lupe)
  Who you were talking about...?
 ~ SetSpeaker(Speaker.Misra)
  Yes.
@@ -44,8 +48,7 @@
  Hey Nimrods. 
  We can hear you.
 ~ SetSpeaker(Speaker.Lupe)
-    -> DONE
-    
+->DONE
     
 = teens_roulette
 
