@@ -91,7 +91,7 @@ namespace Darklight.UnityExt.Inky
                 GoToState(State.DIALOGUE);
                 story.Continue();
 
-                // Check if empty, if so, continue
+                // Check if empty, if so, continue again
                 if (CurrentText == null || CurrentText == "" || CurrentText == "\n")
                 {
                     ContinueStory();

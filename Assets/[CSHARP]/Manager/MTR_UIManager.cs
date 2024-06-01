@@ -219,7 +219,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             }
 
             bubblePosition = playerInteractor.GetBestOverlapGridData().worldPosition;
-            if (bubblePosition.x < playerInteractor.transform.position.x)
+            if (bubblePosition.x <= playerInteractor.transform.position.x)
             {
                 bubbleDirection = Vector2Int.left;
             }
@@ -239,7 +239,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             if (interactable.speakerTag.Contains(currentSpeaker))
             {
                 bubblePosition = interactable.GetBestOverlapGridData().worldPosition;
-                if (bubblePosition.x < interactable.transform.position.x)
+                bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                if (bubblePosition.x <= interactable.transform.position.x)
                 {
                     bubbleDirection = Vector2Int.left;
                 }

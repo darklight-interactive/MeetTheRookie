@@ -78,7 +78,7 @@ namespace Darklight.Game.Grid
 
         public OverlapGrid2D_Data GetBestOverlapGridData()
         {
-            OverlapGrid2D_Data bestData = null;
+            OverlapGrid2D_Data bestData = DataMap.Values.GetEnumerator().Current;
 
             foreach (OverlapGrid2D_Data data in DataMap.Values)
             {
@@ -93,6 +93,7 @@ namespace Darklight.Game.Grid
                     bestData = data;
                 }
             }
+            Debug.Log($"{this.name} OverlapGrid2D Best Data: {bestData.positionKey} - {bestData.worldPosition}");
             return bestData;
         }
     }
