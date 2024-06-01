@@ -1,16 +1,20 @@
-using System.Collections.Generic;
-using Ink.Runtime;
-using UnityEngine;
-using UnityEngine.UIElements;
-using Darklight.UnityExt.Input;
-using Darklight.UXML.Element;
-using UnityEngine.SceneManagement;
-using Darklight.Utility;
-using Darklight.UnityExt.Editor;
-using Darklight.UXML;
-using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Input;
+using Darklight.UnityExt.UXML;
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Audio;
 using FMODUnity;
+
+using Ink.Runtime;
+
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class MTR_DatingSimManager : UXML_UIDocumentObject
 {
@@ -73,8 +77,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         choiceParent = root.Q<VisualElement>("ChoiceParent");
 
         // Get the story object
-        storyObject = InkyStoryManager.Instance.GlobalStoryObject;
-        storyIterator = InkyStoryManager.Instance.Iterator;
+        storyObject = InkyStoryManager.GlobalStoryObject;
+        storyIterator = InkyStoryManager.Iterator;
         storyIterator.GoToKnotOrStitch("scene2");
 
         // Start story
@@ -248,7 +252,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     emotes.SetEmote(content[0].Trim(), content[1].Trim());
                     if (!lupeImage.ClassListContains("Inactive"))
                     {
-                        SoundManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
+                        FMODEventManager.PlayEventWithParametersByName(voiceLupeEvent, (fmodLupeParameterName, content[1].Trim()));
                     }
                 }
                 else if (content[0].Trim() == "misra")
@@ -256,7 +260,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     emotes.SetEmote(content[0].Trim(), content[1].Trim());
                     if (!misraImage.ClassListContains("Inactive"))
                     {
-                        SoundManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
+                        FMODEventManager.PlayEventWithParametersByName(voiceMisraEvent, (fmodMisraParameterName, content[1].Trim()));
                     }
                 }
             }

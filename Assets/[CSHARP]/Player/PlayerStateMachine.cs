@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Darklight.Utility;
+using Darklight.UnityExt.Audio;
+using Darklight.UnityExt.Utility;
 using FMODUnity;
 using UnityEngine;
 
@@ -42,20 +43,20 @@ public class PlayerStateObject : FiniteState<PlayerState>
     public EventReference repeatingSound;
     [SerializeField, Range(0.1f, 1f)] private float repeatingSoundInterval = 1f;
 
-    public PlayerStateObject(PlayerState stateType, params object[] args) : base(stateType, args) { }
+    public PlayerStateObject(PlayerState stateType, params object[] args) : base(stateType) { }
 
     public override void Enter()
     {
         // Debug.Log($"Entering State: {stateType}");
-        SoundManager.PlayOneShot(soundOnEnter);
-        SoundManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
+        FMODEventManager.PlayOneShot(soundOnEnter);
+        FMODEventManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
     }
 
     public override void Exit()
     {
         // Debug.Log($"Exiting State: {stateType}");
-        SoundManager.PlayOneShot(soundOnExit);
-        SoundManager.Instance.StopRepeatingEvent();
+        FMODEventManager.PlayOneShot(soundOnExit);
+        FMODEventManager.Instance.StopRepeatingEvent();
     }
 
     public override void Execute() { }

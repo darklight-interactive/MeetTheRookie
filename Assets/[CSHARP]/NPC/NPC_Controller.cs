@@ -3,6 +3,7 @@ using UnityEngine;
 using Darklight.Utility;
 using Darklight.UnityExt.Editor;
 using System;
+using Darklight.UnityExt.Utility;
 
 [RequireComponent(typeof(NPC_Animator))]
 public class NPC_Controller : MonoBehaviour
