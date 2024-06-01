@@ -23,7 +23,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = thelton
     ~ SetSpeaker(Speaker.Chief_Thelton)
-    You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do.
+    You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do!
     // We hear a generic voicemail beep.
     
     ~ SetSpeaker(Speaker.Lupe)
