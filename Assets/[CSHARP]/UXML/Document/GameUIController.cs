@@ -4,6 +4,16 @@ using Darklight.UnityExt.UXML;
 
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Input;
+using System.Linq;
+using System.Collections.Generic;
+using Ink.Runtime;
+
+
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,72 +27,84 @@ public class GameUIController : UXML_UIDocumentObject
     const string INTERACT_PROMPT_TAG = "interact-icon";
     const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
+    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+
     VisualElement _header;
     VisualElement _body;
     VisualElement _footer;
+    bool lockSelection = false;
 
-    [Range(0.001f, 0.25f)]
-    public float textScale = 0.01f;
+
+    public void Awake()
+    {
+        Initialize(preset);
+
+
+
+        // Listen to the input manager
+        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+    }
 
     public void Start()
     {
         _body = ElementQuery<VisualElement>("body");
         _header = ElementQuery<VisualElement>("header");
         _footer = ElementQuery<VisualElement>("footer");
+    }
 
-        ControlledLabel label = new ControlledLabel();
-        _footer.Add(label);
+    public void LoadChoices(List<Choice> choices)
+    {
+        GroupBox groupBox = ElementQuery<GroupBox>("ChoiceBox");
+        foreach (Choice choice in choices)
+        {
+            SelectableButton button = new SelectableButton();
+            button.text = choice.text;
+            button.OnClick += SelectChoice;
+            groupBox.Add(button);
+        }
 
-        string fullText = "Hello, World! This is a long text string for a Controlled Size Text Element so that it can be tested with rolling text. Thank you for your patience.";
+        // Load the Selectable Elements
+        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        selectableVectorField.Selectables.First().Select();
+    }
 
-        Coroutine rollingTextRoutine = StartCoroutine(RollTextCoroutine(label, fullText, 0.01f));
-
+    public void SelectChoice()
+    {
 
     }
 
-    private IEnumerator RollTextCoroutine(ControlledLabel label, string fullText, float interval)
-    {
-        label.fullText = fullText;
-        for (int i = 0; i < fullText.Length; i++)
-        {
-            label.rollingTextPercentage += interval;
-            yield return new WaitForSeconds(interval);
-        }
 
-        // break when the text is fully rolled
-        yield return null;
+    void OnMoveInputStartAction(Vector2 dir)
+    {
+        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
+        SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
+        Select(buttonInDirection);
+    }
+    void Select(SelectableButton selectedButton)
+    {
+        if (selectedButton == null || lockSelection) return;
+
+        SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        if (selectedButton != previousButton)
+        {
+            previousButton?.Deselect();
+            selectedButton.Select();
+            lockSelection = true;
+            Invoke(nameof(UnlockSelection), 0.1f);
+        }
+    }
+
+    void UnlockSelection()
+    {
+        lockSelection = false;
+    }
+
+
+
+    void OnPrimaryInteractAction()
+    {
+        selectableVectorField.CurrentSelection?.Click();
     }
 
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(GameUIController))]
-public class GameUIControllerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    GameUIController _script;
-
-    public override void OnInspectorGUI()
-    {
-
-        _serializedObject = new SerializedObject(target);
-        _script = (GameUIController)target;
-
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Start"))
-        {
-            _script.Start();
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

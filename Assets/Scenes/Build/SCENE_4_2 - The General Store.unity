@@ -598,6 +598,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1182000046}
+    - target: {fileID: 3246651946785553781, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
+      propertyPath: _sceneKnot
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3246651946785553781, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
+      propertyPath: _interactionStitch
+      value: scene4_1.talk_to_misra
+      objectReference: {fileID: 0}
     - target: {fileID: 3431979080467050842, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -613,7 +621,7 @@ PrefabInstance:
     - target: {fileID: 3694512486796848693, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      objectReference: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
     - target: {fileID: 3925044959927029659, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -710,6 +718,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1676143175}
+    - target: {fileID: 7748824591812347583, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7878634347863637515, guid: fa7b38b8b30ff4d56a94da1ff3cec2ef, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2971,6 +2983,10 @@ PrefabInstance:
       propertyPath: _mainMenuScene.m_SceneName
       value: MAIN_MENU
       objectReference: {fileID: 0}
+    - target: {fileID: 3100972142227852913, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentScene
       value: Assets/Scenes/Build/MAIN_MENU.unity
@@ -3038,6 +3054,18 @@ PrefabInstance:
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneDataObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildScenePaths.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[19]'
+      value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5953019589017212419, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: '_storyObjects.Array.data[0]'

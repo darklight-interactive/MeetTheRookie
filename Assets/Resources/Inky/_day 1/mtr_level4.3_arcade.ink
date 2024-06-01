@@ -1,13 +1,6 @@
 
 === scene4_3 ===
-// FUNC SCENE CHANGE
-# Location: Power Up Arcade
-//+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
-
-* [talk_to_misra] -> Misra_Dialogue
-* [talk_to_jenny] -> Jenny_Dialogue
-* [machines] -> arcade_machines
-* [exit_door] -> exit_scene
+-> teens
 
 = arcade_machines
     {IsQuestComplete(visited_machines):
@@ -23,6 +16,7 @@
 }
     
 = teens
+~ SetSpeaker(Speaker.Lupe)
  Is that...
  Who you were talking about...?
 ~ SetSpeaker(Speaker.Misra)

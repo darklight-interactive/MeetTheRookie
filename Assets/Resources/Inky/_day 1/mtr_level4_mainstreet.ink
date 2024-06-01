@@ -42,6 +42,7 @@ VAR closed_signs = 0
     ~ ChangeGameScene("scene4_2")
     -> DONE
 = powerup_arcade
+    ~ ChangeGameScene("scene4_3")
     -> DONE
 
 = strange_symbol_on_fountain
