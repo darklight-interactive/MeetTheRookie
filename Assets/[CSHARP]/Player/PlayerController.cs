@@ -4,10 +4,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Utility;
-
-#if UNITY_EDITOR
-#endif
+using Darklight.UnityExt.Utility;
 
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
@@ -15,7 +12,7 @@ public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
 /// </summary>
-
+[RequireComponent(typeof(PlayerController), typeof(PlayerInteractor), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     #region  [[ STATE MACHINE ]] ======================================================== >>
@@ -50,11 +47,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class State : FiniteState<PlayerState>
+    public class FinitePlayerState : FiniteState<PlayerState>
     {
         /// <param name="args">
         ///   args[0] = PlayerController ( playerController )
-        public State(PlayerState stateType, params object[] args) : base(stateType, args) { }
+        public FinitePlayerState(PlayerState stateType) : base(stateType) { }
 
         public override void Enter()
         {
@@ -84,18 +81,18 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Settings")]
-    [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
+    [Range(0.1f, 5f)] public float playerSpeed = 1f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
     private SceneBounds sceneBounds;
 
     void Awake()
     {
         stateMachine = new StateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NONE, new State(PlayerState.NONE)},
-            {PlayerState.IDLE, new State(PlayerState.IDLE)},
-            {PlayerState.WALK, new State(PlayerState.WALK)},
-            {PlayerState.INTERACTION, new State(PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new State(PlayerState.HIDE)}
+            {PlayerState.NONE, new FinitePlayerState(PlayerState.NONE)},
+            {PlayerState.IDLE, new FinitePlayerState(PlayerState.IDLE)},
+            {PlayerState.WALK, new FinitePlayerState(PlayerState.WALK)},
+            {PlayerState.INTERACTION, new FinitePlayerState(PlayerState.INTERACTION)},
+            {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)}
         }, PlayerState.IDLE, this);
     }
 
@@ -103,7 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
         UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract += Interact;
+        UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
 
 
@@ -129,7 +126,7 @@ public class PlayerController : MonoBehaviour
     {
         UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
         UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract -= Interact;
+        UniversalInputManager.OnPrimaryInteract -= () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
     }
 
@@ -191,21 +188,21 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Interaction Input has been pressed
+    /// Moves the player into the interaction state
     /// </summary>
-    void Interact()
+    public void EnterInteraction()
     {
-
-        bool result = interactor.InteractWithTarget();
-        if (result && stateMachine.CurrentState != PlayerState.INTERACTION)
-        {
-            stateMachine.GoToState(PlayerState.INTERACTION);
-        }
+        stateMachine.GoToState(PlayerState.INTERACTION);
+        //Debug.Log("Player Controller :: Enter Interaction");
     }
 
+    /// <summary>
+    /// Removes the player from the interaction state
+    /// </summary>
     public void ExitInteraction()
     {
         stateMachine.GoToState(PlayerState.IDLE);
+        //Debug.Log("Player Controller :: Exit Interaction");
     }
 
     #region Synthesis Management
@@ -213,7 +210,7 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis()
     {
         synthesisEnabled = !synthesisEnabled;
-        UIManager.Instance.synthesisManager.Show(synthesisEnabled);
+        MTR_UIManager.Instance.synthesisManager.Show(synthesisEnabled);
         stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion

@@ -2,7 +2,7 @@
 //      MEET THE ROOKIE
 //      - Scene 1.0 - 1.5
 // ---------------------------------------------- >>/^*
-
+// ====== INCLUDE == >>
 VAR gas_pumps = 0
 LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
 LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
@@ -53,12 +53,20 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
     - else:
         ~ SetSpeaker(Speaker.Lupe)
-        {gas_pumps == 1} "Out of order. Pay inside." Of course. Just my luck. -> DONE
-        {gas_pumps == 2} Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
-        {gas_pumps == 3} ... Why am I still looking at this gas pump? -> DONE
-        {gas_pumps < 6} ... -> DONE
-        {gas_pumps == 7} .. This gas pump is kind of freaky. -> DONE
-        {gas_pumps > 7} I should really go pay for gas. -> DONE
+        {
+        	- gas_pumps == 1:
+        		"Out of order. Pay inside." Of course. Just my luck. -> DONE
+            - gas_pumps == 2: 
+                Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
+            - gas_pumps == 3: 
+                ... Why am I still looking at this gas pump? -> DONE
+            - gas_pumps < 6: 
+                ... -> DONE
+            - gas_pumps == 7: 
+                .. This gas pump is kind of freaky. -> DONE
+            - else: 
+                I should really go pay for gas. -> DONE
+	    }
     }
 
 = car
@@ -75,18 +83,18 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = marlowe
     {IsQuestComplete(PAY_FOR_GAS):
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
         ~ SetSpeaker(Speaker.Lupe)
         ...great. Any way I can get this fixed?
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         Got a chainsaw on ya? 
         Heheheheh. 
         Ah, don't look so grumpy. 
         If you put in a complaint with the local Police I'm sure you'll be out of here in no time.
         -> DONE
     - else :
-        ~ SetSpeaker(Speaker.Unknown)
+        ~ SetSpeaker(Speaker.Marlowe)
         You're stuck at the pump too, eh? Good luck getting that lazybones to help you. Heh. Youth these days, am I right?
         -> DONE
     }
@@ -94,6 +102,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 = enter_store
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
+    ~ ChangeGameScene("scene1_2")
     -> DONE
 
 // ------------- SCENE1.2 MelOMarket Store
@@ -197,6 +206,9 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         No idea, it was here when I unlocked this morning. 
         Darn stuff won't scrub off. ->DONE
 
+= door_back_to_interior
+    ~ ChangeGameScene("scene1_2") 
+    ->DONE
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
 

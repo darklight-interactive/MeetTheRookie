@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UXML;
-using Darklight.UXML.Element;
+using Darklight.UnityExt.UXML;
 
 [UxmlElement]
 public partial class SpeechBubble : ControlledLabel
 {
-
     public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
 
     [UxmlAttribute]
@@ -16,12 +14,10 @@ public partial class SpeechBubble : ControlledLabel
         set { SetBackgroundSprite(value); }
     }
 
-
-
     public SpeechBubble()
     {
         SetBackgroundSprite(bubbleSprite);
-        fontSizeToScreenRatio = 0.25f;
+        fontSize = GetDynamicFontSize();
     }
 
     public void SetBackgroundSprite(Sprite sprite)

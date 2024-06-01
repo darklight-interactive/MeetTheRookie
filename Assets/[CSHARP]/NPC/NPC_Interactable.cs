@@ -1,8 +1,8 @@
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
-
-
+using Darklight.UnityExt.Inky;
+using NaughtyAttributes;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,9 +16,18 @@ public class NPC_Interactable : Interactable, IInteract
 
 
     [Header("NPC : Speech Bubble")]
-    private List<string> _speakerOptions => InkyStoryManager.Instance.SpeakerList;
 
-    [DropdownAttribute("_speakerOptions")]
+    // This is just a getter for the speaker tag options
+    private List<string> _speakerOptions
+    {
+        get
+        {
+            List<string> speakers = InkyStoryManager.SpeakerList;
+            return speakers;
+        }
+    }
+
+    [Dropdown("_speakerOptions")]
     public string speakerTag;
 
     public void Start()
@@ -26,7 +35,13 @@ public class NPC_Interactable : Interactable, IInteract
         Reset();
 
         // >> ON FIRST INTERACTION -------------------------------
-        this.OnFirstInteraction += () => stateBeforeTalkedTo = stateMachine.CurrentState;
+        this.OnFirstInteraction += () => 
+        {
+            stateBeforeTalkedTo = stateMachine.CurrentState;
+
+            // If the statemachine is not null, go to the speak state
+            stateMachine?.GoToState(NPCState.SPEAK);
+        };
 
         // >> ON INTERACT ---------------------------------------
         // NOTE :: This event is only called when an Interaction is confirmed
@@ -34,28 +49,12 @@ public class NPC_Interactable : Interactable, IInteract
         {
 
         };
-    }
 
-    public override void Interact()
-    {
-        base.Interact();
-
-        if (isComplete) return;
-        if (_storyIterator.CurrentState != InkyStoryIterator.State.END)
+        this.OnCompleted += () =>
         {
-            // If the statemachine is not null, go to the speak state
-            stateMachine?.GoToState(NPCState.SPEAK);
-        }
-    }
-
-    public override void Complete()
-    {
-        base.Complete();
-
-
-
-        // If the statemachine is not null, go to the state before talked to
-        stateMachine?.GoToState(stateBeforeTalkedTo);
+            // If the statemachine is not null, go to the state before talked to
+            stateMachine?.GoToState(stateBeforeTalkedTo);
+        };
     }
 }
 
