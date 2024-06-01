@@ -183,7 +183,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     -> DONE
 
 = mel
-{IsClueFound(broken_cash_reg) == false:
+{IsClueFound(cashreg_fix) == false:
     ~ SetSpeaker(Speaker.Lupe)
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
@@ -197,9 +197,10 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     Thanks.
     ~ DiscoverClue(cashreg_fix)
     -> DONE
--else:
-    ~ SetSpeaker(Speaker.Mel)
-    {Look, I'd like to help more, but I gotta get this stuff out. | This is <i>definitely</i> a code violation. | It almost looks like mold? Or jello. Gross, ain't it? | I love my job. I love my job. Ugh.}
+    -else:
+        ~ SetSpeaker(Speaker.Mel)
+        {Look, I'd like to help more, but I gotta get this stuff out. | This is <i>definitely</i> a code violation. | It almost looks like mold? Or jello. Gross, ain't it? | I love my job. I love my job. Ugh.}
+        -> DONE
 }
 
 = goop

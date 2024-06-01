@@ -28,9 +28,10 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         get
         {
-            InkyStoryManager storyManager = InkyStoryManager.Instance;
-            if (storyManager == null) return new List<string>();
-            return InkyStoryManager.GlobalStoryObject.KnotNames;
+            List<string> names = new List<string>();
+            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
+            if (storyObject == null) return names;
+            return InkyStoryObject.GetAllKnots(storyObject.StoryValue);
         }
     }
 
@@ -39,9 +40,10 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         get
         {
-            if (_storyObject == null) return new List<string>();
-            if (_sceneKnot == null || _sceneKnot == "") return new List<string>();
-            return InkyStoryObject.GetAllStitchesInKnot(_storyObject.StoryValue, _sceneKnot);
+            List<string> names = new List<string>();
+            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
+            if (storyObject == null) return names;
+            return InkyStoryObject.GetAllStitchesInKnot(storyObject.StoryValue, _sceneKnot);
         }
     }
 
@@ -53,7 +55,6 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [Header("InkyStory")]
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
-    protected InkyStoryObject _storyObject;
 
     [DropdownAttribute("_sceneKnots")]
     public string _sceneKnot;
@@ -73,7 +74,6 @@ public class Interactable : OverlapGrid2D, IInteract
     [SerializeField] Material _outlineMaterial;
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-    public InkyStoryObject storyObject { get => _storyObject; private set => _storyObject = value; }
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
@@ -101,17 +101,6 @@ public class Interactable : OverlapGrid2D, IInteract
         else
             _sprite = _spriteRenderer.sprite;
         _spriteRenderer.color = _defaultTint;
-
-        // << SET THE STORY OBJECT >> ------------------------------------
-        if (_storyObject == null)
-        {
-            if (InkyStoryManager.Instance == null) { Debug.LogError("Could not find InkyStoryManager"); }
-            _storyObject = InkyStoryManager.GlobalStoryObject;
-        }
-
-        OnFirstInteraction += () => 
-        {
-        };
     }
 
     // ====== [[ TARGETING ]] ======================================
