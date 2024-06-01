@@ -93,7 +93,7 @@ namespace Darklight.Game.Grid
                     bestData = data;
                 }
             }
-            Debug.Log($"{this.name} OverlapGrid2D Best Data: {bestData.positionKey} - {bestData.worldPosition}");
+            //Debug.Log($"{this.name} OverlapGrid2D Best Data: {bestData.positionKey} - {bestData.worldPosition}");
             return bestData;
         }
     }

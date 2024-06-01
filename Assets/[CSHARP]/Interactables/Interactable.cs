@@ -11,6 +11,8 @@ using FMODUnity;
 using NaughtyAttributes;
 
 using UnityEngine;
+using Ink.Runtime;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -52,6 +54,7 @@ public class Interactable : OverlapGrid2D, IInteract
     //[HorizontalLine(color: EColor.Gray)]
     [Header("Interactable")]
     [SerializeField, ShowAssetPreview] Sprite _sprite;
+    [SerializeField] private bool onStart;
 
     [Header("InkyStory")]
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
@@ -101,6 +104,11 @@ public class Interactable : OverlapGrid2D, IInteract
         else
             _sprite = _spriteRenderer.sprite;
         _spriteRenderer.color = _defaultTint;
+
+        if (onStart)
+        {
+            Interact();
+        }
     }
 
     // ====== [[ TARGETING ]] ======================================
@@ -168,6 +176,12 @@ public class Interactable : OverlapGrid2D, IInteract
         if (StoryIterator.CurrentState == InkyStoryIterator.State.END)
         {
             Complete();
+        }
+        else if (StoryIterator.CurrentState == InkyStoryIterator.State.CHOICE)
+        {
+            List<Choice> choices = StoryIterator.GetCurrentChoices();
+            MTR_UIManager.Instance.gameUIController.LoadChoices(choices);
+            Debug.Log($"INTERACTABLE :: {name} >> Choices Found");
         }
         else
         {
