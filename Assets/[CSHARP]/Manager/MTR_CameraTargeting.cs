@@ -8,16 +8,21 @@ using UnityEngine;
 [RequireComponent(typeof(CameraController))]
 public class MTR_CameraTargeting : MonoBehaviour
 {
-    public InkyStoryManager storyManager => InkyStoryManager.Instance;
-    public CameraController cameraController => GetComponent<CameraController>();
+    private InkyStoryManager _storyManager;
+    private CameraController _cameraController;
     [ShowOnly, SerializeField] private string _currentSpeaker;
 
+    void Awake()
+    {
+        _storyManager = InkyStoryManager.Instance;
+        _cameraController = GetComponent<CameraController>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         // Observer the current speaker variable in the story
-        storyManager.OnSpeakerSet += SetSpeakerTarget;
+        _storyManager.OnSpeakerSet += SetSpeakerTarget;
     }
 
     void SetSpeakerTarget(string speaker)
@@ -28,7 +33,7 @@ public class MTR_CameraTargeting : MonoBehaviour
         if (_currentSpeaker == "Lupe")
         {
             PlayerController playerController = FindFirstObjectByType<PlayerController>();
-            cameraController.SetFocusTarget(playerController.transform);
+            _cameraController.SetFocusTarget(playerController.transform);
             return;
         }
 
@@ -38,7 +43,7 @@ public class MTR_CameraTargeting : MonoBehaviour
         {
             if (interactable.speakerTag.Contains(_currentSpeaker))
             {
-                cameraController.SetFocusTarget(interactable.transform);
+                _cameraController.SetFocusTarget(interactable.transform);
             }
         }
     }

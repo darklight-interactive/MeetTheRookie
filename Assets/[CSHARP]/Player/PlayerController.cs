@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
-    public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
+    public PlayerInteractor interactor { get; private set; }
+    public PlayerAnimator animator { get; private set; }
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
 
@@ -87,6 +87,9 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        interactor = GetComponent<PlayerInteractor>();
+        animator = GetComponent<PlayerAnimator>();
+
         stateMachine = new StateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
             {PlayerState.NONE, new FinitePlayerState(PlayerState.NONE)},
             {PlayerState.IDLE, new FinitePlayerState(PlayerState.IDLE)},
@@ -102,7 +105,6 @@ public class PlayerController : MonoBehaviour
         UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
         UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
-
 
         // << Find SceneBounds >>
         SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);

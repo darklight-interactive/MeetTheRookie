@@ -161,9 +161,11 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 = door_to_backroom
 {IsClueFound(broken_cash_reg):
     ~ ChangeGameScene("scene1_3")
+    -> DONE
     - else:
         ~ SetSpeaker(Speaker.Lupe)
-        I've got no reason to poke around. -> DONE
+        I've got no reason to poke around.
+        -> DONE
 }
 
 = door_to_outside
@@ -178,6 +180,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 // ------------- SCENE1.3 Breakroom ---- >>
 === scene1_3 ===
 // Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
+    -> DONE
 
 = mel
 {IsClueFound(broken_cash_reg) == false:
