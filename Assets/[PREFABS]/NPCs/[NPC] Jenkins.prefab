@@ -81,15 +81,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1798332040, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.68, y: 1.14}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8703908369491067701
@@ -136,8 +136,8 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
-      - {fileID: -4836672685443199150, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: 356160930, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: -1798332040, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
@@ -147,8 +147,8 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: 8562495904423021863, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
-      - {fileID: -7808102639066312934, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: -1986298664, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+      - {fileID: 375160367, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   - state: 4
     spriteSheet:
       loop: 1
@@ -185,8 +185,8 @@ MonoBehaviour:
   spriteSheet:
     loop: 1
     frames:
-    - {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
-    - {fileID: -4836672685443199150, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+    - {fileID: 356160930, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+    - {fileID: -1798332040, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   currentFrame: 1
 --- !u!61 &6562033029251709814
 BoxCollider2D:
@@ -226,8 +226,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.53125, y: 0.890625}
-    newSize: {x: 0.68, y: 1.14}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -268,7 +268,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   editMode: 0
-  _sprite: {fileID: -2628896996484612803, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
+  _sprite: {fileID: 356160930, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   _sceneKnot: SetSpeaker
   _interactionStitch: 
   _isTarget: 0
