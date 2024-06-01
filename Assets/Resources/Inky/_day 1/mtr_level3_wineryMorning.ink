@@ -50,14 +50,14 @@ Level 3
     // ADD TO SYNTHESIS
     ~ DiscoverClue(evidence_broken_window)
     ~ SetSpeaker(Speaker.Misra)
-    Hm. I'd say that's a pretty solid piece of evidence.
+    Hm. I'd say this is a pretty solid piece of evidence.
     ~ SetSpeaker(Speaker.Lupe)
-    Yeah, it's definitely been broken. But something about this seems off to me...
+    Yeah, it's definitely been broken by force. But something about this seems off to me...
     -> DONE
     
 - else:
     ~ SetSpeaker(Speaker.Lupe)
-    A broken window.
+    Eek. Watch your step. 
     -> DONE
 }
 
