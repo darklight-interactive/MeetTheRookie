@@ -24,7 +24,7 @@ Level 3
     -> scene3_2
 - else:
     ~ SetSpeaker(Speaker.Lupe)
-    This door must lead inside..
+    This door must lead inside.
     -> DONE
 }
 
@@ -171,7 +171,7 @@ Level 3
 =backroom_door
     ~ CompleteQuest(visit_backroom_door)
     ~ SetSpeaker(Speaker.Lupe)
-    Where does that lead?
+    Where does this lead?
     ~ SetSpeaker(Speaker.Misra)
     To one of the backrooms. It was locked when the Winery shut down, and is still locked. 
     ~ SetSpeaker(Speaker.Lupe)
