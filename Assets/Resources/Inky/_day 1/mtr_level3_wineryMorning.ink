@@ -84,6 +84,7 @@ Level 3
 - else:
     ~ SetSpeaker(Speaker.Lupe)
     Those are some interesting footprints.
+    -> DONE
 }
 
 
