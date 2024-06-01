@@ -153,6 +153,7 @@ namespace Darklight.UnityExt.Inky
 
         public void ChooseChoice(Choice choice)
         {
+            Debug.Log($"{Prefix} Choice Selected: {choice.text}");
             _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
             _choiceMap.Clear();
             ContinueStory();

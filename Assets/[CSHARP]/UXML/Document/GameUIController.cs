@@ -9,6 +9,10 @@ using Darklight.UnityExt.Input;
 using System.Linq;
 using System.Collections.Generic;
 using Ink.Runtime;
+using Darklight.UnityExt.Inky;
+using System;
+
+
 
 
 
@@ -28,10 +32,12 @@ public class GameUIController : UXML_UIDocumentObject
     const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    private Dictionary<SelectableButton, Action> buttonHandlers = new Dictionary<SelectableButton, Action>();
 
     VisualElement _header;
     VisualElement _body;
     VisualElement _footer;
+    GroupBox _choiceBox;
     bool lockSelection = false;
 
 
@@ -55,13 +61,19 @@ public class GameUIController : UXML_UIDocumentObject
 
     public void LoadChoices(List<Choice> choices)
     {
-        GroupBox groupBox = ElementQuery<GroupBox>("ChoiceBox");
+        _choiceBox = ElementQuery<GroupBox>("ChoiceBox");
+        _choiceBox.Clear();
+        selectableVectorField.Clear();
+        buttonHandlers.Clear();
+
         foreach (Choice choice in choices)
         {
             SelectableButton button = new SelectableButton();
             button.text = choice.text;
-            button.OnClick += SelectChoice;
-            groupBox.Add(button);
+            Action handler = () => SelectChoice(choice);
+            button.OnClick += handler;
+            _choiceBox.Add(button);
+            buttonHandlers[button] = handler;
         }
 
         // Load the Selectable Elements
@@ -69,10 +81,22 @@ public class GameUIController : UXML_UIDocumentObject
         selectableVectorField.Selectables.First().Select();
     }
 
-    public void SelectChoice()
+    public void SelectChoice(Choice choice)
     {
+        InkyStoryManager.Iterator.ChooseChoice(choice);
 
+        // Remove OnClick event handlers for each button
+        foreach (SelectableButton button in selectableVectorField.Selectables)
+        {
+            if (buttonHandlers.TryGetValue(button, out var handler))
+            {
+                button.OnClick -= handler;
+            }
+        }
+
+        _choiceBox.Clear();
     }
+
 
 
     void OnMoveInputStartAction(Vector2 dir)
