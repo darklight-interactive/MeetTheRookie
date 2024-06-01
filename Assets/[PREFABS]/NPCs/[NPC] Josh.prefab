@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1048859347481113319}
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
-  - component: {fileID: 4138829041031667111}
   - component: {fileID: 2236245743877035675}
   m_Layer: 0
   m_Name: '[NPC] Josh'
@@ -81,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
+  m_Sprite: {fileID: 382276574, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,22 +135,22 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
+      - {fileID: 382276574, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
+      - {fileID: -1822385958, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
+      - {fileID: -182875711, guid: 462665d87a5b44d8f9da4f49f9aa4629, type: 3}
+      - {fileID: -182875711, guid: 462665d87a5b44d8f9da4f49f9aa4629, type: 3}
+      - {fileID: -182875711, guid: 462665d87a5b44d8f9da4f49f9aa4629, type: 3}
+      - {fileID: -182875711, guid: 462665d87a5b44d8f9da4f49f9aa4629, type: 3}
   - state: 3
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-      - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
+      - {fileID: 382276574, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
+      - {fileID: -1822385958, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
   - state: 4
     spriteSheet:
       loop: 1
@@ -188,9 +187,9 @@ MonoBehaviour:
   spriteSheet:
     loop: 1
     frames:
-    - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-    - {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-  currentFrame: 1
+    - {fileID: 382276574, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
+    - {fileID: -1822385958, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
+  currentFrame: 0
 --- !u!61 &6562033029251709814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -237,23 +236,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4138829041031667111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7152001243824678401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
 --- !u!114 &2236245743877035675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,39 +248,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
   editMode: 0
-  _sprite: {fileID: -8793260508057991413, guid: a0370a8cb6fb5fa4d8c6df8e8ed157c7, type: 3}
-  _sceneKnot: 
-  _interactionStitch: 
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+  _sprite: {fileID: 382276574, guid: a98f4ec49de2070429102d0f0823eed7, type: 3}
+  _sceneKnot: scene4_3
+  _interactionStitch: scene4_3.teens
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
-  speakerTag: 
+  speakerTag: Speaker.Josh

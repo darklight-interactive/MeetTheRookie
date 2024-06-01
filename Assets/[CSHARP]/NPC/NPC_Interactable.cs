@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

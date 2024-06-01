@@ -14,9 +14,8 @@ GameObject:
   - component: {fileID: 2441960254337940432}
   - component: {fileID: 2633550569313310591}
   - component: {fileID: 1766258732976720846}
-  - component: {fileID: 8315572382294626543}
   - component: {fileID: 7492364383090528882}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: '[NPC] Marlowe'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+  m_Sprite: {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,7 +135,8 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+      - {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
+      - {fileID: 1304380961, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
@@ -146,22 +146,23 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+      - {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
+      - {fileID: 1304380961, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
   - state: 4
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -3433175864039088387, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+      - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
   - state: 5
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -3433175864039088387, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+      - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
   - state: 6
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -3433175864039088387, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+      - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
 --- !u!114 &2633550569313310591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +179,8 @@ MonoBehaviour:
   spriteSheet:
     loop: 1
     frames:
-    - {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
+    - {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
+    - {fileID: 1304380961, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
   currentFrame: 0
 --- !u!61 &1766258732976720846
 BoxCollider2D:
@@ -224,25 +226,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8315572382294626543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6670640723545290807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
 --- !u!114 &7492364383090528882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,34 +245,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   editMode: 0
-  _sprite: {fileID: -1502009393, guid: aa2371ec34e4c7141a9135a5314411d7, type: 3}
-  _sceneKnot: 
-  _interactionStitch: 
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+  _sprite: {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
+  _sceneKnot: scene1_1
+  _interactionStitch: scene1_1.marlowe
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
-  speakerTag: 
+  speakerTag: Speaker.Marlowe

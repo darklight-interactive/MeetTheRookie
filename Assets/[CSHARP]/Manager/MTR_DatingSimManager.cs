@@ -78,7 +78,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
         // Get the story object
         storyObject = InkyStoryManager.GlobalStoryObject;
-        storyIterator = InkyStoryManager.Instance.Iterator;
+        storyIterator = InkyStoryManager.Iterator;
         storyIterator.GoToKnotOrStitch("scene2");
 
         // Start story

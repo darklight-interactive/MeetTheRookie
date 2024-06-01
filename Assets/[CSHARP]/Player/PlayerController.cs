@@ -4,10 +4,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Utility;
-
-#if UNITY_EDITOR
-#endif
+using Darklight.UnityExt.Utility;
 
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
@@ -15,7 +12,7 @@ public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
 /// </summary>
-
+[RequireComponent(typeof(PlayerController), typeof(PlayerInteractor), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     #region  [[ STATE MACHINE ]] ======================================================== >>
@@ -50,11 +47,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class State : FiniteState<PlayerState>
+    public class FinitePlayerState : FiniteState<PlayerState>
     {
         /// <param name="args">
         ///   args[0] = PlayerController ( playerController )
-        public State(PlayerState stateType, params object[] args) : base(stateType, args) { }
+        public FinitePlayerState(PlayerState stateType) : base(stateType) { }
 
         public override void Enter()
         {
@@ -74,8 +71,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
-    public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
+    public PlayerInteractor interactor { get; private set; }
+    public PlayerAnimator animator { get; private set; }
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
 
@@ -84,18 +81,21 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Settings")]
-    [Range(0.1f, 5f)] public float playerSpeed = 2.5f;
+    [Range(0.1f, 5f)] public float playerSpeed = 1f;
     public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
     private SceneBounds sceneBounds;
 
     void Awake()
     {
+        interactor = GetComponent<PlayerInteractor>();
+        animator = GetComponent<PlayerAnimator>();
+
         stateMachine = new StateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NONE, new State(PlayerState.NONE)},
-            {PlayerState.IDLE, new State(PlayerState.IDLE)},
-            {PlayerState.WALK, new State(PlayerState.WALK)},
-            {PlayerState.INTERACTION, new State(PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new State(PlayerState.HIDE)}
+            {PlayerState.NONE, new FinitePlayerState(PlayerState.NONE)},
+            {PlayerState.IDLE, new FinitePlayerState(PlayerState.IDLE)},
+            {PlayerState.WALK, new FinitePlayerState(PlayerState.WALK)},
+            {PlayerState.INTERACTION, new FinitePlayerState(PlayerState.INTERACTION)},
+            {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)}
         }, PlayerState.IDLE, this);
     }
 
@@ -105,7 +105,6 @@ public class PlayerController : MonoBehaviour
         UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
         UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
-
 
         // << Find SceneBounds >>
         SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -213,7 +212,7 @@ public class PlayerController : MonoBehaviour
     void ToggleSynthesis()
     {
         synthesisEnabled = !synthesisEnabled;
-        UIManager.Instance.synthesisManager.Show(synthesisEnabled);
+        MTR_UIManager.Instance.synthesisManager.Show(synthesisEnabled);
         stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion

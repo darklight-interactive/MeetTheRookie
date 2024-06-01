@@ -26,11 +26,11 @@ namespace Darklight.UnityExt.Utility
                 _instance = FindFirstObjectByType<T>();
                 if (_instance != null)
                 {
-                    Debug.Log($"{Prefix} Found & set existing instance of {typeof(T)}");
+                    Debug.Log($"{Prefix} Found existing instance of {typeof(T)} in scene.");
                     return _instance;
                 }
 
-                Debug.LogError($"{Prefix} Could not find instance of {typeof(T)}");
+                Debug.LogError($"{Prefix} Could not find instance of {typeof(T)} in scene.");
                 return _instance;
             }
         }

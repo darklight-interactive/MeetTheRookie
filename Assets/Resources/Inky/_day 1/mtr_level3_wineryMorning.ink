@@ -24,7 +24,7 @@ Level 3
     -> scene3_2
 - else:
     ~ SetSpeaker(Speaker.Lupe)
-    This door must lead inside..
+    This door must lead inside.
     -> DONE
 }
 
@@ -50,14 +50,14 @@ Level 3
     // ADD TO SYNTHESIS
     ~ DiscoverClue(evidence_broken_window)
     ~ SetSpeaker(Speaker.Misra)
-    Hm. I'd say that's a pretty solid piece of evidence.
+    Hm. I'd say this is a pretty solid piece of evidence.
     ~ SetSpeaker(Speaker.Lupe)
-    Yeah, it's definitely been broken. But something about this seems off to me...
+    Yeah, it's definitely been broken by force. But something about this seems off to me...
     -> DONE
     
 - else:
     ~ SetSpeaker(Speaker.Lupe)
-    A broken window.
+    Eek. Watch your step. 
     -> DONE
 }
 
@@ -84,6 +84,7 @@ Level 3
 - else:
     ~ SetSpeaker(Speaker.Lupe)
     Those are some interesting footprints.
+    -> DONE
 }
 
 
@@ -99,6 +100,29 @@ Level 3
 * [floor wine] -> floor_splatters
 * [backroom door] -> backroom_door
 * [winery front door] -> Winery_front_door
+* [handprint] -> handprint
+* [inside_window] ->inside_window
+
+=inside_window
+    ~ SetSpeaker(Speaker.Lupe)
+    Something about this broken window doesn't make sense to me...
+    ~ CompleteQuest(visit_inside_window)
+    -> DONE
+
+=handprint
+    ~ SetSpeaker(Speaker.Lupe)
+     Well, someone didn't care about leaving behind evidence.
+    ~ SetSpeaker(Speaker.Misra)
+     Could we use that for prints?
+     ~ SetSpeaker(Speaker.Lupe)
+     Do you have a lab here in Kettle Rock?
+    ~ SetSpeaker(Speaker.Misra) 
+    ...
+    Erm, no.
+     ~ SetSpeaker(Speaker.Lupe)
+     Then, no.
+     ~ DiscoverClue(evidence_handprint)
+     -> DONE
 
 
 = claw_marks
@@ -148,7 +172,7 @@ Level 3
 =backroom_door
     ~ CompleteQuest(visit_backroom_door)
     ~ SetSpeaker(Speaker.Lupe)
-    Where does that lead?
+    Where does this lead?
     ~ SetSpeaker(Speaker.Misra)
     To one of the backrooms. It was locked when the Winery shut down, and is still locked. 
     ~ SetSpeaker(Speaker.Lupe)

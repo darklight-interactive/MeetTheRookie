@@ -2849,7 +2849,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.039946
@@ -3096,6 +3096,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 643267811}
     - target: {fileID: 6250550231425151287, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6250550231425151287, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
@@ -3167,6 +3171,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 395935321}
+    - target: {fileID: 7887600965842425661, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7976235553094604760, guid: 2296d9b75c939314dac52220aeb240a6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3235,27 +3243,6 @@ MonoBehaviour:
   _sprite: {fileID: -6693532306599827154, guid: 00256aabfb1b35b489e7ae8335c2c78d, type: 3}
   _sceneKnot: scene4_4
   _interactionStitch: scene4_4.goop
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -3656,6 +3643,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenSize.x
+      value: 1203
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenSize.y
+      value: 752
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenAspectRatio
+      value: 1.5997341
+      objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3694,6 +3693,446 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneDataObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildScenePaths.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[0]'
+      value: Assets/Scenes/Build/MAIN_MENU.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[1]'
+      value: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[2]'
+      value: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[3]'
+      value: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[4]'
+      value: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[5]'
+      value: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[6]'
+      value: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[7]'
+      value: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[8]'
+      value: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[9]'
+      value: Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[10]'
+      value: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[11]'
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[12]'
+      value: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[13]'
+      value: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[14]'
+      value: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[15]'
+      value: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[16]'
+      value: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[17]'
+      value: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[18]'
+      value: Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[19]'
+      value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[0].knot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[1].knot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[2].knot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[0]._name
+      value: MAIN_MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[0]._path
+      value: Assets/Scenes/Build/MAIN_MENU.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[1]._name
+      value: SCENE_1_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[1]._path
+      value: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[2]._name
+      value: SCENE_1_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[2]._path
+      value: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[3]._name
+      value: SCENE_1_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[3]._path
+      value: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[4]._name
+      value: SCENE_1_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[4]._path
+      value: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[5]._name
+      value: SCENE_1_4 - The Gas Station Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[5]._path
+      value: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[6]._name
+      value: SCENE_1_5 - The Gas Station Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[6]._path
+      value: Assets/Scenes/Build/SCENE_1_5 - The Gas Station Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[7]._name
+      value: SCENE_2_0 - The Precinct - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[7]._path
+      value: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[8]._name
+      value: SCENE_3_1 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[8]._path
+      value: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[9]._name
+      value: SCENE_3_2 - The Winery Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[9]._path
+      value: Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[10]._name
+      value: SCENE_3_3 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[10]._path
+      value: Assets/Scenes/Build/SCENE_3_3 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[11]._name
+      value: SCENE_4_1 - Main Street
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[11]._path
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[12]._name
+      value: SCENE_4_2 - The General Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[12]._path
+      value: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[13]._name
+      value: SCENE_4_3 - The Arcade
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[13]._path
+      value: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[14]._name
+      value: SCENE_4_4 - The Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[14]._path
+      value: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[15]._name
+      value: SCENE_4_5 - The Bar - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[15]._path
+      value: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[16]._name
+      value: SCENE_5_1 - Stakeout - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[16]._path
+      value: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[17]._name
+      value: SCENE_5_2 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[17]._path
+      value: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[18]._name
+      value: SCENE_5_3 - The Winery Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[18]._path
+      value: Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[19]._name
+      value: SYNTHESIS_DEMO
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[19]._path
+      value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].knot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].knot
+      value: SetSpeaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].knot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[4].knot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[5].knot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[19]._name
+      value: SYNTHESIS_DEMO
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[19]._path
+      value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[0]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[1]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[2]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[3]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[4]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[5]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[6]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[7]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[8]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[9]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[10]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[11]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[12]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[13]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[14]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[15]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[16]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[17]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[18]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: allSceneData.Array.data[19]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[19]._sceneFound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].backgroundMusicEvent.Path
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].backgroundMusicEvent.Path
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].backgroundMusicEvent.Path
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].backgroundMusicEvent.Guid.Data1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].backgroundMusicEvent.Guid.Data2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].backgroundMusicEvent.Guid.Data3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[1].backgroundMusicEvent.Guid.Data4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].backgroundMusicEvent.Guid.Data1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].backgroundMusicEvent.Guid.Data2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].backgroundMusicEvent.Guid.Data3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[2].backgroundMusicEvent.Guid.Data4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].backgroundMusicEvent.Guid.Data1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].backgroundMusicEvent.Guid.Data2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].backgroundMusicEvent.Guid.Data3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: buildSceneData.Array.data[3].backgroundMusicEvent.Guid.Data4
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}

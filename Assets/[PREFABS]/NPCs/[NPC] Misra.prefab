@@ -54,30 +54,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   editMode: 0
-  _sprite: {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+  _sprite: {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
   _sceneKnot: Misra_Dialogue
-  _interactionStitch: 
-  _onFirstInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onContinuedInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  _onCompleteInteraction:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+  _interactionStitch: Misra_Dialogue.default
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -129,16 +108,16 @@ MonoBehaviour:
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-      - {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+      - {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+      - {fileID: -1216012158, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
   - state: 2
     spriteSheet:
       loop: 1
       frames:
-      - {fileID: -41731316, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-      - {fileID: 436807157, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-      - {fileID: 362986355, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-      - {fileID: 242880236, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+      - {fileID: 951468904, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+      - {fileID: 1006881812, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+      - {fileID: -1524556292, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+      - {fileID: 377155341, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
   - state: 3
     spriteSheet:
       loop: 1
@@ -203,8 +182,8 @@ MonoBehaviour:
   spriteSheet:
     loop: 1
     frames:
-    - {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
-    - {fileID: 1675509262, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+    - {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+    - {fileID: -1216012158, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
   currentFrame: 0
 --- !u!61 &5007469561755814138
 BoxCollider2D:
@@ -244,8 +223,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4453125, y: 0.921875}
-    newSize: {x: 0.4453125, y: 0.921875}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -295,12 +274,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 18124189, guid: 16f20ceec20f13d4d95603c7c4420779, type: 3}
+  m_Sprite: {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.4453125, y: 0.921875}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
