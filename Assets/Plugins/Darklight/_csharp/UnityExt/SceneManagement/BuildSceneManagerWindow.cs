@@ -1,15 +1,9 @@
-using UnityEngine;
-using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-using Darklight.UnityExt.SceneManagement;
-using System.Reflection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
-namespace Darklight.UnityExt.Editor
+namespace Darklight.UnityExt.SceneManagement
 {
 #if UNITY_EDITOR
 
@@ -18,11 +12,9 @@ namespace Darklight.UnityExt.Editor
         private BuildSceneManager buildSceneManager => BuildSceneManager.Instance;
         private Type _dataManagerType;
         private Type _dataType;
-
         private Vector2 scrollPosition;
         private SerializedObject serializedObject;
-
-        private MethodInfo getAllScenesMethod;
+        private SerializedObject dataObjectSerializedObject;
 
         [MenuItem("DarklightExt/BuildSceneManager")]
         public static void ShowWindow()
@@ -45,7 +37,26 @@ namespace Darklight.UnityExt.Editor
             }
 
             // Load the build scenes
-            buildSceneManager.LoadBuildScenes();
+            buildSceneManager.Initialize();
+
+            // Get the buildSceneDataObject field
+            FieldInfo buildSceneDataObjectField = _dataManagerType.GetField(
+                "buildSceneDataObject",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+
+            // If the buildSceneDataObject field is found, and is of type BuildSceneDataObject, get the serialized object
+            if (buildSceneDataObjectField != null)
+            {
+                Debug.Log("BuildSceneDataObject found.");
+
+                ScriptableObject buildSceneDataObject =
+                    buildSceneDataObjectField.GetValue(buildSceneManager) as ScriptableObject;
+                if (buildSceneDataObject != null)
+                {
+                    dataObjectSerializedObject = new SerializedObject(buildSceneDataObject);
+                }
+            }
         }
 
         static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
@@ -64,7 +75,6 @@ namespace Darklight.UnityExt.Editor
 
         void OnGUI()
         {
-            serializedObject = new SerializedObject(buildSceneManager);
             serializedObject.Update();
 
             if (_dataType == null)
@@ -85,10 +95,10 @@ namespace Darklight.UnityExt.Editor
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Refresh"))
             {
-                buildSceneManager.LoadBuildScenes();
+                buildSceneManager.Initialize();
             }
 
-            if (GUILayout.Button("Clear"))
+            if (GUILayout.Button("Clear All Data"))
             {
                 buildSceneManager.ClearBuildScenes();
             }
@@ -99,8 +109,26 @@ namespace Darklight.UnityExt.Editor
             }
             EditorGUILayout.EndHorizontal();
 
+            // Start the scroll view
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneData"), true);
+
+            // Display the properties of buildSceneDataObject
+            if (dataObjectSerializedObject != null)
+            {
+                GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
+
+                // Draw the data object properties
+                dataObjectSerializedObject.Update();
+                SerializedProperty dataProperty = dataObjectSerializedObject.FindProperty("buildSceneData");
+                EditorGUILayout.PropertyField(dataProperty, true);
+                dataObjectSerializedObject.ApplyModifiedProperties();
+            }
+            else
+            {
+                GUILayout.Label("No BuildSceneDataObject found.");
+            }
+
             EditorGUILayout.EndScrollView();
 
             if (EditorGUI.EndChangeCheck())

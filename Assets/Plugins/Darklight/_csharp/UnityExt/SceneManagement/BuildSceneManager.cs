@@ -107,6 +107,8 @@ namespace Darklight.UnityExt.SceneManagement
             EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[buildScenePaths.Length];
             for (int i = 0; i < buildScenePaths.Length; i++)
             {
+                buildScenePaths[i] = buildScenePaths[i].Replace("\\", "/"); // Replace all backslashes with forward slashes
+
                 string scenePath = buildScenePaths[i];
                 editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
             }

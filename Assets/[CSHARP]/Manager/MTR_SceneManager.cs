@@ -6,6 +6,8 @@ using Darklight.UnityExt.SceneManagement;
 using FMODUnity;
 using Ink.Runtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -35,19 +37,50 @@ public class MTR_SceneData : BuildSceneData
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
 /// </summary>
-public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData> { }
+public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
+{
+    public MTR_SceneData GetSceneDataByKnot(string knot)
+    {
+        return GetAllBuildSceneData().Find(x => x.knot == knot);
+    }
 
+    public EventReference GetActiveBackgroundMusicEvent()
+    {
+        MTR_SceneData data = GetActiveSceneData();
+        return data.backgroundMusicEvent;
+    }
+}
+
+/// <summary>
+/// This is the Custom Scene Manager for Meet The Rookie
+/// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
+    MTR_SceneDataObject _mtrSceneDataObject
+    {
+        get
+        {
+            return buildSceneDataObject as MTR_SceneDataObject;
+        }
+        set
+        {
+            buildSceneDataObject = value;
+        }
+    }
+
     public override void Initialize()
     {
         base.Initialize();
-
-#if UNITY_EDITOR
-
-#endif
-
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
+    }
+
+    public override void CreateBuildSceneDataObject()
+    {
+        _mtrSceneDataObject =
+            ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
+                DATA_PATH,
+                DATA_FILENAME
+            );
     }
 
     public void OnStoryInitialized(Story story)
@@ -66,7 +99,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     public object ChangeGameScene(string knotName)
     {
-        MTR_SceneData data = GetSceneDataByKnot(knotName);
+        MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -76,20 +109,16 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public override List<MTR_SceneData> GetAllBuildSceneData()
+    public MTR_SceneData GetSceneData(Scene sceneName)
     {
-        return base.GetAllBuildSceneData();
+        return _mtrSceneDataObject.GetSceneData(sceneName);
     }
 
-    public MTR_SceneData GetSceneDataByKnot(string knot)
+    public MTR_SceneData GetActiveSceneData()
     {
-        return GetAllBuildSceneData().Find(x => x.knot == knot);
-    }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
+        if (_mtrSceneDataObject == null)
+            return new MTR_SceneData();
+        return _mtrSceneDataObject.GetActiveSceneData();
     }
 }
 
