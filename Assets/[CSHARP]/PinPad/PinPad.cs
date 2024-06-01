@@ -12,7 +12,8 @@ public class PinPad : MonoBehaviour
     public List<VisualElement> buttons = new List<VisualElement>();
     private int selector = 0;
     public StyleSheet selected;
-    public
+    public string correctcode;
+    public int Inputted = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +27,13 @@ public class PinPad : MonoBehaviour
                 buttons.Add(child);
             }
         }
+        correctcode = ("100722");
         Debug.Log(buttons.Count);
         buttons.Remove(Numbers);
         Debug.Log(buttons.Count);
         currentselected = buttons[selector];
+        currentselected.RemoveFromClassList("UnHovered");
+        currentselected.AddToClassList("Hovered");
     }
     // Update is called once per frame
     void Update()
@@ -38,59 +42,104 @@ public class PinPad : MonoBehaviour
         {
             if (selector < 11)
             {
-                currentselected.style.backgroundColor = new Color(.4f, .57f, .32f, .8f);
-                selector += 1;
-                currentselected = buttons[selector];
-                currentselected.style.backgroundColor = new Color(0.771f, .64f, 0f, .72f);
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
+            selector += 1;
+            currentselected = buttons[selector];
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
             }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (selector < 9)
             {
-            currentselected.style.backgroundColor = new Color(.4f, .57f, .32f, .8f);
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
             selector += 3;
             currentselected = buttons[selector];
-            currentselected.style.backgroundColor = new Color(0.771f, .64f, 0f, .72f);
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
             }
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (selector > 0)
             {
-            currentselected.style.backgroundColor = new Color(.4f, .57f, .32f, .8f);
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
             selector -= 1;
             currentselected = buttons[selector];
-            currentselected.style.backgroundColor = new Color(0.771f, .64f, 0f, .72f);
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
             }
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (selector > 2)
             {
-            currentselected.style.backgroundColor = new Color(.4f, .57f, .32f, .8f);
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
             selector -= 3;
             currentselected = buttons[selector];
-            currentselected.style.backgroundColor = new Color(0.771f, .64f, 0f, .72f);
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
             }
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            currentselected.RemoveFromClassList("Hovered");
-            currentselected.AddToClassList("Selected");
-            currentselected.style.backgroundColor = new Color(1f, .6f, 0f, .8f);
-            if (currentselected.name != "Pound" && currentselected.name != "Star")
+            StartCoroutine(Select());
+        }
+    }
+    IEnumerator Select()
+    {
+        currentselected.RemoveFromClassList("Hovered");
+        currentselected.AddToClassList("Selected");
+        if (currentselected.name != "Pound" && currentselected.name != "Star")
+        {
+            if (Inputted < 6)
             {
-                Numbers.text += currentselected.name + " ";
-            }
-            if (currentselected.name == "Star")
-            {
-                Numbers.text = "";
-            }
-            if (currentselected.name == "Pound")
-            {
-                Numbers.text = "B O O M";
+            Inputted += 1;
+            Numbers.text += currentselected.name;
             }
         }
+        if (currentselected.name == "Star")
+        {
+            Inputted = 0;
+            Numbers.text = "";
+        }
+        if (currentselected.name == "Pound")
+        {
+            if (Numbers.text != correctcode)
+            {
+                StartCoroutine(Incorrect());
+            }
+            if (Numbers.text == correctcode)
+            {
+                StartCoroutine(Correct());
+            }
+        }
+        yield return new WaitForSecondsRealtime(0.3f);
+        currentselected.RemoveFromClassList("Selected");
+        currentselected.AddToClassList("Hovered");
+    }
+    IEnumerator Correct()
+    {
+        yield return new WaitForSecondsRealtime(0.6f);
+        groupbase.style.backgroundColor = new Color(0, .6f, .18f, .8f);
+    }
+    IEnumerator Incorrect()
+    {
+        groupbase.style.backgroundColor = new Color(.7f, .12f, 0f, 0.4f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        groupbase.style.backgroundColor = new Color(0, .42f, .23f, .77f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        groupbase.style.backgroundColor = new Color(.7f, .12f, 0f, 0.4f);
+        yield return new WaitForSecondsRealtime(0.2f);
+        groupbase.style.backgroundColor = new Color(0, .42f, .23f, .77f);
     }
 }
