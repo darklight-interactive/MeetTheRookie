@@ -14,7 +14,7 @@ namespace Darklight.UnityExt.Inky
     /// <summary>
     ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data.
     /// </summary>
-    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
+    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
         [SerializeField]
         InkyStoryObject _globalStoryObject;
@@ -89,6 +89,11 @@ namespace Darklight.UnityExt.Inky
 
 
         // ------------------------ [[ METHODS ]] ------------------------ >>
+        public void OnEditorReloaded()
+        {
+            Initialize();
+        }
+
         public override void Initialize()
         {
             if (_globalStoryObject == null)

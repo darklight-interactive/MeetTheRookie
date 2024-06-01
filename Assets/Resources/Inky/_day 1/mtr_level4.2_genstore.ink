@@ -29,3 +29,5 @@
      Take care!
         # SCENE CHANGE
         -> DONE
+= roy
+    -> Roy_Dialogue

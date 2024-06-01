@@ -17,6 +17,7 @@ namespace Darklight.UnityExt.Audio
     {
         private StudioEventEmitter _studioEventEmitter => GetComponent<StudioEventEmitter>();
         public static EventInstance CurrentSongInstance { get; private set; }
+        public static EventDescription CurrentSongDescription { get; private set; }
 
 
 
@@ -92,7 +93,19 @@ namespace Darklight.UnityExt.Audio
             instance.release();
         }
 
+        public static string GetInstantiatedEventPath(FMOD.Studio.EventInstance instance)
+        {
+            string result;
+            FMOD.Studio.EventDescription description;
 
+            instance.getDescription(out description);
+            description.getPath(out result);
+
+            // expect the result in the form event:/folder/sub-folder/eventName
+            return result;
+        }
+
+        // --------------------------------- PUBLIC METHODS ---------------------------------
         public override void Initialize()
         {
             LoadBanksAndBuses();
@@ -134,25 +147,31 @@ namespace Darklight.UnityExt.Audio
         {
             if (newSongEventRef.IsNull)
             {
-                Debug.LogWarning(
-                    $"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef
-                );
+                Debug.LogWarning($"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef);
+                return;
+            }
+
+            // If the new song is the same as the current song, do nothing
+            string currentEventName = GetInstantiatedEventPath(CurrentSongInstance);
+            string newEventName = newSongEventRef.Path;
+            if (currentEventName == newEventName)
+            {
+                Debug.LogWarning($"{Prefix} FMOD SONG event is already playing: " + newSongEventRef);
                 return;
             }
 
             // If the current background music is playing, fade it out and start the new song
-            if (CurrentSongInstance.isValid())
+            if (CurrentSongInstance.isValid() && PlaybackState(CurrentSongInstance) == PLAYBACK_STATE.PLAYING)
             {
                 StartCoroutine(EventTransitionRoutine(newSongEventRef));
+                return;
             }
-            else
-            {
-                // Create a new instance of the song and start it
-                EventInstance newSongInstance = RuntimeManager.CreateInstance(newSongEventRef);
-                CurrentSongInstance = newSongInstance;
-                newSongInstance.start();
-                newSongInstance.release();
-            }
+
+            // Create a new instance of the song and start it
+            EventInstance newSongInstance = RuntimeManager.CreateInstance(newSongEventRef);
+            CurrentSongInstance = newSongInstance;
+            newSongInstance.start();
+            newSongInstance.release();
         }
 
         IEnumerator EventTransitionRoutine(EventReference newSongEventRef)
