@@ -18,18 +18,19 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ChoiceParent" style="top: 5%; align-items: center; justify-content: center; align-self: center; flex-direction: column; width: 70%; height: 50%; opacity: 1; display: flex;">
+        <ui:VisualElement name="ChoiceParent" style="top: 5%; align-items: center; justify-content: space-evenly; align-self: center; flex-direction: column; width: 70%; height: 48%; opacity: 1; display: flex;">
             <Darklight.UnityExt.UXML.SelectableButton name="Choice" />
             <Darklight.UnityExt.UXML.SelectableButton name="Choice" />
             <Darklight.UnityExt.UXML.SelectableButton name="Choice" />
             <Darklight.UnityExt.UXML.SelectableButton name="Choice" />
         </ui:VisualElement>
+        <ui:VisualElement name="Dashboard" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Backgrounds/datingsim_stakeout_fg.png?fileID=2800000&amp;guid=3ab68fe5e91a142e68a112fc9f4c91b3&amp;type=3#datingsim_stakeout_fg&quot;); display: none;" />
         <ui:VisualElement name="DialogueBoxParent" class="DialogueBoxParent" style="bottom: 0;">
-            <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;); align-self: center; justify-content: center; align-items: flex-start; display: flex; padding-left: 2%; padding-top: 2%; padding-right: 2%; padding-bottom: 2%;">
-                <Darklight.UnityExt.UXML.ControlledLabel rolling-text-percentage="0.685" font-size-range="48,84" name="DialogueText" style="align-self: stretch;" />
-                <ui:VisualElement name="DialogueTriangle" class="TriangleUp TriangleDown" style="transition-duration: 1s;" />
+            <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;);">
+                <Darklight.UnityExt.UXML.ControlledLabel rolling-text-percentage="1" font-size-range="48,84" name="DialogueText" font-size="48" style="align-self: stretch;" />
+                <ui:VisualElement name="DialogueTriangle" class="TriangleDown TriangleDefault" style="transition-duration: 1s;" />
             </ui:VisualElement>
-            <ui:VisualElement name="NameTag" class="NameTagLupe" style="bottom: auto; top: 15px; width: 40%; align-self: flex-start; justify-content: flex-end; -unity-background-scale-mode: scale-and-crop; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0; height: 30%; overflow: visible;">
+            <ui:VisualElement name="NameTag" class="NameTagLupe" style="bottom: auto; top: 5%; width: 30%; align-self: flex-start; justify-content: flex-end; height: 30%; overflow: visible; -unity-background-scale-mode: scale-to-fit; scale: 1.25 1.25;">
                 <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&quot;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>

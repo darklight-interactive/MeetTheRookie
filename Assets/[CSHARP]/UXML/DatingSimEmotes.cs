@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using System;
+using FMODUnity;
 
 [CreateAssetMenu(fileName = "New Emote Collection", menuName = "Addressables/Emote Collection")]
 public class DatingSimEmotes : ScriptableObject
@@ -21,10 +22,18 @@ public class DatingSimEmotes : ScriptableObject
         }
     }
 
+    [Header("Emote Image")]
     public Texture2D currLupeEmote;
     public Texture2D currMisraEmote;
     public string lupeDefaultEmoteName = "neutral";
     public string misraDefaultEmoteName = "neutral";
+    
+    [Header("Emote Barks")]
+    public EventReference voiceLupeEvent;
+    public EventReference voiceMisraEvent;
+    public string fmodLupeParameterName;
+    public string fmodMisraParameterName;
+
 
     [SerializeField] private List<Texture2D> lupeImages = new List<Texture2D>();
     [SerializeField] private List<Texture2D> misraImages = new List<Texture2D>();

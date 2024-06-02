@@ -64,6 +64,13 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
+        [UxmlAttribute]
+        public TextAnchor textAlign
+        {
+            get { return _label.style.unityTextAlign.value;}
+            set { _label.style.unityTextAlign = value;}
+        }
+
         public ControlledLabel()
         {
             _container = new VisualElement();
@@ -71,15 +78,14 @@ namespace Darklight.UnityExt.UXML
             _container.style.flexWrap = Wrap.Wrap;
 
             _label = new Label();
-            _label.style.unityTextAlign = TextAnchor.MiddleLeft;
-            _label.style.alignSelf = Align.FlexStart;
+            _label.style.alignSelf = Align.Auto;
             _label.style.fontSize = GetDynamicFontSize();
 
             _container.Add(_label);
             Add(_container);
         }
 
-        public void Initialize(string fullText)
+        public void SetFullText(string fullText)
         {
             this.fullText = fullText;
             SetTextToIndex(0);
@@ -110,6 +116,11 @@ namespace Darklight.UnityExt.UXML
         {
             _currentIndex = Mathf.Min(index, fullText.Length);
             this.text = fullText.Substring(0, _currentIndex);
+        }
+
+        public void InstantCompleteText()
+        {
+            SetTextToIndex(fullText.Length);
         }
     }
 }

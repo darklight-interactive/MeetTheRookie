@@ -4,10 +4,12 @@
 # Location: Power Up Arcade
 //+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
 
-* [talk_to_misra] -> Misra_Dialogue
-* [talk_to_jenny] -> Jenny_Dialogue
-* [machines] -> arcade_machines
-* [exit_door] -> exit_scene
+//* [talk_to_misra] -> Misra_Dialogue
+//* [talk_to_jenny] -> Jenny_Dialogue
+//* [machines] -> arcade_machines
+//* [exit_door] -> exit_scene
+
+    -> DONE
 
 = arcade_machines
     {IsQuestComplete(visited_machines):
@@ -20,32 +22,16 @@
      They're cheaper that way.
      And twice the fun!
     -> DONE
-}
-    
+    }
 = teens
- Is that...
- Who you were talking about...?
-~ SetSpeaker(Speaker.Misra)
- Yes.
- Don't be fooled.
- They're vicious.
-~ SetSpeaker(Speaker.Lupe)
- They're....
- ...fourteen year olds.
-~ SetSpeaker(Speaker.Misra)
- I know.
-~ SetSpeaker(Speaker.Lupe)
- They're barely five feet tall.
-~ SetSpeaker(Speaker.Misra)
- <i> I know </i>.
-~ SetSpeaker(Speaker.Lupe)
- They--
-~ SetSpeaker(Speaker.Jenny)
- Hey Nimrods. 
- We can hear you.
-~ SetSpeaker(Speaker.Lupe)
-    -> DONE
+    -> Teens_Dialogue.teens
     
+= jenny
+    -> Teens_Dialogue.jenny
+= calvin
+    -> Teens_Dialogue.calvin
+= josh 
+    -> Teens_Dialogue.josh
     
 = teens_roulette
 
@@ -69,7 +55,7 @@
     * [Calvin] -> Calvin_Dialogue
     * [Josh] -> Josh_Dialogue
     
-    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
+//    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
     
 = exit_scene
     ~ SetSpeaker(Speaker.Jenny)
