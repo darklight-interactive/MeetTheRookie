@@ -13,7 +13,7 @@
 // haven't done intro before questions, have done intro before questions
 // "asked all questions," -> blowoff statment
 // "haven't asked Q1" ... "crazies mentioned"
-
+//
 
 // ~ SetSpeaker(Speaker.[Speaker])
 // IsQuestComplete("boolean")      //add to global
@@ -23,7 +23,13 @@
 = jenny 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
     {
-    -askedAllQuestions():
+    
+    - IsQuestComplete(jenny_suspicion): //after jenny has voiced suspicion, this is her FINAL closing statement in the arcade 
+            ~ SetSpeaker(Speaker.Jenny)
+            {Ugh! I just lost the level. I've got to focus, leave me alone.| I'm clearly busy. | See ya. } //END OF ARCADE INTERACTIONS
+             -> DONE
+        
+    - askedAllQuestions():
         -> jenny_suspects
     - askedJennysQuestions():
         ~ SetSpeaker(Speaker.Jenny)
@@ -50,7 +56,11 @@
         ~ CompleteQuest(lupe_not_a_cop)
     }
 - else: // lupe hasn't asked about hosi yet
-    ~ CompleteQuest(jenny_first_interact)
+    {IsQuestComplete(jenny_first_interact):
+        Die, stupid snakes! Feel my wrath! //if you've already talked to jenny once 
+        -> DONE
+   -else:
+   ~ CompleteQuest(jenny_first_interact)
     ~ SetSpeaker(Speaker.Lupe)
      Hey--
     ~ SetSpeaker(Speaker.Jenny)
@@ -66,6 +76,8 @@
      You're still mad about the HO:SI thing?
     ~ SetSpeaker(Speaker.Lupe)
      HO:SI...?
+     
+     
     {IsQuestComplete(calvin_first_interact) && IsQuestComplete(josh_first_interact) && IsQuestComplete(jenny_first_interact):
         -> hosi
         
@@ -75,6 +87,7 @@
         -> DONE 
     }
 }
+    }
 = jenny_questions
     * [Tell me about Kettle Rock.] -> KR_Jenny
     * [The Old Winery on the hill...] -> winery_jenny
@@ -173,6 +186,7 @@
      Gah.
      Dumb old Goat.
     // Add to Synthesis: Who broke into the Old Winery?
+    ~ CompleteQuest(jenny_suspicion)
     ~ DiscoverClue(jenny_suspects)
         -> DONE
 
@@ -181,6 +195,13 @@
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
  //lupe did intro before questions
     {
+    - IsQuestComplete(calvin_suspicion): //after calvin has voiced suspicion, this is her FINAL closing statement in the arcade 
+            ~ SetSpeaker(Speaker.Calvin)
+            {I'vetoldyoueverything.| SorryIcan'ttalkanymore.}
+             -> DONE // END OF ARCADE INTERACTIONS
+        
+    
+    
     -askedAllQuestions():
         //if asked all teens first round of questions
         -> calvin_sus
@@ -313,17 +334,28 @@ Not much to do other than game and--
  ~ SetSpeaker(Speaker.Calvin)
 Er, nothing.
     -> DONE
+    
 = calvin_sus //TODO LUPE NEEDS TO ASK CALVIN A QUESSTION BEFORE HE RESPONDS
+ ~ SetSpeaker(Speaker.Lupe)
+ ~ CompleteQuest(calvin_suspicion)
+Calvin, you're not in trouble,
+but I need you to tell me who should be.
+Who do you think would've been at the Winery last night?
  ~ SetSpeaker(Speaker.Calvin)
  Uhhhhh...
  Jenkins Tomm.
- ~ SetSpeaker(Speaker.Lupe)
 He used to work there.
     -> DONE
     
 = josh 
 {IsQuestComplete(what_is_hosi): // lupe asked about hosi
    {
+    - IsQuestComplete(josh_suspicion): //after josh has voiced suspicion, this is her FINAL closing statement in the arcade 
+            ~ SetSpeaker(Speaker.Josh)
+            {DANCE BATTLE, BRO?| YOU DON'T WANT TO SEE MY SICK MOVES | BON BON VOYAGE.}
+             -> DONE //END OF ARCADE INTERACTION
+        
+   
     - askedAllQuestions():
         -> josh_sus
     - askedJoshsQuestions():
@@ -449,10 +481,10 @@ What does that have to do with anything?
 
 //~CompleteQuest(josh_suspects)
 = josh_sus
+~ CompleteQuest(josh_suspicion)
 ~SetSpeaker(Speaker.Lupe)
-    JOSH.
-    IF YOU HAD TO PICK ONE PERSON IN TOWN THAT MIGHT'VE BEEN AT THE WINERY LAST NIGHT,
-    WHO WOULD IT BE?
+    Josh.
+    If you had to pick one person in town that might've been at the Winery last night, who would it be?
 ~SetSpeaker(Speaker.Josh)
 I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
 -> DONE
