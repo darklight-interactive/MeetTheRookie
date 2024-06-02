@@ -93,7 +93,7 @@ namespace Darklight.Game.Grid
                     bestData = data;
                 }
             }
-            Debug.Log($"{this.name} OverlapGrid2D Best Data: {bestData.positionKey} - {bestData.worldPosition}");
+            //Debug.Log($"{this.name} OverlapGrid2D Best Data: {bestData.positionKey} - {bestData.worldPosition}");
             return bestData;
         }
     }
@@ -144,7 +144,7 @@ namespace Darklight.Game.Grid
                 {
                     Vector2Int positionKey = new Vector2Int(x, y);
                     Grid2D_Data data = grid2D.GetData(positionKey);
-                    if (data.initialized == false) continue; // Skip uninitialized data
+                    if (data == null || data.initialized == false) continue; // Skip uninitialized data
 
                     Vector3 cellPos = grid2D.GetWorldPositionOfCell(positionKey);
 
