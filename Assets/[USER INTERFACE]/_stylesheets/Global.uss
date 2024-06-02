@@ -1,5 +1,5 @@
 Button {
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=-7972535721337346317&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_1");
+    background-image: none;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -8,8 +8,11 @@ Button {
     padding-right: 2.5%;
     padding-bottom: 2.5%;
     padding-left: 2.5%;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
     flex-grow: 1;
+    color: rgb(255, 255, 255);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    font-size: 70px;
 }
 
 GroupBox {
@@ -66,8 +69,10 @@ GroupBox {
 }
 
 .unity-text-element.unity-button {
-    font-size: 41px;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+    font-size: 70px;
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour");
+    -unity-font-style: bold;
+    color: rgb(226, 220, 217);
 }
 
 .unity-text-element.unity-label {

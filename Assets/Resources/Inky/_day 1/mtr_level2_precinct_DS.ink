@@ -3,17 +3,17 @@
 //        this also appears to be a sort of cutscene so there isnt much logic to do! :)
 
 // VARIABLES HERE:
-VAR reported_incident = false
-VAR case_file_received = false
-VAR love_points = 0
-VAR tease_level = 0
-VAR sincerity_level = 0
-VAR spooked = false
-VAR snooped = false
+// VAR reported_incident = false
+// VAR case_file_received = false
+// VAR love_points = 0
+// VAR tease_level = 0
+// VAR sincerity_level = 0
+// VAR spooked = false
+// VAR snooped = false
 
-* [Scene 2 - The Precinct] -> scene2
+* [Scene 2 - The Precinct] -> scene2_DS
 
-=== scene2 ===
+=== scene2_DS ===
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2
@@ -230,8 +230,7 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Fright_1
 "You CAN'T keep scaring me like that."
 # name : Misra
-{ 
-- spooked: 
+{- spooked: 
 # emote : Misra \| Nervous_1
 "Sorry, sorry!" 
 - else:
