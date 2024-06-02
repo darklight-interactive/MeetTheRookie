@@ -17,8 +17,15 @@ namespace Darklight.UnityExt.UXML
     /// <summary>
     /// This class is used to create a GameObject with a RenderTexture that can be used to render a UXML Element.
     /// </summary>
-    public class UXML_RenderTextureObject : UXML_UIDocumentObject
+    public class UXML_RenderTextureObject : UXML_UIDocumentObject, IUnityEditorListener
     {
+        public void OnEditorReloaded()
+        {
+#if UNITY_EDITOR
+            DestroyImmediate(this.gameObject);
+#endif
+        }
+
         [SerializeField, ShowOnly] GameObject _quad;
         [SerializeField, ShowOnly] MeshRenderer _meshRenderer;
         [SerializeField, ShowOnly] Material _material;
