@@ -177,7 +177,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.Initialize(fullText);
+        speechBubble.SetFullText(fullText);
 
         while (true)
         {
