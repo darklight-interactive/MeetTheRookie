@@ -16,7 +16,7 @@
     align-self: center;
     justify-content: flex-end;
     width: 70%;
-    height: 50%;
+    height: 52%;
     align-items: flex-start;
     flex-shrink: 1;
     flex-grow: 0;
@@ -29,7 +29,7 @@
     align-self: auto;
     height: 30%;
     align-items: center;
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Name%20Tag%20Misra.png?fileID=2800000&guid=734f97ec3f742b146af4ee077707ab23&type=3#Name Tag Misra");
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Name%20Tag%20Misra.png?fileID=2800000&guid=9e3b6ad581042a046b5072e32e184152&type=3#Name Tag Misra");
     -unity-background-scale-mode: scale-to-fit;
     bottom: -45px;
 }
@@ -46,11 +46,11 @@
 }
 
 .DialogueBox {
-    align-self: auto;
+    align-self: center;
     justify-content: flex-start;
     width: 100%;
-    height: 55%;
-    align-items: center;
+    height: 100%;
+    align-items: flex-start;
     flex-direction: column;
     flex-wrap: nowrap;
     max-height: 65%;
@@ -61,8 +61,13 @@
     -unity-slice-left: 40;
     -unity-slice-top: 50;
     -unity-slice-right: 40;
-    -unity-slice-bottom: 25;
+    -unity-slice-bottom: 0;
     background-color: rgba(0, 0, 0, 0.49);
+    padding-left: 2%;
+    padding-top: 1.5%;
+    padding-bottom: 4%;
+    padding-right: 2%;
+    margin-bottom: 0;
 }
 
 .CharacterSide {
@@ -72,7 +77,7 @@
     flex-direction: column-reverse;
 }
 
-.TriangleUp {
+.TriangleDefault {
     width: 50px;
     height: 50px;
     align-self: flex-end;
@@ -80,7 +85,7 @@
     background-image: url("project://database/Assets/Plugins/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&guid=36b22829bdfd5284c82359ec62ba0be2&type=3#arrow-down@2x");
     transition-duration: 1s;
     transition-property: all;
-    bottom: 0;
+    bottom: 14%;
     position: absolute;
     -unity-background-image-tint-color: rgb(0, 0, 0);
 }
