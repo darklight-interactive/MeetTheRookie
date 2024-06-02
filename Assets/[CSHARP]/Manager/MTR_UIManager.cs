@@ -93,7 +93,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     [SerializeField]
     SceneObject _mainMenuScene;
-    private MainMenuController _mainMenuController;
+    private MainMenu _mainMenuController;
 
     [Header("Game UI Controller")]
     private GameUIController _gameUI;

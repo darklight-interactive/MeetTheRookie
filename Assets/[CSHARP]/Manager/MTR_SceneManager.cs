@@ -114,6 +114,11 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return _mtrSceneDataObject.GetSceneData(sceneName);
     }
 
+    public MTR_SceneData GetSceneDataByKnot(string knot)
+    {
+        return this._mtrSceneDataObject.GetSceneDataByKnot(knot);
+    }
+
     public MTR_SceneData GetActiveSceneData()
     {
         if (_mtrSceneDataObject == null)
