@@ -14,7 +14,7 @@
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
     {IsQuestComplete(lupe_not_a_cop): //lupe did intro before questions
     
-        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_local_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_local_question) && IsQuestComplete(josh_personal_questions):
+        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_local_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
             -> jenny_suspects
                 
         - else:
@@ -23,6 +23,8 @@
                 ~ SetSpeaker(Speaker.Jenny)
                 I've already told you what I know.
                 I've got a highscore to beat.
+                -> DONE
+                
             - else:
                 -> jenny_questions
             }
@@ -44,7 +46,7 @@
         ~ SetSpeaker(Speaker.Jenny)
         ...
         ~ CompleteQuest(lupe_not_a_cop)
-        -> DONE 
+        -> jenny_questions
     }
 - else: // lupe hasn't asked about hosi yet
     ~ CompleteQuest(jenny_first_interact)
@@ -76,10 +78,11 @@
     * [Tell me about Kettle Rock.] -> KR_Jenny
     * [The Old Winery on the hill...] -> winery_jenny
     * [You're a local?] -> personal_jenny
-    * {IsQuestComplete(crazies)} ["Crazies"?] -> crazies
+    * {IsQuestComplete(jenny_crazies_question)} ["Crazies?"] -> hmcrazies
     
 = KR_Jenny
     ~ SetSpeaker(Speaker.Jenny)
+    Well.
     Small ass town in the middle of nowhere.
     Not much to see here.
     ~ SetSpeaker(Speaker.Lupe)
@@ -98,15 +101,16 @@
     ~ SetSpeaker(Speaker.Jenny)
     Case in point.
     ~ CompleteQuest(jenny_KR_question)
-    ~ CompleteQuest(crazies)
+    ~ CompleteQuest(jenny_crazies_question)
         -> DONE
     
 = winery_jenny
 ~ SetSpeaker(Speaker.Jenny)
+    Yeah?
      What about it?
     ~ SetSpeaker(Speaker.Lupe)
      I don't know.
-     It seemed kinda important, to like, the town
+     It seemed kinda important, to like, the town.
     ~ SetSpeaker(Speaker.Jenny)
      Oh, sure.
      I mean, the stupid Goats sure liked it up there.
@@ -135,6 +139,7 @@
         }
 = personal_jenny
     ~ SetSpeaker(Speaker.Jenny)
+    .
     Mhm.
     ~ SetSpeaker(Speaker.Lupe)
     What do you do for fun?
@@ -143,7 +148,8 @@
     Public artwork.
     ~ CompleteQuest(jenny_personal_question)
     -> DONE
-= crazies
+    
+= hmcrazies
     ~ SetSpeaker(Speaker.Jenny)
     As in, crazy people.
     ~ SetSpeaker(Speaker.Lupe)
@@ -151,6 +157,7 @@
     ~ SetSpeaker(Speaker.Jenny)
     Uh, it's kinda self explanatory. 
     -> DONE
+    
 = jenny_suspects
 ~ SetSpeaker(Speaker.Lupe)
 Say I wanted to learn more about the Winery...anyone been talking about it lately?
@@ -164,9 +171,6 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
     ~ DiscoverClue(jenny_suspects)
         -> DONE
 
-
-
-
 = calvin 
 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
@@ -174,6 +178,7 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
     {IsQuestComplete(calvin_KR_question) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_winery_question):
         ~ SetSpeaker(Speaker.Calvin)
         SorryI'vegotnothingelseforyou.
+        
     - else:
         {IsQuestComplete(calvin_questions_intro):
             -> calvin_questions
@@ -212,18 +217,98 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
     }
     
 }
-
 = calvin_questions
-~ CompleteQuest(calvin_suspects)
-~ CompleteQuest(calvin_KR_question) 
-~ CompleteQuest(calvin_local_question) 
-~ CompleteQuest(calvin_winery_question)
+
+* [So...you like HO:SI?] -> cal_hosi
+    
+* {HOSI_calvin}[Are you from around here?] -> personal_info_calvin
+
+* {HOSI_calvin}[The Old Winery on the hill...] -> winery_calvin
+
+* {HOSI_calvin}[So, do you like living in Kettle Rock?] -> KR_calvin
+
+
+
+//~ CompleteQuest(calvin_suspects)
 -> DONE
+= cal_hosi
+~ SetSpeaker(Speaker.Calvin)
+.
+...yes.
+~ SetSpeaker(Speaker.Lupe)
+Do you play as the, erm, Snake Invaders?
+~ SetSpeaker(Speaker.Calvin)
+No.
+The Snake Invaders are the bad guys.
+I don't like being the bad guy.
+-> DONE
+
+=personal_info_calvin
+~ CompleteQuest(calvin_local_question)
+~ SetSpeaker(Speaker.Calvin)
+ .
+ Yeah.
+ I live on Oak Avenue.
+ With my parents.
+ And my dog.
+ And my Grandma.
+ My bedrooms on the second floor.
+ I used to go to school here, too, until Kettle Rock Junior High shut down.
+I was in Mrs. Peterson's class.
+I got B+'s, usually.
+I tried out for soccer but didn't make the team.
+~ SetSpeaker(Speaker.Lupe)
+That's ah, more than enough info. 
+But uh, what was your name?
+~ SetSpeaker(Speaker.Calvin)
+Calvin. Calvin Coorsby.
+~ SetSpeaker(Speaker.Lupe)
+Thanks, Calvin.
+-> DONE
+
+=winery_calvin
+~ CompleteQuest(calvin_winery_question)
+~ SetSpeaker(Speaker.Calvin)
+That place gives me the heebie-jeebies.
+~ SetSpeaker(Speaker.Calvin)
+It's probably haunted or cursed or something.
+~ SetSpeaker(Speaker.Lupe)
+Why do you say that?
+~ SetSpeaker(Speaker.Calvin)
+Because it never could stay open.
+~ SetSpeaker(Speaker.Calvin)
+It was always closed, open, bankrupt, making money, then losing money, on and on.
+~ SetSpeaker(Speaker.Calvin)
+And the stupid Goats were always up there, too.
+// Add to Synthesis: Who broke into the Old Winery?
+    {roys_suspicion:
+        ~ SetSpeaker(Speaker.Lupe)
+        Someone said you maybe were up at the Winery? 
+        Last night?
+        ~ SetSpeaker(Speaker.Calvin)
+        ...
+        ~ SetSpeaker(Speaker.Calvin)
+        Ihavenoideawhatyou'retalkingaboutIwasathome.
+       -> DONE
+        - else:
+    -> DONE
+}
+=KR_calvin
+~ CompleteQuest(calvin_KR_question) 
+ ~ SetSpeaker(Speaker.Calvin)
+It's fine, I guess.
+Not much to do other than game and--
+ ~ SetSpeaker(Speaker.Lupe)
+...and?
+ ~ SetSpeaker(Speaker.Calvin)
+Er, nothing.
+    -> DONE
+
 
 = josh 
 {IsQuestComplete(what_is_hosi): 
 // lupe asked about hosi
-    {IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_local_question) && IsQuestComplete(josh_winery_question):
+    {IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
         ~ SetSpeaker(Speaker.Josh)
         YOU DIG IT?
         -> DONE
@@ -276,17 +361,87 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
 }
 
 =josh_questions
-~CompleteQuest(josh_KR_question) 
-~CompleteQuest(josh_local_question) 
+* [So. Who're you?] -> josh_personal_info
+
+* [You a local Kettle Rockian?] -> KettleR_josh
+
+* [The Old Winery on the hill...] -> wine_josh
+    
+= josh_personal_info
 ~CompleteQuest(josh_personal_questions)
-~CompleteQuest(josh_suspects)
+~ SetSpeaker(Speaker.Josh)
+.
+Josh.
+Josh the Squash.
+~ SetSpeaker(Speaker.Lupe)
+Sorry, squash?
+~ SetSpeaker(Speaker.Josh)
+Yuh. 
+~ SetSpeaker(Speaker.Josh)
+Because it rhymes.
+~ SetSpeaker(Speaker.Lupe)
+...
+~ SetSpeaker(Speaker.Josh)
+You don't get it?
+~ SetSpeaker(Speaker.Lupe)
+I, uh...no?
 -> DONE
+
+= KettleR_josh
+~CompleteQuest(josh_KR_question) 
+ ~ SetSpeaker(Speaker.Josh)
+    Yeah.
+    Unfortunately.
+    This place is SO boring.
+ ~ SetSpeaker(Speaker.Misra)
+    That's a bit rude.
+ ~ SetSpeaker(Speaker.Josh)
+    Nothing cool happens.
+ ~ SetSpeaker(Speaker.Josh)
+    Everything's been closing, not like there was much to begin with.
+~ SetSpeaker(Speaker.Misra)
+    It's okay, we'll get back on our feet. 
+    All we need is time. 
+    Time and--
+ ~ SetSpeaker(Speaker.Josh)
+    Yawwwnnnn. Boring.
+    -> DONE
+    
+= wine_josh
+~CompleteQuest(josh_winery_question) 
+ ~ SetSpeaker(Speaker.Josh)
+    That place?
+    It's got good walls. 
+~ SetSpeaker(Speaker.Lupe)
+What does that have to do with anything?
+ ~ SetSpeaker(Speaker.Josh)
+ I dunno, bro.
+ You asked me.
+~ SetSpeaker(Speaker.Lupe)
+    You wouldn't have happened to go up there recently?
+    Say, last night?
+     ~ SetSpeaker(Speaker.Josh)
+    I, uh--
+    # Josh turns his music back up.
+     ~ SetSpeaker(Speaker.Josh)
+    SORRY, CAN'T HEAR YOU.
+    ~ SetSpeaker(Speaker.Lupe)
+    You--
+    ~ SetSpeaker(Speaker.Josh)
+    SORRY. 
+    THIS IS A REALLY GOOD SONG.
+-> DONE
+
+//~CompleteQuest(josh_suspects)
+
+
+
 
 = hosi
     ~ SetSpeaker(Speaker.Lupe)
     What's "HO:SI?"
     ~ SetSpeaker(Speaker.Jenny)
-     Hamster Origins: Space Invaders.
+     Hamster Origins: Snake Invaders.
     ~ SetSpeaker(Speaker.Misra)
      It's the game they're playing.
      They've been trying to beat it for a while now.
