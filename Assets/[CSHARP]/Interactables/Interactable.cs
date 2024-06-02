@@ -87,14 +87,10 @@ public class Interactable : OverlapGrid2D, IInteract
     public event IInteract.OnComplete OnCompleted;
 
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
-    public override void Awake()
-    {
-        base.Awake();
-        Initialize();
-    }
 
-    public virtual void Initialize()
+    public virtual void Start()
     {
+        this.Reset();
 
         // << SET THE INITIAL SPRITE >> ------------------------------------
         // Prioritize the initial sprite that is set in the sprite renderer
@@ -105,9 +101,19 @@ public class Interactable : OverlapGrid2D, IInteract
             _sprite = _spriteRenderer.sprite;
         _spriteRenderer.color = _defaultTint;
 
+        if (Application.isPlaying)
+        {
+            Invoke(nameof(OnStart), 0.1f);
+        }
+    }
+
+    void OnStart()
+    {
         if (onStart)
         {
-            Interact();
+
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            playerInteractor.ForceInteract(this);
         }
     }
 
@@ -249,68 +255,3 @@ public class Interactable : OverlapGrid2D, IInteract
         EnableOutline(false);
     }
 }
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Interactable), true)]
-public class InteractableCustomEditor : OverlapGrid2DEditor
-{
-    SerializedObject _serializedObject;
-    Interactable _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (Interactable)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-
-        GUILayout.Space(10);
-        GUILayout.Label("Interactable Testing", EditorStyles.boldLabel);
-
-        if (!_script.isTarget)
-        {
-            if (GUILayout.Button("Set Target"))
-                _script.TargetSet();
-
-            if (_script.isActive)
-            {
-                if (GUILayout.Button("Continue Interaction"))
-                    _script.Interact();
-
-                if (GUILayout.Button("Complete Interaction"))
-                    _script.Complete();
-
-                if (GUILayout.Button("Reset Interaction"))
-                    _script.Reset();
-            }
-        }
-        else
-        {
-            if (GUILayout.Button("Clear Target"))
-                _script.TargetClear();
-
-            if (!_script.isActive)
-            {
-                if (GUILayout.Button("First Interact"))
-                    _script.Interact();
-            }
-        }
-
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _script.Awake();
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif
