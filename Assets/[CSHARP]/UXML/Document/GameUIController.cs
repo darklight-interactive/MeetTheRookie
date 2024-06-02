@@ -4,6 +4,20 @@ using Darklight.UnityExt.UXML;
 
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Input;
+using System.Linq;
+using System.Collections.Generic;
+using Ink.Runtime;
+using Darklight.UnityExt.Inky;
+using System;
+
+
+
+
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,72 +31,104 @@ public class GameUIController : UXML_UIDocumentObject
     const string INTERACT_PROMPT_TAG = "interact-icon";
     const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
+    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    private Dictionary<SelectableButton, Action> buttonHandlers = new Dictionary<SelectableButton, Action>();
+
     VisualElement _header;
     VisualElement _body;
     VisualElement _footer;
+    GroupBox _choiceBox;
+    bool lockSelection = false;
 
-    [Range(0.001f, 0.25f)]
-    public float textScale = 0.01f;
+
+    public void Awake()
+    {
+        Initialize(preset);
+
+
+
+        // Listen to the input manager
+        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+    }
 
     public void Start()
     {
         _body = ElementQuery<VisualElement>("body");
         _header = ElementQuery<VisualElement>("header");
         _footer = ElementQuery<VisualElement>("footer");
-
-        ControlledLabel label = new ControlledLabel();
-        _footer.Add(label);
-
-        string fullText = "Hello, World! This is a long text string for a Controlled Size Text Element so that it can be tested with rolling text. Thank you for your patience.";
-
-        Coroutine rollingTextRoutine = StartCoroutine(RollTextCoroutine(label, fullText, 0.01f));
-
-
     }
 
-    private IEnumerator RollTextCoroutine(ControlledLabel label, string fullText, float interval)
+    public void LoadChoices(List<Choice> choices)
     {
-        label.fullText = fullText;
-        for (int i = 0; i < fullText.Length; i++)
+        _choiceBox = ElementQuery<GroupBox>("ChoiceBox");
+        _choiceBox.Clear();
+        selectableVectorField.Clear();
+        buttonHandlers.Clear();
+
+        foreach (Choice choice in choices)
         {
-            label.rollingTextPercentage += interval;
-            yield return new WaitForSeconds(interval);
+            SelectableButton button = new SelectableButton();
+            button.text = choice.text;
+            Action handler = () => SelectChoice(choice);
+            button.OnClick += handler;
+            _choiceBox.Add(button);
+            buttonHandlers[button] = handler;
         }
 
-        // break when the text is fully rolled
-        yield return null;
+        // Load the Selectable Elements
+        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        selectableVectorField.Selectables.First().Select();
+    }
+
+    public void SelectChoice(Choice choice)
+    {
+        InkyStoryManager.Iterator.ChooseChoice(choice);
+
+        // Remove OnClick event handlers for each button
+        foreach (SelectableButton button in selectableVectorField.Selectables)
+        {
+            if (buttonHandlers.TryGetValue(button, out var handler))
+            {
+                button.OnClick -= handler;
+            }
+        }
+
+        _choiceBox.Clear();
+    }
+
+
+
+    void OnMoveInputStartAction(Vector2 dir)
+    {
+        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
+        SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
+        Select(buttonInDirection);
+    }
+    void Select(SelectableButton selectedButton)
+    {
+        if (selectedButton == null || lockSelection) return;
+
+        SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        if (selectedButton != previousButton)
+        {
+            previousButton?.Deselect();
+            selectedButton.Select();
+            lockSelection = true;
+            Invoke(nameof(UnlockSelection), 0.1f);
+        }
+    }
+
+    void UnlockSelection()
+    {
+        lockSelection = false;
+    }
+
+
+
+    void OnPrimaryInteractAction()
+    {
+        selectableVectorField.CurrentSelection?.Click();
     }
 
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(GameUIController))]
-public class GameUIControllerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    GameUIController _script;
-
-    public override void OnInspectorGUI()
-    {
-
-        _serializedObject = new SerializedObject(target);
-        _script = (GameUIController)target;
-
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Start"))
-        {
-            _script.Start();
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

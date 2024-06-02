@@ -79,6 +79,20 @@ namespace Darklight.UnityExt.UXML
             _script = (UXML_UIDocumentObject)target;
             _script.Initialize(_script.preset);
         }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            if (GUILayout.Button("Initialize"))
+            {
+                _script.Initialize(_script.preset);
+            }
+
+            base.OnInspectorGUI();
+
+            _serializedObject.ApplyModifiedProperties();
+        }
     }
 #endif
 
