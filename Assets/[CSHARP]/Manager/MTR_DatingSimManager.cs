@@ -8,7 +8,6 @@ using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Audio;
-using FMODUnity;
 
 using Ink.Runtime;
 
@@ -31,6 +30,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     // Choice Variables
     bool choicesActive;
     SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
+    bool isRolling = false;
 
     // UXML Variables
     VisualElement misraImage;
@@ -75,14 +75,15 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         nameTag = root.Q<VisualElement>("NameTag");
         dialogueText = ElementQuery<ControlledLabel>("DialogueText");
         choiceParent = root.Q<VisualElement>("ChoiceParent");
-        
-        if(inCar){ root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
-        else{ root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
+
+        if (inCar) { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
+        else { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
+
+        choiceParent.style.display = DisplayStyle.None;
 
         // Get the story object
         storyObject = InkyStoryManager.GlobalStoryObject;
         storyIterator = InkyStoryManager.Iterator;
-        storyIterator.GoToKnotOrStitch("scene2");
 
         if (!boundEmote)
         {
@@ -139,20 +140,20 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceButtons[index].style.display = DisplayStyle.Flex;
             choiceButtons[index].text = choice.text;
             choiceButtons[index].style.fontSize = textSize.y;
-            choiceButtons[index].RemoveFromClassList("Highlight");
+            choiceButtons[index].Deselect();
             index++;
         }
 
         for (int i = index; i < choiceButtons.Count; i++)
         {
             choiceButtons[i].style.display = DisplayStyle.None;
-            choiceButtons[i].RemoveFromClassList("Highlight");
+            choiceButtons[i].Deselect();
         }
 
         choicesActive = true;
 
         choiceMap.Select(choiceButtons[0]);
-        choiceMap.CurrentSelection.AddToClassList("Highlight");
+        choiceMap.CurrentSelection.Select();
     }
 
     /// <summary>
@@ -183,7 +184,13 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void Select()
     {
-        if (choicesActive)
+        if (isRolling)
+        {
+            StopAllCoroutines();
+            dialogueText.InstantCompleteText();
+            isRolling = false;
+        }
+        else if (choicesActive)
         {
             SelectChoice();
         }
@@ -202,12 +209,12 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         move.y = -move.y;
         if (choiceMap.CurrentSelection != null)
         {
-            choiceMap.CurrentSelection.RemoveFromClassList("Highlight");
+            choiceMap.CurrentSelection.Deselect();
         }
         var selected = choiceMap.getFromDir(move);
         if (selected != null)
         {
-            selected.AddToClassList("Highlight");
+            selected.Select();
         }
     }
 
@@ -272,17 +279,19 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
     {
-        dialogueText.Initialize(fullText); // << Initialized for rolling text
+        isRolling = true;
+        dialogueText.SetFullText(fullText); // << Set rolling text
+        float buffer = 1f;
 
-        while (true)
+        for (int i = 0; i < dialogueText.fullText.Length; i++)
         {
-            for (int i = 0; i < dialogueText.fullText.Length; i++)
-            {
-                dialogueText.RollingTextStep();
-                yield return new WaitForSeconds(interval);
-            }
-            yield return null;
+            dialogueText.RollingTextStep();
+            buffer -= interval;
+            yield return new WaitForSeconds(interval);
         }
+
+        yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
+        isRolling = false;
     }
 
     /// <summary>

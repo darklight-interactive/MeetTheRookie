@@ -85,7 +85,7 @@ namespace Darklight.UnityExt.UXML
             Add(_container);
         }
 
-        public void Initialize(string fullText)
+        public void SetFullText(string fullText)
         {
             this.fullText = fullText;
             SetTextToIndex(0);
@@ -116,6 +116,11 @@ namespace Darklight.UnityExt.UXML
         {
             _currentIndex = Mathf.Min(index, fullText.Length);
             this.text = fullText.Substring(0, _currentIndex);
+        }
+
+        public void InstantCompleteText()
+        {
+            SetTextToIndex(fullText.Length);
         }
     }
 }
