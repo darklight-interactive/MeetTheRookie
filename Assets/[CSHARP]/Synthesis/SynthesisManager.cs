@@ -19,29 +19,23 @@ using UnityEditor;
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject
 {
-    [SerializeField] private UXML_UIDocumentPreset _preset;
     protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
     /// <summary>
     /// Our group for showing the objects visually.
     /// </summary>
-    VisualElement objects;
+    VisualElement objectContainer;
     VisualElement synthesizeButton;
-    public void Awake()
-    {
-        document.visualTreeAsset = _preset.visualTreeAsset;
-        document.panelSettings = _preset.panelSettings;
-    }
 
     bool synthesisActive = false;
     void Start()
     {
-        document.rootVisualElement.visible = false;
-        objects = document.rootVisualElement.Q("objects");
-
+        objectContainer = ElementQuery<VisualElement>("objects");
         synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
+
+        Initialize();
     }
 
     ///oijqwdoijqwodijqwd
@@ -50,7 +44,11 @@ public class SynthesisManager : UXML_UIDocumentObject
 
         //UniversalInputManager.OnMoveInputStarted += SelectMove;
         UniversalInputManager.OnPrimaryInteract += Select;
-        //InkyStoryManager.Instance.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
+        //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
+
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue",
+            (string clue) => AddItem(clue));
+
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
     }
@@ -68,6 +66,11 @@ public class SynthesisManager : UXML_UIDocumentObject
                 selected.AddToClassList("highlight");
             }
         }
+    }
+
+    public void AddClue(string clue)
+    {
+        Debug.Log("SynthesAdding clue: " + clue);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
@@ -135,33 +138,18 @@ public class SynthesisManager : UXML_UIDocumentObject
     }
     */
 
-    /*
-    public object AddItem(object[] args) {
-        if (args.Length < 2) {
-            Debug.LogError("Invalid number of args for AddItem: " + args.Length + " minimum of 2 needed.");
-            return null;
+    public object AddItem(string itemName)
+    {
+        if (synthesisItems.ContainsKey(itemName))
+        {
+            return false;
         }
-        string type = (string)args[0];
-        VisualTreeAsset asset = (VisualTreeAsset)Resources.Load("Synthesis/" + type);
-        var newObj = asset.Instantiate();
-        
-        newObj.name = (string)args[1];
-        newObj.AddToClassList("synthesis-object");
-
-        foreach (var child in newObj.Children()) {
-            if (child.dataSource != null && child.dataSource is SynthesisBinding b) {
-                var source = (SynthesisBinding)b.Clone();
-                if (args.Length == 3) {
-                    source.setValue((string)args[2]);
-                }
-                child.dataSource = source;
-            }
-        }
-        objects.Add(newObj);
-        itemsSelection.Add(newObj);
-        return synthesisItems.TryAdd(newObj.name, newObj);
+        var synthesisObj = new SynthesisObject();
+        synthesisItems.Add(itemName, synthesisObj);
+        objectContainer.Add(synthesisObj);
+        itemsSelection.Add(synthesisObj);
+        return true;
     }
-    */
 
     public object RemoveItem(object[] args) {
         Debug.Log(args[0]);
@@ -198,32 +186,3 @@ public class SynthesisManager : UXML_UIDocumentObject
         document.rootVisualElement.visible = visible;
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(SynthesisManager))]
-public class SynthesisManagerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    SynthesisManager _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (SynthesisManager)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif
