@@ -22,7 +22,11 @@ public class NPC_Interactable : Interactable, IInteract
     {
         get
         {
-            List<string> speakers = InkyStoryManager.SpeakerList;
+            List<string> speakers = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                speakers = InkyStoryManager.SpeakerList;
+            }
             return speakers;
         }
     }

@@ -27,6 +27,7 @@ public class PlayerInteractor : OverlapGrid2D
     void RefreshRadar()
     {
         if (_foundInteractables.Count == 0) return;
+        if (playerController.currentState == PlayerState.INTERACTION) return;
 
         // Temporary list to hold items to be removed
         List<Interactable> toRemove = new List<Interactable>();
@@ -87,7 +88,6 @@ public class PlayerInteractor : OverlapGrid2D
 
     public bool InteractWithTarget()
     {
-        if (_foundInteractables.Count == 0) return false;
         if (targetInteractable == null) return false;
         if (targetInteractable.isComplete) return false;
 
@@ -109,6 +109,19 @@ public class PlayerInteractor : OverlapGrid2D
         activeInteractable.Interact(); // << MAIN INTERACTION
 
         return true;
+    }
+
+    public void ForceInteract(Interactable interactable)
+    {
+        if (interactable == null) return;
+        Debug.Log($"Player Interactor :: Force Interact with {interactable.name}");
+
+        // Set the target interactable
+        targetInteractable = interactable;
+        targetInteractable.TargetSet();
+
+        // Interact with the target
+        InteractWithTarget();
     }
 
     public void ExitInteraction()
