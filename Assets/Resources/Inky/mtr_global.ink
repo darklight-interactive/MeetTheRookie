@@ -20,19 +20,16 @@ INCLUDE _characters/Irene.ink
 //INCLUDE mtr_level3_wineryMorning.ink
 
 INCLUDE _day 1/mtr_level1_melOmart.ink
-INCLUDE _day 1/mtr_level2_precinct_DS.ink
 INCLUDE _day 1/mtr_level3_wineryMorning.ink
 INCLUDE _day 1/mtr_level4_mainstreet.ink
 INCLUDE _day 1/mtr_level4.2_genstore.ink
 INCLUDE _day 1/mtr_level4.3_arcade.ink
 INCLUDE _day 1/mtr_level4.4_bar.ink
-INCLUDE _day 1/mtr_level4.5_bar_DS.ink
-INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
-EXTERNAL AddSynthesisClue(item)
+
 
 // ====== SPEAKER HANDLING == >>
 LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
@@ -67,7 +64,6 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 === function DiscoverClue(clue)
     #DiscoverClue >> {clue}
     ~ GLOBAL_KNOWLEDGE += clue
-    ~ AddSynthesisClue(clue)
 === function IsClueFound(clue)
     ~ return GLOBAL_KNOWLEDGE ? clue
 
@@ -95,17 +91,19 @@ LIST Level4_Quests = visited_goop, visited_symbol, visited_misra, visited_roy, c
 
 
 
-LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing, golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies, HOSI_calvin, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned, KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned, sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence, HOSI_highscore, personal_info_jenny, personal_info_josh, winery_josh, KR_josh
+LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing, golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies, HOSI_calvin, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned, KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned, sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence, HOSI_highscore, personal_info_jenny, personal_info_josh, winery_josh, KR_josh, calvin_questions_intro, josh_questions_intro
 
 //LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing, golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies, HOSI_calvin, jenny_suspects, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned, KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned, sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence, HOSI_highscore, personal_info_jenny, winery_jenny, KR_Jenny, personal_info_josh, winery_josh, KR_josh
 
-// ----------------------------------------------------
-//  Dating Sim Variables 
-// ----------------------------------------------------
-VAR reported_incident = false
-VAR case_file_received = false
-VAR love_points = 0
-VAR tease_level = 0
-VAR sincerity_level = 0
-VAR spooked = false
-VAR snooped = false
+
+
+
+
+
+
+
+
+
+
+
+
