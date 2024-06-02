@@ -17,9 +17,7 @@
      ican'thelpyou. 
     ~ SetSpeaker(Speaker.Lupe)
      ...what??
-    ~ CompleteQuest(calvin_first_interact)
-    {IsQuestComplete() && IsQuestComplete() && IsQuestComplete():
-        -> hosi
+        //-> hosi
     }
     -> DONE
 }

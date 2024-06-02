@@ -55,7 +55,7 @@
     * [Calvin] -> Calvin_Dialogue
     * [Josh] -> Josh_Dialogue
     
-    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
+//    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
     
 = exit_scene
     ~ SetSpeaker(Speaker.Jenny)

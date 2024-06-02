@@ -21,11 +21,9 @@
         ~ SetSpeaker(Speaker.Lupe)
          HO:SI...?
         ~ DiscoverClue(HOSI_mentioned)
-        {IsQuestComplete() && IsQuestComplete() && IsQuestComplete():
-            -> hosi
         }
         -> DONE
-}
+
 
 = hosi
     ~ SetSpeaker(Speaker.Lupe)
@@ -90,7 +88,7 @@
      Case in point.
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(jenny_crazies)
-    ~ DiscoverClue(KR_Jenny)
+//    ~ DiscoverClue(KR_Jenny)
     ~ CompleteQuest(KR_jenny_quest)
         -> DONE
 }
@@ -132,11 +130,11 @@
              That's the truth.
             ~ SetSpeaker(Speaker.Lupe)
              Hmm.
-            ~ DiscoverClue(winery_jenny)
+//            ~ DiscoverClue(winery_jenny)
                 -> DONE
         }
         - else:
-            ~ DiscoverClue(winery_jenny)
+//            ~ DiscoverClue(winery_jenny)
             -> DONE
 }
 
@@ -169,7 +167,7 @@
      Gah.
      Dumb old Goat.
     // Add to Synthesis: Who broke into the Old Winery?
-    ~ DiscoverClue(jenny_suspects)
+   // ~ DiscoverClue(jenny_suspects)
         -> DONE
 }
 
@@ -190,6 +188,6 @@
 * {jenny_crazies} "Crazies"?
     -> DONE
 
-* {IsClueFound(personal_info_jenny) && IsClueFound(winery_jenny) && IsClueFound(KR_Jenny)} [Right then.]
+//* {IsClueFound(personal_info_jenny) && IsClueFound(winery_jenny) && IsClueFound(KR_Jenny)} [Right then.]
     ~ CompleteQuest(visited_jenny)
     -> DONE
