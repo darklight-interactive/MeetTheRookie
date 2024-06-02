@@ -12,7 +12,6 @@
      I DUNNO, CAN YOU?
     ~ SetSpeaker(Speaker.Lupe)
      ...
-    ~ CompleteQuest(josh_first_interact)
     -> DONE
 }
 

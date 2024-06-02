@@ -41,6 +41,7 @@ namespace Darklight.Game.Camera
         {
             _focusTarget = target;
         }
+        private CameraBounds cameraBounds;
 
         [SerializeField, ShowOnly] private Vector3 _offsetPosition;
         public void SetOffsetRotation(Transform mainTarget, Transform secondTarget)
@@ -78,6 +79,18 @@ namespace Darklight.Game.Camera
             return _currentFOV;
         }
 
+        private void Awake() {
+            CameraBounds[] bounds = FindObjectsByType<CameraBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            if (bounds.Length > 0)
+            {
+                cameraBounds = bounds[0];
+            }
+            else
+            {
+                cameraBounds = null;
+            }
+        }
+
         public virtual void Update()
         {
             GetCamerasInChildren();
@@ -98,7 +111,17 @@ namespace Darklight.Game.Camera
 
             // set the position
             Vector3 newPosition = _focusTargetPosition + _offsetPosition;
-            transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
+            Vector3 offsetDirection = (newPosition - transform.position).normalized;
+            float halfWidth = Mathf.Tan(0.5f*Mathf.Deg2Rad*GetCurrentFOV())*_distanceZ*_camerasInChildren[0].aspect;
+            if (cameraBounds)
+            {
+                if ((transform.position.x - halfWidth > cameraBounds.leftBound && offsetDirection.x < 0) || (transform.position.x + halfWidth < cameraBounds.rightBound && offsetDirection.x > 0)){
+                    transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
+                }
+            }
+            else{
+                transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
+            }
 
             // set the rotation
             Quaternion newRotation = GetLookRotation(newPosition, _focusTargetPosition + _focusTargetPositionOffset);

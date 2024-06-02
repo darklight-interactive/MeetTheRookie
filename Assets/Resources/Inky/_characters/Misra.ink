@@ -70,25 +70,16 @@ Idk to each their own , just take it away now. -> DONE
 
 
 = 4_1
-{IsQuestComplete(visited_misra) == false:
-    ~ CompleteQuest(visited_misra)
+{IsQuestComplete(visited_roy):
     ~ SetSpeaker(Speaker.Misra)
-    [Misra] Here we are! 
-    [Misra] Kettle Rock, Main Street. Heart of the Downtown. 
-    [Misra] There's bound to be some locals around - where do you want to start?
+    [Misra] I'm sorry if Roy seems like a bit of a downer.
+    [Misra] He has no faith.
     ~ SetSpeaker(Speaker.Lupe)
--else: 
-    {IsQuestComplete(visited_roy):
-        ~ SetSpeaker(Speaker.Misra)
-        [Misra] I'm sorry if Roy seems like a bit of a downer.
-        [Misra] He has no faith.
-        ~ SetSpeaker(Speaker.Lupe)
-        [Lupe] He seems like he's got a pretty good acceptance of the situation.
-        [Lupe] From what I can tell.
-        ~ SetSpeaker(Speaker.Misra)
-        [Misra] Well, you've only been here a day...
-        ~ SetSpeaker(Speaker.Lupe)
-    }
+    [Lupe] He seems like he's got a pretty good acceptance of the situation.
+    [Lupe] From what I can tell.
+    ~ SetSpeaker(Speaker.Misra)
+    [Misra] Well, you've only been here a day...
+    ~ SetSpeaker(Speaker.Lupe)
 }
 {IsQuestComplete(visited_jenny) && IsQuestComplete(complete_arcade):
     ~ SetSpeaker(Speaker.Misra)

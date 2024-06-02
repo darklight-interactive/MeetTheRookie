@@ -4,13 +4,15 @@
     * [store_window] -> store_window
     * [merch_shirt] -> merch_shirt
     * [merch_sticker] -> merch_sticker
-    + [merch_pamphlet]
-        # Lupe leans close to a pamphlet that has four pages detailing the town history.
-        ~ DiscoverClue(merch_pamphlet)
-    -> DONE
-   
-   * {IsClueFound(merch_pamphlet)} Do you mind explaining this pamphlet a bit? -> DONE
-    
+    * [merch_pamphlet] -> pamphlet
+        ->DONE
+= pamphlet
+    ~ DiscoverClue(merch_pamphlet)
+    ~ SetSpeaker(Speaker.Lupe)
+    Wow, it's a pamphlet w/ loads of info!
+   -> DONE
+= roy
+    -> Roy_Dialogue
 = store_window
     -> Roy_Dialogue.window
     
@@ -29,5 +31,3 @@
      Take care!
         # SCENE CHANGE
         -> DONE
-= roy
-    -> Roy_Dialogue

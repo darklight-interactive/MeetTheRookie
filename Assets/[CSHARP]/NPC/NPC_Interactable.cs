@@ -22,7 +22,11 @@ public class NPC_Interactable : Interactable, IInteract
     {
         get
         {
-            List<string> speakers = InkyStoryManager.SpeakerList;
+            List<string> speakers = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                speakers = InkyStoryManager.SpeakerList;
+            }
             return speakers;
         }
     }
@@ -30,7 +34,7 @@ public class NPC_Interactable : Interactable, IInteract
     [Dropdown("_speakerOptions")]
     public string speakerTag;
 
-    public void Start()
+    public override void Start()
     {
         Reset();
 
@@ -57,16 +61,3 @@ public class NPC_Interactable : Interactable, IInteract
         };
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(NPC_Interactable))]
-public class InteractableNPCCustomEditor : InteractableCustomEditor
-{
-    public override void OnInspectorGUI()
-    {
-        NPC_Interactable interactableNPC = (NPC_Interactable)target;
-
-        base.OnInspectorGUI();
-    }
-}
-#endif

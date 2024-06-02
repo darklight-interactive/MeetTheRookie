@@ -6,6 +6,10 @@ using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+using Ink.Runtime;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -109,6 +113,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Create a new GameUIController if it doesn't
             _gameUI = CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            _gameUI.transform.SetParent(transform);
             return _gameUI;
         }
     }
@@ -158,6 +163,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             DestroySpeechBubble();
         }
 
+        // Return if the application is not playing
+        if (!Application.isPlaying) { return; }
+
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
         (Vector3, Vector2Int) bubbleData = GetSpeakerSpeechBubblePositionAndDirection();
@@ -177,7 +185,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.Initialize(fullText);
+        speechBubble.SetFullText(fullText);
 
         while (true)
         {
@@ -255,6 +263,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
         return (bubblePosition, bubbleDirection);
     }
+
+
+
 
     #region ------ [[ INTERACT ICON ]] ------------------------
     [Header("Interact Icon")]
