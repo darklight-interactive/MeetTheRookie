@@ -80,7 +80,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         Button button = new Button();
         button.text = clue;
         button.name = clue;
-        objectContainer.Add(button);
+        //objectContainer.Add(button);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();

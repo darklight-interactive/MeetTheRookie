@@ -22,7 +22,7 @@ namespace Darklight.UnityExt.SceneManagement
 
         [SerializeField, ShowOnly] private string _name = "default";
         [SerializeField, ShowOnly] private string _path;
-        [SerializeField, ShowOnly] private bool _sceneFound;
+        private bool _sceneFound;
         private Scene _scene;
 
         public string Name => _name;

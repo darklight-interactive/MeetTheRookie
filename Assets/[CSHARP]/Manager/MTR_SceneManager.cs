@@ -18,7 +18,7 @@ using UnityEditor;
 public class MTR_SceneData : BuildSceneData
 {
     private InkyStoryObject _globalStoryObject;
-    [SerializeField] private List<string> _knotNames = new List<string> { "default" };
+    [SerializeField, HideInInspector] private List<string> _knotNames = new List<string> { "default" };
 
     [Dropdown("_knotNames")]
     public string knot;
@@ -32,7 +32,7 @@ public class MTR_SceneData : BuildSceneData
         if (InkyStoryManager.Instance != null)
         {
             _globalStoryObject = InkyStoryManager.GlobalStoryObject;
-            _knotNames = _globalStoryObject.knotNames;
+            _knotNames = _globalStoryObject.KnotNameList;
         }
     }
 }

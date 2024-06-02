@@ -1,19 +1,32 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using System.Collections.Generic;
 
 namespace Darklight.UnityExt.Inky
 {
     public class InkyEditorWindow : EditorWindow
     {
-        public Vector2 _scrollPosition;
+        private Vector2 _scrollPosition;
 
         [MenuItem("DarklightExt/InkyEditorWindow")]
         public static void ShowWindow()
         {
             GetWindow<InkyEditorWindow>();
+        }
+
+        private void OnEnable()
+        {
+            EditorApplication.update += UpdateGUI;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.update -= UpdateGUI;
+        }
+
+        private void UpdateGUI()
+        {
+            Repaint();
         }
 
         private void OnGUI()
@@ -24,25 +37,33 @@ namespace Darklight.UnityExt.Inky
                 EditorGUILayout.HelpBox("Inky Story Manager is not initialized.", MessageType.Warning);
                 return;
             }
-            SerializedObject serializedObject = new SerializedObject(InkyStoryManager.Instance);
+
+            // --------------------- [[ DISPLAY STORY MANAGER ]] --------------------- >>
+            SerializedObject serializedStoryManager = new SerializedObject(InkyStoryManager.Instance);
+            serializedStoryManager.Update();
+            InkyStoryManager.Console.DrawInEditor();
+            EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_globalStoryObject"));
+            EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_currentSpeaker"));
+            serializedStoryManager.ApplyModifiedProperties();
+
+            // --------------------- [[ DISPLAY STORY OBJECT ]] --------------------- >>
             InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
-            List<string> globalKnots = InkyStoryObject.GetAllKnots(storyObject.StoryValue);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_globalStoryObject"));
-
-            // --------------------- [[ DISPLAY KNOTS ]] --------------------- >>
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_speakerList"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_globalKnots"));
-
-            // --------------------- [[ DISPLAY VARIABLES ]] --------------------- >>
-            if (!Application.isPlaying)
+            if (storyObject == null)
             {
-                EditorGUILayout.HelpBox("Enter Play Mode to see Inky runtime values.", MessageType.Info);
+                EditorGUILayout.HelpBox("Story Object is not initialized.", MessageType.Warning);
                 return;
             }
+            SerializedObject serializedStoryObject = new SerializedObject(storyObject);
+            serializedStoryObject.Update();
+            serializedStoryObject.ApplyModifiedProperties();
+
 
 
             // Fetch the global variables from the story
+            EditorGUILayout.Space(10);
+            GUILayout.Label("Variables", EditorStyles.boldLabel);
             List<InkyVariable> variables = InkyStoryObject.GetVariables(storyObject.StoryValue);
+            List<string> knowledge = storyObject.GetVariableByName("GLOBAL_KNOWLEDGE").ToStringList();
 
             // Display the variables
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
@@ -54,4 +75,3 @@ namespace Darklight.UnityExt.Inky
         }
     }
 }
-

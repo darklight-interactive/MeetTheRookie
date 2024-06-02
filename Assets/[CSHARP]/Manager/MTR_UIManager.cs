@@ -212,7 +212,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     (Vector3, Vector2Int) GetSpeakerSpeechBubblePositionAndDirection()
     {
-        string currentSpeaker = InkyStoryManager.Instance.CurrentSpeaker;
+        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Vector3 bubblePosition = Vector3.zero;
         Vector2Int bubbleDirection = Vector2Int.zero;
 

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5312689513072785689
 Transform:
   m_ObjectHideFlags: 0
@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
+  clueLibrary: {fileID: 11400000, guid: a3f42b5a64f1aa24bacc88d2196c2e28, type: 2}
 --- !u!1 &3100972142227852913
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,37 +301,12 @@ MonoBehaviour:
   - Speaker.Josh
   - Speaker.Irene
   - Speaker.Jenkins
-  _globalKnots:
-  - SetSpeaker
-  - SetActiveQuestChain
-  - StartQuest
-  - CompleteQuest
-  - IsQuestComplete
-  - IsQuestActive
-  - DiscoverClue
-  - IsClueFound
-  - Misra_Dialogue
-  - Roy_Dialogue
-  - Jenny_Dialogue
-  - Calvin_Dialogue
-  - Josh_Dialogue
-  - Jenkins_Dialogue
-  - Irene_Dialogue
-  - level1
-  - scene1_0
-  - scene1_1
-  - scene1_2
-  - scene1_3
-  - scene1_4
-  - level3
-  - scene3_1
-  - scene3_2
-  - scene4_1
-  - scene4_4
-  - scene4_3
-  - scene4_2
-  - global decl
+  _globalKnotList: []
   _currentSpeaker: Lupe
+  _mainQuestName: 
+  _activeQuestChain: []
+  _completedQuestChain: []
+  _globalKnowledgeList: []
 --- !u!114 &2433518505442435673
 MonoBehaviour:
   m_ObjectHideFlags: 0
