@@ -35,13 +35,15 @@ namespace Darklight.UnityExt.SceneManagement
                 {
                     Debug.Log($"{this.name} -> Creating new scene data for {scenePath}.");
                     tempData[i] = new TSceneData();
-                    tempData[i].InitializeData(scenePath);
                 }
                 // Otherwise, use the existing scene data.
                 else
                 {
                     tempData[i] = this.buildSceneData[i];
                 }
+
+                // Initialize the scene data.
+                tempData[i].InitializeData(scenePath);
             }
 
             // Update the build scene data.
