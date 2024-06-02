@@ -29,7 +29,7 @@ INCLUDE _day 1/mtr_level4.4_bar.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
-
+EXTERNAL AddSynthesisClue(item)
 
 // ====== SPEAKER HANDLING == >>
 LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
@@ -64,6 +64,7 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 === function DiscoverClue(clue)
     #DiscoverClue >> {clue}
     ~ GLOBAL_KNOWLEDGE += clue
+    ~ AddSynthesisClue(clue)
 === function IsClueFound(clue)
     ~ return GLOBAL_KNOWLEDGE ? clue
 

@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/VisualBase/SynthVisuals.uss?fileID=7433441132597879392&amp;guid=5185de967380c44c7b9381aa27e58176&amp;type=3#SynthVisuals" />
     <engine:VisualElement name="Base" tabindex="-1" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/VisualBase/synthesisBackground.jpeg?fileID=2800000&amp;guid=85b3aa261eb4d4d31a07a3dbada32500&amp;type=3#synthesisBackground&quot;);">
-        <engine:VisualElement name="Mystery" style="flex-grow: 0; height: 80px;">
+        <engine:VisualElement name="Mystery" style="flex-grow: 0; height: 150px;">
             <engine:VisualElement name="MysteryBG" style="flex-grow: 0; background-color: rgba(36, 35, 43, 0.83); flex-direction: row; justify-content: space-around; align-self: auto; height: 150px;">
                 <engine:Button text="Button" name="LeftArrow" class="Arrow" />
                 <engine:Label text="What Happened at the Winery?" name="MysteryTitle" style="-unity-text-align: middle-left; font-size: 50px; color: rgb(255, 255, 255);" />
@@ -9,8 +9,8 @@
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="Items" style="flex-grow: 1;" />
-        <engine:VisualElement name="lupe" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/[SPRITES]/_characters/lupe_spritesheet.png?fileID=2800000&amp;guid=6b167707065891e4c826ace85794e423&amp;type=3#lupe_spritesheet&quot;); position: absolute; width: 256px; height: 512px; bottom: -250px; align-self: center;" />
-        <engine:VisualElement name="Bottom" style="flex-grow: 0; background-color: rgba(36, 35, 43, 0.83); height: 75px; flex-direction: row; justify-content: space-around;">
+        <engine:VisualElement name="lupe" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/[SPRITES]/_characters/lupe_spritesheet.png?fileID=2800000&amp;guid=6b167707065891e4c826ace85794e423&amp;type=3#lupe_spritesheet&apos;); position: absolute; width: 256px; height: 512px; bottom: -250px; align-self: center;" />
+        <engine:VisualElement name="Bottom" style="flex-grow: 0; background-color: rgba(36, 35, 43, 0.83); height: 90px; flex-direction: row; justify-content: space-around;">
             <engine:VisualElement class="Controls" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/VisualBase/Z%20input%20.PNG?fileID=2800000&amp;guid=5b89e296700074cc0819e3f0878c2833&amp;type=3#Z input &quot;);">
                 <engine:Label text="Select" style="-unity-text-align: middle-center; color: rgb(255, 255, 255); left: 86px; top: 2px; font-size: 40px; -unity-font-definition: url(&quot;project://database/Assets/[USER%20INTERFACE]/_fonts/pixelplay.ttf?fileID=12800000&amp;guid=e2cb29917e71d184a9ea0469322749c1&amp;type=3#pixelplay&quot;);" />
             </engine:VisualElement>
