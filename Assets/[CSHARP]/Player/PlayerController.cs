@@ -196,6 +196,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void EnterInteraction()
     {
+        if (stateMachine == null) return;
         stateMachine.GoToState(PlayerState.INTERACTION);
         //Debug.Log("Player Controller :: Enter Interaction");
     }

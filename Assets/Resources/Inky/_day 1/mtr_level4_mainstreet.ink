@@ -35,9 +35,16 @@ VAR closed_signs = 0
 
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
-
+= misra_cutscene
+    ~ CompleteQuest(visited_misra)
+    ~ SetSpeaker(Speaker.Misra)
+    [Misra] Here we are! 
+    [Misra] Kettle Rock, Main Street. Heart of the Downtown. 
+    [Misra] There's bound to be some locals around - where do you want to start?
+    ~ SetSpeaker(Speaker.Lupe)
+    ->DONE
 = talk_to_misra
-    -> Misra_Dialogue
+    -> Misra_Dialogue.4_1
 = door_idahome_and_goods
     ~ ChangeGameScene("scene4_2")
     -> DONE
