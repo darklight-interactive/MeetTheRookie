@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
             {PlayerState.WALK, new FinitePlayerState(PlayerState.WALK)},
             {PlayerState.INTERACTION, new FinitePlayerState(PlayerState.INTERACTION)},
             {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)},
-        }, PlayerState.INTERACTION, this);
+        }, PlayerState.IDLE, this);
     }
 
     void Start()
