@@ -13,13 +13,12 @@
 = jenny 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
     {IsQuestComplete(lupe_not_a_cop): //lupe did intro before questions
-    
-        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_local_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
+        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
             -> jenny_suspects
                 
         - else:
         
-            {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_local_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question):
+            {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question):
                 ~ SetSpeaker(Speaker.Jenny)
                 I've already told you what I know.
                 I've got a highscore to beat.
@@ -67,13 +66,13 @@
      HO:SI...?
     {IsQuestComplete(calvin_first_interact) && IsQuestComplete(josh_first_interact) && IsQuestComplete(jenny_first_interact):
         -> hosi
+        
     -  else: 
         ~ SetSpeaker(Speaker.Jenny)
         Do you mind?
         -> DONE 
     }
 }
-
 = jenny_questions
     * [Tell me about Kettle Rock.] -> KR_Jenny
     * [The Old Winery on the hill...] -> winery_jenny
@@ -135,6 +134,7 @@
                 
         - else:
             ~ DiscoverClue(winery_jenny)
+            ~ CompleteQuest(jenny_winery_question)
             -> DONE
         }
 = personal_jenny
@@ -151,16 +151,20 @@
     
 = hmcrazies
     ~ SetSpeaker(Speaker.Jenny)
+    ~ CompleteQuest(jenny_crazies_question)
+    .
     As in, crazy people.
     ~ SetSpeaker(Speaker.Lupe)
     Yeah, I got that part.
     ~ SetSpeaker(Speaker.Jenny)
     Uh, it's kinda self explanatory. 
+    
     -> DONE
     
 = jenny_suspects
 ~ SetSpeaker(Speaker.Lupe)
-Say I wanted to learn more about the Winery...anyone been talking about it lately?
+    .   
+    Say I wanted to learn more about the Winery...anyone been talking about it lately?
  ~ SetSpeaker(Speaker.Jenny)
      Oh, God. 
      Jenkins won't shut up about it.
@@ -174,11 +178,23 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
 = calvin 
 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
-
-    {IsQuestComplete(calvin_KR_question) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_winery_question):
-        ~ SetSpeaker(Speaker.Calvin)
-        SorryI'vegotnothingelseforyou.
+ //lupe did intro before questions
+        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
+            -> calvin_sus
+                
+        - else:
         
+            {IsQuestComplete(calvin_KR_question) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_winery_question):
+                 ~ SetSpeaker(Speaker.Calvin)
+                 SorryI'vegotnothingelseforyou.
+                    -> DONE
+                
+            - else:
+                -> calvin_questions
+            }
+        }
+
+     
     - else:
         {IsQuestComplete(calvin_questions_intro):
             -> calvin_questions
@@ -194,6 +210,7 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
             -> calvin_questions
         }
     }
+
     
 - else: //Lupe hasn't asked about hosi
     Excuse me?
@@ -215,8 +232,9 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
     -else:
         ->DONE
     }
-    
-}
+  
+ 
+
 = calvin_questions
 
 * [So...you like HO:SI?] -> cal_hosi
@@ -225,7 +243,7 @@ Say I wanted to learn more about the Winery...anyone been talking about it latel
 
 * {HOSI_calvin}[The Old Winery on the hill...] -> winery_calvin
 
-* {HOSI_calvin}[So, do you like living in Kettle Rock?] -> KR_calvin
+* {HOSI_calvin}[Do you like living in Kettle Rock?] -> KR_calvin
 
 
 
@@ -242,9 +260,8 @@ No.
 The Snake Invaders are the bad guys.
 I don't like being the bad guy.
 -> DONE
-
 =personal_info_calvin
-~ CompleteQuest(calvin_local_question)
+~ CompleteQuest(calvin_personal_question)
 ~ SetSpeaker(Speaker.Calvin)
  .
  Yeah.
@@ -264,8 +281,8 @@ But uh, what was your name?
 Calvin. Calvin Coorsby.
 ~ SetSpeaker(Speaker.Lupe)
 Thanks, Calvin.
--> DONE
 
+-> DONE
 =winery_calvin
 ~ CompleteQuest(calvin_winery_question)
 ~ SetSpeaker(Speaker.Calvin)
@@ -294,8 +311,9 @@ And the stupid Goats were always up there, too.
     -> DONE
 }
 =KR_calvin
-~ CompleteQuest(calvin_KR_question) 
+~ CompleteQuest(calvin_KR_questions) 
  ~ SetSpeaker(Speaker.Calvin)
+ .
 It's fine, I guess.
 Not much to do other than game and--
  ~ SetSpeaker(Speaker.Lupe)
@@ -303,11 +321,23 @@ Not much to do other than game and--
  ~ SetSpeaker(Speaker.Calvin)
 Er, nothing.
     -> DONE
-
-
+= calvin_sus
+ ~ SetSpeaker(Speaker.Calvin)
+ Uhhhhh...
+ Jenkins Tomm.
+ ~ SetSpeaker(Speaker.Lupe)
+He used to work there.
+    -> DONE
+    
 = josh 
 {IsQuestComplete(what_is_hosi): 
 // lupe asked about hosi
+   {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
+            -> josh_sus
+                
+
+        - else:
+
     {IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
         ~ SetSpeaker(Speaker.Josh)
         YOU DIG IT?
@@ -344,7 +374,7 @@ Er, nothing.
             -> josh_questions
         }
     }
-
+}
 - else: //Lupe hasn't asked about hosi
     ~ CompleteQuest(josh_first_interact)
     ~ SetSpeaker(Speaker.Lupe)
@@ -359,6 +389,7 @@ Er, nothing.
         -> DONE
     }
 }
+
 
 =josh_questions
 * [So. Who're you?] -> josh_personal_info
@@ -386,7 +417,6 @@ You don't get it?
 ~ SetSpeaker(Speaker.Lupe)
 I, uh...no?
 -> DONE
-
 = KettleR_josh
 ~CompleteQuest(josh_KR_question) 
  ~ SetSpeaker(Speaker.Josh)
@@ -433,9 +463,14 @@ What does that have to do with anything?
 -> DONE
 
 //~CompleteQuest(josh_suspects)
-
-
-
+= josh_sus
+~SetSpeaker(Speaker.Lupe)
+    JOSH.
+    IF YOU HAD TO PICK ONE PERSON IN TOWN THAT MIGHT'VE BEEN AT THE WINERY LAST NIGHT,
+    WHO WOULD IT BE?
+~SetSpeaker(Speaker.Josh)
+I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
+-> DONE
 
 = hosi
     ~ SetSpeaker(Speaker.Lupe)
