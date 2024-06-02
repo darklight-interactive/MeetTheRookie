@@ -104,7 +104,7 @@ namespace Darklight.UnityExt.Inky
             _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
             //Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
-            _globalKnots = _globalStoryObject.KnotNames;
+            _globalKnots = _globalStoryObject.knotNames;
             //Debug.Log($"{Prefix} >> Global Knots Count : {GlobalKnots.Count}");
 
             // << OBSERVE VARIABLES >>

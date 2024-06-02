@@ -121,8 +121,7 @@ namespace Darklight.UnityExt.Inky
         [SerializeField]
         private List<InkyKnot> _knots;
 
-        [SerializeField]
-        private List<InkyVariable> _variables;
+        [SerializeField] private List<InkyVariable> _variables;
         private List<string> _globalTags;
 
         // ------------------------------ [[ PUBLIC METHODS ]] ------------------------------ >>
@@ -131,7 +130,7 @@ namespace Darklight.UnityExt.Inky
         /// Public reference to the Ink story inside the StoryObject.
         /// </summary>
         public Story StoryValue => this._story;
-        public List<string> KnotNames => _knots.Select(knot => knot.name).ToList();
+        public List<string> knotNames;
 
         /// <summary>
         /// Initializes the story object with data from the given Inky TextAsset.
@@ -147,9 +146,9 @@ namespace Darklight.UnityExt.Inky
             }
 
             this._story = CreateStory(_textAsset);
-            this._knots = GetAllKnots(_story)
-                .Select(knot => new InkyKnot
-                {
+            this.knotNames = GetAllKnots(_story);
+            this._knots = knotNames.Select(knot => new InkyKnot
+            {
                     name = knot,
                     stitches = GetAllStitchesInKnot(_story, knot)
                 })

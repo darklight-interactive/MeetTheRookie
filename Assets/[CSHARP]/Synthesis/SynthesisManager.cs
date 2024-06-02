@@ -14,13 +14,17 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Handle the UI and <see cref="SynthesisObject"/>s.
+/// Handle the UI and <see cref="SynthesisClueElement"/>s.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject
 {
-    protected Dictionary<string, SynthesisObject> synthesisItems = new Dictionary<string, SynthesisObject>();
+    const string LIBRARY_PATH = "Assets/Resources/Synthesis";
+    const string LIBRARY_NAME = "SynthesisClueLibrary";
+    public SynthesisClueLibrary clueLibrary;
+    protected Dictionary<string, SynthesisClueElement> synthesisItems = new Dictionary<string, SynthesisClueElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
+
 
     /// <summary>
     /// Our group for showing the objects visually.
@@ -31,6 +35,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     bool synthesisActive = false;
     void Start()
     {
+        clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
+
         objectContainer = ElementQuery<VisualElement>("objects");
         synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
@@ -47,7 +53,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
 
         InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue",
-            (string clue) => AddItem(clue));
+            (string clue) => AddClue(clue));
 
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
@@ -70,7 +76,11 @@ public class SynthesisManager : UXML_UIDocumentObject
 
     public void AddClue(string clue)
     {
-        Debug.Log("SynthesAdding clue: " + clue);
+        Debug.Log("Synthesis Adding clue: " + clue);
+        Button button = new Button();
+        button.text = clue;
+        button.name = clue;
+        objectContainer.Add(button);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
@@ -144,7 +154,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         {
             return false;
         }
-        var synthesisObj = new SynthesisObject();
+        var synthesisObj = new SynthesisClueElement();
         synthesisItems.Add(itemName, synthesisObj);
         objectContainer.Add(synthesisObj);
         itemsSelection.Add(synthesisObj);
@@ -171,7 +181,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     }
 
     [Obsolete("Dragging should not be used for synthesis items.")]
-    public SynthesisObject OverlappingObject(VisualElement synthesisObj) {
+    public SynthesisClueElement OverlappingObject(VisualElement synthesisObj)
+    {
         var rect = synthesisObj.worldBound;
         foreach (var obj in synthesisItems) {
             if (obj.Value != synthesisObj && obj.Value.worldBound.Overlaps(rect, true)) {

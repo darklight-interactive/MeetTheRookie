@@ -7,6 +7,8 @@ using FMODUnity;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,24 +17,26 @@ using UnityEditor;
 [System.Serializable]
 public class MTR_SceneData : BuildSceneData
 {
-    private List<string> _knotNames
-    {
-        get
-        {
-            List<string> names = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                return InkyStoryManager.GlobalStoryObject.KnotNames;
-            }
-            return names;
-        }
-    }
+    private InkyStoryObject _globalStoryObject;
+    [SerializeField] private List<string> _knotNames = new List<string> { "default" };
 
-    [NaughtyAttributes.Dropdown("_knotNames")]
+    [Dropdown("_knotNames")]
     public string knot;
 
     public EventReference backgroundMusicEvent;
+
+    public override void InitializeData(string path)
+    {
+        base.InitializeData(path);
+
+        if (InkyStoryManager.Instance != null)
+        {
+            _globalStoryObject = InkyStoryManager.GlobalStoryObject;
+            _knotNames = _globalStoryObject.knotNames;
+        }
+    }
 }
+
 
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.

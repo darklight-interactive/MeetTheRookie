@@ -1,13 +1,14 @@
 using UnityEngine.UIElements;
 
 [UxmlElement]
-public partial class SynthesisObject : VisualElement
+public partial class SynthesisClueElement : VisualElement
 {
-    public new class UxmlFactory : UxmlFactory<SynthesisObject> { }
+    public new class UxmlFactory : UxmlFactory<SynthesisClueElement> { }
 
     public Label noteHeader;
-    
-    public SynthesisObject() {
+
+    public SynthesisClueElement()
+    {
         AddToClassList("synthesis-object");
 
         noteHeader = new Label();
