@@ -1,3 +1,13 @@
+=== function askedAllQuestions()
+    ~ return askedJennysQuestions() && askedCalvinsQuestions() && askedJoshsQuestions
+    
+=== function askedJennysQuestions()
+    ~ return IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question)
+=== function askedCalvinsQuestions()
+    ~ return IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question)
+=== function askedJoshsQuestions()
+    ~ return IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions)
+    
 === Teens_Dialogue ===
 //  lupe hasn't mentioned hosi, Lupe has mentioned hosi, 
 // haven't done intro before questions, have done intro before questions
@@ -12,24 +22,17 @@
 
 = jenny 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
-    {IsQuestComplete(lupe_not_a_cop): //lupe did intro before questions
-        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
-            -> jenny_suspects
-                
-        - else:
-        
-            {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question):
-                ~ SetSpeaker(Speaker.Jenny)
-                I've already told you what I know.
-                I've got a highscore to beat.
-                -> DONE
-                
-            - else:
-                -> jenny_questions
-            }
-        }
+    {
+    -askedAllQuestions():
+        -> jenny_suspects
+    - askedJennysQuestions():
+        ~ SetSpeaker(Speaker.Jenny)
+        I've already told you what I know.
+        I've got a highscore to beat.
+        -> DONE
+    - IsQuestComplete(lupe_not_a_cop): //lupe's done intro before questions
+        -> jenny_questions
     - else:
-        //lupe hasn't done intro before questions
         Well, <i>I'm</i> not a cop.
         And I'm not the one blocking you from your high score.
         ~ SetSpeaker(Speaker.Jenny)
@@ -45,7 +48,6 @@
         ~ SetSpeaker(Speaker.Jenny)
         ...
         ~ CompleteQuest(lupe_not_a_cop)
-        -> jenny_questions
     }
 - else: // lupe hasn't asked about hosi yet
     ~ CompleteQuest(jenny_first_interact)
@@ -163,7 +165,6 @@
     
 = jenny_suspects
 ~ SetSpeaker(Speaker.Lupe)
-    .   
     Say I wanted to learn more about the Winery...anyone been talking about it lately?
  ~ SetSpeaker(Speaker.Jenny)
      Oh, God. 
@@ -179,36 +180,27 @@
 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
  //lupe did intro before questions
-        {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
-            -> calvin_sus
-                
-        - else:
-        
-            {IsQuestComplete(calvin_KR_question) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_winery_question):
-                 ~ SetSpeaker(Speaker.Calvin)
-                 SorryI'vegotnothingelseforyou.
-                    -> DONE
-                
-            - else:
-                -> calvin_questions
-            }
-        }
-
-     
-    - else:
-        {IsQuestComplete(calvin_questions_intro):
-            -> calvin_questions
-        -else:
-            ~ SetSpeaker(Speaker.Lupe)
-            Can you, uh, speak a little slower?
+    {
+    -askedAllQuestions():
+        //if asked all teens first round of questions
+        -> calvin_sus
+    - askedCalvinsQuestions(): // else if u've asked calvin all of his questions
             ~ SetSpeaker(Speaker.Calvin)
-            I'mnotsupposedtobetalkingtoyouatall.
-            ~ SetSpeaker(Speaker.Lupe)
-            Dude, you're not in trouble.
-            ~ SetSpeaker(Speaker.Calvin)
-            I'm not??
-            -> calvin_questions
-        }
+            SorryI'vegotnothingelseforyou.
+            -> DONE
+    - IsQuestComplete(calvin_questions_intro): // else if u have done the intro to questions already
+        -> calvin_questions
+    - else: //else, (haven't done the intro to questions yet)
+        ~ SetSpeaker(Speaker.Lupe)
+        Can you, uh, speak a little slower?
+        ~ SetSpeaker(Speaker.Calvin)
+        I'mnotsupposedtobetalkingtoyouatall.
+        ~ SetSpeaker(Speaker.Lupe)
+        Dude, you're not in trouble.
+        ~ SetSpeaker(Speaker.Calvin)
+        I'm not??
+        ~CompleteQuest(calvin_questions_intro)
+        -> calvin_questions
     }
 
     
@@ -232,7 +224,7 @@
     -else:
         ->DONE
     }
-  
+  }
  
 
 = calvin_questions
@@ -321,7 +313,7 @@ Not much to do other than game and--
  ~ SetSpeaker(Speaker.Calvin)
 Er, nothing.
     -> DONE
-= calvin_sus
+= calvin_sus //TODO LUPE NEEDS TO ASK CALVIN A QUESSTION BEFORE HE RESPONDS
  ~ SetSpeaker(Speaker.Calvin)
  Uhhhhh...
  Jenkins Tomm.
@@ -330,51 +322,44 @@ He used to work there.
     -> DONE
     
 = josh 
-{IsQuestComplete(what_is_hosi): 
-// lupe asked about hosi
-   {IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question) && IsQuestComplete(calvin_KR_questions) && IsQuestComplete(calvin_local_question) && IsQuestComplete(calvin_personal_question) && IsQuestComplete(calvin_winery_question) && IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
-            -> josh_sus
-                
-
-        - else:
-
-    {IsQuestComplete(josh_KR_question) && IsQuestComplete(josh_winery_question) && IsQuestComplete(josh_personal_questions):
+{IsQuestComplete(what_is_hosi): // lupe asked about hosi
+   {
+    - askedAllQuestions():
+        -> josh_sus
+    - askedJoshsQuestions():
         ~ SetSpeaker(Speaker.Josh)
         YOU DIG IT?
         -> DONE
-    -else:
-        {IsQuestComplete(josh_questions_intro):
-            -> josh_questions
-        - else:
-            ~ SetSpeaker(Speaker.Lupe)
-            ~ CompleteQuest(josh_questions_intro)
-            Hey man, can you turn that down a bit?
-            ~ SetSpeaker(Speaker.Josh)
-            YOU DON'T LIKE THE BEAT?
-            ~ SetSpeaker(Speaker.Lupe)
-            It's just, really loud.
-            ~ SetSpeaker(Speaker.Josh)
-            THAT SOUNDS LIKE A YOU PROBLEM.
-            ~ SetSpeaker(Speaker.Lupe)
-            ...
-            ~ SetSpeaker(Speaker.Lupe)
-            Okay.
-            You must not have anything important to say, then.
-            ~ SetSpeaker(Speaker.Josh)
-            WHAT?
-            ~ SetSpeaker(Speaker.Lupe)
-            I can just talk to your friends, then.
-            ~ SetSpeaker(Speaker.Lupe)
-            You probably don't matter as much, anyway.
-            ~ SetSpeaker(Speaker.Josh)
-            HEY.
-            I MATTER.
-            # Josh turns down the music a bit.
-            What do you wanna know?
-            -> josh_questions
-        }
+    - IsQuestComplete(josh_questions_intro):
+        -> josh_questions
+    - else:
+        ~ SetSpeaker(Speaker.Lupe)
+        ~ CompleteQuest(josh_questions_intro)
+        Hey man, can you turn that down a bit?
+        ~ SetSpeaker(Speaker.Josh)
+        YOU DON'T LIKE THE BEAT?
+        ~ SetSpeaker(Speaker.Lupe)
+        It's just, really loud.
+        ~ SetSpeaker(Speaker.Josh)
+        THAT SOUNDS LIKE A YOU PROBLEM.
+        ~ SetSpeaker(Speaker.Lupe)
+        ...
+        ~ SetSpeaker(Speaker.Lupe)
+        Okay.
+        You must not have anything important to say, then.
+        ~ SetSpeaker(Speaker.Josh)
+        WHAT?
+        ~ SetSpeaker(Speaker.Lupe)
+        I can just talk to your friends, then.
+        ~ SetSpeaker(Speaker.Lupe)
+        You probably don't matter as much, anyway.
+        ~ SetSpeaker(Speaker.Josh)
+        HEY.
+        I MATTER.
+        # Josh turns down the music a bit.
+        What do you wanna know?
+        -> josh_questions
     }
-}
 - else: //Lupe hasn't asked about hosi
     ~ CompleteQuest(josh_first_interact)
     ~ SetSpeaker(Speaker.Lupe)
