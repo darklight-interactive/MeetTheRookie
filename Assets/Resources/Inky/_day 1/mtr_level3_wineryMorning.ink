@@ -1,8 +1,5 @@
 // SCENE 3: The Winery
 // --- scene 3 ---
-=== level3 ===
-Level 3
--> scene3_1
 
 === scene3_1 ===
 // location : The Winery, outside
@@ -18,6 +15,7 @@ Level 3
 // Needed evidence to progress to inside the Winery: window evidence, fence evidence, footsteps evidence
 = misra 
 -> Misra_Dialogue.3_1
+
 = door_main_room
 {IsQuestComplete(discover_outside_clues):
     ~ SetSpeaker(Speaker.Lupe)

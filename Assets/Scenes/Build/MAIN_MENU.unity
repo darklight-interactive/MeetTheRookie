@@ -1504,7 +1504,6 @@ GameObject:
   m_Component:
   - component: {fileID: 591242197}
   - component: {fileID: 591242196}
-  - component: {fileID: 591242195}
   - component: {fileID: 591242198}
   m_Layer: 5
   m_Name: 'UXMLUIDocument : MainMenuPreset'
@@ -1513,21 +1512,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &591242195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591242194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ed90aa0885f3c4459b8bc6a32979552, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
-  _preset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
-  selectablesCount: 0
 --- !u!114 &591242196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1571,6 +1555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e266c941d636f498f8360501ff3e7b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   selector: 0
 --- !u!43 &651167639
 Mesh:
@@ -4245,17 +4230,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: _screenSize.x
-      value: 989.2
+    - target: {fileID: 293430607668870812, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: _screenSize.y
-      value: 482
-      objectReference: {fileID: 0}
-    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: _screenAspectRatio
-      value: 2.052282
+    - target: {fileID: 3100972142227852913, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentScene
