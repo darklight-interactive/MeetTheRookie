@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Input;
+//using Darklight.UnityExt.Audio;
 using System.Linq;
 using System.Collections.Generic;
 using Ink.Runtime;
@@ -84,6 +85,7 @@ public class GameUIController : UXML_UIDocumentObject
     public void SelectChoice(Choice choice)
     {
         InkyStoryManager.Iterator.ChooseChoice(choice);
+        //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuSelectEventReference);
 
         // Remove OnClick event handlers for each button
         foreach (SelectableButton button in selectableVectorField.Selectables)
@@ -115,6 +117,7 @@ public class GameUIController : UXML_UIDocumentObject
             previousButton?.Deselect();
             selectedButton.Select();
             lockSelection = true;
+            //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuHoverEventReference);
             Invoke(nameof(UnlockSelection), 0.1f);
         }
     }
