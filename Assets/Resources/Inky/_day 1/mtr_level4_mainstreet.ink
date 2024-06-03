@@ -11,6 +11,7 @@ VAR teensFirst = false
 VAR royFirst = false
 VAR canStreetRoyCutscene = true
 VAR canStreetTeensCutscene = true
+VAR canIntroArcade = true
 
 // ============================================================
 // ========================== SCENE 4.1 =======================
@@ -140,8 +141,7 @@ VAR canStreetTeensCutscene = true
     ~ ChangeGameScene("scene4_2")
     -> DONE
 = door_powerup_arcade
-    {IsQuestComplete("entered_arcade"):
-    - else: 
+    {canIntroArcade:
         ~ SetSpeaker("Speaker.Misra")
         Okay...
         Just so you know, these guys in here are a litte...
