@@ -7,7 +7,7 @@
     ~ SetSpeaker(Speaker.Irene)
      Is that Ritam Misra I spy?
     ~ SetSpeaker(Speaker.Misra)
-    [Misra] Hi, Irene!
+    Hi, Irene!
     ~ SetSpeaker(Speaker.Irene)
      Damn, it's been a sec! 
      How're you?
@@ -15,10 +15,10 @@
     ~ SetSpeaker(Speaker.Lupe)
      Detective Lupe.
     ~ SetSpeaker(Speaker.Irene)
-     Ooh, a <i>Detective</i>.
-     Like Sherlock Holmes.
-     Or Nancy Drew.
-     Or Scooby-Doo.
+    Ooh, a <i>Detective</i>.
+    Like Sherlock Holmes.
+    Or Nancy Drew.
+    Or Scooby-Doo.
     ~ SetSpeaker(Speaker.Lupe)
      ...
      Yes.
