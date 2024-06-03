@@ -61,8 +61,6 @@ namespace Darklight.UnityExt.Inky
         }
 
         // ----------- [[ STORY ITERATOR ]] ------------ >>
-
-
         #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
         public delegate void SpeakerSet(string speaker);
         public event SpeakerSet OnSpeakerSet;

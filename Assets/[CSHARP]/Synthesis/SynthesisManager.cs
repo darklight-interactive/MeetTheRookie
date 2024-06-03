@@ -22,6 +22,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     const string LIBRARY_PATH = "Assets/Resources/Synthesis";
     const string LIBRARY_NAME = "SynthesisClueLibrary";
     public SynthesisClueLibrary clueLibrary;
+
     protected Dictionary<string, SynthesisClueElement> synthesisItems = new Dictionary<string, SynthesisClueElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
@@ -36,6 +37,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     void Start()
     {
         clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
+        clueLibrary.LoadMysteryClues();
 
         objectContainer = ElementQuery<VisualElement>("objects");
         synthesizeButton = ElementQuery<VisualElement>("title");
