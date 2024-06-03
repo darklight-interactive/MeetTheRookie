@@ -21,15 +21,6 @@ Idk to each their own , just take it away now. -> DONE
     -> DONE
     
 - else:
-    ~ SetSpeaker(Speaker.Misra)
-    Here we are! Kettle Rock's pride and joy. Best wine north of California.
-    ~ SetSpeaker(Speaker.Lupe)
-    You said this place closed a few weeks ago? It looks like it's been abandoned for years.
-    ~ SetSpeaker(Speaker.Misra)
-    Well, it <i>has</i> been a bit neglected recently. But make no mistake, this is a piece of town history! 
-    ~ SetSpeaker(Speaker.Lupe)
-    Right... 
-    ~ CompleteQuest(talk_to_misra_quest)
     -> DONE
 }
 
