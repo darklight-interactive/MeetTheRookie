@@ -33,6 +33,8 @@ VAR closed_signs = 0
 + [strange symbol] -> strange_symbol_on_fountain
 + [goop] -> goop_on_fountain
 
++ [lupe_car] -> lupe_car
+
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 = misra_cutscene
@@ -43,8 +45,57 @@ VAR closed_signs = 0
     There's bound to be some locals around - where do you want to start?
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
+    
+= misra_cutscene_after_general_store
+    ~ SetSpeaker(Speaker.Misra)
+    I'm sorry if Roy seems like a bit of a downer.
+    He has no faith.
+    ~ SetSpeaker(Speaker.Lupe)
+    He seems like he's got a pretty good acceptance of the situation.
+    From what I can tell.
+    ~ SetSpeaker(Speaker.Misra)
+    Well, you've only been here a day...
+    ~ SetSpeaker(Speaker.Lupe)
+    -> DONE
+
+=misra_cutscene_after_teens
+    ~ SetSpeaker(Speaker.Misra)
+     Those guys are the worst.
+    ~ SetSpeaker(Speaker.Lupe)
+     They're definitely hiding <i>something</i>.
+    ~ SetSpeaker(Speaker.Misra)
+     Good luck getting anything out of them.
+    ~ SetSpeaker(Speaker.Lupe)
+     // Add to Synthesis: Who broke into the Winery?
+-> DONE
+
+= lupe_car
+  ~ SetSpeaker(Speaker.Lupe)
+  Are you sure it's okay for me to park here?
+  ~ SetSpeaker(Speaker.Misra)
+  Yup!
+  ~ SetSpeaker(Speaker.Lupe)
+  Just...in the middle of the road like this?
+ ~ SetSpeaker(Speaker.Misra)
+  Well, normally I would give you a ticket. 
+  But for you, I can let it slide!
+  Beside, tickets aren't that bad around here, anyway.
+ ~ SetSpeaker(Speaker.Lupe)
+    How much are they, usually?
+  ~ SetSpeaker(Speaker.Misra)
+  ...
+  $0.
+  It's just a note.
+  That usually says, "Please don't park here again! Have a nice day :)"
+   ~ SetSpeaker(Speaker.Lupe)
+   ...
+   Ay, Dios Mio.
+   -> DONE
+    
+    
 = talk_to_misra
     -> Misra_Dialogue.4_1
+    
 = door_idahome_and_goods
     ~ ChangeGameScene("scene4_2")
     -> DONE
@@ -156,7 +207,7 @@ VAR closed_signs = 0
 
 = apartments_for_lease_sign
     ~ closed_signs ++ 
-    [Lupe] Hm..
+        Hm...
         -> DONE
     
 
