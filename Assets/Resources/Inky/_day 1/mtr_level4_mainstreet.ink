@@ -7,6 +7,10 @@
 // ---------------------------------------------- >>/^*
 // ---- [[ LOCAL VARIABLES ]] ---- >>
 VAR closed_signs = 0
+VAR teensFirst = false
+VAR royFirst = false
+VAR canStreetRoyCutscene = true
+VAR canStreetTeensCutscene = true
 
 // ============================================================
 // ========================== SCENE 4.1 =======================
@@ -37,7 +41,7 @@ VAR closed_signs = 0
 
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
-= misra_cutscene
+= misra_cutscene_afternoon
     ~ CompleteQuest(visited_misra)
     ~ SetSpeaker(Speaker.Misra)
     Here we are! 
@@ -45,6 +49,34 @@ VAR closed_signs = 0
     There's bound to be some locals around - where do you want to start?
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
+= misra_cutscene_golden_hour
+    {
+    - (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ):
+        {canStreetTeensCutscene:
+            ~canStreetTeensCutscene = false
+            ~ teensFirst = true
+            -> misra_cutscene_after_teens
+        }
+        ->DONE
+    -(IsClueFound(roys_suspicion)):
+        {canStreetRoyCutscene:
+            ~ canStreetRoyCutscene = false
+            ~ royFirst = true
+            ->misra_cutscene_after_general_store
+        }
+        ->DONE
+    }
+= misra_cutscene_dusk
+    {
+        
+    -teensFirst && IsClueFound(roys_suspicion) && canStreetRoyCutscene:
+        ~ canStreetRoyCutscene = false
+        ->misra_cutscene_after_general_store
+    -royFirst && (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && canStreetTeensCutscene:
+        ~canStreetRoyCutscene = false
+        ->misra_cutscene_after_teens
+    
+    }
     
 = misra_cutscene_after_general_store
     ~ SetSpeaker(Speaker.Misra)
@@ -160,7 +192,7 @@ VAR closed_signs = 0
     }
 
 = door_the_rockin_kettle
-    {IsQuestComplete(complete_gen_store) && IsQuestComplete(complete_arcade):
+    {(IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && IsClueFound(roys_suspicion):
         ~ SetSpeaker(Speaker.Misra)
         Looks like the Bar is open! Shall we?
         ~ SetSpeaker(Speaker.Lupe)
