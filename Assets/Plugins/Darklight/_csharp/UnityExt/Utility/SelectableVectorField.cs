@@ -9,28 +9,28 @@ namespace Darklight.UnityExt.Utility
     /// Not actually a vector field (https://en.wikipedia.org/wiki/Vector_field), but a sloppy interpretation of one.
     /// Basically, given a 2D grid of positions, a present position, and a given direction, where will you go based on the direction?
     /// </summary>
-    /// <typeparam name="TSelectable">The selectables we'll be looking over.</typeparam>
-    public class SelectableVectorField<TSelectable> where TSelectable : VisualElement, new()
+    /// <typeparam name="TElement">The selectables we'll be looking over.</typeparam>
+    public class SelectableVectorField<TElement> where TElement : VisualElement, new()
     {
-        HashSet<TSelectable> _selectables = new HashSet<TSelectable>();
-        public HashSet<TSelectable> Selectables
+        HashSet<TElement> _selectables = new HashSet<TElement>();
+        public HashSet<TElement> Selectables
         {
             get { return _selectables; }
             set { _selectables = value; }
         }
-        public TSelectable PreviousSelection { get; private set; }
-        public TSelectable CurrentSelection { get; private set; }
-        public void Select(TSelectable selectable)
+        public TElement PreviousSelection { get; private set; }
+        public TElement CurrentSelection { get; private set; }
+        public void Select(TElement selectable)
         {
             CurrentSelection = selectable;
         }
-        public void Add(TSelectable selectable)
+        public void Add(TElement selectable)
         {
             _selectables.Add(selectable);
             if (CurrentSelection == null)
                 Select(selectable);
         }
-        public void Remove(TSelectable selectable)
+        public void Remove(TElement selectable)
         {
             _selectables.Remove(selectable);
             if (CurrentSelection == selectable)
@@ -38,9 +38,9 @@ namespace Darklight.UnityExt.Utility
             else if (_selectables.Count == 0)
                 CurrentSelection = null;
         }
-        public void Load(IEnumerable<TSelectable> selectables)
+        public void Load(IEnumerable<TElement> selectables)
         {
-            _selectables = new HashSet<TSelectable>(selectables);
+            _selectables = new HashSet<TElement>(selectables);
             CurrentSelection = _selectables.First();
         }
         public void Clear()
@@ -48,7 +48,7 @@ namespace Darklight.UnityExt.Utility
             _selectables.Clear();
             CurrentSelection = null;
         }
-        public void AddRange(IEnumerable<TSelectable> selectables)
+        public void AddRange(IEnumerable<TElement> selectables)
         {
             foreach (var selectable in selectables)
             {
@@ -62,7 +62,7 @@ namespace Darklight.UnityExt.Utility
         /// </summary>
         /// <param name="dir">The direction from which to select.</param>
         /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
-        public TSelectable getFromDir(Vector2 dir)
+        public TElement getFromDir(Vector2 dir)
         {
             if (_selectables.Count == 0) return null;
             if (this.CurrentSelection == null) {
@@ -73,7 +73,7 @@ namespace Darklight.UnityExt.Utility
             if (dir != Vector2.zero)
             {
                 // Potentially select a new element.
-                TSelectable pick = raycastEstimate(CurrentSelection.worldBound.center, dir);
+                TElement pick = raycastEstimate(CurrentSelection.worldBound.center, dir);
                 if (pick != null && pick != CurrentSelection)
                 {
                     PreviousSelection = CurrentSelection;
@@ -96,17 +96,17 @@ namespace Darklight.UnityExt.Utility
         /// <param name="direction">Any direction relative to the position.</param>
         /// <param name="threshhold">The maximum distance a given Selectable from `from` can have to be selected.</param>
         /// <returns>Index of closest selectable from raycast.</returns>
-        TSelectable raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 1000)
+        TElement raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 1000)
         {
             float closestDir = -1;
-            TSelectable selected = null;
+            TElement selected = null;
 
             // We parameterize our direction vector.
             // Direction = (dx/dt, dy/dt).
             // So direction.y = dy/dt, y = direction.y * t + C_1.
             // And direction.x = dx/dt, x = direction.x * t + C_2.
             // C_1 and C_2 are just from.y and from.x respectively.
-            foreach (TSelectable selectable in _selectables)
+            foreach (TElement selectable in _selectables)
             {
                 if (selectable != CurrentSelection)
                 {

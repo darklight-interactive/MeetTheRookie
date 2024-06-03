@@ -93,7 +93,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     [SerializeField]
     SceneObject _mainMenuScene;
-    private MainMenuController _mainMenuController;
+    private MainMenu _mainMenuController;
 
     [Header("Game UI Controller")]
     private GameUIController _gameUI;
@@ -172,7 +172,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubbleObject.transform.position = bubbleData.Item1;
         Vector2Int bubbleDirection = bubbleData.Item2;
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
-        Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
+        //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.fontSizeRange = speechBubbleFontSizeRange;
@@ -212,7 +212,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     (Vector3, Vector2Int) GetSpeakerSpeechBubblePositionAndDirection()
     {
-        string currentSpeaker = InkyStoryManager.Instance.CurrentSpeaker;
+        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Vector3 bubblePosition = Vector3.zero;
         Vector2Int bubbleDirection = Vector2Int.zero;
 

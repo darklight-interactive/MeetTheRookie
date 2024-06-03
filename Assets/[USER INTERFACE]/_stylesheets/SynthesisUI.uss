@@ -1,0 +1,43 @@
+.synthesis-object {
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-left;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.2s;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    align-self: flex-start;
+}
+
+.highlight {
+    background-color: rgba(187, 157, 0, 0.53);
+}
+
+.selected {
+    background-color: rgba(121, 175, 200, 0.63);
+}
+
+.selected.highlight {
+    background-color: rgba(224, 150, 79, 0.73);
+}
+
+.hover {
+    background-color: rgb(255, 0, 0);
+}
+
+Button.Arrow {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/Synthesis/SynthAlternative/VisualBase/Arrow-2.PNG?fileID=2800000&guid=71bcdcb5b584243fe9e620bc8415eadb&type=3#Arrow-2");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    flex-grow: 1;
+    max-width: 100px;
+    max-height: 100px;
+    align-self: auto;
+    align-items: center;
+    min-height: 100px;
+}
+
+Label {
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/digital_disco/DigitalDisco-Thin.ttf?fileID=12800000&guid=daf3d86db769b4580826d9e669247d9e&type=3#DigitalDisco-Thin");
+}
