@@ -1,4 +1,15 @@
 
+=== function mainStreetCheck() ===
+    {
+    - ( IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_DUSK")
+        ~ return
+    - ( IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) || IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_GOLDENHOUR")
+        ~ return
+    - else:
+        ~ ChangeGameScene("scene4_1")
+    }
 === scene4_3 ===
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
@@ -56,12 +67,21 @@
     * [Josh] -> Josh_Dialogue
     
 //    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
-    
+
 = exit_scene
     ~ SetSpeaker(Speaker.Jenny)
-     Unless the Rookie Sheriff wants to conceit their HO:SI score, no.
-     We're done talking with you losers.
+    Bye loooosersss.
     ~ SetSpeaker(Speaker.Lupe)
+    ~ mainStreetCheck()
+    ->DONE
+    
+    
+    
+    
+    
+    
+    
+    
     ~ CompleteQuest(complete_arcade)
     ~ CompleteQuest(suspects)
     -> DONE

@@ -23,11 +23,7 @@
     -> Roy_Dialogue.merch_sticker
 
 = front_door
-    ~ SetSpeaker(Speaker.Lupe)
-    Thanks again.
-    ~ SetSpeaker(Speaker.Misra)
-    Bye, Roy!
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     Take care!
-        # SCENE CHANGE
-        -> DONE
+    Take care!
+    ~ mainStreetCheck()
+    ->DONE

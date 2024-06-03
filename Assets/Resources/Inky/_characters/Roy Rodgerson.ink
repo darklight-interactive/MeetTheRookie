@@ -242,7 +242,6 @@ Someone's got to try and turn things around.
     // Add to Synthesis: Who broke into the Old Winery?
     ~ DiscoverClue(roys_suspicion)
     -> DONE
-
 }
 
 = teenagers
