@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1048859347481113319}
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
-  - component: {fileID: 4138829041031667111}
   - component: {fileID: 2236245743877035675}
   m_Layer: 0
   m_Name: '[NPC] Jenkins'
@@ -234,23 +233,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4138829041031667111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7152001243824678401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e476d2557e1c44785da8b08da977cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
 --- !u!114 &2236245743877035675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +248,7 @@ MonoBehaviour:
   _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   editMode: 0
   _sprite: {fileID: 356160930, guid: bcb811a6ed9cdef43b9f29df45b60059, type: 3}
   onStart: 0
