@@ -5,6 +5,7 @@
     * [merch_shirt] -> merch_shirt
     * [merch_sticker] -> merch_sticker
     * [merch_pamphlet] -> pamphlet
+    
         ->DONE
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
