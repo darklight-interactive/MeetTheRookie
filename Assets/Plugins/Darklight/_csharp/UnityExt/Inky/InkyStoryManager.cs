@@ -153,7 +153,7 @@ namespace Darklight.UnityExt.Inky
                 (string varName, object newValue) =>
                 {
                     _globalKnowledgeList = newValue as List<string>;
-                    Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledgeList.Count}");
+                    //Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledgeList.Count}");
                 }
             );
 

@@ -74,7 +74,7 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 //  LEVEL 1 : Quests and Clues
 // ----------------------------------------------------
 LIST Level1_Clues = (broken_gas_pump), (broken_cash_reg), (cashreg_fix)
-LIST Level1_Quests = (first_interact), (pay_for_gas)
+LIST Level1_Quests = (first_interact), (pay_for_gas), (look_at_tree)
 
 // ----------------------------------------------------
 //  LEVEL 3 : Quests and Clues
