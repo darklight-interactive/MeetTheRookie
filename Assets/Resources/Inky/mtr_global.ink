@@ -16,9 +16,6 @@ INCLUDE _characters/Calvin.ink
 INCLUDE _characters/Josh.ink
 INCLUDE _characters/Jenkins.ink
 INCLUDE _characters/Irene.ink
-
-//INCLUDE mtr_level3_wineryMorning.ink
-
 INCLUDE _day 1/mtr_level1_melOmart.ink
 INCLUDE _day 1/mtr_level3_wineryMorning.ink
 INCLUDE _day 1/mtr_level4_mainstreet.ink
@@ -60,7 +57,7 @@ LIST COMPLETED_QUESTS = DEFAULTQUEST // <- all completed quests
     ~ return ACTIVE_QUEST_CHAIN ? quest
 
 // ====== CLUE HANDLING == >>
-LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
+LIST GLOBAL_KNOWLEDGE = DEFAULTCLUE
 === function DiscoverClue(clue)
     #DiscoverClue >> {clue}
     ~ GLOBAL_KNOWLEDGE += clue
