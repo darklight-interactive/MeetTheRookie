@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
@@ -7,15 +8,14 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class SynthesisClue
 {
-    public string clueName;
-    public string clueDescription;
-    public VisualTreeAsset clueElement;
+    [ShowOnly] public string clueName;
+    [ShowOnly] public bool isDiscovered;
 }
 
 public class SynthesisClueLibrary : ScriptableObject
 {
+    [SerializeField] private SynthesisClue[] mystery1Clues;
 
-    [Button]
     public void LoadMysteryClues()
     {
         InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
@@ -25,7 +25,7 @@ public class SynthesisClueLibrary : ScriptableObject
             return;
         }
 
-        List<string> clues = storyObject.GetVariableByName("Level3_Clues").ToStringList();
+        List<string> clues = storyObject.GetVariableByName("Mystery1").ToStringList();
         mystery1Clues = new SynthesisClue[clues.Count];
         foreach (string clue in clues)
         {
@@ -35,8 +35,4 @@ public class SynthesisClueLibrary : ScriptableObject
             //newClue.clueElement = new VisualTreeAsset("Assets/Resources/Synthesis/SynthesisClue.uxml");
         }
     }
-
-    [SerializeField] private SynthesisClue[] mystery1Clues;
-
-
 }

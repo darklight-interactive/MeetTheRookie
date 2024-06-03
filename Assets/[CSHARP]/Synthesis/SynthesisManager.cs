@@ -38,6 +38,8 @@ public class SynthesisManager : UXML_UIDocumentObject
     bool synthesisActive = false;
     void Start()
     {
+        Show(false);
+
         clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
         clueLibrary.LoadMysteryClues();
 
@@ -83,7 +85,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     {
         Debug.Log("Synthesis Adding clue: " + clue);
         SynthesisClueElement newClue = new SynthesisClueElement();
-        newClue.fullText = clue;
+        newClue.text = clue;
 
         mystery1Container = ElementQuery<GroupBox>("mystery1");
         mystery1Container.Add(newClue);
