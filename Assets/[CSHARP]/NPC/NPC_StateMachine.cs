@@ -254,9 +254,13 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Enter()
     {
+        Debug.Log("Entering Follow State");
+
         if (player == null) { player = _stateMachine.controller.player; }
 
          coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
+
+        movingInFollowState = true;
     }
 
     public override void Exit()
@@ -297,16 +301,15 @@ public class FollowState : FiniteState<NPCState>
             currentFollowDistance = playerPos.x - npcPos.x;
             bool beyondFollowDistance = Mathf.Abs(currentFollowDistance) > followDistance;
 
-            // If NPC is moving and they're within distance, stop
+            // If NPC not moving and they're outside distance, start
             if (!movingInFollowState && beyondFollowDistance)
             {
                 movingInFollowState = true;
-                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
+                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
             }
 
-            // If NPC not moving and they're outside distance, start
-            else if (movingInFollowState && !beyondFollowDistance)
-            {
+            // If NPC is moving and they're within distance, stop
+            else if (movingInFollowState && !beyondFollowDistance)            {
                 movingInFollowState = false;
                 _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
             }
