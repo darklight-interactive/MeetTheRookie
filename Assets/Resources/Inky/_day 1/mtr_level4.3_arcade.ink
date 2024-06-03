@@ -1,15 +1,17 @@
 
 === function mainStreetCheck() ===
-    {
-    - ( IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && IsClueFound(roys_suspicion):
+    {( IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) ):
+        {IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_DUSK")
         ~ return
-    - ( IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) || IsClueFound(roys_suspicion):
+        }
+    }
+    {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) or IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_GOLDENHOUR")
         ~ return
-    - else:
-        ~ ChangeGameScene("scene4_1")
     }
+    ~ ChangeGameScene("scene4_1")
+    ~ return
 === scene4_3 ===
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
@@ -69,19 +71,13 @@
 //    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
 
 = exit_scene
+
     ~ SetSpeaker(Speaker.Jenny)
     Bye loooosersss.
     ~ SetSpeaker(Speaker.Lupe)
     ~ mainStreetCheck()
-    ->DONE
-    
-    
-    
-    
-    
-    
-    
-    
     ~ CompleteQuest(complete_arcade)
     ~ CompleteQuest(suspects)
     -> DONE
+    
+    
