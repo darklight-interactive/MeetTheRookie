@@ -70,6 +70,14 @@ VAR closed_signs = 0
 -> DONE
 
 = lupe_car
+{IsQuestComplete(car_first_interact):
+  ~ SetSpeaker(Speaker.Misra)
+    {Your park job, may I say, is impeccable!| Hot wheels for a hot...let's continue. | Have you ever considered getting one of those little hula dashboard figurines? You know, to spice it up!| I don't think it's time to go yet, we should look around more!}
+
+    -> DONE
+
+- else:
+  ~ CompleteQuest(car_first_interact)
   ~ SetSpeaker(Speaker.Lupe)
   Are you sure it's okay for me to park here?
   ~ SetSpeaker(Speaker.Misra)
@@ -91,7 +99,7 @@ VAR closed_signs = 0
    ...
    Ay, Dios Mio.
    -> DONE
-    
+ }
     
 = talk_to_misra
     -> Misra_Dialogue.4_1
