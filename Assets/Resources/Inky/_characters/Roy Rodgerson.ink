@@ -68,7 +68,7 @@ Kettle Rock is my home.
  But things are changing.
 ~ SetSpeaker(Speaker.Misra)
 ~ DiscoverClue(roy_personal_info)
-// Add to Synthesis - The Town of KR
+TODO // Add to Synthesis - The Town of KR
     ...
 ~ SetSpeaker(Speaker.Lupe)
 -> interogate

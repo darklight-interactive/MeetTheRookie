@@ -38,9 +38,9 @@ VAR closed_signs = 0
 = misra_cutscene
     ~ CompleteQuest(visited_misra)
     ~ SetSpeaker(Speaker.Misra)
-    [Misra] Here we are! 
-    [Misra] Kettle Rock, Main Street. Heart of the Downtown. 
-    [Misra] There's bound to be some locals around - where do you want to start?
+    Here we are! 
+    Kettle Rock, Main Street. Heart of the Downtown. 
+    There's bound to be some locals around - where do you want to start?
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
 = talk_to_misra
@@ -49,6 +49,25 @@ VAR closed_signs = 0
     ~ ChangeGameScene("scene4_2")
     -> DONE
 = door_powerup_arcade
+    {IsQuestComplete("entered_arcade"):
+    - else: 
+        ~ SetSpeaker("Speaker.Misra")
+        Okay...
+        Just so you know, these guys in here are a litte...
+        ...<i>intense.</i>
+        ~ SetSpeaker("Speaker.Lupe")
+        I deal with intense people all the time.
+        ~ SetSpeaker("Speaker.Misra")
+        Yeah?
+        ~ SetSpeaker("Speaker.Lupe")
+        Criminals.
+        Convicts.
+        Killers.
+        I'm not afraid of whoever is in there.
+        ~ SetSpeaker("Speaker.Misra")
+        If you say so...
+        ~ CompleteQuest(entered_arcade)
+    }
     ~ ChangeGameScene("scene4_3")
     -> DONE
 
@@ -165,4 +184,8 @@ VAR closed_signs = 0
     Breaks my heart a bit.
     // Add to Synthesis - The Town of KR
     -> DONE
+=== scene4_1_GOLDENHOUR ===
+->DONE
+=== scene4_1_DUSK ===
+->DONE
 

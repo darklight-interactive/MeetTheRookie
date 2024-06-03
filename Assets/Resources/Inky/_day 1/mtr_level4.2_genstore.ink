@@ -9,7 +9,7 @@
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
     ~ SetSpeaker(Speaker.Lupe)
-    Wow, it's a pamphlet w/ loads of info!
+    TODO Wow, it's a pamphlet w/ loads of info!
    -> DONE
 = roy
     -> Roy_Dialogue
