@@ -39,16 +39,18 @@
         -> DONE
      
     - else: 
-    * {IsClueFound(goats_mentioned)} [People have been mentioning goats a lot.] -> irene_goats
-    * {memorial_plaque_visited} [Someone's drawn on your memorial plaque over there.] -> irene_plaque
-    * {sacrifice_mentioned} [Sorry, a sacrifice?] -> irene_sacrifice
-    * [How long have you lived in Kettle Rock?] -> irene_kettle_rock
-    * {KR_irene && closed_shops_irene} [What do you know about the Old Winery?] -> irene_winery
-    * [Despite all the closed shops and stores, this place is still open...] -> irene_still_standing
+    * {IsClueFound(goats_mentioned)} [Goats...?] -> irene_goats
+    * {memorial_plaque_visited} [Your picture has vandalized.] -> irene_plaque
+    * {IsClueFound(sacrifice_mentioned)} [Sorry, a sacrifice?] -> irene_sacrifice
+    * [How long have you lived here?] -> irene_kettle_rock
+    * {KR_irene && closed_shops_irene} [What do you know about the Winery?] -> irene_winery
+    * [The Rockin' Kettle...] -> irene_still_standing
     }
 
 = irene_goats
     ~ SetSpeaker(Speaker.Lupe)
+     .
+     People have been mentioning Goats a lot.
      I get the feeling they're not talking about the animal. 
     ~ SetSpeaker(Speaker.Irene)
      Oh.
@@ -83,6 +85,7 @@
 
 = irene_plaque
     ~ SetSpeaker(Speaker.Irene)
+    .
      Damn it! 
      People keep doing that.
      It's disrespectful. 
@@ -96,6 +99,7 @@
     
 = irene_sacrifice
     ~ SetSpeaker(Speaker.Misra)
+    .
      It's nothing.
      Like Irene said, stupid gossip.
     ~ SetSpeaker(Speaker.Lupe)
@@ -108,7 +112,7 @@
     ~ SetSpeaker(Speaker.Lupe)
      Humor me.
     ~ SetSpeaker(Speaker.Irene)
-     I'm sure Misra's told you about Kettle Rock's <i> rocky </i> past?
+     I'm sure Misra's told you about Kettle Rock's <i> rocky</i> past?
     ~ SetSpeaker(Speaker.Lupe)
      That part, yes.
     ~ SetSpeaker(Speaker.Irene)
@@ -125,7 +129,7 @@
     ~ SetSpeaker(Speaker.Irene)
      SpoOooOooOky.
     ~ SetSpeaker(Speaker.Lupe)
-     I feel like you've given that speech before
+     I feel like you've given that speech before.
     ~ SetSpeaker(Speaker.Irene)
      Hey, I gotta keep the drunks entertained somehow.
     ~ CompleteQuest(irene_convo_1)
@@ -134,6 +138,7 @@
 
 = irene_kettle_rock
     ~ SetSpeaker(Speaker.Irene)
+    .
      I moved here when I was 13!
      I actually when to highschool with Misra.
     ~ SetSpeaker(Speaker.Misra)
@@ -147,6 +152,7 @@
 
 = irene_winery
     ~ SetSpeaker(Speaker.Irene)
+    .
      Sheesh, that old shack on the hill?
      More trouble than it's worth, in my opinion.
      Why?
@@ -162,7 +168,7 @@
      He's completely passed out.
     ~ SetSpeaker(Speaker.Irene)
      Yeah, he's been taking it rough.
-     He worked at the place for years.
+     He worked at that place for years.
     ~ SetSpeaker(Speaker.Lupe)
      Would he have any reason to go up there and trash the place?
     ~ SetSpeaker(Speaker.Irene)
@@ -170,11 +176,13 @@
      But why don't you ask him yourselves?
      Give him a good shove, and he'll come to.
      I've done it a dozen times when he passes out like this.
-    ~ CompleteQuest(jenkins_wakes_up)
+    ~ CompleteQuest(irene_gives_cue)
     ~ CompleteQuest(irene_convo_2)
     -> DONE
 
 = irene_still_standing
+    ~ SetSpeaker(Speaker.Lupe)
+    Despite all the closed shops and stores, this place is still open.
     ~ SetSpeaker(Speaker.Irene)
      Yeahhhhh.
      It's a little concerning that the bar is one of 
