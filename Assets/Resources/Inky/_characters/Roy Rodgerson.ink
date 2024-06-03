@@ -29,9 +29,11 @@
 
 = interogate
     ~ SetSpeaker(Speaker.Lupe)
-    * [Tell me about yourself] -> personal_info
-    * [Tell me about the Town.] -> town_history
+    * [Tell me about yourself.] -> personal_info
+    * [Tell me about this Town.] -> town_history
     * [Tell me about the Winery.] -> winery_closing
+    * {IsClueFound(merch_pamphlet)} -> pamphlet
+    
 {IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
         Thank you for your cooperation. 
         ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -42,6 +44,7 @@
 
 = personal_info
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
+.
  Well, I was born and raised here in Kettle Rock.
  Lived here my whole life.
  IdaHome is my family's business.
@@ -66,6 +69,9 @@ Kettle Rock is my home.
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
  Of course. 
  But things are changing.
+ A young person like yourself should be out there,
+ in the world.
+ Not here, where things move at a snails pace.
 ~ SetSpeaker(Speaker.Misra)
 ~ DiscoverClue(roy_personal_info)
 TODO // Add to Synthesis - The Town of KR
@@ -75,6 +81,7 @@ TODO // Add to Synthesis - The Town of KR
 
 = town_history
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
+.
  As I'm sure you've noticed, it's not in the best shape.
  Lots of places shutting down, going out of business.
  Lots of locals moving away.
@@ -97,6 +104,7 @@ Someone's got to try and turn things around.
 
 = winery_closing
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
+. 
  Ah, the straw that broke the camels back.
  It finally shut down, about a month ago.
  They closed it up tight.
@@ -108,6 +116,12 @@ Someone's got to try and turn things around.
 
 
 = window
+  {IsQuestComplete(visit_window): 
+    ~SetSpeaker(Speaker.Lupe)
+    Other than the abandoned Winery, the environment is kinda pretty...
+    -> DONE
+  
+   - else: 
     ~ SetSpeaker(Speaker.Lupe)
     You have a perfect view of the Winery from here.
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -127,14 +141,14 @@ Someone's got to try and turn things around.
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      There's nothing there of interest.
     ~ SetSpeaker(Speaker.Misra)
-    Did you see anything, Uncle?
+    Did you see anything last night, Uncle?
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     ...
      No. 
     ~ SetSpeaker(Speaker.Lupe)
     Any ideas on who would want to break in and trash the place? 
         -> potential_suspects
-        
+        }
 
 = merch_shirt
         Really leaning into that small town appeal, I see.
@@ -185,31 +199,38 @@ Someone's got to try and turn things around.
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(rocky_years)
       // Add to Synthesis - The Town of KR
-    -> DONE
+    -> pamphlet
 
 * The Tragedy?
+ ~ SetSpeaker(Speaker.Roy_Rodgerson)
     ...
      Terrible.
      Delusional people.
      Folk around here speak ill of them, but don't listen.
      Certain people even like to gossip, call them names, 
      insinuate that there was something else going on.
+      ~ SetSpeaker(Speaker.Lupe)
     Like what?
+     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      Nothing real, and nothing worth talking about.
     ~ DiscoverClue(tragedy)
     // Add to Synthesis - The Town of KR
     -> pamphlet
 
 * The Golden Age?
+ ~ SetSpeaker(Speaker.Roy_Rodgerson)
      A time of true prosperity.
      Business was, as you say, booming.
      The Winery sales were good, tourism was up.
      people recovered from whatever mysterious disease had passed over us.
      It was a good time, but it's over now.
+      ~ SetSpeaker(Speaker.Misra)
     For now. Good times will come again!
+     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      Sometimes that's not the case, mijo.
      Sometimes, the good times are just behind us.
      And that's okay.
+     ~ SetSpeaker(Speaker.Misra)
     ...
     ~ DiscoverClue(golden_age)
         // Add to Synthesis - The Town of KR
@@ -234,6 +255,14 @@ Someone's got to try and turn things around.
     - else:
     
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    I don't like to gossip.
+     ~ SetSpeaker(Speaker.Lupe)
+     I just need something to go off of.
+      ~ SetSpeaker(Speaker.Misra)
+      Please Roy,
+      this is important to me.
+      ~ SetSpeaker(Speaker.Roy_Rodgerson)
+      ...
      If I had to pick someone...
      I'd say those troublemakers down at the Arcade.
     ~ SetSpeaker(Speaker.Misra)
