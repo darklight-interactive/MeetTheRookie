@@ -28,10 +28,13 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     // We hear a generic voicemail beep.
     
     ~ SetSpeaker(Speaker.Lupe)
-    Hey, it's Lupe. Had to change my route; tank was running low. 
+    Hey, it's Lupe. Had to change my route; 
+    tank was running low. 
     I pit stopped outside of Kettle Rock, Idaho. 
-    Should be back on the road soon--don't jump on me for being late. 
-    I'll debrief the Watchowski Case with you when I get back. Alright. Bye.
+    Should be back on the road soon
+    don't jump on me for being late. 
+    I'll debrief the Watchowski Case with you when I get back.
+    Alright. Bye.
         ~ChangeGameScene("scene1_1")
         -> DONE
 
