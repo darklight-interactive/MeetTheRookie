@@ -110,8 +110,11 @@
 	</object>
 	<object class="EventMixerMaster" id="{bdcb3cf7-78c1-4ba3-858f-b51ae0cb435c}">
 		<property name="volume">
-			<value>10</value>
+			<value>5</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{3750c4ec-f941-4c34-8698-c9cfbae3fdbd}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{5394bed5-93c9-4bfe-abd7-b41578d683c0}</destination>
 		</relationship>
@@ -194,7 +197,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{dcbeff67-33df-440a-8099-1a5f45a7fc0c}">
 		<property name="volume">
-			<value>-6.5</value>
+			<value>3</value>
 		</property>
 		<property name="name">
 			<value>Fluorescent light hum</value>
@@ -239,7 +242,7 @@
 			<value>5</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>74</value>
+			<value>7.5999999</value>
 		</property>
 		<property name="pitchRandomization">
 			<value>0.949999988</value>
@@ -249,6 +252,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{e5b94ff9-5121-4764-b684-3ab352e68cc1}">
+		<property name="volume">
+			<value>6</value>
+		</property>
 		<property name="name">
 			<value>Plastics</value>
 		</property>
@@ -295,7 +301,7 @@
 			<value>3.60000014</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>55</value>
+			<value>7</value>
 		</property>
 		<property name="pitchRandomization">
 			<value>0.949999988</value>
@@ -305,6 +311,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{f1bd151d-e652-4e0b-862d-15c9fbb293f2}">
+		<property name="volume">
+			<value>6</value>
+		</property>
 		<property name="name">
 			<value>Papers</value>
 		</property>
@@ -335,8 +344,23 @@
 			<destination>{0bcfc868-c887-4b39-a913-1463645677aa}</destination>
 		</relationship>
 	</object>
+	<object class="ADSRModulator" id="{3750c4ec-f941-4c34-8698-c9cfbae3fdbd}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>300</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{5394bed5-93c9-4bfe-abd7-b41578d683c0}">
 		<relationship name="effects">
+			<destination>{20c39a27-2590-45d8-b14e-bf4a3d5744db}</destination>
 			<destination>{772591d9-50bc-475a-b6a4-4ba69da6bfd7}</destination>
 		</relationship>
 	</object>
@@ -481,6 +505,7 @@
 			<destination>{f5026399-217c-4a1e-bff2-3a50f66d7edd}</destination>
 		</relationship>
 	</object>
+	<object class="GainEffect" id="{20c39a27-2590-45d8-b14e-bf4a3d5744db}" />
 	<object class="MixerBusFader" id="{772591d9-50bc-475a-b6a4-4ba69da6bfd7}" />
 	<object class="AutomationPoint" id="{5657bde3-f74e-4512-a4e1-2da6a952bd9d}">
 		<property name="position">

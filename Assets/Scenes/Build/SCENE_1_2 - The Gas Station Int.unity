@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &56955156 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 415956327}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &59412664 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5416394239746758926, guid: 4b1868b2577ce7e47a1a3f3440559158, type: 3}
@@ -530,6 +535,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -6538129623186974381, guid: 7718ce52f2ba1474bbe972b14ef3d27e, type: 3}
+  onStart: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_backroom
   _isTarget: 0
@@ -1085,6 +1091,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 56955156}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
@@ -2407,7 +2417,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3858459531442568866, guid: 348875da0b139d9429c630ec5222c601, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8698824490680527907, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2135215256}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4735442510937674344, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       insertIndex: -1
@@ -2430,6 +2443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56ed29780db74a4c8efd2ee6fb3fce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1448286054 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8698824490680527907, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+  m_PrefabInstance: {fileID: 1448286051}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1475827738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3062,6 +3080,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 3223386051870524753, guid: 3ca41105c26b7064d990012a850ac2eb, type: 3}
+  onStart: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_outside
   _isTarget: 0
@@ -3659,6 +3678,69 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &2135215255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2135215256}
+  - component: {fileID: 2135215257}
+  m_Layer: 0
+  m_Name: front door bell
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2135215256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135215255}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.8840003, y: 0.30400002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1448286054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2135215257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135215255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -12464235
+      Data2: 1247697381
+      Data3: -867501648
+      Data4: 160161749
+    Path: event:/SFX/Doors/genstore_doorBell
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 2
+  OverrideMaxDistance: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
