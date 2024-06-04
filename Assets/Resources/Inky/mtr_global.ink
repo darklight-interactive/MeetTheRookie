@@ -17,9 +17,8 @@ INCLUDE _characters/Josh.ink
 INCLUDE _characters/Jenkins.ink
 INCLUDE _characters/Irene.ink
 
-//INCLUDE mtr_level3_wineryMorning.ink
-
 INCLUDE _day 1/mtr_level1_melOmart.ink
+INCLUDE _day 1/mtr_level2_precinct_DS.ink
 INCLUDE _day 1/mtr_level3_wineryMorning.ink
 INCLUDE _day 1/mtr_level4_mainstreet.ink
 INCLUDE _day 1/mtr_level4.2_genstore.ink
