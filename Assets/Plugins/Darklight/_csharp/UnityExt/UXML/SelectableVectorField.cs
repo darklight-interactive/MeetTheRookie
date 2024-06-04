@@ -109,7 +109,7 @@ namespace Darklight.UnityExt.UXML
                 if (selectable != CurrentSelection)
                 {
                     Vector2 selectable_center = selectable.worldBound.center;
-                    Debug.Log($"Selectable: {selectable.name} Center: {selectable_center}");
+                    //Debug.Log($"Selectable: {selectable.name} Center: {selectable_center}");
 
                     // The direction ray gives us an equation we can solve for. But first,
                     // Get a dot product to quickly see if we're headed in the right direction:

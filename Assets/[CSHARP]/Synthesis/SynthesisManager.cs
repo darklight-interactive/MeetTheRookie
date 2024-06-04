@@ -202,7 +202,9 @@ public class SynthesisManager : UXML_UIDocumentObject
 
     public void Show(bool visible)
     {
-        document.rootVisualElement.visible = visible;
+        Debug.Log("SynthesisManager: Show(" + visible + ")");
+        VisualElement container = ElementQuery<VisualElement>("synthesis-container");
+        container.visible = visible;
     }
 }
 
