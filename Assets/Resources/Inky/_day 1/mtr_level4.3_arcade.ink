@@ -75,7 +75,7 @@
 = exit_scene
 
     ~ SetSpeaker(Speaker.Jenny)
-    Bye loooosersss.
+        [Bye loooosersss.]
     ~ SetSpeaker(Speaker.Lupe)
     ~ mainStreetCheck()
     ~ CompleteQuest(complete_arcade)

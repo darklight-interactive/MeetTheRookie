@@ -299,6 +299,7 @@ Thanks, Calvin.
 =winery_calvin
 ~ CompleteQuest(calvin_winery_question)
 ~ SetSpeaker(Speaker.Calvin)
+.
 That place gives me the heebie-jeebies.
 ~ SetSpeaker(Speaker.Calvin)
 It's probably haunted or cursed or something.
@@ -482,7 +483,7 @@ What does that have to do with anything?
 //~CompleteQuest(josh_suspects)
 = josh_sus
 ~ CompleteQuest(josh_suspicion)
-~SetSpeaker(Speaker.Lupe)
+~ SetSpeaker(Speaker.Lupe)
     Josh.
     If you had to pick one person in town that might've been at the Winery last night, who would it be?
 ~SetSpeaker(Speaker.Josh)
@@ -515,12 +516,14 @@ I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
 ~ SetSpeaker(Speaker.Misra)
     Do we really have to come back here...
 - else:
+~ SetSpeaker(Speaker.Misra)
+Maybe if we don't move they won't see us.
  ~ SetSpeaker(Speaker.Jenny)
  DIE SNAKES, DIE!
 ~ SetSpeaker(Speaker.Lupe)
 Is that...
   ~ SetSpeaker(Speaker.Lupe)
- Who you were talking about...?
+ Who you're talking about...?
 ~ SetSpeaker(Speaker.Misra)
  Yes.
  Don't be fooled.

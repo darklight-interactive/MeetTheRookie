@@ -253,6 +253,7 @@ Someone's got to try and turn things around.
     We talked with them earlier.
     They didn't let much slip.
     ~ SetSpeaker(Speaker.Lupe)
+     ~ DiscoverClue(roys_suspicion)
     // Add to Synthesis: Who broke into the Old Winery?
     -> DONE
     - else:
