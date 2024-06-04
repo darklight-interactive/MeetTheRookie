@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Darklight.UnityExt.Utility
+namespace Darklight.UnityExt.UXML
 {
     /// <summary>
     /// Not actually a vector field (https://en.wikipedia.org/wiki/Vector_field), but a sloppy interpretation of one.
@@ -20,23 +21,19 @@ namespace Darklight.UnityExt.Utility
         }
         public TElement PreviousSelection { get; private set; }
         public TElement CurrentSelection { get; private set; }
-        public void Select(TElement selectable)
-        {
-            CurrentSelection = selectable;
-        }
         public void Add(TElement selectable)
         {
             _selectables.Add(selectable);
             if (CurrentSelection == null)
-                Select(selectable);
+                CurrentSelection = selectable;
         }
         public void Remove(TElement selectable)
         {
             _selectables.Remove(selectable);
             if (CurrentSelection == selectable)
-                Select(_selectables.First());
-            else if (_selectables.Count == 0)
-                CurrentSelection = null;
+            {
+                CurrentSelection = _selectables.First();
+            }
         }
         public void Load(IEnumerable<TElement> selectables)
         {
@@ -50,7 +47,7 @@ namespace Darklight.UnityExt.Utility
         }
         public void AddRange(IEnumerable<TElement> selectables)
         {
-            foreach (var selectable in selectables)
+            foreach (TElement selectable in selectables)
             {
                 _selectables.Add(selectable);
             }
@@ -62,10 +59,11 @@ namespace Darklight.UnityExt.Utility
         /// </summary>
         /// <param name="dir">The direction from which to select.</param>
         /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
-        public TElement getFromDir(Vector2 dir)
+        public TElement GetElementInDirection(Vector2 dir)
         {
             if (_selectables.Count == 0) return null;
-            if (this.CurrentSelection == null) {
+            if (this.CurrentSelection == null)
+            {
                 return this.CurrentSelection;
             }
 
@@ -74,7 +72,7 @@ namespace Darklight.UnityExt.Utility
             {
                 // Potentially select a new element.
                 TElement pick = raycastEstimate(CurrentSelection.worldBound.center, dir);
-                if (pick != null && pick != CurrentSelection)
+                if (pick != null && pick.name != CurrentSelection.name)
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
@@ -111,6 +109,7 @@ namespace Darklight.UnityExt.Utility
                 if (selectable != CurrentSelection)
                 {
                     Vector2 selectable_center = selectable.worldBound.center;
+                    Debug.Log($"Selectable: {selectable.name} Center: {selectable_center}");
 
                     // The direction ray gives us an equation we can solve for. But first,
                     // Get a dot product to quickly see if we're headed in the right direction:
@@ -133,13 +132,13 @@ namespace Darklight.UnityExt.Utility
                         // t = (direction.y * (center.y - C_1) + direction.x * (center.x - C_2))/(direction.x^2 + direction.y^2).
 
                         // Visualization: https://www.desmos.com/calculator/kl2oypib1f
-                        var t = (direction.y * (selectable_center.y - from.y)
+                        float t = (direction.y * (selectable_center.y - from.y)
                             + direction.x * (selectable_center.x - from.x))
                             / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
                         // And so we get the x and y from our t-value:
-                        var dirClose = new Vector2(direction.x * t + from.x, direction.y * t + from.y);
+                        Vector2 dirClose = new Vector2(direction.x * t + from.x, direction.y * t + from.y);
                         // And now we just find the distance, and see if it's closer than the other distances we've calculated.
-                        var dist = Vector2.Distance(dirClose, selectable_center);
+                        float dist = Vector2.Distance(dirClose, selectable_center);
 
                         // Check if the point is within the rect bounds.
                         Vector2 selectFullPos = selectable.worldBound.position;

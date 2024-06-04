@@ -1,5 +1,5 @@
-Button {
-    background-image: none;
+SelectableButton {
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=2371981046512543649&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_3");
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -8,11 +8,24 @@ Button {
     padding-right: 2.5%;
     padding-bottom: 2.5%;
     padding-left: 2.5%;
-    background-color: rgba(255, 255, 255, 0);
-    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.43);
     color: rgb(255, 255, 255);
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
-    font-size: 70px;
+    max-width: 1080px;
+    font-size: 84px;
+}
+
+SelectableButton.selected {
+    scale: 1.025 1.025;
+    transition-property: scale;
+    transition-duration: 0.5s;
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-left-color: rgb(60, 34, 106);
+    border-right-color: rgb(60, 34, 106);
+    border-top-color: rgb(60, 34, 106);
+    border-bottom-color: rgb(60, 34, 106);
 }
 
 GroupBox {
@@ -24,13 +37,19 @@ GroupBox {
     padding-left: 10px;
 }
 
+#background {
+}
+
 #header {
     flex-basis: 25%;
 }
 
 #body {
     flex-basis: 100%;
-    flex-direction: row;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-start;
+    align-self: flex-start;
 }
 
 #footer {
@@ -48,40 +67,14 @@ GroupBox {
     position: absolute;
 }
 
+.unity-text-element {
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
+}
+
 #title.unity-text-element {
-    flex-grow: 1;
-    color: rgb(0, 0, 0);
-    -unity-font-definition: url('project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt');
-    align-self: center;
-    justify-content: center;
-    font-size: 100px;
-    -unity-font-style: normal;
-    -unity-text-align: middle-left;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    margin-top: 15%;
-    margin-right: 15%;
-    margin-bottom: 15%;
-    margin-left: 15%;
-}
-
-.unity-text-element.unity-button {
-    font-size: 70px;
-    -unity-font-definition: url('project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour');
-    -unity-font-style: bold;
-    color: rgb(226, 220, 217);
-}
-
-.unity-text-element.unity-label {
-    flex-grow: 1;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/arcade_alternate/ArcadeAlternate.ttf?fileID=12800000&guid=e16deed7071cf484e8ed0f3bcbb731ed&type=3#ArcadeAlternate");
-    align-self: center;
-    justify-content: center;
-    -unity-text-align: middle-left;
-    letter-spacing: 0;
-    white-space: normal;
+    font-size: 128px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco');
 }
 
 .column-active {
@@ -100,9 +93,6 @@ GroupBox {
     opacity: 0;
 }
 
-.panel {
-}
-
 .horz-direction {
     flex-direction: row;
 }
@@ -111,25 +101,9 @@ GroupBox {
     flex-direction: column;
 }
 
-.panel {
-    justify-content: space-between;
-}
-
 .selected {
-    border-left-color: rgb(255, 0, 0);
-    border-right-color: rgb(255, 0, 0);
-    border-top-color: rgb(255, 0, 0);
-    border-bottom-color: rgb(255, 0, 0);
-    border-top-width: 15px;
-    border-right-width: 15px;
-    border-bottom-width: 15px;
-    border-left-width: 15px;
     transition-duration: 0.1s;
     transition-timing-function: ease-in;
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
 }
 
 .clicked {

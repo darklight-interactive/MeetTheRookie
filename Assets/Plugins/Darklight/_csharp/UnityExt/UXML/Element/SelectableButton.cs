@@ -1,3 +1,4 @@
+using System;
 using Darklight.UnityExt.Editor;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -7,59 +8,25 @@ namespace Darklight.UnityExt.UXML
     #region ---- [[ SELECTABLE BUTTON ]] ----
     // Specific implementation for a Button element.
     [UxmlElement]
-    public partial class SelectableButton : SelectableVisualElement<Button>
+    public partial class SelectableButton : Button, ISelectable
     {
         public class SelectableButtonFactory : UxmlFactory<SelectableButton> { }
 
-        [UxmlAttribute]
-        public string text
-        {
-            get { return Element.text; }
-            set { Element.text = value; }
-        }
-
+        public event Action OnSelect;
+        public event Action OnClick;
         public SelectableButton()
         {
-            Element = (Button)this;
-
-            if (Element == null)
-            {
-                Element = new Button();
-                Add(Element);
-            }
-            Element.text = "selectable-button";
-            Element.clickable.clicked += ClickAction;
+            text = "selectable-button";
+            //ElementButton.clickable.clicked += () => InvokeClickAction();
         }
 
-        private void ClickAction()
+        public void SetSelected()
         {
-            Click();
-            Element.clickable.clicked -= ClickAction;
+            AddToClassList("selected");
+            OnSelect?.Invoke();
         }
-    }
-    #endregion
-
-    #region ---- [[ SELECTABLE SCENE CHANGE BUTTON ]] ----
-    [UxmlElement]
-    public partial class SelectableSceneChangeButton : SelectableButton
-    {
-        public class SelectableSceneChangeButtonFactory : UxmlFactory<SelectableSceneChangeButton> { }
-
-        [UxmlAttribute]
-        public string scene;
-        public SelectableSceneChangeButton()
-        {
-            OnClick += ChangeScene;
-        }
-
-        private void ChangeScene()
-        {
-            if (scene != null)
-            {
-                SceneManager.LoadScene(scene);
-                OnClick -= ChangeScene; // Ensure this is only called once
-            }
-        }
+        public void Deselect() => RemoveFromClassList("selected");
+        public void InvokeClickAction() => OnClick?.Invoke();
     }
     #endregion
 }

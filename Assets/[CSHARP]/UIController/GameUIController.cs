@@ -70,7 +70,7 @@ public class GameUIController : UXML_UIDocumentObject
         foreach (Choice choice in choices)
         {
             SelectableButton button = new SelectableButton();
-            button.text = choice.text;
+            //button.text = choice.text;
             Action handler = () => SelectChoice(choice);
             button.OnClick += handler;
             _choiceBox.Add(button);
@@ -79,7 +79,7 @@ public class GameUIController : UXML_UIDocumentObject
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().Select();
+        selectableVectorField.Selectables.First().SetSelected();
     }
 
     public void SelectChoice(Choice choice)
@@ -104,7 +104,7 @@ public class GameUIController : UXML_UIDocumentObject
     void OnMoveInputStartAction(Vector2 dir)
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        SelectableButton buttonInDirection = selectableVectorField.getFromDir(directionInScreenSpace);
+        SelectableButton buttonInDirection = selectableVectorField.GetElementInDirection(directionInScreenSpace);
         Select(buttonInDirection);
     }
     void Select(SelectableButton selectedButton)
@@ -115,7 +115,7 @@ public class GameUIController : UXML_UIDocumentObject
         if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
-            selectedButton.Select();
+            selectedButton.SetSelected();
             lockSelection = true;
             //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuHoverEventReference);
             Invoke(nameof(UnlockSelection), 0.1f);
@@ -131,7 +131,7 @@ public class GameUIController : UXML_UIDocumentObject
 
     void OnPrimaryInteractAction()
     {
-        selectableVectorField.CurrentSelection?.Click();
+        //selectableVectorField.CurrentSelection?.Clic
     }
 
 }
