@@ -26,6 +26,9 @@ INCLUDE _day 1/mtr_level4.3_arcade.ink
 INCLUDE _day 1/mtr_level4.4_bar.ink
 INCLUDE _day 1/mtr_level4.5_bar_DS.ink
 INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
+INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
+INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
+
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
@@ -96,8 +99,11 @@ LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winer
 //LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing, golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies, HOSI_calvin, jenny_suspects, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned, KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned, sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence, HOSI_highscore, personal_info_jenny, winery_jenny, KR_Jenny, personal_info_josh, winery_josh, KR_josh
 
 
+// ----------------------------------------------------
+//  LEVEL 5 : Quests and Clues
+// ----------------------------------------------------
 
-
+    LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper)
 
 
 
