@@ -162,7 +162,7 @@
      Let's take a break.
      Irene!
      Can we get a drink?
-     ~ChangeGameScene("scene")
+     ~ChangeGameScene("scene4_5_DS")
     -> DONE //{Go to Dating Sim: Bar}
 
 
