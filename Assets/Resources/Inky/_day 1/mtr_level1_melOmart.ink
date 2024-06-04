@@ -91,7 +91,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     - IsQuestComplete(look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
-        //~ ChangeGameScene("scene")
+        ~ ChangeGameScene("scene2_DS")
         -> DONE
     - IsQuestComplete(pay_for_gas):
         / TEMP DIA:/ I should look into what caused that noise.
@@ -253,7 +253,7 @@ What was that?
     
 = fallen_tree 
     // Lupe sees a tree has fallen and blocked the way out of town.
-    
+    -> scene1_1.marlowe
     -> DONE
     //* What the hell... -> npc
   
