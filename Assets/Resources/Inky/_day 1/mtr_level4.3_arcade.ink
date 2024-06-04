@@ -28,6 +28,8 @@
     {IsQuestComplete(visited_machines):
         {"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
     - else:
+     ~ CompleteQuest(visited_machines)
+    ~ SetSpeaker(Speaker.Lupe)
      I don't recognize any of these games.
     ~ SetSpeaker(Speaker.Misra)
      Yeah...

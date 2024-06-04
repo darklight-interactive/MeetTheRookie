@@ -511,10 +511,14 @@ I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
         -> DONE
 
 = teens 
-~ SetSpeaker(Speaker.Lupe)
-Is that...
+{IsQuestComplete(jenny_suspicion) || IsQuestComplete(josh_suspicion) || IsQuestComplete(calvin_suspicion):
+~ SetSpeaker(Speaker.Misra)
+    Do we really have to come back here...
+- else:
  ~ SetSpeaker(Speaker.Jenny)
  DIE SNAKES, DIE!
+~ SetSpeaker(Speaker.Lupe)
+Is that...
   ~ SetSpeaker(Speaker.Lupe)
  Who you were talking about...?
 ~ SetSpeaker(Speaker.Misra)
@@ -537,3 +541,4 @@ Is that...
  We can hear you.
 ~ SetSpeaker(Speaker.Lupe)
 ->DONE
+}
