@@ -1,9 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TempPauseScript : MonoBehaviour
+public class PauseMenu : MonoBehaviour
 {
     private UIDocument flicker;
+    private VisualElement SoundsMenu;
+    private VisualElement ControlsMenu;
+    private VisualElement GeneralMenu;
+    private List<VisualElement> Interactors = new List<VisualElement>();
     // Start is called before the first frame update
     void Start()
     {  
