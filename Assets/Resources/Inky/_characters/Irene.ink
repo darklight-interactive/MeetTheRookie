@@ -1,9 +1,11 @@
 
 === Irene_Dialogue ===
 
-{IsQuestComplete(irene_intro):
+//{IsQuestComplete(irene_intro):
     -> Irene_Dialogue.irene_questions
-- else:
+//- else:
+
+= irene_intro_cutscene
     ~ SetSpeaker(Speaker.Irene)
      Is that Ritam Misra I spy?
     ~ SetSpeaker(Speaker.Misra)
@@ -29,7 +31,7 @@
      Let me know if you need anything.
     ~ CompleteQuest(irene_intro)
     -> DONE
-}
+//}
 
 
 
@@ -37,10 +39,10 @@
     {IsQuestComplete(irene_convo_1) && IsQuestComplete(irene_convo_2): 
         {What's up? | Whatchya need? | Anything else? | Whatchya need? }
         -> DONE
-     
+
     - else: 
     * {IsClueFound(goats_mentioned)} [Goats...?] -> irene_goats
-    * {memorial_plaque_visited} [Your picture has vandalized.] -> irene_plaque
+    * {IsQuestComplete(memorial_plaque_visited)} [Your picture has vandalized.] -> irene_plaque
     * {IsClueFound(sacrifice_mentioned)} [Sorry, a sacrifice?] -> irene_sacrifice
     * [How long have you lived here?] -> irene_kettle_rock
     * {KR_irene && closed_shops_irene} [What do you know about the Winery?] -> irene_winery
