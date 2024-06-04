@@ -837,6 +837,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 1919708431}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
@@ -1850,6 +1854,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 212690443}
+    - target: {fileID: 531803276921170197, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 686150502}
     - target: {fileID: 1149332677556019910, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1858,6 +1866,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[LOCATION] winery exterior'
       objectReference: {fileID: 0}
+    - target: {fileID: 1833466853655070294, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 350332007}
     - target: {fileID: 1886391877865151093, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1866,6 +1878,26 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 652349366}
+    - target: {fileID: 2255509836889381259, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 686150502}
+    - target: {fileID: 2493766284487713363, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: PlayEvent
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2493766284487713363, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: StopEvent
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2493766284487713363, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: CollisionTag
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2725667940368560706, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 350332007}
     - target: {fileID: 2902978295283681637, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1974,11 +2006,20 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 277796028}
+    - target: {fileID: 8977926916357718598, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.84
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+--- !u!1 &1919708431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 990153277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2118,6 +2118,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 220013850}
+    - target: {fileID: 8209210989142624501, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.396
+      objectReference: {fileID: 0}
     - target: {fileID: 8340690270593771375, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2304,6 +2308,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1916810891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 1339865227}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2112424092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2352,6 +2361,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 1916810891}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'

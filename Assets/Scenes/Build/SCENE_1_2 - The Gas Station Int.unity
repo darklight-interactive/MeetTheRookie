@@ -2182,6 +2182,18 @@ PrefabInstance:
       propertyPath: _preset
       value: 
       objectReference: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
+    - target: {fileID: 2718049936919026889, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: OverrideAttenuation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718049936919026889, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718049936919026889, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: OverrideMinDistance
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2728932593013656067, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2354,6 +2366,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2105732753}
+    - target: {fileID: 6764758056706148149, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6909660701239236655, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2390,6 +2406,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 220013850}
+    - target: {fileID: 8209210989142624501, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.749
+      objectReference: {fileID: 0}
     - target: {fileID: 8340690270593771375, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2402,6 +2422,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 138511462}
+    - target: {fileID: 8698824490680527907, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.73
+      objectReference: {fileID: 0}
     - target: {fileID: 8717687276695611259, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3704,7 +3728,7 @@ Transform:
   m_GameObject: {fileID: 2135215255}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.8840003, y: 0.30400002, z: 0}
+  m_LocalPosition: {x: -3.079, y: 0.358, z: -1.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3738,9 +3762,9 @@ MonoBehaviour:
   Preload: 0
   AllowNonRigidbodyDoppler: 0
   Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 2
-  OverrideMaxDistance: 50
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0.5
+  OverrideMaxDistance: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

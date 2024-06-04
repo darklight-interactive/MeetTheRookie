@@ -167,6 +167,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 132596691}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
@@ -188,6 +192,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+--- !u!1 &132596691 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 1818236857}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &198411784
 Mesh:
   m_ObjectHideFlags: 0
@@ -693,68 +702,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &278886496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_level2_precinct
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 56d5c002448d20e4597414021daff05c, type: 3}
-  _knots:
-  - name: scene2
-    stitches:
-    - scene2.ding
-    - scene2.hello
-    - scene2.soul
-    - scene2.chastise
-    - scene2.scared
-    - scene2.introductions
-    - scene2.silence
-    - scene2.niceToMeet
-    - scene2.precinct
-    - scene2.Company
-    - scene2.treeFell
-    - scene2.snoop
-    - scene2.peek
-    - scene2.wait
-    - scene2.solo
-    - scene2.transition_to_case
-    - scene2.time
-    - scene2.police_report
-    - scene2.theRest
-    - scene2.nothingHere
-    - scene2.Evidence
-    - scene2.Witnesses
-    - scene2.Help
-    - scene2.We
-    - scene2.phone_call
-    - scene2.voicemail
-    - scene2.JokeBack
-    - scene2.door
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: reported_incident
-    _valueAsString: False
-  - _key: case_file_received
-    _valueAsString: False
-  - _key: love_points
-    _valueAsString: 0
-  - _key: tease_level
-    _valueAsString: 0
-  - _key: sincerity_level
-    _valueAsString: 0
-  - _key: spooked
-    _valueAsString: False
-  - _key: snooped
-    _valueAsString: False
-  _globalTags: []
 --- !u!1001 &552314249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -993,207 +940,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &717369826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_global
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
-  _knots:
-  - name: SetSpeaker
-    stitches: []
-  - name: SetActiveQuestChain
-    stitches: []
-  - name: StartQuest
-    stitches: []
-  - name: CompleteQuest
-    stitches: []
-  - name: IsQuestComplete
-    stitches: []
-  - name: IsQuestActive
-    stitches: []
-  - name: DiscoverClue
-    stitches: []
-  - name: IsClueFound
-    stitches: []
-  - name: Misra_Dialogue
-    stitches:
-    - Misra_Dialogue.default
-    - Misra_Dialogue.3_1
-    - Misra_Dialogue.3_2
-    - Misra_Dialogue.4_1
-  - name: Roy_Dialogue
-    stitches:
-    - Roy_Dialogue.interogate
-    - Roy_Dialogue.personal_info
-    - Roy_Dialogue.town_history
-    - Roy_Dialogue.winery_closing
-    - Roy_Dialogue.window
-    - Roy_Dialogue.merch_shirt
-    - Roy_Dialogue.merch_sticker
-    - Roy_Dialogue.pamphlet
-    - Roy_Dialogue.potential_suspects
-    - Roy_Dialogue.teenagers
-  - name: Jenny_Dialogue
-    stitches:
-    - Jenny_Dialogue.interogate
-    - Jenny_Dialogue.hosi
-    - Jenny_Dialogue.4_3_jenny_questions
-  - name: Calvin_Dialogue
-    stitches:
-    - Calvin_Dialogue.4_3
-    - Calvin_Dialogue.4_3_calvin_questions
-    - Calvin_Dialogue.cal_hosi
-    - Calvin_Dialogue.HOSI_questions
-    - Calvin_Dialogue.HOSI_questions2
-    - Calvin_Dialogue.personal_info_calvin
-    - Calvin_Dialogue.winery_calvin
-    - Calvin_Dialogue.KR_calvin
-  - name: Josh_Dialogue
-    stitches:
-    - Josh_Dialogue.4_3
-    - Josh_Dialogue.4_3_josh_questions
-    - Josh_Dialogue.4_3_josh_personal_info
-    - Josh_Dialogue.4_3_KR_josh
-    - Josh_Dialogue.4_3_winery_josh
-  - name: Jenkins_Dialogue
-    stitches:
-    - Jenkins_Dialogue.jenkins_questions
-    - Jenkins_Dialogue.jenkins_winery_
-    - Jenkins_Dialogue.jenkins_last_night
-    - Jenkins_Dialogue.jenkins_kettle_rock
-    - Jenkins_Dialogue.jenkins_council
-    - Jenkins_Dialogue.jenkins_sarah
-    - Jenkins_Dialogue.jenkins_sacrifice
-  - name: Irene_Dialogue
-    stitches:
-    - Irene_Dialogue.irene_questions
-    - Irene_Dialogue.irene_goats
-    - Irene_Dialogue.irene_plaque
-    - Irene_Dialogue.irene_sacrifice
-    - Irene_Dialogue.irene_kettle_rock
-    - Irene_Dialogue.irene_winery
-    - Irene_Dialogue.irene_still_standing
-  - name: level1
-    stitches: []
-  - name: scene1_0
-    stitches:
-    - scene1_0.thelton
-  - name: scene1_1
-    stitches:
-    - scene1_1.gas_pump
-    - scene1_1.car
-    - scene1_1.marlowe
-    - scene1_1.enter_store
-  - name: scene1_2
-    stitches:
-    - scene1_2.vending_machine
-    - scene1_2.employee
-    - scene1_2.door_to_backroom
-    - scene1_2.door_to_outside
-  - name: scene1_3
-    stitches:
-    - scene1_3.mel
-    - scene1_3.goop
-  - name: scene1_4
-    stitches:
-    - scene1_4.fallen_tree
-  - name: level3
-    stitches: []
-  - name: scene3_1
-    stitches:
-    - scene3_1.door
-    - scene3_1.fence
-    - scene3_1.window
-    - scene3_1.strange_footsteps
-  - name: scene3_2
-    stitches:
-    - scene3_2.claw_marks
-    - scene3_2.floor_splatters
-    - scene3_2.equipment
-    - scene3_2.wine_barrels
-    - scene3_2.backroom_door
-    - scene3_2.Winery_front_door
-  - name: scene4_1
-    stitches:
-    - scene4_1.talk_to_misra
-    - scene4_1.idahome_and_goods
-    - scene4_1.powerup_arcade
-    - scene4_1.strange_symbol_on_fountain
-    - scene4_1.goop_on_fountain
-    - scene4_1.the_rockin_kettle
-    - scene4_1.laundromat_closed_sign
-    - scene4_1.einab_closed_sign
-    - scene4_1.apartments_for_lease_sign
-    - scene4_1.diner_closed_sign
-    - scene4_1.clothing_store_closed_sign
-    - scene4_1.heart_of_kettle
-  - name: scene4_4
-    stitches:
-    - scene4_4.irene_text
-    - scene4_4.man
-    - scene4_4.goop
-    - scene4_4.memorial_plaque
-  - name: scene4_3
-    stitches:
-    - scene4_3.arcade_machines
-    - scene4_3.teens
-    - scene4_3.teens_roulette
-    - scene4_3.teens_suspect
-    - scene4_3.exit_scene
-  - name: scene4_2
-    stitches:
-    - scene4_2.store_window
-    - scene4_2.merch_shirt
-    - scene4_2.merch_sticker
-    - scene4_2.front_door
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: gas_pumps
-    _valueAsString: 0
-  - _key: Clues_1
-    _valueAsString: GAS_PUMP_BROKEN, CASHREG_BROKEN, CASHREG_FIX
-  - _key: QuestChain_1
-    _valueAsString: FIRST_INTERACT, PAY_FOR_GAS
-  - _key: closed_signs
-    _valueAsString: 0
-  - _key: Speaker
-    _valueAsString: Unknown, Misra, Lupe, Chief_Thelton, Marlowe, Beth, Mel, Roy_Rodgerson,
-      Jenny, Calvin, Josh, Irene, Jenkins
-  - _key: CURRENT_SPEAKER
-    _valueAsString: Lupe
-  - _key: MAIN_QUEST
-    _valueAsString: 
-  - _key: ACTIVE_QUEST_CHAIN
-    _valueAsString: 
-  - _key: COMPLETED_QUESTS
-    _valueAsString: 
-  - _key: GLOBAL_KNOWLEDGE
-    _valueAsString: 
-  - _key: Level1_Clues
-    _valueAsString: broken_gas_pump, broken_cash_reg, cashreg_fix
-  - _key: Level1_Quests
-    _valueAsString: first_interact, pay_for_gas
-  - _key: Level3_Clues
-    _valueAsString: evidence_broken_window, evidence_footsteps, evidence_fence, evidence_claw_marks,
-      evidence_damages
-  - _key: Level3_Quests
-    _valueAsString: talk_to_misra_quest, visit_fence, visit_window, discover_outside_clues,
-      discuss_misra, visit_footsteps, visit_floor, visit_barrels, visit_backroom_door,
-      discover_inside_clues
-  - _key: Level4_Quests
-    _valueAsString: 
-  - _key: Level4_Clues
-    _valueAsString: 
-  _globalTags: []
 --- !u!43 &1039839678
 Mesh:
   m_ObjectHideFlags: 0
@@ -1359,89 +1105,171 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1190344412
-MonoBehaviour:
+--- !u!43 &1177609798
+Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: mtr_scene2_precinctDEMO
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 128483559616cef4b9002c3e7c1d7d52, type: 3}
-  _knots:
-  - name: scene2
-    stitches:
-    - scene2.intro
-    - scene2.ding
-    - scene2.hello
-    - scene2.soul
-    - scene2.chastise
-    - scene2.scared
-    - scene2.introductions
-    - scene2.silence
-    - scene2.niceToMeet
-    - scene2.precinct
-    - scene2.Company
-    - scene2.treeFell
-    - scene2.snoop
-    - scene2.peek
-    - scene2.wait
-    - scene2.solo
-    - scene2.transition_to_case
-    - scene2.time
-    - scene2.police_report
-    - scene2.theRest
-    - scene2.nothingHere
-    - scene2.Evidence
-    - scene2.Witnesses
-    - scene2.Help
-    - scene2.We
-    - scene2.phone_call
-    - scene2.voicemail
-    - scene2.JokeBack
-    - scene2.door
-  - name: global decl
-    stitches: []
-  _variables:
-  - _key: reported_incident
-    _valueAsString: False
-  - _key: case_file_received
-    _valueAsString: False
-  - _key: love_points
-    _valueAsString: 0
-  - _key: tease_level
-    _valueAsString: 0
-  - _key: sincerity_level
-    _valueAsString: 0
-  - _key: spooked
-    _valueAsString: False
-  - _key: snooped
-    _valueAsString: False
-  _globalTags: []
---- !u!114 &1475871097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a35ab352d7ead40ba9a1c9e028b43b, type: 3}
-  m_Name: synthesisTest
-  m_EditorClassIdentifier: 
-  _inkyTextAsset: {fileID: 4900000, guid: 66ae6d2237460114eb1cd5c052de6568, type: 3}
-  _knots:
-  - name: nada
-    stitches: []
-  - name: synthesize
-    stitches: []
-  _variables: []
-  _globalTags: []
+  m_Name: pb_Mesh-166652
+  serializedVersion: 11
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 36
+    topology: 0
+    baseVertex: 0
+    firstVertex: 0
+    vertexCount: 24
+    localAABB:
+      m_Center: {x: 0.4625001, y: 0.26250002, z: 0.0625}
+      m_Extent: {x: 0.46249998, y: 0.26250002, z: 0.0625}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_BonesAABB: []
+  m_VariableBoneCountWeights:
+    m_Data: 
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexFormat: 0
+  m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e00100011001200110013001200140015001600150017001600
+  m_VertexData:
+    serializedVersion: 3
+    m_VertexCount: 24
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 4
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 40
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 1152
+    _typelessdata: 00000034000000000000003e00000000000000000000803f000080bf0000000000000000000080bf000000b400000000cecc6c3f000000000000003e00000000000000000000803f000080bf0000000000000000000080bfcecc6cbf00000000000000346766063f0000003e00000000000000000000803f000080bf0000000000000000000080bf000000b46766063fcecc6c3f6766063f0000003e00000000000000000000803f000080bf0000000000000000000080bfcecc6cbf6766063fcecc6c3f000000000000003e0000803f000000000000000000000000000000000000803f000080bf0000003e00000000cecc6c3f00000000000000000000803f000000000000000000000000000000000000803f000080bf0000000000000000cecc6c3f6766063f0000003e0000803f000000000000000000000000000000000000803f000080bf0000003e6766063fcecc6c3f6766063f000000000000803f000000000000000000000000000000000000803f000080bf000000006766063fcecc6c3f00000000000000000000000000000000000080bf0000803f0000000000000000000080bfcecc6c3f000000000000003400000000000000000000000000000000000080bf0000803f0000000000000000000080bf0000003400000000cecc6c3f6766063f000000000000000000000000000080bf0000803f0000000000000000000080bfcecc6c3f6766063f000000346766063f000000000000000000000000000080bf0000803f0000000000000000000080bf000000346766063f000000340000000000000000000080bf00000000000000000000000000000000000080bf000080bf000000000000000000000034000000000000003e000080bf00000000000000000000000000000000000080bf000080bf000000be00000000000000346766063f00000000000080bf00000000000000000000000000000000000080bf000080bf000000006766063f000000346766063f0000003e000080bf00000000000000000000000000000000000080bf000080bf000000be6766063f000000346766063f0000003e000000000000803f000000000000803f0000000000000000000080bf000000340000003ececc6c3f6766063f0000003e000000000000803f000000000000803f0000000000000000000080bfcecc6c3f0000003e000000346766063f00000000000000000000803f000000000000803f0000000000000000000080bf0000003400000000cecc6c3f6766063f00000000000000000000803f000000000000803f0000000000000000000080bfcecc6c3f0000000000000034000000000000000000000000000080bf00000000000080bf0000000000000000000080bf000000b400000000cecc6c3f000000000000000000000000000080bf00000000000080bf0000000000000000000080bfcecc6cbf0000000000000034000000000000003e00000000000080bf00000000000080bf0000000000000000000080bf000000b40000003ececc6c3f000000000000003e00000000000080bf00000000000080bf0000000000000000000080bfcecc6cbf0000003e
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0.4625001, y: 0.26250002, z: 0.0625}
+    m_Extent: {x: 0.46249998, y: 0.26250002, z: 0.0625}
+  m_MeshUsageFlags: 0
+  m_CookingOptions: 30
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  'm_MeshMetrics[0]': 1
+  'm_MeshMetrics[1]': 1
+  m_MeshOptimizationFlags: 1
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!43 &1538766144
 Mesh:
   m_ObjectHideFlags: 0
@@ -1607,6 +1435,171 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!43 &1632452794
+Mesh:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pb_Mesh-166638
+  serializedVersion: 11
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 96
+    topology: 0
+    baseVertex: 0
+    firstVertex: 0
+    vertexCount: 52
+    localAABB:
+      m_Center: {x: 0.46249998, y: 0.6, z: 0.057509214}
+      m_Extent: {x: 0.4625001, y: 0.6, z: 0.057510562}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_BonesAABB: []
+  m_VariableBoneCountWeights:
+    m_Data: 
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexFormat: 0
+  m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000e000d000c000e000f000d0012001100100012001300110024002500230025002600230022002900210029002200230023002800290028002300260028002600270018001900200019001c0020001f0020001c001c001d001f001e001f001d001c0019001a001c001a001b001400150017001700150016002b002c002d002a002b002d0033002e0032002e002f00320032002f003000320030003100
+  m_VertexData:
+    serializedVersion: 3
+    m_VertexCount: 52
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 4
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 40
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 2496
+    _typelessdata: cacc6c3f00000000a0cccc3d0000803f979696b40000000000000000000000000000803f000080bfa0cccc3d00000000cacc6c3f00000000000080b40000803f5e3c3cb4fbff6fb5fbff6f35764beb1f0000803f000080bf000080b400000000cecc6c3f9a99593f74cccc3d0000803f5e3c3cb4fbff6fb5fbff6f35764beb1f0000803f000080bfa0cccc3d93ed8c3fcbcc6c3f9a99593fde8f3ab50000803f1d9796b3fbffefb5fbffef35000000000000803f000080bf000080b493ed8c3f000000b400000000000080b4ebf87fbf2fde703c000000000000000000000000000080bf000080bf0000803400000000000000b400000000a0cccc3debf87fbfa2de703c537c8435fd7f84b5faa634a8000080bf000080bfa0ccccbd0000000005c24c3c9a99593f0c4be13bebf87fbfa2de703c537c8435fd7f84b5faa634a8000080bf000080bf0000803493ed8c3fd9c24c3c9a99593f82e1da3debf87fbf16df703c537c0436fd7f04b616df70a7000080bf000080bfa0ccccbd93ed8c3f000000b400000000000080b400000000000080bf00000000000080bf0000000000000000000080bf00000034000080b4cacc6c3f00000000000080b400000000000080bf00000000000080bf0000000000000000000080bfcacc6cbf000080b4000000b400000000a0cccc3d00000000000080bf00000000000080bf0000000000000000000080bf00000034a0cccc3dcacc6c3f00000000a0cccc3d00000000000080bf00000000000080bf0000000000000000000080bfcacc6cbfa0cccc3dcbcc6c3f9a99593fde8f3ab50bd15e3ff219fc3ef5e3d0b5faffef35f2197ca90000803f000080bf0ab880352f98913ececc6c3f9a99593f74cccc3d0bd15e3ff219fc3ef5e3d0b5faffef35f2197ca90000803f000080bf52cdcc3d2f98913eb974533f3333833f0a88b4b50bd15e3ff219fc3ef5e3d0b5faffef35f2197ca90000803f000080bff4aa0d34ce89f83ebc74533f3333833f1dcccc3d0bd15e3ff319fc3ef5e3d0b5faffef35f3197c290000803f000080bfe3cccc3dce89f83ed9c24c3c9a99593f82e1da3d8f9c56bf2c900b3ffdf6d935feff01b62c908ba9000080bf000080bf85e1dabdfc29383f05c24c3c9a99593f0c4be13b849c56bf3c900b3f31e616b5b079b132e12186b5000080bf000080bf404be1bbfc29383f1755013e3333833f7d8feb3d849c56bf3c900b3f31e616b5b079b132e12186b5000080bf000080bf9e8febbd939a6d3f2d55013e3333833f8816763c7a9c56bf4d900b3f976e38b6e6c50436e22106b6000080bf000080bf8f1776bc979a6d3fb0bb963e6766963f5c18f63bb0712abf8e023f3fcb7912b68f023f3fb0712a3f19070eb1000080bfad40803fd324f63b2d55013e3333833f8816763cb0712abf8e023f3fcb7912b68f023f3fb0712a3fcf048eb0000080bf7dd4463fc31c763c1755013e3333833f7d8feb3db1712abf8e023f3fcb7912b68e023f3fb1712a3f00000000000080bf79d4463f4490eb3da5bb963e6766963f312edc3db0712abf8e023f3fcb7912b68f023f3fb0712a3fcf048eb0000080bfab40803ff82edc3db974533f3333833f0a88b4b5e4f466b734fa40b7000080bf0000803f1b2cf9b76cf366b7000080bfd472533fc833833fcbcc6c3f9a99593fde8f3ab504c2a4bbd3720ebb4cfe7fbf2cff7f3f1c4446b75ec2a4bb000080bfacca6c3f059b593fcacc6c3f00000000000080b4f4e976bb5084843b00fe7fbf89ff7f3f1b2285b783ec76bb000080bfabca6c3f3c13e037000000b400000000000080b4000000009086043cdbfd7fbf0000803f2928f2b717ba7ab4000080bf91b5fbb3e33e63b005c24c3c9a99593f0c4be13bd41bc5bc9147a03cc2627fbff3ec7f3f57a058385c84c5bc000080bf05cf4b3cd99a593f2d55013e3333833f8816763c671d97bda14d673d825e7ebf1b4c7f3f2b8c653907a497bd000080bf1733013ed134833fb0bb963e6766963f5c18f63b41d336bde65ab536b0be7fbfafbe7f3ffb56033941d336bd000080bf1bb2963e4d67963fc8ccec3e9a99993f000080b4809f4cbdcd6a033d93e67ebfb0ad7f3fe08e1139a63a4dbd000080bfa9caec3ece99993f8fed243f6766963f519618b5811757bb847ffdbbd1fb7fbfa6ff7f3fb84395b76a1857bb000080bf15ec243fc866963fa5bb963e6766963f312edc3dfdd1363d12a686b6b0be7f3fb0be7fbfe75603b9fdd1363d000080bf734496be9e72963f1755013e3333833f7d8feb3d811c973d2e4b67bd865e7e3f1d4c7fbf698c65b920a3973d000080bfc75700be2240833fd9c24c3c9a99593f82e1da3d1a1bc53c2246a0bcc3627f3ff3ec7fbf73ba58b8a183c53c000080bf3c1c3ebc7bb1593f000000b400000000a0cccc3d00000000328704bcdbfd7f3f000080bf5e3df2373ed17a34000080bfab415b3a4f09b539cacc6c3f00000000a0cccc3df4e9763b968584bb00fe7f3f89ff7fbf95e6843782ec763b000080bfdd936cbf890ac339cecc6c3f9a99593f74cccc3d77bba43b576e0e3b4cfe7f3f2cff7fbfc6b43b37d4bba43b000080bfe1936cbfa6b1593fbc74533f3333833f1dcccc3d9dab3f37dc922a370000803f000080bfc76dea3765aa3f37000080bf093c53bf183f833f93ed243f6766963f67cccc3d1c0d573bfd7cfd3bd1fb7f3fa6ff7fbfde2a9037190e573b000080bf4ab524bf1972963fc8ccec3e9a99993fa0cccc3d799e4c3d426903bd95e67e3fb1ad7fbffa8e11b99d394d3d000080bf0c5decbe1fa5993fbc74533f3333833f1dcccc3d55f3223f0371453f1cc498b5f470453f49f322bf381ecbba000080bf61dbdb3e8215c13db974533f3333833f0a88b4b554f3223f0471453f2f3ab2b5f570453f48f322bfea1dcbba000080bf5cdbdb3e246cbbbb8fed243f6766963f519618b554f3223f0571453f42b0cbb5f670453f47f322bf9b1dcbba000080bfca89543ef75cc7bb93ed243f6766963f67cccc3d54f3223f0471453f2f3ab2b5f570453f48f322bfea1dcbba000080bfd989543e5656c03d8fed243f6766963f519618b5e9890b3eae9c7d3f726c2eb4a79c7d3fe5890bbe0d547a3a000080bfca89543ef75cc7bbc8ccec3e9a99993f000080b49086b1bbdc697d3f00000000effe7f3fab55b33b88a0d33a000080bf8f32e63c9d9cc1bbb0bb963e6766963f5c18f63b4fa216be0b377d3f8a7381b4e3367d3f37a2163e20b40e3b000080bfc2f2f8bdb73a013ba5bb963e6766963f312edc3d46a216be0b377d3f8a7301b5e4367d3f2fa2163ec0b30e3b000080bfebf2f8bdf3d5d03dc8ccec3e9a99993fa0cccc3d6086b1bbdd697d3fc3a958b4effe7f3f7b55b33b65a0d33a000080bf8f32e63c69b2c03d93ed243f6766963f67cccc3de3890b3eae9c7d3f726caeb4a79c7d3fdf890bbeeb547a3a000080bfd989543e5656c03d
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0.46249998, y: 0.6, z: 0.057509214}
+    m_Extent: {x: 0.4625001, y: 0.6, z: 0.057510562}
+  m_MeshUsageFlags: 0
+  m_CookingOptions: 30
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  'm_MeshMetrics[0]': 1.0338875
+  'm_MeshMetrics[1]': 1
+  m_MeshOptimizationFlags: 1
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!1001 &1818236857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1689,6 +1682,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 212690443}
+    - target: {fileID: 531803276921170197, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1632452794}
     - target: {fileID: 1149332677556019910, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1697,6 +1694,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[LOCATION] winery exterior'
       objectReference: {fileID: 0}
+    - target: {fileID: 1833466853655070294, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1177609798}
     - target: {fileID: 1886391877865151093, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1705,6 +1706,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 652349366}
+    - target: {fileID: 2255509836889381259, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1632452794}
+    - target: {fileID: 2725667940368560706, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1177609798}
     - target: {fileID: 2902978295283681637, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1741,6 +1750,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 212690443}
+    - target: {fileID: 7511961423422822460, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1632452794}
     - target: {fileID: 7519007252775029298, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1797,10 +1810,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8387663320635089649, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1177609798}
     - target: {fileID: 8644878061120811046, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 277796028}
+    - target: {fileID: 8977926916357718598, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

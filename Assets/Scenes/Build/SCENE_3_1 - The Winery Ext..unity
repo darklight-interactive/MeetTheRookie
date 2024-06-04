@@ -1134,6 +1134,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 1837469909}
     - target: {fileID: 2895742502396242152, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
       propertyPath: m_Name
       value: '[EXTERIOR CAM CONTROLLER]'
@@ -1207,6 +1211,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 223610801}
+    - target: {fileID: 2493766284487713363, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: OverrideMinDistance
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2725667940368560706, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1247,6 +1255,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 482133455}
+    - target: {fileID: 5508468726814337316, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.08
+      objectReference: {fileID: 0}
     - target: {fileID: 5643042609114684415, guid: e32e13ed6a85e1848971b366b0dcafdd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2500,6 +2512,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1837469909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 1364886415}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1908725325
 Mesh:
   m_ObjectHideFlags: 0
@@ -2721,15 +2738,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.x
-      value: 1461
+      value: 988.39996
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.y
-      value: 913
+      value: 427.6
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenAspectRatio
-      value: 1.600219
+      value: 2.311506
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x

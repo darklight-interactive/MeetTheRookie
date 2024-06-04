@@ -111,9 +111,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{b2c3ab91-dd1d-44a9-8510-ca887f3fa43b}">
-		<property name="volume">
-			<value>-10</value>
-		</property>
 		<relationship name="modulators">
 			<destination>{996df117-bd3b-4aca-8db3-a4f239f1c7f0}</destination>
 		</relationship>
@@ -144,10 +141,10 @@
 			<value>3000</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>4</value>
+			<value>0</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>4.25</value>
+			<value>0.219999999</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{f48748b6-ddfa-4001-8893-b63656c78845}</destination>
@@ -157,9 +154,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{9f3f2f3b-2476-47e5-8f3a-16b57fa661e8}">
-		<property name="volume">
-			<value>-13</value>
-		</property>
 		<property name="name">
 			<value>beeps</value>
 		</property>
@@ -174,9 +168,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{580dbf26-0e76-406e-82df-7cc4004875d0}">
-		<property name="volume">
-			<value>-12.5</value>
-		</property>
 		<property name="name">
 			<value>controller bus</value>
 		</property>
@@ -204,10 +195,10 @@
 			<value>2000</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>8.35000038</value>
+			<value>2.20000005</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>10</value>
+			<value>3.79999995</value>
 		</property>
 		<relationship name="sound">
 			<destination>{a999ef6b-bab9-4102-b483-3fe2c4c265b5}</destination>
@@ -215,7 +206,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{1cbbaf72-d010-4585-a89b-a6cf8d3d6637}">
 		<property name="volume">
-			<value>-3.5</value>
+			<value>-2</value>
 		</property>
 		<property name="name">
 			<value>controller button</value>
@@ -281,10 +272,10 @@
 			<value>35000</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>3.60000014</value>
+			<value>0.5</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>4.80000019</value>
+			<value>0.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{7b545482-9fde-4963-91ca-12fc67a7963c}</destination>
@@ -295,7 +286,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{a91405e4-fd9f-4d81-8d4c-07d802fd7a07}">
 		<property name="volume">
-			<value>-19.5</value>
+			<value>-10</value>
 		</property>
 		<property name="name">
 			<value>Insert Coin</value>
