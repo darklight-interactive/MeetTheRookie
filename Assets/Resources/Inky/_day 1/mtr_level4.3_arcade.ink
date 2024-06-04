@@ -1,17 +1,17 @@
 
 === function mainStreetCheck() ===
-    {( IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) ):
-        {IsClueFound(roys_suspicion):
+    {isAnyTeenSus() && IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_DUSK")
         ~ return
-        }
-    }
-    {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) or IsClueFound(roys_suspicion):
+     }
+    {isAnyTeenSus || IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_GOLDENHOUR")
         ~ return
     }
     ~ ChangeGameScene("scene4_1")
     ~ return
+=== function isAnyTeenSus() ===
+    ~ return IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)
 === scene4_3 ===
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
