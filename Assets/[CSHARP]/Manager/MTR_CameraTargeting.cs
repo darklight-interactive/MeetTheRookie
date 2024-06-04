@@ -11,6 +11,8 @@ public class MTR_CameraTargeting : MonoBehaviour
     private InkyStoryManager _storyManager;
     private CameraController _cameraController;
     [ShowOnly, SerializeField] private string _currentSpeaker;
+    
+    public bool targetBasedOnSpeaker = false;
 
     void Awake()
     {
@@ -22,7 +24,7 @@ public class MTR_CameraTargeting : MonoBehaviour
     void Start()
     {
         // Observer the current speaker variable in the story
-        _storyManager.OnSpeakerSet += SetSpeakerTarget;
+        if(!targetBasedOnSpeaker){ _storyManager.OnSpeakerSet += SetSpeakerTarget;}
     }
 
     void SetSpeakerTarget(string speaker)
