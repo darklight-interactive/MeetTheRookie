@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Inky;
+using NaughtyAttributes;
+
 
 
 #if UNITY_EDITOR
@@ -22,6 +24,7 @@ public class SynthesisManager : UXML_UIDocumentObject
     const string LIBRARY_PATH = "Assets/Resources/Synthesis";
     const string LIBRARY_NAME = "SynthesisClueLibrary";
     public SynthesisClueLibrary clueLibrary;
+
     protected Dictionary<string, SynthesisClueElement> synthesisItems = new Dictionary<string, SynthesisClueElement>();
     public SelectableVectorField<VisualElement> itemsSelection = new SelectableVectorField<VisualElement>();
 
@@ -29,15 +32,18 @@ public class SynthesisManager : UXML_UIDocumentObject
     /// <summary>
     /// Our group for showing the objects visually.
     /// </summary>
-    VisualElement objectContainer;
+    VisualElement mystery1Container;
     VisualElement synthesizeButton;
 
     bool synthesisActive = false;
     void Start()
     {
-        clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
+        Show(false);
 
-        objectContainer = ElementQuery<VisualElement>("objects");
+        clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
+        clueLibrary.LoadMysteryClues();
+
+        mystery1Container = ElementQuery<GroupBox>("mystery1");
         synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
 
@@ -74,13 +80,15 @@ public class SynthesisManager : UXML_UIDocumentObject
         }
     }
 
+    [Button]
     public void AddClue(string clue)
     {
         Debug.Log("Synthesis Adding clue: " + clue);
-        Button button = new Button();
-        button.text = clue;
-        button.name = clue;
-        //objectContainer.Add(button);
+        SynthesisClueElement newClue = new SynthesisClueElement();
+        newClue.text = clue;
+
+        mystery1Container = ElementQuery<GroupBox>("mystery1");
+        mystery1Container.Add(newClue);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
@@ -156,7 +164,7 @@ public class SynthesisManager : UXML_UIDocumentObject
         }
         var synthesisObj = new SynthesisClueElement();
         synthesisItems.Add(itemName, synthesisObj);
-        objectContainer.Add(synthesisObj);
+        mystery1Container.Add(synthesisObj);
         itemsSelection.Add(synthesisObj);
         return true;
     }
@@ -197,3 +205,36 @@ public class SynthesisManager : UXML_UIDocumentObject
         document.rootVisualElement.visible = visible;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(SynthesisManager))]
+public class SynthesisManagerCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    SynthesisManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (SynthesisManager)target;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        if (GUILayout.Button("Add Test Clue"))
+        {
+            _script.AddClue("Test Clue");
+        }
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
