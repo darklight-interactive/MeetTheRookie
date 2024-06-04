@@ -178,8 +178,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
-        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
+        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
+        speechBubble.UpdateFontSizeToMatchScreen();
         speechBubble.SetBackgroundSprite(bubbleSprite);
         speechBubble.style.width = speechBubbleWidth;
         //speechBubble.style.color = Color.red; // << change color
