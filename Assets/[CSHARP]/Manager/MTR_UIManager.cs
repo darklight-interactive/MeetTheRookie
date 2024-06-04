@@ -149,7 +149,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [ShowOnly]
     public UXML_RenderTextureObject speechBubbleObject;
 
-    [MinMaxSlider(24, 128)]
+    [MinMaxSlider(24, 512)]
     public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
 
     [Range(128, 2048)]
@@ -173,6 +173,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
+
+        // TODO: omg this line HAS to be done better lmao
         (Vector3, Vector2Int, Color) bubbleData = GetSpeakerSpeechBubblePositionAndDirectionAndColor();
         speechBubbleObject.transform.position = bubbleData.Item1;
         Vector2Int bubbleDirection = bubbleData.Item2;
@@ -185,7 +187,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubble.style.color = bubbleData.Item3;
         speechBubble.SetBackgroundSprite(bubbleSprite);
         speechBubble.style.width = speechBubbleWidth;
-        //speechBubble.style.color = Color.red; // << change color
 
         StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
     }
@@ -224,8 +225,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Vector3 bubblePosition = Vector3.zero;
         Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = characterColors[currentSpeaker];
-
-        
 
         // Set the Camera Target to the Player
         if (currentSpeaker.Contains("Lupe"))
