@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5312689513072785689
 Transform:
   m_ObjectHideFlags: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293430607668870812}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -319,8 +319,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 826.5001, y: 465}
-  _screenAspectRatio: 1.7774196
+  _screenSize: {x: 1920, y: 1080}
+  _screenAspectRatio: 1.7777778
+  characterColors: {fileID: 11400000, guid: c6c79f343d8e72142b9489b6fc6edc7c, type: 2}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _mainMenuScene:
     m_SceneName: 
@@ -328,7 +329,7 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  speechBubbleFontSizeRange: {x: 114, y: 128}
+  speechBubbleFontSizeRange: {x: 96, y: 128}
   speechBubbleWidth: 1080
   LTick_SpeechBubble: {fileID: 21300000, guid: 0b162cc3f1b244d2a9d9e7d9714ee803, type: 3}
   RTick_SpeechBubble: {fileID: 21300000, guid: 47845efcdff9e456bb60412abd6c84d7, type: 3}
@@ -368,7 +369,7 @@ MonoBehaviour:
   - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
   - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
   - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
-  buildSceneDataObject: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
+  buildSceneDataObject: {fileID: 0}
 --- !u!114 &1103200859854054853
 MonoBehaviour:
   m_ObjectHideFlags: 0
