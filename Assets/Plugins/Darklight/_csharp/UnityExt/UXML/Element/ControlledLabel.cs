@@ -72,7 +72,6 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
-
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText =
             "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
@@ -106,6 +105,9 @@ namespace Darklight.UnityExt.UXML
         public ControlledLabel()
         {
             _container = new VisualElement();
+            _container.name = "container";
+            _container.style.flexGrow = 1;
+            _container.style.flexDirection = FlexDirection.Row;
             _container.style.overflow = Overflow.Hidden;
             _container.style.flexWrap = Wrap.Wrap;
 
@@ -113,6 +115,8 @@ namespace Darklight.UnityExt.UXML
             label.style.alignSelf = Align.Auto;
 
             UpdateFontSizeToMatchScreen();
+
+            label.text = fullText;
 
             _container.Add(label);
             Add(_container);
