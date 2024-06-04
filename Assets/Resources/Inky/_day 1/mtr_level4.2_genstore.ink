@@ -7,6 +7,8 @@
     * [merch_pamphlet] -> pamphlet
     
         ->DONE
+= intro
+    -> Roy_Dialogue.roy_intro_cutscene
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
     ~ SetSpeaker(Speaker.Lupe)

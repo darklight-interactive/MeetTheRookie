@@ -23,7 +23,7 @@
 //* [exit_door] -> exit_scene
 
     -> DONE
-
+= 
 = arcade_machines
     {IsQuestComplete(visited_machines):
         {"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
