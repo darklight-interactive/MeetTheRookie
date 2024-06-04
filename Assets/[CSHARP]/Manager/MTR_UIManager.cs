@@ -84,24 +84,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     [SerializeField, ShowOnly]
     float _screenAspectRatio;
-    
+
     [SerializeField] CharacterColors characterColors;
 
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
-    [Header("Main Menu Controller")]
-    [SerializeField]
-    UXML_UIDocumentPreset _mainMenuPreset;
+    [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
 
-    [SerializeField]
-    SceneObject _mainMenuScene;
-    private MainMenuController _mainMenuController;
-
-    [Header("Game UI Controller")]
+    // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     private GameUIController _gameUI;
-
-    [SerializeField]
-    UXML_UIDocumentPreset _gameUIPreset;
+    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
     public GameUIController gameUIController
     {
         get
@@ -142,6 +134,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
+    #region ------ [[ SPEECH BUBBLE ]] ------------------------ >>
     [Header("Speech Bubble")]
     [SerializeField]
     UXML_UIDocumentPreset _speechBubblePreset;
@@ -190,7 +183,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
     }
-
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
@@ -206,7 +198,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             yield return null;
         }
     }
-
     public void DestroySpeechBubble()
     {
         if (speechBubbleObject != null)
@@ -218,7 +209,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
         speechBubbleObject = null;
     }
-
     (Vector3, Vector2Int, Color) GetSpeakerSpeechBubblePositionAndDirectionAndColor()
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
@@ -273,9 +263,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
         return (bubblePosition, bubbleDirection, bubbleColor);
     }
-
-
-
+    #endregion
 
     #region ------ [[ INTERACT ICON ]] ------------------------
     [Header("Interact Icon")]

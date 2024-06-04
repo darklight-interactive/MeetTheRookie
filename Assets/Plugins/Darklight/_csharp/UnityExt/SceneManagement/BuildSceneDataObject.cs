@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Darklight.UnityExt.SceneManagement;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Darklight.UnityExt.SceneManagement
 {
@@ -21,6 +24,7 @@ namespace Darklight.UnityExt.SceneManagement
         /// Saves the build scene data by updating the paths of the BuildSceneData objects
         /// based on the paths in the EditorBuildSettingsScene array.
         /// </summary>
+#if UNITY_EDITOR
         public void SaveBuildSceneData(string[] buildScenePaths)
         {
             this.buildScenePaths = buildScenePaths;
@@ -51,6 +55,7 @@ namespace Darklight.UnityExt.SceneManagement
             EditorUtility.SetDirty(this);
             Debug.Log($"{this.name} Saved build scene data.");
         }
+#endif
 
         public virtual List<TSceneData> GetAllBuildSceneData()
         {

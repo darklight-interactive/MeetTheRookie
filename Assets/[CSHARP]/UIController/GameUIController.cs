@@ -32,12 +32,14 @@ public class GameUIController : UXML_UIDocumentObject
     const string INTERACT_PROMPT_TAG = "interact-icon";
     const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
-    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    SelectableVectorField<SelectableButton> choiceButtonField = new SelectableVectorField<SelectableButton>();
     private Dictionary<SelectableButton, Action> buttonHandlers = new Dictionary<SelectableButton, Action>();
 
     VisualElement _header;
     VisualElement _body;
     VisualElement _footer;
+    VisualElement _menuPanel;
+    VisualElement _choicePanel;
     GroupBox _choiceBox;
     bool lockSelection = false;
 
@@ -45,26 +47,60 @@ public class GameUIController : UXML_UIDocumentObject
     public void Awake()
     {
         Initialize(preset);
-
-
-
-        // Listen to the input manager
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
     }
 
     public void Start()
     {
+
+        // Listen to the input manager
+        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+        UniversalInputManager.OnMenuButton += OnMenuButtonAction;
+
         _body = ElementQuery<VisualElement>("body");
         _header = ElementQuery<VisualElement>("header");
         _footer = ElementQuery<VisualElement>("footer");
+
+        _menuPanel = ElementQuery<VisualElement>("MenuPanel");
+
+        _choicePanel = ElementQuery<VisualElement>("ChoicePanel");
+        _choicePanel.style.visibility = Visibility.Hidden;
+
+
+        SetVisibility(false);
+    }
+
+    void OnMoveInputStartAction(Vector2 dir)
+    {
+        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
+        SelectableButton buttonInDirection = choiceButtonField.GetElementInDirection(directionInScreenSpace);
+        Select(buttonInDirection);
+    }
+
+    void OnPrimaryInteractAction()
+    {
+        //selectableVectorField.CurrentSelection?.Clic
+    }
+
+    void OnMenuButtonAction()
+    {
+        if (_menuPanel.visible)
+        {
+            SetVisibility(false);
+            _menuPanel.visible = false;
+        }
+        else
+        {
+            SetVisibility(true);
+            _menuPanel.visible = true;
+        }
     }
 
     public void LoadChoices(List<Choice> choices)
     {
         _choiceBox = ElementQuery<GroupBox>("ChoiceBox");
         _choiceBox.Clear();
-        selectableVectorField.Clear();
+        choiceButtonField.Clear();
         buttonHandlers.Clear();
 
         foreach (Choice choice in choices)
@@ -78,8 +114,8 @@ public class GameUIController : UXML_UIDocumentObject
         }
 
         // Load the Selectable Elements
-        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().SetSelected();
+        choiceButtonField.Load(ElementQueryAll<SelectableButton>());
+        choiceButtonField.Selectables.First().SetSelected();
     }
 
     public void SelectChoice(Choice choice)
@@ -88,7 +124,7 @@ public class GameUIController : UXML_UIDocumentObject
         //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuSelectEventReference);
 
         // Remove OnClick event handlers for each button
-        foreach (SelectableButton button in selectableVectorField.Selectables)
+        foreach (SelectableButton button in choiceButtonField.Selectables)
         {
             if (buttonHandlers.TryGetValue(button, out var handler))
             {
@@ -101,17 +137,13 @@ public class GameUIController : UXML_UIDocumentObject
 
 
 
-    void OnMoveInputStartAction(Vector2 dir)
-    {
-        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        SelectableButton buttonInDirection = selectableVectorField.GetElementInDirection(directionInScreenSpace);
-        Select(buttonInDirection);
-    }
+
+
     void Select(SelectableButton selectedButton)
     {
         if (selectedButton == null || lockSelection) return;
 
-        SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        SelectableButton previousButton = choiceButtonField.PreviousSelection;
         if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
@@ -129,9 +161,6 @@ public class GameUIController : UXML_UIDocumentObject
 
 
 
-    void OnPrimaryInteractAction()
-    {
-        //selectableVectorField.CurrentSelection?.Clic
-    }
+
 
 }

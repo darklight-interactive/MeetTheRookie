@@ -6,6 +6,7 @@ using Darklight.UnityExt.Editor;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 namespace Darklight.UnityExt.Input
 {
@@ -38,9 +39,10 @@ namespace Darklight.UnityExt.Input
         InputActionMap _touchActionMap;
 
         // -------------- [[ INPUT ACTIONS ]] -------------- >>
-        InputAction _move => _activeActionMap.FindAction("MoveInput");
-        InputAction _primary => _activeActionMap.FindAction("PrimaryInteract");
-        InputAction _secondary => _activeActionMap.FindAction("SecondaryInteract");
+        InputAction _moveInputAction => _activeActionMap.FindAction("MoveInput");
+        InputAction _primaryButtonAction => _activeActionMap.FindAction("PrimaryInteract");
+        InputAction _secondaryButtonAction => _activeActionMap.FindAction("SecondaryInteract");
+        InputAction _menuButtonAction => _activeActionMap.FindAction("MenuButton");
 
         // -------------- [[ INPUT EVENTS ]] -------------- >>
         public delegate void OnInput_Trigger();
@@ -59,6 +61,9 @@ namespace Darklight.UnityExt.Input
         public static event OnInput_Trigger OnSecondaryInteract;
         public static event OnInput_Trigger OnSecondaryInteractCanceled;
 
+        /// <summary> Event for the menu button input from the active device. </summary>
+        public static event OnInput_Trigger OnMenuButton;
+
         public override void Initialize()
         {
             if (DetectAndEnableInputDevice())
@@ -70,37 +75,14 @@ namespace Darklight.UnityExt.Input
 
         public void Reset()
         {
-            Debug.Log($"{Prefix} Resetting Inputs ");
-
-            // Unsubscribe from all input actions
-            if (_move != null)
-            {
-                _move.started -= HandleMoveStarted;
-                _move.performed -= HandleMovePerformed;
-                _move.canceled -= HandleMoveCanceled;
-            }
-
-            if (_primary != null)
-            {
-                _primary.performed -= HandlePrimaryPerformed;
-                _primary.canceled -= HandlePrimaryCanceled;
-            }
-
-            if (_secondary != null)
-            {
-                _secondary.performed -= HandleSecondaryPerformed;
-                _secondary.canceled -= HandleSecondaryCanceled;
-            }
-
-            DisableAllActionMaps();
+            ResetInputEvents();
+            _inputActionAsset.Disable();
         }
 
         public void OnDestroy()
         {
-            //Reset();
+            ResetInputEvents();
         }
-
-
 
         #region ---- [[ DEVICE INPUT DETECTION ]] ---->>
 
@@ -154,26 +136,52 @@ namespace Darklight.UnityExt.Input
             DeviceInputType = type;
 
             // Enable the actions
-            _move.Enable();
-            _primary.Enable();
-            _secondary.Enable();
+            _moveInputAction.Enable();
+            _primaryButtonAction.Enable();
+            _secondaryButtonAction.Enable();
 
             // << -- Set the input events -- >>
-            _move.started += HandleMoveStarted;
-            _move.performed += HandleMovePerformed;
-            _move.canceled += HandleMoveCanceled;
+            _moveInputAction.started += HandleMoveStarted;
+            _moveInputAction.performed += HandleMovePerformed;
+            _moveInputAction.canceled += HandleMoveCanceled;
 
-            _primary.performed += HandlePrimaryPerformed;
-            _primary.canceled += HandlePrimaryCanceled;
+            _primaryButtonAction.performed += HandlePrimaryPerformed;
+            _primaryButtonAction.canceled += HandlePrimaryCanceled;
 
-            _secondary.performed += HandleSecondaryPerformed;
-            _secondary.canceled += HandleSecondaryCanceled;
+            _secondaryButtonAction.performed += HandleSecondaryPerformed;
+            _secondaryButtonAction.canceled += HandleSecondaryCanceled;
+
+            _menuButtonAction.started += HandleMenuStarted;
             return true;
         }
+
+        void ResetInputEvents()
+        {
+            Debug.Log($"{Prefix} ResetInputEventsting Inputs ");
+
+            // Unsubscribe from all input actions
+            if (_moveInputAction != null)
+            {
+                _moveInputAction.started -= HandleMoveStarted;
+                _moveInputAction.performed -= HandleMovePerformed;
+                _moveInputAction.canceled -= HandleMoveCanceled;
+            }
+
+            if (_primaryButtonAction != null)
+            {
+                _primaryButtonAction.performed -= HandlePrimaryPerformed;
+                _primaryButtonAction.canceled -= HandlePrimaryCanceled;
+            }
+
+            if (_secondaryButtonAction != null)
+            {
+                _secondaryButtonAction.performed -= HandleSecondaryPerformed;
+                _secondaryButtonAction.canceled -= HandleSecondaryCanceled;
+            }
+
+            DisableAllActionMaps();
+        }
         #endregion
-
-
-
 
         private void HandleMoveStarted(InputAction.CallbackContext ctx)
         {
@@ -222,6 +230,10 @@ namespace Darklight.UnityExt.Input
             OnSecondaryInteractCanceled?.Invoke();
         }
 
+        private void HandleMenuStarted(InputAction.CallbackContext ctx)
+        {
+            OnMenuButton?.Invoke();
+        }
 
     }
 }
