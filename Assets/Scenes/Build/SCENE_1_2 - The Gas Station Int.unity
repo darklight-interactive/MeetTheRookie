@@ -530,6 +530,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: -6538129623186974381, guid: 7718ce52f2ba1474bbe972b14ef3d27e, type: 3}
+  onStart: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_backroom
   _isTarget: 0
@@ -3062,6 +3063,7 @@ MonoBehaviour:
     m_Bits: 0
   editMode: 0
   _sprite: {fileID: 3223386051870524753, guid: 3ca41105c26b7064d990012a850ac2eb, type: 3}
+  onStart: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_outside
   _isTarget: 0
@@ -3111,6 +3113,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenSize.x
+      value: 1478
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenSize.y
+      value: 890
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _screenAspectRatio
+      value: 1.6606742
+      objectReference: {fileID: 0}
     - target: {fileID: 3935851452667166986, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: currentScene
       value: SCENE_1_2 - The Gas Station Int.
