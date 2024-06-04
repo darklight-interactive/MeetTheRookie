@@ -17,7 +17,7 @@ public partial class SpeechBubble : ControlledLabel
     public SpeechBubble()
     {
         SetBackgroundSprite(bubbleSprite);
-        fontSize = GetDynamicFontSize();
+        UpdateFontSizeToMatchScreen();
     }
 
     public void SetBackgroundSprite(Sprite sprite)

@@ -152,6 +152,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [MinMaxSlider(24, 128)]
     public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
 
+    [Range(128, 2048)]
+    public int speechBubbleWidth = 256;
+
     [SerializeField]
     Sprite LTick_SpeechBubble;
 
@@ -177,10 +180,12 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
-        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
+        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
+        speechBubble.UpdateFontSizeToMatchScreen();
         speechBubble.style.color = bubbleData.Item3;
         speechBubble.SetBackgroundSprite(bubbleSprite);
+        speechBubble.style.width = speechBubbleWidth;
+        //speechBubble.style.color = Color.red; // << change color
 
         StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
     }
