@@ -31,8 +31,8 @@ Whoever left these here...are they here again?
 -> DONE
 
 = door_to_inside_winery_night
--> scene5_3 // GO TO INSIDE WINERY, FUNC SCENE CHANGE
-
+    ~ ChangeGameScene("scene5_3") 
+    -> DONE
 
 ===scene5_3===
 //Inside the winery
@@ -95,7 +95,8 @@ God, more of this gunk. It reeks - smells like vinegar.
 ~ SetSpeaker(Speaker.Lupe)
 Wait...
 Wasn't this closed before?
--> scene5_4
+~ ChangeGameScene("scene5_4")
+-> DONE
 
 = exit
 ~ SetSpeaker(Speaker.Lupe)
