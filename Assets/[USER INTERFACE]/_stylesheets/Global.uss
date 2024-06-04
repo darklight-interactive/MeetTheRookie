@@ -37,6 +37,10 @@ GroupBox {
     padding-left: 10px;
 }
 
+SpeechBubble Label.unity-text-element {
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco');
+}
+
 #background {
 }
 
@@ -69,12 +73,14 @@ GroupBox {
 
 .unity-text-element {
     -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
+    white-space: normal;
 }
 
 #title.unity-text-element {
     font-size: 128px;
     color: rgb(255, 255, 255);
     -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco');
+    white-space: nowrap;
 }
 
 .column-active {
