@@ -24,7 +24,8 @@ INCLUDE _day 1/mtr_level4_mainstreet.ink
 INCLUDE _day 1/mtr_level4.2_genstore.ink
 INCLUDE _day 1/mtr_level4.3_arcade.ink
 INCLUDE _day 1/mtr_level4.4_bar.ink
-
+INCLUDE _day 1/mtr_level4.5_bar_DS.ink
+INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
