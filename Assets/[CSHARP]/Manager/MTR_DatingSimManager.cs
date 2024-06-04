@@ -139,7 +139,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         {
             choiceButtons[index].style.display = DisplayStyle.Flex;
             choiceButtons[index].text = choice.text;
-            choiceButtons[index].style.fontSize = textSize.y;
+            choiceButtons[index].style.fontSize = SetFontSize(false, choice.text);
             choiceButtons[index].Deselect();
             index++;
         }
@@ -154,6 +154,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
         choiceMap.Select(choiceButtons[0]);
         choiceMap.CurrentSelection.Select();
+        choiceMap.CurrentSelection.style.fontSize = SetFontSize(true, choiceMap.CurrentSelection.text);
     }
 
     /// <summary>
@@ -210,11 +211,13 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         if (choiceMap.CurrentSelection != null)
         {
             choiceMap.CurrentSelection.Deselect();
+            choiceMap.CurrentSelection.style.fontSize = SetFontSize(false, choiceMap.CurrentSelection.text);
         }
         var selected = choiceMap.getFromDir(move);
         if (selected != null)
         {
             selected.Select();
+            selected.style.fontSize = SetFontSize(true, selected.text);
         }
     }
 
@@ -273,8 +276,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         }
 
         StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
-
-        //UpdateBoxNTextSize();
     }
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
@@ -293,21 +294,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
         isRolling = false;
     }
-
-    /// <summary>
-    /// Updates the text box size and text size
-    /// </summary>
-    /*
-    void UpdateBoxNTextSize()
-    {
-        dialogueText.style.fontSize = textSize.y;
-        float width = (!float.IsNaN(dialogueText.resolvedStyle.width)) ? dialogueText.resolvedStyle.width : 1000;
-        Vector2 newBoxSize = dialogueText.MeasureTextSize(dialogueText.text, width, VisualElement.MeasureMode.Exactly, 0, VisualElement.MeasureMode.Undefined);
-        dialogueBox.style.height = newBoxSize.y * 1.2f;
-        float trueBoxHeight = (dialogueBox.style.height.value.value > 223f) ? 190f : 170f;
-        dialogueText.style.fontSize = Mathf.Max(textSize.y * Mathf.Clamp(trueBoxHeight / newBoxSize.y, 0, 1), textSize.x);
-    }
-    */
 
     /// <summary>
     /// Moves the cool dialogue triangle up and down
@@ -341,5 +327,22 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         }
 
         return success;
+    }
+
+    /// <summary>
+    /// HARDCODED: Sets the font size of the choice boxes. Expects max string size of 57.
+    /// </summary>
+    /// <param name="selected"> If the box is selected or not </param>
+    /// <param name="text"> The text to measure to set the font size </param>
+    float SetFontSize(bool selected, string text)
+    {
+        if (selected)
+        {
+            return Mathf.Pow(5f, Mathf.Clamp((57f - text.Length) / 32f, 0f, 1f) + 1.29f) + 20f;
+        }
+        else
+        {
+            return Mathf.Pow(5f, Mathf.Clamp((57f - text.Length) / 32f, 0f, 1f) + 1.115f) + 20f;
+        }
     }
 }

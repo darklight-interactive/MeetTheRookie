@@ -35,7 +35,6 @@ GroupBox {
 
 #footer {
     flex-basis: 25%;
-    background-color: rgba(0, 0, 0, 0.49);
     align-items: center;
 }
 
@@ -52,7 +51,7 @@ GroupBox {
 #title.unity-text-element {
     flex-grow: 1;
     color: rgb(0, 0, 0);
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt");
+    -unity-font-definition: url('project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&guid=b615391fee7f2f449b46c6ff8b8cfc14&type=3#zeldadxt');
     align-self: center;
     justify-content: center;
     font-size: 100px;
@@ -70,7 +69,7 @@ GroupBox {
 
 .unity-text-element.unity-button {
     font-size: 70px;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour");
+    -unity-font-definition: url('project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour');
     -unity-font-style: bold;
     color: rgb(226, 220, 217);
 }
@@ -150,8 +149,4 @@ GroupBox {
     height: 128px;
     width: 128px;
     position: absolute;
-}
-
-.CharacterSprite {
-    scale: 1.25 1.25;
 }

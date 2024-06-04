@@ -17,15 +17,15 @@ INCLUDE _characters/Josh.ink
 INCLUDE _characters/Jenkins.ink
 INCLUDE _characters/Irene.ink
 
-//INCLUDE mtr_level3_wineryMorning.ink
-
 INCLUDE _day 1/mtr_level1_melOmart.ink
+INCLUDE _day 1/mtr_level2_precinct_DS.ink
 INCLUDE _day 1/mtr_level3_wineryMorning.ink
 INCLUDE _day 1/mtr_level4_mainstreet.ink
 INCLUDE _day 1/mtr_level4.2_genstore.ink
 INCLUDE _day 1/mtr_level4.3_arcade.ink
 INCLUDE _day 1/mtr_level4.4_bar.ink
-
+INCLUDE _day 1/mtr_level4.5_bar_DS.ink
+INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
@@ -86,7 +86,7 @@ LIST Level3_Quests = (talk_to_misra_quest), (visit_fence), (visit_window), (disc
 // ----------------------------------------------------
 //  LEVEL 4 : Quests and Clues
 // ----------------------------------------------------
-LIST Level4_Quests = entered_arcade, visited_goop, visited_symbol, visited_misra, visited_roy, complete_gen_store, complete_arcade, visited_machines, visited_jenny, visited_calvin, visited_josh, irene_intro, memorial_plaque_visited, irene_convo_1, irene_convo_2, jenkins_wakes_up, calvin_first_interact, josh_first_interact, KR_jenny_quest, personal_info_jenny_quest, winery_jenny_quest, personal_info_josh_quest, KR_josh_quest, winery_josh_quest, suspects, jenkins_intro, what_is_hosi, lupe_not_a_cop, jenny_KR_question, jenny_local_question, jenny_personal_question, jenny_winery_question, jenny_crazies_question, calvin_KR_questions, calvin_personal_question, calvin_local_question, josh_KR_question, josh_personal_questions, jenny_first_interact, calvin_KR_question, calvin_winery_question, josh_winery_question, josh_suspicion, jenny_suspicion, calvin_suspicion, car_first_interact, irene_gives_cue, jenkins_first_interact
+LIST Level4_Quests = entered_arcade, visited_goop, visited_symbol, visited_misra, visited_roy, complete_gen_store, complete_arcade, visited_machines, visited_jenny, visited_calvin, visited_josh, irene_intro, memorial_plaque_visited, irene_convo_1, irene_convo_2, jenkins_wakes_up, calvin_first_interact, josh_first_interact, KR_jenny_quest, personal_info_jenny_quest, winery_jenny_quest, personal_info_josh_quest, KR_josh_quest, winery_josh_quest, suspects, jenkins_intro, what_is_hosi, lupe_not_a_cop, jenny_KR_question, jenny_local_question, jenny_personal_question, jenny_winery_question, jenny_crazies_question, calvin_KR_questions, calvin_personal_question, calvin_local_question, josh_KR_question, josh_personal_questions, jenny_first_interact, calvin_KR_question, calvin_winery_question, josh_winery_question, josh_suspicion, jenny_suspicion, calvin_suspicion, car_first_interact, irene_gives_cue, jenkins_first_interact, visit_roy_window
 
 
 

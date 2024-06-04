@@ -3,13 +3,13 @@
 //        this also appears to be a sort of cutscene so there isnt much logic to do! :)
 
 // VARIABLES HERE:
-// VAR reported_incident = false
-// VAR case_file_received = false
-// VAR love_points = 0
-// VAR tease_level = 0
-// VAR sincerity_level = 0
-// VAR spooked = false
-// VAR snooped = false
+VAR reported_incident = false
+VAR case_file_received = false
+VAR love_points = 0
+VAR tease_level = 0
+VAR sincerity_level = 0
+VAR spooked = false
+VAR snooped = false
 
 * [Scene 2 - The Precinct] -> scene2_DS
 
