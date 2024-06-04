@@ -43,6 +43,7 @@
 
 = memorial_plaque
 # Lupe leans close to a memorial plaque on the wall. It reads "In Memory of those lost in the Tragedy of 1940. Rest in Peace, Never Forgotten." Over the corner of it, someone has sharpied over it with "THOSE STUPID GOATS!"
+    TODO implement expandable window
 ~ CompleteQuest(memorial_plaque_visited)
     // Add to Synthesis - The Town of KR
 -> DONE

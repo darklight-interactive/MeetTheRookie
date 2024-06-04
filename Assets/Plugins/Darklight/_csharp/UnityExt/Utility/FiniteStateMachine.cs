@@ -103,5 +103,10 @@ namespace Darklight.UnityExt.Utility
             OnStateChanged?.Invoke(state);
             return true;
         }
+
+        public virtual void ClearState()
+        {
+            currentFiniteState = null;
+        }
     }
 }
