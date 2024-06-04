@@ -42,6 +42,7 @@ VAR canIntroArcade = true
 
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
+
 = misra_cutscene_afternoon
     ~ CompleteQuest(visited_misra)
     ~ SetSpeaker(Speaker.Misra)
@@ -200,35 +201,43 @@ VAR canIntroArcade = true
     }
 
 = door_the_rockin_kettle
-    {(IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && IsClueFound(roys_suspicion):
-        ~ SetSpeaker(Speaker.Misra)
-        Looks like the Bar is open! Shall we?
-        ~ SetSpeaker(Speaker.Lupe)
-        I shouldn't drink.
-        I still need to drive back out tonight once the road is cleared.
-        ~ SetSpeaker(Speaker.Misra)
-        Right, about that...
-        I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
-        I'm really sorry.
-        I know you had somewhere to be.
-        ~ SetSpeaker(Speaker.Lupe)
-        Ah...
-        Well, that's not great.
-        But I suppose there's nothing you can do about it.
-        ~ SetSpeaker(Speaker.Misra)
-        Think of it this way...we get more time to crack this case!
-        But in the meantime, let's take a bit of a break...
-        ~ SetSpeaker(Speaker.Lupe)
-         ~ ChangeGameScene("scene4_4")
-         ->DONE
-        
+    {(IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) ):
+        {IsClueFound(roys_suspicion):
+            ~ SetSpeaker(Speaker.Misra)
+            Looks like the Bar is open! Shall we?
+            ~ SetSpeaker(Speaker.Lupe)
+            I shouldn't drink.
+            I still need to drive back out tonight once the road is cleared.
+            ~ SetSpeaker(Speaker.Misra)
+            Right, about that...
+            I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
+            I'm really sorry.
+            I know you had somewhere to be.
+            ~ SetSpeaker(Speaker.Lupe)
+            Ah...
+            Well, that's not great.
+            But I suppose there's nothing you can do about it.
+            ~ SetSpeaker(Speaker.Misra)
+            Think of it this way...we get more time to crack this case!
+            But in the meantime, let's take a bit of a break...
+            ~ SetSpeaker(Speaker.Lupe)
+             ~ ChangeGameScene("scene4_4")
+             ->DONE
+        - else:
+            ~ SetSpeaker(Speaker.Misra)
+            Someone wants a drink, I see.
+            The Rockin Kettle doesn't open until happy hour! 
+            We can come back later.
+            ~ SetSpeaker(Speaker.Lupe)
+            -> DONE
+        }
     - else:
         ~ SetSpeaker(Speaker.Misra)
         Someone wants a drink, I see.
         The Rockin Kettle doesn't open until happy hour! 
         We can come back later.
         ~ SetSpeaker(Speaker.Lupe)
-    -> DONE
+        -> DONE
     }
     
 
