@@ -27,7 +27,6 @@ INCLUDE _day 1/mtr_level4.4_bar.ink
 INCLUDE _day 1/mtr_level4.5_bar_DS.ink
 INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
-INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
 
 
 // ====== EXTERNAL FUNCTIONS == >>
@@ -103,7 +102,7 @@ LIST Level4_Clues = merch_pamphlet, roys_suspicion, roy_personal_info, roy_winer
 //  LEVEL 5 : Quests and Clues
 // ----------------------------------------------------
 
-    LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper)
+    LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote)
 
 
 

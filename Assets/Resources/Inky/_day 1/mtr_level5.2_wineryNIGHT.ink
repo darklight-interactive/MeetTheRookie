@@ -7,7 +7,7 @@
 + [cut fence] -> fence
 + [window] -> window
 + [tracks] -> strange_footsteps
-+ [door] -> door_main_room
++ [door] -> door_to_inside_winery_night
 
 = lupe_intro
 ~ SetSpeaker(Speaker.Lupe)
@@ -114,18 +114,18 @@ I can't leave--not without Misra.
     -else:
          ~ SetSpeaker(Speaker. Lupe)
         What's this...?
-        ~ CompleteQuest(handwritten_note)
+        ~ CompleteQuest(handwrittennote)
         -> DONE
     }
 
 
 + [winery_blueprint] -> winery_blueprint
 
-+ [locked_door_number_pad] ->number_pad
+//+ [locked_door_number_pad] ->number_pad
 
-+ [newspaper_article_pinned_on_corkboard] -> newspaper
++ [newspaper_article_pinned_on_corkboard] -> read_newspaper
 
-=newspaper
+= read_newspaper
     {IsQuestComplete(newspaper):
     ~SetSpeaker(Speaker.Lupe)
      Well, that's depressing. Seems like the Winery closing was the last straw.
@@ -169,6 +169,7 @@ I can't leave--not without Misra.
     -> DONE
  }
 
+TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
 // = number_pad
 
 // {winery_blueprint_evidence:
