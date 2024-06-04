@@ -515,7 +515,9 @@ I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
 {IsQuestComplete(jenny_suspicion) || IsQuestComplete(josh_suspicion) || IsQuestComplete(calvin_suspicion):
 ~ SetSpeaker(Speaker.Misra)
     Do we really have to come back here...
+    
 - else:
+
 ~ SetSpeaker(Speaker.Misra)
 Maybe if we don't move they won't see us.
  ~ SetSpeaker(Speaker.Jenny)
