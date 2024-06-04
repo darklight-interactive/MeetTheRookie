@@ -1,4 +1,6 @@
 === Roy_Dialogue ===
+
+= roy_intro_cutscene
 { IsQuestComplete(visited_roy) == false:
     ~ CompleteQuest(visited_roy)
     ~ SetSpeaker(Speaker.Misra)
@@ -77,7 +79,7 @@ Kettle Rock is my home.
 TODO // Add to Synthesis - The Town of KR
     ...
 ~ SetSpeaker(Speaker.Lupe)
--> interogate
+-> DONE
 
 = town_history
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -100,7 +102,7 @@ Someone's got to try and turn things around.
 ~ SetSpeaker(Speaker.Lupe)
     // Add to Synthesis - The Town of KR
 ~ DiscoverClue(roy_town_history)
--> interogate
+-> DONE
 
 = winery_closing
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -112,17 +114,18 @@ Someone's got to try and turn things around.
  There are only so many things you can do with an old Winery.
 ~ SetSpeaker(Speaker.Lupe)
 ~ DiscoverClue(roy_winery_closing)
--> interogate
+-> DONE
 
 
 = window
-  {IsQuestComplete(visit_window): 
+  {IsQuestComplete(visit_roy_window): 
     ~SetSpeaker(Speaker.Lupe)
     Other than the abandoned Winery, the environment is kinda pretty...
     -> DONE
   
    - else: 
     ~ SetSpeaker(Speaker.Lupe)
+    ~ CompleteQuest(visit_roy_window)
     You have a perfect view of the Winery from here.
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      I do.
@@ -250,6 +253,7 @@ Someone's got to try and turn things around.
     We talked with them earlier.
     They didn't let much slip.
     ~ SetSpeaker(Speaker.Lupe)
+     ~ DiscoverClue(roys_suspicion)
     // Add to Synthesis: Who broke into the Old Winery?
     -> DONE
     - else:

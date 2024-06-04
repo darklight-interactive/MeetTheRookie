@@ -1,17 +1,17 @@
 
 === function mainStreetCheck() ===
-    {( IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) ):
-        {IsClueFound(roys_suspicion):
+    {isAnyTeenSus() && IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_DUSK")
         ~ return
-        }
-    }
-    {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) or IsClueFound(roys_suspicion):
+     }
+    {isAnyTeenSus || IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_GOLDENHOUR")
         ~ return
     }
     ~ ChangeGameScene("scene4_1")
     ~ return
+=== function isAnyTeenSus() ===
+    ~ return IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)
 === scene4_3 ===
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
@@ -23,11 +23,13 @@
 //* [exit_door] -> exit_scene
 
     -> DONE
-
+= 
 = arcade_machines
     {IsQuestComplete(visited_machines):
         {"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
     - else:
+     ~ CompleteQuest(visited_machines)
+    ~ SetSpeaker(Speaker.Lupe)
      I don't recognize any of these games.
     ~ SetSpeaker(Speaker.Misra)
      Yeah...
@@ -73,7 +75,7 @@
 = exit_scene
 
     ~ SetSpeaker(Speaker.Jenny)
-    Bye loooosersss.
+        [Bye loooosersss.]
     ~ SetSpeaker(Speaker.Lupe)
     ~ mainStreetCheck()
     ~ CompleteQuest(complete_arcade)

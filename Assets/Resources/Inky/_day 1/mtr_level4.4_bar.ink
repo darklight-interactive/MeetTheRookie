@@ -9,11 +9,10 @@
 + {irene_intro}[goop] -> goop
 + [bleach_bottle] -> DONE
 
-
-
+= intro
+    -> Irene_Dialogue.irene_intro_cutscene
 = irene_text
     -> Irene_Dialogue
-     
 = man 
     -> Jenkins_Dialogue
 
