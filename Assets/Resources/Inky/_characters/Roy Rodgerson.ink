@@ -76,7 +76,7 @@ Kettle Rock is my home.
  Not here, where things move at a snails pace.
 ~ SetSpeaker(Speaker.Misra)
 ~ DiscoverClue(roy_personal_info)
-TODO // Add to Synthesis - The Town of KR
+// TODO Add to Synthesis - The Town of KR
     ...
 ~ SetSpeaker(Speaker.Lupe)
 -> DONE

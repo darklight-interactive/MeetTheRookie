@@ -4,7 +4,7 @@
         ~ ChangeGameScene("scene4_1_DUSK")
         ~ return
      }
-    {isAnyTeenSus || IsClueFound(roys_suspicion):
+    {isAnyTeenSus() || IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_GOLDENHOUR")
         ~ return
     }
@@ -75,7 +75,7 @@
 = exit_scene
 
     ~ SetSpeaker(Speaker.Jenny)
-        [Bye loooosersss.]
+        Bye loooosersss.
     ~ SetSpeaker(Speaker.Lupe)
     ~ mainStreetCheck()
     ~ CompleteQuest(complete_arcade)
