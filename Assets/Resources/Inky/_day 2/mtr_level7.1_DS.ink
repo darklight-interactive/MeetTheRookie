@@ -14,7 +14,7 @@
 
 
 
-* [BEGIN] -> intro
+* [BEGIN] -> scene7_1_DS
 
 === scene7_1_DS ===
 # name: description
