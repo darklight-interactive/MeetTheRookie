@@ -39,26 +39,6 @@ public class MTR_SceneData : BuildSceneData
     }
 }
 
-
-/// <summary>
-/// Custom Scriptable object to hold MTR_SceneData.
-/// </summary>
-public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
-{
-    public MTR_SceneData GetSceneDataByKnot(string knot)
-    {
-        return GetData().Find(x => x.knot == knot);
-    }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
-    }
-
-
-}
-
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
