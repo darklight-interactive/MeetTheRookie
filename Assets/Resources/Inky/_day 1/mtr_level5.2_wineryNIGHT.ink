@@ -114,6 +114,8 @@ I can't leave--not without Misra.
 
 + [newspaper_article_pinned_on_corkboard] -> read_newspaper
 
++ [door back to main room] -> door_back_to_main_room
+
 = read_newspaper
     {IsQuestComplete(newspaper):
     ~SetSpeaker(Speaker.Lupe)
@@ -173,6 +175,12 @@ I can't leave--not without Misra.
         -> DONE
     }
 
+
+= door_back_to_main_room
+ ~ SetSpeaker(Speaker. Lupe)
+ {No, no, no--Misra's got to be here somewhere. | I can't leave yet. | I know they're here <i> somewhere </i>. }
+ -> DONE
+ 
 
 
 TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
