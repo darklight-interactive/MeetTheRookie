@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Darklight.UnityExt.Inky;
 
 namespace Darklight.UnityExt.SceneManagement
 {
@@ -10,6 +11,7 @@ namespace Darklight.UnityExt.SceneManagement
     public class BuildSceneManagerWindow : EditorWindow
     {
         private BuildSceneManager buildSceneManager => BuildSceneManager.Instance;
+        private InkyStoryManager inkyStoryManager => InkyStoryManager.Instance;
         private Type _dataManagerType;
         private Type _dataType;
         private Vector2 scrollPosition;
@@ -37,6 +39,7 @@ namespace Darklight.UnityExt.SceneManagement
             }
 
             // Load the build scenes
+            inkyStoryManager.Initialize();
             buildSceneManager.Initialize();
 
             // Get the buildSceneDataObject field
