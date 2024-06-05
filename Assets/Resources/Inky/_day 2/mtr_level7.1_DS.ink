@@ -16,7 +16,7 @@
 
 * [BEGIN] -> intro
 
-=== intro ===
+=== scene7_1_DS ===
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2
@@ -77,6 +77,7 @@
 # emote : Lupe \| Fright_1
 "Y-yeah. But.. but.." 
 
+#name: Lupe 
 "H-how?!" 
 ->BreakCycle
 
@@ -158,7 +159,6 @@
 #name:Misra
 # emote : Misra \| Neutral_1
 "Sheriff Misra."
-//also : [Shake their hand in silence], [Return the greeting]
 + ["It's nice to meet you."] -> niceToMeet
 +["I...know you."]  -> BreakCycle
 
@@ -203,6 +203,7 @@
 # emote : Misra \| Curious_1
 { tease_level > sincerity_level:  "Leaving already?! | "Ah, I see. } Well, I'll call the tree people and get that cleared out." 
 
+#name:Misra
 "May take a while though! As you may have noticed, we don't have many people who can help around here. "
 //they gesture to an empty room
 #name:Misra
@@ -234,7 +235,7 @@
 
 <i> You feel a memory tug at the back of your mind. </i> 
 
-<i> You...know what's going to be in here. </i> 
+<i> You know what's going to be in here. </i> 
 
 + [Take a peek.] -> peek
 + [Don't be ridiculous.] -> wait
@@ -308,7 +309,7 @@ And a black and white picture of the winery stained with age.
 
 
 # name : Lupe
-...Wow.
+"...Wow."
 -> transition_to_case
 
 = transition_to_case
@@ -346,6 +347,7 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Inquisiting_1
 "It's hard to say. The time tends to range between-"
 
+#name:Misra
 "...Oh, yeah. A couple days.
 
 #name:Lupe
@@ -518,6 +520,7 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Nervous_1
 "Nothing. Just..." 
 
+#name: Misra 
 "You seem..." 
 
 #name:Lupe
@@ -562,22 +565,31 @@ And a black and white picture of the winery stained with age.
 ~sincerity_level++
 <i> You take a couple steps away from Misra and lower you voice. </i> 
 
+#name:Lupe
 "Something's off with this town." 
 
+#name:Lupe
 "With these people." 
 
+#name:Lupe
 "With the winery up on the hill." 
 
+#name:Lupe
 "It's just a hunch, or a weird feeling, or....well, I don't know."
 
+#name:Lupe
 "If you could formally look into the record of the Kettle Rock Winery that would be greatly appreciated." 
 
+#name:Lupe
 "More specifically..." 
 
+#name:Lupe
 "Missing persons cases in the area." 
 
+#name:Lupe
 "...and if any of their last known locations are connected to that winery." 
 
+#name:Lupe
 "I'd...greatly appreciate it if you could call back. Thanks."
 
 <i>You hang up.</i> 
@@ -593,22 +605,31 @@ And a black and white picture of the winery stained with age.
 =StayPut
 ~tease_level++
 
+#name:Lupe
 "Something's off with this town." 
 
+#name:Lupe
 "With these people." 
 
+#name:Lupe
 "With the winery up on the hill." 
 
+#name:Lupe
 "It's just a hunch, or a weird feeling, or....well, I don't know."
 
+#name:Lupe
 "If you could formally look into the record of the Kettle Rock Winery that would be greatly appreciated." 
 
+#name:Lupe
 "More specifically..." 
 
+#name:Lupe
 "Missing persons cases in the area." 
 
+#name:Lupe
 "...and if any of their last known locations are connected to that winery." 
 
+#name:Lupe
 "I'd...greatly appreciate it if you could call back. Thanks."
 
 <i>You hang up.</i> 
@@ -621,7 +642,6 @@ And a black and white picture of the winery stained with age.
 
 #name: Misra 
 # emote : Misra \| Nervous_1
-
 "Wow, callin' in the big guns?" 
 
 #name: Lupe 
@@ -760,8 +780,10 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Fright_1
 "There you go...breathe." 
 
-"Come on, breathe with me here Lupe." 
+#name: Misra 
+"Come on, breathe with me Lupe." 
 
+#name: Misra 
 "Breathe in..." 
 *[Breathe in.] -> breathingExercise 
 +["The Winery."] -> TheWinery
@@ -777,6 +799,7 @@ And a black and white picture of the winery stained with age.
 #name: Misra 
 "Ok, there we go! One more time. Can you do that for me?" 
 
+#name: Misra 
 "Breathe in..." 
 
 <i> They offer their hand. </i> 
@@ -788,7 +811,7 @@ And a black and white picture of the winery stained with age.
 =hand
 ~tease_level++
 <i> You lay your hand in theirs, and they gently place their other hand on top. </i> 
-
+#name: Misra 
 "There you go...come on. One more breath." 
 
 +[Breathe.] -> breathe 
@@ -837,24 +860,34 @@ And a black and white picture of the winery stained with age.
 
 <i> You take a couple steps away from Misra and lower you voice. </i> 
 
+#name:Lupe
 "Something's off with this town." 
 
+#name:Lupe
 "With these people." 
 
+#name:Lupe
 "With the winery up on the hill." 
 
+#name:Lupe
 "There's...something there."
 
+#name:Lupe
 "It's just a hunch, or a weird feeling, or....well, I don't know."
 
+#name:Lupe
 "If you could formally look into the record of the Kettle Rock Winery that would be greatly appreciated." 
 
+#name:Lupe
 "More specifically..." 
 
+#name:Lupe
 "Missing persons cases in the area." 
 
+#name:Lupe
 "...and if any of their last known locations are connected to that winery." 
 
+#name:Lupe
 "I'd...greatly appreciate it if you could call back. Thanks."
 
 <i>You hang up.</i> 
@@ -917,6 +950,7 @@ And a black and white picture of the winery stained with age.
  #name: Lupe 
  "It...killed you." 
  
+ #name: Lupe 
  "It...gored me." 
  
  #name: Misra 
@@ -929,7 +963,7 @@ And a black and white picture of the winery stained with age.
  
  #name: Misra 
  # emote : Misra \| Nervous_1
- "...oh, you're serious?" 
+ "...Oh, you're serious?" 
  
  #name: Lupe 
  "Dead serious." 
@@ -940,8 +974,10 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Inquistive_1
 "Thanks." 
 
+#name: Lupe
 "..."
 
+#name: Lupe
 "You know what would be a big help?" 
 
 #name: Misra 
@@ -952,6 +988,7 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Neutral_2
 "If you could hand me the winery case file, I'd greatly appreciate it." 
 
+#name: Misra
 { tease_level > sincerity_level:  "That's some strong Deja Vu!" | "Yeah, sure."} 
 
 ->TheWinery
@@ -1007,23 +1044,28 @@ And a black and white picture of the winery stained with age.
 #name: Lupe 
 "And then..." 
 
+#name: Lupe 
 # emote : Lupe \| Fright_1
 "And then...you died." 
 
+#name: Lupe 
 "And...I got gored by..."
 
+#name: Lupe 
 "That..." 
 
 #name: Misra 
 # emote : Misra \| Inquisiting_1
 "Um...question." 
 
+#name: Misra 
 "Am I a ghost then?" 
 
 #name: Lupe 
 # emote : Lupe \| Annoyed_1
 "No because-" 
 
+#name: Lupe 
 "...you, you really don't remember?" 
 
 #name: Misra 
@@ -1041,6 +1083,7 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Annoyed_1
 "No-" 
 
+#name: Lupe 
 # emote : Lupe \| Serious_2
 "In the Winery!" 
 
@@ -1074,11 +1117,10 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Surprised_2
 "No wait! I want to hear you out!" 
 
-#name: Lupe 
-# emote : Lupe \| Inquistive_1
-
 { tease_level > sincerity_level: <i> Your face becomes warm for a brief moment. </i> }
 
+#name: Lupe 
+# emote : Lupe \| Inquistive_1
 "..." 
 
 ->TheWinery
@@ -1108,7 +1150,7 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Inquistive_1
 "Hmph." 
 
-{ tease_level > sincerity_level:  <i> They pose themselves to reflect you. </i> ->MimicLupe | "Well?"} 
+{ tease_level > sincerity_level:  <i> They pose themselves to reflect you. </i> ->MimicLupe} 
 
 ->WineryContinued
 
@@ -1152,8 +1194,10 @@ And a black and white picture of the winery stained with age.
 #name: Lupe 
 "We need to go to this winery as soon as possible." 
 
+#name: Lupe 
 "Something is going on." 
 
+#name: Lupe 
 "And this has to be the origin point." 
 
 <i> You begin walking towards the door </i> 
@@ -1162,7 +1206,9 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Surprised_2
 "Oh!! Ok!!!" 
 
+#name: Misra 
 { tease_level > sincerity_level:  "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" | <i> They quickly follow behind. </i> } 
 
  
+->END
 ->END

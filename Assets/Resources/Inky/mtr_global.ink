@@ -29,6 +29,8 @@ INCLUDE _day 1/mtr_level4.4_bar.ink
 INCLUDE _day 1/mtr_level4.5_bar_DS.ink
 INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
+INCLUDE _day 2/mtr_level7.1_DS.ink
+
 
 
 
