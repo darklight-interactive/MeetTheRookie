@@ -141,7 +141,9 @@ I can't leave--not without Misra.
     -else:
         ~SetSpeaker(Speaker.Lupe)
 
-        [Lupe] This place has really seen some bad days. And some good ones, too. I've never seen profit be this erratic and inconsistent.
+        This place has really seen some bad days. 
+        And some good ones, too. 
+        I've never seen profit be this erratic and inconsistent.
     ~ CompleteQuest(winerygraph)
     -> DONE
 }
@@ -182,7 +184,7 @@ I can't leave--not without Misra.
  -> DONE
  
 
-
+= door_pinpad
 TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
 // = number_pad
 
