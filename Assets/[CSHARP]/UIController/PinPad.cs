@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,26 +10,16 @@ public class PinPad : MonoBehaviour
     public Label Numbers;
     public VisualElement currentselected;
     public List<VisualElement> buttons = new List<VisualElement>();
-    public VisualElement LFlasher;
-    public VisualElement RFlasher;
     private int selector = 0;
-    private string correctcode;
+    public StyleSheet selected;
+    public string correctcode;
     public int Inputted = 0;
-    public bool ispinpadcorrect;
     // Start is called before the first frame update
-    void Awake()
-    {
-    }
-
     void Start()
     {
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
         VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         groupbase = root.Q<VisualElement>("Base");
         Numbers = root.Q<VisualElement>("Numbers").Q<Label>("Numbers");
-        LFlasher = root.Q<VisualElement>("LFlasher");
-        RFlasher = root.Q<VisualElement>("RFlasher");
         foreach (VisualElement row in groupbase.Children())
         { 
             foreach (VisualElement child in row.Children())
@@ -39,65 +27,73 @@ public class PinPad : MonoBehaviour
                 buttons.Add(child);
             }
         }
-        correctcode = "100722";
+        correctcode = ("100722");
+        Debug.Log(buttons.Count);
         buttons.Remove(Numbers);
+        Debug.Log(buttons.Count);
         currentselected = buttons[selector];
         currentselected.RemoveFromClassList("UnHovered");
         currentselected.AddToClassList("Hovered");
-        groupbase.style.scale = new StyleScale(new Scale(new Vector2(1.4f, 1.4f)));
-    }
-        void OnMoveInputStartAction(Vector2 dir)
-    {
-        Vector2 directionInScreenSpace = new Vector2 (dir.x, -dir.y);
-        if (directionInScreenSpace.x > 0)
-        {
-            if (selector < 11)
-            {
-            UnHover();
-            selector += 1;
-            currentselected = buttons[selector];
-            Hover();
-            }
-        }
-        if (directionInScreenSpace.y > 0)
-        {
-            if (selector < 9)
-            {
-            UnHover();
-            selector += 3;
-            currentselected = buttons[selector];
-            Hover();
-            }
-        }
-        if (directionInScreenSpace.x < 0)
-        {
-            if (selector > 0)
-            {
-            UnHover();
-            selector -= 1;
-            currentselected = buttons[selector];
-            Hover();
-            }
-        }
-        if (directionInScreenSpace.y < 0)
-        {
-            if (selector > 2)
-            {
-            UnHover();
-            selector -= 3;
-            currentselected = buttons[selector];
-            Hover();
-            }
-        }
     }
     // Update is called once per frame
     void Update()
     {
-    }
-    
-    void OnPrimaryInteractAction()
-    {
-        StartCoroutine(Select());
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (selector < 11)
+            {
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
+            selector += 1;
+            currentselected = buttons[selector];
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (selector < 9)
+            {
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
+            selector += 3;
+            currentselected = buttons[selector];
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (selector > 0)
+            {
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
+            selector -= 1;
+            currentselected = buttons[selector];
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (selector > 2)
+            {
+            currentselected.RemoveFromClassList("Selected");
+            currentselected.RemoveFromClassList("Hovered");
+            currentselected.AddToClassList("UnHovered");
+            selector -= 3;
+            currentselected = buttons[selector];
+            currentselected.RemoveFromClassList("UnHovered");
+            currentselected.AddToClassList("Hovered");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(Select());
+        }
     }
     IEnumerator Select()
     {
@@ -134,36 +130,16 @@ public class PinPad : MonoBehaviour
     IEnumerator Correct()
     {
         yield return new WaitForSecondsRealtime(0.6f);
-        LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
-        ispinpadcorrect = true;
-
+        groupbase.style.backgroundColor = new Color(0, .6f, .18f, .8f);
     }
     IEnumerator Incorrect()
     {
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
+        groupbase.style.backgroundColor = new Color(.7f, .12f, 0f, 0.4f);
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(.4156f,.4156f,.4156f,1));
+        groupbase.style.backgroundColor = new Color(0, .42f, .23f, .77f);
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
+        groupbase.style.backgroundColor = new Color(.7f, .12f, 0f, 0.4f);
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(.4156f,.4156f,.4156f,1));
+        groupbase.style.backgroundColor = new Color(0, .42f, .23f, .77f);
     }
-    void UnHover()
-    {
-        currentselected.RemoveFromClassList("Selected");
-        currentselected.RemoveFromClassList("Hovered");
-        currentselected.AddToClassList("UnHovered");
-    }
-    void Hover()
-    {
-        currentselected.RemoveFromClassList("UnHovered");
-        currentselected.AddToClassList("Hovered");
-    }
-
-    private void OnDestroy()
-    {
-        UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-    }
-    
 }

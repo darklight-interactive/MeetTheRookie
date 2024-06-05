@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using Darklight.UnityExt.Inky;
 
 namespace Darklight.UnityExt.SceneManagement
 {
@@ -11,7 +10,6 @@ namespace Darklight.UnityExt.SceneManagement
     public class BuildSceneManagerWindow : EditorWindow
     {
         private BuildSceneManager buildSceneManager => BuildSceneManager.Instance;
-        private InkyStoryManager inkyStoryManager => InkyStoryManager.Instance;
         private Type _dataManagerType;
         private Type _dataType;
         private Vector2 scrollPosition;
@@ -39,7 +37,6 @@ namespace Darklight.UnityExt.SceneManagement
             }
 
             // Load the build scenes
-            inkyStoryManager.Initialize();
             buildSceneManager.Initialize();
 
             // Get the buildSceneDataObject field
@@ -53,7 +50,8 @@ namespace Darklight.UnityExt.SceneManagement
             {
                 Debug.Log("BuildSceneDataObject found.");
 
-                ScriptableObject buildSceneDataObject = buildSceneDataObjectField.GetValue(buildSceneManager) as ScriptableObject;
+                ScriptableObject buildSceneDataObject =
+                    buildSceneDataObjectField.GetValue(buildSceneManager) as ScriptableObject;
                 if (buildSceneDataObject != null)
                 {
                     dataObjectSerializedObject = new SerializedObject(buildSceneDataObject);
@@ -111,15 +109,15 @@ namespace Darklight.UnityExt.SceneManagement
             }
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
-
             // Start the scroll view
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
             // Display the properties of buildSceneDataObject
             if (dataObjectSerializedObject != null)
             {
+                GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
+
                 // Draw the data object properties
                 dataObjectSerializedObject.Update();
                 SerializedProperty dataProperty = dataObjectSerializedObject.FindProperty("buildSceneData");
