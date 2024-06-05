@@ -35,5 +35,7 @@ public class MTR_AudioManager : FMODEventManager
         PlayOneShot(endInteractionEventReference);
     }
 
-
+    [Header("UI Audio")]
+    public EventReference menuSelectEventReference;
+    public EventReference menuHoverEventReference;
 }
