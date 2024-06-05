@@ -7,6 +7,8 @@ using FMODUnity;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,24 +17,28 @@ using UnityEditor;
 [System.Serializable]
 public class MTR_SceneData : BuildSceneData
 {
-    private List<string> _knotNames
+    private InkyStoryObject _globalStoryObject;
+    private List<string> _knotNames = new List<string> { "default" };
+
+    [SerializeField, ShowOnly] private string _savedKnotData = "default";
+
+    [Dropdown("_knotNames")]
+    public string knot;
+    public EventReference backgroundMusicEvent;
+
+    public override void InitializeData(string path)
     {
-        get
+        base.InitializeData(path);
+
+        if (InkyStoryManager.Instance != null)
         {
-            List<string> names = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                return InkyStoryManager.GlobalStoryObject.KnotNames;
-            }
-            return names;
+            _globalStoryObject = InkyStoryManager.GlobalStoryObject;
+            _knotNames = _globalStoryObject.KnotNameList;
+            _savedKnotData = knot;
         }
     }
-
-    [NaughtyAttributes.Dropdown("_knotNames")]
-    public string knot;
-
-    public EventReference backgroundMusicEvent;
 }
+
 
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
@@ -41,7 +47,7 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 {
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return GetAllBuildSceneData().Find(x => x.knot == knot);
+        return GetData().Find(x => x.knot == knot);
     }
 
     public EventReference GetActiveBackgroundMusicEvent()
@@ -49,6 +55,8 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
         MTR_SceneData data = GetActiveSceneData();
         return data.backgroundMusicEvent;
     }
+
+
 }
 
 /// <summary>
@@ -56,31 +64,12 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 /// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    MTR_SceneDataObject _mtrSceneDataObject
-    {
-        get
-        {
-            return buildSceneDataObject as MTR_SceneDataObject;
-        }
-        set
-        {
-            buildSceneDataObject = value;
-        }
-    }
+    protected MTR_SceneDataObject _mtrSceneDataObject => (MTR_SceneDataObject)buildSceneDataObject;
 
     public override void Initialize()
     {
         base.Initialize();
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
-    }
-
-    public override void CreateBuildSceneDataObject()
-    {
-        _mtrSceneDataObject =
-            ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
-                DATA_PATH,
-                DATA_FILENAME
-            );
     }
 
     public void OnStoryInitialized(Story story)
@@ -97,7 +86,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// </summary>
     /// <param name="args">0 : The name of the sceneKnot</param>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    public object ChangeGameScene(string knotName)
+    object ChangeGameScene(string knotName)
     {
         MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
 
@@ -112,6 +101,11 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     public MTR_SceneData GetSceneData(Scene sceneName)
     {
         return _mtrSceneDataObject.GetSceneData(sceneName);
+    }
+
+    public MTR_SceneData GetSceneDataByKnot(string knot)
+    {
+        return this._mtrSceneDataObject.GetSceneDataByKnot(knot);
     }
 
     public MTR_SceneData GetActiveSceneData()
@@ -140,11 +134,6 @@ public class MTR_SceneManagerCustomEditor : Editor
         _serializedObject.Update();
 
         EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Initialize"))
-        {
-            _script.Initialize();
-        }
 
         if (GUILayout.Button("Show Editor Window"))
         {

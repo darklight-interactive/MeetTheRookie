@@ -50,8 +50,7 @@ namespace Darklight.UnityExt.SceneManagement
             {
                 Debug.Log("BuildSceneDataObject found.");
 
-                ScriptableObject buildSceneDataObject =
-                    buildSceneDataObjectField.GetValue(buildSceneManager) as ScriptableObject;
+                ScriptableObject buildSceneDataObject = buildSceneDataObjectField.GetValue(buildSceneManager) as ScriptableObject;
                 if (buildSceneDataObject != null)
                 {
                     dataObjectSerializedObject = new SerializedObject(buildSceneDataObject);
@@ -109,15 +108,15 @@ namespace Darklight.UnityExt.SceneManagement
             }
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
+
             // Start the scroll view
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
             // Display the properties of buildSceneDataObject
             if (dataObjectSerializedObject != null)
             {
-                GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
-
                 // Draw the data object properties
                 dataObjectSerializedObject.Update();
                 SerializedProperty dataProperty = dataObjectSerializedObject.FindProperty("buildSceneData");
@@ -135,6 +134,8 @@ namespace Darklight.UnityExt.SceneManagement
             {
                 serializedObject.ApplyModifiedProperties();
             }
+            Repaint();
+
         }
     }
 #endif

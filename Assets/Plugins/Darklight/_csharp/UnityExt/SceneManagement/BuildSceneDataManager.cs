@@ -18,6 +18,7 @@ namespace Darklight.UnityExt.SceneManagement
         public const string DATA_FILENAME = "BuildSceneDataObject";
 
         [SerializeField] protected BuildSceneDataObject<TSceneData> buildSceneDataObject;
+        private List<TSceneData> _buildSceneData = new List<TSceneData>();
 
         public override void Awake()
         {
@@ -27,18 +28,48 @@ namespace Darklight.UnityExt.SceneManagement
         public override void Initialize()
         {
 #if UNITY_EDITOR
-            base.LoadBuildScenes();
-            CreateBuildSceneDataObject();
-            buildSceneDataObject.SaveBuildSceneData(buildScenePaths);
-#endif
-        }
-
-        public virtual void CreateBuildSceneDataObject()
-        {
             buildSceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<BuildSceneDataObject<TSceneData>>(
                 DATA_PATH,
                 DATA_FILENAME
             );
+
+            if (buildSceneDataObject == null)
+            {
+                Debug.LogError($"{this.name} Failed to create or load build scene data object.");
+                return;
+            }
+
+            base.LoadBuildScenes();
+            SaveBuildSceneData(buildScenePaths);
+#endif
+        }
+
+        /// <summary>
+        /// Saves the build scene data by updating the paths of the BuildSceneData objects
+        /// based on the paths in the EditorBuildSettingsScene array.
+        /// </summary>
+        public virtual void SaveBuildSceneData(string[] buildScenePaths)
+        {
+            this.buildScenePaths = buildScenePaths;
+
+            for (int i = 0; i < buildScenePaths.Length; i++)
+            {
+                string scenePath = buildScenePaths[i];
+
+                // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+                if (this._buildSceneData.Count <= i || this._buildSceneData[i].Path != scenePath)
+                {
+                    _buildSceneData.Add(new TSceneData());
+                    Debug.Log($"{this.name} -> Added new scene data object. {typeof(TSceneData).Name}");
+                }
+
+                // Initialize the scene data.
+                _buildSceneData[i].InitializeData(scenePath);
+            }
+
+            buildSceneDataObject.SaveData(_buildSceneData.ToArray());
+            EditorUtility.SetDirty(this);
+            Debug.Log($"{this.name} Saved build scene data. {typeof(TSceneData).Name}");
         }
 
         /// <summary>
