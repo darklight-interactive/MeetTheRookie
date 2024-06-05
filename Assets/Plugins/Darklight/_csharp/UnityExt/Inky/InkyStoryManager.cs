@@ -111,8 +111,6 @@ namespace Darklight.UnityExt.Inky
                 "CURRENT_SPEAKER",
                 (string varName, object newValue) =>
                 {
-                    if (_currentSpeaker == newValue.ToString())
-                        return;
                     _currentSpeaker = newValue.ToString();
                     OnSpeakerSet?.Invoke(_currentSpeaker);
                     Debug.Log($"{Prefix} >> Current Speaker: {_currentSpeaker}");

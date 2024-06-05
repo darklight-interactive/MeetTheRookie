@@ -68,6 +68,11 @@
     padding-bottom: 4%;
     padding-right: 2%;
     margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.DialogueText {
+    -unity-font-definition: resource('Fonts/cour');
 }
 
 .CharacterSide {
@@ -95,10 +100,10 @@
 }
 
 .Choice {
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Dating_Sim_Box.png?fileID=2800000&guid=81b318e1e649a7a4fb70ac3efc3afa93&type=3#Dating_Sim_Box");
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Dating_Sim_Box.png?fileID=2800000&guid=9e21c114a355a4a28b094479f53efc33&type=3#Dating_Sim_Box");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-background-image-tint-color: rgb(255, 255, 255);
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour");
+    -unity-font-definition: resource('Fonts/cour');
     color: rgb(0, 0, 0);
     width: 60%;
     height: 17%;
@@ -134,17 +139,6 @@
     scale: 1.25 1.25;
 }
 
-.unity-text-element.unity-label {
-    flex-grow: 1;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/cour.ttf?fileID=12800000&guid=728d930755b2040efae7a865907559c1&type=3#cour");
-    align-self: center;
-    justify-content: center;
-    -unity-text-align: middle-left;
-    white-space: normal;
-    -unity-font-style: normal;
-    letter-spacing: 5px;
-}
-
 .selected {
     height: 23%;
     width: 65%;
@@ -163,10 +157,6 @@
     border-bottom-left-radius: 3px;
 }
 
-Button {
-    background-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
+.unity-text-element {
+    white-space: normal;
 }

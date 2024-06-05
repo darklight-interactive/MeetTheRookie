@@ -594,4 +594,5 @@ And a black and white picture of the winery stained with age.
 # name : Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
+~ChangeGameScene("scene4_1")
 -> DONE

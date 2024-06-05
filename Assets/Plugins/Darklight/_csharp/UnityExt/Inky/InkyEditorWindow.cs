@@ -48,9 +48,13 @@ namespace Darklight.UnityExt.Inky
 
             // --------------------- [[ DISPLAY STORY OBJECT ]] --------------------- >>
             InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
-            if (storyObject == null)
+            if (storyObject == null || storyObject.StoryValue == null)
             {
                 EditorGUILayout.HelpBox("Story Object is not initialized.", MessageType.Warning);
+                if (GUILayout.Button("Initialize Story Object"))
+                {
+                    InkyStoryManager.GlobalStoryObject.Initialize();
+                }
                 return;
             }
             SerializedObject serializedStoryObject = new SerializedObject(storyObject);

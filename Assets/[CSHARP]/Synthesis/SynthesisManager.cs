@@ -8,6 +8,8 @@ using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
+using Darklight.UnityExt.Editor;
+
 
 
 
@@ -19,8 +21,13 @@ using UnityEditor;
 /// Handle the UI and <see cref="SynthesisClueElement"/>s.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class SynthesisManager : UXML_UIDocumentObject
+public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 {
+    public void OnEditorReloaded()
+    {
+        Show(false);
+    }
+
     const string LIBRARY_PATH = "Assets/Resources/Synthesis";
     const string LIBRARY_NAME = "SynthesisClueLibrary";
     public SynthesisClueLibrary clueLibrary;
@@ -34,8 +41,9 @@ public class SynthesisManager : UXML_UIDocumentObject
     /// </summary>
     VisualElement mystery1Container;
     VisualElement synthesizeButton;
-
     bool synthesisActive = false;
+
+
     void Start()
     {
         Show(false);
@@ -73,7 +81,7 @@ public class SynthesisManager : UXML_UIDocumentObject
             {
                 itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
             }
-            var selected = itemsSelection.getFromDir(move);
+            var selected = itemsSelection.GetElementInDirection(move);
             if (selected != null) {
                 selected.AddToClassList("highlight");
             }
@@ -200,9 +208,17 @@ public class SynthesisManager : UXML_UIDocumentObject
         return null;
     }
 
+    public void ToggleVisibility()
+    {
+        synthesisActive = !synthesisActive;
+        Show(!synthesisActive);
+    }
+
     public void Show(bool visible)
     {
-        document.rootVisualElement.visible = visible;
+        Debug.Log("SynthesisManager: Show(" + visible + ")");
+        VisualElement container = ElementQuery<VisualElement>("synthesis-container");
+        container.visible = visible;
     }
 }
 
@@ -224,9 +240,9 @@ public class SynthesisManagerCustomEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        if (GUILayout.Button("Add Test Clue"))
+        if (GUILayout.Button("Toggle Visibility"))
         {
-            _script.AddClue("Test Clue");
+            _script.ToggleVisibility();
         }
 
         base.OnInspectorGUI();

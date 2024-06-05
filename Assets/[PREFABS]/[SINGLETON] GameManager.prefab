@@ -40,7 +40,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293430607668870812}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -319,18 +319,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1920, y: 1080}
-  _screenAspectRatio: 1.7777778
-  characterColors: {fileID: 11400000, guid: c6c79f343d8e72142b9489b6fc6edc7c, type: 2}
+  _screenSize: {x: 1431, y: 805}
+  _screenAspectRatio: 1.7776397
+  characterColors: {fileID: 11400000, guid: e723c62cd5a684110a4fcbb8fbf2266d, type: 2}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
-  _mainMenuScene:
-    m_SceneName: 
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  speechBubbleFontSizeRange: {x: 96, y: 128}
-  speechBubbleWidth: 1080
+  speechBubbleFontSizeRange: {x: 96, y: 350}
+  speechBubbleWidth: 2048
   LTick_SpeechBubble: {fileID: 21300000, guid: 0b162cc3f1b244d2a9d9e7d9714ee803, type: 3}
   RTick_SpeechBubble: {fileID: 21300000, guid: 47845efcdff9e456bb60412abd6c84d7, type: 3}
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
@@ -369,7 +367,7 @@ MonoBehaviour:
   - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
   - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext..unity
   - Assets/Scenes/Build/SCENE_5_3 - The Winery Int..unity
-  buildSceneDataObject: {fileID: 0}
+  buildSceneDataObject: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
 --- !u!114 &1103200859854054853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,6 +415,20 @@ MonoBehaviour:
       Data3: 1133846155
       Data4: -246206366
     Path: event:/SFX/Generic/NPC_InteractStop
+  menuSelectEventReference:
+    Guid:
+      Data1: -954684799
+      Data2: 1104147438
+      Data3: 728851383
+      Data4: -633248287
+    Path: event:/SFX/Generic/UI_select
+  menuHoverEventReference:
+    Guid:
+      Data1: -619712208
+      Data2: 1275090819
+      Data3: 672460202
+      Data4: 591725032
+    Path: event:/SFX/Generic/UI_hover
 --- !u!114 &6736551505315507451
 MonoBehaviour:
   m_ObjectHideFlags: 0
