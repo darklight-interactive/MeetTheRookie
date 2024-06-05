@@ -27,6 +27,7 @@ Button.GenSettingsButton {
 }
 
 Button.GenSettingsButton.Selected {
+    color: rgb(212, 101, 7);
 }
 
 Label.TabTitle {
@@ -34,6 +35,14 @@ Label.TabTitle {
     -unity-font-style: bold;
     font-size: 26px;
     color: rgb(43, 47, 55);
+}
+
+Label.TabTitle.Selected {
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/digital_disco/DigitalDisco-Thin.ttf?fileID=12800000&guid=daf3d86db769b4580826d9e669247d9e&type=3#DigitalDisco-Thin");
+    -unity-font-style: bold;
+    font-size: 26px;
+    color: rgb(212, 101, 7);
+    -unity-text-align: upper-center;
 }
 
 SliderInt.SoundSlider {
@@ -44,6 +53,14 @@ SliderInt.SoundSlider {
 SliderInt Label {
     background-color: rgba(221, 39, 39, 0);
     color: rgb(35, 40, 46);
+    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/digital_disco/DigitalDisco-Thin.ttf?fileID=12800000&guid=daf3d86db769b4580826d9e669247d9e&type=3#DigitalDisco-Thin");
+    -unity-font-style: bold;
+    font-size: 21px;
+}
+
+SliderInt Label.Selected {
+    background-color: rgba(221, 39, 39, 0);
+    color: rgb(212, 101, 7);
     -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/digital_disco/DigitalDisco-Thin.ttf?fileID=12800000&guid=daf3d86db769b4580826d9e669247d9e&type=3#DigitalDisco-Thin");
     -unity-font-style: bold;
     font-size: 21px;

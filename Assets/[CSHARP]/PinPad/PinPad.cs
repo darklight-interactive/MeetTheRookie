@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PinPad : UXML_UIDocumentObject
+public class PinPad : MonoBehaviour
 {
     public VisualElement groupbase;
     public Label Numbers;
@@ -39,7 +39,7 @@ public class PinPad : UXML_UIDocumentObject
                 buttons.Add(child);
             }
         }
-        correctcode = ("100722");
+        correctcode = "100722";
         buttons.Remove(Numbers);
         currentselected = buttons[selector];
         currentselected.RemoveFromClassList("UnHovered");
