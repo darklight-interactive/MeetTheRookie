@@ -1,15 +1,21 @@
 
 === function mainStreetCheck() ===
-    {isAnyTeenSus() && IsClueFound(roys_suspicion):
+    {
+    - IsQuestComplete(complete_arcade) && IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_DUSK")
         ~ return
-     }
-    {isAnyTeenSus() || IsClueFound(roys_suspicion):
+    -isAnyTeenSus() && IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_DUSK")
+        ~ return
+
+    - isAnyTeenSus() || IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_GOLDENHOUR")
         ~ return
+    
+    - else:
+        ~ ChangeGameScene("scene4_1")
+        ~ return
     }
-    ~ ChangeGameScene("scene4_1")
-    ~ return
 === function isAnyTeenSus() ===
     ~ return IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)
 === scene4_3 ===
@@ -76,10 +82,7 @@
 
     ~ SetSpeaker(Speaker.Jenny)
         Bye loooosersss.
-    ~ SetSpeaker(Speaker.Lupe)
     ~ mainStreetCheck()
-    ~ CompleteQuest(complete_arcade)
-    ~ CompleteQuest(suspects)
     -> DONE
     
     

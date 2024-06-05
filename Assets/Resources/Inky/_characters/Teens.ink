@@ -1,6 +1,4 @@
-=== function askedAllQuestions()
-    ~ return askedJennysQuestions() && askedCalvinsQuestions() && askedJoshsQuestions
-    
+
 === function askedJennysQuestions()
     ~ return IsQuestComplete(jenny_KR_question) && IsQuestComplete(jenny_personal_question) && IsQuestComplete(jenny_winery_question) && IsQuestComplete(jenny_crazies_question)
 === function askedCalvinsQuestions()
@@ -29,13 +27,13 @@
             {Ugh! I just lost the level. I've got to focus, leave me alone.| I'm clearly busy. | See ya. } //END OF ARCADE INTERACTIONS
              -> DONE
         
-    - askedAllQuestions():
-        -> jenny_suspects
     - askedJennysQuestions():
-        ~ SetSpeaker(Speaker.Jenny)
-        I've already told you what I know.
-        I've got a highscore to beat.
-        -> DONE
+        -> jenny_suspects
+    TODO FIX - askedJennysQuestions():
+    //    ~ SetSpeaker(Speaker.Jenny)
+    //    I've already told you what I know.
+    //    I've got a highscore to beat.
+    //    -> DONE
     - IsQuestComplete(lupe_not_a_cop): //lupe's done intro before questions
         -> jenny_questions
     - else:
@@ -187,6 +185,7 @@
      Dumb old Goat.
     // Add to Synthesis: Who broke into the Old Winery?
     ~ CompleteQuest(jenny_suspicion)
+    ~CompleteQuest(complete_arcade)
     ~ DiscoverClue(jenny_suspects)
         -> DONE
 
@@ -200,15 +199,13 @@
             {I'vetoldyoueverything.| SorryIcan'ttalkanymore.}
              -> DONE // END OF ARCADE INTERACTIONS
         
-    
-    
-    -askedAllQuestions():
+    - askedCalvinsQuestions():
         //if asked all teens first round of questions
         -> calvin_sus
-    - askedCalvinsQuestions(): // else if u've asked calvin all of his questions
-            ~ SetSpeaker(Speaker.Calvin)
-            SorryI'vegotnothingelseforyou.
-            -> DONE
+    TODO FIX- askedCalvinsQuestions(): // else if u've asked calvin all of his questions
+    //        ~ SetSpeaker(Speaker.Calvin)
+    //        SorryI'vegotnothingelseforyou.
+    //        -> DONE
     - IsQuestComplete(calvin_questions_intro): // else if u have done the intro to questions already
         -> calvin_questions
     - else: //else, (haven't done the intro to questions yet)
@@ -339,6 +336,7 @@ Er, nothing.
 = calvin_sus //TODO LUPE NEEDS TO ASK CALVIN A QUESSTION BEFORE HE RESPONDS
  ~ SetSpeaker(Speaker.Lupe)
  ~ CompleteQuest(calvin_suspicion)
+ ~CompleteQuest(complete_arcade)
 Calvin, you're not in trouble,
 but I need you to tell me who should be.
 Who do you think would've been at the Winery last night?
@@ -355,14 +353,12 @@ He used to work there.
             ~ SetSpeaker(Speaker.Josh)
             {DANCE BATTLE, BRO?| YOU DON'T WANT TO SEE MY SICK MOVES | BON BON VOYAGE.}
              -> DONE //END OF ARCADE INTERACTION
-        
-   
-    - askedAllQuestions():
-        -> josh_sus
     - askedJoshsQuestions():
-        ~ SetSpeaker(Speaker.Josh)
-        YOU DIG IT?
-        -> DONE
+        -> josh_sus
+    TODO fix this logic - askedJoshsQuestions():
+    //    ~ SetSpeaker(Speaker.Josh)
+    //    YOU DIG IT?
+    //    -> DONE
     - IsQuestComplete(josh_questions_intro):
         -> josh_questions
     - else:
@@ -483,6 +479,7 @@ What does that have to do with anything?
 //~CompleteQuest(josh_suspects)
 = josh_sus
 ~ CompleteQuest(josh_suspicion)
+~CompleteQuest(complete_arcade)
 ~ SetSpeaker(Speaker.Lupe)
     Josh.
     If you had to pick one person in town that might've been at the Winery last night, who would it be?

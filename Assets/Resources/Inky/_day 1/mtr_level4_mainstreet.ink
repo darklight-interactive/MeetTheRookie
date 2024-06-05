@@ -52,6 +52,7 @@ VAR canIntroArcade = true
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
 = misra_cutscene_golden_hour
+    {IsQuestComplete(complete_arcade) && IsClueFound(roys_suspicion)}
     {
     - (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ):
         {canStreetTeensCutscene:
