@@ -560,5 +560,5 @@
 
 #name: Lupe 
 "Misra, what are you doing?! Get back here!" 
-
+~ ChangeGameScene("scene5_2")
 -> DONE
