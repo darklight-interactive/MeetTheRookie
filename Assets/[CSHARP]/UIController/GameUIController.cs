@@ -29,8 +29,6 @@ using UnityEditor;
 /// </summary>
 public class GameUIController : UXML_UIDocumentObject
 {
-
-
     List<SelectableButton> _choiceButtons = new List<SelectableButton>();
     int selectedChoiceIndex = 0;
     SelectableButton previousButton;
