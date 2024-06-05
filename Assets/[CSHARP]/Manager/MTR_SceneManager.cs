@@ -18,11 +18,12 @@ using UnityEditor;
 public class MTR_SceneData : BuildSceneData
 {
     private InkyStoryObject _globalStoryObject;
-    [SerializeField, HideInInspector] private List<string> _knotNames = new List<string> { "default" };
+    private List<string> _knotNames = new List<string> { "default" };
+
+    [SerializeField, ShowOnly] private string _savedKnotData = "default";
 
     [Dropdown("_knotNames")]
     public string knot;
-
     public EventReference backgroundMusicEvent;
 
     public override void InitializeData(string path)
@@ -33,6 +34,7 @@ public class MTR_SceneData : BuildSceneData
         {
             _globalStoryObject = InkyStoryManager.GlobalStoryObject;
             _knotNames = _globalStoryObject.KnotNameList;
+            _savedKnotData = knot;
         }
     }
 }
@@ -43,21 +45,9 @@ public class MTR_SceneData : BuildSceneData
 /// </summary>
 public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 {
-    new MTR_SceneData[] buildSceneData
-    {
-        get
-        {
-            return base.buildSceneData;
-        }
-        set
-        {
-            base.buildSceneData = value;
-        }
-    }
-
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return GetAllBuildSceneData().Find(x => x.knot == knot);
+        return GetData().Find(x => x.knot == knot);
     }
 
     public EventReference GetActiveBackgroundMusicEvent()
@@ -66,44 +56,7 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
         return data.backgroundMusicEvent;
     }
 
-    /// <summary>
-    /// Saves the build scene data by updating the paths of the BuildSceneData objects
-    /// based on the paths in the EditorBuildSettingsScene array.
-    /// </summary>
-    public override void SaveBuildSceneData(string[] buildScenePaths)
-    {
-        this.buildScenePaths = buildScenePaths;
-        int buildScenePathsLength = buildScenePaths.Length;
-        List<MTR_SceneData> newSceneData = new List<MTR_SceneData>(buildScenePathsLength);
 
-        for (int i = 0; i < buildScenePathsLength; i++)
-        {
-            string scenePath = buildScenePaths[i];
-
-            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
-            if (this.buildSceneData.Length <= i || this.buildSceneData[i].Path != scenePath)
-            {
-                Debug.Log($"{this.buildSceneData[i].Path} -> Saving scene data for {scenePath}");
-                newSceneData.Add(new MTR_SceneData());
-            }
-            else
-            {
-                newSceneData.Add(this.buildSceneData[i]);
-            }
-
-            // Initialize the scene data.
-            newSceneData[i].InitializeData(scenePath);
-        }
-
-        // Update the build scene data.
-        buildSceneData = newSceneData.ToArray();
-
-#if UNITY_EDITOR
-        if (this != null)
-            EditorUtility.SetDirty(this);
-#endif
-        Debug.Log($"{this.name} Saved MTR build scene data.");
-    }
 }
 
 /// <summary>
@@ -111,31 +64,12 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 /// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    MTR_SceneDataObject _mtrSceneDataObject
-    {
-        get
-        {
-            return buildSceneDataObject as MTR_SceneDataObject;
-        }
-        set
-        {
-            buildSceneDataObject = value;
-        }
-    }
+    protected MTR_SceneDataObject _mtrSceneDataObject => (MTR_SceneDataObject)buildSceneDataObject;
 
     public override void Initialize()
     {
         base.Initialize();
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
-    }
-
-    public override void CreateBuildSceneDataObject()
-    {
-        _mtrSceneDataObject =
-            ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
-                DATA_PATH,
-                DATA_FILENAME
-            );
     }
 
     public void OnStoryInitialized(Story story)
@@ -200,11 +134,6 @@ public class MTR_SceneManagerCustomEditor : Editor
         _serializedObject.Update();
 
         EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Initialize"))
-        {
-            _script.Initialize();
-        }
 
         if (GUILayout.Button("Show Editor Window"))
         {
