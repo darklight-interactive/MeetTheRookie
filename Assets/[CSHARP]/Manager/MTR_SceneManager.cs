@@ -43,6 +43,18 @@ public class MTR_SceneData : BuildSceneData
 /// </summary>
 public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 {
+    new MTR_SceneData[] buildSceneData
+    {
+        get
+        {
+            return base.buildSceneData;
+        }
+        set
+        {
+            base.buildSceneData = value;
+        }
+    }
+
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
         return GetAllBuildSceneData().Find(x => x.knot == knot);
@@ -52,6 +64,45 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
     {
         MTR_SceneData data = GetActiveSceneData();
         return data.backgroundMusicEvent;
+    }
+
+    /// <summary>
+    /// Saves the build scene data by updating the paths of the BuildSceneData objects
+    /// based on the paths in the EditorBuildSettingsScene array.
+    /// </summary>
+    public override void SaveBuildSceneData(string[] buildScenePaths)
+    {
+        this.buildScenePaths = buildScenePaths;
+        int buildScenePathsLength = buildScenePaths.Length;
+        List<MTR_SceneData> newSceneData = new List<MTR_SceneData>(buildScenePathsLength);
+
+        for (int i = 0; i < buildScenePathsLength; i++)
+        {
+            string scenePath = buildScenePaths[i];
+
+            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+            if (this.buildSceneData.Length <= i || this.buildSceneData[i].Path != scenePath)
+            {
+                Debug.Log($"{this.buildSceneData[i].Path} -> Saving scene data for {scenePath}");
+                newSceneData.Add(new MTR_SceneData());
+            }
+            else
+            {
+                newSceneData.Add(this.buildSceneData[i]);
+            }
+
+            // Initialize the scene data.
+            newSceneData[i].InitializeData(scenePath);
+        }
+
+        // Update the build scene data.
+        buildSceneData = newSceneData.ToArray();
+
+#if UNITY_EDITOR
+        if (this != null)
+            EditorUtility.SetDirty(this);
+#endif
+        Debug.Log($"{this.name} Saved MTR build scene data.");
     }
 }
 

@@ -17,14 +17,14 @@ namespace Darklight.UnityExt.SceneManagement
     public class BuildSceneDataObject<TSceneData> : ScriptableObject
         where TSceneData : BuildSceneData, new()
     {
-        private string[] buildScenePaths = new string[0];
+        protected string[] buildScenePaths = new string[0];
         [SerializeField] protected TSceneData[] buildSceneData = new TSceneData[0];
 
         /// <summary>
         /// Saves the build scene data by updating the paths of the BuildSceneData objects
         /// based on the paths in the EditorBuildSettingsScene array.
         /// </summary>
-        public void SaveBuildSceneData(string[] buildScenePaths)
+        public virtual void SaveBuildSceneData(string[] buildScenePaths)
         {
             this.buildScenePaths = buildScenePaths;
             int buildScenePathsLength = buildScenePaths.Length;
