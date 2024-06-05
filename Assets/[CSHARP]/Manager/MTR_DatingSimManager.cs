@@ -152,8 +152,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
         choicesActive = true;
 
-        choiceMap.Select(choiceButtons[0]);
-        choiceMap.CurrentSelection.Select();
+        //choiceMap.SelectElement(choiceButtons[0]);
+        choiceMap.CurrentSelection.SetSelected();
         choiceMap.CurrentSelection.style.fontSize = SetFontSize(true, choiceMap.CurrentSelection.text);
     }
 
@@ -213,10 +213,10 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             choiceMap.CurrentSelection.Deselect();
             choiceMap.CurrentSelection.style.fontSize = SetFontSize(false, choiceMap.CurrentSelection.text);
         }
-        var selected = choiceMap.getFromDir(move);
+        var selected = choiceMap.GetElementInDirection(move);
         if (selected != null)
         {
-            selected.Select();
+            selected.SetSelected();
             selected.style.fontSize = SetFontSize(true, selected.text);
         }
     }

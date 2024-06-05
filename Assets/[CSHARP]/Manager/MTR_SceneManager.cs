@@ -101,7 +101,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// </summary>
     /// <param name="args">0 : The name of the sceneKnot</param>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    public object ChangeGameScene(string knotName)
+    object ChangeGameScene(string knotName)
     {
         MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
 
