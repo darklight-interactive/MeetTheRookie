@@ -44,11 +44,26 @@ public class MTR_SceneData : BuildSceneData
 /// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    protected MTR_SceneDataObject _mtrSceneDataObject => (MTR_SceneDataObject)buildSceneDataObject;
+
+    MTR_SceneDataObject mtr_SceneDataObject;
 
     public override void Initialize()
     {
-        base.Initialize();
+#if UNITY_EDITOR
+            mtr_SceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
+                DATA_PATH,
+                DATA_FILENAME
+            );
+
+            if (mtr_SceneDataObject == null)
+            {
+                Debug.LogError($"{this.name} Failed to create or load build scene data object.");
+                return;
+            }
+
+            base.LoadBuildScenes();
+            SaveBuildSceneData(buildScenePaths);
+#endif
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
     }
 
@@ -68,7 +83,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     object ChangeGameScene(string knotName)
     {
-        MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
+        MTR_SceneData data = mtr_SceneDataObject.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -80,19 +95,19 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 
     public MTR_SceneData GetSceneData(Scene sceneName)
     {
-        return _mtrSceneDataObject.GetSceneData(sceneName);
+        return mtr_SceneDataObject.GetSceneData(sceneName);
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return this._mtrSceneDataObject.GetSceneDataByKnot(knot);
+        return this.mtr_SceneDataObject.GetSceneDataByKnot(knot);
     }
 
     public MTR_SceneData GetActiveSceneData()
     {
-        if (_mtrSceneDataObject == null)
+        if (mtr_SceneDataObject == null)
             return new MTR_SceneData();
-        return _mtrSceneDataObject.GetActiveSceneData();
+        return mtr_SceneDataObject.GetActiveSceneData();
     }
 }
 
