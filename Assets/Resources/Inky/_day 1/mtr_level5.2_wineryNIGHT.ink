@@ -105,20 +105,8 @@ I can't leave--not without Misra.
 
 === scene5_4 ====
 
-   + [handwritten_note_on_corkboard] 
-    // stardew valley thing
-    {IsQuestComplete:
-        ~ SetSpeaker(Speaker. Lupe)
-        Another goat reference... 
-        -> DONE
-    
-    -else:
-         ~ SetSpeaker(Speaker. Lupe)
-        What's this...?
-        ~ CompleteQuest(handwrittennote)
-        -> DONE
-    }
-
+  + [handwritten_note_on_corkboard] -> handwritten_note
+   
 
 + [winery_blueprint] -> winery_blueprint
 
@@ -169,6 +157,23 @@ I can't leave--not without Misra.
 ~ CompleteQuest (blueprint)
     -> DONE
  }
+
+
+=handwritten_note
+ // stardew valley thing
+    {IsQuestComplete:
+        ~ SetSpeaker(Speaker. Lupe)
+        Another goat reference... 
+        -> DONE
+    
+    -else:
+         ~ SetSpeaker(Speaker. Lupe)
+        What's this...?
+        ~ CompleteQuest(handwrittennote)
+        -> DONE
+    }
+
+
 
 TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
 // = number_pad
