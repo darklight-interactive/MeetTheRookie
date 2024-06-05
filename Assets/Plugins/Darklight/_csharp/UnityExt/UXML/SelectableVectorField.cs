@@ -94,7 +94,7 @@ namespace Darklight.UnityExt.UXML
         /// <param name="direction">Any direction relative to the position.</param>
         /// <param name="threshhold">The maximum distance a given Selectable from `from` can have to be selected.</param>
         /// <returns>Index of closest selectable from raycast.</returns>
-        TElement raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 1000)
+        TElement raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 9999)
         {
             float closestDir = -1;
             TElement selected = null;

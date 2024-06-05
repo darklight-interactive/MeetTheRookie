@@ -17,7 +17,7 @@ namespace Darklight.UnityExt.UXML
         public SelectableButton()
         {
             text = "selectable-button";
-            //ElementButton.clickable.clicked += () => InvokeClickAction();
+            this.clickable.clicked += () => InvokeClickAction();
         }
 
         public void SetSelected()

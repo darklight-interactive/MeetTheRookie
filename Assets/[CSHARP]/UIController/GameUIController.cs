@@ -29,11 +29,14 @@ using UnityEditor;
 /// </summary>
 public class GameUIController : UXML_UIDocumentObject
 {
-    const string INTERACT_PROMPT_TAG = "interact-icon";
-    const string SPEECH_BUBBLE_TAG = "speech-bubble";
 
-    SelectableVectorField<SelectableButton> choiceButtonField = new SelectableVectorField<SelectableButton>();
-    private Dictionary<SelectableButton, Action> buttonHandlers = new Dictionary<SelectableButton, Action>();
+
+    List<SelectableButton> _choiceButtons = new List<SelectableButton>();
+    int selectedChoiceIndex = 0;
+    SelectableButton previousButton;
+    SelectableButton selectedButton;
+
+    private Dictionary<SelectableButton, Action> _buttonHandlers = new Dictionary<SelectableButton, Action>();
 
     VisualElement _header;
     VisualElement _body;
@@ -62,6 +65,7 @@ public class GameUIController : UXML_UIDocumentObject
         _footer = ElementQuery<VisualElement>("footer");
 
         _menuPanel = ElementQuery<VisualElement>("MenuPanel");
+        _menuPanel.style.visibility = Visibility.Hidden;
 
         _choicePanel = ElementQuery<VisualElement>("ChoicePanel");
         _choicePanel.style.visibility = Visibility.Hidden;
@@ -73,13 +77,27 @@ public class GameUIController : UXML_UIDocumentObject
     void OnMoveInputStartAction(Vector2 dir)
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        SelectableButton buttonInDirection = choiceButtonField.GetElementInDirection(directionInScreenSpace);
-        Select(buttonInDirection);
+        RotateChoiceSelection((int)directionInScreenSpace.y);
+
+    }
+
+    void RotateChoiceSelection(int direction)
+    {
+        if (_choiceButtons.Count == 0) return;
+
+        selectedChoiceIndex += direction;
+        if (selectedChoiceIndex < 0) selectedChoiceIndex = _choiceButtons.Count - 1;
+        if (selectedChoiceIndex >= _choiceButtons.Count) selectedChoiceIndex = 0;
+
+        Select(_choiceButtons[selectedChoiceIndex]);
     }
 
     void OnPrimaryInteractAction()
     {
-        //selectableVectorField.CurrentSelection?.Clic
+        if (_choicePanel.visible)
+        {
+            _choiceButtons[selectedChoiceIndex].InvokeClickAction();
+        }
     }
 
     void OnMenuButtonAction()
@@ -100,58 +118,57 @@ public class GameUIController : UXML_UIDocumentObject
     {
         _choiceBox = ElementQuery<GroupBox>("ChoiceBox");
         _choiceBox.Clear();
-        choiceButtonField.Clear();
-        buttonHandlers.Clear();
+        _choiceButtons.Clear();
+        _buttonHandlers.Clear();
 
         foreach (Choice choice in choices)
         {
             SelectableButton button = new SelectableButton();
-            //button.text = choice.text;
-            Action handler = () => SelectChoice(choice);
+            button.text = choice.text;
+
+            Action handler = () => ConfirmChoice(choice);
             button.OnClick += handler;
+            _buttonHandlers[button] = handler;
+
             _choiceBox.Add(button);
-            buttonHandlers[button] = handler;
+            _choiceButtons.Add(button);
         }
 
-        // Load the Selectable Elements
-        choiceButtonField.Load(ElementQueryAll<SelectableButton>());
-        choiceButtonField.Selectables.First().SetSelected();
+        // Select the first button
+        Select(_choiceButtons[0]);
+
+        _choicePanel.style.visibility = Visibility.Visible;
+        _choicePanel.AddToClassList("visible");
+        this.SetVisibility(true);
     }
 
-    public void SelectChoice(Choice choice)
+    public void ConfirmChoice(Choice choice)
     {
         InkyStoryManager.Iterator.ChooseChoice(choice);
-        //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuSelectEventReference);
-
-        // Remove OnClick event handlers for each button
-        foreach (SelectableButton button in choiceButtonField.Selectables)
-        {
-            if (buttonHandlers.TryGetValue(button, out var handler))
-            {
-                button.OnClick -= handler;
-            }
-        }
+        MTR_AudioManager.PlayOneShot(MTR_AudioManager.Instance.menuSelectEventReference);
 
         _choiceBox.Clear();
+        _choicePanel.style.visibility = Visibility.Hidden;
+        _choicePanel.RemoveFromClassList("visible");
     }
 
-
-
-
-
-    void Select(SelectableButton selectedButton)
+    void Select(SelectableButton newSelection)
     {
-        if (selectedButton == null || lockSelection) return;
+        if (newSelection == null || lockSelection) return;
+        if (newSelection == selectedButton) return;
 
-        SelectableButton previousButton = choiceButtonField.PreviousSelection;
-        if (selectedButton != previousButton)
-        {
-            previousButton?.Deselect();
-            selectedButton.SetSelected();
-            lockSelection = true;
-            //FMODEventManager.PlayOneShot(MTR_AudioManager.Instance.menuHoverEventReference);
-            Invoke(nameof(UnlockSelection), 0.1f);
-        }
+        // Transfer the selection
+        previousButton = selectedButton;
+        selectedButton = newSelection;
+
+        // Set the selection classes
+        previousButton?.Deselect();
+        newSelection.SetSelected();
+
+        lockSelection = true;
+        MTR_AudioManager.PlayOneShot(MTR_AudioManager.Instance.menuHoverEventReference);
+        Invoke(nameof(UnlockSelection), 0.1f);
+
     }
 
     void UnlockSelection()

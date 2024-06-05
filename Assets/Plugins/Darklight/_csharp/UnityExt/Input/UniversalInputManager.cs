@@ -157,7 +157,7 @@ namespace Darklight.UnityExt.Input
 
         void ResetInputEvents()
         {
-            Debug.Log($"{Prefix} ResetInputEventsting Inputs ");
+            Debug.Log($"{Prefix} Reset Input Events ");
 
             // Unsubscribe from all input actions
             if (_moveInputAction != null)
