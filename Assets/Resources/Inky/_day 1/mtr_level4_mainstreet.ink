@@ -225,6 +225,7 @@ VAR canIntroArcade = true
              ~ ChangeGameScene("scene4_4")
              ->DONE
         - else:
+            TODO bar entrance mention night time
             ~ SetSpeaker(Speaker.Misra)
             Someone wants a drink, I see.
             The Rockin Kettle doesn't open until happy hour! 

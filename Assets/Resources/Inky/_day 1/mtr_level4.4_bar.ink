@@ -18,6 +18,7 @@
 
 
 = goop
+    TODO secondary dialogue
     ~ SetSpeaker(Speaker.Lupe)
      You've been getting this stuff too, huh?
     ~ SetSpeaker(Speaker.Irene)

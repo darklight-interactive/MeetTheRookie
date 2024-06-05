@@ -161,6 +161,7 @@
     
 
 = wine_barrels
+    TODO "should be adjusted"
     ~ CompleteQuest(visit_barrels)
     ~ SetSpeaker(Speaker.Misra)
     Back in the day, this place really did make good wine.

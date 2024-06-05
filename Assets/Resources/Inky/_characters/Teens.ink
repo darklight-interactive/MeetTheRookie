@@ -380,6 +380,7 @@ He used to work there.
         WHAT?
         ~ SetSpeaker(Speaker.Lupe)
         I can just talk to your friends, then.
+        TODO ryan got sad
         ~ SetSpeaker(Speaker.Lupe)
         You probably don't matter as much, anyway.
         ~ SetSpeaker(Speaker.Josh)
