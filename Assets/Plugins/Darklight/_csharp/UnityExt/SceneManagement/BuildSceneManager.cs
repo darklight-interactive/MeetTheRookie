@@ -127,17 +127,21 @@ namespace Darklight.UnityExt.SceneManagement
 
         public virtual void ClearBuildScenes()
         {
+#if UNITY_EDITOR
             buildScenePaths = new string[0];
             EditorBuildSettings.scenes = new EditorBuildSettingsScene[0];
             EditorUtility.SetDirty(this);
 
             Debug.Log($"{Prefix} Cleared build scenes.");
+#endif
         }
 
         public static bool IsSceneInBuild(string path)
         {
+#if UNITY_EDITOR
             bool result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
             return result;
+#endif
         }
     }
 }

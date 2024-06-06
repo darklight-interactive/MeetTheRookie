@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Darklight.UnityExt.Inky
 {
+#if UNITY_EDITOR
     public class InkyEditorWindow : EditorWindow
     {
         private Vector2 _scrollPosition;
@@ -78,4 +79,5 @@ namespace Darklight.UnityExt.Inky
             EditorGUILayout.EndScrollView();
         }
     }
+#endif
 }
