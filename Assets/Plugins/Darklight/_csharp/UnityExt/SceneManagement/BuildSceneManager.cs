@@ -138,10 +138,12 @@ namespace Darklight.UnityExt.SceneManagement
 
         public static bool IsSceneInBuild(string path)
         {
+            bool result = false;
 #if UNITY_EDITOR
-            bool result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
-            return result;
+            result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
 #endif
+            return result;
+
         }
     }
 }

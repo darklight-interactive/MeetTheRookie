@@ -66,7 +66,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         UniversalInputManager.OnPrimaryInteract += Select;
         //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
 
-        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
+        //InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
 
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
