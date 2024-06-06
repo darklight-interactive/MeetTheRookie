@@ -19,6 +19,7 @@
 === function isAnyTeenSus() ===
     ~ return IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)
 === scene4_3 ===
+TODO SFX DOOR CLOSE
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
 //+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
@@ -79,7 +80,7 @@
 //    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
 
 = exit_scene
-
+TODO SFX DOOR OPEN
     ~ SetSpeaker(Speaker.Jenny)
         Bye loooosersss.
     ~ mainStreetCheck()

@@ -1,5 +1,7 @@
 === scene4_4 ===
 // FUNC SCENE CHANGE
+TODO SFX DOOR CLOSE
+
 # Location: The Rockin Kettle, Bar 
 # Only accessible after Gen Store and Arcade have been visited
 

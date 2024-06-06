@@ -6,9 +6,11 @@ helloooo
 === thelton_intro_DAY2===
 
    ~ SetSpeaker(Speaker.Chief_Thelton)
+   TODO SFX RING RING RING
     You've reached Chief Detective Inspector Thelton, Boise Precinct. 
     I'm not available right now. You know what to do!
     // We hear a generic voicemail beep.
+    TODO SFX VOICEMAIL BEEP
     
     ~ SetSpeaker(Speaker.Lupe)
    Hey...it's Lupe. Had to change my route; tank was running low. I pit stopped outside of Kettle Rock, Idaho. Hoping to get back on the road soon...sorry, I'm a bit scatterbrained right now. Don't jump on me for being late. I'll debrief the Watchowski Case with you when I get back. Alright. Bye.
@@ -48,6 +50,7 @@ helloooo
     - IsQuestComplete(look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         Something tells me I'll be here longer than I think. I should probably try Thelton again at some point.
+        TODO SFX CAR DOOR OPEN CLOSE AND STARTING
         ~ ChangeGameScene("scene7_1_DS")
         -> DONE
     - IsQuestComplete(pay_for_gas):
@@ -62,6 +65,10 @@ helloooo
  {IsQuestComplete(pay_for_gas):
         ~ SetSpeaker(Speaker.Lupe)
          {God, I feel weird. The Deja Vu is killing me right now. | Alright. Let's get this over with. | I hope it doesn't take too long.}
+                 TODO SFX CAR DOOR OPEN CLOSE AND STARTING
+                ~ ChangeGameScene("scene7_1_DS")
+  
+
           -> DONE 
         
     - else:
@@ -73,11 +80,13 @@ helloooo
 = enter_store
  ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
+    TODO SFX DOOR OPEN
     ~ ChangeGameScene("scene6_2")
     -> DONE
     
 === scene6_2 ===
 //The gas station door chimes with a slightly out of tune jingle.
+TODO SFX DOOR CLOSE
 
 * [vending_machine] -> vending_machine
 * [employee] -> employee
@@ -184,6 +193,7 @@ I'll be right back.
 =door_to_outside
 {IsQuestComplete(pay_for_gas):
     ~ChangeGameScene("scene6_4")
+    TODO SFX DOOR OPEN
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -193,6 +203,7 @@ I'll be right back.
 
 
 === scene6_3 ===
+TODO SFX DOOR CLOSE
 
 + [goop] -> goop
 + [mel] -> mel
@@ -277,10 +288,11 @@ It's been annoying the hell outta me.
 
 = door_to_mainroom
     ~ ChangeGameScene("scene6_4")
+    TODO SFX DOOR OPEN
     -> DONE
 
 === scene6_4 ===
-
+TODO SFX DOOR CLOSE
 * [vending_machine] -> vending_machine
 * [employee] -> employee
 * [backrooms] -> door_to_backroom
@@ -304,6 +316,7 @@ I think I'd rather lick ground than eat something out of here.
         ~ SetSpeaker(Speaker.Lupe)
         Mel said to hit it. In the side.
         // the employee whacks the side of the register.The Drawer pops open.
+        TODO SFX CASH REGISTER FIX NOISE
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $76.45.
         ~ SetSpeaker(Speaker.Lupe)
@@ -320,6 +333,8 @@ I think I'd rather lick ground than eat something out of here.
         That's-
         Ugh, you know what?
         Nevermind.
+            TODO SFX TREE CRASH
+        Uh, what was that?
         ->DONE
         
     - else:
@@ -328,6 +343,7 @@ I think I'd rather lick ground than eat something out of here.
         
         // TODO CRASHING TREE NOISE 
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
+        TODO SFX TREE CRASH
         What was that? 
         -> DONE
         }
@@ -340,13 +356,16 @@ I think I'd rather lick ground than eat something out of here.
     
 = door_to_backroom
     ~ ChangeGameScene("scene6_3")
+    TODO SFX DOOR OPEN
     -> DONE
 
 = door_to_outside
     ~ ChangeGameScene("scene6_5")
+    TODO SFX DOOR OPEN
     -> DONE
 
 === scene6_5 ===
+TODO DOOR CLOSE
 // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
 ~ SetSpeaker(Speaker.Lupe)
 * [fallen tree] -> fallen_tree
