@@ -53,21 +53,22 @@ VAR canIntroArcade = true
     ->DONE
 = misra_cutscene_golden_hour
 TODO SFX door close
-    {IsQuestComplete(complete_arcade) && IsClueFound(roys_suspicion)}
     {
-    - (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ):
+    - IsQuestComplete(complete_arcade):
         {canStreetTeensCutscene:
-            ~canStreetTeensCutscene = false
+            ~ canStreetTeensCutscene = false
             ~ teensFirst = true
             -> misra_cutscene_after_teens
         }
         ->DONE
-    -(IsClueFound(roys_suspicion)):
+    - IsClueFound(roys_suspicion):
         {canStreetRoyCutscene:
             ~ canStreetRoyCutscene = false
             ~ royFirst = true
             ->misra_cutscene_after_general_store
         }
+        ->DONE
+    -else:
         ->DONE
     }
 = misra_cutscene_dusk
@@ -98,7 +99,7 @@ TODO SFX gen store bell
     -> DONE
 
 =misra_cutscene_after_teens
-TODO SFX door close
+//TODO SFX door close
     ~ SetSpeaker(Speaker.Misra)
      Those guys are the worst.
     ~ SetSpeaker(Speaker.Lupe)
