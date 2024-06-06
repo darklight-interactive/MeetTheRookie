@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MTR_SceneDataObject : ScriptableObject
 {
-    public MTR_SceneData[] buildSceneData = new MTR_SceneData[0];
+    [SerializeField] private MTR_SceneData[] buildSceneData = new MTR_SceneData[0];
     public void Initialize(string[] buildScenePaths)
     {
         for (int i = 0; i < buildScenePaths.Length; i++)
@@ -34,9 +34,14 @@ public class MTR_SceneDataObject : ScriptableObject
 
     }
 
-    public List<MTR_SceneData> GetData()
+    public List<MTR_SceneData> GetAllData()
     {
         return buildSceneData.ToList();
+    }
+
+    public MTR_SceneData GetSceneData(string name)
+    {
+        return buildSceneData.ToList().Find(x => x.Name == name);
     }
 
     public MTR_SceneData GetActiveSceneData()
@@ -47,7 +52,7 @@ public class MTR_SceneDataObject : ScriptableObject
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return GetData().Find(x => x.knot == knot);
+        return GetAllData().Find(x => x.knot == knot);
     }
 
     public EventReference GetActiveBackgroundMusicEvent()

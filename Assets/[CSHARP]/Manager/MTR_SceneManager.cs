@@ -59,7 +59,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     public override void SaveBuildSceneData(string[] buildScenePaths)
     {
         this.buildScenePaths = buildScenePaths;
-        List<MTR_SceneData> buildSceneData = mtr_SceneDataObject.GetData();
+        List<MTR_SceneData> buildSceneData = mtr_SceneDataObject.GetAllData();
 
         for (int i = 0; i < buildScenePaths.Length; i++)
         {
@@ -74,7 +74,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 
             // Initialize the scene data.
             buildSceneData[i].InitializeData(scenePath);
-            buildSceneDataObject.SaveSceneData(buildSceneData[i]);
+            //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
         }
 
 
@@ -108,10 +108,9 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public MTR_SceneData GetSceneData(Scene scene)
+    public MTR_SceneData GetSceneData(string name)
     {
-        string sceneName = scene.name;
-        return mtr_SceneDataObject.buildSceneData.ToList().Find(x => x.Name == sceneName);
+        return mtr_SceneDataObject.GetSceneData(name);
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
