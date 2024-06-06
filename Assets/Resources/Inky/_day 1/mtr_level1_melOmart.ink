@@ -94,7 +94,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         ~ ChangeGameScene("scene2_DS")
         -> DONE
     - IsQuestComplete(pay_for_gas):
-        / TEMP DIA:/ I should look into what caused that noise.
+        That noise didn't sound good. I should probably see what's up.
     - else: 
         ~ SetSpeaker(Speaker.Lupe)
         Still gotta pay.
@@ -140,7 +140,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 * [exit door] -> door_to_outside
 
 = vending_machine
-    {Sugar-Flavored Snack Bites. Pickle Chips. Jerkied Ox Sticks...I think I'll pass.| Is this stuff FDA approved? | I though Pop Pops Gum went out of production in the 90s? Weird.}
+    {Sugar-Flavored Snack Bites. Pickle Chips. Jerkied Ox Sticks...I think I'll pass.| Is this stuff FDA approved?}
     -> DONE
 
 = employee
@@ -209,7 +209,8 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 // ------------- SCENE1.3 Breakroom ---- >>
 === scene1_3 ===
 // Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
-    -> DONE
+ 
++ [mel] -> mel
 
 = mel
 {IsClueFound(cashreg_fix) == false:
@@ -221,9 +222,17 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     I need to pay for gas. The cash register is broken.
     ~ SetSpeaker(Speaker.Mel)
      That old piece of junk. 
-    The drawer is just jammed, it just needs to be whacked in the side a bit
+    The drawer is just jammed, it just needs to be whacked in the side a bit.
     ~ SetSpeaker(Speaker.Lupe)
     Thanks.
+    ...
+    Uh. What is that stuff?
+    ~ SetSpeaker(Speaker.Mel)
+        No idea, it was here when I unlocked this morning. 
+        Darn stuff won't scrub off. 
+     ~ SetSpeaker(Speaker.Lupe)
+     Huh.
+     Weird.
     ~ DiscoverClue(cashreg_fix)
     -> DONE
     -else:
@@ -232,12 +241,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         -> DONE
 }
 
-= goop
-    ~ SetSpeaker(Speaker.Lupe)
-        Uh. What is that?
-    ~ SetSpeaker(Speaker.Mel)
-        No idea, it was here when I unlocked this morning. 
-        Darn stuff won't scrub off. ->DONE
+
 
 = door_back_to_interior
     ~ ChangeGameScene("scene1_2") 
@@ -247,7 +251,6 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
 ~ SetSpeaker(Speaker.Lupe)
-What was that? 
 * [fallen tree] -> fallen_tree
 
     

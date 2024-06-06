@@ -8,6 +8,8 @@
 /////////////////////////////////////////////////////////^*
 
 // ====== INCLUDE == >>
+
+//DAY 1
 INCLUDE mtr_mystery.ink
 
 INCLUDE _characters/Misra.ink
@@ -29,7 +31,13 @@ INCLUDE _day 1/mtr_level4.4_bar.ink
 INCLUDE _day 1/mtr_level4.5_bar_DS.ink
 INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
+
+// DAY 2 
 INCLUDE _day 2/mtr_level7.1_DS.ink
+INCLUDE _day 2/mtr_level6.1_melOmart.ink
+
+
+
 
 
 
@@ -97,6 +105,9 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
     LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote)
 
 
+// LEVEL 6 
+
+LIST Level6_Quests = (haggle)
 
 
 
