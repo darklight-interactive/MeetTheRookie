@@ -100,9 +100,9 @@ namespace Darklight.UnityExt.SceneManagement
 
 
 
-#if UNITY_EDITOR
         public virtual void LoadBuildScenes()
         {
+#if UNITY_EDITOR
             // Get all unity scene paths in the specified directory.
             string[] buildScenePaths = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
 
@@ -122,6 +122,7 @@ namespace Darklight.UnityExt.SceneManagement
 
             this.buildScenePaths = buildScenePaths;
             //Debug.Log($"{Prefix} Found {buildScenePaths.Length} scenes in the build directory {BUILD_SCENE_DIRECTORY}.");
+#endif
         }
 
         public virtual void ClearBuildScenes()
@@ -138,6 +139,5 @@ namespace Darklight.UnityExt.SceneManagement
             bool result = EditorBuildSettings.scenes.ToList().Exists(x => x.path == path);
             return result;
         }
-#endif
     }
 }
