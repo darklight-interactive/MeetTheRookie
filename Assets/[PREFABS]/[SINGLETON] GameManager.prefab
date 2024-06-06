@@ -301,7 +301,72 @@ MonoBehaviour:
   - Speaker.Josh
   - Speaker.Irene
   - Speaker.Jenkins
-  _globalKnotList: []
+  _globalKnotList:
+  - ChangeGameScene
+  - AddSynthesisClue
+  - SetSpeaker
+  - SetActiveQuestChain
+  - StartQuest
+  - CompleteQuest
+  - IsQuestComplete
+  - IsQuestActive
+  - DiscoverClue
+  - IsClueFound
+  - Misra_Dialogue
+  - Roy_Dialogue
+  - askedJennysQuestions
+  - askedCalvinsQuestions
+  - askedJoshsQuestions
+  - Teens_Dialogue
+  - Jenny_Dialogue
+  - Calvin_Dialogue
+  - Josh_Dialogue
+  - Jenkins_Dialogue
+  - Irene_Dialogue
+  - level1
+  - scene1_0
+  - scene1_1
+  - scene1_2
+  - scene1_3
+  - scene1_4
+  - scene2_DS
+  - outsideCluesFound
+  - insideCluesFound
+  - scene3_1
+  - scene3_2
+  - scene4_1
+  - scene4_1_GOLDENHOUR
+  - scene4_1_DUSK
+  - scene4_2
+  - mainStreetCheck
+  - isAnyTeenSus
+  - scene4_3
+  - scene4_4
+  - scene4_5_DS
+  - questions
+  - Roy
+  - Bachitan
+  - Thelton
+  - Teens
+  - WhatNow
+  - scene5_1_DS
+  - questions_bar_5_1
+  - goats
+  - teens_bar_5_1
+  - RuhRoah
+  - scene5_2
+  - scene5_3
+  - scene5_4
+  - scene7_1_DS
+  - BreakCycle
+  - hi
+  - thelton_intro_DAY2
+  - scene6_1
+  - scene6_2
+  - scene6_3
+  - scene6_4
+  - scene6_5
+  - global decl
   _currentSpeaker: Lupe
   _mainQuestName: 
   _activeQuestChain: []
@@ -319,16 +384,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1431, y: 805}
-  _screenAspectRatio: 1.7776397
+  _screenSize: {x: 1351, y: 760}
+  _screenAspectRatio: 1.7776315
   characterColors: {fileID: 11400000, guid: e723c62cd5a684110a4fcbb8fbf2266d, type: 2}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
   speechBubbleObject: {fileID: 0}
-  speechBubbleFontSizeRange: {x: 96, y: 350}
-  speechBubbleWidth: 2048
+  speechBubbleFontSizeRange: {x: 96, y: 130}
+  speechBubbleWidth: 1080
   LTick_SpeechBubble: {fileID: 21300000, guid: 0b162cc3f1b244d2a9d9e7d9714ee803, type: 3}
   RTick_SpeechBubble: {fileID: 21300000, guid: 47845efcdff9e456bb60412abd6c84d7, type: 3}
   _interactIconPreset: {fileID: 11400000, guid: a710785f670e8194db4f43f3dd090d35, type: 2}
@@ -367,6 +432,7 @@ MonoBehaviour:
   - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
   - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext. [EVENING].unity
   - Assets/Scenes/Build/SCENE_5_3 - The Winery Int. [EVENING].unity
+  - Assets/Scenes/Build/SCENE_5_4 - The Winery Office Interior [EVENING].unity
   - Assets/Scenes/Build/SYNTHESIS_DEMO.unity
   sceneDataObject: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
 --- !u!114 &1103200859854054853

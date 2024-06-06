@@ -1,21 +1,24 @@
 
-=== hi ===
-helloooo
+=== scene6_0===
+
+= intro
+~ SetSpeaker(Speaker.Chief_Thelton)
+TODO SFX RING RING RING
+You've reached Chief Detective Inspector Thelton, Boise Precinct. 
+I'm not available right now. You know what to do!
+// We hear a generic voicemail beep.
+TODO SFX VOICEMAIL BEEP
+
+~ SetSpeaker(Speaker.Lupe)
+Hey...it's Lupe. Had to change my route; tank was running low.
+I pit stopped outside of Kettle Rock, Idaho.
+Hoping to get back on the road soon...sorry,
+I'm a bit scatterbrained right now.
+Don't jump on me for being late.
+I'll debrief the Watchowski Case with you when I get back.
+Alright. Bye.
+~ ChangeGameScene("scene6_1")
 -> DONE
-
-=== thelton_intro_DAY2===
-
-   ~ SetSpeaker(Speaker.Chief_Thelton)
-   TODO SFX RING RING RING
-    You've reached Chief Detective Inspector Thelton, Boise Precinct. 
-    I'm not available right now. You know what to do!
-    // We hear a generic voicemail beep.
-    TODO SFX VOICEMAIL BEEP
-    
-    ~ SetSpeaker(Speaker.Lupe)
-   Hey...it's Lupe. Had to change my route; tank was running low. I pit stopped outside of Kettle Rock, Idaho. Hoping to get back on the road soon...sorry, I'm a bit scatterbrained right now. Don't jump on me for being late. I'll debrief the Watchowski Case with you when I get back. Alright. Bye.
-        ~ChangeGameScene("scene6_1")
-        -> DONE
 
 === scene6_1 ===
 // ------------- SCENE6.1 Outside MelOMarket
