@@ -48,9 +48,10 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     {
         Show(false);
 
+#if UNITY_EDITOR
         clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
         clueLibrary.LoadMysteryClues();
-
+#endif
         mystery1Container = ElementQuery<GroupBox>("mystery1");
         synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
