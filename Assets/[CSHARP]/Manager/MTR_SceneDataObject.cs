@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Darklight.UnityExt.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using FMODUnity;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 #endif
 
 /// <summary>
