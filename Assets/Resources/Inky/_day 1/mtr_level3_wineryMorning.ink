@@ -34,6 +34,7 @@
 {outsideCluesFound():
     ~ SetSpeaker(Speaker.Lupe)
     In we go.
+    TODO SFX door open
     ~ ChangeGameScene("scene3_2")
     -> DONE
 - else:
@@ -96,6 +97,7 @@
 
 
 ===scene3_2===
+TODO SFX door close
 //Lupe and Misra enter the Winery. Inside is in shambles, clearly ransacked and clearly abandoned (large equipment and wine barrels still there). Dried, spilled wine is smeared on the floor and on some equipment.
 
 // Note, only the main room is accessible during this time. The door that leads to the office area is closed and locked, located on the back wall.
@@ -194,6 +196,7 @@
 = door_winery_exterior
     {insideCluesFound():
         ~ ChangeGameScene("scene4_1")
+        TODO SFX door open
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Misra)

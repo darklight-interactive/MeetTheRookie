@@ -1,4 +1,6 @@
 === scene4_2 ===
+TODO SFX GEN STORE bell
+TODO SFX DOOR CLOSE
 # Location: IdaHome and Goods, General Store
     * [talk_to_roy] -> Roy_Dialogue  
     * [store_window] -> store_window

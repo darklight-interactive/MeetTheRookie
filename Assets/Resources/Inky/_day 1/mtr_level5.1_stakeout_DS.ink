@@ -143,7 +143,7 @@
 -> questions_bar_5_1
 
 =turnOffRadio 
-{music: You turn off the radio.}
+{music: <i> You turn off the radio.</i>}
 
 #name: Misra
 # emote : Misra \| Surprised_2
@@ -186,9 +186,11 @@
 #name: Misra 
 "Hmph." 
 
+#name: Misra 
 # emote : Misra \| Nervous_1
 "By the way, 'goats' is an insulting name to those who disappeared." 
 
+#name: Misra 
 "It's best to not call them that." 
 
 +["Sorry."] -> didntKnowBetter 
@@ -198,6 +200,7 @@
 #name: Misra 
 "It's alright, you didn't know any better!" 
 
+#name: Misra 
 "Just something to keep in mind." 
 
 #name: Lupe 
@@ -211,18 +214,23 @@
 # emote : Lupe \| Inquistive_1
 "I mean there have been many terms tossed around." 
 
+#name: Lupe 
 "Goats..." 
 
+#name: Lupe 
 "Council..." 
 
+#name: Lupe 
 "Sacrifice..." 
 
+#name: Lupe 
 "Were they some sort of cult?" 
 
 #name: Misra 
 # emote : Misra \| Fright_2
 "Cult is a strong term, but I guess..." 
 
+#name: Misra 
 "But yeah, you could consider them a cult..." 
 
 ->misguided
@@ -263,17 +271,20 @@
 #name: Misra 
 "People here have a tendency to talk on their behalf after the tragedy..." 
 
+#name: Misra 
 "And I've heard through the grapevine that the Council was convinced their sacrifice would bring prosperity back to Kettle Rock." 
 
 #name: Lupe 
 "Hmmm..." 
 
+#name: Lupe 
 "And what? Do you believe that they instead set loose some sort of curse?" 
 
 #name: Misra 
 # emote : Misra \| Surprised_2
 "Of course not!" 
 
+#name: Misra 
 "Do you?" 
 
 +["Yes, maybe."] -> yeah
@@ -317,8 +328,10 @@
 # emote : Misra \| Nervous_1
 "Yeah, maybe." 
 
+#name: Misra 
 "..." 
 
+#name: Misra 
 "Would be kinda nice, wouldn't it?" 
 
 #name: Lupe 
@@ -328,8 +341,10 @@
 #name: Misra 
 { tease_level > sincerity_level: "Yeah! Sure! Let me just quickly get the KoolAid! I'm just joking."} 
 
+#name: Misra 
 { tease_level > sincerity_level: "But..."} 
 
+#name: Misra 
 "If we did find some way to help out little ol' Kettle Rock, that could be nice." 
 
 +["Could be."]-> couldBe 
@@ -387,10 +402,13 @@
 # emote : Lupe \| Inquistive_1
 "I'm just saying that..." 
 
+#name: Lupe 
 "Curse or not, I understand why people are leaving." 
 
+#name: Lupe 
 "Seems like citizens here are struggling to get by."
 
+#name: Lupe
 "So it makes sense if they would like to look for...something better?"
 
 #name: Misra 
@@ -421,6 +439,7 @@
 # emote : Misra \| Neutral_1
 "It's not pleasent, but sometimes things happen." 
 
+#name: Lupe 
 "Change is..." 
 
 +["Scary."] -> scary 
@@ -442,19 +461,25 @@
 #name: Lupe 
 "Change is normal. As absurd as it sounds, it's just a part of life we have no control over." 
 
+#name: Lupe 
 "Plants change..." 
 
+#name: Lupe 
 "The sky changes..." 
 
+#name: Lupe 
 "People change..." 
 
+#name: Lupe 
 "Places change..." 
 
 ->preSound
 
 =preSound
+#name: Lupe 
 "But it's what's needed to progress life towards something better." 
 
+#name: Lupe 
 "Don't you think so?" 
 
 #name: Misra 
@@ -487,12 +512,16 @@
 #name: Lupe 
 "Maybe I'm having some sort of deja vu..."
 
+#name: Lupe 
 "Somethings been strange since I've first stepped foot in this town."
 
+#name: Lupe 
 "It all feels...familar." 
 
+#name: Lupe 
 "..."
 
+#name: Lupe 
 "<b>You</b> feel...familiar, somehow. Like I've met you before. Or someone like you, at least." 
 
 ->RuhRoah
@@ -506,10 +535,13 @@
 # emote : Misra \| Curious_1
 "What do you think they're doing?" 
 
+#name: Misra 
 "Drinking?" 
 
+#name: Misra 
 "Smoking?" 
 
+#name: Misra 
 "Graffiti?" 
 
 #name: Lupe
@@ -518,7 +550,7 @@
 #name: Misra 
 { tease_level > sincerity_level: "I don't think they have enough arms to do that!" | "You're right." }
 
-{ tease_level > sincerity_level: You lightly laugh to yourself }
+{ tease_level > sincerity_level: <i> You lightly laugh to yourself </i>}
 
 #name: Lupe
 # emote : Lupe \| Neutral_2
@@ -528,6 +560,7 @@
 # emote : Misra \| Neutral_1
 "..." 
 
+#name: Misra
 { tease_level > sincerity_level: "Can I ask you a strange question?" | ->RuhRoah }
 
 { tease_level > sincerity_level: 

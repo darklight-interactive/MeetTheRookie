@@ -46,6 +46,7 @@ Idk to each their own , just take it away now. -> DONE
     Oh, right! Yeah, of course you don't. 
     I can give you directions in the car.
     ~ CompleteQuest(discover_inside_clues)
+    TODO SFX once fade to black, car leave noises
     -> DONE
     
 - else:

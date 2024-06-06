@@ -66,8 +66,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         UniversalInputManager.OnPrimaryInteract += Select;
         //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
 
-        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue",
-            (string clue) => AddClue(clue));
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
 
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
@@ -208,14 +207,9 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         return null;
     }
 
-    public void ToggleVisibility()
-    {
-        synthesisActive = !synthesisActive;
-        Show(!synthesisActive);
-    }
-
     public void Show(bool visible)
     {
+        synthesisActive = visible;
         Debug.Log("SynthesisManager: Show(" + visible + ")");
         VisualElement container = ElementQuery<VisualElement>("synthesis-container");
         container.visible = visible;

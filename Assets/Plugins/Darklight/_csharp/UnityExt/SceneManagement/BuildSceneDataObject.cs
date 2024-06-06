@@ -20,11 +20,51 @@ namespace Darklight.UnityExt.SceneManagement
         protected string[] buildScenePaths = new string[0];
         [SerializeField] protected TSceneData[] buildSceneData = new TSceneData[0];
 
-        public virtual void SaveData(BuildSceneData[] buildSceneData)
+        public virtual void Initialize()
         {
-            this.buildSceneData = buildSceneData.Cast<TSceneData>().ToArray();
+            for (int i = 0; i < buildScenePaths.Length; i++)
+            {
+                string scenePath = buildScenePaths[i];
+
+                // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+                if (this.buildSceneData.Length <= i || this.buildSceneData[i].Path != scenePath)
+                {
+                    TSceneData sceneData = new TSceneData();
+                    SaveSceneData(sceneData);
+                }
+
+                this.buildSceneData[i].InitializeData(scenePath);
+            }
+        }
+
+        public virtual void SaveSceneData(TSceneData sceneData)
+        {
+            if (sceneData == null)
+            {
+                Debug.LogWarning(
+                    $"{this.name} Cannot save null scene data."
+                );
+                return;
+            }
+
+            // Check if the scene data already exists.
+            TSceneData existingData = buildSceneData.ToList().Find(x => x.Name == sceneData.Name);
+            if (existingData != null)
+            {
+                // Update the existing scene data.
+                existingData = sceneData;
+                sceneData.InitializeData(sceneData.Path);
+            }
+            else
+            {
+                // Add the scene data to the list.
+                List<TSceneData> sceneDataList = buildSceneData.ToList();
+                sceneDataList.Add(sceneData);
+                buildSceneData = sceneDataList.ToArray();
+            }
+
             EditorUtility.SetDirty(this);
-            Debug.Log($"{this.name} Saved build scene data.");
+            Debug.Log($"{this.name} Saved scene data for {sceneData.Name}.");
         }
 
         public virtual List<TSceneData> GetData()

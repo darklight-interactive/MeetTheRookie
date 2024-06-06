@@ -17,7 +17,7 @@ namespace Darklight.UnityExt.SceneManagement
         public const string DATA_PATH = "Assets/Resources/BuildSceneData";
         public const string DATA_FILENAME = "BuildSceneDataObject";
 
-        [SerializeField] protected BuildSceneDataObject<TSceneData> buildSceneDataObject;
+        private BuildSceneDataObject<TSceneData> tempBuildSceneDataObject;
         private List<TSceneData> _buildSceneData = new List<TSceneData>();
 
         public override void Awake()
@@ -28,12 +28,12 @@ namespace Darklight.UnityExt.SceneManagement
         public override void Initialize()
         {
 #if UNITY_EDITOR
-            buildSceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<BuildSceneDataObject<TSceneData>>(
+            tempBuildSceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<BuildSceneDataObject<TSceneData>>(
                 DATA_PATH,
                 DATA_FILENAME
             );
 
-            if (buildSceneDataObject == null)
+            if (tempBuildSceneDataObject == null)
             {
                 Debug.LogError($"{this.name} Failed to create or load build scene data object.");
                 return;
@@ -65,9 +65,10 @@ namespace Darklight.UnityExt.SceneManagement
 
                 // Initialize the scene data.
                 _buildSceneData[i].InitializeData(scenePath);
+                tempBuildSceneDataObject.SaveSceneData(_buildSceneData[i]);
             }
 
-            buildSceneDataObject.SaveData(_buildSceneData.ToArray());
+
             EditorUtility.SetDirty(this);
             Debug.Log($"{this.name} Saved build scene data. {typeof(TSceneData).Name}");
         }
@@ -96,7 +97,7 @@ namespace Darklight.UnityExt.SceneManagement
 
         public override void ClearBuildScenes()
         {
-            buildSceneDataObject.ClearBuildSceneData();
+            tempBuildSceneDataObject.ClearBuildSceneData();
             base.ClearBuildScenes();
         }
 #endif
