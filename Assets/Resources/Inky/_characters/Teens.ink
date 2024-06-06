@@ -29,7 +29,7 @@
         
     - askedJennysQuestions():
         -> jenny_suspects
-    TODO FIX - askedJennysQuestions():
+//    TODO FIX - askedJennysQuestions():
     //    ~ SetSpeaker(Speaker.Jenny)
     //    I've already told you what I know.
     //    I've got a highscore to beat.
@@ -202,7 +202,7 @@
     - askedCalvinsQuestions():
         //if asked all teens first round of questions
         -> calvin_sus
-    TODO FIX- askedCalvinsQuestions(): // else if u've asked calvin all of his questions
+//    TODO FIX- askedCalvinsQuestions(): // else if u've asked calvin all of his questions
     //        ~ SetSpeaker(Speaker.Calvin)
     //        SorryI'vegotnothingelseforyou.
     //        -> DONE
@@ -355,7 +355,7 @@ He used to work there.
              -> DONE //END OF ARCADE INTERACTION
     - askedJoshsQuestions():
         -> josh_sus
-    TODO fix this logic - askedJoshsQuestions():
+//    TODO fix this logic - askedJoshsQuestions():
     //    ~ SetSpeaker(Speaker.Josh)
     //    YOU DIG IT?
     //    -> DONE
@@ -380,7 +380,7 @@ He used to work there.
         WHAT?
         ~ SetSpeaker(Speaker.Lupe)
         I can just talk to your friends, then.
-        TODO ryan got sad
+       // TODO ryan got sad
         ~ SetSpeaker(Speaker.Lupe)
         You probably don't matter as much, anyway.
         ~ SetSpeaker(Speaker.Josh)

@@ -120,7 +120,7 @@
     ~ SetSpeaker(Speaker.Irene)
      Well, legend says that in order to save the town, in desperation, a group of locals turned to darker alternatives.
      I don't know if they were dancin' with the Devil,
-     or one of the many demons that want to sink their fangs into humanity's naviety,
+     or one of the many demons that want to sink their fangs into humanity's naive nature,
      but they were in kahoots with something of that nature.
      And one day in 1940, when it came time to pay up and face the music...
      They <i>vanished</i>.
