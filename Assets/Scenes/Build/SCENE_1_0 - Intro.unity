@@ -210,7 +210,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 515395789}
-  m_PlaneDistance: 10
+  m_PlaneDistance: 5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -664,23 +664,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.x
-      value: 1918
+      value: 1584
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.y
-      value: 762
-      objectReference: {fileID: 0}
-    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: speechBubbleWidth
-      value: 2048
+      value: 891
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenAspectRatio
-      value: 2.5170603
-      objectReference: {fileID: 0}
-    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: speechBubbleFontSizeRange.y
-      value: 350
+      value: 1.7777778
       objectReference: {fileID: 0}
     - target: {fileID: 3100972142227852913, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_IsActive
@@ -732,7 +724,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: buildScenePaths.Array.size
-      value: 20
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[0]'
@@ -772,15 +764,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[9]'
-      value: Assets/Scenes/Build/SCENE_4_1 - Main Street [AFTERNOON].unity
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street_AFTERNOON.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[10]'
-      value: Assets/Scenes/Build/SCENE_4_1 - Main Street [DUSK].unity
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street_DUSK.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[11]'
-      value: Assets/Scenes/Build/SCENE_4_1 - Main Street [GOLDEN HOUR].unity
+      value: Assets/Scenes/Build/SCENE_4_1 - Main Street_GOLDENHOUR.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[12]'
@@ -812,6 +804,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: 'buildScenePaths.Array.data[19]'
+      value: Assets/Scenes/Build/SCENE_5_4 - The Winery Office Interior [EVENING].unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[20]'
+      value: Assets/Scenes/Build/SCENE_6_0 - Intro.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[21]'
+      value: Assets/Scenes/Build/SCENE_6_1 - The Gas Station Ext.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[22]'
+      value: Assets/Scenes/Build/SCENE_6_2 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[23]'
+      value: Assets/Scenes/Build/SCENE_6_3 - The Gas Station Int Bathroom.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[24]'
+      value: Assets/Scenes/Build/SCENE_6_4 - The Gas Station Int.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[25]'
+      value: Assets/Scenes/Build/SCENE_6_5 - The Gas Station Ext..unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[26]'
+      value: Assets/Scenes/Build/SCENE_7_0 - The Precinct - Dating Sim.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: 'buildScenePaths.Array.data[27]'
       value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
       objectReference: {fileID: 0}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
