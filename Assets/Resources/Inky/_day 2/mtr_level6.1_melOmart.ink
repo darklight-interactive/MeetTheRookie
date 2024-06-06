@@ -1,7 +1,7 @@
 
 === hi ===
 helloooo
--> DONErt
+-> DONE
 
 === thelton_intro_DAY2===
 
