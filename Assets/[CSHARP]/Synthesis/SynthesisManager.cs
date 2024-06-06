@@ -207,14 +207,9 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         return null;
     }
 
-    public void ToggleVisibility()
-    {
-        synthesisActive = !synthesisActive;
-        Show(!synthesisActive);
-    }
-
     public void Show(bool visible)
     {
+        synthesisActive = visible;
         Debug.Log("SynthesisManager: Show(" + visible + ")");
         VisualElement container = ElementQuery<VisualElement>("synthesis-container");
         container.visible = visible;
