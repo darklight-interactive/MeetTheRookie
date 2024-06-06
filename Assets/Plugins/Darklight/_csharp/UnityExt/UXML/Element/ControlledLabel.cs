@@ -15,11 +15,13 @@ namespace Darklight.UnityExt.UXML
     public partial class ControlledLabel : VisualElement
     {
         public class ControlledSizeLabelFactory : UxmlFactory<ControlledLabel> { }
-
         private VisualElement _container;
-        private Label _label;
         private float _rollingTextPercentValue;
         private int _currentIndex;
+        private int _fontSize;
+        private Vector2Int _fontSizeRange = new Vector2Int(96, 128);
+
+        protected Label label;
 
         [UxmlAttribute, ShowOnly]
         public Vector2 screenSize
@@ -28,18 +30,47 @@ namespace Darklight.UnityExt.UXML
             set { }
         }
 
-        [UxmlAttribute]
-        public int fontSize
+        [UxmlAttribute, ShowOnly]
+        public float aspectRatio
         {
-            get
-            {
-                return (int)_label.style.fontSize.value.value;
-            }
-            set { _label.style.fontSize = value; }
+            get { return ScreenInfoUtility.ScreenAspectRatio; }
+            set { }
         }
 
-        [UxmlAttribute, MinMaxSlider(12, 128)]
-        public Vector2Int fontSizeRange;
+        [UxmlAttribute, ShowOnly]
+        public int fontSize
+        {
+            get { return _fontSize; }
+            set
+            {
+                _fontSize = value;
+                label.style.fontSize = value;
+            }
+        }
+
+
+        [UxmlAttribute, Range(12, 512)]
+        public int fontSizeMin
+        {
+            get { return _fontSizeRange.x; }
+            set
+            {
+                _fontSizeRange.x = value;
+                UpdateFontSizeToMatchScreen();
+            }
+        }
+
+
+        [UxmlAttribute, Range(12, 512)]
+        public int fontSizeMax
+        {
+            get { return _fontSizeRange.y; }
+            set
+            {
+                _fontSizeRange.y = value;
+                UpdateFontSizeToMatchScreen();
+            }
+        }
 
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText =
@@ -48,8 +79,8 @@ namespace Darklight.UnityExt.UXML
         [UxmlAttribute, ShowOnly]
         public string text
         {
-            get { return _label.text; }
-            set { _label.text = value; }
+            get { return label.text; }
+            set { label.text = value; }
         }
 
         [UxmlAttribute, Range(0, 1)]
@@ -64,41 +95,53 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
+        [UxmlAttribute]
+        public TextAnchor textAlign
+        {
+            get { return label.style.unityTextAlign.value; }
+            set { label.style.unityTextAlign = value; }
+        }
+
         public ControlledLabel()
         {
             _container = new VisualElement();
+            _container.name = "container";
+            _container.style.flexGrow = 1;
+            _container.style.flexDirection = FlexDirection.Row;
             _container.style.overflow = Overflow.Hidden;
             _container.style.flexWrap = Wrap.Wrap;
 
-            _label = new Label();
-            _label.style.unityTextAlign = TextAnchor.MiddleLeft;
-            _label.style.alignSelf = Align.FlexStart;
-            _label.style.fontSize = GetDynamicFontSize();
+            label = new Label();
+            label.style.alignSelf = Align.Auto;
 
-            _container.Add(_label);
+            UpdateFontSizeToMatchScreen();
+
+            label.text = fullText;
+
+            _container.Add(label);
             Add(_container);
         }
 
-        public void Initialize(string fullText)
+        public void SetFullText(string fullText)
         {
             this.fullText = fullText;
             SetTextToIndex(0);
         }
 
-        public int GetDynamicFontSize()
+        public void UpdateFontSizeToMatchScreen()
         {
             screenSize = ScreenInfoUtility.ScreenSize;
+            aspectRatio = ScreenInfoUtility.ScreenAspectRatio;
 
             // Get the font size based on the screen size
-            int fontSizeMin = (int)fontSizeRange.x;
-            int fontSizeMax = (int)fontSizeRange.y;
+            int fontSizeMin = (int)_fontSizeRange.x;
+            int fontSizeMax = (int)_fontSizeRange.y;
 
             // Divide the max font size by the aspect ratio
-            float fontSizeByAspectRatio = fontSizeMax / ScreenInfoUtility.ScreenAspectRatio;
+            float fontSizeByAspectRatio = fontSizeMax / aspectRatio;
 
             // Clamp the font size to the set range
-            int result = (int)Mathf.Clamp(fontSizeByAspectRatio, fontSizeRange.x, fontSizeRange.y);
-            return result;
+            fontSize = (int)Mathf.Clamp(fontSizeByAspectRatio, _fontSizeRange.x, _fontSizeRange.y);
         }
 
         public void RollingTextStep()
@@ -110,6 +153,17 @@ namespace Darklight.UnityExt.UXML
         {
             _currentIndex = Mathf.Min(index, fullText.Length);
             this.text = fullText.Substring(0, _currentIndex);
+        }
+
+        public void InstantCompleteText()
+        {
+            SetTextToIndex(fullText.Length);
+        }
+
+        public void SetFontSizeRange(Vector2Int range)
+        {
+            _fontSizeRange = range;
+            UpdateFontSizeToMatchScreen();
         }
     }
 }

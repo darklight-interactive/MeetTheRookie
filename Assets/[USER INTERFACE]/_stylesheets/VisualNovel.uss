@@ -16,7 +16,7 @@
     align-self: center;
     justify-content: flex-end;
     width: 70%;
-    height: 50%;
+    height: 52%;
     align-items: flex-start;
     flex-shrink: 1;
     flex-grow: 0;
@@ -29,7 +29,7 @@
     align-self: auto;
     height: 30%;
     align-items: center;
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Name%20Tag%20Misra.png?fileID=2800000&guid=734f97ec3f742b146af4ee077707ab23&type=3#Name Tag Misra");
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Name%20Tag%20Misra.png?fileID=2800000&guid=9e3b6ad581042a046b5072e32e184152&type=3#Name Tag Misra");
     -unity-background-scale-mode: scale-to-fit;
     bottom: -45px;
 }
@@ -46,11 +46,11 @@
 }
 
 .DialogueBox {
-    align-self: auto;
+    align-self: center;
     justify-content: flex-start;
     width: 100%;
-    height: 55%;
-    align-items: center;
+    height: 100%;
+    align-items: flex-start;
     flex-direction: column;
     flex-wrap: nowrap;
     max-height: 65%;
@@ -61,8 +61,18 @@
     -unity-slice-left: 40;
     -unity-slice-top: 50;
     -unity-slice-right: 40;
-    -unity-slice-bottom: 25;
+    -unity-slice-bottom: 0;
     background-color: rgba(0, 0, 0, 0.49);
+    padding-left: 2%;
+    padding-top: 1.5%;
+    padding-bottom: 4%;
+    padding-right: 2%;
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.DialogueText {
+    -unity-font-definition: resource('Fonts/cour');
 }
 
 .CharacterSide {
@@ -72,7 +82,7 @@
     flex-direction: column-reverse;
 }
 
-.TriangleUp {
+.TriangleDefault {
     width: 50px;
     height: 50px;
     align-self: flex-end;
@@ -80,7 +90,7 @@
     background-image: url("project://database/Assets/Plugins/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&guid=36b22829bdfd5284c82359ec62ba0be2&type=3#arrow-down@2x");
     transition-duration: 1s;
     transition-property: all;
-    bottom: 0;
+    bottom: 14%;
     position: absolute;
     -unity-background-image-tint-color: rgb(0, 0, 0);
 }
@@ -90,16 +100,24 @@
 }
 
 .Choice {
-    flex-grow: 0;
-    font-size: 35px;
-    -unity-font-definition: url("project://database/Assets/[USER%20INTERFACE]/_fonts/LGGothic.ttf?fileID=12800000&guid=d95d61c132c648c42b6313ed97ed9cf7&type=3#LGGothic");
-    display: none;
-    width: 75%;
-    white-space: normal;
-    height: 20%;
-    margin-bottom: 1%;
-    margin-top: 1%;
-    background-image: url("project://database/Assets/[TEXTURES]/mtr_color/mtr_color_44.png?fileID=2800000&guid=9443ae1fc318e87449e5601a6227f872&type=3#mtr_color_44");
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Dating_Sim_Box.png?fileID=2800000&guid=9e21c114a355a4a28b094479f53efc33&type=3#Dating_Sim_Box");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-font-definition: resource('Fonts/cour');
+    color: rgb(0, 0, 0);
+    width: 60%;
+    height: 17%;
+    justify-content: center;
+    transition-duration: 0.5s, 0.5s, 0.25s;
+    border-left-color: rgb(217, 180, 130);
+    border-right-color: rgb(217, 180, 130);
+    border-top-color: rgb(217, 180, 130);
+    border-bottom-color: rgb(217, 180, 130);
+    -unity-font-style: bold;
+    font-size: 50px;
+    align-items: stretch;
+    transition-property: width, height, font-size;
+    transition-timing-function: ease, ease, ease-out-cubic;
 }
 
 .Highlight {
@@ -115,4 +133,30 @@
 
 .Inactive {
     -unity-background-image-tint-color: rgb(178, 178, 178);
+}
+
+.CharacterSprite {
+    scale: 1.25 1.25;
+}
+
+.selected {
+    height: 23%;
+    width: 65%;
+    font-size: 60px;
+    border-top-width: 15px;
+    border-right-width: 15px;
+    border-bottom-width: 15px;
+    border-left-width: 15px;
+    border-left-color: rgb(229, 198, 151);
+    border-right-color: rgb(229, 198, 151);
+    border-top-color: rgb(229, 198, 151);
+    border-bottom-color: rgb(229, 198, 151);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.unity-text-element {
+    white-space: normal;
 }

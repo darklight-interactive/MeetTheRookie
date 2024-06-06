@@ -1,9 +1,9 @@
 // SCENE 3: The Winery
 // --- scene 3 ---
-=== level3 ===
-Level 3
--> scene3_1
-
+=== function outsideCluesFound() ===
+    ~ return IsClueFound(evidence_fence) && IsClueFound(evidence_broken_window) && IsClueFound(evidence_footsteps)
+=== function insideCluesFound() ===
+    ~ return IsQuestComplete(visit_barrels) && IsClueFound(evidence_damages) && IsQuestComplete(visit_floor) && IsClueFound(evidence_claw_marks) && IsClueFound(evidence_handprint) && IsQuestComplete(visit_inside_window)
 === scene3_1 ===
 // location : The Winery, outside
 
@@ -12,16 +12,31 @@ Level 3
 * [cut fence] -> fence
 * [window] -> window
 * [tracks] -> strange_footsteps
-* [door] -> door
+* [door] -> door_main_room
 * [misra] -> Misra_Dialogue.3_1
 // QUEST OBJECTIVE: What Happened at the Winery?
 // Needed evidence to progress to inside the Winery: window evidence, fence evidence, footsteps evidence
+= misra 
+-> Misra_Dialogue.3_1
 
-= door
-{IsQuestComplete(discover_outside_clues):
+= intro
+    ~ SetSpeaker(Speaker.Misra)
+    Here we are! Kettle Rock's pride and joy. Best wine north of California.
+    ~ SetSpeaker(Speaker.Lupe)
+    You said this place closed a few weeks ago? It looks like it's been abandoned for years.
+    ~ SetSpeaker(Speaker.Misra)
+    Well, it <i>has</i> been a bit neglected recently. But make no mistake, this is a piece of town history! 
+    ~ SetSpeaker(Speaker.Lupe)
+    Right... 
+    ~ CompleteQuest(talk_to_misra_quest)
+    -> DONE
+= door_main_room
+{outsideCluesFound():
     ~ SetSpeaker(Speaker.Lupe)
     In we go.
-    -> scene3_2
+    TODO SFX door open
+    ~ ChangeGameScene("scene3_2")
+    -> DONE
 - else:
     ~ SetSpeaker(Speaker.Lupe)
     This door must lead inside.
@@ -45,7 +60,6 @@ Level 3
 }
 
 = window
-{IsQuestComplete(talk_to_misra_quest):
     // Lupe approaches a window on the front of the Winery that has been shattered into a million pieces on the ground. Puzzling...
     // ADD TO SYNTHESIS
     ~ DiscoverClue(evidence_broken_window)
@@ -54,12 +68,6 @@ Level 3
     ~ SetSpeaker(Speaker.Lupe)
     Yeah, it's definitely been broken by force. But something about this seems off to me...
     -> DONE
-    
-- else:
-    ~ SetSpeaker(Speaker.Lupe)
-    Eek. Watch your step. 
-    -> DONE
-}
 
 
 = strange_footsteps
@@ -89,6 +97,7 @@ Level 3
 
 
 ===scene3_2===
+TODO SFX door close
 //Lupe and Misra enter the Winery. Inside is in shambles, clearly ransacked and clearly abandoned (large equipment and wine barrels still there). Dried, spilled wine is smeared on the floor and on some equipment.
 
 // Note, only the main room is accessible during this time. The door that leads to the office area is closed and locked, located on the back wall.
@@ -98,18 +107,20 @@ Level 3
 * [claw marks] -> claw_marks
 * [damaged equipment] -> equipment
 * [floor wine] -> floor_splatters
-* [backroom door] -> backroom_door
-* [winery front door] -> Winery_front_door
+* [backroom door] -> door_office
+* [winery front door] -> door_winery_exterior
 * [handprint] -> handprint
 * [inside_window] ->inside_window
-
-=inside_window
+= misra 
+    -> Misra_Dialogue.3_2
+    
+= inside_window
     ~ SetSpeaker(Speaker.Lupe)
     Something about this broken window doesn't make sense to me...
     ~ CompleteQuest(visit_inside_window)
     -> DONE
 
-=handprint
+= handprint
     ~ SetSpeaker(Speaker.Lupe)
      Well, someone didn't care about leaving behind evidence.
     ~ SetSpeaker(Speaker.Misra)
@@ -169,7 +180,7 @@ Level 3
     I know, I know. Professional, as always.
     -> DONE
 
-=backroom_door
+= door_office
     ~ CompleteQuest(visit_backroom_door)
     ~ SetSpeaker(Speaker.Lupe)
     Where does this lead?
@@ -179,10 +190,13 @@ Level 3
     So they wouldn't have been able to access that room?
     ~ SetSpeaker(Speaker.Misra)
     Not unless they had a key.
+    //DON'T GO INTO OFFICE
     -> DONE
 
-= Winery_front_door
-    {IsQuestComplete(discover_inside_clues):
+= door_winery_exterior
+    {insideCluesFound():
+        ~ ChangeGameScene("scene4_1")
+        TODO SFX door open
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Misra)

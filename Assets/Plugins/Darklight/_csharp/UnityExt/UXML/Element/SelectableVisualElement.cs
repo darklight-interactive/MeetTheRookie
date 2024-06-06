@@ -8,13 +8,10 @@ using UnityEngine.UIElements;
 
 namespace Darklight.UnityExt.UXML
 {
-    public interface ISelectableUIElement<TElement> where TElement : VisualElement, new()
+    public interface ISelectable
     {
-        TElement Element { get; }
         public event Action OnSelect;
-        public event Action OnClick;
-        void Select();
-        void Click();
+        void SetSelected();
         void Deselect();
     }
 
@@ -25,47 +22,27 @@ namespace Darklight.UnityExt.UXML
     /// <typeparam name="TElement">The Type of the </typeparam>
     // Base class for controlled elements that encapsulates common functionalities for UXML elements.
     [UxmlElement]
-    public partial class SelectableVisualElement<TElement> : VisualElement, ISelectableUIElement<TElement> where TElement : VisualElement, new()
+    public partial class SelectableVisualElement : VisualElement, ISelectable
     {
-        // Publicly accessible element instance.
-        public TElement Element { get; protected set; }
-        public Rect Rect => Element.worldBound;
-        public Vector2 CenterPosition => Element.worldBound.center;
+        public class SelectableVisualElementFactory : UxmlFactory<SelectableVisualElement> { }
+        public VisualElement Element { get; protected set; }
         public event Action OnSelect;
-        public event Action OnClick;
         public SelectableVisualElement()
         {
-            Element = this as TElement;
+            Element = this;
             this.focusable = true;
         }
 
-        public virtual void Select()
+        public virtual void SetSelected()
         {
             this.AddToClassList("selected");
             this.Focus();
             OnSelect?.Invoke();
         }
 
-        public virtual void Click()
-        {
-            this.RemoveFromClassList("selected");
-            this.AddToClassList("clicked");
-            OnClick?.Invoke();
-        }
-
         public virtual void Deselect()
         {
             this.RemoveFromClassList("selected");
-            this.RemoveFromClassList("clicked");
-        }
-
-        /// <summary>
-        /// Allows implicit conversion from SelectableElement to the generic class, typeof(TElement) : VisualElement.
-        /// </summary>
-        /// <param name="wrapper"></param>
-        public static implicit operator TElement(SelectableVisualElement<TElement> wrapper)
-        {
-            return wrapper.Element;
         }
     }
     #endregion

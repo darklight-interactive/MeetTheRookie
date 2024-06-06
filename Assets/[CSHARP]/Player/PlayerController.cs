@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         public StateMachine(Dictionary<PlayerState, FiniteState<PlayerState>> possibleStates, PlayerState initialState, params object[] args) : base(possibleStates, initialState, args)
         {
             _controller = (PlayerController)args[0];
+            GoToState(initialState);
         }
 
         public override void Step()
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
             bool result = base.GoToState(stateType);
             if (result)
             {
-                _controller._currentState = stateType;
+                _controller.currentState = stateType;
                 _animator.PlayStateAnimation(stateType);
             }
 
@@ -71,12 +72,11 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    public PlayerInteractor interactor => GetComponentInChildren<PlayerInteractor>();
-    public PlayerAnimator animator => GetComponentInChildren<PlayerAnimator>();
+    public PlayerInteractor interactor { get; private set; }
+    public PlayerAnimator animator { get; private set; }
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
     public StateMachine stateMachine { get; private set; }
-
-    [SerializeField, ShowOnly] PlayerState _currentState = PlayerState.NONE;
+    public PlayerState currentState;
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
 
 
@@ -87,12 +87,15 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        interactor = GetComponent<PlayerInteractor>();
+        animator = GetComponent<PlayerAnimator>();
+
         stateMachine = new StateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
             {PlayerState.NONE, new FinitePlayerState(PlayerState.NONE)},
             {PlayerState.IDLE, new FinitePlayerState(PlayerState.IDLE)},
             {PlayerState.WALK, new FinitePlayerState(PlayerState.WALK)},
             {PlayerState.INTERACTION, new FinitePlayerState(PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)}
+            {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)},
         }, PlayerState.IDLE, this);
     }
 
@@ -102,7 +105,6 @@ public class PlayerController : MonoBehaviour
         UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
         UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
         UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
-
 
         // << Find SceneBounds >>
         SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
@@ -168,6 +170,8 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (stateMachine.CurrentState == PlayerState.INTERACTION) return;
+
         // Get Hidden Object Component
         Hideable_Object hiddenObject = other.GetComponent<Hideable_Object>();
         if (hiddenObject != null)
@@ -192,6 +196,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void EnterInteraction()
     {
+        if (stateMachine == null) return;
         stateMachine.GoToState(PlayerState.INTERACTION);
         //Debug.Log("Player Controller :: Enter Interaction");
     }

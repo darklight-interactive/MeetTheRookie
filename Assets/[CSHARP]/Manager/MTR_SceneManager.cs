@@ -7,80 +7,78 @@ using FMODUnity;
 using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NaughtyAttributes;
+using System.Linq;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[System.Serializable]
-public class MTR_SceneData : BuildSceneData
-{
-    private List<string> _knotNames
-    {
-        get
-        {
-            List<string> names = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                return InkyStoryManager.GlobalStoryObject.KnotNames;
-            }
-            return names;
-        }
-    }
-
-    [NaughtyAttributes.Dropdown("_knotNames")]
-    public string knot;
-
-    public EventReference backgroundMusicEvent;
-}
-
-/// <summary>
-/// Custom Scriptable object to hold MTR_SceneData.
-/// </summary>
-public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
-{
-    public MTR_SceneData GetSceneDataByKnot(string knot)
-    {
-        return GetAllBuildSceneData().Find(x => x.knot == knot);
-    }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
-    }
-}
 
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    MTR_SceneDataObject _mtrSceneDataObject
-    {
-        get
-        {
-            return buildSceneDataObject as MTR_SceneDataObject;
-        }
-        set
-        {
-            buildSceneDataObject = value;
-        }
-    }
+    public MTR_SceneDataObject sceneDataObject;
 
     public override void Initialize()
     {
-        base.Initialize();
+#if UNITY_EDITOR
+        sceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
+            DATA_PATH,
+                DATA_FILENAME
+            );
+
+        if (sceneDataObject == null)
+        {
+            Debug.LogError($"{this.name} Failed to create or load build scene data object.");
+            return;
+        }
+        else
+        {
+            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {sceneDataObject}");
+        }
+
+        base.LoadBuildScenes();
+#endif
+
+        sceneDataObject.Initialize(buildScenePaths);
+
+        //SaveBuildSceneData(buildScenePaths);
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
     }
 
-    public override void CreateBuildSceneDataObject()
+    /// <summary>
+    /// Saves the build scene data by updating the paths of the BuildSceneData objects
+    /// based on the paths in the EditorBuildSettingsScene array.
+    /// </summary>
+    public override void SaveBuildSceneData(string[] buildScenePaths)
     {
-        _mtrSceneDataObject =
-            ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
-                DATA_PATH,
-                DATA_FILENAME
-            );
+        this.buildScenePaths = buildScenePaths;
+        List<MTR_SceneData> buildSceneData = sceneDataObject.GetAllData();
+
+        for (int i = 0; i < buildScenePaths.Length; i++)
+        {
+            string scenePath = buildScenePaths[i];
+
+            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+            if (buildSceneData.Count <= i || buildSceneData[i].Path != scenePath)
+            {
+                buildSceneData.Add(new MTR_SceneData());
+                Debug.Log($"{this.name} -> Added new MTR_SceneData object.");
+            }
+
+            // Initialize the scene data.
+            buildSceneData[i].InitializeData(scenePath);
+            //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
+        }
+
+
+        EditorUtility.SetDirty(this);
+        Debug.Log($"{this.name} Saved build scene data.");
     }
 
     public void OnStoryInitialized(Story story)
@@ -97,9 +95,9 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// </summary>
     /// <param name="args">0 : The name of the sceneKnot</param>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    public object ChangeGameScene(string knotName)
+    object ChangeGameScene(string knotName)
     {
-        MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
+        MTR_SceneData data = sceneDataObject.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -109,16 +107,21 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public MTR_SceneData GetSceneData(Scene sceneName)
+    public MTR_SceneData GetSceneData(string name)
     {
-        return _mtrSceneDataObject.GetSceneData(sceneName);
+        return sceneDataObject.GetSceneData(name);
+    }
+
+    public MTR_SceneData GetSceneDataByKnot(string knot)
+    {
+        return this.sceneDataObject.GetSceneDataByKnot(knot);
     }
 
     public MTR_SceneData GetActiveSceneData()
     {
-        if (_mtrSceneDataObject == null)
+        if (sceneDataObject == null)
             return new MTR_SceneData();
-        return _mtrSceneDataObject.GetActiveSceneData();
+        return sceneDataObject.GetActiveSceneData();
     }
 }
 
@@ -128,11 +131,11 @@ public class MTR_SceneManagerCustomEditor : Editor
 {
     SerializedObject _serializedObject;
     MTR_SceneManager _script;
-
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
         _script = (MTR_SceneManager)target;
+        _script.Awake();
     }
 
     public override void OnInspectorGUI()
@@ -146,18 +149,7 @@ public class MTR_SceneManagerCustomEditor : Editor
             _script.Initialize();
         }
 
-        if (GUILayout.Button("Show Editor Window"))
-        {
-            BuildSceneManagerWindow.ShowWindow();
-        }
-
-        // Display the active scene name.
-        MTR_SceneData activeScene = _script.GetActiveSceneData();
-        if (activeScene != null)
-        {
-            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Scene", activeScene.Name);
-            CustomInspectorGUI.CreateTwoColumnLabel("Active Build Knot", activeScene.knot);
-        }
+        base.OnInspectorGUI();
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -165,6 +157,5 @@ public class MTR_SceneManagerCustomEditor : Editor
         }
     }
 }
-
-
 #endif
+

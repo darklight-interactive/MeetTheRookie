@@ -23,7 +23,7 @@ namespace Darklight.UnityExt.UXML
         [SerializeField] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
-        public Dictionary<string, VisualElement> uiElements { get; private set; } = new();
+        public bool isVisible { get; protected set; }
 
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
@@ -65,6 +65,24 @@ namespace Darklight.UnityExt.UXML
             root.Query<T>(tagOrClass).ForEach(element => elements.Add(element));
             return elements;
         }
+
+        /// <summary>
+        /// Toggle the visibility of the root element.
+        /// </summary>
+        public void ToggleVisibility()
+        {
+            isVisible = !isVisible;
+            root.visible = isVisible;
+        }
+
+        /// <summary>
+        /// Set the visibility of the root element directly.
+        /// </summary>
+        public void SetVisibility(bool visible)
+        {
+            isVisible = visible;
+            root.visible = isVisible;
+        }
     }
 
 #if UNITY_EDITOR
@@ -78,6 +96,20 @@ namespace Darklight.UnityExt.UXML
             _serializedObject = new SerializedObject(target);
             _script = (UXML_UIDocumentObject)target;
             _script.Initialize(_script.preset);
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            if (GUILayout.Button("Initialize"))
+            {
+                _script.Initialize(_script.preset);
+            }
+
+            base.OnInspectorGUI();
+
+            _serializedObject.ApplyModifiedProperties();
         }
     }
 #endif

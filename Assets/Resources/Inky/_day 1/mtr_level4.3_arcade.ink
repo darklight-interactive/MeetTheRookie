@@ -1,18 +1,42 @@
 
+=== function mainStreetCheck() ===
+    {
+    - IsQuestComplete(complete_arcade) && IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_DUSK")
+        ~ return
+    -isAnyTeenSus() && IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_DUSK")
+        ~ return
+
+    - isAnyTeenSus() || IsClueFound(roys_suspicion):
+        ~ ChangeGameScene("scene4_1_GOLDENHOUR")
+        ~ return
+    
+    - else:
+        ~ ChangeGameScene("scene4_1")
+        ~ return
+    }
+=== function isAnyTeenSus() ===
+    ~ return IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)
 === scene4_3 ===
+TODO SFX DOOR CLOSE
 // FUNC SCENE CHANGE
 # Location: Power Up Arcade
 //+ {CompleteQuest(visited_arcade)}[front_door] -> scene4_1.main_street
 
-* [talk_to_misra] -> Misra_Dialogue
-* [talk_to_jenny] -> Jenny_Dialogue
-* [machines] -> arcade_machines
-* [exit_door] -> exit_scene
+//* [talk_to_misra] -> Misra_Dialogue
+//* [talk_to_jenny] -> Jenny_Dialogue
+//* [machines] -> arcade_machines
+//* [exit_door] -> exit_scene
 
+    -> DONE
+= 
 = arcade_machines
     {IsQuestComplete(visited_machines):
         {"Mac Pan"... huh | "Donkey King"...that's...okay.. | "GalaxyBattles!" | "Sidewalk Fighter" | So weird...}
     - else:
+     ~ CompleteQuest(visited_machines)
+    ~ SetSpeaker(Speaker.Lupe)
      I don't recognize any of these games.
     ~ SetSpeaker(Speaker.Misra)
      Yeah...
@@ -20,32 +44,16 @@
      They're cheaper that way.
      And twice the fun!
     -> DONE
-}
-    
+    }
 = teens
- Is that...
- Who you were talking about...?
-~ SetSpeaker(Speaker.Misra)
- Yes.
- Don't be fooled.
- They're vicious.
-~ SetSpeaker(Speaker.Lupe)
- They're....
- ...fourteen year olds.
-~ SetSpeaker(Speaker.Misra)
- I know.
-~ SetSpeaker(Speaker.Lupe)
- They're barely five feet tall.
-~ SetSpeaker(Speaker.Misra)
- <i> I know </i>.
-~ SetSpeaker(Speaker.Lupe)
- They--
-~ SetSpeaker(Speaker.Jenny)
- Hey Nimrods. 
- We can hear you.
-~ SetSpeaker(Speaker.Lupe)
-    -> DONE
+    -> Teens_Dialogue.teens
     
+= jenny
+    -> Teens_Dialogue.jenny
+= calvin
+    -> Teens_Dialogue.calvin
+= josh 
+    -> Teens_Dialogue.josh
     
 = teens_roulette
 
@@ -69,13 +77,13 @@
     * [Calvin] -> Calvin_Dialogue
     * [Josh] -> Josh_Dialogue
     
-    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
-    
+//    * {IsClueFound(jenny_suspects) && IsClueFound(josh_suspects) && IsClueFound(calvin_suspects)} [So. Anything else you wanna get off your chests?] -> exit_scene
+
 = exit_scene
+TODO SFX DOOR OPEN
     ~ SetSpeaker(Speaker.Jenny)
-     Unless the Rookie Sheriff wants to conceit their HO:SI score, no.
-     We're done talking with you losers.
-    ~ SetSpeaker(Speaker.Lupe)
-    ~ CompleteQuest(complete_arcade)
-    ~ CompleteQuest(suspects)
+        Bye loooosersss.
+    ~ mainStreetCheck()
     -> DONE
+    
+    

@@ -119,10 +119,9 @@ namespace Darklight.UnityExt.Inky
         private TextAsset _textAsset;
 
         [SerializeField]
-        private List<InkyKnot> _knots;
+        private List<InkyKnot> _knots = new List<InkyKnot>();
 
-        [SerializeField]
-        private List<InkyVariable> _variables;
+        [SerializeField] private List<InkyVariable> _variables = new List<InkyVariable>();
         private List<string> _globalTags;
 
         // ------------------------------ [[ PUBLIC METHODS ]] ------------------------------ >>
@@ -130,8 +129,21 @@ namespace Darklight.UnityExt.Inky
         /// <summary>
         /// Public reference to the Ink story inside the StoryObject.
         /// </summary>
-        public Story StoryValue => this._story;
-        public List<string> KnotNames => _knots.Select(knot => knot.name).ToList();
+        public Story StoryValue
+        {
+            get
+            {
+                if (_story == null)
+                {
+                    return CreateStory(_textAsset);
+                }
+                return _story;
+            }
+        }
+        public List<string> KnotNameList
+        {
+            get => _knots.Select(knot => knot.name).ToList();
+        }
 
         /// <summary>
         /// Initializes the story object with data from the given Inky TextAsset.
@@ -147,9 +159,8 @@ namespace Darklight.UnityExt.Inky
             }
 
             this._story = CreateStory(_textAsset);
-            this._knots = GetAllKnots(_story)
-                .Select(knot => new InkyKnot
-                {
+            this._knots = GetAllKnots(_story).Select(knot => new InkyKnot
+            {
                     name = knot,
                     stitches = GetAllStitchesInKnot(_story, knot)
                 })
@@ -163,6 +174,12 @@ namespace Darklight.UnityExt.Inky
 
             Debug.Log($"InkyStoryObject: Initialized {this.name} with {_textAsset.name}."
                     + $" Found {_knots.Count} knots and {_variables.Count} variables.");
+        }
+
+        public List<InkyVariable> GetVariables()
+        {
+            _variables = GetVariables(_story);
+            return _variables;
         }
 
         public InkyVariable GetVariableByName(string variableName)

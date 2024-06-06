@@ -1,16 +1,23 @@
 === scene4_2 ===
+TODO SFX GEN STORE bell
+TODO SFX DOOR CLOSE
 # Location: IdaHome and Goods, General Store
     * [talk_to_roy] -> Roy_Dialogue  
     * [store_window] -> store_window
     * [merch_shirt] -> merch_shirt
     * [merch_sticker] -> merch_sticker
-    + [merch_pamphlet]
-        # Lupe leans close to a pamphlet that has four pages detailing the town history.
-        ~ DiscoverClue(merch_pamphlet)
-    -> DONE
-   
-   * {IsClueFound(merch_pamphlet)} Do you mind explaining this pamphlet a bit? -> DONE
+    * [merch_pamphlet] -> pamphlet
     
+        ->DONE
+= intro
+    -> Roy_Dialogue.roy_intro_cutscene
+= pamphlet
+    ~ DiscoverClue(merch_pamphlet)
+    ~ SetSpeaker(Speaker.Lupe)
+    TODO Wow, it's a pamphlet w/ loads of info!
+   -> DONE
+= roy
+    -> Roy_Dialogue
 = store_window
     -> Roy_Dialogue.window
     
@@ -21,13 +28,7 @@
     -> Roy_Dialogue.merch_sticker
 
 = front_door
-    ~ SetSpeaker(Speaker.Lupe)
-    Thanks again.
-    ~ SetSpeaker(Speaker.Misra)
-    Bye, Roy!
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     Take care!
-        # SCENE CHANGE
-        -> DONE
-= roy
-    -> Roy_Dialogue
+    Take care!
+    ~ mainStreetCheck()
+    ->DONE

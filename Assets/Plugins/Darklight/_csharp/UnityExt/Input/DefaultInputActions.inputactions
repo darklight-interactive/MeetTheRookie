@@ -33,13 +33,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Pointer",
-                    "type": "Value",
-                    "id": "cf343646-6d7a-4ad1-a52b-90052b2faa7d",
-                    "expectedControlType": "",
+                    "name": "MenuButton",
+                    "type": "Button",
+                    "id": "68f36159-20da-4219-a657-9eb6ac26db36",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -132,13 +132,68 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "c2c038e8-48b6-49ab-b764-17025d85a2fb",
-                    "path": "*/{Point}",
+                    "name": "2D Vector",
+                    "id": "b63e3da8-22b4-482b-b317-f395b0e790c4",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pointer",
+                    "action": "MoveInput",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "b0513e5f-08c5-44e2-ae7f-bd753c508a13",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveInput",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "aa224ec1-cd5e-4e90-8890-12df20ffe3a8",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveInput",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "8392e43a-fabe-499f-9a20-d3ea6dd6100a",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveInput",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "afc024f9-f09b-4692-a25c-3366521bf535",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveInput",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "464428c1-98e4-4341-9009-edb5f8998a28",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MenuButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

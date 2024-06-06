@@ -21,15 +21,6 @@ Idk to each their own , just take it away now. -> DONE
     -> DONE
     
 - else:
-    ~ SetSpeaker(Speaker.Misra)
-    Here we are! Kettle Rock's pride and joy. Best wine north of California.
-    ~ SetSpeaker(Speaker.Lupe)
-    You said this place closed a few weeks ago? It looks like it's been abandoned for years.
-    ~ SetSpeaker(Speaker.Misra)
-    Well, it <i>has</i> been a bit neglected recently. But make no mistake, this is a piece of town history! 
-    ~ SetSpeaker(Speaker.Lupe)
-    Right... 
-    ~ CompleteQuest(talk_to_misra_quest)
     -> DONE
 }
 
@@ -52,8 +43,10 @@ Idk to each their own , just take it away now. -> DONE
     ~ SetSpeaker(Speaker.Lupe)
     I...don't know the way to Downtown.
     ~ SetSpeaker(Speaker.Misra)
-    Oh, right! Yeah, of course you don't. Follow me.
+    Oh, right! Yeah, of course you don't. 
+    I can give you directions in the car.
     ~ CompleteQuest(discover_inside_clues)
+    TODO SFX once fade to black, car leave noises
     -> DONE
     
 - else:
@@ -70,35 +63,7 @@ Idk to each their own , just take it away now. -> DONE
 
 
 = 4_1
-{IsQuestComplete(visited_misra) == false:
-    ~ CompleteQuest(visited_misra)
-    ~ SetSpeaker(Speaker.Misra)
-    [Misra] Here we are! 
-    [Misra] Kettle Rock, Main Street. Heart of the Downtown. 
-    [Misra] There's bound to be some locals around - where do you want to start?
-    ~ SetSpeaker(Speaker.Lupe)
--else: 
-    {IsQuestComplete(visited_roy):
-        ~ SetSpeaker(Speaker.Misra)
-        [Misra] I'm sorry if Roy seems like a bit of a downer.
-        [Misra] He has no faith.
-        ~ SetSpeaker(Speaker.Lupe)
-        [Lupe] He seems like he's got a pretty good acceptance of the situation.
-        [Lupe] From what I can tell.
-        ~ SetSpeaker(Speaker.Misra)
-        [Misra] Well, you've only been here a day...
-        ~ SetSpeaker(Speaker.Lupe)
-    }
-}
-{IsQuestComplete(visited_jenny) && IsQuestComplete(complete_arcade):
-    ~ SetSpeaker(Speaker.Misra)
-     [Misra] Those guys are the worst.
-    ~ SetSpeaker(Speaker.Lupe)
-     [Lupe] They're definitely hiding <i>something</i>.
-    ~ SetSpeaker(Speaker.Misra)
-     [Misra] Good luck getting anything out of them.
-    ~ SetSpeaker(Speaker.Lupe)
-     // Add to Synthesis: Who broke into the Winery?
-}
+~ SetSpeaker(Speaker.Misra)
+Where to next, Detective?
     -> DONE
 

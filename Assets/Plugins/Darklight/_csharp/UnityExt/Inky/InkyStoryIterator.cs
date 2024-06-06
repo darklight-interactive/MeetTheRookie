@@ -91,7 +91,7 @@ namespace Darklight.UnityExt.Inky
                 GoToState(State.DIALOGUE);
                 story.Continue();
 
-                // Check if empty, if so, continue
+                // Check if empty, if so, continue again
                 if (CurrentText == null || CurrentText == "" || CurrentText == "\n")
                 {
                     ContinueStory();
@@ -109,13 +109,17 @@ namespace Darklight.UnityExt.Inky
             // -- ( CHOICE STATE ) --------------- >>
             else if (story.currentChoices.Count > 0)
             {
-                GoToState(State.CHOICE);
-                InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
-
-                foreach (Choice choice in story.currentChoices)
+                // Go To Choice State and store the choice data
+                if (CurrentState != State.CHOICE)
                 {
-                    _choiceMap.Add(choice, choice.index);
-                    InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                    GoToState(State.CHOICE);
+                    InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
+                    foreach (Choice choice in story.currentChoices)
+                    {
+                        _choiceMap.Add(choice, choice.index);
+                        InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                    }
+                    return;
                 }
             }
             // -- ( END STATE ) --------------- >>
@@ -137,9 +141,19 @@ namespace Darklight.UnityExt.Inky
             }
         }
 
-        public void ChooseChoice(int choiceIndex)
+        public List<Choice> GetCurrentChoices()
         {
-            Choice choice = _storyObject.StoryValue.currentChoices[choiceIndex];
+            List<Choice> choices = new List<Choice>();
+            foreach (Choice choice in _storyObject.StoryValue.currentChoices)
+            {
+                choices.Add(choice);
+            }
+            return choices;
+        }
+
+        public void ChooseChoice(Choice choice)
+        {
+            Debug.Log($"{Prefix} Choice Selected: {choice.text}");
             _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
             _choiceMap.Clear();
             ContinueStory();

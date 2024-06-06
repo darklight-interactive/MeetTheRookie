@@ -6,6 +6,10 @@ using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+using Ink.Runtime;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -81,21 +85,15 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [SerializeField, ShowOnly]
     float _screenAspectRatio;
 
+    [SerializeField] CharacterColors characterColors;
+
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
-    [Header("Main Menu Controller")]
-    [SerializeField]
-    UXML_UIDocumentPreset _mainMenuPreset;
+    [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
 
-    [SerializeField]
-    SceneObject _mainMenuScene;
-    private MainMenuController _mainMenuController;
-
-    [Header("Game UI Controller")]
+    // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     private GameUIController _gameUI;
-
-    [SerializeField]
-    UXML_UIDocumentPreset _gameUIPreset;
+    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
     public GameUIController gameUIController
     {
         get
@@ -109,6 +107,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Create a new GameUIController if it doesn't
             _gameUI = CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            _gameUI.transform.SetParent(transform);
             return _gameUI;
         }
     }
@@ -135,6 +134,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
+    #region ------ [[ SPEECH BUBBLE ]] ------------------------ >>
     [Header("Speech Bubble")]
     [SerializeField]
     UXML_UIDocumentPreset _speechBubblePreset;
@@ -142,8 +142,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [ShowOnly]
     public UXML_RenderTextureObject speechBubbleObject;
 
-    [MinMaxSlider(24, 128)]
+    [MinMaxSlider(24, 512)]
     public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
+
+    [Range(128, 2048)]
+    public int speechBubbleWidth = 256;
 
     [SerializeField]
     Sprite LTick_SpeechBubble;
@@ -158,26 +161,32 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             DestroySpeechBubble();
         }
 
+        // Return if the application is not playing
+        if (!Application.isPlaying) { return; }
+
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
-        (Vector3, Vector2Int) bubbleData = GetSpeakerSpeechBubblePositionAndDirection();
+
+        // TODO: omg this line HAS to be done better lmao
+        (Vector3, Vector2Int, Color) bubbleData = GetSpeakerSpeechBubblePositionAndDirectionAndColor();
         speechBubbleObject.transform.position = bubbleData.Item1;
         Vector2Int bubbleDirection = bubbleData.Item2;
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
-        Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
+        //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.fontSizeRange = speechBubbleFontSizeRange;
-        speechBubble.fontSize = speechBubble.GetDynamicFontSize();
+        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
+        speechBubble.UpdateFontSizeToMatchScreen();
+        speechBubble.style.color = bubbleData.Item3;
         speechBubble.SetBackgroundSprite(bubbleSprite);
+        speechBubble.style.width = speechBubbleWidth;
 
         StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
     }
-
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.Initialize(fullText);
+        speechBubble.SetFullText(fullText);
 
         while (true)
         {
@@ -189,7 +198,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             yield return null;
         }
     }
-
     public void DestroySpeechBubble()
     {
         if (speechBubbleObject != null)
@@ -201,12 +209,12 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
         speechBubbleObject = null;
     }
-
-    (Vector3, Vector2Int) GetSpeakerSpeechBubblePositionAndDirection()
+    (Vector3, Vector2Int, Color) GetSpeakerSpeechBubblePositionAndDirectionAndColor()
     {
-        string currentSpeaker = InkyStoryManager.Instance.CurrentSpeaker;
+        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Vector3 bubblePosition = Vector3.zero;
         Vector2Int bubbleDirection = Vector2Int.zero;
+        Color bubbleColor = characterColors[currentSpeaker];
 
         // Set the Camera Target to the Player
         if (currentSpeaker.Contains("Lupe"))
@@ -215,11 +223,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             if (playerInteractor == null)
             {
                 Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-                return (bubblePosition, bubbleDirection);
+                return (bubblePosition, bubbleDirection, bubbleColor);
             }
 
             bubblePosition = playerInteractor.GetBestOverlapGridData().worldPosition;
-            if (bubblePosition.x < playerInteractor.transform.position.x)
+            if (bubblePosition.x <= playerInteractor.transform.position.x)
             {
                 bubbleDirection = Vector2Int.left;
             }
@@ -227,7 +235,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             {
                 bubbleDirection = Vector2Int.right;
             }
-            return (bubblePosition, bubbleDirection);
+            return (bubblePosition, bubbleDirection, bubbleColor);
         }
 
         // Set the Camera Target to a NPC
@@ -239,7 +247,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             if (interactable.speakerTag.Contains(currentSpeaker))
             {
                 bubblePosition = interactable.GetBestOverlapGridData().worldPosition;
-                if (bubblePosition.x < interactable.transform.position.x)
+                bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                if (bubblePosition.x <= interactable.transform.position.x)
                 {
                     bubbleDirection = Vector2Int.left;
                 }
@@ -247,13 +256,14 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 {
                     bubbleDirection = Vector2Int.right;
                 }
-                return (bubblePosition, bubbleDirection);
+                return (bubblePosition, bubbleDirection, bubbleColor);
             }
         }
 
         Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
-        return (bubblePosition, bubbleDirection);
+        return (bubblePosition, bubbleDirection, bubbleColor);
     }
+    #endregion
 
     #region ------ [[ INTERACT ICON ]] ------------------------
     [Header("Interact Icon")]

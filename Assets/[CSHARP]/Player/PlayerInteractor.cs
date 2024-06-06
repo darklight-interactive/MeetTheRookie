@@ -27,6 +27,7 @@ public class PlayerInteractor : OverlapGrid2D
     void RefreshRadar()
     {
         if (_foundInteractables.Count == 0) return;
+        if (playerController.currentState == PlayerState.INTERACTION) return;
 
         // Temporary list to hold items to be removed
         List<Interactable> toRemove = new List<Interactable>();
@@ -49,12 +50,8 @@ public class PlayerInteractor : OverlapGrid2D
             _foundInteractables.Remove(completedInteraction);
         }
 
-        // Get the Target Interactable 
-        // TODO :: Find the best interactable
-        if (targetInteractable == null && _foundInteractables.Count > 0)
-        {
-            targetInteractable = _foundInteractables.First();
-        }
+        // Update the target interactable
+        targetInteractable = GetClosestInteractable();
 
         // Only set the target if the interactable is not the active target
         if (targetInteractable != activeInteractable)
@@ -69,9 +66,28 @@ public class PlayerInteractor : OverlapGrid2D
 
     #endregion
 
+    Interactable GetClosestInteractable()
+    {
+        if (_foundInteractables.Count == 0) return null;
+
+        Interactable closest = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (Interactable interactable in _foundInteractables)
+        {
+            float distance = Vector2.Distance(transform.position, interactable.transform.position);
+            if (distance < closestDistance)
+            {
+                closest = interactable;
+                closestDistance = distance;
+            }
+        }
+
+        return closest;
+    }
+
     public bool InteractWithTarget()
     {
-        if (_foundInteractables.Count == 0) return false;
         if (targetInteractable == null) return false;
         if (targetInteractable.isComplete) return false;
 
@@ -95,7 +111,20 @@ public class PlayerInteractor : OverlapGrid2D
         return true;
     }
 
-    void ExitInteraction()
+    public void ForceInteract(Interactable interactable)
+    {
+        if (interactable == null) return;
+        Debug.Log($"Player Interactor :: Force Interact with {interactable.name}");
+
+        // Set the target interactable
+        targetInteractable = interactable;
+        targetInteractable.TargetSet();
+
+        // Interact with the target
+        InteractWithTarget();
+    }
+
+    public void ExitInteraction()
     {
         Debug.Log("Player Interactor :: Exit Interaction");
 
@@ -110,6 +139,18 @@ public class PlayerInteractor : OverlapGrid2D
         activeInteractable.OnCompleted -= ExitInteraction;
         targetInteractable = null;
         activeInteractable = null;
+    }
+
+    /// <summary>
+    /// Remove interactables from the local list and clear their target state. 
+    /// </summary>
+    public void ClearInteractables()
+    {
+        foreach (Interactable interactable in _foundInteractables)
+        {
+            interactable.TargetClear();
+        }
+        _foundInteractables.Clear();
     }
 
 
