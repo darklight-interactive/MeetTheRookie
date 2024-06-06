@@ -94,8 +94,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         SynthesisClueElement newClue = new SynthesisClueElement();
         newClue.text = clue;
 
-        mystery1Container = ElementQuery<GroupBox>("mystery1");
-        mystery1Container.Add(newClue);
+        //mystery1Container = ElementQuery<GroupBox>("mystery1");
+        //mystery1Container.Add(newClue);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
@@ -211,8 +211,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     {
         synthesisActive = visible;
         Debug.Log("SynthesisManager: Show(" + visible + ")");
-        VisualElement container = ElementQuery<VisualElement>("synthesis-container");
-        container.visible = visible;
+        //VisualElement container = ElementQuery<VisualElement>("synthesis-container");
+        //container.visible = visible;
     }
 }
 
