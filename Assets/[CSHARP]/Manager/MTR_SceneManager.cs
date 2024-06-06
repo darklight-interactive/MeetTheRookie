@@ -123,6 +123,12 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
             return new MTR_SceneData();
         return sceneDataObject.GetActiveSceneData();
     }
+
+    public void LoadSceneByKnot(string knot)
+    {
+        MTR_SceneData data = GetSceneDataByKnot(knot);
+        LoadScene(data.Name);
+    }
 }
 
 #if UNITY_EDITOR
