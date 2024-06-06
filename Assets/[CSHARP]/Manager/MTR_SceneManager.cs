@@ -14,30 +14,6 @@ using NaughtyAttributes;
 using UnityEditor;
 #endif
 
-[System.Serializable]
-public class MTR_SceneData : BuildSceneData
-{
-    private InkyStoryObject _globalStoryObject;
-    private List<string> _knotNames = new List<string> { "default" };
-
-    [SerializeField, ShowOnly] private string _savedKnotData = "default";
-
-    [Dropdown("_knotNames")]
-    public string knot;
-    public EventReference backgroundMusicEvent;
-
-    public override void InitializeData(string path)
-    {
-        base.InitializeData(path);
-
-        if (InkyStoryManager.Instance != null)
-        {
-            _globalStoryObject = InkyStoryManager.GlobalStoryObject;
-            _knotNames = _globalStoryObject.KnotNameList;
-            _savedKnotData = knot;
-        }
-    }
-}
 
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
@@ -60,9 +36,13 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
                 Debug.LogError($"{this.name} Failed to create or load build scene data object.");
                 return;
             }
+        else
+        {
+            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {mtr_SceneDataObject}");
+        }
 
-            base.LoadBuildScenes();
-            SaveBuildSceneData(buildScenePaths);
+        base.LoadBuildScenes();
+        //SaveBuildSceneData(buildScenePaths);
 #endif
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
     }

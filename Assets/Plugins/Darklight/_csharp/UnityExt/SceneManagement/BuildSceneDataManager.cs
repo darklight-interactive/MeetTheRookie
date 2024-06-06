@@ -65,9 +65,10 @@ namespace Darklight.UnityExt.SceneManagement
 
                 // Initialize the scene data.
                 _buildSceneData[i].InitializeData(scenePath);
+                buildSceneDataObject.SaveSceneData(_buildSceneData[i]);
             }
 
-            buildSceneDataObject.SaveData(_buildSceneData.ToArray());
+
             EditorUtility.SetDirty(this);
             Debug.Log($"{this.name} Saved build scene data. {typeof(TSceneData).Name}");
         }

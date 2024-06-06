@@ -114,6 +114,8 @@ namespace Darklight.UnityExt.SceneManagement
             GUILayout.Label("BuildSceneDataObject", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("buildSceneDataObject"));
 
+
+            /*
             // Start the scroll view
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
@@ -132,12 +134,13 @@ namespace Darklight.UnityExt.SceneManagement
             }
 
             EditorGUILayout.EndScrollView();
+            */
 
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
+                Repaint();
             }
-            Repaint();
 
         }
     }
