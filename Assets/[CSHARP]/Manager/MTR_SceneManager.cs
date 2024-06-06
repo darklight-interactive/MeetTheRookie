@@ -8,83 +8,78 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using NaughtyAttributes;
+using System.Linq;
+
 
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[System.Serializable]
-public class MTR_SceneData : BuildSceneData
-{
-    private InkyStoryObject _globalStoryObject;
-    [SerializeField, HideInInspector] private List<string> _knotNames = new List<string> { "default" };
-
-    [Dropdown("_knotNames")]
-    public string knot;
-
-    public EventReference backgroundMusicEvent;
-
-    public override void InitializeData(string path)
-    {
-        base.InitializeData(path);
-
-        if (InkyStoryManager.Instance != null)
-        {
-            _globalStoryObject = InkyStoryManager.GlobalStoryObject;
-            _knotNames = _globalStoryObject.KnotNameList;
-        }
-    }
-}
-
-
-/// <summary>
-/// Custom Scriptable object to hold MTR_SceneData.
-/// </summary>
-public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
-{
-    public MTR_SceneData GetSceneDataByKnot(string knot)
-    {
-        return GetAllBuildSceneData().Find(x => x.knot == knot);
-    }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
-    }
-}
 
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
 {
-    MTR_SceneDataObject _mtrSceneDataObject
-    {
-        get
-        {
-            return buildSceneDataObject as MTR_SceneDataObject;
-        }
-        set
-        {
-            buildSceneDataObject = value;
-        }
-    }
+
+    MTR_SceneDataObject mtr_SceneDataObject;
 
     public override void Initialize()
     {
-        base.Initialize();
-        InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
-    }
-
-    public override void CreateBuildSceneDataObject()
-    {
-        _mtrSceneDataObject =
-            ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
+#if UNITY_EDITOR
+            mtr_SceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
                 DATA_PATH,
                 DATA_FILENAME
             );
+
+            if (mtr_SceneDataObject == null)
+            {
+                Debug.LogError($"{this.name} Failed to create or load build scene data object.");
+                return;
+            }
+        else
+        {
+            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {mtr_SceneDataObject}");
+        }
+
+        base.LoadBuildScenes();
+#endif
+
+        mtr_SceneDataObject.Initialize(buildScenePaths);
+
+        //SaveBuildSceneData(buildScenePaths);
+        InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
+    }
+
+    /// <summary>
+    /// Saves the build scene data by updating the paths of the BuildSceneData objects
+    /// based on the paths in the EditorBuildSettingsScene array.
+    /// </summary>
+    public override void SaveBuildSceneData(string[] buildScenePaths)
+    {
+        this.buildScenePaths = buildScenePaths;
+        List<MTR_SceneData> buildSceneData = mtr_SceneDataObject.GetAllData();
+
+        for (int i = 0; i < buildScenePaths.Length; i++)
+        {
+            string scenePath = buildScenePaths[i];
+
+            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+            if (buildSceneData.Count <= i || buildSceneData[i].Path != scenePath)
+            {
+                buildSceneData.Add(new MTR_SceneData());
+                Debug.Log($"{this.name} -> Added new MTR_SceneData object.");
+            }
+
+            // Initialize the scene data.
+            buildSceneData[i].InitializeData(scenePath);
+            //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
+        }
+
+
+        EditorUtility.SetDirty(this);
+        Debug.Log($"{this.name} Saved build scene data.");
     }
 
     public void OnStoryInitialized(Story story)
@@ -103,7 +98,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     object ChangeGameScene(string knotName)
     {
-        MTR_SceneData data = _mtrSceneDataObject.GetSceneDataByKnot(knotName);
+        MTR_SceneData data = mtr_SceneDataObject.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -113,21 +108,21 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public MTR_SceneData GetSceneData(Scene sceneName)
+    public MTR_SceneData GetSceneData(string name)
     {
-        return _mtrSceneDataObject.GetSceneData(sceneName);
+        return mtr_SceneDataObject.GetSceneData(name);
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return this._mtrSceneDataObject.GetSceneDataByKnot(knot);
+        return this.mtr_SceneDataObject.GetSceneDataByKnot(knot);
     }
 
     public MTR_SceneData GetActiveSceneData()
     {
-        if (_mtrSceneDataObject == null)
+        if (mtr_SceneDataObject == null)
             return new MTR_SceneData();
-        return _mtrSceneDataObject.GetActiveSceneData();
+        return mtr_SceneDataObject.GetActiveSceneData();
     }
 }
 
