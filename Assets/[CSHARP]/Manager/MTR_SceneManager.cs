@@ -8,6 +8,8 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using NaughtyAttributes;
+using System.Linq;
+
 
 
 #if UNITY_EDITOR
@@ -42,9 +44,42 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         }
 
         base.LoadBuildScenes();
-        //SaveBuildSceneData(buildScenePaths);
 #endif
+
+        mtr_SceneDataObject.Initialize(buildScenePaths);
+
+        //SaveBuildSceneData(buildScenePaths);
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
+    }
+
+    /// <summary>
+    /// Saves the build scene data by updating the paths of the BuildSceneData objects
+    /// based on the paths in the EditorBuildSettingsScene array.
+    /// </summary>
+    public override void SaveBuildSceneData(string[] buildScenePaths)
+    {
+        this.buildScenePaths = buildScenePaths;
+        List<MTR_SceneData> buildSceneData = mtr_SceneDataObject.GetData();
+
+        for (int i = 0; i < buildScenePaths.Length; i++)
+        {
+            string scenePath = buildScenePaths[i];
+
+            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
+            if (buildSceneData.Count <= i || buildSceneData[i].Path != scenePath)
+            {
+                buildSceneData.Add(new MTR_SceneData());
+                Debug.Log($"{this.name} -> Added new MTR_SceneData object.");
+            }
+
+            // Initialize the scene data.
+            buildSceneData[i].InitializeData(scenePath);
+            buildSceneDataObject.SaveSceneData(buildSceneData[i]);
+        }
+
+
+        EditorUtility.SetDirty(this);
+        Debug.Log($"{this.name} Saved build scene data.");
     }
 
     public void OnStoryInitialized(Story story)
@@ -73,9 +108,10 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public MTR_SceneData GetSceneData(Scene sceneName)
+    public MTR_SceneData GetSceneData(Scene scene)
     {
-        return mtr_SceneDataObject.GetSceneData(sceneName);
+        string sceneName = scene.name;
+        return mtr_SceneDataObject.buildSceneData.ToList().Find(x => x.Name == sceneName);
     }
 
     public MTR_SceneData GetSceneDataByKnot(string knot)
@@ -109,6 +145,11 @@ public class MTR_SceneManagerCustomEditor : Editor
         _serializedObject.Update();
 
         EditorGUI.BeginChangeCheck();
+
+        if (GUILayout.Button("Initialize"))
+        {
+            _script.Initialize();
+        }
 
         if (GUILayout.Button("Show Editor Window"))
         {

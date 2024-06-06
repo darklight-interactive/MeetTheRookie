@@ -10,8 +10,17 @@ using UnityEngine;
 public class MTR_SceneData : BuildSceneData
 {
     private InkyStoryObject _globalStoryObject;
-    private List<string> _knotNames = new List<string> { "default" };
-
+    // private access to knots for dropdown
+    private List<string> _knotNames
+    {
+        get
+        {
+            List<string> names = new List<string>();
+            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
+            if (storyObject == null) return names;
+            return InkyStoryObject.GetAllKnots(storyObject.StoryValue);
+        }
+    }
     [SerializeField, ShowOnly] private string _savedKnotData = "default";
 
     [Dropdown("_knotNames")]
@@ -22,11 +31,7 @@ public class MTR_SceneData : BuildSceneData
     {
         base.InitializeData(path);
 
-        if (InkyStoryManager.Instance != null)
-        {
-            _globalStoryObject = InkyStoryManager.GlobalStoryObject;
-            _knotNames = _globalStoryObject.KnotNameList;
-            _savedKnotData = knot;
-        }
+        _savedKnotData = knot;
+        Debug.Log("InitializeData: " + _savedKnotData);
     }
 }
