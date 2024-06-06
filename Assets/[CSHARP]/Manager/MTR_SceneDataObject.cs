@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MTR_SceneDataObject : ScriptableObject
 {
-    [SerializeField] private MTR_SceneData[] buildSceneData = new MTR_SceneData[0];
+    [SerializeField] private List<MTR_SceneData> buildSceneData = new List<MTR_SceneData>();
     public void Initialize(string[] buildScenePaths)
     {
         for (int i = 0; i < buildScenePaths.Length; i++)
@@ -22,10 +22,10 @@ public class MTR_SceneDataObject : ScriptableObject
             string scenePath = buildScenePaths[i];
 
             // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
-            if (this.buildSceneData.Length <= i || this.buildSceneData[i].Path != scenePath)
+            if (this.buildSceneData.Count <= i || this.buildSceneData[i].Path != scenePath)
             {
                 MTR_SceneData sceneData = new MTR_SceneData();
-                this.buildSceneData.ToList().Add(sceneData);
+                this.buildSceneData.Add(sceneData);
             }
 
             this.buildSceneData[i].InitializeData(scenePath);
