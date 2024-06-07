@@ -497,6 +497,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624106581333338020, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
+      propertyPath: attenuationObject
+      value: 
+      objectReference: {fileID: 1192516343}
     - target: {fileID: 2895742502396242152, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
       propertyPath: m_Name
       value: '[EXTERIOR CAM CONTROLLER]'
@@ -1830,11 +1834,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.x
-      value: 1766
+      value: 940.39996
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.y
-      value: 966
+      value: 338.8
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: speechBubbleWidth
@@ -1842,7 +1846,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenAspectRatio
-      value: 1.8281573
+      value: 2.7756789
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4809,6 +4813,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1192516343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 833330028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1341763073
 Mesh:
   m_ObjectHideFlags: 0
@@ -6330,9 +6339,17 @@ PrefabInstance:
       objectReference: {fileID: 1056522415}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5151676587201704938, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1977841804}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
+--- !u!4 &1802227496 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5151676587201704938, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
+  m_PrefabInstance: {fileID: 1802227495}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1805792569
 Mesh:
   m_ObjectHideFlags: 0
@@ -6498,6 +6515,69 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1977841803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1977841804}
+  - component: {fileID: 1977841805}
+  m_Layer: 0
+  m_Name: car door audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1977841804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977841803}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.52, y: -0.95, z: -5.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1802227496}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1977841805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977841803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1462994767
+      Data2: 1253463399
+      Data3: -1020608602
+      Data4: 235909762
+    Path: event:/SFX/carDoorOpenAndClose
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 10
 --- !u!43 &1994922643
 Mesh:
   m_ObjectHideFlags: 0
