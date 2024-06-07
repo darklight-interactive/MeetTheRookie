@@ -196,7 +196,13 @@ TODO SFX Door close
     ~ SetSpeaker(Speaker.Lupe)
     Whose paygrade is it <i>not</i> above?
     ~ SetSpeaker(Speaker.Beth) 
-    My manager's in the back.
+    My manager's in the bathroom.
+    ~ SetSpeaker(Speaker.Lupe)
+    Should I wait or...?
+    ~ SetSpeaker(Speaker.Beth)
+    Oh he's not using it just cleaning some weird thing.
+    ~ SetSpeaker(Speaker.Lupe)
+    Okay...
     ~DiscoverClue(broken_cash_reg)
     -> DONE
 }
@@ -235,7 +241,7 @@ TODO SFX door close
     ~ SetSpeaker(Speaker.Lupe)
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
-    Mel's the name. What are you doing back here?
+    Mel's the name. What are you doing in here?
     ~ SetSpeaker(Speaker.Lupe)
     I need to pay for gas. The cash register is broken.
     ~ SetSpeaker(Speaker.Mel)

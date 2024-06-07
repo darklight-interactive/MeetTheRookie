@@ -194,7 +194,7 @@ TODO SFX door close
     -> DONE
 
 = door_winery_exterior
-    {insideCluesFound():
+    {IsClueFound(evidence_claw_marks) && IsClueFound(evidence_damages):
         ~ ChangeGameScene("scene4_1")
         TODO SFX door open
         -> DONE
