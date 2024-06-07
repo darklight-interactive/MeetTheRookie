@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentSpeaker: 
+  targetBasedOnSpeaker: 0
 --- !u!114 &7167559734855225826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +222,7 @@ Camera:
   m_Depth: 2
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 960
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -323,8 +324,8 @@ Camera:
   m_GameObject: {fileID: 5947460541986450070}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.42352945, g: 0.46274513, b: 0.47058827, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -353,7 +354,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 65
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
