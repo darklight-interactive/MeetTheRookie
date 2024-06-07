@@ -20,13 +20,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 === scene1_0 ===
 
 = intro
-    hi i'm your main character Lupe! (progress with Z)
-    same person just on the phone w/ my boss :(
-    Here's how you play MTR
-    walk with arrow keys & interact with Z!
-    okay i'm going back to my world
-    where everything is not as it seems
-    byyeeeeeeeee
+    Let's get in and get out.
     ->DONE
 * [thelton] -> thelton
 
