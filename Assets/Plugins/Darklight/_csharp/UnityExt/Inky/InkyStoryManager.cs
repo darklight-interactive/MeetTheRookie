@@ -153,6 +153,8 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
+
+
             // << INITIALIZE STORY ITERATOR >>
             Iterator = new InkyStoryIterator(_globalStoryObject);
 

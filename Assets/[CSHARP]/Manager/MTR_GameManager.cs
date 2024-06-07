@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager; 
+    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
@@ -25,6 +25,13 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         Cursor.visible = false;
 
         GameSceneManager.OnSceneChanged += OnSceneChanged;
+
+
+
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
+        {
+            PlaySpecialAnimation(speaker);
+        });
     }
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
@@ -39,6 +46,18 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         FMODEventManager.Instance.PlaySong(newSceneData.backgroundMusicEvent);
     }
 
+    public void PlaySpecialAnimation(string speakerName)
+    {
+        // Set the Camera Target to a NPC
+        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
+        foreach (NPC_Interactable interactable in interactables)
+        {
+            if (interactable.speakerTag.Contains(speakerName))
+            {
+                interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
+            }
+        }
+    }
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
     {
