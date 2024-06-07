@@ -114,29 +114,27 @@ MonoBehaviour:
   - state: 8
     spriteSheet:
       loop: 0
+      frames: []
+  - state: 9
+    spriteSheet:
+      loop: 1
+      frames: []
+  - state: 7
+    spriteSheet:
+      loop: 0
       frames:
-      - {fileID: 6033610134040265441, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: -6398975411899439488, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 960000386750408900, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 6466794509692765469, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 3826696478288984551, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 7888508188285371250, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: -5514728110783900701, guid: 99172b01b501694409bc9b33012d738c, type: 3}
-  - state: 9
-    spriteSheet:
-      loop: 1
-      frames:
       - {fileID: -4395454992754428846, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 8796358768372581860, guid: 99172b01b501694409bc9b33012d738c, type: 3}
-      - {fileID: -3469111583574947563, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: -3469111583574947563, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: -4227228220917134951, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 3348623913371697693, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: -1117165935647651449, guid: 99172b01b501694409bc9b33012d738c, type: 3}
-  - state: 10
-    spriteSheet:
-      loop: 0
-      frames:
       - {fileID: -6534126438040574910, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 2939543790331999609, guid: 99172b01b501694409bc9b33012d738c, type: 3}
       - {fileID: 5005115766270713721, guid: 99172b01b501694409bc9b33012d738c, type: 3}
@@ -214,7 +212,7 @@ MonoBehaviour:
     frames:
     - {fileID: -2700165468037723250, guid: 99172b01b501694409bc9b33012d738c, type: 3}
     - {fileID: 3097259804628475345, guid: 99172b01b501694409bc9b33012d738c, type: 3}
-  currentFrame: 1
+  currentFrame: 0
 --- !u!61 &5007469561755814138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -304,7 +302,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3097259804628475345, guid: 99172b01b501694409bc9b33012d738c, type: 3}
+  m_Sprite: {fileID: -2700165468037723250, guid: 99172b01b501694409bc9b33012d738c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
