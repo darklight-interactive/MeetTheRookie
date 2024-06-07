@@ -66,7 +66,8 @@ TODO SFX door closing
     ~ CompleteQuest(first_interact)
     ~ DiscoverClue(broken_gas_pump)
     ~ gas_pumps += 1
-    {IsQuestComplete(pay_for_gas):
+    {
+    - IsQuestComplete(pay_for_gas) && (look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
         Ugh. Guess I'll be more than a little late...
@@ -75,7 +76,8 @@ TODO SFX door closing
         -> DONE 
         TODO SFX Car closing door noise and leaving
         //fade to black, go to precinct day 1 
-        
+     - IsQuestComplete(pay_for_gas):
+        That noise didn't sound good. I should probably see what's up.
     - else:
         ~ SetSpeaker(Speaker.Lupe)
         {
