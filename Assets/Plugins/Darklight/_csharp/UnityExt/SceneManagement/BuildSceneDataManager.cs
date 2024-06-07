@@ -50,6 +50,8 @@ namespace Darklight.UnityExt.SceneManagement
         /// </summary>
         public virtual void SaveBuildSceneData(string[] buildScenePaths)
         {
+
+#if UNITY_EDITOR
             this.buildScenePaths = buildScenePaths;
 
             for (int i = 0; i < buildScenePaths.Length; i++)
@@ -71,6 +73,7 @@ namespace Darklight.UnityExt.SceneManagement
 
             EditorUtility.SetDirty(this);
             Debug.Log($"{this.name} Saved build scene data. {typeof(TSceneData).Name}");
+#endif
         }
 
         /// <summary>

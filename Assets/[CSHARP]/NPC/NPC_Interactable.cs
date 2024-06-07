@@ -60,4 +60,43 @@ public class NPC_Interactable : Interactable, IInteract
             stateMachine?.GoToState(stateBeforeTalkedTo);
         };
     }
+
+    public void PlayAnimation(NPCState state)
+    {
+        GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(NPC_Interactable))]
+public class NPC_InteractableCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    NPC_Interactable _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (NPC_Interactable)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        if (GUILayout.Button("Play Animation"))
+        {
+            _script.PlayAnimation(NPCState.PLAY_ANIMATION);
+        }
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

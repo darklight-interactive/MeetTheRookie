@@ -57,6 +57,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// </summary>
     public override void SaveBuildSceneData(string[] buildScenePaths)
     {
+#if UNITY_EDITOR
         this.buildScenePaths = buildScenePaths;
         List<MTR_SceneData> buildSceneData = sceneDataObject.GetAllData();
 
@@ -76,9 +77,9 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
             //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
         }
 
-
         EditorUtility.SetDirty(this);
         Debug.Log($"{this.name} Saved build scene data.");
+#endif
     }
 
     public void OnStoryInitialized(Story story)

@@ -48,9 +48,10 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     {
         Show(false);
 
+#if UNITY_EDITOR
         clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(LIBRARY_PATH, LIBRARY_NAME);
         clueLibrary.LoadMysteryClues();
-
+#endif
         mystery1Container = ElementQuery<GroupBox>("mystery1");
         synthesizeButton = ElementQuery<VisualElement>("title");
         itemsSelection.Add(synthesizeButton);
@@ -66,7 +67,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         UniversalInputManager.OnPrimaryInteract += Select;
         //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
 
-        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
+        //InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
 
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
         InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
@@ -94,8 +95,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         SynthesisClueElement newClue = new SynthesisClueElement();
         newClue.text = clue;
 
-        mystery1Container = ElementQuery<GroupBox>("mystery1");
-        mystery1Container.Add(newClue);
+        //mystery1Container = ElementQuery<GroupBox>("mystery1");
+        //mystery1Container.Add(newClue);
     }
 
     HashSet<VisualElement> toSynthesize = new HashSet<VisualElement>();
@@ -211,8 +212,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     {
         synthesisActive = visible;
         Debug.Log("SynthesisManager: Show(" + visible + ")");
-        VisualElement container = ElementQuery<VisualElement>("synthesis-container");
-        container.visible = visible;
+        //VisualElement container = ElementQuery<VisualElement>("synthesis-container");
+        //container.visible = visible;
     }
 }
 

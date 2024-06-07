@@ -25,7 +25,7 @@ public partial class SynthesisClueElement : ControlledLabel
         this.fontSizeMin = 24;
         this.fontSizeMax = 48;
         this.rollingTextPercentage = 1;
-        backgroundSprite = AssetDatabase.LoadAssetAtPath<Sprite>(DEFAULT_BACKGROUND);
+        //backgroundSprite = AssetDatabase.LoadAssetAtPath<Sprite>(DEFAULT_BACKGROUND);
 
         this.style.justifyContent = Justify.Center;
 

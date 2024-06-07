@@ -62,8 +62,9 @@ namespace Darklight.UnityExt.SceneManagement
                 sceneDataList.Add(sceneData);
                 buildSceneData = sceneDataList.ToArray();
             }
-
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
             Debug.Log($"{this.name} Saved scene data for {sceneData.Name}.");
         }
 
@@ -114,7 +115,9 @@ namespace Darklight.UnityExt.SceneManagement
         public void ClearBuildSceneData()
         {
             buildSceneData = new TSceneData[0];
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this);
+#endif
             Debug.Log($"{this.name} Cleared build scene data.");
         }
     }
