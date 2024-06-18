@@ -62,8 +62,6 @@ public class MTR_SceneDataObject : ScriptableObject
 }
 
 #if UNITY_EDITOR
-
-#if UNITY_EDITOR
 [CustomEditor(typeof(MTR_SceneDataObject))]
 public class MTR_SceneDataObjectCustomEditor : Editor
 {
@@ -86,10 +84,10 @@ public class MTR_SceneDataObjectCustomEditor : Editor
         if (EditorGUI.EndChangeCheck())
         {
             _serializedObject.ApplyModifiedProperties();
-            Repaint();
         }
+
+        Repaint();
+
     }
 }
-#endif
-
 #endif
