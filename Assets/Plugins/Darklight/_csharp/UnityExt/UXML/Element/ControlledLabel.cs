@@ -104,19 +104,31 @@ namespace Darklight.UnityExt.UXML
 
         public ControlledLabel()
         {
-            _container = new VisualElement();
-            _container.name = "container";
-            _container.style.flexGrow = 1;
-            _container.style.flexDirection = FlexDirection.Row;
-            _container.style.overflow = Overflow.Hidden;
-            _container.style.flexWrap = Wrap.Wrap;
+            _container = new VisualElement
+            {
+                name = "contained-label",
+                style =
+                {
+                    flexGrow = 1,
+                    flexDirection = FlexDirection.Column,
+                    overflow = Overflow.Hidden,
+                    justifyContent = Justify.FlexStart
+                }
+            };
 
-            label = new Label();
-            label.style.alignSelf = Align.Auto;
+            label = new Label
+            {
+                text = fullText,
+                style =
+                {
+                    whiteSpace = WhiteSpace.Normal,
+                    overflow = Overflow.Hidden,
+                    alignSelf = Align.FlexEnd
+                }
+            };
 
             UpdateFontSizeToMatchScreen();
 
-            label.text = fullText;
 
             _container.Add(label);
             Add(_container);

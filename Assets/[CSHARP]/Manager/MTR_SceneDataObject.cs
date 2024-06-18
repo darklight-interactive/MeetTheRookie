@@ -60,3 +60,36 @@ public class MTR_SceneDataObject : ScriptableObject
         return data.backgroundMusicEvent;
     }
 }
+
+#if UNITY_EDITOR
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(MTR_SceneDataObject))]
+public class MTR_SceneDataObjectCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    MTR_SceneDataObject _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (MTR_SceneDataObject)target;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+            Repaint();
+        }
+    }
+}
+#endif
+
+#endif
