@@ -1,5 +1,4 @@
 name: Unity - Automated Build
-
 on:
   workflow_dispatch:
   push:
@@ -9,14 +8,14 @@ on:
       - 'Assets/**/*'
       - 'Packages/**/*'
       - 'ProjectSettings/**/*'
-      - '.github/workflows/main.yml'
+      - .github/workflows/main.yml
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: true # cancel if a new push is made
 
 permissions:
   actions: read
@@ -35,6 +34,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
+
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -70,6 +71,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
+
+      #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -117,10 +120,12 @@ jobs:
         run: |
           mkdir -p ./Build-WebGL
           cp -r build/* ./Build-WebGL
+
       - name: Configure Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: Commit and Push changes
         run: |
           git add .
