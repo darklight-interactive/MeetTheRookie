@@ -1,13 +1,15 @@
 using System.Collections;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using Ink.Runtime;
+using Darklight.UnityExt.Utility;
+
 
 
 #if UNITY_EDITOR
@@ -357,7 +359,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Set the Screen Size Property value
             _screenSizeProperty.vector2Value = ScreenInfoUtility.ScreenSize;
-            _screenAspectRatioProperty.floatValue = ScreenInfoUtility.ScreenAspectRatio;
+            _screenAspectRatioProperty.floatValue = ScreenInfoUtility.GetScreenAspectRatio();
 
             base.OnInspectorGUI();
 

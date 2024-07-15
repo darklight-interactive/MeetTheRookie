@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using System;
 

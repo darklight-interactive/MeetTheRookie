@@ -1,9 +1,10 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Darklight.Utility;
-using Darklight.UnityExt.Editor;
 using System;
-using Darklight.UnityExt.Utility;
+using System.Collections.Generic;
+
+using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
+
+using UnityEngine;
 
 [RequireComponent(typeof(NPC_Animator))]
 public class NPC_Controller : MonoBehaviour

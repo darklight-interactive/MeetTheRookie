@@ -6,7 +6,7 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Audio;
 
 using Ink.Runtime;

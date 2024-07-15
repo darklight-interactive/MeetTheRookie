@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using Darklight.Game.Grid;
+using Darklight.UnityExt.Game;
 using Darklight.UnityExt.Audio;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
@@ -12,6 +12,8 @@ using NaughtyAttributes;
 
 using UnityEngine;
 using Ink.Runtime;
+using Darklight.UnityExt.Game.Grid2D;
+
 
 
 #if UNITY_EDITOR

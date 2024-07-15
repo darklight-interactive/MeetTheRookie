@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Input;
+using Darklight.UnityExt.Behaviour;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Utility;
 
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         /// <param name="args">
         ///   args[0] = PlayerController ( playerController )
-        public FinitePlayerState(PlayerState stateType) : base(stateType) { }
+        public FinitePlayerState(PlayerState stateType) : base(null, stateType) { }
 
         public override void Enter()
         {

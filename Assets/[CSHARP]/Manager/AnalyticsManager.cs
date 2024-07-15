@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.UnityExt;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
 using UnityEngine;

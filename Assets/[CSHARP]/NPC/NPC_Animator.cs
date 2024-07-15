@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Darklight.Game.SpriteAnimation;
 using UnityEngine;
+using Darklight.Game.SpriteAnimation;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

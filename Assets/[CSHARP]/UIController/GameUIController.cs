@@ -4,7 +4,6 @@ using Darklight.UnityExt.UXML;
 
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Input;
 //using Darklight.UnityExt.Audio;
 using System.Linq;

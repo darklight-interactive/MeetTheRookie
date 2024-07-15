@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
-using Darklight.Game.Camera;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Game.Camera;
+
 using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 [ExecuteAlways]
 public class PlayerCameraController : CameraController
 {

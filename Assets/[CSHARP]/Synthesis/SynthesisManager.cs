@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using Darklight.UnityExt.Editor;

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Darklight.Game.Camera;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using UnityEngine;
+using Darklight.UnityExt.Game.Camera;
 
 [RequireComponent(typeof(CameraController))]
 public class MTR_CameraTargeting : MonoBehaviour
