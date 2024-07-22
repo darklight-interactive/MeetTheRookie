@@ -106,10 +106,11 @@
 
 <i>They hit the table with a drum roll.</i>
 
+#name: Misra 
 "Purple!!" 
 
 #name: Lupe
-...
+"..."
 
 #name: Misra 
 # emote : Misra \| Nervous_1
@@ -139,10 +140,8 @@
 { tease_level > sincerity_level:  "Oh ok! C'mon, you're not going to get it right." | "Sure!" }
 
 +["Green."] -> CorrectColor 
-+ "Blue." 
--> IncorrectColor 
-+"Orange." 
--> IncorrectColor
++ ["Blue."] -> IncorrectColor 
++["Orange."] -> IncorrectColor
 
 =CorrectColor
 ~ tease_level++
@@ -224,13 +223,15 @@
 #name: Lupe
 " I insist..." 
 
-{- color: 
+{- color:
+#name: Lupe
 "A bet is a bet. You guessed my favorite color, and now I need to pay my end of the bargin."
 - else: 
+#name: Lupe
 "It's the least I can do." 
 } 
 
-Irene meets eyes with you. 
+<i>Irene meets eyes with you.</i>
 +[Wait for Misra to order.] -> MisraOrdersForThemselves
 +[Attempt to guess their drink.] -> GuessMisrasOrder 
 
@@ -245,7 +246,7 @@ Irene meets eyes with you.
 {-  MisraConfused: 
 "Heh. funny. Seems like we have similar tastes."
 - else: 
-You watch Irene make the Old Fashioned and place it in front of Misra. 
+<i> You watch Irene make the Old Fashioned and place it in front of Misra. </i>
 #name: Misra
 "Thank you very much!" 
 } 
@@ -337,7 +338,6 @@ They'll have...
 "You said he's your uncle?" 
 
 #name: Misra
-
 "Yep! Well, technically no. He's my godfather." 
 
 #name: Lupe 
@@ -361,6 +361,7 @@ They'll have...
 # emote : Misra \| Nervous_1
 "No worries! They're not dead or anything like that." 
 
+#name: Misra 
 "They just moved over to Montana, that's all!"
 
 #name: Lupe 
@@ -376,6 +377,7 @@ They'll have...
 # emote : Misra \| Neutral_1
 "Mostly thanks to Roy, though." 
 
+#name: Misra 
 "I don't know where I'd be without him!" 
 -> RoyQuestions
 
@@ -391,14 +393,15 @@ They'll have...
 
 = leaveWithThem
 #name: Misra 
-
 "..." 
 
+#name: Misra 
 "Because I still have hope for this town." 
 
 # emote : Misra \| Nervous_1
 "I know, I know...sounds crazy!" 
 
+#name: Misra 
 "People keep leaving, thinking that this is some sort of crazy downfall." 
 
 #name: Lupe
@@ -409,18 +412,22 @@ They'll have...
 # emote : Misra \| Surprised_2
 "No way! There has to be some way to get back on our feet. Kettle Rock has done it multiple times in the past, and we can do it again!"
 
+#name: Misra
 # emote : Misra \| Nervous_1
 "If I have to be the only person who truly believes that, then so be it." 
 
+#name: Misra
 # emote : Misra \| Fright_2
 "I just..." 
 
+#name: Misra
 "I just wish more people cared about our home, you know?" 
 
 #name: Misra 
 # emote : Misra \| Fright_2
 "Augh, I'm being a debby downer."
 
+#name: Misra
 "You know what, we'll recover! I just know it!!" 
 
 ->RoyQuestions
@@ -430,9 +437,9 @@ They'll have...
 # emote : Misra \| Nervous_1
 "Oh yeah...but that's pretty normal around these parts." 
 
+#name: Misra  
 "We're not really the most wealthy town, at least not anymore." 
 
-#name: Lupe 
 +["But he's offering to buy out businesses?"] -> buyOut 
 +["Sorry to hear that."] -> itsAlright 
 
@@ -458,8 +465,10 @@ They'll have...
 # emote : Misra \| Neutral_1
 "Oh yeah!! He's been here a long time." 
 
+#name: Misra
 "Actually, he's been here his whole life!" 
 
+#name: Misra
 "I'm pretty sure him and his sister never traveled outside of Kettle Rock." 
 
 +["Did you know his sister?"] -> RoySister 
@@ -487,6 +496,7 @@ They'll have...
 = maybe 
 #name: Misra 
 "..." 
+#name: Misra 
 "...maybe." 
 ->RoyQuestions
 
@@ -548,10 +558,12 @@ They'll have...
 
 #name: Misra 
 # emote : Misra \| Curious_1
-"People believe they're connected to the Tragedy. I don't know, it feels bad to poke around into that mess and all of those mistakes." 
+"People believe they're connected to the tragedy. I don't know, it feels bad to poke around into that mess and all of those mistakes." 
 
+#name: Misra 
 "Let them rest..." 
 
+#name: Misra 
 "Wherever they are." 
 
 -> questions
@@ -588,6 +600,7 @@ They'll have...
 #name: Misra 
 "Ah! Gotcha!" 
 
+#name: Misra 
 "And where would that be?" 
 
 #name: Lupe
@@ -620,6 +633,7 @@ They'll have...
 # emote : Lupe \| Neutral_2
 "So you're not too far from home!" 
 
+#name: Misra 
 "That's, what, four...five hours away?" 
 
 #name: Lupe 
@@ -728,6 +742,7 @@ They'll have...
 # emote : Misra \| Surprised_2
 "Like those old cop movies?!" 
 
+#name: Misra 
 "I've always wanted to do that!!" 
 
 #name: Lupe 
@@ -755,6 +770,7 @@ They'll have...
 #name: Lupe. 
 "Fine."
 
+#name: Lupe. 
 "We can use mine." 
 
 -> LupeCar 

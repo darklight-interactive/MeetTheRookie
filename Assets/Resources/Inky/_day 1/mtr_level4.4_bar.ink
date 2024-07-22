@@ -1,5 +1,7 @@
 === scene4_4 ===
 // FUNC SCENE CHANGE
+TODO SFX DOOR CLOSE
+
 # Location: The Rockin Kettle, Bar 
 # Only accessible after Gen Store and Arcade have been visited
 
@@ -18,6 +20,12 @@
 
 
 = goop
+{IsQuestComplete(gooptalk):
+    ~ SetSpeaker(Speaker.Lupe)
+    I know better than to touch that stuff. 
+    -> DONE
+
+-else:
     ~ SetSpeaker(Speaker.Lupe)
      You've been getting this stuff too, huh?
     ~ SetSpeaker(Speaker.Irene)
@@ -37,8 +45,11 @@
      Sure. 
      I just dump all the bleach I've got in the backroom on it and poof!
      Melts away.
+     ~ CompleteQuest(gooptalk)
     // Add to Synthesis - The Town of KR
     -> DONE
+}
+    
 
 = memorial_plaque
 # Lupe leans close to a memorial plaque on the wall. It reads "In Memory of those lost in the Tragedy of 1940. Rest in Peace, Never Forgotten." Over the corner of it, someone has sharpied over it with "THOSE STUPID GOATS!"

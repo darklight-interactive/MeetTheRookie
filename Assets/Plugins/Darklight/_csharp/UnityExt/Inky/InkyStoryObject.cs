@@ -129,7 +129,17 @@ namespace Darklight.UnityExt.Inky
         /// <summary>
         /// Public reference to the Ink story inside the StoryObject.
         /// </summary>
-        public Story StoryValue => this._story;
+        public Story StoryValue
+        {
+            get
+            {
+                if (_story == null)
+                {
+                    return CreateStory(_textAsset);
+                }
+                return _story;
+            }
+        }
         public List<string> KnotNameList
         {
             get => _knots.Select(knot => knot.name).ToList();

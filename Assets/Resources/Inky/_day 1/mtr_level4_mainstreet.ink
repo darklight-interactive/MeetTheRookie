@@ -52,23 +52,27 @@ VAR canIntroArcade = true
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
 = misra_cutscene_golden_hour
+TODO SFX door close
     {
-    - (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ):
+    - IsQuestComplete(complete_arcade):
         {canStreetTeensCutscene:
-            ~canStreetTeensCutscene = false
+            ~ canStreetTeensCutscene = false
             ~ teensFirst = true
             -> misra_cutscene_after_teens
         }
         ->DONE
-    -(IsClueFound(roys_suspicion)):
+    - IsClueFound(roys_suspicion):
         {canStreetRoyCutscene:
             ~ canStreetRoyCutscene = false
             ~ royFirst = true
             ->misra_cutscene_after_general_store
         }
         ->DONE
+    -else:
+        ->DONE
     }
 = misra_cutscene_dusk
+TODO SFX door close
     {
         
     -teensFirst && IsClueFound(roys_suspicion) && canStreetRoyCutscene:
@@ -81,6 +85,8 @@ VAR canIntroArcade = true
     }
     
 = misra_cutscene_after_general_store
+TODO SFX door close
+TODO SFX gen store bell
     ~ SetSpeaker(Speaker.Misra)
     I'm sorry if Roy seems like a bit of a downer.
     He has no faith.
@@ -93,6 +99,7 @@ VAR canIntroArcade = true
     -> DONE
 
 =misra_cutscene_after_teens
+//TODO SFX door close
     ~ SetSpeaker(Speaker.Misra)
      Those guys are the worst.
     ~ SetSpeaker(Speaker.Lupe)
@@ -139,9 +146,11 @@ VAR canIntroArcade = true
     -> Misra_Dialogue.4_1
     
 = door_idahome_and_goods
+TODO SFX DOOR OPEN
     ~ ChangeGameScene("scene4_2")
     -> DONE
 = door_powerup_arcade
+TODO SFX DOOR OPEN
     {canIntroArcade:
         ~ SetSpeaker("Speaker.Misra")
         Okay...
@@ -220,6 +229,7 @@ VAR canIntroArcade = true
             ~ SetSpeaker(Speaker.Misra)
             Think of it this way...we get more time to crack this case!
             But in the meantime, let's take a bit of a break...
+            TODO SFX DOOR OPEN
             ~ SetSpeaker(Speaker.Lupe)
              ~ ChangeGameScene("scene4_4")
              ->DONE
@@ -227,6 +237,7 @@ VAR canIntroArcade = true
             ~ SetSpeaker(Speaker.Misra)
             Someone wants a drink, I see.
             The Rockin Kettle doesn't open until happy hour! 
+            Which around here, is 8 PM, so after sunset.
             We can come back later.
             ~ SetSpeaker(Speaker.Lupe)
             -> DONE

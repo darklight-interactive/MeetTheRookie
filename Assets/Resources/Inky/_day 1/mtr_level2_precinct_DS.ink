@@ -3,13 +3,13 @@
 //        this also appears to be a sort of cutscene so there isnt much logic to do! :)
 
 // VARIABLES HERE:
-VAR reported_incident = false
-VAR case_file_received = false
-VAR love_points = 0
-VAR tease_level = 0
-VAR sincerity_level = 0
-VAR spooked = false
-VAR snooped = false
+ VAR reported_incident = false
+ VAR case_file_received = false
+ VAR love_points = 0
+ VAR tease_level = 0
+ VAR sincerity_level = 0
+ VAR spooked = false
+ VAR snooped = false
 
 * [Scene 2 - The Precinct] -> scene2_DS
 
@@ -59,7 +59,6 @@ VAR snooped = false
 # name : Misra
 "...You ok?"
 
-// Also: [Chastise them for scaring you], [Play it off.] 
 + ["You almost gave me a heart attack!"] -> chastise //scared
 + ["Yeah, I'm fine."] -> scared //sarcastic expression
 
@@ -149,7 +148,7 @@ VAR snooped = false
 # emote : Misra \| Nervous_1
 "Not here, plus I'm not opposed to some company." //flirty
 
-//flustured Lupe
+
 <i>Your train of thought scatters for a brief moment with the slight raise of your heart rate.</i>
 
 <i>How...strange. </i>
@@ -166,12 +165,14 @@ VAR snooped = false
 
 # name : Lupe
 "There's a tree blocking the road out of town by the gas station. I need it cleared as soon as possible." 
+
 #name:Misra
 # emote : Misra \| Curious_1
 { tease_level > sincerity_level:  "Leaving already?! | "Ah, I see. } Well, I'll call the tree people and get that cleared out." 
 
+#name:Misra
 "May take a while though! As you may have noticed, we don't have many people who can help around here. "
-//they gesture to an empty room
+
 #name:Misra
 # emote : Misra \| Nervous_1
 { sincerity_level >= tease_level: "Sorry about that!" } { tease_level >= sincerity_level:  "Looks like we might get to know each other after all." } 
@@ -227,14 +228,18 @@ And a black and white picture of the winery stained with age.
 #name:Lupe
 # emote : Lupe \| Fright_1
 "AYE!!"
+
+#name:Lupe
 # emote : Lupe \| Fright_1
 "You CAN'T keep scaring me like that."
-# name : Misra
+
 {- spooked: 
-# emote : Misra \| Nervous_1
-"Sorry, sorry!" 
-- else:
-# emote : Misra \| Surprised_2
+    # name : Misra
+    # emote : Misra \| Nervous_1
+    "Sorry, sorry!" 
+  - else: 
+    # name : Misra
+    # emote : Misra \| Surprised_2
     "So, you admit you were scared! "
 }
 
@@ -295,9 +300,8 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Nervous_1
 "Yep!" 
 
-
 # name : Lupe
-<i>...Wow.</i>
+"...Wow."
 -> transition_to_case
 
 = transition_to_case
@@ -324,9 +328,9 @@ Date: August 29th, 1995
 
 And a black and white picture of the winery stained with age.
 */
+
 #name:Misra
 # emote : Misra \| Inquisiting_1
-
 "Well, what are your thoughts?"
 -> police_report
 
@@ -427,6 +431,7 @@ And a black and white picture of the winery stained with age.
 
 #name: Lupe 
 "..."
+
 #name: Lupe 
 "Well you're going to get nowhere with this." 
 
@@ -521,12 +526,11 @@ And a black and white picture of the winery stained with age.
 
 #name: Lupe 
 "Let me just make a quick call first." 
-#name: Misra 
-// TATI NOTE: THIS IS WHERE I LEFT OFF
 
 ~ case_file_received = true
 // TO PROGRAMMERS: ADD EVIDENCE TO SYNTHESIS GAME! 
 
+#name: Lupe 
 * "[It's a simple case."] Shouldn't take me more than a day to figure this out." 
 -> phone_call
 + [Call your boss.]
@@ -573,11 +577,10 @@ And a black and white picture of the winery stained with age.
 # name : Misra
 "Eh-shall we?"
 
-*"We shall." ->JokeBack
+*["We shall."] ->JokeBack
 *[Walk through door.] -> door 
 
 = JokeBack
-#name:Lupe
 # emote : Lupe \| Fluster_1
 <i>That slight joke may have drained your social battery for the week.</i> 
 
@@ -593,6 +596,6 @@ And a black and white picture of the winery stained with age.
 <i>You walk through the door, not saying a word to Misra.</i> 
 # name : Misra
 # emote : Misra \| Neutral_1
-"Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
-~ChangeGameScene("scene4_1")
+"Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!"
+~ChangeGameScene("scene4_1") 
 -> DONE

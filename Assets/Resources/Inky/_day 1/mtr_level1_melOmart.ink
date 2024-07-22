@@ -32,9 +32,11 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 = thelton
     ~ SetSpeaker(Speaker.Chief_Thelton)
+    TODO SFX phone ringing and ringing, 
     You've reached Chief Detective Inspector Thelton, Boise Precinct. 
     I'm not available right now. You know what to do!
     // We hear a generic voicemail beep.
+    TODO SFX voicemail beep
     
     ~ SetSpeaker(Speaker.Lupe)
     Hey, it's Lupe. Had to change my route; 
@@ -53,6 +55,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 // PLAYER_PROMPT -> highlight gas pump
 ~ SetActiveQuestChain(QuestChain_1)
 ~ StartQuest(pay_for_gas)
+TODO SFX door closing
 
 * [npc] -> marlowe
 * [lupe's car] -> car
@@ -67,7 +70,12 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
         Ugh. Guess I'll be more than a little late...
-        Thelton's gonna kill me. Gah. Let's blow this popsicle stand.  -> DONE 
+        Thelton's gonna kill me. Gah. Let's blow this popsicle stand. 
+         ~ ChangeGameScene("scene2_DS")
+        -> DONE 
+        TODO SFX Car closing door noise and leaving
+        //fade to black, go to precinct day 1 
+        
     - else:
         ~ SetSpeaker(Speaker.Lupe)
         {
@@ -92,9 +100,11 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
         ~ ChangeGameScene("scene2_DS")
+                TODO SFX Car closing door noise and leaving
+
         -> DONE
     - IsQuestComplete(pay_for_gas):
-        / TEMP DIA:/ I should look into what caused that noise.
+        That noise didn't sound good. I should probably see what's up.
     - else: 
         ~ SetSpeaker(Speaker.Lupe)
         Still gotta pay.
@@ -127,11 +137,13 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 = enter_store
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
+    TODO SFX Door open
     ~ ChangeGameScene("scene1_2")
     -> DONE
 
 // ------------- SCENE1.2 MelOMarket Store
 === scene1_2 ===
+TODO SFX Door close
 //The gas station door chimes with a slightly out of tune jingle.
 //Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 * [vending_machine] -> vending_machine
@@ -140,7 +152,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 * [exit door] -> door_to_outside
 
 = vending_machine
-    {Sugar-Flavored Snack Bites. Pickle Chips. Jerkied Ox Sticks...I think I'll pass.| Is this stuff FDA approved? | I though Pop Pops Gum went out of production in the 90s? Weird.}
+    {Sugar-Flavored Snack Bites. Pickle Chips. Jerkied Ox Sticks...I think I'll pass.| Is this stuff FDA approved?}
     -> DONE
 
 = employee
@@ -151,6 +163,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         ~ SetSpeaker(Speaker.Lupe)
         Mel said to hit it. In the side.
         // the employee whacks the side of the register.The Drawer pops open.
+        TODO ^^ SFX, cash register hit noise
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $76.45.
         ~ SetSpeaker(Speaker.Lupe)
@@ -187,6 +200,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 }
 
 = door_to_backroom
+TODO SFX Door open
 {IsClueFound(broken_cash_reg):
     ~ ChangeGameScene("scene1_3")
     -> DONE
@@ -199,6 +213,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 = door_to_outside
 {IsQuestComplete(pay_for_gas):
     ~ChangeGameScene("scene1_4")
+    TODO SFX Door open
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -208,8 +223,10 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 // ------------- SCENE1.3 Breakroom ---- >>
 === scene1_3 ===
+TODO SFX door close
 // Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
-    -> DONE
+ 
++ [mel] -> mel
 
 = mel
 {IsClueFound(cashreg_fix) == false:
@@ -221,9 +238,17 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     I need to pay for gas. The cash register is broken.
     ~ SetSpeaker(Speaker.Mel)
      That old piece of junk. 
-    The drawer is just jammed, it just needs to be whacked in the side a bit
+    The drawer is just jammed, it just needs to be whacked in the side a bit.
     ~ SetSpeaker(Speaker.Lupe)
     Thanks.
+    ...
+    Uh. What is that stuff?
+    ~ SetSpeaker(Speaker.Mel)
+        No idea, it was here when I unlocked this morning. 
+        Darn stuff won't scrub off. 
+     ~ SetSpeaker(Speaker.Lupe)
+     Huh.
+     Weird.
     ~ DiscoverClue(cashreg_fix)
     -> DONE
     -else:
@@ -232,22 +257,17 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
         -> DONE
 }
 
-= goop
-    ~ SetSpeaker(Speaker.Lupe)
-        Uh. What is that?
-    ~ SetSpeaker(Speaker.Mel)
-        No idea, it was here when I unlocked this morning. 
-        Darn stuff won't scrub off. ->DONE
+
 
 = door_back_to_interior
     ~ ChangeGameScene("scene1_2") 
+    TODO SFX Door open
     ->DONE
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
 
 // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
 ~ SetSpeaker(Speaker.Lupe)
-What was that? 
 * [fallen tree] -> fallen_tree
 
     
