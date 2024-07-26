@@ -99,7 +99,9 @@ namespace Darklight.UnityExt.SceneManagement
         }
 
 
-
+        /// <summary>
+        /// Loads all scenes in the build directory.
+        /// </summary>
         public virtual void LoadBuildScenes()
         {
 #if UNITY_EDITOR

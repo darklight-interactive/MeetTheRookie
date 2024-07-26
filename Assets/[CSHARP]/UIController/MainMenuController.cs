@@ -61,7 +61,7 @@ public class MainMenuController : UXML_UIDocumentObject
             previousButton?.Deselect();
             selectedButton.SetSelected();
             lockSelection = true;
-            MTR_AudioManager.PlayOneShot(MTR_AudioManager.Instance.menuHoverEventReference);
+            MTR_AudioManager.Instance.PlayMenuHoverEvent();
             Invoke(nameof(UnlockSelection), 0.1f);
         }
     }

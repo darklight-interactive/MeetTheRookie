@@ -18,16 +18,16 @@ namespace Darklight.UnityExt.SceneManagement
         where TSceneData : BuildSceneData, new()
     {
         protected string[] buildScenePaths = new string[0];
-        [SerializeField] protected TSceneData[] buildSceneData = new TSceneData[0];
+        [SerializeField] protected List<TSceneData> buildSceneData = new List<TSceneData>();
 
-        public virtual void Initialize()
+        public virtual void Initialize(string[] paths)
         {
             for (int i = 0; i < buildScenePaths.Length; i++)
             {
                 string scenePath = buildScenePaths[i];
 
                 // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
-                if (this.buildSceneData.Length <= i || this.buildSceneData[i].Path != scenePath)
+                if (this.buildSceneData.Count <= i || this.buildSceneData[i].Path != scenePath)
                 {
                     TSceneData sceneData = new TSceneData();
                     SaveSceneData(sceneData);
@@ -58,9 +58,7 @@ namespace Darklight.UnityExt.SceneManagement
             else
             {
                 // Add the scene data to the list.
-                List<TSceneData> sceneDataList = buildSceneData.ToList();
-                sceneDataList.Add(sceneData);
-                buildSceneData = sceneDataList.ToArray();
+                buildSceneData.Add(sceneData);
             }
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
@@ -114,7 +112,7 @@ namespace Darklight.UnityExt.SceneManagement
 
         public void ClearBuildSceneData()
         {
-            buildSceneData = new TSceneData[0];
+            buildSceneData.Clear();
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif

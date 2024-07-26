@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
+using Darklight.UnityExt.SceneManagement;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,10 +13,9 @@ using UnityEditor;
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
 /// </summary>
-public class MTR_SceneDataObject : ScriptableObject
+public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 {
-    [SerializeField] private List<MTR_SceneData> buildSceneData = new List<MTR_SceneData>();
-    public void Initialize(string[] buildScenePaths)
+    public override void Initialize(string[] buildScenePaths)
     {
         for (int i = 0; i < buildScenePaths.Length; i++)
         {
@@ -33,31 +34,14 @@ public class MTR_SceneDataObject : ScriptableObject
 
     }
 
-    public List<MTR_SceneData> GetAllData()
+    public List<MTR_SceneData> GetBuildSceneData()
     {
         return buildSceneData.ToList();
     }
 
-    public MTR_SceneData GetSceneData(string name)
-    {
-        return buildSceneData.ToList().Find(x => x.Name == name);
-    }
-
-    public MTR_SceneData GetActiveSceneData()
-    {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        return buildSceneData.ToList().Find(x => x.Name == activeSceneName);
-    }
-
     public MTR_SceneData GetSceneDataByKnot(string knot)
     {
-        return GetAllData().Find(x => x.knot == knot);
-    }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
+        return GetBuildSceneData().Find(x => x.knot == knot);
     }
 }
 
