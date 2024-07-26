@@ -6,6 +6,13 @@ public class MTR_AudioManager : FMODEventManager
 {
     public static new MTR_AudioManager Instance => FMODEventManager.Instance as MTR_AudioManager;
 
+    [Header("Background Music")]
+    public FMODBackgroundMusicObject backgroundMusic;
+    public void PlaySceneBackgroundMusic(string sceneName)
+    {
+        PlaySong(backgroundMusic.GetEventReference(sceneName));
+    }
+
 
     [Header("Footstep Audio")]
     public EventReference footstepEventReference;

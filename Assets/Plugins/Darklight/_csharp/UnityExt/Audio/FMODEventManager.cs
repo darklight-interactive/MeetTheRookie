@@ -19,8 +19,6 @@ namespace Darklight.UnityExt.Audio
         public static EventInstance CurrentSongInstance { get; private set; }
         public static EventDescription CurrentSongDescription { get; private set; }
 
-
-
         #region == [[ BUSES & BANKS ]] ========================================================
 
         [ShowOnly]

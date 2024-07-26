@@ -53,10 +53,4 @@ public class MTR_SceneDataObject : ScriptableObject
     {
         return GetAllData().Find(x => x.knot == knot);
     }
-
-    public EventReference GetActiveBackgroundMusicEvent()
-    {
-        MTR_SceneData data = GetActiveSceneData();
-        return data.backgroundMusicEvent;
-    }
 }
