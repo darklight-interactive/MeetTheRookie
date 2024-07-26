@@ -171,7 +171,7 @@ public class Interactable : OverlapGrid2D, IInteract
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             OnFirstInteraction?.Invoke();
-            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
+            MTR_AudioManager.Instance.PlayStartInteractionEvent();
             Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
 

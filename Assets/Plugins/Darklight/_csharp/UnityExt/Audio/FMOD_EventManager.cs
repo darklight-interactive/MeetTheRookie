@@ -13,14 +13,24 @@ namespace Darklight.UnityExt.Audio
     ///  This is the main singleton class that manages all FMOD audio events and buses.
     /// </summary>
     [RequireComponent(typeof(StudioEventEmitter))]
-    public class FMODEventManager : MonoBehaviourSingleton<FMODEventManager>
+    public class FMOD_EventManager : MonoBehaviourSingleton<FMOD_EventManager>
     {
         private StudioEventEmitter _studioEventEmitter => GetComponent<StudioEventEmitter>();
         public static EventInstance CurrentSongInstance { get; private set; }
         public static EventDescription CurrentSongDescription { get; private set; }
 
+
+        // ====================== FMOD EVENT OBJECT REFERENCES ====================== >>
+
+        [Header("FMOD Event Objects")]
+        public FMOD_MusicObject backgroundMusic;
+        public FMOD_SFXObject generalSFX;
+
+
         #region == [[ BUSES & BANKS ]] ========================================================
 
+
+        [Header("FMOD Buses & Banks")]
         [ShowOnly]
         public FMOD.RESULT busListOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
 
@@ -120,7 +130,7 @@ namespace Darklight.UnityExt.Audio
         {
             while (true)
             {
-                FMODEventManager.PlayOneShot(eventReference);
+                FMOD_EventManager.PlayOneShot(eventReference);
                 yield return new WaitForSeconds(interval);
             }
         }
@@ -325,5 +335,43 @@ namespace Darklight.UnityExt.Audio
             }
         }
         #endregion
+
+
+
+
+        #region ------------------- [[ SIMPLE REFERENCE FUNCTIONS ]] -------------------
+        public void PlaySceneBackgroundMusic(string sceneName)
+        {
+            EventReference bg_music = backgroundMusic.GetBackgroundMusicByScene(sceneName);
+            PlaySong(bg_music);
+        }
+
+        public void PlayStartInteractionEvent()
+        {
+            PlayOneShot(generalSFX.startInteraction);
+        }
+
+        public void PlayContinuedInteractionEvent()
+        {
+            PlayOneShot(generalSFX.continuedInteraction);
+        }
+
+        public void PlayEndInteractionEvent()
+        {
+            PlayOneShot(generalSFX.endInteraction);
+        }
+
+        public void PlayMenuHoverEvent()
+        {
+            PlayOneShot(generalSFX.menuHover);
+        }
+
+        public void PlayMenuSelectEvent()
+        {
+            PlayOneShot(generalSFX.menuSelect);
+        }
+        #endregion
+
+
     }
 }

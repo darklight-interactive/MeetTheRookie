@@ -319,11 +319,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         success = emotes.SetEmote(name, emote);
         if (name == "lupe")
         {
-            FMODEventManager.PlayEventWithParametersByName(emotes.voiceLupeEvent, (emotes.fmodLupeParameterName, emote));
+            FMOD_EventManager.PlayEventWithParametersByName(emotes.voiceLupeEvent, (emotes.fmodLupeParameterName, emote));
         }
         else if (name == "misra")
         {
-            FMODEventManager.PlayEventWithParametersByName(emotes.voiceMisraEvent, (emotes.fmodMisraParameterName, emote));
+            FMOD_EventManager.PlayEventWithParametersByName(emotes.voiceMisraEvent, (emotes.fmodMisraParameterName, emote));
         }
 
         return success;

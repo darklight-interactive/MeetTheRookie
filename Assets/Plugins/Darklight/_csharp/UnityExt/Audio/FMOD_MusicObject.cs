@@ -3,10 +3,13 @@ using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Darklight/FMOD/FMODEventObject")]
-public class FMODBackgroundMusicObject : ScriptableObject
+[CreateAssetMenu(menuName = "Darklight/FMOD/FMOD_MusicObject")]
+public class FMOD_MusicObject : ScriptableObject
 {
 
+    /// <summary>
+    /// A generic class to store a scene and an event reference for background music.
+    /// </summary>
     [System.Serializable]
     public class BackgroundMusicEvent
     {
@@ -19,12 +22,11 @@ public class FMODBackgroundMusicObject : ScriptableObject
         }
     }
 
-    [Header("Background Music")]
+    // -----------------------------------------------------------------------------------------
     public List<BackgroundMusicEvent> backgroundMusicEvents = new List<BackgroundMusicEvent>();
-
-    public EventReference GetEventReference(string sceneName)
+    public EventReference GetBackgroundMusicByScene(string sceneName)
     {
-        BackgroundMusicEvent backgroundMusicEvent = backgroundMusicEvents.Find(x => x.scene.name == sceneName);
+        BackgroundMusicEvent backgroundMusicEvent = backgroundMusicEvents.Find(x => x.GetSceneName() == sceneName);
         if (backgroundMusicEvent == null)
         {
             Debug.LogError($"No Background Music Event found for scene: {sceneName}");

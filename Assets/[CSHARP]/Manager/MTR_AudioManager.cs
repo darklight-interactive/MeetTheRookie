@@ -2,47 +2,16 @@ using Darklight.UnityExt.Audio;
 using FMODUnity;
 using UnityEngine;
 
-public class MTR_AudioManager : FMODEventManager
+public class MTR_AudioManager : FMOD_EventManager
 {
-    public static new MTR_AudioManager Instance => FMODEventManager.Instance as MTR_AudioManager;
+    // Overwrite the Instance property to return the instance of this class
+    public static new MTR_AudioManager Instance => FMOD_EventManager.Instance as MTR_AudioManager;
 
-    [Header("Background Music")]
-    public FMODBackgroundMusicObject backgroundMusic;
-    public void PlaySceneBackgroundMusic(string sceneName)
-    {
-        PlaySong(backgroundMusic.GetEventReference(sceneName));
-    }
+    // Overwrite the generalSFX property to return the instance of the MTR_GeneralSFX class
+    private new MTR_GeneralSFX generalSFX => base.generalSFX as MTR_GeneralSFX;
 
-
-    [Header("Footstep Audio")]
-    public EventReference footstepEventReference;
-    [Range(0.1f, 1f)] public float footstepInterval = 0.5f;
     public void StartFootstepEvent()
     {
-        StartRepeatingEvent(footstepEventReference, footstepInterval);
+        StartRepeatingEvent(generalSFX.footstep, generalSFX.footstepInterval);
     }
-
-    [Header("Interaction Audio")]
-    public EventReference firstInteractionEventReference;
-    public EventReference continuedInteractionEventReference;
-    public EventReference endInteractionEventReference;
-
-    public void PlayFirstInteractionEvent()
-    {
-        PlayOneShot(firstInteractionEventReference);
-    }
-
-    public void PlayContinuedInteractionEvent()
-    {
-        PlayOneShot(continuedInteractionEventReference);
-    }
-
-    public void PlayEndInteractionEvent()
-    {
-        PlayOneShot(endInteractionEventReference);
-    }
-
-    [Header("UI Audio")]
-    public EventReference menuSelectEventReference;
-    public EventReference menuHoverEventReference;
 }

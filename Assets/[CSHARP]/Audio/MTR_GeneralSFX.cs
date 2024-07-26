@@ -2,27 +2,21 @@ using UnityEngine;
 using FMODUnity;
 
 
-[CreateAssetMenu]
-public class FMOD_EventReferences : ScriptableObject
+[CreateAssetMenu(menuName = "MeetTheRookie/MTR_GeneralSFX")]
+public class MTR_GeneralSFX : FMOD_SFXObject
 {
+
+    [Space(20), Header("---->> MEET THE ROOKIE SPECIFIC SFX")]
 
     //----------------GENERAL AUDIO----------------//
     [Header("Footstep Audio")]
-    public EventReference footstepEventReference;
-    // Might use more footsteps in the future??
+    [Range(0.1f, 1f)] public float footstepInterval = 0.5f;
+    public EventReference footstep;
+
 
     [Header("Interaction Audio")]
-    // Main three
-    public EventReference firstInteractionEventReference;
-    public EventReference continuedInteractionEventReference;
-    public EventReference endInteractionEventReference;
-    // Other interactions
     public EventReference itemInteractEventReference;
     public EventReference paperInteractEventReference;
-
-    [Header("UI Audio")]
-    public EventReference menuSelectEventReference;
-    public EventReference menuHoverEventReference;
 
     [Header("Door Audio")]
     public EventReference doorOpenEventReference;
