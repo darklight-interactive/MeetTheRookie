@@ -13,7 +13,7 @@ public class FMODBackgroundMusicObject : ScriptableObject
         public SceneAsset scene;
         public EventReference eventReference;
 
-        public override string ToString()
+        public string GetSceneName()
         {
             return scene.name;
         }

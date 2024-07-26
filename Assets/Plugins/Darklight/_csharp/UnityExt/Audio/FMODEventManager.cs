@@ -149,7 +149,6 @@ namespace Darklight.UnityExt.Audio
                 return;
             }
 
-            /*
             // If the new song is the same as the current song, do nothing
             string currentEventName = GetInstantiatedEventPath(CurrentSongInstance);
             string newEventName = newSongEventRef.Path;
@@ -158,7 +157,6 @@ namespace Darklight.UnityExt.Audio
                 Debug.LogWarning($"{Prefix} FMOD SONG event is already playing: " + newSongEventRef);
                 return;
             }
-            */
 
             // If the current background music is playing, fade it out and start the new song
             if (CurrentSongInstance.isValid() && PlaybackState(CurrentSongInstance) == PLAYBACK_STATE.PLAYING)
