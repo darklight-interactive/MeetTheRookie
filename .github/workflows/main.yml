@@ -118,8 +118,8 @@ jobs:
 
       - name: Copy WebGL build to gh-pages
         run: |
-          mkdir -p ./Build-WebGL
-          cp -r build/* ./Build-WebGL
+          mkdir -p ./
+          cp -r build/Build-WebGL
 
       - name: Configure Git
         run: |
