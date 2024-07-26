@@ -59,7 +59,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     {
 #if UNITY_EDITOR
         this.buildScenePaths = buildScenePaths;
-        List<MTR_SceneData> buildSceneData = sceneDataObject.GetAllData();
+        List<MTR_SceneData> buildSceneData = sceneDataObject.GetBuildSceneData();
 
         for (int i = 0; i < buildScenePaths.Length; i++)
         {
