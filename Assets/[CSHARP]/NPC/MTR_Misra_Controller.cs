@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using System;
 
@@ -12,9 +12,9 @@ public class MTR_Misra_Controller : NPC_Controller {
         base.Start();
 
         // ADD MISRA-SPECIFIC STATES
-        GrabbedState grabbedState = new(NPCState.GRABBED, new object[] { this.stateMachine });
-        StruggleState struggleState = new(NPCState.STRUGGLE, new object[] { this.stateMachine });
-        DraggedState draggedState = new(NPCState.DRAGGED, new object[] { this.stateMachine });
+        GrabbedState grabbedState = new(stateMachine, NPCState.GRABBED, new object[] { this.stateMachine });
+        StruggleState struggleState = new(stateMachine, NPCState.STRUGGLE, new object[] { this.stateMachine });
+        DraggedState draggedState = new(stateMachine, NPCState.DRAGGED, new object[] { this.stateMachine });
 
         stateMachine.AddState(grabbedState);
         stateMachine.AddState(struggleState);

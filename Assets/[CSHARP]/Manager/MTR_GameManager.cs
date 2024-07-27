@@ -1,8 +1,6 @@
-using Darklight.UnityExt.Audio;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.Utility;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +27,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
     {
-        InputManager.Reset();
+        //InputManager.Reset();
         InputManager.Awake();
 
         MTR_SceneData newSceneData = GameSceneManager.GetSceneData(newScene.name);
@@ -47,7 +45,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 // ================================================================================================= //
 // ------------ [[ GameStateMachine ]] ------------ //
 public enum GameState { NULL, MAIN_MENU, LOADING_SCENE }
-public class GameStateMachine : StateMachine<GameState>
+public class GameStateMachine : SimpleStateMachine<GameState>
 {
     public GameStateMachine(GameState baseState) : base(baseState) { }
     public override void GoToState(GameState newState)

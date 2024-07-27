@@ -33,7 +33,7 @@ namespace Darklight.UnityExt.UXML
         [UxmlAttribute, ShowOnly]
         public float aspectRatio
         {
-            get { return ScreenInfoUtility.ScreenAspectRatio; }
+            get { return ScreenInfoUtility.GetScreenAspectRatio(); }
             set { }
         }
 
@@ -131,7 +131,7 @@ namespace Darklight.UnityExt.UXML
         public void UpdateFontSizeToMatchScreen()
         {
             screenSize = ScreenInfoUtility.ScreenSize;
-            aspectRatio = ScreenInfoUtility.ScreenAspectRatio;
+            aspectRatio = ScreenInfoUtility.GetScreenAspectRatio();
 
             // Get the font size based on the screen size
             int fontSizeMin = (int)_fontSizeRange.x;

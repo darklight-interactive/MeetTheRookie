@@ -42,7 +42,7 @@ namespace Darklight.UnityExt.Inky
             // --------------------- [[ DISPLAY STORY MANAGER ]] --------------------- >>
             SerializedObject serializedStoryManager = new SerializedObject(InkyStoryManager.Instance);
             serializedStoryManager.Update();
-            InkyStoryManager.Console.DrawInEditor();
+            //InkyStoryManager.Console.DrawInEditor();
             EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_globalStoryObject"));
             EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_currentSpeaker"));
             serializedStoryManager.ApplyModifiedProperties();

@@ -1,6 +1,6 @@
 using System.Collections;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -237,7 +237,7 @@ namespace Darklight.UnityExt.Audio
 
         public IEnumerator LoadBanksAndBusesRoutine()
         {
-            Console.Log($"{Prefix} Loading.");
+            Debug.Log($"{Prefix} Loading.");
             // ============================================= LOAD ============================
             FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] loadedBanks);
             foreach (FMOD.Studio.Bank bank in loadedBanks)
@@ -246,7 +246,7 @@ namespace Darklight.UnityExt.Audio
                 bank.getPath(out string bankPath);
                 // Load the bank
                 FMOD.RESULT bankLoadResult = bank.loadSampleData();
-                Console.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
+                Debug.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
                 // Retrieve the list of buses associated with the bank
                 busListOk = bank.getBusList(out myBuses);
                 // Get the number of buses in the bank
@@ -260,7 +260,7 @@ namespace Darklight.UnityExt.Audio
                         bus.getPath(out string busPath);
                         // Load the bus
                         FMOD.RESULT busLoadResult = bus.lockChannelGroup();
-                        Console.Log(
+                        Debug.Log(
                             $"{Prefix} Bus Load Result: " + bankPath + " -> " + bankLoadResult
                         );
                         // Save the bus to the appropriate variable

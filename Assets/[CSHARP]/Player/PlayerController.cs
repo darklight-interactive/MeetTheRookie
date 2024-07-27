@@ -4,7 +4,7 @@ using Darklight.UnityExt.Input;
 
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 
 
 public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
@@ -16,43 +16,12 @@ public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE }
 public class PlayerController : MonoBehaviour
 {
     #region  [[ STATE MACHINE ]] ======================================================== >>
-    public class StateMachine : FiniteStateMachine<PlayerState>
-    {
-        private PlayerController _controller;
-        private PlayerAnimator _animator => _controller.animator;
-
-        /// <param name="args">
-        ///    args[0] = PlayerController ( playerController )
-        /// </param>
-        public StateMachine(Dictionary<PlayerState, FiniteState<PlayerState>> possibleStates, PlayerState initialState, params object[] args) : base(possibleStates, initialState, args)
-        {
-            _controller = (PlayerController)args[0];
-            GoToState(initialState);
-        }
-
-        public override void Step()
-        {
-            base.Step();
-        }
-
-        public override bool GoToState(PlayerState stateType)
-        {
-            bool result = base.GoToState(stateType);
-            if (result)
-            {
-                _controller.currentState = stateType;
-                _animator.PlayStateAnimation(stateType);
-            }
-
-            return result;
-        }
-    }
 
     public class FinitePlayerState : FiniteState<PlayerState>
     {
         /// <param name="args">
         ///   args[0] = PlayerController ( playerController )
-        public FinitePlayerState(PlayerState stateType) : base(stateType) { }
+        public FinitePlayerState(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType) { }
 
         public override void Enter()
         {
@@ -75,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInteractor interactor { get; private set; }
     public PlayerAnimator animator { get; private set; }
     public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
-    public StateMachine stateMachine { get; private set; }
+    public PlayerStateMachine stateMachine { get; private set; }
     public PlayerState currentState;
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
 
@@ -90,12 +59,12 @@ public class PlayerController : MonoBehaviour
         interactor = GetComponent<PlayerInteractor>();
         animator = GetComponent<PlayerAnimator>();
 
-        stateMachine = new StateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NONE, new FinitePlayerState(PlayerState.NONE)},
-            {PlayerState.IDLE, new FinitePlayerState(PlayerState.IDLE)},
-            {PlayerState.WALK, new FinitePlayerState(PlayerState.WALK)},
-            {PlayerState.INTERACTION, new FinitePlayerState(PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new FinitePlayerState(PlayerState.HIDE)},
+        stateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
+            {PlayerState.NONE, new FinitePlayerState(stateMachine, PlayerState.NONE)},
+            {PlayerState.IDLE, new FinitePlayerState(stateMachine, PlayerState.IDLE)},
+            {PlayerState.WALK, new FinitePlayerState(stateMachine, PlayerState.WALK)},
+            {PlayerState.INTERACTION, new FinitePlayerState(stateMachine, PlayerState.INTERACTION)},
+            {PlayerState.HIDE, new FinitePlayerState(stateMachine, PlayerState.HIDE)},
         }, PlayerState.IDLE, this);
     }
 

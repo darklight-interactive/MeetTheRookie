@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Utility;
 using UnityEngine;
 
@@ -57,7 +58,7 @@ public class IdleState : FiniteState<NPCState>
     ///     args[2] = float (_maxDuration)
     ///     args[3] = bool  (_idleWalkLoop)
     /// </param>
-    public IdleState(NPCState stateType, params object[] args) : base(stateType)
+    public IdleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -115,7 +116,7 @@ public class WalkState : FiniteState<NPCState>
     ///   args[5] = float (_rightBound)
     ///   args[6] = bool  (_idleWalkLoop)
     /// </param>
-    public WalkState(NPCState stateType, params object[] args) : base(stateType)
+    public WalkState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -196,7 +197,7 @@ public class SpeakState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public SpeakState(NPCState stateType, params object[] args) : base(stateType)
+    public SpeakState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
@@ -244,7 +245,7 @@ public class FollowState : FiniteState<NPCState>
     ///    args[2] = float (followDistance)
     ///    args[3] = float (followSpeed)
     /// </param>
-    public FollowState(NPCState stateType, params object[] args) : base(stateType)
+    public FollowState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -340,7 +341,7 @@ public class HideState : FiniteState<NPCState>
     ///   args[1] = MonoBehaviour (_coroutineRunner)
     ///   args[2] = float (hideSpeed)
     /// </param>
-    public HideState(NPCState stateType, params object[] args) : base(stateType)
+    public HideState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -459,7 +460,7 @@ public class ChaseState : FiniteState<NPCState>
     ///  args[1] = float (chaseSpeakDistance)
     ///  args[2] = float (chaseSpeed)
     /// </param>
-    public ChaseState(NPCState stateType, params object[] args) : base(stateType)
+    public ChaseState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         chaseSpeakDistance = (float)args[1];
@@ -501,7 +502,7 @@ public class PlayAnimationState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     public NPCState _returnState;
 
-    public PlayAnimationState(NPCState stateType, params object[] args) : base(stateType)
+    public PlayAnimationState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _returnState = (NPCState)args[1];
@@ -525,7 +526,7 @@ public class GrabbedState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public GrabbedState(NPCState stateType, params object[] args) : base(stateType)
+    public GrabbedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
@@ -549,7 +550,7 @@ public class StruggleState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public StruggleState(NPCState stateType, params object[] args) : base(stateType)
+    public StruggleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
@@ -566,7 +567,7 @@ public class DraggedState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public DraggedState(NPCState stateType, params object[] args) : base(stateType)
+    public DraggedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
