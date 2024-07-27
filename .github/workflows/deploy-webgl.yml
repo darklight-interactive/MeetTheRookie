@@ -42,17 +42,17 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
+          targetPlatform: ${{ vars.TARGET_PLATFORM }}
           buildName: MeetTheRookie
-          buildsPath: ${{ vars.BUILD_PATH }}
+          buildsPath: ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
           allowDirtyBuild: true
 
-      # Upload Build Artifact
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload WebGL Build Artifact
+        uses: actions/upload-artifact@v4.3.3
         with:
-          name: WebGL-Build
+          name: ${{ vars.TARGET_PLATFORM }}
           path: ${{ vars.BUILD_PATH }}
+          if-no-files-found: warn
 
       # Deployment
       - name: Stash build result and reset local changes
