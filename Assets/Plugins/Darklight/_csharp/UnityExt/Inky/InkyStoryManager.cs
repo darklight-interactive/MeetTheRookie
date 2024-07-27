@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Behaviour;
 using Ink.Runtime;
 using UnityEngine;
 #if UNITY_EDITOR

@@ -15,23 +15,10 @@ using UnityEditor;
 /// </summary>
 public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
 {
-    public override void Initialize(string[] buildScenePaths)
+    public void Initialize(string[] buildScenePaths)
     {
-        for (int i = 0; i < buildScenePaths.Length; i++)
-        {
-            string scenePath = buildScenePaths[i];
-
-            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
-            if (this.buildSceneData.Count <= i || this.buildSceneData[i].Path != scenePath)
-            {
-                MTR_SceneData sceneData = new MTR_SceneData();
-                this.buildSceneData.Add(sceneData);
-            }
-
-            this.buildSceneData[i].InitializeData(scenePath);
-        }
-        Debug.Log("MTR_SceneDataObject Initialized");
-
+        this.buildScenePaths = buildScenePaths;
+        Initialize();
     }
 
     public List<MTR_SceneData> GetBuildSceneData()

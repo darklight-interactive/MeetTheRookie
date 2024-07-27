@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Game.Grid;
+using Darklight.UnityExt.Game.Grid2D;
 using Darklight.UnityExt.Inky;
 
 public class PlayerInteractor : OverlapGrid2D
