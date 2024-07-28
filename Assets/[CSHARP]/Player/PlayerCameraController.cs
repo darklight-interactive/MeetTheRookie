@@ -22,12 +22,12 @@ public class PlayerCameraController : CameraController
         SetFocusTarget(_playerController.transform);
 
         // Create States
-        CameraState defaultState = new CameraState(stateMachine, CameraStateKey.DEFAULT, this, defaultStateFOVOffset);
-        CameraState followTargetState = new CameraState(stateMachine, CameraStateKey.FOLLOW_TARGET, this, followTargetStateFOVOffset);
-        CameraState closeUpState = new CameraState(stateMachine, CameraStateKey.CLOSE_UP, this, closeUpStateFOVOffset);
+        CameraState defaultState = new CameraState(_stateMachine, CameraStateKey.DEFAULT, this, defaultStateFOVOffset);
+        CameraState followTargetState = new CameraState(_stateMachine, CameraStateKey.FOLLOW_TARGET, this, followTargetStateFOVOffset);
+        CameraState closeUpState = new CameraState(_stateMachine, CameraStateKey.CLOSE_UP, this, closeUpStateFOVOffset);
 
         // Create State Machine
-        stateMachine = new StateMachine(new Dictionary<CameraStateKey, FiniteState<CameraStateKey>>()
+        _stateMachine = new StateMachine(new Dictionary<CameraStateKey, FiniteState<CameraStateKey>>()
         {
             { CameraStateKey.DEFAULT, defaultState },
             { CameraStateKey.FOLLOW_TARGET, followTargetState },
@@ -48,13 +48,13 @@ public class PlayerCameraController : CameraController
         {
             case PlayerState.NONE:
             case PlayerState.IDLE:
-                stateMachine.GoToState(CameraStateKey.DEFAULT);
+                _stateMachine.GoToState(CameraStateKey.DEFAULT);
                 break;
             case PlayerState.INTERACTION:
-                stateMachine.GoToState(CameraStateKey.CLOSE_UP);
+                _stateMachine.GoToState(CameraStateKey.CLOSE_UP);
                 break;
             case PlayerState.WALK:
-                stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
+                _stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
                 break;
         }
     }
