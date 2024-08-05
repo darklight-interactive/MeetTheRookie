@@ -41,6 +41,8 @@ EXTERNAL ChangeGameScene(knotName)
 //EXTERNAL AddSynthesisClue(clue)
 EXTERNAL PlaySpecialAnimation(speaker)
 
+EXTERNAL PlaySFX(sfx)
+
 == function ChangeGameScene(knotName)
     ~ return
 
