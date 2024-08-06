@@ -13,6 +13,11 @@ public class PlayerAudioController : MonoBehaviour
         playerController.stateMachine.OnStateChanged += OnStateChanged;     
     }
 
+    public void OnDestroy()
+    {
+        MTR_AudioManager.Instance.StopRepeatingEvent();
+    }
+
     private PlayerState lastState = PlayerState.NONE;
     public void OnStateChanged(PlayerState newState)
     {

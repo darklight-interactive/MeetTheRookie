@@ -15,34 +15,34 @@ public class MTR_GeneralSFX : FMOD_SFXObject
 
 
     [Header("Interaction Audio")]
-    public EventReference itemInteractEventReference;
-    public EventReference paperInteractEventReference;
+    public EventReference itemInteract;
+    public EventReference paperInteract;
 
     [Header("Door Audio")]
-    public EventReference doorOpenEventReference;
-    public EventReference doorCloseEventReference;
-    public EventReference doorLockedEventReference;
-    public EventReference doorUnlockedEventReference;
+    public EventReference doorOpen;
+    public EventReference doorClose;
+    public EventReference doorLocked;
+    public EventReference doorUnlocked;
 
     [Header("Miscellaneous Audio")]
-    public EventReference phoneBeepEventReference;
-    public EventReference doorBellEventReference;
-    public EventReference carDoorEventReference; // Does this go with "Door Audio"?
-    public EventReference carDriveEventReference;
+    public EventReference phoneBeep;
+    public EventReference doorBell;
+    public EventReference carDoor; // Does this go with "Door Audio"?
+    public EventReference carDrive;
 
 
     //----------------SCENE-SPECIFIC AUDIO----------------//
     [Header("Gas Station Audio")]
-    public EventReference cashRegisterEventReference;
-    public EventReference sinkSqueakEventReference;
-    public EventReference fallingTreeEventReference;
+    public EventReference cashRegister;
+    public EventReference sinkSqueak;
+    public EventReference fallingTree;
 
     [Header("Winery Audio")]
-    public EventReference misraAndTentacleEventReference;
+    public EventReference misraAndTentacle;
 
 
     //----------------VOICE ACTING AUDIO----------------//
     [Header("Dating Audio")]
-    public EventReference voiceLupeEventReference;
-    public EventReference voiceMisraEventReference;
+    public EventReference voiceLupe;
+    public EventReference voiceMisra;
 }
