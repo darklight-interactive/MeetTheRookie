@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using System;
 using Darklight.UnityExt.Utility;
@@ -51,13 +51,13 @@ public class NPC_Controller : MonoBehaviour
     public virtual void Start()
     {
         // Create instances of the states
-        IdleState idleState = new(NPCState.IDLE, new object[] { stateMachine, this, idleMaxDuration, idleWalkLoop });
-        WalkState walkState = new(NPCState.WALK, new object[] { stateMachine, this, npcSpeed, walkMaxDuration, leftBound, rightBound, idleWalkLoop });
-        SpeakState speakState = new(NPCState.SPEAK, new object[] { stateMachine });
-        FollowState followState = new(NPCState.FOLLOW, new object[] { stateMachine, this, followDistance, followSpeed });
-        HideState hideState = new(NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
-        ChaseState chaseState = new(NPCState.CHASE, new object[] { stateMachine, chaseSpeakDistance, chaseSpeed });
-        PlayAnimationState playAnimationState= new(NPCState.PLAY_ANIMATION, new object[] { stateMachine, stateAfterAnimation});
+        IdleState idleState = new(stateMachine, NPCState.IDLE, new object[] { stateMachine, this, idleMaxDuration, idleWalkLoop });
+        WalkState walkState = new(stateMachine, NPCState.WALK, new object[] { stateMachine, this, npcSpeed, walkMaxDuration, leftBound, rightBound, idleWalkLoop });
+        SpeakState speakState = new(stateMachine, NPCState.SPEAK, new object[] { stateMachine });
+        FollowState followState = new(stateMachine, NPCState.FOLLOW, new object[] { stateMachine, this, followDistance, followSpeed });
+        HideState hideState = new(stateMachine, NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
+        ChaseState chaseState = new(stateMachine, NPCState.CHASE, new object[] { stateMachine, chaseSpeakDistance, chaseSpeed });
+        PlayAnimationState playAnimationState = new(stateMachine, NPCState.PLAY_ANIMATION, new object[] { stateMachine, stateAfterAnimation });
 
         // Create dictionary to hold the possible states
         Dictionary<NPCState, FiniteState<NPCState>> possibleStates = new()

@@ -9,7 +9,6 @@ using UnityEngine;
 [System.Serializable]
 public class MTR_SceneData : BuildSceneData
 {
-    private InkyStoryObject _globalStoryObject;
     // private access to knots for dropdown
     private List<string> _knotNames
     {
@@ -25,7 +24,6 @@ public class MTR_SceneData : BuildSceneData
 
     [Dropdown("_knotNames")]
     public string knot;
-    public EventReference backgroundMusicEvent;
 
     public override void InitializeData(string path)
     {

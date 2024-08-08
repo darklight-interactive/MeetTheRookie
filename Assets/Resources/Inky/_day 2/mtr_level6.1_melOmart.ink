@@ -7,8 +7,7 @@ TODO SFX RING RING RING
 You've reached Chief Detective Inspector Thelton, Boise Precinct. 
 I'm not available right now. You know what to do!
 // We hear a generic voicemail beep.
-TODO SFX VOICEMAIL BEEP
-
+~ PlaySFX("phoneBeep")
 ~ SetSpeaker(Speaker.Lupe)
 Hey...it's Lupe. Had to change my route; tank was running low.
 I pit stopped outside of Kettle Rock, Idaho.
@@ -83,7 +82,7 @@ Alright. Bye.
 = enter_store
  ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
-    TODO SFX DOOR OPEN
+    ~ openDoor()
     ~ ChangeGameScene("scene6_2")
     -> DONE
     
@@ -128,7 +127,7 @@ TODO SFX DOOR CLOSE
     ~ SetSpeaker(Speaker.Lupe)
     Whose paygrade is it <i>not</i> above?
     ~ SetSpeaker(Speaker.Beth) 
-    My manager's in the back.
+    My manager's in the bathroom.
     ~DiscoverClue(broken_cash_reg)
     -> DONE
 
@@ -167,7 +166,7 @@ I'm not gonna trust your "hunch"!
 That's weird.
 ~ SetSpeaker(Speaker.Lupe)
 Ugh.
-Look, your manager's in the back, right?
+Look, your manager's in the bathroom, right?
 ~ SetSpeaker(Speaker.Beth)
 Uh, yeah.
 ~ SetSpeaker(Speaker.Lupe)
@@ -181,7 +180,7 @@ Uh, okay.
 Cough, cough, weird.
 ~ SetSpeaker(Speaker.Lupe)
 ...
-Look, your manager's in the back, right?
+Look, your manager's in the bathroom, right?
 ~ SetSpeaker(Speaker.Beth)
 Uh, yeah.
 ~ SetSpeaker(Speaker.Lupe)
@@ -190,13 +189,14 @@ I'll be right back.
 -> DONE
 
 =door_to_backroom
+~ openDoor()
  ~ ChangeGameScene("scene6_3")
     -> DONE
 
 =door_to_outside
 {IsQuestComplete(pay_for_gas):
+    ~openDoor()
     ~ChangeGameScene("scene6_4")
-    TODO SFX DOOR OPEN
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -219,7 +219,7 @@ TODO SFX DOOR CLOSE
     ~ SetSpeaker(Speaker.Mel)
     Yeah.
     I'm Mel.
-    What are you doing back here?
+    What are you doing in here?
     Did you need something?
     ~ SetSpeaker(Speaker.Lupe)
     The register is broken.

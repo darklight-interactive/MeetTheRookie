@@ -1,6 +1,4 @@
 === scene4_2 ===
-TODO SFX GEN STORE bell
-TODO SFX DOOR CLOSE
 # Location: IdaHome and Goods, General Store
     * [talk_to_roy] -> Roy_Dialogue  
     * [store_window] -> store_window
@@ -10,6 +8,7 @@ TODO SFX DOOR CLOSE
     
         ->DONE
 = intro
+    ~PlaySFX("Doors/genstore_doorBell")
     -> Roy_Dialogue.roy_intro_cutscene
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
@@ -30,5 +29,6 @@ TODO SFX DOOR CLOSE
 = front_door
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
+    ~PlaySFX("Doors/doorClose")
     ~ mainStreetCheck()
     ->DONE

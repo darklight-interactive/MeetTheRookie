@@ -1271,8 +1271,8 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: 4816572674808989152, guid: 8c8656af83038694a92f90fd4e59bac4, type: 3}
   onStart: 0
-  _sceneKnot: scene1_1
-  _interactionStitch: scene1_1.gas_pump
+  _sceneKnot: scene6_1
+  _interactionStitch: scene6_1.gas_pump
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -3465,8 +3465,8 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: 3223386051870524753, guid: 3ca41105c26b7064d990012a850ac2eb, type: 3}
   onStart: 0
-  _sceneKnot: scene1_1
-  _interactionStitch: scene1_1.enter_store
+  _sceneKnot: scene6_1
+  _interactionStitch: scene6_1.enter_store
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -4213,9 +4213,9 @@ Transform:
   m_GameObject: {fileID: 1334586580}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.23140833, z: -0, w: 0.9728567}
-  m_LocalPosition: {x: -0.013949394, y: 8.222032, z: -22.044468}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.013949394, y: 8.38, z: -22.044468}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 436676880}
   m_LocalEulerAnglesHint: {x: 0, y: 26.76, z: 0}
@@ -4238,8 +4238,8 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: 5708137881974659742, guid: 68227262425ffaa49821b7afdaa5f7c3, type: 3}
   onStart: 0
-  _sceneKnot: scene1_4
-  _interactionStitch: scene1_4.fallen_tree
+  _sceneKnot: scene6_5
+  _interactionStitch: scene6_5.fallen_tree
   _isTarget: 0
   _isActive: 0
   _isComplete: 0
@@ -4356,6 +4356,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1399021055}
   - component: {fileID: 1399021056}
+  - component: {fileID: 1399021058}
+  - component: {fileID: 1399021057}
   m_Layer: 0
   m_Name: melomart_detective_car_v2_0
   m_TagString: Untagged
@@ -4432,6 +4434,79 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1399021057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399021054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  editMode: 0
+  _sprite: {fileID: -596871123, guid: f30e68b2ec5d9884cba4b967501a8257, type: 3}
+  onStart: 0
+  _sceneKnot: scene6_1
+  _interactionStitch: scene6_1.car
+  _isTarget: 0
+  _isActive: 0
+  _isComplete: 0
+  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineMaterial: {fileID: 0}
+--- !u!61 &1399021058
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399021054}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 1}
+    newSize: {x: 2, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2, y: 1}
+  m_EdgeRadius: 0
 --- !u!43 &1448764339
 Mesh:
   m_ObjectHideFlags: 0
@@ -6279,9 +6354,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[NPC] Marlowe'
       objectReference: {fileID: 0}
+    - target: {fileID: 7492364383090528882, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: _sceneKnot
+      value: scene6_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7492364383090528882, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
+      propertyPath: _interactionStitch
+      value: scene6_1.marlowe
+      objectReference: {fileID: 0}
     - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.729998
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 8572119588816432696, guid: 925ec54fc1dd9244ea2901724dcb7627, type: 3}
       propertyPath: m_LocalPosition.y

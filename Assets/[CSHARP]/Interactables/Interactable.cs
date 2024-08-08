@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using Darklight.Game.Grid;
-using Darklight.UnityExt.Audio;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Game.Grid2D;
 using Darklight.UnityExt.Inky;
 
-using FMODUnity;
+using Ink.Runtime;
 
 using NaughtyAttributes;
 
 using UnityEngine;
-using Ink.Runtime;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -171,7 +168,7 @@ public class Interactable : OverlapGrid2D, IInteract
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             OnFirstInteraction?.Invoke();
-            MTR_AudioManager.Instance.PlayFirstInteractionEvent();
+            MTR_AudioManager.Instance.PlayStartInteractionEvent();
             Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
 
@@ -208,7 +205,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isComplete = true;
 
         // Reset the interactable after 1 second
-        Invoke(nameof(Reset), 1.0f);
+        Invoke(nameof(Reset), 0.7f);
     }
 
     /// <summary>

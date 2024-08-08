@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Darklight.Game.SpriteAnimation;
-using UnityEditor;
+using Darklight.UnityExt.Animation;
 using UnityEngine;
 #if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 [RequireComponent(typeof(SpriteRenderer), typeof(FrameAnimationPlayer))]

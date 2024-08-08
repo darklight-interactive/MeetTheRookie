@@ -64,7 +64,7 @@ SelectableButton {
     padding-left: 2.5%;
     background-color: rgba(255, 255, 255, 0.43);
     color: rgb(255, 255, 255);
-    font-size: 200%;
+    font-size: 400%;
     flex-grow: 1;
     max-height: 64px;
     align-self: stretch;
@@ -159,6 +159,8 @@ VisualElement.panel.visible {
     border-right-color: rgba(154, 154, 154, 0.35);
     border-top-color: rgba(154, 154, 154, 0.35);
     border-bottom-color: rgba(154, 154, 154, 0.35);
+    font-size: 32px;
+    color: rgb(0, 0, 0);
 }
 
 .ChoiceGroup SelectableButton.selected {
@@ -168,8 +170,8 @@ VisualElement.panel.visible {
     border-right-width: 5px;
     border-bottom-width: 5px;
     border-left-width: 5px;
-    border-left-color: rgba(162, 62, 140, 0.35);
-    border-right-color: rgba(162, 62, 140, 0.35);
-    border-top-color: rgba(162, 62, 140, 0.35);
-    border-bottom-color: rgba(162, 62, 140, 0.35);
+    border-left-color: rgb(162, 62, 140);
+    border-right-color: rgb(162, 62, 140);
+    border-top-color: rgb(162, 62, 140);
+    border-bottom-color: rgb(162, 62, 140);
 }

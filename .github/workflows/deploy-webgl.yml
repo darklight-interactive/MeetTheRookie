@@ -1,0 +1,94 @@
+name: Unity WebGL Automatic Build 👽✨🚀
+
+on:
+  push:
+    branches:
+      - 'build'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Unity Build 👽
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.4
+
+      - name: Clean up Docker to free up space
+        run: docker system prune -af
+
+      - name: Restore Library cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ vars.TARGET_PLATFORM }}
+          buildName: MeetTheRookie
+          buildsPath: ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
+          allowDirtyBuild: true
+
+      - name: Upload WebGL Build Artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: ${{ vars.TARGET_PLATFORM }}
+          path: ${{ vars.BUILD_PATH }}
+          if-no-files-found: warn
+
+      # Deployment
+      - name: Stash build result and reset local changes
+        run: |
+          sudo chown -R $USER:$USER ${{ vars.BUILD_PATH }}
+          git config --global user.email "${{ secrets.GH_EMAIL }}"
+          git config --global user.name "${{ secrets.GH_USERNAME }}"
+          git add ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
+          git stash push ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}
+          git reset --hard
+          sudo git clean -d -x -f
+
+      - name: Cleaning gh-pages branch
+        run: |
+          git switch -f ${{ vars.DEPLOYMENT_BRANCH }}
+          git reset --hard
+          sudo git clean -d -x -f
+          rm -r *
+          git add *
+          git commit -m "Cleaning branch"
+          git push
+
+      - name: Applying stashed files to ${{ vars.DEPLOYMENT_BRANCH }}
+        run: git stash apply stash@{0}
+
+      - name: Copying files to root directory
+        run: |
+          cd ${{ vars.BUILD_PATH }}/${{ vars.TARGET_PLATFORM }}/${{ vars.TARGET_PLATFORM }}
+          cp -r * ../../../
+          cd ../../../
+          rm -r ${{ vars.BUILD_PATH }}
+
+      - name: Pushing deployment to gh-pages branch
+        run: |
+          git add *
+          git commit -m "Deployment"
+          git push
+          git reset --hard
+          sudo git clean -d -x -f
