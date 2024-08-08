@@ -385,7 +385,7 @@ MonoBehaviour:
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
-  AutomaticEventLoading: 1
+  AutomaticEventLoading: 0
   BankLoadType: 0
   AutomaticSampleLoading: 0
   EncryptionKey: 
@@ -405,21 +405,27 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - AmbienceTown
+  - DatingMusic
+  - GeneralMusic
+  - SFX_Dating
+  - SFX_General
+  BanksToLoad:
+  - Master
+  - Master.strings
+  - GeneralSFX
+  - GeneralMusic
   - DatingMusic
   - DatingSFX
   - ForestAmbience
-  - GeneralSFX
-  - HorrorMusic
   - HorrorSFX
   - TownAmbience
-  - TownMusic
-  BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
   AndroidUseOBB: 0
   AndroidPatchBuild: 0
   MeterChannelOrdering: 0
-  StopEventsOutsideMaxDistance: 0
+  StopEventsOutsideMaxDistance: 1
   BoltUnitOptionsBuildPending: 0
   EnableErrorCallback: 0
   SharedLibraryUpdateStage: 0
