@@ -205,7 +205,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isComplete = true;
 
         // Reset the interactable after 1 second
-        Invoke(nameof(Reset), 1.0f);
+        Invoke(nameof(Reset), 0.7f);
     }
 
     /// <summary>
