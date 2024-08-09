@@ -205,8 +205,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 float fullTextHeight = evt.newRect.height;
                 float fullTextWidth = evt.newRect.width;
 
-                Debug.Log("Height, Width: " + fullTextHeight + ", " + fullTextWidth);
-
                 speechBubble.style.height = fullTextHeight;
                 speechBubble.style.width = fullTextWidth;
 

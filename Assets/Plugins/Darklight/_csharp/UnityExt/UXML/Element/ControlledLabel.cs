@@ -158,7 +158,6 @@ namespace Darklight.UnityExt.UXML
         {
             //assuming font size is set assuming the screen is 1920x1080
             this.style.fontSize = new Length(fontSizeMax, LengthUnit.Percent);
-            Debug.Log("FONT SIZE: " + this.style.fontSize);
         }
 
         public void RollingTextStep()
