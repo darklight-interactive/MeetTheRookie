@@ -183,9 +183,27 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubble.UpdateFontSizeToMatchScreen();
         speechBubble.style.color = bubbleData.Item3;
         speechBubble.SetBackgroundSprite(bubbleSprite);
-        speechBubble.style.width = speechBubbleWidth;
+        //speechBubble.style.width = speechBubbleWidth;
+        
+        //tati edit
+            speechBubble.SetFullText(text);
+            speechBubble.InstantCompleteText(); // Temporarily display full text
+            speechBubble.schedule.Execute(() =>
+            {
+                float fullTextHeight = speechBubble.resolvedStyle.height;
+                float fullTextWidth = speechBubble.resolvedStyle.width;
+                Debug.Log("Height, Width: " + fullTextHeight + ", " + fullTextWidth);
 
-        StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+                speechBubble.style.height = fullTextHeight;
+                speechBubble.style.width = fullTextWidth;
+                //bubble position
+                //Vector3 bubblePosition = speechBubbleObject.transform.position;
+                //bubblePosition.y += fullTextHeight / 2.0f;  // Adjust position based on height
+                //speechBubbleObject.transform.position = bubblePosition;
+                // Reset the text to start rolling it out
+                speechBubble.SetFullText(text);
+                StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+            }).ExecuteLater(0); // Ensure it runs in the next frame
     }
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {

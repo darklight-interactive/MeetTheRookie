@@ -140,8 +140,7 @@ namespace Darklight.UnityExt.UXML
             SetTextToIndex(0);
         }
 
-        public void UpdateFontSizeToMatchScreen()
-        {
+        public void OLDUpdateFontSizeToMatchScreen(){
             screenSize = ScreenInfoUtility.ScreenSize;
             aspectRatio = ScreenInfoUtility.GetScreenAspectRatio();
 
@@ -154,6 +153,12 @@ namespace Darklight.UnityExt.UXML
 
             // Clamp the font size to the set range
             fontSize = (int)Mathf.Clamp(fontSizeByAspectRatio, _fontSizeRange.x, _fontSizeRange.y);
+        }
+        public void UpdateFontSizeToMatchScreen()
+        {
+            //assuming font size is set assuming the screen is 1920x1080
+            this.style.fontSize = new Length(fontSizeMax, LengthUnit.Percent);
+            Debug.Log("FONT SIZE: " + this.style.fontSize);
         }
 
         public void RollingTextStep()
