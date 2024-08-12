@@ -4,10 +4,9 @@ using Darklight.UnityExt.Behaviour;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using FMOD;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using Debug = UnityEngine.Debug;
 
 namespace Darklight.UnityExt.FMODExt
 {
@@ -159,10 +158,15 @@ namespace Darklight.UnityExt.FMODExt
                 return;
             }
 
-            // If the new song is the same as the current song, do nothing
-            string currentEventName = GetInstantiatedEventPath(CurrentSongInstance);
-            string newEventName = newSongEventRef.Path;
-            if (currentEventName == newEventName)
+            // Retrieve the GUID of the current and new song events
+            GUID currentEventGuid;
+            CurrentSongInstance.getDescription(out EventDescription eventDescription);
+            eventDescription.getID(out currentEventGuid);
+
+            GUID newEventGuid = newSongEventRef.Guid;
+
+            // Compare the GUIDs
+            if (currentEventGuid == newEventGuid)
             {
                 Debug.LogWarning($"{Prefix} FMOD SONG event is already playing: " + newSongEventRef);
                 return;
@@ -181,6 +185,7 @@ namespace Darklight.UnityExt.FMODExt
             newSongInstance.start();
             newSongInstance.release();
         }
+
 
         IEnumerator EventTransitionRoutine(EventReference newSongEventRef)
         {
