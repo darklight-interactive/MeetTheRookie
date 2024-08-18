@@ -72,8 +72,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3073816321907884251}
-  - component: {fileID: 4949514368199085501}
   - component: {fileID: 8022161291901641825}
+  - component: {fileID: 4949514368199085501}
   m_Layer: 5
   m_Name: GameUIController
   m_TagString: Untagged
@@ -96,6 +96,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5054830795790530424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8022161291901641825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3100972142227852913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
 --- !u!114 &4949514368199085501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,19 +125,6 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
   m_SortingOrder: 0
---- !u!114 &8022161291901641825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3100972142227852913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b7ba7e5db69664897d6221c78e1bca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
 --- !u!1 &3169731501728990774
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +274,7 @@ MonoBehaviour:
   _moveInput: {x: 0, y: 0}
   _primaryInteract: 0
   _secondaryInteract: 0
+  _pauseInteract: 0
 --- !u!114 &7427744868763189831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,9 +423,9 @@ MonoBehaviour:
   - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
   - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
   - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street [AFTERNOON].unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street [DUSK].unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street [GOLDEN HOUR].unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street_AFTERNOON.unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street_DUSK.unity
+  - Assets/Scenes/Build/SCENE_4_1 - Main Street_GOLDENHOUR.unity
   - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
   - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
   - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
@@ -433,6 +434,13 @@ MonoBehaviour:
   - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext. [EVENING].unity
   - Assets/Scenes/Build/SCENE_5_3 - The Winery Int. [EVENING].unity
   - Assets/Scenes/Build/SCENE_5_4 - The Winery Office Interior [EVENING].unity
+  - Assets/Scenes/Build/SCENE_6_0 - Intro.unity
+  - Assets/Scenes/Build/SCENE_6_1 - The Gas Station Ext.unity
+  - Assets/Scenes/Build/SCENE_6_2 - The Gas Station Int.unity
+  - Assets/Scenes/Build/SCENE_6_3 - The Gas Station Int Bathroom.unity
+  - Assets/Scenes/Build/SCENE_6_4 - The Gas Station Int.unity
+  - Assets/Scenes/Build/SCENE_6_5 - The Gas Station Ext..unity
+  - Assets/Scenes/Build/SCENE_7_0 - The Precinct - Dating Sim.unity
   - Assets/Scenes/Build/SYNTHESIS_DEMO.unity
   sceneDataObject: {fileID: 11400000, guid: 985fee78f5f34b34ab4d7ddb85f37d9e, type: 2}
 --- !u!114 &1103200859854054853

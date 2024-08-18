@@ -13,13 +13,6 @@ using Ink.Runtime;
 using Darklight.UnityExt.Inky;
 using System;
 
-
-
-
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
