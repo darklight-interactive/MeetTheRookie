@@ -25,9 +25,21 @@ public class GameUIController : UXML_UIDocumentObject
     const string PAUSEMENU_CTN = "PauseMenuContainer";
     VisualElement _pauseMenuContainer;
 
-    const string MAINMENU_BTN = "mainmenu-btn";
+    // << MENU ELEMENTS >>
+    const string MENU_FOLDER = "Menu";
     const string RESUME_BTN = "resume-btn";
     const string SETTINGS_BTN = "settings-btn";
+    const string SCENES_BTN = "scenes-btn";
+    const string MAINMENU_BTN = "mainmenu-btn";
+    VisualElement _menuFolder;
+
+    const string SETTINGS_FOLDER = "Settings";
+    VisualElement _settingsFolder;
+
+    const string SCENES_FOLDER = "Scenes";
+    VisualElement _scenesFolder;
+
+
 
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
 
@@ -58,18 +70,47 @@ public class GameUIController : UXML_UIDocumentObject
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
         UniversalInputManager.OnMenuButton += OnMenuButtonAction;
 
+        // Load the selectable buttons
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
         selectableVectorField.Selectables.First().SetSelected();
 
+        // Store the pause menu container
         _pauseMenuContainer = ElementQuery<VisualElement>(PAUSEMENU_CTN);
         _pauseMenuContainer.style.visibility = Visibility.Hidden;
 
+        // Store references to the folders
+        _menuFolder = ElementQuery<VisualElement>(MENU_FOLDER);
+        _settingsFolder = ElementQuery<VisualElement>(SETTINGS_FOLDER);
+        _scenesFolder = ElementQuery<VisualElement>(SCENES_FOLDER);
+
+        // << PAUSE MENU ACTIONS >>
         SelectableButton resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
         resumeButton.OnClick += () =>
         {
             SetVisibility(false);
             _pauseMenuContainer.visible = false;
+            _menuFolder.visible = false;
+            _settingsFolder.visible = false;
+            _scenesFolder.visible = false;
         };
+
+        SelectableButton settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
+        settingsButton.OnClick += () =>
+        {
+            _menuFolder.visible = false;
+            _settingsFolder.visible = true;
+            _scenesFolder.visible = true;
+        };
+
+        SelectableButton scenesButton = ElementQuery<SelectableButton>(SCENES_BTN);
+        scenesButton.OnClick += () =>
+        {
+            _menuFolder.visible = false;
+            _settingsFolder.visible = false;
+            _scenesFolder.visible = true;
+        };
+
+
 
         SetVisibility(false);
     }
@@ -79,6 +120,7 @@ public class GameUIController : UXML_UIDocumentObject
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
         RotateChoiceSelection((int)directionInScreenSpace.y);
 
+        // Select the next button in the direction
         selectableVectorField.CurrentSelection.Deselect();
         SelectableButton newButton = selectableVectorField.GetElementInDirection(directionInScreenSpace);
         newButton?.SetSelected();
