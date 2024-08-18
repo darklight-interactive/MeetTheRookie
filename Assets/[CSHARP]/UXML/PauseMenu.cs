@@ -28,7 +28,7 @@ public class PauseMenu : MonoBehaviour
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
         UniversalInputManager.OnSecondaryInteract += OnSecondaryInteractAction;
-        UniversalInputManager.OnPauseInteract += OnPauseInteractAction;
+        UniversalInputManager.OnMenuButton += OnPauseInteractAction;
     }
     void OpenPauseMenu()
     {

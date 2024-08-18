@@ -22,7 +22,11 @@ using UnityEditor;
 /// </summary>
 public class GameUIController : UXML_UIDocumentObject
 {
+    const string PAUSEMENU_CTN = "PauseMenuContainer";
+    VisualElement _pauseMenuContainer;
+
     const string MAINMENU_BTN = "mainmenu-btn";
+    const string RESUME_BTN = "resume-btn";
     const string SETTINGS_BTN = "settings-btn";
 
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
@@ -54,16 +58,18 @@ public class GameUIController : UXML_UIDocumentObject
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
         UniversalInputManager.OnMenuButton += OnMenuButtonAction;
 
-        _body = ElementQuery<VisualElement>("body");
-        _header = ElementQuery<VisualElement>("header");
-        _footer = ElementQuery<VisualElement>("footer");
+        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        selectableVectorField.Selectables.First().SetSelected();
 
-        _menuPanel = ElementQuery<VisualElement>("MenuPanel");
-        _menuPanel.style.visibility = Visibility.Hidden;
+        _pauseMenuContainer = ElementQuery<VisualElement>(PAUSEMENU_CTN);
+        _pauseMenuContainer.style.visibility = Visibility.Hidden;
 
-        _choicePanel = ElementQuery<VisualElement>("ChoicePanel");
-        _choicePanel.style.visibility = Visibility.Hidden;
-
+        SelectableButton resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
+        resumeButton.OnClick += () =>
+        {
+            SetVisibility(false);
+            _pauseMenuContainer.visible = false;
+        };
 
         SetVisibility(false);
     }
@@ -72,6 +78,10 @@ public class GameUIController : UXML_UIDocumentObject
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
         RotateChoiceSelection((int)directionInScreenSpace.y);
+
+        selectableVectorField.CurrentSelection.Deselect();
+        SelectableButton newButton = selectableVectorField.GetElementInDirection(directionInScreenSpace);
+        newButton?.SetSelected();
     }
 
     void RotateChoiceSelection(int direction)
@@ -87,23 +97,27 @@ public class GameUIController : UXML_UIDocumentObject
 
     void OnPrimaryInteractAction()
     {
+        /*
         if (_choicePanel.visible)
         {
             _choiceButtons[selectedChoiceIndex].InvokeClickAction();
         }
+        */
+
+        selectableVectorField.CurrentSelection?.InvokeClickAction();
     }
 
     void OnMenuButtonAction()
     {
-        if (_menuPanel.visible)
+        if (_pauseMenuContainer.visible)
         {
             SetVisibility(false);
-            _menuPanel.visible = false;
+            _pauseMenuContainer.visible = false;
         }
         else
         {
             SetVisibility(true);
-            _menuPanel.visible = true;
+            _pauseMenuContainer.visible = true;
         }
     }
 
