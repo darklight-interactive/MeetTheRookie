@@ -22,6 +22,11 @@ using UnityEditor;
 /// </summary>
 public class GameUIController : UXML_UIDocumentObject
 {
+    const string MAINMENU_BTN = "mainmenu-btn";
+    const string SETTINGS_BTN = "settings-btn";
+
+    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+
     List<SelectableButton> _choiceButtons = new List<SelectableButton>();
     int selectedChoiceIndex = 0;
     SelectableButton previousButton;
@@ -37,7 +42,6 @@ public class GameUIController : UXML_UIDocumentObject
     GroupBox _choiceBox;
     bool lockSelection = false;
 
-
     public void Awake()
     {
         Initialize(preset);
@@ -45,7 +49,6 @@ public class GameUIController : UXML_UIDocumentObject
 
     public void Start()
     {
-
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
@@ -69,7 +72,6 @@ public class GameUIController : UXML_UIDocumentObject
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
         RotateChoiceSelection((int)directionInScreenSpace.y);
-
     }
 
     void RotateChoiceSelection(int direction)
