@@ -38,7 +38,8 @@ INCLUDE _day 2/mtr_level6.1_melOmart.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
-EXTERNAL AddSynthesisClue(clue)
+//EXTERNAL AddSynthesisClue(clue)
+EXTERNAL PlaySpecialAnimation(speaker)
 
 == function ChangeGameScene(knotName)
     ~ return

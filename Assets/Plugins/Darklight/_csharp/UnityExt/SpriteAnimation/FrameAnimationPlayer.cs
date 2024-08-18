@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Darklight.Game.SpriteAnimation
+namespace Darklight.UnityExt.Animation
 {
 
     /// <summary>

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 using Ink.Runtime;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace Darklight.UnityExt.Inky
     /// This class is responsible for iterating through the Ink story and handling the different states of the story.
     /// It implements a simple state machine to track the current state of the story.
     /// </summary>
-    public class InkyStoryIterator : StateMachine<InkyStoryIterator.State>
+    public class InkyStoryIterator : SimpleStateMachine<InkyStoryIterator.State>
     {
         public enum State
         {
@@ -53,13 +53,13 @@ namespace Darklight.UnityExt.Inky
             }
             catch (System.Exception e)
             {
-                InkyStoryManager.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
+                //InkyStoryManager.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
                 Debug.LogError($"{Prefix} Error: {e.Message}, this");
             }
             finally
             {
                 GoToState(State.START);
-                InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
+                //InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
                 Debug.Log($"{Prefix} Moved to Knot: {knotName}");
             }
         }
@@ -69,7 +69,7 @@ namespace Darklight.UnityExt.Inky
             // Check if null
             if (_storyObject == null || CurrentState == State.NULL)
             {
-                InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
+                //InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
                 Debug.LogError($"{Prefix} Error: Story is null");
                 return;
             }
@@ -80,7 +80,7 @@ namespace Darklight.UnityExt.Inky
             // Check if end
             if (CurrentState == State.END)
             {
-                InkyStoryManager.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
+                //InkyStoryManager.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
                 Debug.LogWarning($"{Prefix} Knot has ended");
                 return;
             }
@@ -104,7 +104,7 @@ namespace Darklight.UnityExt.Inky
 
                 HandleTags();
 
-                InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentText}");
+                //InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentText}");
             }
             // -- ( CHOICE STATE ) --------------- >>
             else if (story.currentChoices.Count > 0)
@@ -113,11 +113,11 @@ namespace Darklight.UnityExt.Inky
                 if (CurrentState != State.CHOICE)
                 {
                     GoToState(State.CHOICE);
-                    InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
+                    //InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
                     foreach (Choice choice in story.currentChoices)
                     {
                         _choiceMap.Add(choice, choice.index);
-                        InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
+                        //InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
                     }
                     return;
                 }
@@ -126,7 +126,7 @@ namespace Darklight.UnityExt.Inky
             else
             {
                 GoToState(State.END);
-                InkyStoryManager.Console.Log($"{Prefix} End of Knot");
+                //InkyStoryManager.Console.Log($"{Prefix} End of Knot");
                 Debug.Log($"{Prefix} End of Knot");
             }
 
@@ -136,7 +136,7 @@ namespace Darklight.UnityExt.Inky
             {
                 foreach (string tag in tags)
                 {
-                    InkyStoryManager.Console.Log($"{Prefix} Found Tag: {tag}", 3);
+                    //InkyStoryManager.Console.Log($"{Prefix} Found Tag: {tag}", 3);
                 }
             }
         }
@@ -169,11 +169,13 @@ namespace Darklight.UnityExt.Inky
                 string[] splitTag = tag.Split(':');
                 if (splitTag.Length != 2)
                 {
+                    /*
                     InkyStoryManager.Console.Log(
                         $"{Prefix} Tag is not formatted correctly: {tag}",
                         0,
                         LogSeverity.Error
                     );
+                    */
                 }
                 else
                 {
@@ -184,11 +186,13 @@ namespace Darklight.UnityExt.Inky
                     switch (tagKey)
                     {
                         default:
-                            InkyStoryManager.Console.Log(
-                                $"{Prefix} Tag came in but is not currently being handled: {tag}",
-                                0,
-                                LogSeverity.Warning
-                            );
+                            /*
+                                InkyStoryManager.Console.Log(
+                                    $"{Prefix} Tag came in but is not currently being handled: {tag}",
+                                    0,
+                                    LogSeverity.Warning
+                                );
+                              */
                             break;
                     }
                 }

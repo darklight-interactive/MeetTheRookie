@@ -20,13 +20,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 === scene1_0 ===
 
 = intro
-    hi i'm your main character Lupe! (progress with Z)
-    same person just on the phone w/ my boss :(
-    Here's how you play MTR
-    walk with arrow keys & interact with Z!
-    okay i'm going back to my world
-    where everything is not as it seems
-    byyeeeeeeeee
+    Let's get in and get out.
     ->DONE
 * [thelton] -> thelton
 
@@ -66,7 +60,8 @@ TODO SFX door closing
     ~ CompleteQuest(first_interact)
     ~ DiscoverClue(broken_gas_pump)
     ~ gas_pumps += 1
-    {IsQuestComplete(pay_for_gas):
+    {
+    - IsQuestComplete(pay_for_gas) && (look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
         Ugh. Guess I'll be more than a little late...
@@ -75,7 +70,8 @@ TODO SFX door closing
         -> DONE 
         TODO SFX Car closing door noise and leaving
         //fade to black, go to precinct day 1 
-        
+     - IsQuestComplete(pay_for_gas):
+        That noise didn't sound good. I should probably see what's up.
     - else:
         ~ SetSpeaker(Speaker.Lupe)
         {
@@ -164,6 +160,7 @@ TODO SFX Door close
         Mel said to hit it. In the side.
         // the employee whacks the side of the register.The Drawer pops open.
         TODO ^^ SFX, cash register hit noise
+        ~ PlaySpecialAnimation(Speaker.Beth)
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $76.45.
         ~ SetSpeaker(Speaker.Lupe)
@@ -194,7 +191,13 @@ TODO SFX Door close
     ~ SetSpeaker(Speaker.Lupe)
     Whose paygrade is it <i>not</i> above?
     ~ SetSpeaker(Speaker.Beth) 
-    My manager's in the back.
+    My manager's in the bathroom.
+    ~ SetSpeaker(Speaker.Lupe)
+    Should I wait or...?
+    ~ SetSpeaker(Speaker.Beth)
+    Oh he's not using it just cleaning some weird thing.
+    ~ SetSpeaker(Speaker.Lupe)
+    Okay...
     ~DiscoverClue(broken_cash_reg)
     -> DONE
 }
@@ -233,7 +236,7 @@ TODO SFX door close
     ~ SetSpeaker(Speaker.Lupe)
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
-    Mel's the name. What are you doing back here?
+    Mel's the name. What are you doing in here?
     ~ SetSpeaker(Speaker.Lupe)
     I need to pay for gas. The cash register is broken.
     ~ SetSpeaker(Speaker.Mel)

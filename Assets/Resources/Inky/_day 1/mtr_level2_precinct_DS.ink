@@ -589,13 +589,14 @@ And a black and white picture of the winery stained with age.
 #name:Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
--> END
+~ ChangeGameScene("scene3_1") 
+-> DONE
 
-=door 
+= door 
 # hide : Lupe
 <i>You walk through the door, not saying a word to Misra.</i> 
 # name : Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!"
-~ChangeGameScene("scene4_1") 
+~ ChangeGameScene("scene3_1") 
 -> DONE

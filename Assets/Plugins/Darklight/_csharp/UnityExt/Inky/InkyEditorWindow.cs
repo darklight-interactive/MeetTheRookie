@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Darklight.UnityExt.Inky
 {
+#if UNITY_EDITOR
     public class InkyEditorWindow : EditorWindow
     {
         private Vector2 _scrollPosition;
@@ -41,7 +42,7 @@ namespace Darklight.UnityExt.Inky
             // --------------------- [[ DISPLAY STORY MANAGER ]] --------------------- >>
             SerializedObject serializedStoryManager = new SerializedObject(InkyStoryManager.Instance);
             serializedStoryManager.Update();
-            InkyStoryManager.Console.DrawInEditor();
+            //InkyStoryManager.Console.DrawInEditor();
             EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_globalStoryObject"));
             EditorGUILayout.PropertyField(serializedStoryManager.FindProperty("_currentSpeaker"));
             serializedStoryManager.ApplyModifiedProperties();
@@ -78,4 +79,5 @@ namespace Darklight.UnityExt.Inky
             EditorGUILayout.EndScrollView();
         }
     }
+#endif
 }

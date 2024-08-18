@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.Game.Grid;
+using Darklight.UnityExt.Game.Grid2D;
 using Darklight.UnityExt.Inky;
 
 public class PlayerInteractor : OverlapGrid2D
@@ -104,6 +104,10 @@ public class PlayerInteractor : OverlapGrid2D
 
             // Set the player controller state to Interaction
             playerController.EnterInteraction();
+
+            // Set Lupe to face interactable
+            Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
+            playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
         }
 
         activeInteractable.Interact(); // << MAIN INTERACTION

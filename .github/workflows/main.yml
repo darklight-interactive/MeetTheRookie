@@ -35,6 +35,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
+      - name: Clean up Docker to free up space
+        run: docker system prune -af
+
       #- run: git submodule update --init --recursive
 
       - name: Restore Library cache
@@ -55,11 +58,11 @@ jobs:
           targetPlatform: WebGL
           buildName: MeetTheRookie
 
-      - name: Upload artifact
+      - name: Upload WebGL Build Artifact
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-WebGL
-          path: build
+          path: ${{ vars.BUILD_PATH }}
           if-no-files-found: warn
 
   # ----- Build for Windows -----
@@ -71,6 +74,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
+
+      - name: Clean up Docker to free up space
+        run: docker system prune -af
 
       #- run: git submodule update --init --recursive
 
@@ -96,38 +102,5 @@ jobs:
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-Windows
-          path: build
+          path: ${{ vars.BUILD_PATH }}
           if-no-files-found: warn
-
-  # ----- Deploy to Github Pages -----
-  deployPages:
-    needs: buildWebGL
-    name: Deploy to Github Pages 🚀
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v4.1.4
-        with:
-          ref: gh-pages
-
-      - name: Download WebGL build artifact
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Build-WebGL
-          path: build
-
-      - name: Copy WebGL build to gh-pages
-        run: |
-          mkdir -p ./
-          cp -r Build/WebGL/* ./
-
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Commit and Push changes
-        run: |
-          git add .
-          git commit -m "Update WebGL build"
-          git push origin gh-pages

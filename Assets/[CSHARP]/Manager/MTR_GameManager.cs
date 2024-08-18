@@ -1,8 +1,6 @@
-using Darklight.UnityExt.Audio;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.Utility;
-using Darklight.Utility;
+using Darklight.UnityExt.Behaviour;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager; 
+    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
 
@@ -25,20 +23,37 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         Cursor.visible = false;
 
         GameSceneManager.OnSceneChanged += OnSceneChanged;
+
+
+
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
+        {
+            PlaySpecialAnimation(speaker);
+        });
     }
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
     {
-        InputManager.Reset();
+        //InputManager.Reset();
         InputManager.Awake();
-
 
         MTR_SceneData newSceneData = GameSceneManager.GetSceneData(newScene.name);
         InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
-
-        FMODEventManager.Instance.PlaySong(newSceneData.backgroundMusicEvent);
+        MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }
 
+    public void PlaySpecialAnimation(string speakerName)
+    {
+        // Set the Camera Target to a NPC
+        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
+        foreach (NPC_Interactable interactable in interactables)
+        {
+            if (interactable.speakerTag.Contains(speakerName))
+            {
+                interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
+            }
+        }
+    }
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
     {
@@ -49,7 +64,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 // ================================================================================================= //
 // ------------ [[ GameStateMachine ]] ------------ //
 public enum GameState { NULL, MAIN_MENU, LOADING_SCENE }
-public class GameStateMachine : StateMachine<GameState>
+public class GameStateMachine : SimpleStateMachine<GameState>
 {
     public GameStateMachine(GameState baseState) : base(baseState) { }
     public override void GoToState(GameState newState)
