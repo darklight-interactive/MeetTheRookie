@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Darklight.UnityExt.Audio;
+using Darklight.UnityExt.FMODExt;
 using Darklight.UnityExt.Behaviour;
 using FMODUnity;
 using UnityEngine;
@@ -48,15 +48,15 @@ public class PlayerStateObject : FiniteState<PlayerState>
     public override void Enter()
     {
         // Debug.Log($"Entering State: {stateType}");
-        FMOD_EventManager.PlayOneShot(soundOnEnter);
-        FMOD_EventManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
+        FMODExt_EventManager.PlayOneShot(soundOnEnter);
+        FMODExt_EventManager.Instance.StartRepeatingEvent(repeatingSound, repeatingSoundInterval);
     }
 
     public override void Exit()
     {
         // Debug.Log($"Exiting State: {stateType}");
-        FMOD_EventManager.PlayOneShot(soundOnExit);
-        FMOD_EventManager.Instance.StopRepeatingEvent();
+        FMODExt_EventManager.PlayOneShot(soundOnExit);
+        FMODExt_EventManager.Instance.StopRepeatingEvent();
     }
 
     public override void Execute() { }
