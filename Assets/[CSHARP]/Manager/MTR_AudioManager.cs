@@ -1,6 +1,8 @@
 using Darklight.UnityExt.FMODExt;
-using FMODUnity;
-using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MTR_AudioManager : FMODExt_EventManager
 {
@@ -8,10 +10,11 @@ public class MTR_AudioManager : FMODExt_EventManager
     public static new MTR_AudioManager Instance => FMODExt_EventManager.Instance as MTR_AudioManager;
 
     // Overwrite the generalSFX property to return the instance of the MTR_GeneralSFX class
-    private new MTR_GeneralSFX generalSFX => base.generalSFX as MTR_GeneralSFX;
+    private MTR_GeneralSFX sfx => GeneralSFX as MTR_GeneralSFX;
+    private MTR_SceneManager sceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
 
     public void StartFootstepEvent()
     {
-        StartRepeatingEvent(generalSFX.footstep, generalSFX.footstepInterval);
+        StartRepeatingEvent(sfx.footstep, sfx.footstepInterval);
     }
 }

@@ -1,12 +1,22 @@
 using System.Collections;
-using Darklight.UnityExt.Editor;
+
 using Darklight.UnityExt.Behaviour;
-using FMOD.Studio;
-using FMODUnity;
-using UnityEngine;
+using Darklight.UnityExt.Editor;
+
 using FMOD;
+using FMOD.Studio;
+
+using FMODUnity;
+
+using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 using Debug = UnityEngine.Debug;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 namespace Darklight.UnityExt.FMODExt
 {
@@ -16,46 +26,121 @@ namespace Darklight.UnityExt.FMODExt
     [RequireComponent(typeof(StudioEventEmitter))]
     public class FMODExt_EventManager : MonoBehaviourSingleton<FMODExt_EventManager>
     {
-        private StudioEventEmitter _studioEventEmitter => GetComponent<StudioEventEmitter>();
         public static EventInstance CurrentSongInstance { get; private set; }
         public static EventDescription CurrentSongDescription { get; private set; }
+        public static ConsoleGUI InternalConsole { get; private set; } = new ConsoleGUI();
 
+        #region == [[ MONOBEHAVIOUR SINGLETON METHODS ]] ==================================== >>
+        public override void Initialize()
+        {
+            LoadBanksAndBuses();
+        }
 
-        // ====================== FMOD EVENT OBJECT REFERENCES ====================== >>
-
-        [Header("FMOD Event Objects")]
-        public FMODExt_MusicObject backgroundMusic;
-        public FMODExt_SFXObject generalSFX;
-
-
-        #region == [[ BUSES & BANKS ]] ========================================================
-
-
-        [Header("FMOD Buses & Banks")]
-        [ShowOnly] public FMOD.RESULT busListOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
-
-        [ShowOnly] public FMOD.RESULT systemIsOk = FMOD.RESULT.ERR_UNIMPLEMENTED;
-
-        [ShowOnly]
-        public bool allBanksLoaded = false;
-
-        [ShowOnly]
-        public bool allBusesLoaded = false;
-
-        [SerializeField]
-        FMOD.Studio.Bus[] myBuses;
-
-        [Space(10), Header("Buses")]
-        [SerializeField]
-        private Bus masterBus;
-
-        [SerializeField]
-        private string masterBusPath = "bus:/MasterVolume";
-
-        [SerializeField, Range(-80f, 10.0f)]
-        private float masterBusVolume;
+        public void Update()
+        {
+            // << UPDATE BUS DATA >>
+            foreach (FMODExt_Bus bus in _busData)
+            {
+                bus.Update();
+            }
+        }
         #endregion
 
+        #region == [[ FMODExt EVENT OBJECTS ]] ============================================== >>
+
+        [Header("FMOD Event Objects")]
+        [SerializeField] FMODExt_MusicObject _backgroundMusic;
+        [SerializeField] FMODExt_SFXObject _generalSFX;
+        public FMODExt_MusicObject BackgroundMusic => _backgroundMusic;
+        public FMODExt_SFXObject GeneralSFX => _generalSFX;
+
+        #region -- (( PLAY EVENTS )) ----------------------- ))
+        public void PlaySceneBackgroundMusic(string sceneName)
+        {
+            EventReference bg_music = _backgroundMusic.GetBackgroundMusicByScene(sceneName);
+            PlaySong(bg_music);
+        }
+
+        public void PlayStartInteractionEvent()
+        {
+            PlayOneShot(_generalSFX.startInteraction);
+        }
+
+        public void PlayContinuedInteractionEvent()
+        {
+            PlayOneShot(_generalSFX.continuedInteraction);
+        }
+
+        public void PlayEndInteractionEvent()
+        {
+            PlayOneShot(_generalSFX.endInteraction);
+        }
+
+        public void PlayMenuHoverEvent()
+        {
+            PlayOneShot(_generalSFX.menuHover);
+        }
+
+        public void PlayMenuSelectEvent()
+        {
+            PlayOneShot(_generalSFX.menuSelect);
+        }
+        #endregion
+
+        #endregion
+
+        #region == [[ BUSES & BANKS ]] ====================================================== >>
+
+        [Header("(( ---- FMOD BANKS ---- ))")]
+        [SerializeField, ShowOnly] FMOD.RESULT _bankLoadResult;
+        [SerializeField] List<FMODExt_Bank> _bankData;
+
+        [Header("(( ---- FMOD BUSES ---- ))")]
+        [SerializeField, ShowOnly] FMOD.RESULT _busLoadResult;
+        [SerializeField] List<FMODExt_Bus> _busData;
+
+        #region -- (( LOADING )) ----------------------- ))
+        public void LoadBanksAndBuses()
+        {
+            StartCoroutine(LoadBanksAndBusesRoutine());
+        }
+
+        IEnumerator LoadBanksAndBusesRoutine()
+        {
+            // ------- Load Banks ------- //
+            InternalConsole.Log($"{Prefix} Loading Banks.");
+            FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] _banks);
+            foreach (FMOD.Studio.Bank bank in _banks)
+            {
+                // Load the bank
+                _bankLoadResult = bank.loadSampleData();
+                if (_bankLoadResult == FMOD.RESULT.OK)
+                {
+                    FMODExt_Bank newBankData = new FMODExt_Bank(bank);
+                    _bankData.Add(newBankData);
+                    InternalConsole.Log($"Bank Load Result: " + newBankData.Path + " -> " + _bankLoadResult, 1);
+                }
+            }
+
+            // ------- Load Buses ------- //
+            InternalConsole.Log($"{Prefix} Loading Buses.");
+            foreach (FMODExt_Bank bank in _bankData)
+            {
+                List<FMODExt_Bus> busData = bank.BusData;
+                _busData.AddRange(busData);
+                foreach (FMODExt_Bus bus in busData)
+                {
+                    InternalConsole.Log($"Bus Load Result: " + bus.Path + " -> " + bus.LoadResult, 1);
+                }
+            }
+
+            yield return null;
+        }
+        #endregion
+
+        #endregion
+
+        #region == [[ PLAY EVENT FUNCTIONS ]] =============================================== >>
         public static void PlayOneShot(EventReference eventReference)
         {
             RuntimeManager.PlayOneShot(eventReference);
@@ -99,6 +184,7 @@ namespace Darklight.UnityExt.FMODExt
             instance.start();
             instance.release();
         }
+        #endregion
 
         public static string GetInstantiatedEventPath(EventInstance instance)
         {
@@ -110,18 +196,6 @@ namespace Darklight.UnityExt.FMODExt
 
             // expect the result in the form event:/folder/sub-folder/eventName
             return result;
-        }
-
-        // --------------------------------- PUBLIC METHODS ---------------------------------
-        public override void Initialize()
-        {
-            LoadBanksAndBuses();
-        }
-
-        void Update()
-        {
-            float volume = Mathf.Pow(10.0f, masterBusVolume / 20f);
-            masterBus.setVolume(volume);
         }
 
         // Coroutine to handle the repeated playing of an event
@@ -159,11 +233,11 @@ namespace Darklight.UnityExt.FMODExt
             }
 
             // Retrieve the GUID of the current and new song events
-            GUID currentEventGuid;
+            FMOD.GUID currentEventGuid;
             CurrentSongInstance.getDescription(out EventDescription eventDescription);
             eventDescription.getID(out currentEventGuid);
 
-            GUID newEventGuid = newSongEventRef.Guid;
+            FMOD.GUID newEventGuid = newSongEventRef.Guid;
 
             // Compare the GUIDs
             if (currentEventGuid == newEventGuid)
@@ -233,150 +307,38 @@ namespace Darklight.UnityExt.FMODExt
 
             CurrentSongInstance.release();
         }
-
-        #region == [[ LOAD BANKS AND BUSES ]] ========================================
-        public void LoadBanksAndBuses()
-        {
-            StartCoroutine(LoadBanksAndBusesRoutine());
-        }
-
-        public IEnumerator LoadBanksAndBusesRoutine()
-        {
-            Debug.Log($"{Prefix} Loading.");
-            // ============================================= LOAD ============================
-            FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] loadedBanks);
-            foreach (FMOD.Studio.Bank bank in loadedBanks)
-            {
-                // Get the path of the bank
-                bank.getPath(out string bankPath);
-                // Load the bank
-                FMOD.RESULT bankLoadResult = bank.loadSampleData();
-                Debug.Log($"{Prefix} Bank Load Result: " + bankPath + " -> " + bankLoadResult);
-                // Retrieve the list of buses associated with the bank
-                busListOk = bank.getBusList(out myBuses);
-                // Get the number of buses in the bank
-                bank.getBusCount(out int busCount);
-                if (busCount > 0)
-                {
-                    // Iterate through the buses in the bank
-                    foreach (Bus bus in myBuses)
-                    {
-                        // Get the path of each bus
-                        bus.getPath(out string busPath);
-                        // Load the bus
-                        FMOD.RESULT busLoadResult = bus.lockChannelGroup();
-                        Debug.Log(
-                            $"{Prefix} Bus Load Result: " + bankPath + " -> " + bankLoadResult
-                        );
-                        // Save the bus to the appropriate variable
-                        if (busPath == masterBusPath)
-                        {
-                            masterBus = FMODUnity.RuntimeManager.GetBus(busPath);
-                            // masterBus.setVolume(masterBusVolume);
-                        }
-                        /*
-                        else if (busPath == musVolBusPath)
-                        {
-                            musBus = bus;
-                            musBus.setVolume(musicVolume);
-                        }
-                        else if (busPath == sfxVolBusPath)
-                        {
-                            sfxBus = bus;
-                            sfxBus.setVolume(sfxVolume);
-                        }
-                        else if (busPath == diaVolBusPath)
-                        {
-                            diaBus = bus;
-                            diaBus.setVolume(dialogueVolume);
-                        }
-                        else if (busPath == ambiVolBusPath)
-                        {
-                            ambiBus = bus;
-                            ambiBus.setVolume(ambianceVolume);
-                        }
-                        */
-                    }
-                }
-            }
-
-            // ------- Confirm Load -------
-            foreach (FMOD.Studio.Bank bank in loadedBanks)
-            {
-                // Load each bank
-                bank.loadSampleData();
-                // Check if all banks are loaded
-                FMOD.Studio.LOADING_STATE bankLoadingState;
-                bank.getLoadingState(out bankLoadingState);
-                if (!allBanksLoaded && bankLoadingState == FMOD.Studio.LOADING_STATE.LOADED)
-                {
-                    allBanksLoaded = true;
-                }
-                // Retrieve the list of buses associated with the bank
-                bank.getBusList(out FMOD.Studio.Bus[] buses);
-                foreach (FMOD.Studio.Bus bus in buses)
-                {
-                    /*
-                    // Check if the bus is already locked
-                    if (!bus.isLocked)
-                    {
-                        // Lock the bus
-                        bus.lockChannelGroup();
-                    }
-                    */
-                    // Check if all buses are loaded
-                    if (!allBusesLoaded && bus.isValid())
-                    {
-                        allBusesLoaded = true;
-                    }
-                }
-            }
-
-            // If banks and buses are not loaded, try again in 1 second
-            if (!allBanksLoaded || !allBusesLoaded)
-            {
-                yield return new WaitForSeconds(1);
-                LoadBanksAndBuses();
-            }
-        }
-        #endregion
-
-
-
-
-        #region ------------------- [[ SIMPLE REFERENCE FUNCTIONS ]] -------------------
-        public void PlaySceneBackgroundMusic(string sceneName)
-        {
-            EventReference bg_music = backgroundMusic.GetBackgroundMusicByScene(sceneName);
-            PlaySong(bg_music);
-        }
-
-        public void PlayStartInteractionEvent()
-        {
-            PlayOneShot(generalSFX.startInteraction);
-        }
-
-        public void PlayContinuedInteractionEvent()
-        {
-            PlayOneShot(generalSFX.continuedInteraction);
-        }
-
-        public void PlayEndInteractionEvent()
-        {
-            PlayOneShot(generalSFX.endInteraction);
-        }
-
-        public void PlayMenuHoverEvent()
-        {
-            PlayOneShot(generalSFX.menuHover);
-        }
-
-        public void PlayMenuSelectEvent()
-        {
-            PlayOneShot(generalSFX.menuSelect);
-        }
-        #endregion
-
-
     }
+
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(FMODExt_EventManager), true)]
+    public class FMODExt_EventManagerCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        FMODExt_EventManager _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (FMODExt_EventManager)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            // Draw the consoleGUI in the inspector
+            FMODExt_EventManager.InternalConsole.DrawInEditor();
+
+            CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
 }

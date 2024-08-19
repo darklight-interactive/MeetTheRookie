@@ -455,14 +455,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c189080abee24146b2eacaf9afcb28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundMusic: {fileID: 11400000, guid: 5f2e4dcebe0288a43970e0620a8d3776, type: 2}
-  generalSFX: {fileID: 11400000, guid: a6196fc4810803045af27c4eadbb76b0, type: 2}
-  busListOk: 66
-  systemIsOk: 66
-  allBanksLoaded: 0
-  allBusesLoaded: 0
-  masterBusPath: bus:/MasterVolume
-  masterBusVolume: 0
+  fmodProjectFile: {fileID: 102900000, guid: b0c125b7fa6f15d4fbd18f5e0a1e87cf, type: 3}
+  _backgroundMusic: {fileID: 11400000, guid: c835a11ab279b0b42ab68eb49150358e, type: 2}
+  _generalSFX: {fileID: 11400000, guid: a6196fc4810803045af27c4eadbb76b0, type: 2}
+  _bankLoadResult: 0
+  _bankData: []
+  _busLoadResult: 0
 --- !u!114 &6736551505315507451
 MonoBehaviour:
   m_ObjectHideFlags: 0
