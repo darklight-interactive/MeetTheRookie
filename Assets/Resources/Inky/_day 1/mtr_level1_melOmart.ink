@@ -30,7 +30,7 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
     You've reached Chief Detective Inspector Thelton, Boise Precinct. 
     I'm not available right now. You know what to do!
     // We hear a generic voicemail beep.
-    TODO SFX voicemail beep
+    ~PlaySFX("phoneBeep")
     
     ~ SetSpeaker(Speaker.Lupe)
     Hey, it's Lupe. Had to change my route; 
@@ -134,6 +134,8 @@ TODO SFX door closing
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
     TODO SFX Door open
+    ~openDoor()
+    
     ~ ChangeGameScene("scene1_2")
     -> DONE
 
@@ -203,8 +205,9 @@ TODO SFX Door close
 }
 
 = door_to_backroom
-TODO SFX Door open
+TODO SFX
 {IsClueFound(broken_cash_reg):
+    ~ openDoor()
     ~ ChangeGameScene("scene1_3")
     -> DONE
     - else:
@@ -215,8 +218,10 @@ TODO SFX Door open
 
 = door_to_outside
 {IsQuestComplete(pay_for_gas):
+    TODO SFX
+    ~ openDoor()
     ~ChangeGameScene("scene1_4")
-    TODO SFX Door open
+
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Lupe)

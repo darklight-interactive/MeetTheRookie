@@ -41,10 +41,18 @@ EXTERNAL ChangeGameScene(knotName)
 //EXTERNAL AddSynthesisClue(clue)
 EXTERNAL PlaySpecialAnimation(speaker)
 
+EXTERNAL PlaySFX(sfx)
+
 == function ChangeGameScene(knotName)
     ~ return
 
 == function AddSynthesisClue(clue)
+    ~ return
+== function openDoor()
+    ~PlaySFX("Doors/doorOpen")
+    ~ return
+== function closeDoor()
+    ~PlaySFX("Doors/doorClose")
     ~ return
 
 
@@ -109,8 +117,13 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
     LIST Level6_Quests = (haggle)
 
 
-
-
+=== SFX
+= playOpenDoor
+~ openDoor()
+-> DONE
+= playCloseDoor
+~ closeDoor()
+-> DONE
 
 
 

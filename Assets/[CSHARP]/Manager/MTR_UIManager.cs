@@ -173,11 +173,23 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
-        CreateSpeechBubbleAtCurrentSpeaker();
+        SpeechBubble speechBubble = CreateSpeechBubbleAtCurrentSpeaker();
+        speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            float fullTextHeight = evt.newRect.height;
+            float fullTextWidth = evt.newRect.width;
 
-        StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+            speechBubble.style.height = fullTextHeight;
+            speechBubble.style.width = fullTextWidth;
+
+            speechBubble.SetFullText(text);
+            StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+        });
+        speechBubble.SetFullText(text);
+        speechBubble.InstantCompleteText(); // Temporarily display full text
+
     }
-    void CreateSpeechBubbleAtCurrentSpeaker()
+    SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         OverlapGrid2D_Data gridData;
@@ -198,8 +210,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             gridData = playerInteractor.GetBestOverlapGridData();
 
-            // Set the Bubble Position and Direction
+            // Set the Bubble Position
             bubblePosition = gridData.worldPosition;
+            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
+
+            // Set the Bubble Direction
             if (bubblePosition.x <= playerInteractor.transform.position.x)
             {
                 bubbleDirection = Vector2Int.left;
@@ -257,6 +272,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubble.style.color = bubbleColor;
         speechBubble.SetBackgroundSprite(bubbleSprite);
         speechBubble.style.width = speechBubbleWidth;
+
+        return speechBubble;
     }
 
     public void AssignTransformToGridData(OverlapGrid2D_Data gridData)

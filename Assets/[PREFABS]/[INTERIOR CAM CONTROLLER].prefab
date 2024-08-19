@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 348082412807241120}
   - component: {fileID: 2456542461274326303}
-  - component: {fileID: 7167559734855225826}
+  - component: {fileID: -8219706209154254921}
   m_Layer: 0
   m_Name: '[INTERIOR CAM CONTROLLER]'
   m_TagString: Untagged
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentSpeaker: 
   targetBasedOnSpeaker: 0
---- !u!114 &7167559734855225826
+--- !u!114 &-8219706209154254921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,27 +129,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 2895742502396242152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
+  m_Script: {fileID: 11500000, guid: d2f4f69ce17324906b30b31788f0eede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camerasInChildren:
-  - {fileID: 294617130321755958}
-  - {fileID: 1148548231494987092}
-  - {fileID: 6029335792472997658}
-  - {fileID: 5663657954300164996}
+  _camerasInChildren: []
   _focusTarget: {fileID: 0}
   _focusTargetPosition: {x: 0, y: 0, z: 0}
-  _focusTargetPositionOffset: {x: 0, y: 0.25, z: 0}
+  _focusTargetPositionOffset: {x: 0, y: 0, z: 0}
   _focusOffsetY: 0.25
-  _offsetPosition: {x: 0, y: 0, z: -10}
-  _positionLerpSpeed: 10
-  _rotationLerpSpeed: 10
-  _fovLerpSpeed: 10
+  _offsetPosition: {x: 0, y: 0, z: 0}
+  _positionLerpSpeed: 5
+  _rotationLerpSpeed: 5
+  _fovLerpSpeed: 5
   _distanceY: 0
   _distanceZ: 7
   _baseFOV: 15
   _offsetFOV: 0
-  _currentFOV: 10
+  _currentFOV: 0
+  defaultStateFOVOffset: 0
+  followTargetStateFOVOffset: -0.25
+  closeUpStateFOVOffset: -0.5
 --- !u!1 &3605313824413459967
 GameObject:
   m_ObjectHideFlags: 0

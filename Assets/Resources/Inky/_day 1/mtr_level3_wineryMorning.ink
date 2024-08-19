@@ -34,7 +34,7 @@
 {outsideCluesFound():
     ~ SetSpeaker(Speaker.Lupe)
     In we go.
-    TODO SFX door open
+    ~ openDoor()
     ~ ChangeGameScene("scene3_2")
     -> DONE
 - else:

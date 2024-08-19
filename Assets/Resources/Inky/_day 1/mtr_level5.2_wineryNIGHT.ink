@@ -3,13 +3,14 @@
 
     
 === scene5_2 ===
-TODO SFX CAR DOOR CLOSE NOISE
+
 + [cut fence] -> fence
 + [window] -> window
 + [tracks] -> strange_footsteps
 + [door] -> door_to_inside_winery_night
 
 = lupe_intro
+TODO SFX CAR DOOR CLOSE NOISE
 ~ SetSpeaker(Speaker.Lupe)
 Misra, WAIT!
 -> DONE 
@@ -31,8 +32,8 @@ Whoever left these here...are they here again?
 -> DONE
 
 = door_to_inside_winery_night
+    ~ openDoor()
     ~ ChangeGameScene("scene5_3") 
-    TODO SFX DOOR OPEN 
     -> DONE
 
 ===scene5_3===
@@ -50,6 +51,7 @@ Whoever left these here...are they here again?
 * [inside_window] -> inside_window
 
 = lupe_inside_intro
+~ closeDoor()
 ~ SetSpeaker(Speaker.Lupe)
 Misra??
 -> DONE
@@ -98,7 +100,7 @@ God, more of this gunk. It reeks - smells like vinegar.
 ~ SetSpeaker(Speaker.Lupe)
 Wait...
 Wasn't this closed before?
-    TODO SFX DOOR OPEN 
+~ openDoor()
 
 ~ ChangeGameScene("scene5_4")
 -> DONE
