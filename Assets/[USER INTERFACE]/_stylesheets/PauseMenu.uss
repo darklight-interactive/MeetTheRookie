@@ -1,17 +1,161 @@
-.button {
-    justify-content: space-evenly;
+VisualElement.Folder {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    background-image: none;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+    justify-content: center;
+    align-self: center;
+}
+
+GroupBox.MenuBox {
+    justify-content: space-between;
+    align-self: center;
+    align-items: center;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 75%;
+}
+
+SelectableButton.Menu {
+    font-size: 500%;
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
+    -unity-text-align: lower-center;
+    margin-top: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
+}
+
+Label.TabTitle {
+    -unity-font-definition: resource('Fonts/cour');
+    -unity-font-style: bold;
+    font-size: 20px;
+    color: rgb(43, 47, 55);
+}
+
+Label.TabTitle.Selected {
+    -unity-font-definition: resource('Fonts/cour');
+    -unity-font-style: bold;
+    font-size: 20px;
+    color: rgba(255, 150, 0, 0.81);
+}
+
+SliderInt.SoundSlider {
+    color: rgb(35, 40, 46);
+    width: 100%;
+    justify-content: center;
     align-self: auto;
-    margin-right: 0;
-    padding-right: 0;
+    align-items: center;
+}
+
+SliderInt Label {
+    background-color: rgba(221, 39, 39, 0);
+    color: rgb(35, 40, 46);
+    -unity-font-definition: resource('Fonts/cour');
+    -unity-font-style: bold;
+    font-size: 30px;
+    background-image: none;
+    -unity-text-align: middle-right;
+}
+
+SliderInt Label.Selected {
+    background-color: rgba(221, 39, 39, 0);
+    color: rgba(255, 150, 0, 0.81);
+    -unity-font-definition: resource('Fonts/cour');
+    -unity-font-style: bold;
+    font-size: 20px;
+    background-image: none;
+}
+
+SliderInt #unity-dragger {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Pin.png?fileID=4690419380084828854&guid=d5d4be384c1732247bb9fe36b6bcbacf&type=3#Ui_Pin_0");
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    width: 2.5%;
+    height: 100%;
+}
+
+#Fullscreen Image {
+    color: rgba(27, 27, 27, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#Fullscreen TextElement {
+    -unity-font-definition: resource('Fonts/cour');
+}
+
+Button.Fullscreen {
+    width: 50px;
+    height: 50px;
+    left: 959px;
+    top: 49px;
     margin-top: 0;
+    margin-right: 0;
     margin-bottom: 0;
     margin-left: 0;
     padding-top: 0;
+    padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    -unity-text-align: middle-center;
-    white-space: normal;
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    height: 10%;
-    width: 66%;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/fullscreen1.png?fileID=-3308469008158286800&guid=276b5eb848904b4478a891fa2aec9439&type=3#fullscreen1_0");
+    background-color: rgba(188, 188, 188, 0);
+}
+
+Button.Fullscreen.Selected {
+    width: 50px;
+    height: 50px;
+    left: 959px;
+    top: 49px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/fullscreen1.png?fileID=-3308469008158286800&guid=276b5eb848904b4478a891fa2aec9439&type=3#fullscreen1_0");
+    background-color: rgba(255, 150, 0, 0.81);
+}
+
+.SceneBox {
+    flex-grow: 1;
+    align-self: stretch;
+    background-color: rgb(0, 150, 0);
+    margin-top: 0;
+    margin-right: 1%;
+    margin-bottom: 0;
+    margin-left: 1%;
+}
+
+.SceneBox.Selected {
+    flex-grow: 1;
+    align-self: stretch;
+    background-color: rgb(255, 58, 0);
+    margin-top: 0;
+    margin-right: 1%;
+    margin-bottom: 0;
+    margin-left: 1%;
 }

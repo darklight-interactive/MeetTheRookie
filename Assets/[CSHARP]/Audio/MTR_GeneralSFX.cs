@@ -3,7 +3,7 @@ using FMODUnity;
 
 
 [CreateAssetMenu(menuName = "MeetTheRookie/MTR_GeneralSFX")]
-public class MTR_GeneralSFX : FMOD_SFXObject
+public class MTR_GeneralSFX : FMODExt_SFXObject
 {
 
     [Space(20), Header("---->> MEET THE ROOKIE SPECIFIC SFX")]
