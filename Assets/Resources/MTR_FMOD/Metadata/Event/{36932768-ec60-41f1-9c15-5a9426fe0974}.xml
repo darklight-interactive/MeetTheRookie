@@ -5,7 +5,7 @@
 			<value>Footsteps1</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{6ff3ba03-9d82-4a2c-b79a-c36793439373}</destination>
@@ -100,6 +100,7 @@
 		<relationship name="effects">
 			<destination>{930ddda7-e214-4b6c-946b-0c021b1b549c}</destination>
 			<destination>{0bec4816-b863-4cd5-8960-dda3c530ee87}</destination>
+			<destination>{bedd75b3-e111-44d4-b85d-d620879bfa76}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{59207313-493b-4bef-9f0d-0cf9c34255ec}" />
@@ -133,6 +134,7 @@
 			<value>0.402513534</value>
 		</property>
 	</object>
+	<object class="SpatialiserEffect" id="{bedd75b3-e111-44d4-b85d-d620879bfa76}" />
 	<object class="RandomizerModulator" id="{9de5f757-3721-4255-8dc0-708bd540b803}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
