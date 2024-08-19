@@ -156,8 +156,10 @@ namespace Darklight.UnityExt.UXML
         }
         public void UpdateFontSizeToMatchScreen()
         {
+            OLDUpdateFontSizeToMatchScreen();
+
             //assuming font size is set assuming the screen is 1920x1080
-            this.style.fontSize = new Length(fontSizeMax, LengthUnit.Percent);
+            //this.style.fontSize = new Length(fontSizeMax, LengthUnit.Percent);
         }
 
         public void RollingTextStep()
