@@ -5,7 +5,7 @@ using FMODUnity;
 
 
 [CreateAssetMenu(menuName = "MeetTheRookie/MTR_MusicObject")]
-public class MTR_MusicObject : FMOD_MusicObject
+public class MTR_MusicObject : FMODExt_MusicObject
 {
     //[Space(20), Header("---->> MEET THE ROOKIE SPECIFIC MUSIC CONTROLS")]
 
