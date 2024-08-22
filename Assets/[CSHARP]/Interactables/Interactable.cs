@@ -189,7 +189,6 @@ public class Interactable : OverlapGrid2D, IInteract
         else
         {
             OnInteraction?.Invoke(StoryIterator.CurrentText);
-
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
     }

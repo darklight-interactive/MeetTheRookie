@@ -154,12 +154,12 @@ public class GameUIController : UXML_UIDocumentObject
         if (_pauseMenuContainer.visible)
         {
             SetVisibility(false);
-            _pauseMenuContainer.visible = false;
+            _pauseMenuContainer.style.visibility = Visibility.Hidden;
         }
         else
         {
             SetVisibility(true);
-            _pauseMenuContainer.visible = true;
+            _pauseMenuContainer.style.visibility = Visibility.Visible;
         }
     }
 
@@ -224,9 +224,5 @@ public class GameUIController : UXML_UIDocumentObject
     {
         lockSelection = false;
     }
-
-
-
-
 
 }
