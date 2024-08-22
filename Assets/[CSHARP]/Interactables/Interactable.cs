@@ -22,6 +22,10 @@ public class Interactable : OverlapGrid2D, IInteract
     private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
 
+    // private references for DestinationPoints
+    private GameObject Lupe;
+    private GameObject Misra;
+
     // private access to knots for dropdown
     private List<string> _sceneKnots
     {
@@ -52,6 +56,7 @@ public class Interactable : OverlapGrid2D, IInteract
     [Header("Interactable")]
     [SerializeField, ShowAssetPreview] Sprite _sprite;
     [SerializeField] private bool onStart;
+    public bool isSpawn;
 
     [Header("InkyStory")]
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
@@ -72,6 +77,10 @@ public class Interactable : OverlapGrid2D, IInteract
 
     [Header("Outline")]
     [SerializeField] Material _outlineMaterial;
+
+    [Header("Destination Points")]
+    [SerializeField] List<float> destinationPointsRelativeX;
+    private List<GameObject> _destinationPoints = new List<GameObject>();
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
@@ -101,6 +110,18 @@ public class Interactable : OverlapGrid2D, IInteract
         if (Application.isPlaying)
         {
             Invoke(nameof(OnStart), 0.1f);
+        }
+
+        var tempLupe = FindFirstObjectByType<PlayerController>();
+        if (tempLupe != null)
+        {
+            Lupe = tempLupe.gameObject;
+        }
+
+        var tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
+        if (tempMisra != null)
+        {
+            Misra = tempMisra.gameObject;
         }
     }
 
@@ -250,4 +271,101 @@ public class Interactable : OverlapGrid2D, IInteract
         yield return new WaitForSeconds(0.25f);
         EnableOutline(false);
     }
+
+    // ====== [[ Destination Points ]] ======================================
+
+    new private void OnDrawGizmosSelected()
+    {
+        if (destinationPointsRelativeX == null) {  return; }
+
+        foreach (var destinationPoint in destinationPointsRelativeX)
+        {
+            Gizmos.DrawLine(new Vector3(transform.position.x + destinationPoint, -5, transform.position.z), new Vector3(transform.position.x + destinationPoint, 5, transform.position.z));
+        }
+    }
+
+    public void Initialize()
+    {
+        if (destinationPointsRelativeX == null || destinationPointsRelativeX.Count == 0)
+        {
+            destinationPointsRelativeX = new List<float> { -1, 1 };
+        }
+    }
+
+    public void SpawnDestinationPoints()
+    {
+        var tempLupe = FindFirstObjectByType<PlayerController>();
+        if (tempLupe != null)
+        {
+            Lupe = tempLupe.gameObject;
+        }
+
+        float lupeY = gameObject.transform.position.y;
+        if (Lupe != null)
+        {
+            lupeY = Lupe.transform.position.y;
+        }
+
+        foreach (var point in _destinationPoints)
+        {
+            DestroyImmediate(point);
+        }
+        _destinationPoints.Clear();
+
+        // Create new destination points
+        for (int i = 0; i < destinationPointsRelativeX.Count; i++)
+        {
+            GameObject destinationPoint = new GameObject("Destination Point");
+            destinationPoint.AddComponent<DestinationPoint>();
+            destinationPoint.transform.position = new Vector3(gameObject.transform.position.x + destinationPointsRelativeX[i], lupeY, gameObject.transform.position.z);
+            destinationPoint.transform.SetParent(this.transform);
+            _destinationPoints.Add(destinationPoint);
+        }
+    }
+
+    public List<GameObject> GetDestinationPoints()
+    {
+        return _destinationPoints;
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Interactable))]
+public class InteractableCustomEditor : Editor
+{
+    SerializedObject _serializedObject;
+    Interactable _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (Interactable)target;
+        _script.Initialize();
+    }
+
+    // This is the method that is called when the inspector is drawn
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        // Checking to see if any values have changed
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI(); // Draw the default inspector
+
+        if (GUILayout.Button("Spawn Destination Points"))
+        {
+            _script.SpawnDestinationPoints();
+        }
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+
+    public void OnSceneGUI()
+    {
+        //Handles.Label(new Vector3(0, 0, 0), "This is the origin");
+    }
+}
+#endif
