@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 1103200859854054853}
   - component: {fileID: 6736551505315507451}
   - component: {fileID: 255471297845677017}
+  - component: {fileID: 6518913931919201701}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -385,8 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1920, y: 1080}
-  _screenAspectRatio: 1.7777778
+  _screenSize: {x: 964, y: 568}
+  _screenAspectRatio: 1.6971831
   characterColors: {fileID: 11400000, guid: e723c62cd5a684110a4fcbb8fbf2266d, type: 2}
   _speechBubbleScaleModifier: 1.5
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
@@ -505,3 +506,15 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: -1
   OverrideMaxDistance: -1
+--- !u!114 &6518913931919201701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3c1aefa25d1fd4cb20cd0f4c950bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

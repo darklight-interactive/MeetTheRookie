@@ -123,6 +123,15 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             Misra = tempMisra.gameObject;
         }
+
+        _destinationPoints.Clear();
+        DestinationPoint[] childrenDestinationPoints = GetComponentsInChildren<DestinationPoint>();
+        foreach (var destinationPoint in childrenDestinationPoints)
+        {
+            _destinationPoints.Add(destinationPoint.gameObject);
+        }
+
+        OnFirstInteraction += ChangeSpawnPoints;
     }
 
     void OnStart()
@@ -294,6 +303,7 @@ public class Interactable : OverlapGrid2D, IInteract
 
     public void SpawnDestinationPoints()
     {
+
         var tempLupe = FindFirstObjectByType<PlayerController>();
         if (tempLupe != null)
         {
@@ -323,9 +333,36 @@ public class Interactable : OverlapGrid2D, IInteract
         }
     }
 
+    public void FindDestinationPoints()
+    {
+        _destinationPoints.Clear();
+
+
+        DestinationPoint[] childrenDestinationPoints = GetComponentsInChildren<DestinationPoint>();
+        foreach (var destinationPoint in childrenDestinationPoints)
+        {
+            _destinationPoints.Add(destinationPoint.gameObject);
+        }
+
+        Debug.LogError(name + ": " + _destinationPoints.Count);
+    }
+
     public List<GameObject> GetDestinationPoints()
     {
         return _destinationPoints;
+    }
+
+    private void ChangeSpawnPoints()
+    {
+        SpawnHandler spawnHandler = SpawnHandler.Instance;
+        List<GameObject> interactables = spawnHandler.GetAllInteractables();
+
+        foreach (var currentInteractable in interactables)
+        {
+            currentInteractable.GetComponent<Interactable>().isSpawn = false;
+        }
+
+        isSpawn = true;
     }
 }
 
