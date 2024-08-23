@@ -130,8 +130,6 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             _destinationPoints.Add(destinationPoint.gameObject);
         }
-
-        OnFirstInteraction += ChangeSpawnPoints;
     }
 
     void OnStart()
@@ -198,6 +196,7 @@ public class Interactable : OverlapGrid2D, IInteract
             StartCoroutine(ColorChangeRoutine(_interactionTint, 0.25f));
 
             OnFirstInteraction?.Invoke();
+            ChangeSpawnPoints();
             MTR_AudioManager.Instance.PlayStartInteractionEvent();
             Debug.Log($"INTERACTABLE :: {name} >> First Interaction");
         }
@@ -343,8 +342,6 @@ public class Interactable : OverlapGrid2D, IInteract
         {
             _destinationPoints.Add(destinationPoint.gameObject);
         }
-
-        Debug.LogError(name + ": " + _destinationPoints.Count);
     }
 
     public List<GameObject> GetDestinationPoints()
@@ -363,6 +360,8 @@ public class Interactable : OverlapGrid2D, IInteract
         }
 
         isSpawn = true;
+
+        spawnHandler.SetSpawnPoints(interactables);
     }
 }
 

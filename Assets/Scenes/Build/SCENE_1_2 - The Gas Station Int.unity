@@ -674,7 +674,8 @@ Transform:
   m_LocalPosition: {x: -0.484, y: 1.2956713, z: -14.74}
   m_LocalScale: {x: 1.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 858920003}
   m_Father: {fileID: 1440921911}
   m_LocalEulerAnglesHint: {x: 0, y: -74.049, z: 0}
 --- !u!114 &256807743
@@ -696,6 +697,7 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: -6538129623186974381, guid: 7718ce52f2ba1474bbe972b14ef3d27e, type: 3}
   onStart: 0
+  isSpawn: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_backroom
   _isTarget: 0
@@ -704,6 +706,8 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX:
+  - 0.32
 --- !u!61 &256807744
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1028,6 +1032,7 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: 7083626296817226911, guid: b47b954f6829b844fbfd9d7156ed4f60, type: 3}
   onStart: 0
+  isSpawn: 0
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.vending_machine
   _isTarget: 0
@@ -1036,6 +1041,9 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX:
+  - -1
+  - 1
 --- !u!61 &407943209
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1082,6 +1090,51 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.765625, y: 1.03125}
   m_EdgeRadius: 0
+--- !u!1 &412392886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 412392887}
+  - component: {fileID: 412392888}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &412392887
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412392886}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.6766123, z: -0, w: 0.73633945}
+  m_LocalPosition: {x: 0.016878327, y: -0.055328727, z: -0.29893}
+  m_LocalScale: {x: 0.99645156, y: 1, z: 0.6682531}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1730456537}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &412392888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412392886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!1001 &415956327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1699,6 +1752,51 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &858920002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 858920003}
+  - component: {fileID: 858920004}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &858920003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858920002}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.6021545, z: -0, w: 0.79837966}
+  m_LocalPosition: {x: 0.05862826, y: -0.50600004, z: -0.30767846}
+  m_LocalScale: {x: 0.963611, y: 1, z: 0.6838837}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 256807742}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &858920004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858920002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!43 &963840081
 Mesh:
   m_ObjectHideFlags: 0
@@ -3376,7 +3474,8 @@ Transform:
   m_LocalPosition: {x: -2.678, y: 0.845, z: -17.138}
   m_LocalScale: {x: 1.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 412392887}
   m_Father: {fileID: 1440921911}
   m_LocalEulerAnglesHint: {x: 0, y: -85.159, z: 0}
 --- !u!61 &1730456539
@@ -3498,6 +3597,7 @@ MonoBehaviour:
   editMode: 0
   _sprite: {fileID: -526578920533849773, guid: abf3648a41e1601429a136f10b1800fa, type: 3}
   onStart: 0
+  isSpawn: 1
   _sceneKnot: scene1_2
   _interactionStitch: scene1_2.door_to_outside
   _isTarget: 0
@@ -3506,6 +3606,8 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX:
+  - 0.3
 --- !u!1 &1791120686
 GameObject:
   m_ObjectHideFlags: 0

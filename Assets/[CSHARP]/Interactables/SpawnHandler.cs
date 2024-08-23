@@ -40,12 +40,10 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
 
         if (!scenes.ContainsKey(currentScene.name))
         {
-            var sceneData = new SceneInteractableInfo(currentScene.name, interactableObjects);
+            var sceneData = new SceneInteractableInfo(currentScene.name);
             scenes[currentScene.name] = sceneData;
+            SetSpawnPoints(interactableObjects);
         }
-
-
-        UpdateSpawnPoints();
 
         // Change locations of Lupe and Misra to Spawn Points
         SceneInteractableInfo sceneInfo = scenes[currentScene.name];
@@ -69,7 +67,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
                 Debug.LogError("Cannot spawn Lupe. No Spawn Points");
                 return;
             }
-            Lupe.transform.position = new Vector3(sceneInfo.spawnPoints[0].transform.position.x, Lupe.transform.position.y, Lupe.transform.position.z);
+            Lupe.transform.position = new Vector3(sceneInfo.spawnPoints[0], Lupe.transform.position.y, Lupe.transform.position.z);
         }
 
         if (Misra != null && Misra.GetComponent<SpriteRenderer>().enabled)
@@ -79,13 +77,13 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
                 Debug.LogError("Cannot spawn Misra. No available Spawn Points");
                 return;
             }
-            Misra.transform.position = new Vector3(sceneInfo.spawnPoints[1].transform.position.x, Misra.transform.position.y, Misra.transform.position.z);
+            Misra.transform.position = new Vector3(sceneInfo.spawnPoints[1], Misra.transform.position.y, Misra.transform.position.z);
         }
     }
 
-    public void UpdateSpawnPoints()
+    public void SetSpawnPoints(List<GameObject> interactables)
     {
-        scenes[currentScene.name].FindSpawnPoints();
+        scenes[currentScene.name].SetSpawnPoints(interactables);
     }
 
     public List<GameObject> GetAllInteractables()
@@ -100,36 +98,53 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
 
         return interactableObjects;
     }
+
+    public void LogErrorFormat()
+    {
+        Debug.LogError("\n----------");
+        foreach (var data in scenes)
+        {
+            Debug.LogError(scenes[data.Key].sceneName);
+            Debug.LogError(scenes[data.Key].spawnPoints.Count);
+            Debug.LogError("\n----------");
+        }
+    }
 }
 
 public class SceneInteractableInfo
 {
     public string sceneName;
-    public List<GameObject> interactables;
-    public List<GameObject> spawnPoints = new List<GameObject>();
+    public List<float> spawnPoints = new List<float>();
 
-    public SceneInteractableInfo(string sceneName, List<GameObject> interactables)
+    public SceneInteractableInfo(string sceneName)
     {
         this.sceneName = sceneName;
-        this.interactables = interactables;
 
     }
 
-    public void FindSpawnPoints()
+    public void SetSpawnPoints(List<GameObject> interactables)
     {
-        if (interactables.Count == 0)
-        {
-            return;
-        }
-
         spawnPoints.Clear();
 
-        foreach (var interactableObject in interactables)
-        {
-            Interactable interactable = interactableObject.GetComponent<Interactable>();
-            if (!interactable.isSpawn) { continue; }
+        spawnPoints.AddRange(FindSpawnPoints(interactables));
+    }
 
-            spawnPoints.AddRange(interactable.GetDestinationPoints());
+    private List<float> FindSpawnPoints(List<GameObject> interactables)
+    {
+        List<float> spawnPoints = new List<float>();
+
+        foreach (var interactable in interactables)
+        {
+            Interactable script = interactable.GetComponent<Interactable>();
+
+            if (!script.isSpawn) { continue; }
+
+            List<GameObject> destinationPoints = script.GetDestinationPoints();
+            foreach (var destinationPoint in destinationPoints)
+            {
+                spawnPoints.Add(destinationPoint.transform.position.x);
+            }
         }
+        return spawnPoints;
     }
 }
