@@ -48,9 +48,6 @@ public class IdleState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
-    private readonly float _maxDuration;
-
-    private readonly bool _idleWalkLoop;
 
     /// <param name="args">
     ///     args[0] = NPC_StateMachine (_stateMachine)
@@ -62,15 +59,10 @@ public class IdleState : FiniteState<NPCState>
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
-        _maxDuration = (float)args[2];
-        _idleWalkLoop = (bool)args[3];
     }
 
     public override void Enter()
     {
-        if (_maxDuration == 0) { _stateMachine.GoToState(NPCState.WALK); }
-        
-        if (_idleWalkLoop) { coroutine = _coroutineRunner.StartCoroutine(IdleTimer()); }
     }
 
     public override void Exit()
@@ -81,12 +73,6 @@ public class IdleState : FiniteState<NPCState>
     }
 
     public override void Execute() { }
-
-    private IEnumerator IdleTimer()
-    {
-        yield return new WaitForSeconds(Random.Range(0, _maxDuration));
-        _stateMachine.GoToState(NPCState.WALK);
-    }
 }
 
 #endregion
@@ -97,12 +83,11 @@ public class IdleState : FiniteState<NPCState>
 public class WalkState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
-    private readonly float _maxDuration;
     private int _walkDirection = 1;
-    private readonly float _leftBound;
-    private readonly float _rightBound;
+    private float _walkDestinationX;
     private readonly float _walkSpeed;
-    private readonly bool _idleWalkLoop;
+    private DestinationWrapper _destinationWrapper;
+    private NPCState _stateAfterWalking;
 
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
@@ -121,20 +106,16 @@ public class WalkState : FiniteState<NPCState>
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
         _walkSpeed = (float)args[2];
-        _maxDuration = (float)args[3];
-        _leftBound = (float)args[4];
-        _rightBound = (float)args[5];
-        _idleWalkLoop = (bool)args[6];
+        _destinationWrapper = (DestinationWrapper)args[3];
+        _walkDestinationX = _destinationWrapper.walkDestinationX;
+        _stateAfterWalking = (NPCState)args[4];
+
     }
 
     public override void Enter()
     {
-        NPC_Animator _animator = _stateMachine.animator;
-
         // When walking, it can be either direction randomly
         _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-
-        if (_idleWalkLoop) { coroutine = _coroutineRunner.StartCoroutine(WalkTimer()); }
     }
 
     public override void Exit()
@@ -148,32 +129,25 @@ public class WalkState : FiniteState<NPCState>
 
     public override void Execute()
     {
-
         Transform transform = _stateMachine.controller.transform;
-        float movement = _walkDirection * _walkSpeed;
-        float targetX = transform.position.x + movement;
+        _walkDestinationX = _destinationWrapper.walkDestinationX;
 
-        // If we're going out of bounds, flip directions
-        if (targetX < _leftBound || targetX > _rightBound)
+        if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
         {
-            _walkDirection *= -1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
+            _stateMachine.GoToState(_stateAfterWalking);
+            return;
         }
 
-        // If we are already out of bounds, we want to walk back in bounds
-        if (transform.position.x <= _leftBound)
-        {
-            _walkDirection = 1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
-        }
-        if (transform.position.x >= _rightBound)
+        if (transform.position.x > _walkDestinationX)
         {
             _walkDirection = -1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
+        } else
+        {
+            _walkDirection = 1;
         }
+
+        float movement = _walkDirection * _walkSpeed;
+        float targetX = transform.position.x + movement;
 
         // move the character
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
@@ -182,10 +156,10 @@ public class WalkState : FiniteState<NPCState>
         _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-_walkDirection, 0));
     }
 
-    private IEnumerator WalkTimer()
+    // Wrapper class
+    public class DestinationWrapper
     {
-        yield return new WaitForSeconds(Random.Range(0, _maxDuration));
-        _stateMachine.GoToState(NPCState.IDLE);
+        public float walkDestinationX;
     }
 }
 
