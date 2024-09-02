@@ -150,7 +150,7 @@ public class PlayerInteractor : OverlapGrid2D
 
         // Make Lupe and Misra walk to the points
         controller.destinationPoint.destinationPoint = nearestDestinationPoint.GetComponent<DestinationPoint>();
-        controller.stateMachine.GoToState(PlayerState.WALK);
+        controller.stateMachine.GoToState(PlayerState.WALKOVERRIDE);
 
         if (Misra != null)
         {
@@ -187,6 +187,8 @@ public class PlayerInteractor : OverlapGrid2D
         // Set Lupe to face interactable
         Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
         playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+
+        activeInteractable.Interact(); // << MAIN INTERACTION
     }
 
     public void ForceInteract(Interactable interactable)

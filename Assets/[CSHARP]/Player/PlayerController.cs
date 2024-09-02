@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     public class WalkOverride : FinitePlayerState
     {
-        private PlayerStateMachine _stateMachine;
+        public PlayerStateMachine _stateMachine;
         private float _walkDestinationX;
         private CurrentDestinationPoint _currentDestinationPoint;
 
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-            // Debug.Log($"Entering State: {stateType}");
+            // Debug.Log($"Entering State: WALK");
         }
 
         public override void Exit()
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
 
             // Update the Animation
-            _stateMachine._animator.FrameAnimationPlayer.FlipTransform(new Vector2(-_walkDirection, 0));
+            _stateMachine._animator.FrameAnimationPlayer.FlipTransform(new Vector2(_walkDirection, 0));
         }
 
     }
@@ -131,14 +131,18 @@ public class PlayerController : MonoBehaviour
         interactor = GetComponent<PlayerInteractor>();
         animator = GetComponent<PlayerAnimator>();
 
+        WalkOverride walkOverride = new WalkOverride(stateMachine, PlayerState.WALKOVERRIDE, destinationPoint);
+
         stateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
             {PlayerState.NONE, new FinitePlayerState(stateMachine, PlayerState.NONE)},
             {PlayerState.IDLE, new FinitePlayerState(stateMachine, PlayerState.IDLE)},
             {PlayerState.WALK, new FinitePlayerState(stateMachine, PlayerState.WALK)},
             {PlayerState.INTERACTION, new FinitePlayerState(stateMachine, PlayerState.INTERACTION)},
             {PlayerState.HIDE, new FinitePlayerState(stateMachine, PlayerState.HIDE)},
-            {PlayerState.WALKOVERRIDE, new WalkOverride(stateMachine, PlayerState.WALKOVERRIDE, destinationPoint) }
+            {PlayerState.WALKOVERRIDE, walkOverride}
         }, PlayerState.IDLE, this);
+
+        walkOverride._stateMachine = stateMachine;
     }
 
     void Start()
@@ -163,7 +167,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        stateMachine.Step();
         HandleMovement();
+        currentState = stateMachine.CurrentState;
     }
 
     public void OnDestroy()
@@ -177,7 +183,7 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // If the player is in an interaction state, do not allow movement
-        if (stateMachine.CurrentState == PlayerState.INTERACTION) return;
+        if (stateMachine.CurrentState == PlayerState.INTERACTION || stateMachine.CurrentState == PlayerState.WALKOVERRIDE) return;
 
         Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
         moveDirection *= playerSpeed; // Scalar
