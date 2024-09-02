@@ -36,6 +36,8 @@ public class NPC_Interactable : Interactable, IInteract
 
     public override void Start()
     {
+        SpawnDestinationPoints();
+
         Reset();
 
         // >> ON FIRST INTERACTION -------------------------------

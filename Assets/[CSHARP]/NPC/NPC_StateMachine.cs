@@ -114,8 +114,6 @@ public class WalkState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        // When walking, it can be either direction randomly
-        _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
     }
 
     public override void Exit()

@@ -5,6 +5,8 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Game.Grid2D;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
+using System.Collections;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerInteractor : OverlapGrid2D
 {
@@ -108,16 +110,83 @@ public class PlayerInteractor : OverlapGrid2D
             // Subscribe to the OnComplete event
             activeInteractable.OnCompleted += ExitInteraction;
 
-            // Set the player controller state to Interaction
-            playerController.EnterInteraction();
+            StartCoroutine(MoveToPosition());
 
-            // Set Lupe to face interactable
-            Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
-            playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+            return true;
         }
 
         activeInteractable.Interact(); // << MAIN INTERACTION
         return true;
+    }
+
+    private IEnumerator MoveToPosition()
+    {
+        PlayerController controller = gameObject.GetComponent<PlayerController>();
+
+        // Set up destination points and sort by nearest
+        List<GameObject> destinationPoints = activeInteractable.GetDestinationPoints();
+        destinationPoints.Sort((a, b) =>
+            Mathf.Abs(a.transform.position.x - playerController.transform.position.x)
+                .CompareTo(Mathf.Abs(b.transform.position.x - playerController.transform.position.x))
+        );
+        GameObject nearestDestinationPoint = destinationPoints[0];
+        GameObject secondNearest = null;
+
+        // Find Misra
+        GameObject Misra = null;
+        var tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
+        if (tempMisra != null)
+        {
+            Misra = tempMisra.gameObject;
+        }
+
+        // Make the DestinationPoints track Lupe and Misra
+        nearestDestinationPoint.GetComponent<DestinationPoint>().trackedEntity = gameObject;
+        if (destinationPoints.Count > 1 && Misra != null)
+        {
+            secondNearest = destinationPoints[1];
+            secondNearest.GetComponent<DestinationPoint>().trackedEntity = Misra;
+        }
+
+        // Make Lupe and Misra walk to the points
+        controller.destinationPoint.destinationPoint = nearestDestinationPoint.GetComponent<DestinationPoint>();
+        controller.stateMachine.GoToState(PlayerState.WALK);
+
+        if (Misra != null)
+        {
+            if (secondNearest == null)
+            {
+                Debug.LogError("Cannot move Misra, no destination point");
+            } else
+            {
+                MTR_Misra_Controller Misra_Controller = Misra.GetComponent<MTR_Misra_Controller>();
+                Misra_Controller.walkDestinationX = secondNearest.transform.position.x;
+                Misra_Controller.stateMachine.GoToState(NPCState.WALK);
+            }
+        }
+
+        // pause action until they reach the destinations
+        while (true) {
+            yield return new WaitForSeconds(0.05f);
+            
+            if (!nearestDestinationPoint.GetComponent<DestinationPoint>().isEntityInRange()) {
+                continue;
+            }
+
+            if (secondNearest != null && Misra != null && !secondNearest.GetComponent<DestinationPoint>().isEntityInRange())
+            {
+                continue;
+            }
+
+            break;
+        }
+
+        // Set the player controller state to Interaction
+        playerController.EnterInteraction();
+
+        // Set Lupe to face interactable
+        Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
+        playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
     }
 
     public void ForceInteract(Interactable interactable)
