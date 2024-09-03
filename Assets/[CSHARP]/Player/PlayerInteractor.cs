@@ -125,6 +125,22 @@ public class PlayerInteractor : OverlapGrid2D
 
         // Set up destination points and sort by nearest
         List<GameObject> destinationPoints = activeInteractable.GetDestinationPoints();
+
+        // Ensure there are enough destination points
+        if (destinationPoints == null || destinationPoints.Count == 0)
+        {
+            //Debug.LogError("No destination points found.");
+            // Set the player controller state to Interaction
+            playerController.EnterInteraction();
+
+            // Set Lupe to face interactable
+            Vector3 newActiveInteractablePosition = activeInteractable.gameObject.transform.position;
+            playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+
+            activeInteractable.Interact(); // << MAIN INTERACTION
+            yield break;
+        }
+
         destinationPoints.Sort((a, b) =>
             Mathf.Abs(a.transform.position.x - playerController.transform.position.x)
                 .CompareTo(Mathf.Abs(b.transform.position.x - playerController.transform.position.x))
@@ -184,8 +200,13 @@ public class PlayerInteractor : OverlapGrid2D
         // Set the player controller state to Interaction
         playerController.EnterInteraction();
 
-        // Set Lupe to face interactable
-        Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
+        if (Misra != null)
+        {
+            Misra.GetComponent<MTR_Misra_Controller>().stateMachine.GoToState(NPCState.FOLLOW);
+        }
+
+            // Set Lupe to face interactable
+            Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
         playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
         activeInteractable.Interact(); // << MAIN INTERACTION
