@@ -79,7 +79,7 @@ public class NPC_InteractableCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (NPC_Interactable)target;
-        _script.Awake();
+        //_script.Awake();
     }
 
     public override void OnInspectorGUI()

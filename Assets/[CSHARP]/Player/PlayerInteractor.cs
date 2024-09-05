@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Game.Grid2D;
+using Darklight.UnityExt.Game.Grid;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using System.Collections;
 using static UnityEngine.GraphicsBuffer;
 
-public class PlayerInteractor : OverlapGrid2D
+public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
@@ -20,13 +20,12 @@ public class PlayerInteractor : OverlapGrid2D
     public Interactable activeInteractable;
     [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
     public Interactable previousTargetInteractable;
-        
+
 
     #region -- [[ UPDATE THE INTERACTABLE RADAR ]] ------------------------------------- >> 
 
-    public override void Update()
+    public void Update()
     {
-        base.Update();
         RefreshRadar();
     }
 

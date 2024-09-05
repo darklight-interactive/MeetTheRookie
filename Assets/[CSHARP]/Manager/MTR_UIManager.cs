@@ -13,7 +13,7 @@ using NaughtyAttributes;
 
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Game.Grid2D;
+using Darklight.UnityExt.Game.Grid;
 
 
 #if UNITY_EDITOR
@@ -192,68 +192,71 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-        OverlapGrid2D_Data gridData;
+        //OverlapGrid2D_Data gridData;
 
         Vector3 bubblePosition = Vector3.zero;
         Vector3 bubbleScale = Vector3.one;
         Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = characterColors[currentSpeaker];
+        /*
 
-        // Set the Camera Target to the Player
-        if (currentSpeaker.Contains("Lupe"))
+    // Set the Camera Target to the Player
+    if (currentSpeaker.Contains("Lupe"))
+    {
+
+PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+if (playerInteractor == null)
+{
+Debug.LogError($"{Prefix} Could not find PlayerInteractor");
+}
+
+gridData = playerInteractor.GetBestOverlapGridData();
+
+// Set the Bubble Position
+bubblePosition = gridData.worldPosition;
+Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
+
+// Set the Bubble Direction
+if (bubblePosition.x <= playerInteractor.transform.position.x)
+{
+bubbleDirection = Vector2Int.left;
+}
+else if (bubblePosition.x > playerInteractor.transform.position.x)
+{
+bubbleDirection = Vector2Int.right;
+}
+
+        // Set the Bubble Scale
+        bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+    }
+    else
+    {
+        // Set the Camera Target to a NPC
+        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
+        foreach (NPC_Interactable interactable in interactables)
         {
-            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            if (playerInteractor == null)
+            if (interactable.speakerTag.Contains(currentSpeaker))
             {
-                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-            }
+                //gridData = interactable.GetBestOverlapGridData();
 
-            gridData = playerInteractor.GetBestOverlapGridData();
-
-            // Set the Bubble Position
-            bubblePosition = gridData.worldPosition;
-            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
-
-            // Set the Bubble Direction
-            if (bubblePosition.x <= playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.left;
-            }
-            else if (bubblePosition.x > playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.right;
-            }
-
-            // Set the Bubble Scale
-            bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
-        }
-        else
-        {
-            // Set the Camera Target to a NPC
-            NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
-            foreach (NPC_Interactable interactable in interactables)
-            {
-                if (interactable.speakerTag.Contains(currentSpeaker))
+                // Set the Bubble Position and Direction
+                bubblePosition = gridData.worldPosition;
+                bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                if (bubblePosition.x <= interactable.transform.position.x)
                 {
-                    gridData = interactable.GetBestOverlapGridData();
-
-                    // Set the Bubble Position and Direction
-                    bubblePosition = gridData.worldPosition;
-                    bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
-                    if (bubblePosition.x <= interactable.transform.position.x)
-                    {
-                        bubbleDirection = Vector2Int.left;
-                    }
-                    else if (bubblePosition.x > interactable.transform.position.x)
-                    {
-                        bubbleDirection = Vector2Int.right;
-                    }
-
-                    // Set the Bubble Scale
-                    bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+                    bubbleDirection = Vector2Int.left;
                 }
+                else if (bubblePosition.x > interactable.transform.position.x)
+                {
+                    bubbleDirection = Vector2Int.right;
+                }
+
+                // Set the Bubble Scale
+                bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
             }
         }
+    }
+*/
 
 
 
@@ -276,14 +279,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         return speechBubble;
     }
 
-    public void AssignTransformToGridData(OverlapGrid2D_Data gridData)
-    {
-        if (speechBubbleObject == null)
-            return;
+    /*
+        public void AssignTransformToGridData(OverlapGrid2D_Data gridData)
+        {
+            if (speechBubbleObject == null)
+                return;
 
-        speechBubbleObject.transform.position = gridData.worldPosition;
-        speechBubbleObject.transform.localScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
-    }
+            speechBubbleObject.transform.position = gridData.worldPosition;
+            speechBubbleObject.transform.localScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+        }
+        */
 
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {

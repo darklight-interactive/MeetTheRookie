@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Game.Grid2D;
+using Darklight.UnityExt.Game.Grid;
 using Darklight.UnityExt.Inky;
 
 using Ink.Runtime;
@@ -17,7 +17,7 @@ using UnityEditor;
 
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
-public class Interactable : OverlapGrid2D, IInteract
+public class Interactable : MonoBehaviour, IInteract
 {
     private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
@@ -136,9 +136,8 @@ public class Interactable : OverlapGrid2D, IInteract
     {
         if (onStart)
         {
-
-            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            playerInteractor.ForceInteract(this);
+            //PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            //playerInteractor.ForceInteract(this);
         }
     }
 
@@ -146,10 +145,10 @@ public class Interactable : OverlapGrid2D, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        OverlapGrid2D_Data targetData = GetBestOverlapGridData();
+        //OverlapGrid2D_Data targetData = GetBestOverlapGridData();
 
-        if (MTR_UIManager.Instance != null)
-            MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
+        //if (MTR_UIManager.Instance != null)
+        //MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public virtual void TargetClear()
