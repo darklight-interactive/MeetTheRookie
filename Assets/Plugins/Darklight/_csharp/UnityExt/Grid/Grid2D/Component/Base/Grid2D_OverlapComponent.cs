@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 namespace Darklight.UnityExt.Game.Grid
 {
+    [RequireComponent(typeof(Grid2D))]
     public class Grid2D_OverlapComponent : Grid2D_Component
     {
         // ======== [[ FIELDS ]] =========================== >>>>
@@ -24,8 +25,6 @@ namespace Darklight.UnityExt.Game.Grid
 
                 // << INITIALIZATION >> 
                 overlapComponent.LayerMask = _layerMask;
-                overlapComponent.OnColliderEnter += OnColliderEnter;
-                overlapComponent.OnColliderExit += OnColliderExit;
                 overlapComponent.OnInitialize(cell);
                 return true;
             };
@@ -55,10 +54,6 @@ namespace Darklight.UnityExt.Game.Grid
             Cell2D.VisitorFactory.CreateBaseEditorGizmosVisitor(Cell2D.ComponentTypeKey.OVERLAP);
         #endregion
 
-        // ======== [[ EVENTS ]] ================================== >>>>
-        public UltEvent<Cell2D> HandleCollisionEnter;
-        public UltEvent<Cell2D> HandleCollisionExit;
-
         // ======== [[ METHODS ]] ================================== >>>>
         #region -- (( INTERFACE )) : IComponent -------- ))
         public override void OnUpdate()
@@ -80,18 +75,24 @@ namespace Darklight.UnityExt.Game.Grid
         #endregion
 
         // -- (( GETTERS )) -------- ))
-
-
-
-        // -- (( EVENT HANDLERS )) -------- ))
-        void OnColliderEnter(Cell2D cell, Collider2D collider)
+        public List<Cell2D> GetCellsWithLeastOverlap()
         {
-            HandleCollisionEnter?.Invoke(cell);
-        }
-
-        void OnColliderExit(Cell2D cell, Collider2D collider)
-        {
-            HandleCollisionExit?.Invoke(cell);
+            List<Cell2D> cells = new List<Cell2D>();
+            int minWeight = int.MaxValue;
+            foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
+            {
+                if (pair.Value < minWeight)
+                {
+                    cells.Clear();
+                    cells.Add(pair.Key);
+                    minWeight = pair.Value;
+                }
+                else if (pair.Value == minWeight)
+                {
+                    cells.Add(pair.Key);
+                }
+            }
+            return cells;
         }
     }
 }

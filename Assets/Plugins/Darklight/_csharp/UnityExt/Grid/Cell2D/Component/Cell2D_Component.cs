@@ -41,7 +41,7 @@ namespace Darklight.UnityExt.Game.Grid
 
             public virtual void OnUpdate()
             {
-
+                if (BaseCell == null) return;
             }
 
             public virtual ComponentTypeKey GetTypeKey() => ComponentRegistry.GetTypeKey(this);

@@ -94,6 +94,15 @@ namespace Darklight.UnityExt.Game.Grid
             return chosenCell;
         }
 
+        public Cell2D GetLowestWeightedCell()
+        {
+            List<Cell2D_WeightComponent> weightComponents = BaseGrid.GetComponentsByType<Cell2D_WeightComponent>();
+            Cell2D chosenCell = WeightedDataSelector.SelectLowestWeightedItem(weightComponents).BaseCell;
+
+            Debug.Log($"Lowest Weight Chosen Cell: {chosenCell.Key}");
+            return chosenCell;
+        }
+
 #if UNITY_EDITOR
         [CustomEditor(typeof(Grid2D_WeightComponent))]
         public class Grid2D_WeightComponentCustomEditor : UnityEditor.Editor

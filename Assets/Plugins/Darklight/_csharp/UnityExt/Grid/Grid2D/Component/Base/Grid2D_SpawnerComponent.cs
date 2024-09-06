@@ -13,7 +13,7 @@ namespace Darklight.UnityExt.Game.Grid
     public class Grid2D_SpawnerComponent : Grid2D_Component
     {
         // ======== [[ FIELDS ]] ======================================================= >>>>
-        [SerializeField] Sprite _sprite;
+        [SerializeField] GameObject _objectToSpawn;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( BASE VISITORS )) -------- ))
@@ -36,13 +36,7 @@ namespace Darklight.UnityExt.Game.Grid
 
                 // -- (( SPAWN OBJECT )) -------- ))
                 cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-                spawnerComponent.SpawnObject((go) =>
-                {
-                    SpriteRenderer spriteRenderer = go.AddComponent<SpriteRenderer>();
-                    spriteRenderer.sprite = _sprite;
-                    SpriteUtility.FitSpriteToSize(spriteRenderer, dimensions);
-                    return go;
-                });
+                spawnerComponent.InstantiateObject(_objectToSpawn);
 
                 return true;
             });
@@ -108,6 +102,7 @@ namespace Darklight.UnityExt.Game.Grid
 
                 base.OnInspectorGUI();
 
+                /*
                 if (GUILayout.Button("Spawn Object At All Cells"))
                 {
                     _script.SpawnObjectAtAllCells();
@@ -116,6 +111,7 @@ namespace Darklight.UnityExt.Game.Grid
                 {
                     _script.DestroyObject();
                 }
+                */
 
                 if (EditorGUI.EndChangeCheck())
                 {

@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Game.Grid;
 using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Utility;
 
 using Ink.Runtime;
 
 using NaughtyAttributes;
 
 using UnityEngine;
+using GameObjectUtility = Darklight.UnityExt.Utility.GameObjectUtility;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,6 +24,7 @@ public class Interactable : MonoBehaviour, IInteract
 {
     private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
+    private Grid2D_OverlapWeightSpawner _gridSpawner => GetComponentInChildren<Grid2D_OverlapWeightSpawner>();
 
     // private references for DestinationPoints
     private GameObject Lupe;
@@ -62,7 +66,7 @@ public class Interactable : MonoBehaviour, IInteract
     [Tooltip("The parent InkyStoryObject that this interactable belongs to. This is equivalent to a 'Level' of the game.")]
 
     [DropdownAttribute("_sceneKnots")]
-    public string _sceneKnot;
+    public string _sceneKnot = "scene1_0";
 
     [DropdownAttribute("_interactionStitches")]
     public string _interactionStitch;
@@ -83,6 +87,7 @@ public class Interactable : MonoBehaviour, IInteract
     private List<GameObject> _destinationPoints = new List<GameObject>();
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
+    public Grid2D_OverlapWeightSpawner gridSpawner => _gridSpawner;
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
@@ -93,6 +98,19 @@ public class Interactable : MonoBehaviour, IInteract
     public event IInteract.OnComplete OnCompleted;
 
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
+    public void Awake()
+    {
+        if (_gridSpawner == null)
+        {
+            GameObjectUtility.CreateGameObject("Weighted Spawner", (GameObject go) =>
+            {
+                go.transform.SetParent(this.transform);
+                go.AddComponent<Grid2D_OverlapWeightSpawner>();
+                return go;
+            }, this.transform);
+        }
+    }
+
 
     public virtual void Start()
     {
@@ -136,8 +154,8 @@ public class Interactable : MonoBehaviour, IInteract
     {
         if (onStart)
         {
-            //PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            //playerInteractor.ForceInteract(this);
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            playerInteractor.ForceInteract(this);
         }
     }
 
@@ -145,10 +163,12 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        //OverlapGrid2D_Data targetData = GetBestOverlapGridData();
+        Cell2D cell = _gridSpawner.GetBestCell();
 
-        //if (MTR_UIManager.Instance != null)
-        //MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
+        cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+
+        if (MTR_UIManager.Instance != null)
+            MTR_UIManager.Instance.ShowInteractIcon(position, dimensions.y);
     }
 
     public virtual void TargetClear()
@@ -281,7 +301,7 @@ public class Interactable : MonoBehaviour, IInteract
 
     // ====== [[ Destination Points ]] ======================================
 
-    new private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         if (destinationPointsRelativeX == null) {  return; }
 
@@ -374,7 +394,7 @@ public class InteractableCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (Interactable)target;
-        _script.Initialize();
+        _script.Awake();
     }
 
     // This is the method that is called when the inspector is drawn

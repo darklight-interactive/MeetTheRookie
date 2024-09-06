@@ -13,6 +13,7 @@ using UnityEditor;
 namespace Darklight.UnityExt.Game.Grid
 {
     [ExecuteAlways]
+    [RequireComponent(typeof(Grid2D_ConfigComponent))]
     public partial class Grid2D : MonoBehaviour, IUnityEditorListener
     {
         // ======== [[ CONSTANTS ]] ======================================================= >>>>
@@ -129,7 +130,7 @@ namespace Darklight.UnityExt.Game.Grid
         void Refresh()
         {
             // Initialize if not already
-            if (!_isInitialized)
+            if (!_isInitialized || _config == null)
             {
                 Initialize();
                 return;

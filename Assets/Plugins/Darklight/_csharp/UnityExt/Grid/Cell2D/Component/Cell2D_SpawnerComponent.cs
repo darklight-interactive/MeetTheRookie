@@ -25,6 +25,15 @@ namespace Darklight.UnityExt.Game.Grid
             _spawnedObject = initializer(_spawnedObject);
         }
 
+        public void InstantiateObject(GameObject prefab)
+        {
+            if (_spawnedObject != null) return;
+            BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+
+            _spawnedObject = GameObject.Instantiate(prefab, position, Quaternion.LookRotation(normal, Vector3.up));
+            _spawnedObject.transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
+        }
+
         public void DestroyObject()
         {
             if (_spawnedObject == null) return;

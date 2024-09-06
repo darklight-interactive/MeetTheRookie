@@ -56,18 +56,28 @@ namespace Darklight.UnityExt.Game.Grid
         {
             if (_data == null) return;
             if (_componentReg == null) return;
+            if (grid == null) return;
 
-            // Calculate the cell's transform
-            Grid2D.SpatialUtility.CalculateCellTransform(
-                out Vector3 position, out Vector2Int coordinate,
-                out Vector3 normal, out Vector2 dimensions,
-                this, grid.GetConfig());
+            try
+            {
+                // Calculate the cell's transform
+                Grid2D.SpatialUtility.CalculateCellTransform(
+                    out Vector3 position, out Vector2Int coordinate,
+                    out Vector3 normal, out Vector2 dimensions,
+                    this, grid.GetConfig());
 
-            // Assign the calculated values to the cell
-            Data.SetPosition(position);
-            Data.SetCoordinate(coordinate);
-            Data.SetNormal(normal);
-            Data.SetDimensions(dimensions);
+                // Assign the calculated values to the cell
+                Data.SetPosition(position);
+                Data.SetCoordinate(coordinate);
+                Data.SetNormal(normal);
+                Data.SetDimensions(dimensions);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error recalculating cell data: {e.Message}", grid.transform.parent);
+            }
+
+
         }
 
         public Cell2D Clone()
@@ -115,8 +125,8 @@ namespace Darklight.UnityExt.Game.Grid
         {
             if (_data == null) return;
 
-            GetTransformData(out Vector3 position, out float radius, out Vector3 normal);
-            CustomGizmos.DrawWireSquare(position, radius, normal, Color.gray);
+            GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+            CustomGizmos.DrawWireRect(position, dimensions, normal, Color.white);
         }
 
         public void DrawEditor()

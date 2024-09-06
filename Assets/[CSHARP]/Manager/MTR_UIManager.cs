@@ -192,71 +192,71 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-        //OverlapGrid2D_Data gridData;
+        Cell2D bestCell = null;
 
         Vector3 bubblePosition = Vector3.zero;
         Vector3 bubbleScale = Vector3.one;
         Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = characterColors[currentSpeaker];
-        /*
 
-    // Set the Camera Target to the Player
-    if (currentSpeaker.Contains("Lupe"))
-    {
-
-PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-if (playerInteractor == null)
-{
-Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-}
-
-gridData = playerInteractor.GetBestOverlapGridData();
-
-// Set the Bubble Position
-bubblePosition = gridData.worldPosition;
-Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
-
-// Set the Bubble Direction
-if (bubblePosition.x <= playerInteractor.transform.position.x)
-{
-bubbleDirection = Vector2Int.left;
-}
-else if (bubblePosition.x > playerInteractor.transform.position.x)
-{
-bubbleDirection = Vector2Int.right;
-}
-
-        // Set the Bubble Scale
-        bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
-    }
-    else
-    {
-        // Set the Camera Target to a NPC
-        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
-        foreach (NPC_Interactable interactable in interactables)
+        // Set the Camera Target to the Player
+        if (currentSpeaker.Contains("Lupe"))
         {
-            if (interactable.speakerTag.Contains(currentSpeaker))
+
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            if (playerInteractor == null)
             {
-                //gridData = interactable.GetBestOverlapGridData();
+                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
+            }
 
-                // Set the Bubble Position and Direction
-                bubblePosition = gridData.worldPosition;
-                bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
-                if (bubblePosition.x <= interactable.transform.position.x)
-                {
-                    bubbleDirection = Vector2Int.left;
-                }
-                else if (bubblePosition.x > interactable.transform.position.x)
-                {
-                    bubbleDirection = Vector2Int.right;
-                }
+            // Get the Best Cell
+            bestCell = playerInteractor.grid2D_OverlapWeightSpawner.GetBestCell();
+            bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-                // Set the Bubble Scale
-                bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+            // Set the Bubble Position
+            bubblePosition = position;
+            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
+
+            // Set the Bubble Direction
+            if (bubblePosition.x <= playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.left;
+            }
+            else if (bubblePosition.x > playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.right;
+            }
+
+            // Set the Bubble Scale
+            bubbleScale = new Vector3(dimensions.x, dimensions.y, 1);
+        }
+        else
+        {
+            // Set the Camera Target to a NPC
+            NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
+            foreach (NPC_Interactable interactable in interactables)
+            {
+                if (interactable.speakerTag.Contains(currentSpeaker))
+                {
+                    bestCell = interactable.gridSpawner.GetBestCell();
+                    bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+                    // Set the Bubble Position and Direction
+                    bubblePosition = position;
+                    bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                    if (bubblePosition.x <= interactable.transform.position.x)
+                    {
+                        bubbleDirection = Vector2Int.left;
+                    }
+                    else if (bubblePosition.x > interactable.transform.position.x)
+                    {
+                        bubbleDirection = Vector2Int.right;
+                    }
+
+                    // Set the Bubble Scale
+                    bubbleScale = new Vector3(dimensions.x, dimensions.y, 1);
+                }
             }
         }
-    }
-*/
 
 
 

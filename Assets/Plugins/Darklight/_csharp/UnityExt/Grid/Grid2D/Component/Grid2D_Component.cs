@@ -56,6 +56,12 @@ namespace Darklight.UnityExt.Game.Grid
             _guid = System.Guid.NewGuid().GetHashCode();
             _typeKey = GetTypeKey();
             BaseGrid = baseObj;
+
+            if (BaseGrid == null)
+            {
+                Debug.LogError("Grid2D_Component: BaseGrid is null. Cannot initialize component.");
+                return;
+            }
             BaseGrid.SendVisitorToAllCells(InitVisitor);
         }
         public virtual void OnUpdate()

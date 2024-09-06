@@ -32,6 +32,7 @@ namespace Darklight.UnityExt.Game.Grid
         // ======== [[ METHODS ]] ================================== >>>>
         public override void OnUpdate()
         {
+            base.OnUpdate();
             UpdateColliders();
         }
 
@@ -68,6 +69,7 @@ namespace Darklight.UnityExt.Game.Grid
 
             // Clear the currentColliders set to prepare for new detections
             _currentColliders = new HashSet<Collider2D>();
+
 
             BaseCell.GetTransformData(out Vector3 position, out float radius, out Vector3 normal);
             Vector3 halfExtents = Vector3.one * radius;
