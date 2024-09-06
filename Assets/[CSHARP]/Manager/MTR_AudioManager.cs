@@ -1,5 +1,6 @@
 using Darklight.UnityExt.FMODExt;
 using FMODUnity;
+using System.Collections;
 using UnityEngine;
 
 public class MTR_AudioManager : FMODExt_EventManager
@@ -19,8 +20,33 @@ public class MTR_AudioManager : FMODExt_EventManager
         PlaySong(bg_music);
     }
 
+    //public void SetReverb(float reverbValue)
+    //{
+    //    if (reverbValue >= 0 &&  reverbValue <= 1) { FMODUnity.RuntimeManager.StudioSystem.setParameterByName(Reverb, reverbValue); }
+    //}
+
+
+    GameObject player;
+    Coroutine repeatEventCoroutine;
     public void StartFootstepEvent()
     {
-        StartRepeatingEvent(generalSFX.footstep, generalSFX.footstepInterval);
+        if (player == null) { player = GameObject.Find("[PLAYER] Lupe"); }
+        
+        repeatEventCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
+    }
+
+    // Handling spatialized repeated events
+    private IEnumerator RepeatEventRoutine(EventReference eventReference, float interval, GameObject soundObject)
+    {
+        while (true)
+        {
+            FMODUnity.RuntimeManager.PlayOneShotAttached(eventReference, soundObject);
+            yield return new WaitForSeconds(interval);
+        }
+    }
+
+    public new void StopRepeatingEvent()
+    {
+        StopCoroutine(repeatEventCoroutine);
     }
 }

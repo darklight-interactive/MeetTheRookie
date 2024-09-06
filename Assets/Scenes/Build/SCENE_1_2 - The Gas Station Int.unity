@@ -1093,7 +1093,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.271
@@ -2380,6 +2380,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1476753203}
+    - target: {fileID: 5504865614351322785, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: PlayEvent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504865614351322785, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: StopEvent
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504865614351322785, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504865614351322785, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: OverrideMinDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5562682158242864135, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2396,6 +2412,30 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 496524716}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.191
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.823
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873745497624051434, guid: 348875da0b139d9429c630ec5222c601, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6909660701239236655, guid: 348875da0b139d9429c630ec5222c601, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2440,7 +2480,8 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 22347832}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5452777074116572522, guid: 348875da0b139d9429c630ec5222c601, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2671,7 +2712,7 @@ PrefabInstance:
     - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: attenuationObject
       value: 
-      objectReference: {fileID: 1798601803}
+      objectReference: {fileID: 0}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
@@ -3539,11 +3580,6 @@ Transform:
   - {fileID: 1255759071}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1798601803 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-  m_PrefabInstance: {fileID: 415956327}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1822882988
 PrefabInstance:
   m_ObjectHideFlags: 0

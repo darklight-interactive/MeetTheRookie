@@ -48,15 +48,21 @@
 		</relationship>
 	</object>
 	<object class="CompressorEffect" id="{7c61cc44-4898-45bd-ae0b-6f483e6cdccb}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
 		<property name="threshold">
-			<value>-19.5</value>
+			<value>-18.5</value>
 		</property>
 		<property name="ratio">
-			<value>2.29999995</value>
+			<value>3</value>
 		</property>
+		<property name="attackTime">
+			<value>54</value>
+		</property>
+		<property name="releaseTime">
+			<value>400</value>
+		</property>
+		<relationship name="sidechains">
+			<destination>{e611b819-7fd5-4075-b763-e66c0c28edd8}</destination>
+		</relationship>
 	</object>
 	<object class="Automator" id="{28e0e78a-bc92-4721-9191-f9648054a655}">
 		<property name="nameOfPropertyBeingAutomated">

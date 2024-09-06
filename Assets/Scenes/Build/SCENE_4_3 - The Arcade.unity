@@ -449,11 +449,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &44923917 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-  m_PrefabInstance: {fileID: 441265061}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &48623353
 Mesh:
   m_ObjectHideFlags: 0
@@ -3567,7 +3562,7 @@ PrefabInstance:
     - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: attenuationObject
       value: 
-      objectReference: {fileID: 44923917}
+      objectReference: {fileID: 0}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
@@ -9132,7 +9127,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
+      objectReference: {fileID: -1216012158, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -9328,11 +9323,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1057445392754232926, guid: 4bd48c863e6524337a4531036421a359, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2
+      value: -0.19999999
       objectReference: {fileID: 0}
     - target: {fileID: 1057445392754232926, guid: 4bd48c863e6524337a4531036421a359, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.845
+      value: -12.17
       objectReference: {fileID: 0}
     - target: {fileID: 1070027040494919132, guid: 4bd48c863e6524337a4531036421a359, type: 3}
       propertyPath: m_Mesh
@@ -9867,8 +9862,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1692796992}
     - target: {fileID: 7171973432914521611, guid: 4bd48c863e6524337a4531036421a359, type: 3}
+      propertyPath: PlayEvent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7171973432914521611, guid: 4bd48c863e6524337a4531036421a359, type: 3}
+      propertyPath: StopEvent
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7171973432914521611, guid: 4bd48c863e6524337a4531036421a359, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7171973432914521611, guid: 4bd48c863e6524337a4531036421a359, type: 3}
       propertyPath: OverrideMinDistance
-      value: 0.84
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7253141247304195155, guid: 4bd48c863e6524337a4531036421a359, type: 3}
       propertyPath: m_LocalPosition.x
