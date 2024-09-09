@@ -21,24 +21,23 @@ namespace Darklight.UnityExt.Game.Grid
             { "Left", Vector3.left },
             { "Right", Vector3.right },
             { "Forward", Vector3.forward },
-            { "Back", Vector3.back }
+            { "Back", Vector3.back },
         };
 
-        bool _showLocalPosition => _lockToTransform;
-        bool _showWorldPosition => !_lockToTransform;
-        bool _showNormal => !_lockToTransform;
+        bool _showLocalPosition => _lockPosToTransform;
+        bool _showWorldPosition => !_lockPosToTransform;
+        bool _showNormal => !_lockNormalToTransform;
 
         #endregion
 
         // ======== [[ SERIALIZED FIELDS ]] ======================================================= >>>>
         // (( GRID2D CONFIG )) ---- >>
         [Header("-- GRID2D CONFIG -- >>")]
-        [SerializeField] bool _lockToTransform = true;
+        [SerializeField] bool _lockPosToTransform = true;
+        [SerializeField] bool _lockNormalToTransform = true;
         [SerializeField, ShowIf("_showLocalPosition")] Vector3 _gridLocalPosition = new Vector3(0, 0, 0);
-        [SerializeField, ShowIf("_showWorldPosition")] Vector3 _gridWorldPosition = new Vector3(0, 0, 0);
-
-        [ShowIf("_showNormal"), Dropdown("editor_directions")]
-        [SerializeField] Vector3 _gridNormal = Vector3.forward;
+        [Dropdown("editor_directions")]
+        [SerializeField, ShowIf("_showNormal")] Vector3 _gridNormal = Vector3.forward;
 
         [Space(10)]
         [SerializeField] Grid2D.Alignment _gridAlignment = Grid2D.Alignment.Center;
@@ -69,19 +68,16 @@ namespace Darklight.UnityExt.Game.Grid
             return config;
         }
 
-        public Grid2D.Config CreateGridConfig()
+        public void UpdateConfig(Grid2D.Config config)
         {
-            Grid2D.Config config = new Grid2D.Config()
-            {
-                LockToTransform = _lockToTransform,
-                GridAlignment = _gridAlignment,
-                GridLocalPosition = _gridLocalPosition,
-                GridWorldPosition = _gridWorldPosition,
-                GridNormal = _gridNormal,
-                GridDimensions = new Vector2Int(_gridColumns, _gridRows),
-                CellConfig = CreateCellConfig()
-            };
-            return config;
+            config.LockPosToTransform = _lockPosToTransform;
+            config.LockNormalToTransform = _lockNormalToTransform;
+            config.GridAlignment = _gridAlignment;
+            config.GridDimensions = new Vector2Int(_gridColumns, _gridRows);
+            config.GridNormal = _gridNormal;
+            config.SetGridLocalPosition(_gridLocalPosition);
+
+            config.CellConfig = CreateCellConfig();
         }
     }
 }

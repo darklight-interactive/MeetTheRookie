@@ -20,11 +20,23 @@ using UnityEditor;
 
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
 public class Interactable : MonoBehaviour, IInteract
 {
     private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private Grid2D_OverlapWeightSpawner _gridSpawner => GetComponentInChildren<Grid2D_OverlapWeightSpawner>();
+    private Grid2D_OverlapWeightSpawner _gridSpawner
+    {
+        get
+        {
+            Grid2D_OverlapWeightSpawner spawner = GetComponent<Grid2D_OverlapWeightSpawner>();
+            if (spawner == null)
+                spawner = this.gameObject.AddComponent<Grid2D_OverlapWeightSpawner>();
+
+            return spawner;
+
+        }
+    }
 
     // private references for DestinationPoints
     private GameObject Lupe;

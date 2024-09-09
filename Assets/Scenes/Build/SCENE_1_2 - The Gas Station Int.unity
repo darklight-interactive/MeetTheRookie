@@ -745,6 +745,11 @@ GameObject:
   - component: {fileID: 256807745}
   - component: {fileID: 256807744}
   - component: {fileID: 256807743}
+  - component: {fileID: 256807750}
+  - component: {fileID: 256807749}
+  - component: {fileID: 256807748}
+  - component: {fileID: 256807747}
+  - component: {fileID: 256807746}
   m_Layer: 8
   m_Name: gas_bathroom_door_0
   m_TagString: Untagged
@@ -776,16 +781,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256807741}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
   _sprite: {fileID: -6538129623186974381, guid: 7718ce52f2ba1474bbe972b14ef3d27e, type: 3}
   onStart: 0
   isSpawn: 0
@@ -899,6 +899,114 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &256807746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 793246900
+  _typeKey: 4
+--- !u!114 &256807747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 2116661318
+  _typeKey: 1
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _showGizmos: 0
+--- !u!114 &256807748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: -706115162
+  _typeKey: 2
+  _showGizmos: 0
+  _autoUpdate: 1
+  _serializedWeightData:
+  - name: Cell (0,0)
+    key: {x: 0, y: 0}
+    weight: 5
+--- !u!114 &256807749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1503146338
+  _typeKey: 3
+  _objectToSpawn: {fileID: 0}
+--- !u!114 &256807750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad7d47a447166f43a56cdc7f3968cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isLoaded: 1
+  _isInitialized: 1
+  _config:
+    _lockToTransform: 1
+    _gridAlignment: 4
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
+    _gridWorldPosition: {x: -2.219033, y: 1, z: 4.6509857}
+    _gridNormal: {x: -0.96149564, y: 0, z: 0.2748201}
+    _gridDimensions: {x: 1, y: 1}
+    _cellConfig:
+      _cellDimensions: {x: 0.5, y: 0.5}
+      _cellSpacing: {x: 0, y: 0}
+      _cellBonding: {x: 0, y: 0}
+  _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
+  _cellsInMap:
+  - _name: Cell2D (0,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1008461680
+      _key: {x: 0, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _dimensions: {x: 0.5, y: 0.5}
+      _position: {x: -2.219033, y: 1, z: 4.6509857}
+      _normal: {x: -0.96149564, y: 0, z: 0.2748201}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
 --- !u!1 &270385831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,6 +1226,11 @@ GameObject:
   - component: {fileID: 407943207}
   - component: {fileID: 407943209}
   - component: {fileID: 407943208}
+  - component: {fileID: 407943214}
+  - component: {fileID: 407943213}
+  - component: {fileID: 407943212}
+  - component: {fileID: 407943211}
+  - component: {fileID: 407943210}
   m_Layer: 0
   m_Name: realfridge_0
   m_TagString: Untagged
@@ -1207,11 +1320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
   _sprite: {fileID: 7083626296817226911, guid: b47b954f6829b844fbfd9d7156ed4f60, type: 3}
   onStart: 0
   isSpawn: 0
@@ -1271,6 +1379,250 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.765625, y: 1.03125}
   m_EdgeRadius: 0
+--- !u!114 &407943210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: -173545508
+  _typeKey: 4
+--- !u!114 &407943211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1213704418
+  _typeKey: 1
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _showGizmos: 0
+--- !u!114 &407943212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1472338604
+  _typeKey: 2
+  _showGizmos: 0
+  _autoUpdate: 1
+  _serializedWeightData:
+  - name: Cell (0,0)
+    key: {x: 0, y: 0}
+    weight: 5
+  - name: Cell (0,1)
+    key: {x: 0, y: 1}
+    weight: 5
+  - name: Cell (0,2)
+    key: {x: 0, y: 2}
+    weight: 5
+  - name: Cell (1,0)
+    key: {x: 1, y: 0}
+    weight: 5
+  - name: Cell (1,1)
+    key: {x: 1, y: 1}
+    weight: 5
+  - name: Cell (1,2)
+    key: {x: 1, y: 2}
+    weight: 5
+  - name: Cell (2,0)
+    key: {x: 2, y: 0}
+    weight: 5
+  - name: Cell (2,1)
+    key: {x: 2, y: 1}
+    weight: 5
+  - name: Cell (2,2)
+    key: {x: 2, y: 2}
+    weight: 5
+--- !u!114 &407943213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: -380215892
+  _typeKey: 3
+  _objectToSpawn: {fileID: 0}
+--- !u!114 &407943214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad7d47a447166f43a56cdc7f3968cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isLoaded: 1
+  _isInitialized: 1
+  _config:
+    _lockToTransform: 1
+    _gridAlignment: 4
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
+    _gridWorldPosition: {x: -0.30000007, y: 0.725, z: 5.575}
+    _gridNormal: {x: 0, y: 0, z: 1}
+    _gridDimensions: {x: 3, y: 3}
+    _cellConfig:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+  _configObj: {fileID: 0}
+  _cellsInMap:
+  - _name: Cell2D (0,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -771880962
+      _key: {x: 0, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (0,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1604129398
+      _key: {x: 0, y: 1}
+      _coordinate: {x: 0, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (0,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1357548404
+      _key: {x: 0, y: 2}
+      _coordinate: {x: 0, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1322183035
+      _key: {x: 1, y: 0}
+      _coordinate: {x: 1, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -497258217
+      _key: {x: 1, y: 1}
+      _coordinate: {x: 1, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -955457687
+      _key: {x: 1, y: 2}
+      _coordinate: {x: 1, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -225080980
+      _key: {x: 2, y: 0}
+      _coordinate: {x: 2, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1036032271
+      _key: {x: 2, y: 1}
+      _coordinate: {x: 2, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 884941336
+      _key: {x: 2, y: 2}
+      _coordinate: {x: 2, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
 --- !u!1001 &415956327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2952,9 +3304,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: field of view
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.4794421
+      value: -4.271
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2962,15 +3318,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.7390003
+      value: -17.739
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999219
+      value: 0.9999805
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.01249707
+      value: -0.0062496336
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2992,6 +3348,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1148548231494987092, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: field of view
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1624106581333338020, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: attenuationObject
       value: 
@@ -2999,6 +3359,14 @@ PrefabInstance:
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
       value: '[CAMERA CONTROLLER]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5663657954300164996, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: field of view
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029335792472997658, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: field of view
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _focusTarget
@@ -3803,6 +4171,11 @@ GameObject:
   - component: {fileID: 1730456540}
   - component: {fileID: 1730456539}
   - component: {fileID: 1730456541}
+  - component: {fileID: 1730456546}
+  - component: {fileID: 1730456545}
+  - component: {fileID: 1730456544}
+  - component: {fileID: 1730456543}
+  - component: {fileID: 1730456542}
   m_Layer: 0
   m_Name: genstore_exterior_door_0 (1)
   m_TagString: Untagged
@@ -3938,11 +4311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
   _sprite: {fileID: -526578920533849773, guid: abf3648a41e1601429a136f10b1800fa, type: 3}
   onStart: 0
   isSpawn: 1
@@ -3956,6 +4324,250 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX:
   - 0.3
+--- !u!114 &1730456542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730456536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1264280269
+  _typeKey: 4
+--- !u!114 &1730456543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730456536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 363839103
+  _typeKey: 1
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _showGizmos: 0
+--- !u!114 &1730456544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730456536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 1012170941
+  _typeKey: 2
+  _showGizmos: 0
+  _autoUpdate: 1
+  _serializedWeightData:
+  - name: Cell (0,0)
+    key: {x: 0, y: 0}
+    weight: 5
+  - name: Cell (0,1)
+    key: {x: 0, y: 1}
+    weight: 5
+  - name: Cell (0,2)
+    key: {x: 0, y: 2}
+    weight: 5
+  - name: Cell (1,0)
+    key: {x: 1, y: 0}
+    weight: 5
+  - name: Cell (1,1)
+    key: {x: 1, y: 1}
+    weight: 5
+  - name: Cell (1,2)
+    key: {x: 1, y: 2}
+    weight: 5
+  - name: Cell (2,0)
+    key: {x: 2, y: 0}
+    weight: 5
+  - name: Cell (2,1)
+    key: {x: 2, y: 1}
+    weight: 5
+  - name: Cell (2,2)
+    key: {x: 2, y: 2}
+    weight: 5
+--- !u!114 &1730456545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730456536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 618211827
+  _typeKey: 3
+  _objectToSpawn: {fileID: 0}
+--- !u!114 &1730456546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730456536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad7d47a447166f43a56cdc7f3968cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isLoaded: 1
+  _isInitialized: 1
+  _config:
+    _lockToTransform: 1
+    _gridAlignment: 4
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
+    _gridWorldPosition: {x: -4.413033, y: 0.5493287, z: 2.252985}
+    _gridNormal: {x: -0.99643266, y: 0, z: 0.084391534}
+    _gridDimensions: {x: 3, y: 3}
+    _cellConfig:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+  _configObj: {fileID: 0}
+  _cellsInMap:
+  - _name: Cell2D (0,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 344332008
+      _key: {x: 0, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (0,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1898878394
+      _key: {x: 0, y: 1}
+      _coordinate: {x: 0, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (0,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1242542807
+      _key: {x: 0, y: 2}
+      _coordinate: {x: 0, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1167342093
+      _key: {x: 1, y: 0}
+      _coordinate: {x: 1, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1843092210
+      _key: {x: 1, y: 1}
+      _coordinate: {x: 1, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (1,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 848219399
+      _key: {x: 1, y: 2}
+      _coordinate: {x: 1, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1922709192
+      _key: {x: 2, y: 0}
+      _coordinate: {x: 2, y: 0}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,1)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1562158327
+      _key: {x: 2, y: 1}
+      _coordinate: {x: 2, y: 1}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
+  - _name: Cell2D (2,2)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1817557996
+      _key: {x: 2, y: 2}
+      _coordinate: {x: 2, y: 2}
+      _dimensions: {x: 1, y: 1}
+      _position: {x: 0, y: 0, z: 0}
+      _normal: {x: 0, y: 1, z: 0}
+      _isDisabled: 0
+    componentTypeKeys: 04000000030000000200000000000000
 --- !u!1 &1791120686
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,18 +38,18 @@ namespace Darklight.UnityExt.Game.Grid
 
                 // Calculate the offset of the cell from the grid origin
                 Vector2 originOffsetPos = originKey * cellConfig.CellDimensions;
-            Vector2 keyOffsetPos = key * cellConfig.CellDimensions;
+                Vector2 keyOffsetPos = key * cellConfig.CellDimensions;
 
-            // Calculate the final position of the cell
-            Vector2 cellPosition = (keyOffsetPos - originOffsetPos); // << Calculate the position offset
-            cellPosition *= spacingOffsetPos; // << Multiply the spacing offset
-            cellPosition += bondingOffset; // << Add the bonding offset
+                // Calculate the final position of the cell
+                Vector2 cellPosition = (keyOffsetPos - originOffsetPos); // << Calculate the position offset
+                cellPosition *= spacingOffsetPos; // << Multiply the spacing offset
+                cellPosition += bondingOffset; // << Add the bonding offset
 
-            // Create a rotation matrix based on the grid's normal
-            Quaternion rotation = Quaternion.LookRotation(config.GridNormal, Vector3.forward);
+                // Create a rotation matrix based on the grid's normal
+                Quaternion rotation = Quaternion.LookRotation(config.GridNormal, Vector3.forward);
 
                 // Apply the rotation to the grid offset and return the final world position
-                return config.GridWorldPosition + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
+                return config.GetGridWorldPosition() + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
             }
 
             static Vector2Int CalculateCoordinateFromKey(Vector2Int key, Grid2D.Config config)

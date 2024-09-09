@@ -10,21 +10,21 @@ namespace Darklight.UnityExt.Game.Grid
         {
             // ======== [[ FIELDS ]] ============================================================ >>>>
             Transform _transform;
+            Vector3 _gridWorldPosition = new Vector3(0, 0, 0);
 
-            [SerializeField, ShowOnly] bool _lockToTransform = true;
+            [SerializeField, ShowOnly] bool _lockPosToTransform = true;
+            [SerializeField, ShowOnly] bool _lockNormalToTransform = true;
             [SerializeField, ShowOnly] Alignment _gridAlignment = Alignment.Center;
             [SerializeField, ShowOnly] Vector3 _gridLocalPosition = new Vector3(0, 0, 0);
-            [SerializeField, ShowOnly] Vector3 _gridWorldPosition = new Vector3(0, 0, 0);
-            [SerializeField, ShowOnly] Vector3 _gridNormal = Vector3.forward;
+            [SerializeField, ShowOnly] Vector3 _gridNormal = Vector3.up;
             [SerializeField, ShowOnly] Vector2Int _gridDimensions = new Vector2Int(3, 3);
             [SerializeField] Cell2D.SettingsConfig _cellConfig;
 
             // ======== [[ PROPERTIES ]] ============================================================ >>>>
-            public bool LockToTransform { get => _lockToTransform; set => _lockToTransform = value; }
+            public bool LockPosToTransform { get => _lockPosToTransform; set => _lockPosToTransform = value; }
+            public bool LockNormalToTransform { get => _lockNormalToTransform; set => _lockNormalToTransform = value; }
             public Alignment GridAlignment { get => _gridAlignment; set => _gridAlignment = value; }
-            public Vector3 GridLocalPosition { get => _gridLocalPosition; set => _gridLocalPosition = value; }
-            public Vector3 GridWorldPosition { get => _gridWorldPosition; set => _gridWorldPosition = value; }
-            public Vector3 GridNormal { get => _gridNormal; set => _gridNormal = value; }
+            public Vector3 GridNormal { get => GetGridNormal(); set => _gridNormal = value; }
             public Vector2Int GridDimensions { get => _gridDimensions; set => _gridDimensions = value; }
             public Cell2D.SettingsConfig CellConfig { get => _cellConfig; set => _cellConfig = value; }
 
@@ -33,18 +33,39 @@ namespace Darklight.UnityExt.Game.Grid
             public Config(Transform transform) => UpdateTransformData(transform);
 
             // ======== [[ METHODS ]] ============================================================ >>>>
-
-
             // ---- (( RUNTIME )) ---- >>
             public void UpdateTransformData(Transform transform)
             {
                 // Set the private transform field
                 _transform = transform;
 
-                // Update the grid position based on the transform
-                if (!_lockToTransform) return;
-                _gridWorldPosition = transform.position + _gridLocalPosition;
-                _gridNormal = transform.forward;
+                _gridWorldPosition = GetGridWorldPosition();
+            }
+
+            // ---- (( SETTERS )) ---- >>
+            public void SetGridLocalPosition(Vector3 position)
+            {
+                _gridLocalPosition = position;
+            }
+
+            public Vector3 GetGridNormal()
+            {
+                Vector3 normal = _gridNormal;
+                if (_lockNormalToTransform)
+                {
+                    normal = _transform.forward + _gridNormal;
+                }
+                return normal;
+            }
+
+            public Vector3 GetGridWorldPosition()
+            {
+                Vector3 position = _gridWorldPosition;
+                if (_lockPosToTransform && _transform != null)
+                    position = _transform.position + _gridLocalPosition;
+                else
+                    position = _gridLocalPosition;
+                return position;
             }
         }
     }

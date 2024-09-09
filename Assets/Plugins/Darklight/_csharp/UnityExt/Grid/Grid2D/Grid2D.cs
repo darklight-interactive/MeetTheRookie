@@ -181,14 +181,6 @@ namespace Darklight.UnityExt.Game.Grid
         #endregion
 
         #region -- (( SETTERS )) -------- )))
-        public void SetConfig(Config config)
-        {
-            if (config == null) return;
-
-            // Assign the new config
-            this.config = config;
-            config.UpdateTransformData(this.transform);
-        }
 
         public void SetCells(List<Cell2D> cells)
         {
@@ -223,12 +215,10 @@ namespace Darklight.UnityExt.Game.Grid
             // Create a new config if none exists
             if (_config == null)
             {
+                _config = new Config();
                 if (_configObj != null)
-                    _config = _configObj.CreateGridConfig();
-                else
-                    _config = new Config();
+                    _configObj.UpdateConfig(_config);
             }
-            SetConfig(_config);
 
             // Create a new cell map
             _cellMap = new Dictionary<Vector2Int, Cell2D>();
@@ -274,8 +264,8 @@ namespace Darklight.UnityExt.Game.Grid
             // Update the config if the data object is not null
             if (_configObj != null)
             {
-                Config updatedConfig = _configObj.CreateGridConfig();
-                SetConfig(updatedConfig);
+                _configObj.UpdateConfig(_config);
+                _config.UpdateTransformData(this.transform);
             }
 
             // Resize the grid if the dimensions have changed
