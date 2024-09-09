@@ -51,7 +51,7 @@ namespace Darklight.UnityExt.Game.Grid
             public Vector3 GetGridNormal()
             {
                 Vector3 normal = _gridNormal;
-                if (_lockNormalToTransform)
+                if (_lockNormalToTransform && _transform != null)
                 {
                     normal = _transform.forward + _gridNormal;
                 }

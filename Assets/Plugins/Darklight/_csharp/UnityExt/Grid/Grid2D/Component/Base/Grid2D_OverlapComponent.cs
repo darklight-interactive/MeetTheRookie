@@ -101,6 +101,17 @@ namespace Darklight.UnityExt.Game.Grid
             }
             return cells;
         }
+
+        public List<Cell2D> GetCellsWithLowestColliderCount()
+        {
+            int min = int.MaxValue;
+            foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
+            {
+                if (pair.Value < min)
+                    min = pair.Value;
+            }
+            return GetCellsWithColliderCount(min);
+        }
     }
 }
 

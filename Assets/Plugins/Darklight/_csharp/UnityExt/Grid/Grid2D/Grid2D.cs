@@ -136,7 +136,9 @@ namespace Darklight.UnityExt.Game.Grid
         #region -- (( GETTERS )) -------- )))
         public Config GetConfig()
         {
-            return config;
+            if (_config == null)
+                _config = new Config();
+            return _config;
         }
 
         public List<Cell2D> GetCells()

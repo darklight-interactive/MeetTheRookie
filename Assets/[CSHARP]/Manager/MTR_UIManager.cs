@@ -210,15 +210,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             bestCell = playerInteractor.grid2D_OverlapWeightSpawner.GetBestCell();
             bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-            // Set the Bubble Direction
-            if (texturePosition.x <= playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.left;
-            }
-            else if (texturePosition.x > playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.right;
-            }
+
 
             // << SET SCALE >>
             float width = bestCell.Data.Dimensions.x;
@@ -228,6 +220,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             texturePosition = position;
             texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
             Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
+
+            // Set the Bubble Direction
+            if (texturePosition.x <= playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.left;
+            }
+            else if (texturePosition.x > playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.right;
+            }
         }
         else
         {
@@ -240,9 +242,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                     bestCell = interactable.gridSpawner.GetBestCell();
                     bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-                    // Set the Bubble Position and Direction
+                    // << SET SCALE >>
+                    float width = bestCell.Data.Dimensions.x;
+                    textureScale = new Vector3(width, width, 1);
+
+                    // << SET POSITION >>
                     texturePosition = position;
-                    texturePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                    texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
+                    Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
+
+                    // Set the Bubble Position and Direction
                     if (texturePosition.x <= interactable.transform.position.x)
                     {
                         bubbleDirection = Vector2Int.left;
@@ -251,10 +260,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                     {
                         bubbleDirection = Vector2Int.right;
                     }
-
-                    // Set the Bubble Scale
-                    float width = bestCell.Data.Dimensions.x;
-                    textureScale = new Vector3(width, width, 1);
                 }
             }
         }

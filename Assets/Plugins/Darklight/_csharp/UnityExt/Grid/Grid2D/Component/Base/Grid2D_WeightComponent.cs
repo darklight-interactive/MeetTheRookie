@@ -230,8 +230,8 @@ namespace Darklight.UnityExt.Game.Grid
 
         public Cell2D GetCellWithLowestWeight(List<Cell2D> cells)
         {
-            Cell2D lowestWeightCell = null;
-            int lowestWeight = 0;
+            Cell2D lowestWeightCell = cells[0];
+            int lowestWeight = cells[0].ComponentReg.GetComponent<Cell2D_WeightComponent>().GetWeight();
             foreach (Cell2D cell in cells)
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();

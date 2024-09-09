@@ -15,6 +15,11 @@ GameObject:
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
   - component: {fileID: 2236245743877035675}
+  - component: {fileID: 1232434135740185907}
+  - component: {fileID: 4470569458824845985}
+  - component: {fileID: 3598255222325451657}
+  - component: {fileID: 5216095270100915675}
+  - component: {fileID: 6847460164853541444}
   m_Layer: 7
   m_Name: '[NPC] Jess Gas Employee'
   m_TagString: Untagged
@@ -105,18 +110,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
-  idleWalkLoop: 0
   stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: 2.33
-  rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  walkDestinationX: 0
+  stateAfterWalking: 1
 --- !u!114 &1048859347481113319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,13 +279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: ac840e1dea0edbc488574e3fc5106c6a, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  editMode: 0
   _sprite: {fileID: -8603573873493872659, guid: 6b6830db7439af447b0949d40c896a3f, type: 3}
   onStart: 0
+  isSpawn: 0
   _sceneKnot: SetSpeaker
   _interactionStitch: 
   _isTarget: 0
@@ -292,4 +290,96 @@ MonoBehaviour:
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX: []
   speakerTag: 
+--- !u!114 &1232434135740185907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad7d47a447166f43a56cdc7f3968cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isLoaded: 1
+  _isInitialized: 1
+  _config:
+    _lockPosToTransform: 1
+    _lockNormalToTransform: 1
+    _gridAlignment: 4
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
+    _gridNormal: {x: 0, y: 1, z: 0}
+    _gridDimensions: {x: 3, y: 3}
+    _cellConfig:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+  _configObj: {fileID: 11400000, guid: 26fde3fd59623d8478e4d6203630fce0, type: 2}
+  _cellsInMap: []
+--- !u!114 &4470569458824845985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 0
+  _typeKey: 0
+  _objectToSpawn: {fileID: 0}
+--- !u!114 &3598255222325451657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 0
+  _typeKey: 0
+  _showGizmos: 0
+  _autoUpdate: 1
+  _serializedWeightData: []
+--- !u!114 &5216095270100915675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 0
+  _typeKey: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _showGizmos: 0
+--- !u!114 &6847460164853541444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 0
+  _typeKey: 0

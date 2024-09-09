@@ -72,25 +72,20 @@ namespace Darklight.UnityExt.Game.Grid
         {
             if (!_initialized) return;
             if (grid == null) return;
+            if (grid.GetConfig() == null) return;
+            if (Data == null) return;
 
-            try
-            {
-                // Calculate the cell's transform
-                Grid2D.SpatialUtility.CalculateCellTransform(
-                    out Vector3 position, out Vector2Int coordinate,
-                    out Vector3 normal, out Vector2 dimensions,
-                    this, grid.GetConfig());
+            // Calculate the cell's transform
+            Grid2D.SpatialUtility.CalculateCellTransform(
+                out Vector3 position, out Vector2Int coordinate,
+                out Vector3 normal, out Vector2 dimensions,
+                this, grid.GetConfig());
 
-                // Assign the calculated values to the cell
-                Data.SetPosition(position);
-                Data.SetCoordinate(coordinate);
-                Data.SetNormal(normal);
-                Data.SetDimensions(dimensions);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"Error recalculating cell data: {e.Message}", grid.transform.parent);
-            }
+            // Assign the calculated values to the cell
+            Data.SetPosition(position);
+            Data.SetCoordinate(coordinate);
+            Data.SetNormal(normal);
+            Data.SetDimensions(dimensions);
         }
 
         public Cell2D Clone()

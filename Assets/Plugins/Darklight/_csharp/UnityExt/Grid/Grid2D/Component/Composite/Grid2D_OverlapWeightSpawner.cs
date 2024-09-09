@@ -39,11 +39,12 @@ namespace Darklight.UnityExt.Game.Grid
 
         public Cell2D GetBestCell()
         {
+            // From all available cells, get the cells with the lowest collider count
             HashSet<Cell2D> availableCells = BaseGrid.GetCells().ToHashSet();
-            HashSet<Cell2D> emptyCells = _overlapComponent.GetCellsWithColliderCount(0).ToHashSet();
-            if (emptyCells.Count > 0)
-                availableCells.IntersectWith(emptyCells);
+            HashSet<Cell2D> lowestColliderCells = _overlapComponent.GetCellsWithLowestColliderCount().ToHashSet();
+            availableCells.IntersectWith(lowestColliderCells);
 
+            // Then get the cell with the lowest weight
             Cell2D bestCell = _weightComponent.GetCellWithLowestWeight(availableCells.ToList());
             return bestCell;
         }
