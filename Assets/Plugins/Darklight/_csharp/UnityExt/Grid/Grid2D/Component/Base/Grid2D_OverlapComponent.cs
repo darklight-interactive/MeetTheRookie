@@ -25,6 +25,8 @@ namespace Darklight.UnityExt.Game.Grid
 
                 // << INITIALIZATION >> 
                 overlapComponent.LayerMask = _layerMask;
+                _colliderWeightMap[cell] = overlapComponent.GetColliderCount();
+
                 overlapComponent.OnInitialize(cell);
                 return true;
             };
@@ -39,6 +41,8 @@ namespace Darklight.UnityExt.Game.Grid
 
                 // << UPDATE >>
                 overlapComponent.LayerMask = _layerMask;
+                _colliderWeightMap[cell] = overlapComponent.GetColliderCount();
+
                 overlapComponent.OnUpdate();
                 return true;
             };
@@ -75,22 +79,25 @@ namespace Darklight.UnityExt.Game.Grid
         #endregion
 
         // -- (( GETTERS )) -------- ))
-        public List<Cell2D> GetCellsWithLeastOverlap()
+        public Dictionary<int, List<Cell2D>> GetCellsByOverlap()
         {
-            List<Cell2D> cells = new List<Cell2D>();
-            int minWeight = int.MaxValue;
+            Dictionary<int, List<Cell2D>> overlapMap = new Dictionary<int, List<Cell2D>>();
             foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
             {
-                if (pair.Value < minWeight)
-                {
-                    cells.Clear();
+                if (!overlapMap.ContainsKey(pair.Value))
+                    overlapMap[pair.Value] = new List<Cell2D>();
+                overlapMap[pair.Value].Add(pair.Key);
+            }
+            return overlapMap;
+        }
+
+        public List<Cell2D> GetCellsWithColliderCount(int count)
+        {
+            List<Cell2D> cells = new List<Cell2D>();
+            foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
+            {
+                if (pair.Value == count)
                     cells.Add(pair.Key);
-                    minWeight = pair.Value;
-                }
-                else if (pair.Value == minWeight)
-                {
-                    cells.Add(pair.Key);
-                }
             }
             return cells;
         }

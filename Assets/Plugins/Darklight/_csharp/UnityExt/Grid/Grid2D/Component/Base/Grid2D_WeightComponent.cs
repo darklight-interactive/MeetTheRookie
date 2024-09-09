@@ -147,13 +147,101 @@ namespace Darklight.UnityExt.Game.Grid
             return chosenCell;
         }
 
-        public Cell2D GetLowestWeightedCell()
+        public Cell2D GetRandomCellByWeight(List<Cell2D> cells)
         {
-            List<Cell2D_WeightComponent> weightComponents = BaseGrid.GetComponentsByType<Cell2D_WeightComponent>();
-            Cell2D chosenCell = WeightedDataSelector.SelectLowestWeightedItem(weightComponents).BaseCell;
+            List<Cell2D_WeightComponent> weightComponents = new List<Cell2D_WeightComponent>();
+            foreach (Cell2D cell in cells)
+            {
+                Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
+                if (weightComponent != null)
+                    weightComponents.Add(weightComponent);
+            }
 
-            Debug.Log($"Lowest Weight Chosen Cell: {chosenCell.Key}");
+            Cell2D chosenCell = WeightedDataSelector.SelectRandomWeightedItem(weightComponents, (Cell2D_WeightComponent weightComponent) =>
+            {
+                return weightComponent.BaseCell;
+            });
+
+            // Begin recursive search for a cell with a weight
+            if (chosenCell == null)
+            {
+                return GetRandomCellByWeight(cells);
+            }
+
+            Debug.Log($"Random Weight Chosen Cell: {chosenCell.Key}");
             return chosenCell;
+        }
+
+        public Dictionary<int, List<Cell2D>> GetAllCellsByWeight()
+        {
+            Dictionary<int, List<Cell2D>> weightMap = new Dictionary<int, List<Cell2D>>();
+            foreach (KeyValuePair<Vector2Int, int> pair in _weightData)
+            {
+                if (!weightMap.ContainsKey(pair.Value))
+                    weightMap[pair.Value] = new List<Cell2D>();
+                weightMap[pair.Value].Add(BaseGrid.GetCell(pair.Key));
+            }
+            return weightMap;
+        }
+
+        public List<Cell2D> GetCellsWithWeight(int weight)
+        {
+            List<Cell2D> cells = new List<Cell2D>();
+            foreach (KeyValuePair<Vector2Int, int> pair in _weightData)
+            {
+                if (pair.Value == weight)
+                    cells.Add(BaseGrid.GetCell(pair.Key));
+            }
+            return cells;
+        }
+
+        public Cell2D GetCellWithHighestWeight()
+        {
+            Dictionary<int, List<Cell2D>> weightMap = GetAllCellsByWeight();
+            int highestWeight = 0;
+            foreach (int weight in weightMap.Keys)
+            {
+                if (weight > highestWeight)
+                    highestWeight = weight;
+            }
+
+            if (highestWeight == 0)
+                return null;
+
+            List<Cell2D> cells = weightMap[highestWeight];
+            return GetRandomCellByWeight(cells);
+        }
+
+        public Cell2D GetCellWithHighestWeight(List<Cell2D> cells)
+        {
+            Cell2D highestWeightCell = null;
+            int highestWeight = 0;
+            foreach (Cell2D cell in cells)
+            {
+                Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
+                if (highestWeightCell == null || weightComponent.GetWeight() > highestWeight)
+                {
+                    highestWeight = weightComponent.GetWeight();
+                    highestWeightCell = cell;
+                }
+            }
+            return highestWeightCell;
+        }
+
+        public Cell2D GetCellWithLowestWeight(List<Cell2D> cells)
+        {
+            Cell2D lowestWeightCell = null;
+            int lowestWeight = 0;
+            foreach (Cell2D cell in cells)
+            {
+                Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
+                if (lowestWeightCell == null || weightComponent.GetWeight() < lowestWeight)
+                {
+                    lowestWeight = weightComponent.GetWeight();
+                    lowestWeightCell = cell;
+                }
+            }
+            return lowestWeightCell;
         }
 
         // -- (( SETTERS )) -------- ))

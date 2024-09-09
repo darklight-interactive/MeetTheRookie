@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -37,12 +39,13 @@ namespace Darklight.UnityExt.Game.Grid
 
         public Cell2D GetBestCell()
         {
-            List<Cell2D> cellsWithLeastOverlap = _overlapComponent.GetCellsWithLeastOverlap();
-            Cell2D cell2D = _weightComponent.GetLowestWeightedCell();
+            HashSet<Cell2D> availableCells = BaseGrid.GetCells().ToHashSet();
+            HashSet<Cell2D> emptyCells = _overlapComponent.GetCellsWithColliderCount(0).ToHashSet();
+            if (emptyCells.Count > 0)
+                availableCells.IntersectWith(emptyCells);
 
-            if (cell2D == null)
-                Debug.LogError("Grid2D_OverlapWeightSpawner: No cells found with lowest weight.");
-            return cell2D;
+            Cell2D bestCell = _weightComponent.GetCellWithLowestWeight(availableCells.ToList());
+            return bestCell;
         }
     }
 }

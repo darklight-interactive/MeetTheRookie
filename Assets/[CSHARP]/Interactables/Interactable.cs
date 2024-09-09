@@ -163,8 +163,8 @@ public class Interactable : MonoBehaviour, IInteract
     public virtual void TargetSet()
     {
         isTarget = true;
-        Cell2D cell = _gridSpawner.GetBestCell();
 
+        Cell2D cell = _gridSpawner.GetBestCell();
         cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
         if (MTR_UIManager.Instance != null)

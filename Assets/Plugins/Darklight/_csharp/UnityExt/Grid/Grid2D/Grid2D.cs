@@ -144,6 +144,13 @@ namespace Darklight.UnityExt.Game.Grid
             return new List<Cell2D>(cellMap.Values);
         }
 
+        public Cell2D GetCell(Vector2Int key)
+        {
+            if (cellMap.ContainsKey(key))
+                return cellMap[key];
+            return null;
+        }
+
         public List<Cell2D> GetCellsByComponentType(Cell2D.ComponentTypeKey type)
         {
             List<Cell2D> cells = new List<Cell2D>();

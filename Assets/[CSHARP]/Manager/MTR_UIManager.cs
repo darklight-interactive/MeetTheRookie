@@ -220,7 +220,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 bubbleDirection = Vector2Int.right;
             }
 
-            // Set the Bubble Scale
+            // << SET SCALE >>
             float width = bestCell.Data.Dimensions.x;
             textureScale = new Vector3(width, width, 1);
 
