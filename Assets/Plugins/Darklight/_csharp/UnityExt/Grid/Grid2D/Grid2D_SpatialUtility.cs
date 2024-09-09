@@ -48,9 +48,9 @@ namespace Darklight.UnityExt.Game.Grid
             // Create a rotation matrix based on the grid's normal
             Quaternion rotation = Quaternion.LookRotation(config.GridNormal, Vector3.forward);
 
-            // Apply the rotation to the grid offset and return the final world position
-            return config.GridPosition + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
-        }
+                // Apply the rotation to the grid offset and return the final world position
+                return config.GridWorldPosition + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
+            }
 
             static Vector2Int CalculateCoordinateFromKey(Vector2Int key, Grid2D.Config config)
             {

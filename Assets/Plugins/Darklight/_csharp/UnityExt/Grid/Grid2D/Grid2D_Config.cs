@@ -1,5 +1,4 @@
 using Darklight.UnityExt.Editor;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace Darklight.UnityExt.Game.Grid
@@ -9,41 +8,44 @@ namespace Darklight.UnityExt.Game.Grid
         [System.Serializable]
         public class Config
         {
-            // ======== [[ SERIALIZED FIELDS ]] ============================================================ >>>>
+            // ======== [[ FIELDS ]] ============================================================ >>>>
+            Transform _transform;
+
             [SerializeField, ShowOnly] bool _lockToTransform = true;
             [SerializeField, ShowOnly] Alignment _gridAlignment = Alignment.Center;
-            [SerializeField, ShowOnly] Vector3 _gridPosition = new Vector3(0, 0, 0);
+            [SerializeField, ShowOnly] Vector3 _gridLocalPosition = new Vector3(0, 0, 0);
+            [SerializeField, ShowOnly] Vector3 _gridWorldPosition = new Vector3(0, 0, 0);
             [SerializeField, ShowOnly] Vector3 _gridNormal = Vector3.forward;
             [SerializeField, ShowOnly] Vector2Int _gridDimensions = new Vector2Int(3, 3);
             [SerializeField] Cell2D.SettingsConfig _cellConfig;
 
             // ======== [[ PROPERTIES ]] ============================================================ >>>>
-            public bool LockToTransform => _lockToTransform;
-            public Grid2D.Alignment GridAlignment => _gridAlignment;
-            public Vector3 GridPosition => _gridPosition;
-            public Vector3 GridNormal => _gridNormal;
-            public Vector2Int GridDimensions => _gridDimensions;
-            public Cell2D.SettingsConfig CellConfig => _cellConfig;
+            public bool LockToTransform { get => _lockToTransform; set => _lockToTransform = value; }
+            public Alignment GridAlignment { get => _gridAlignment; set => _gridAlignment = value; }
+            public Vector3 GridLocalPosition { get => _gridLocalPosition; set => _gridLocalPosition = value; }
+            public Vector3 GridWorldPosition { get => _gridWorldPosition; set => _gridWorldPosition = value; }
+            public Vector3 GridNormal { get => _gridNormal; set => _gridNormal = value; }
+            public Vector2Int GridDimensions { get => _gridDimensions; set => _gridDimensions = value; }
+            public Cell2D.SettingsConfig CellConfig { get => _cellConfig; set => _cellConfig = value; }
 
             // ======== [[ CONSTRUCTORS ]] ============================================================ >>>>
             public Config() { }
-            public Config(Config originConfig)
-            {
-                _lockToTransform = originConfig._lockToTransform;
-                _gridAlignment = originConfig._gridAlignment;
-                _gridPosition = originConfig._gridPosition;
-                _gridNormal = originConfig._gridNormal;
-                _gridDimensions = originConfig._gridDimensions;
-                _cellConfig = new Cell2D.SettingsConfig(originConfig._cellConfig);
-            }
+            public Config(Transform transform) => UpdateTransformData(transform);
 
             // ======== [[ METHODS ]] ============================================================ >>>>
-            public void SetLockToTransform(bool lockToTransform) => _lockToTransform = lockToTransform;
-            public void SetGridAlignment(Alignment gridAlignment) => _gridAlignment = gridAlignment;
-            public void SetGridPosition(Vector3 originPosition) => _gridPosition = originPosition;
-            public void SetGridNormal(Vector3 gridNormal) => _gridNormal = gridNormal;
-            public void SetGridDimensions(Vector2Int gridDimensions) => _gridDimensions = gridDimensions;
-            public void SetCellConfig(Cell2D.SettingsConfig cellConfig) => _cellConfig = cellConfig;
+
+
+            // ---- (( RUNTIME )) ---- >>
+            public void UpdateTransformData(Transform transform)
+            {
+                // Set the private transform field
+                _transform = transform;
+
+                // Update the grid position based on the transform
+                if (!_lockToTransform) return;
+                _gridWorldPosition = transform.position + _gridLocalPosition;
+                _gridNormal = transform.forward;
+            }
         }
     }
 }

@@ -83,8 +83,8 @@ namespace Darklight.UnityExt.Game.Grid
             _currentColliders = new HashSet<Collider2D>();
 
 
-            BaseCell.GetTransformData(out Vector3 position, out float radius, out Vector3 normal);
-            Vector3 halfExtents = Vector3.one * radius;
+            BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+            Vector3 halfExtents = new Vector3(dimensions.x * 0.5f, dimensions.y * 0.5f, 0);
 
             // Use Physics2D.OverlapBoxAll to detect colliders within the cell dimensions
             _colliders = Physics2D.OverlapBoxAll(position, halfExtents, 0, _layerMask);

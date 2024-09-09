@@ -95,7 +95,6 @@ namespace Darklight.UnityExt.UXML
         {
             _serializedObject = new SerializedObject(target);
             _script = (UXML_UIDocumentObject)target;
-            _script.Initialize(_script.preset);
         }
 
         public override void OnInspectorGUI()

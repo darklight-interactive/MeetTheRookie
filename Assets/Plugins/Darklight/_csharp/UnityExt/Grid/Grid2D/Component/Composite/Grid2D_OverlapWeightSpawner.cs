@@ -39,6 +39,9 @@ namespace Darklight.UnityExt.Game.Grid
         {
             List<Cell2D> cellsWithLeastOverlap = _overlapComponent.GetCellsWithLeastOverlap();
             Cell2D cell2D = _weightComponent.GetLowestWeightedCell();
+
+            if (cell2D == null)
+                Debug.LogError("Grid2D_OverlapWeightSpawner: No cells found with lowest weight.");
             return cell2D;
         }
     }

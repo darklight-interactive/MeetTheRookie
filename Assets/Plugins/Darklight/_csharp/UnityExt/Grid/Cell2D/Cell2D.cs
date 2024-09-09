@@ -121,13 +121,6 @@ namespace Darklight.UnityExt.Game.Grid
             normal = Data.Normal;
         }
 
-        public void GetTransformData(out Vector3 position, out float size, out Vector3 normal)
-        {
-            position = Data.Position;
-            size = GetMinDimension();
-            normal = Data.Normal;
-        }
-
         // (( SETTERS )) -------- ))
         protected void SetData(SerializedData data) => _data = data;
         protected void SetConfig(SettingsConfig config) => _config = config;

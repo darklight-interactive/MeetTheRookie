@@ -78,9 +78,9 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
-        void OnDrawGizmos()
+        void OnDrawGizmosSelected()
         {
-            CustomGizmos.DrawWireRect(this.transform.position, new Vector2(1, 1), Vector3.forward, Color.white);
+            CustomGizmos.DrawWireRect(this.transform.position, this.transform.localScale, Vector3.forward, Color.white);
         }
     }
 }

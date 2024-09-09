@@ -85,6 +85,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
+
     [SerializeField, ShowOnly]
     Vector2 _screenSize;
 
@@ -92,8 +93,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     float _screenAspectRatio;
 
     [SerializeField] CharacterColors characterColors;
-
-    [SerializeField, Range(1, 2)] float _speechBubbleScaleModifier = 1.5f;
 
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
@@ -152,9 +151,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [MinMaxSlider(24, 512)]
     public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
 
-    [Range(128, 2048)]
-    public int speechBubbleWidth = 256;
-
     [SerializeField]
     Sprite LTick_SpeechBubble;
 
@@ -185,6 +181,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             speechBubble.SetFullText(text);
             StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
         });
+
         speechBubble.SetFullText(text);
         speechBubble.InstantCompleteText(); // Temporarily display full text
 
@@ -194,8 +191,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Cell2D bestCell = null;
 
-        Vector3 bubblePosition = Vector3.zero;
-        Vector3 bubbleScale = Vector3.one;
+        Vector3 texturePosition = Vector3.zero;
+        Vector3 textureScale = Vector3.one;
         Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = characterColors[currentSpeaker];
 
@@ -211,24 +208,26 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Get the Best Cell
             bestCell = playerInteractor.grid2D_OverlapWeightSpawner.GetBestCell();
-            bestCell.GetTransformData(out Vector3 position, out float width, out Vector3 normal);
-
-            // Set the Bubble Position
-            bubblePosition = position;
-            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
+            bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
             // Set the Bubble Direction
-            if (bubblePosition.x <= playerInteractor.transform.position.x)
+            if (texturePosition.x <= playerInteractor.transform.position.x)
             {
                 bubbleDirection = Vector2Int.left;
             }
-            else if (bubblePosition.x > playerInteractor.transform.position.x)
+            else if (texturePosition.x > playerInteractor.transform.position.x)
             {
                 bubbleDirection = Vector2Int.right;
             }
 
             // Set the Bubble Scale
-            bubbleScale = new Vector3(width, width, 1);
+            float width = bestCell.Data.Dimensions.x;
+            textureScale = new Vector3(width, width, 1);
+
+            // << SET POSITION >>
+            texturePosition = position;
+            texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
+            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
         }
         else
         {
@@ -239,32 +238,31 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
                     bestCell = interactable.gridSpawner.GetBestCell();
-                    bestCell.GetTransformData(out Vector3 position, out float width, out Vector3 normal);
+                    bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
                     // Set the Bubble Position and Direction
-                    bubblePosition = position;
-                    bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
-                    if (bubblePosition.x <= interactable.transform.position.x)
+                    texturePosition = position;
+                    texturePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                    if (texturePosition.x <= interactable.transform.position.x)
                     {
                         bubbleDirection = Vector2Int.left;
                     }
-                    else if (bubblePosition.x > interactable.transform.position.x)
+                    else if (texturePosition.x > interactable.transform.position.x)
                     {
                         bubbleDirection = Vector2Int.right;
                     }
 
                     // Set the Bubble Scale
-                    bubbleScale = new Vector3(width, width, 1);
+                    float width = bestCell.Data.Dimensions.x;
+                    textureScale = new Vector3(width, width, 1);
                 }
             }
         }
 
 
 
-        speechBubbleObject.transform.position = bubblePosition;
-
-        bubbleScale *= _speechBubbleScaleModifier;
-        speechBubbleObject.transform.localScale = bubbleScale;
+        speechBubbleObject.transform.position = texturePosition;
+        speechBubbleObject.transform.localScale = textureScale;
 
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
         //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
@@ -275,7 +273,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         speechBubble.UpdateFontSizeToMatchScreen();
         speechBubble.style.color = bubbleColor;
         speechBubble.SetBackgroundSprite(bubbleSprite);
-        speechBubble.style.width = speechBubbleWidth;
+        //speechBubble.style.width = speechBubbleWidth;
 
         return speechBubble;
     }

@@ -11,7 +11,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerInteractor : MonoBehaviour
 {
     public PlayerController playerController => GetComponent<PlayerController>();
-    public Grid2D_OverlapWeightSpawner grid2D_OverlapWeightSpawner => GetComponentInChildren<Grid2D_OverlapWeightSpawner>();
+    public Grid2D_OverlapWeightSpawner grid2D_OverlapWeightSpawner => GetComponent<Grid2D_OverlapWeightSpawner>();
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
     [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
