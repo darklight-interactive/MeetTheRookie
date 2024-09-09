@@ -211,7 +211,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
             // Get the Best Cell
             bestCell = playerInteractor.grid2D_OverlapWeightSpawner.GetBestCell();
-            bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+            bestCell.GetTransformData(out Vector3 position, out float width, out Vector3 normal);
 
             // Set the Bubble Position
             bubblePosition = position;
@@ -228,7 +228,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             }
 
             // Set the Bubble Scale
-            bubbleScale = new Vector3(dimensions.x, dimensions.y, 1);
+            bubbleScale = new Vector3(width, width, 1);
         }
         else
         {
@@ -239,7 +239,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
                     bestCell = interactable.gridSpawner.GetBestCell();
-                    bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+                    bestCell.GetTransformData(out Vector3 position, out float width, out Vector3 normal);
+
                     // Set the Bubble Position and Direction
                     bubblePosition = position;
                     bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
@@ -253,7 +254,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                     }
 
                     // Set the Bubble Scale
-                    bubbleScale = new Vector3(dimensions.x, dimensions.y, 1);
+                    bubbleScale = new Vector3(width, width, 1);
                 }
             }
         }

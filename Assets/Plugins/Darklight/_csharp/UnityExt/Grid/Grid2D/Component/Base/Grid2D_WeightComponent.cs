@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,11 +11,15 @@ namespace Darklight.UnityExt.Game.Grid
 {
     public class Grid2D_WeightComponent : Grid2D_Component
     {
-        const int DEFAULT_WEIGHT = 100;
+        const int DEFAULT_WEIGHT = 5;
         const int MIN_WEIGHT = 0;
 
         // ======== [[ FIELDS ]] ================================== >>>>
+        Dictionary<Vector2Int, int> _weightData = new Dictionary<Vector2Int, int>();
+
         [SerializeField] bool _showGizmos;
+        [SerializeField] bool _showEditorGizmos;
+        [SerializeField] List<Weighted_SerializedCellData> _serializedWeightData;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( BASE VISITORS )) -------- ))
@@ -22,12 +28,27 @@ namespace Darklight.UnityExt.Game.Grid
             (Cell2D cell, Cell2D.ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
-                weightComponent.SetWeight(DEFAULT_WEIGHT);
+
+                // Set the weight data to the default weight if it does not contain the key
+                if (!_weightData.ContainsKey(cell.Key))
+                    weightComponent.SetWeight(DEFAULT_WEIGHT);
+                else
+                    weightComponent.SetWeight(_weightData[cell.Key]);
+
                 weightComponent.OnInitialize(cell);
                 return true;
             });
+
         protected override Cell2D.ComponentVisitor UpdateVisitor =>
-            Cell2D.VisitorFactory.CreateBaseUpdateVisitor(Cell2D.ComponentTypeKey.WEIGHT);
+            Cell2D.VisitorFactory.CreateComponentVisitor(Cell2D.ComponentTypeKey.WEIGHT,
+            (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            {
+                Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
+                weightComponent.SetWeight(_weightData[cell.Key]);
+                weightComponent.OnUpdate();
+                return true;
+            });
+
         protected override Cell2D.ComponentVisitor GizmosVisitor =>
             Cell2D.VisitorFactory.CreateBaseGizmosVisitor(Cell2D.ComponentTypeKey.WEIGHT);
         protected override Cell2D.ComponentVisitor EditorGizmosVisitor =>
@@ -50,15 +71,51 @@ namespace Darklight.UnityExt.Game.Grid
                 return true;
             });
 
+        private Cell2D.ComponentVisitor _loadDataVisitor => Cell2D.VisitorFactory.CreateComponentVisitor
+            (Cell2D.ComponentTypeKey.WEIGHT, (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            {
+                Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
+                weightComponent.SetWeight(_weightData[cell.Key]);
+                return true;
+            });
+
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE )) : IComponent -------- ))
+        public override void OnInitialize(Grid2D baseObj)
+        {
+            base.OnInitialize(baseObj);
+            LoadWeights();
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            UpdateSerializedCellData();
+        }
+
         public override void DrawGizmos()
         {
             if (!_showGizmos) return;
             base.DrawGizmos();
         }
 
+        public override void DrawEditorGizmos()
+        {
+            if (!_showEditorGizmos) return;
+            base.DrawEditorGizmos();
+        }
+
         // -- (( HANDLER METHODS )) -------- ))
+        public void LoadWeights()
+        {
+            // Set the weight data to match the serialized weight data
+            foreach (Weighted_SerializedCellData data in _serializedWeightData)
+            {
+                _weightData[data.key] = data.weight;
+            }
+            BaseGrid.SendVisitorToAllCells(_loadDataVisitor);
+        }
+
         public void RandomizeWeights()
         {
             BaseGrid.SendVisitorToAllCells(_randomizeVisitor);
@@ -103,6 +160,55 @@ namespace Darklight.UnityExt.Game.Grid
             return chosenCell;
         }
 
+        // ======== [[ PRIVATE METHODS ]] ================================== >>>>
+        void UpdateSerializedCellData()
+        {
+            if (_weightData == null)
+                _weightData = new Dictionary<Vector2Int, int>();
+            if (_serializedWeightData == null)
+                _serializedWeightData = new List<Weighted_SerializedCellData>();
+
+            // Iterate through the weight data
+            foreach (Vector2Int key in _weightData.Keys)
+            {
+                // If the serialized weight data does not contain the key, add the serialized data
+                if (!_serializedWeightData.Exists(x => x.key == key))
+                    _serializedWeightData.Add(new Weighted_SerializedCellData(key, _weightData[key]));
+            }
+
+            // Iterate through the serialized weight data
+            for (int i = 0; i < _serializedWeightData.Count; i++)
+            {
+                // If the weight data does not contain the key, remove the serialized data
+                if (!_weightData.ContainsKey(_serializedWeightData[i].key))
+                    _serializedWeightData.RemoveAt(i);
+                // Otherwise, update the weight data to match the serialized weight data
+                else
+                {
+                    Vector2Int key = _serializedWeightData[i].key;
+                    _weightData[key] = _serializedWeightData[i].weight;
+                }
+            }
+        }
+
+
+        // ======== [[ NESTED TYPES ]] ================================== >>>>
+
+        [System.Serializable]
+        public class Weighted_SerializedCellData
+        {
+            [ShowOnly] public string name;
+            [ShowOnly] public Vector2Int key;
+            [Range(MIN_WEIGHT, 10)] public int weight;
+            public Weighted_SerializedCellData(Vector2Int key, int weight)
+            {
+                this.name = $"Cell ({key.x},{key.y})";
+                this.key = key;
+                this.weight = weight;
+            }
+        }
+
+
 #if UNITY_EDITOR
         [CustomEditor(typeof(Grid2D_WeightComponent))]
         public class Grid2D_WeightComponentCustomEditor : UnityEditor.Editor
@@ -124,19 +230,20 @@ namespace Darklight.UnityExt.Game.Grid
 
                 base.OnInspectorGUI();
 
-                if (GUILayout.Button("Randomize Weights"))
-                {
-                    _script.RandomizeWeights();
-                }
-                if (GUILayout.Button("Reset Weights"))
-                {
-                    _script.ResetWeights();
-                }
+                if (GUILayout.Button("Randomize Weights")) _script.RandomizeWeights();
+                if (GUILayout.Button("Reset Weights")) _script.ResetWeights();
 
                 if (EditorGUI.EndChangeCheck())
                 {
                     _serializedObject.ApplyModifiedProperties();
                 }
+
+                _script.Update();
+            }
+
+            private void OnSceneGUI()
+            {
+                _script.DrawEditorGizmos();
             }
         }
 #endif

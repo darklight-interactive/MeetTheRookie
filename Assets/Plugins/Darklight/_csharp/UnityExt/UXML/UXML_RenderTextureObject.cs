@@ -77,5 +77,10 @@ namespace Darklight.UnityExt.UXML
                 DestroyImmediate(this.gameObject);
             }
         }
+
+        void OnDrawGizmos()
+        {
+            CustomGizmos.DrawWireRect(this.transform.position, new Vector2(1, 1), Vector3.forward, Color.white);
+        }
     }
 }

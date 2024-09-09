@@ -5,6 +5,8 @@ using Darklight.UnityExt.Editor;
 
 using UnityEngine;
 using System;
+using NaughtyAttributes;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,7 +15,6 @@ using UnityEditor;
 namespace Darklight.UnityExt.Game.Grid
 {
     [ExecuteAlways]
-    [RequireComponent(typeof(Grid2D_ConfigComponent))]
     public partial class Grid2D : MonoBehaviour, IUnityEditorListener
     {
         // ======== [[ CONSTANTS ]] ======================================================= >>>>
@@ -22,15 +23,20 @@ namespace Darklight.UnityExt.Game.Grid
 
         // ======== [[ FIELDS ]] ======================================================= >>>>
         ConsoleGUI _console = new ConsoleGUI();
+        Dictionary<Vector2Int, Cell2D> _cellMap;
+        ComponentRegistry _componentRegistry;
+
+
+        // -- (( STATES )) ------------------ >>
         [SerializeField, ShowOnly] bool _isLoaded = false;
         [SerializeField, ShowOnly] bool _isInitialized = false;
 
-        [Space(10), Header("Internal Data")]
+        [Space(5), Header("Config Data")]
         [SerializeField] Config _config;
+        [SerializeField, Expandable] Grid2D_ConfigDataObject _configObj;
 
-        Dictionary<Vector2Int, Cell2D> _map;
+        [Space(5), Header("Cells")]
         [SerializeField] List<Cell2D> _cellsInMap;
-        [SerializeField] ComponentRegistry _componentSystem;
 
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
@@ -44,15 +50,15 @@ namespace Darklight.UnityExt.Game.Grid
             }
             set { _config = value; }
         }
-        protected Dictionary<Vector2Int, Cell2D> map
+        protected Dictionary<Vector2Int, Cell2D> cellMap
         {
             get
             {
-                if (_map == null)
-                    _map = new Dictionary<Vector2Int, Cell2D>();
-                return _map;
+                if (_cellMap == null)
+                    _cellMap = new Dictionary<Vector2Int, Cell2D>();
+                return _cellMap;
             }
-            set { _map = value; }
+            set { _cellMap = value; }
         }
         protected ConsoleGUI consoleGUI => _console;
 
@@ -64,26 +70,149 @@ namespace Darklight.UnityExt.Game.Grid
             return true;
         });
 
+        protected Cell2D.Visitor CellGizmosVisitor => new Cell2D.Visitor(cell =>
+        {
+            cell.DrawGizmos();
+            return true;
+        });
+
+        protected Cell2D.Visitor CellEditorGizmosVisitor => new Cell2D.Visitor(cell =>
+        {
+            cell.DrawEditorGizmos();
+            return true;
+        });
+
         // ======== [[ EVENTS ]] ======================================================= >>>>
         public delegate void GridEvent();
         public event GridEvent OnGridPreloaded;
         public event GridEvent OnGridInitialized;
         public event GridEvent OnGridUpdated;
 
-        // ======== [[ METHODS ]] ============================================================ >>>>
+        // ======== [[ PUBLIC METHODS ]] ============================================================ >>>>
         public void OnEditorReloaded()
         {
             _console.Clear();
             Reset();
         }
 
-        #region -- (( UNITY )) -------- )))
+        #region -- (( UNITY RUNTIME )) -------- )))
         public void Awake() => Preload();
 
         public void Start() => Initialize();
 
         public void Update() => Refresh();
         #endregion
+
+        #region -- (( VISITOR PATTERN )) -------- )))
+        public void SendVisitorToCell(Vector2Int key, IVisitor<Cell2D> visitor)
+        {
+            if (cellMap == null) return;
+
+            // Skip if the key is not in the map
+            if (!cellMap.ContainsKey(key)) return;
+
+            // Apply the map function to the cell
+            Cell2D cell = cellMap[key];
+            cell.Accept(visitor);
+        }
+
+        public void SendVisitorToAllCells(IVisitor<Cell2D> visitor)
+        {
+            if (cellMap == null) return;
+
+            List<Vector2Int> keys = new List<Vector2Int>(cellMap.Keys);
+            foreach (Vector2Int key in keys)
+            {
+                // Skip if the key is not in the map
+                if (!cellMap.ContainsKey(key)) continue;
+
+                // Apply the map function to the cell
+                Cell2D cell = cellMap[key];
+                cell.Accept(visitor);
+            }
+        }
+        #endregion
+
+        #region -- (( GETTERS )) -------- )))
+        public Config GetConfig()
+        {
+            return config;
+        }
+
+        public List<Cell2D> GetCells()
+        {
+            return new List<Cell2D>(cellMap.Values);
+        }
+
+        public List<Cell2D> GetCellsByComponentType(Cell2D.ComponentTypeKey type)
+        {
+            List<Cell2D> cells = new List<Cell2D>();
+            foreach (Cell2D cell in cellMap.Values)
+            {
+                if (cell.ComponentReg.HasComponent(type))
+                {
+                    cells.Add(cell);
+                }
+            }
+            return cells;
+        }
+
+        public List<TComponent> GetComponentsByType<TComponent>()
+            where TComponent : Cell2D.Component
+        {
+            List<TComponent> components = new List<TComponent>();
+            foreach (Cell2D cell in cellMap.Values)
+            {
+                TComponent component = cell.ComponentReg.GetComponent<TComponent>();
+                if (component != null)
+                {
+                    components.Add(component);
+                }
+            }
+            return components;
+        }
+        #endregion
+
+        #region -- (( SETTERS )) -------- )))
+        public void SetConfig(Config config)
+        {
+            if (config == null) return;
+
+            // Check if the grid should lock to the transform
+            if (config.LockToTransform)
+            {
+                // Set the grid's position and normal to the transform's position and forward
+                config.SetGridPosition(transform.position);
+                config.SetGridNormal(transform.forward);
+            }
+
+            // Assign the new config
+            this.config = config;
+        }
+
+        public void SetCells(List<Cell2D> cells)
+        {
+            if (cells == null || cells.Count == 0) return;
+            foreach (Cell2D cell in cells)
+            {
+                if (cell == null) continue;
+                if (cellMap.ContainsKey(cell.Key))
+                    cellMap[cell.Key] = cell;
+                else
+                    cellMap.Add(cell.Key, cell);
+            }
+        }
+
+        public void Reset()
+        {
+            _isLoaded = false;
+            _isInitialized = false;
+
+            Initialize();
+        }
+        #endregion
+
+        // ======== [[ PRIVATE METHODS ]] ============================================================ >>>>
 
         #region -- (( RUNTIME )) -------- )))
         void Preload()
@@ -93,13 +222,19 @@ namespace Darklight.UnityExt.Game.Grid
 
             // Create a new config if none exists
             if (_config == null)
-                _config = new Config();
+            {
+                if (_configObj != null)
+                    _config = _configObj.CreateGridConfig();
+                else
+                    _config = new Config();
+            }
+            SetConfig(_config);
 
             // Create a new cell map
-            _map = new Dictionary<Vector2Int, Cell2D>();
+            _cellMap = new Dictionary<Vector2Int, Cell2D>();
 
             // Create a new component system
-            _componentSystem = new ComponentRegistry(this);
+            _componentRegistry = new ComponentRegistry(this);
 
             // Determine if the grid was preloaded
             _isLoaded = true;
@@ -136,10 +271,17 @@ namespace Darklight.UnityExt.Game.Grid
                 return;
             }
 
+            // Update the config if the data object is not null
+            if (_configObj != null)
+            {
+                Config updatedConfig = _configObj.CreateGridConfig();
+                SetConfig(updatedConfig);
+            }
+
             // Resize the grid if the dimensions have changed
             ResizeCellMap();
 
-            _cellsInMap = new List<Cell2D>(map.Values);
+            _cellsInMap = new List<Cell2D>(cellMap.Values);
 
             // Update the cells
             SendVisitorToAllCells(CellUpdateVisitor);
@@ -151,137 +293,42 @@ namespace Darklight.UnityExt.Game.Grid
             _isLoaded = false;
             _isInitialized = false;
 
-            if (map != null)
-                map.Clear(); // << Clear the map
+            if (cellMap != null)
+                cellMap.Clear(); // << Clear the map
 
             consoleGUI.Log("Cleared");
         }
 
-        public void Reset()
+        void OnDrawGizmos()
         {
-            _isLoaded = false;
-            _isInitialized = false;
-
-            Initialize();
+            if (!_isInitialized) return;
+            SendVisitorToAllCells(CellGizmosVisitor);
         }
+
+        void OnDrawEditorGizmos()
+        {
+            if (!_isInitialized) return;
+            SendVisitorToAllCells(CellEditorGizmosVisitor);
+        }
+
         #endregion
 
-        #region -- (( VISITOR PATTERN )) -------- )))
-        public void SendVisitorToCell(Vector2Int key, IVisitor<Cell2D> visitor)
-        {
-            if (map == null) return;
-
-            // Skip if the key is not in the map
-            if (!map.ContainsKey(key)) return;
-
-            // Apply the map function to the cell
-            Cell2D cell = map[key];
-            cell.Accept(visitor);
-        }
-
-        public void SendVisitorToAllCells(IVisitor<Cell2D> visitor)
-        {
-            if (map == null) return;
-
-            List<Vector2Int> keys = new List<Vector2Int>(map.Keys);
-            foreach (Vector2Int key in keys)
-            {
-                // Skip if the key is not in the map
-                if (!map.ContainsKey(key)) continue;
-
-                // Apply the map function to the cell
-                Cell2D cell = map[key];
-                cell.Accept(visitor);
-            }
-        }
-        #endregion
-
-        // -- (( GETTERS )) -------- )))
-        public Config GetConfig()
-        {
-            return config;
-        }
-
-        public List<Cell2D> GetCells()
-        {
-            return new List<Cell2D>(map.Values);
-        }
-
-        public List<Cell2D> GetCellsByComponentType(Cell2D.ComponentTypeKey type)
-        {
-            List<Cell2D> cells = new List<Cell2D>();
-            foreach (Cell2D cell in map.Values)
-            {
-                if (cell.ComponentReg.HasComponent(type))
-                {
-                    cells.Add(cell);
-                }
-            }
-            return cells;
-        }
-
-        public List<TComponent> GetComponentsByType<TComponent>()
-            where TComponent : Cell2D.Component
-        {
-            List<TComponent> components = new List<TComponent>();
-            foreach (Cell2D cell in map.Values)
-            {
-                TComponent component = cell.ComponentReg.GetComponent<TComponent>();
-                if (component != null)
-                {
-                    components.Add(component);
-                }
-            }
-            return components;
-        }
-
-        // (( SETTERS )) -------- )))
-        public void SetConfig(Config config)
-        {
-            if (config == null) return;
-
-            // Check if the grid should lock to the transform
-            if (config.LockToTransform)
-            {
-                // Set the grid's position and normal to the transform's position and forward
-                config.SetGridPosition(transform.position);
-                config.SetGridNormal(transform.forward);
-            }
-
-            // Assign the new config
-            this.config = config;
-        }
-
-        public void SetCells(List<Cell2D> cells)
-        {
-            if (cells == null || cells.Count == 0) return;
-            foreach (Cell2D cell in cells)
-            {
-                if (cell == null) continue;
-                if (map.ContainsKey(cell.Key))
-                    map[cell.Key] = cell;
-                else
-                    map.Add(cell.Key, cell);
-            }
-        }
-
-        // ======== [[ PROTECTED METHODS ]] ======================================================= >>>>
         bool CreateCell(Vector2Int key)
         {
-            if (_map.ContainsKey(key))
+            if (_cellMap.ContainsKey(key))
                 return false;
 
             Cell2D cell = (Cell2D)Activator.CreateInstance(typeof(Cell2D), key);
-            _map[key] = cell;
+            _cellMap[key] = cell;
             return true;
         }
 
         bool RemoveCell(Vector2Int key)
         {
-            if (!_map.ContainsKey(key))
+            if (!_cellMap.ContainsKey(key))
                 return false;
 
-            _map.Remove(key);
+            _cellMap.Remove(key);
             return true;
         }
 
@@ -291,7 +338,7 @@ namespace Darklight.UnityExt.Game.Grid
             if (_isInitialized) return false;
 
             // Clear the map
-            _map.Clear();
+            _cellMap.Clear();
 
             // Iterate through the grid dimensions and create cells
             Vector2Int dimensions = config.GridDimensions;
@@ -304,7 +351,7 @@ namespace Darklight.UnityExt.Game.Grid
                 }
             }
 
-            if (_map.Count == 0) return false;
+            if (_cellMap.Count == 0) return false;
             return true;
         }
 
@@ -315,11 +362,11 @@ namespace Darklight.UnityExt.Game.Grid
 
             // Check if the dimensions have changed
             int newGridArea = newDimensions.x * newDimensions.y;
-            int oldGridArea = map.Count;
+            int oldGridArea = cellMap.Count;
             if (newGridArea == oldGridArea) return;
 
             // Remove cells that are out of bounds
-            List<Vector2Int> keys = new List<Vector2Int>(map.Keys);
+            List<Vector2Int> keys = new List<Vector2Int>(cellMap.Keys);
             foreach (Vector2Int key in keys)
             {
                 if (key.x >= newDimensions.x || key.y >= newDimensions.y)
@@ -335,6 +382,15 @@ namespace Darklight.UnityExt.Game.Grid
                     CreateCell(gridKey);
                 }
             }
+        }
+
+        Grid2D_ConfigDataObject CreateNewConfigDataObject()
+        {
+            string name = this.name;
+
+            _configObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_ConfigDataObject>(Grid2D.DataObjectRegistry.CONFIG_PATH, name);
+            _configObj.name = name;
+            return _configObj;
         }
 
         // ======== [[ NESTED TYPES ]] ======================================================= >>>>
@@ -374,6 +430,14 @@ namespace Darklight.UnityExt.Game.Grid
                 // < CUSTOM INSPECTOR > ------------------ >>
                 CustomInspectorGUI.DrawHorizontalLine(Color.gray, 4, 10);
                 if (GUILayout.Button("Initialize")) { _script.Initialize(); }
+
+                if (_script._configObj == null)
+                {
+                    if (GUILayout.Button("Create New Config"))
+                    {
+                        _script.CreateNewConfigDataObject();
+                    }
+                }
 
                 // < CONSOLE > ------------------ >>
                 CustomInspectorGUI.DrawHorizontalLine(Color.gray, 4, 10);

@@ -108,8 +108,9 @@ namespace Darklight.UnityExt.Game.Grid
                 if (EditorGUI.EndChangeCheck())
                 {
                     _serializedObject.ApplyModifiedProperties();
-                    _script.Update();
                 }
+                _script.Update();
+
             }
 
             private void OnSceneGUI()

@@ -10,13 +10,20 @@ namespace Darklight.UnityExt.Game.Grid
     [System.Serializable]
     public partial class Cell2D : IVisitable<Cell2D>
     {
-        // ======== [[ SERIALIZED FIELDS ]] ======================================================= >>>>
+        // ======== [[ FIELDS ]] ======================================================= >>>>
+        ComponentRegistry _componentReg;
+        List<string> _componentDebugLabels = new List<string>();
+
+        bool _enabled;
+        bool _initialized;
+
         [SerializeField, ShowOnly] string _name = "Cell2D";
         [SerializeField] SettingsConfig _config;
         [SerializeField] SerializedData _data;
-        [SerializeField] ComponentRegistry _componentReg;
+        [ShowOnly, NonReorderable] public ComponentTypeKey[] componentTypeKeys;
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
+        public string Name { get => _name; }
         public Vector2Int Key { get => _data.Key; }
         public SettingsConfig Config { get => _config; }
         public SerializedData Data { get => _data; }
@@ -40,22 +47,30 @@ namespace Darklight.UnityExt.Game.Grid
 
             // Create the composite
             _componentReg = new ComponentRegistry(this);
+            componentTypeKeys = _componentReg.GetComponentTypeKeys();
 
             // Set the name
             _name = $"Cell2D ({key.x},{key.y})";
+
+            // << SET INITIALIZED >>
+            if (_config == null || _data == null || _componentReg == null)
+            {
+                _initialized = false;
+                return;
+            }
+            _initialized = true;
         }
 
         public void Update()
         {
-            if (_data == null) return;
-            if (_componentReg == null) return;
+            if (!_initialized) return;
+            componentTypeKeys = _componentReg.GetComponentTypeKeys();
         }
 
         // -- (( HANDLERS )) -------- )))
         public void RecalculateDataFromGrid(Grid2D grid)
         {
-            if (_data == null) return;
-            if (_componentReg == null) return;
+            if (!_initialized) return;
             if (grid == null) return;
 
             try
@@ -76,8 +91,6 @@ namespace Darklight.UnityExt.Game.Grid
             {
                 Debug.LogError($"Error recalculating cell data: {e.Message}", grid.transform.parent);
             }
-
-
         }
 
         public Cell2D Clone()
@@ -99,6 +112,7 @@ namespace Darklight.UnityExt.Game.Grid
         }
 
         // (( GETTERS )) -------- ))
+        public bool IsEnabled() => _enabled;
         public float GetMinDimension() => Mathf.Min(Data.Dimensions.x, Data.Dimensions.y);
         public void GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal)
         {
@@ -118,18 +132,20 @@ namespace Darklight.UnityExt.Game.Grid
         protected void SetData(SerializedData data) => _data = data;
         protected void SetConfig(SettingsConfig config) => _config = config;
         protected void SetComposite(ComponentRegistry composite) => _componentReg = composite;
-
+        protected void SetEnabled(bool enabled) => _enabled = enabled;
 
         // (( GIZMOS )) -------- ))
-        public void DrawDefaultGizmos()
+        public void DrawGizmos()
         {
             if (_data == null) return;
 
             GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-            CustomGizmos.DrawWireRect(position, dimensions, normal, Color.white);
+
+            Color faintWhite = new Color(1, 1, 1, 0.5f);
+            CustomGizmos.DrawWireRect(position, dimensions, normal, faintWhite);
         }
 
-        public void DrawEditor()
+        public void DrawEditorGizmos()
         {
             if (_data == null) return;
         }

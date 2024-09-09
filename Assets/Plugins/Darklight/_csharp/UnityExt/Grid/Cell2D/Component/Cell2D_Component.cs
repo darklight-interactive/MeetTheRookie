@@ -45,12 +45,8 @@ namespace Darklight.UnityExt.Game.Grid
             }
 
             public virtual ComponentTypeKey GetTypeKey() => ComponentRegistry.GetTypeKey(this);
-            public virtual void DrawGizmos()
-            {
-                // Draw the base cell gizmos by default
-                _baseCell.DrawDefaultGizmos();
-            }
-            public virtual void DrawEditorGizmos() { }
+            public abstract void DrawGizmos();
+            public abstract void DrawEditorGizmos();
 
             // ---- (( VISITOR METHODS )) ---- >>
             public virtual void Accept(IVisitor<Component> visitor)

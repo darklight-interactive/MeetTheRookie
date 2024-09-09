@@ -7,12 +7,12 @@ namespace Darklight.UnityExt.Game.Grid
     [System.Serializable]
     public class Cell2D_OverlapComponent : Cell2D.Component
     {
-        [SerializeField] LayerMask _layerMask;
+        // ======== [[ FIELDS ]] =========================== >>>>
+        LayerMask _layerMask;
         Collider2D[] _colliders;
+        HashSet<Collider2D> _currentColliders = new HashSet<Collider2D>();
+        HashSet<Collider2D> _previousColliders = new HashSet<Collider2D>();
 
-        // HashSets for tracking colliders
-        private HashSet<Collider2D> _currentColliders = new HashSet<Collider2D>();
-        private HashSet<Collider2D> _previousColliders = new HashSet<Collider2D>();
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
@@ -29,7 +29,7 @@ namespace Darklight.UnityExt.Game.Grid
             _layerMask = layerMask;
         }
 
-        // ======== [[ METHODS ]] ================================== >>>>
+        // ======== [[ INHERITED METHODS ]] ================================== >>>>
         public override void OnUpdate()
         {
             base.OnUpdate();
@@ -40,26 +40,38 @@ namespace Darklight.UnityExt.Game.Grid
         {
             BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
             GetColor(out Color color);
+            int colliderCount = GetColliderCount();
 
-            string label = $"Overlap Colliders : 0";
-            if (_colliders != null && _colliders.Length > 0)
-            {
-                label = $"Overlap Colliders : {_colliders.Length}";
-            }
-            CustomGizmos.DrawWireRect(position, dimensions, normal, color);
+            // << DRAW LABEL >>
+            string label = $"Overlap Colliders : {colliderCount}";
             Vector3 labelPosition = position + (new Vector3(-dimensions.x, dimensions.y, 0) * 0.5f);
             CustomGizmos.DrawLabel(label, labelPosition, new GUIStyle()
             {
                 fontSize = 12,
                 normal = new GUIStyleState() { textColor = color }
             });
-        }
 
-        public void SetLayerMask(LayerMask layerMask)
+            // << DRAW OUTLINE >>
+            CustomGizmos.DrawWireRect(position, dimensions, normal, color);
+
+            // << DRAW SOLID IF OVERLAPED >>
+            if (colliderCount > 0)
+            {
+                Color alphaColor = new Color(color.r, color.g, color.b, 0.3f);
+                CustomGizmos.DrawSolidRect(position, dimensions, normal, alphaColor);
+            }
+        }
+        public override void DrawEditorGizmos() { }
+
+        // ======== [[ PUBLIC METHODS ]] =========================== >>>>
+        public int GetColliderCount()
         {
-            _layerMask = layerMask;
+            if (_colliders == null) return 0;
+            return _colliders.Length;
         }
 
+
+        // ======== [[ PRIVATE METHODS ]] =========================== >>>>
         void UpdateColliders()
         {
             if (_previousColliders == null)
@@ -113,5 +125,6 @@ namespace Darklight.UnityExt.Game.Grid
 
             color = Color.red;
         }
+
     }
 }

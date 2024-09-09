@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5396789277340896030}
   - component: {fileID: 2631554151006959539}
-  - component: {fileID: 3027904365736815327}
   - component: {fileID: 7517774116608465388}
   - component: {fileID: 7647236149161533771}
   - component: {fileID: 229329916193135207}
-  - component: {fileID: 1639313718509284942}
+  - component: {fileID: 4025349241361643126}
   m_Layer: 0
   m_Name: '[GRID2D] NPC'
   m_TagString: Untagged
@@ -54,13 +53,14 @@ MonoBehaviour:
   _config:
     _lockToTransform: 1
     _gridAlignment: 4
-    _gridPosition: {x: 0.5, y: 0.625, z: 3.071}
+    _gridPosition: {x: -0.5, y: 0.625, z: 3}
     _gridNormal: {x: 0, y: 0, z: 1}
     _gridDimensions: {x: 3, y: 3}
     _cellConfig:
       _cellDimensions: {x: 0.6, y: 0.4}
       _cellSpacing: {x: 0.25, y: 0}
       _cellBonding: {x: 0, y: 0}
+  _configObj: {fileID: 0}
   _cellsInMap:
   - _name: Cell2D (0,0)
     _config:
@@ -68,405 +68,126 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 168454723
+      _guid: 1294131338
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: -1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: -0.25, y: 0.225, z: 3.071}
+      _position: {x: -1.25, y: 0.225, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218913
-      - rid: 4687546957985218914
-      - rid: 4687546957985218915
-      - rid: 4687546957985218916
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (0,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 2026817611
+      _guid: 1135959672
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 0}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: -0.25, y: 0.625, z: 3.071}
+      _position: {x: -1.25, y: 0.625, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218917
-      - rid: 4687546957985218918
-      - rid: 4687546957985218919
-      - rid: 4687546957985218920
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (0,2)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 156786618
+      _guid: -845017157
       _key: {x: 0, y: 2}
       _coordinate: {x: -1, y: 1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: -0.25, y: 1.025, z: 3.071}
+      _position: {x: -1.25, y: 1.025, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218921
-      - rid: 4687546957985218922
-      - rid: 4687546957985218923
-      - rid: 4687546957985218924
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (1,0)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1626065617
+      _guid: -1787348403
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: -1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 0.5, y: 0.225, z: 3.071}
+      _position: {x: -0.5, y: 0.225, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218925
-      - rid: 4687546957985218926
-      - rid: 4687546957985218927
-      - rid: 4687546957985218928
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (1,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -540275210
+      _guid: 1808712737
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 0}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 0.5, y: 0.625, z: 3.071}
+      _position: {x: -0.5, y: 0.625, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218929
-      - rid: 4687546957985218930
-      - rid: 4687546957985218931
-      - rid: 4687546957985218932
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (1,2)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 2076221474
+      _guid: 1457237808
       _key: {x: 1, y: 2}
       _coordinate: {x: 0, y: 1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 0.5, y: 1.025, z: 3.071}
+      _position: {x: -0.5, y: 1.025, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218933
-      - rid: 4687546957985218934
-      - rid: 4687546957985218935
-      - rid: 4687546957985218936
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (2,0)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1501144454
+      _guid: -899058318
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: -1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 1.25, y: 0.225, z: 3.071}
+      _position: {x: 0.25, y: 0.225, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218937
-      - rid: 4687546957985218938
-      - rid: 4687546957985218939
-      - rid: 4687546957985218940
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (2,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -559460499
+      _guid: 1455441874
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 0}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 1.25, y: 0.625, z: 3.071}
+      _position: {x: 0.25, y: 0.625, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218941
-      - rid: 4687546957985218942
-      - rid: 4687546957985218943
-      - rid: 4687546957985218944
+    componentTypeKeys: 020000000400000003000000
   - _name: Cell2D (2,2)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 456727786
+      _guid: 371035391
       _key: {x: 2, y: 2}
       _coordinate: {x: 1, y: 1}
       _dimensions: {x: 0.6, y: 0.4}
-      _position: {x: 1.25, y: 1.025, z: 3.071}
+      _position: {x: 0.25, y: 1.025, z: 3}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
-    _componentReg:
-      _components:
-      - rid: 4687546957985218945
-      - rid: 4687546957985218946
-      - rid: 4687546957985218947
-      - rid: 4687546957985218948
-  references:
-    version: 2
-    RefIds:
-    - rid: 4687546957985218913
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1252645066
-        _type: 0
-    - rid: 4687546957985218914
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 142438369
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218915
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1116147616
-        _type: 4
-    - rid: 4687546957985218916
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1732364678
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218917
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -60426537
-        _type: 0
-    - rid: 4687546957985218918
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1751554986
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218919
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1293128156
-        _type: 4
-    - rid: 4687546957985218920
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1084594172
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218921
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1948982874
-        _type: 0
-    - rid: 4687546957985218922
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -380733351
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218923
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -213520255
-        _type: 4
-    - rid: 4687546957985218924
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 621926419
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218925
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 508497957
-        _type: 0
-    - rid: 4687546957985218926
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1252788599
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218927
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 2028394873
-        _type: 4
-    - rid: 4687546957985218928
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1479535268
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218929
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1496495246
-        _type: 0
-    - rid: 4687546957985218930
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 674467843
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218931
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1524469877
-        _type: 4
-    - rid: 4687546957985218932
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1424835290
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218933
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 548678896
-        _type: 0
-    - rid: 4687546957985218934
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1516394208
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218935
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1408524544
-        _type: 4
-    - rid: 4687546957985218936
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -405954122
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218937
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1193793907
-        _type: 0
-    - rid: 4687546957985218938
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 802147995
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218939
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -260770448
-        _type: 4
-    - rid: 4687546957985218940
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1617792301
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218941
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -839157039
-        _type: 0
-    - rid: 4687546957985218942
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 2044943473
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218943
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1264416620
-        _type: 4
-    - rid: 4687546957985218944
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1243466362
-        _type: 3
-        _weight: 100
-    - rid: 4687546957985218945
-      type: {class: Cell2D_BaseComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 1524142852
-        _type: 0
-    - rid: 4687546957985218946
-      type: {class: Cell2D_OverlapComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: 2013902226
-        _type: 2
-        _layerMask:
-          serializedVersion: 2
-          m_Bits: 64
-    - rid: 4687546957985218947
-      type: {class: Cell2D_SpawnerComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -1756325177
-        _type: 4
-    - rid: 4687546957985218948
-      type: {class: Cell2D_WeightComponent, ns: Darklight.UnityExt.Game.Grid, asm: Darklight.UnityExt.Grid}
-      data:
-        _guid: -352038119
-        _type: 3
-        _weight: 100
---- !u!114 &3027904365736815327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2878671464624747111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2531ec52f14d32d4c8cf28f529afdb03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _guid: 896656696
-  _typeKey: 1
-  _configObj: {fileID: 11400000, guid: 31c39c3e142a22d46b00de316fb05b01, type: 2}
+    componentTypeKeys: 020000000400000003000000
 --- !u!114 &7517774116608465388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,8 +200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1902055982
-  _typeKey: 2
+  _guid: -1230931619
+  _typeKey: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -497,8 +218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1633886338
-  _typeKey: 4
+  _guid: 446189005
+  _typeKey: 3
   _objectToSpawn: {fileID: 0}
 --- !u!114 &229329916193135207
 MonoBehaviour:
@@ -512,10 +233,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1814296952
-  _typeKey: 3
+  _guid: 2090441289
+  _typeKey: 2
   _showGizmos: 0
---- !u!114 &1639313718509284942
+  _showEditorGizmos: 0
+  _serializedWeightData:
+  - name: Cell (0,0)
+    key: {x: 0, y: 0}
+    weight: 8
+  - name: Cell (0,1)
+    key: {x: 0, y: 1}
+    weight: 2
+  - name: Cell (0,2)
+    key: {x: 0, y: 2}
+    weight: 10
+  - name: Cell (1,0)
+    key: {x: 1, y: 0}
+    weight: 8
+  - name: Cell (1,1)
+    key: {x: 1, y: 1}
+    weight: 2
+  - name: Cell (1,2)
+    key: {x: 1, y: 2}
+    weight: 10
+--- !u!114 &4025349241361643126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -527,8 +268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 514787959
-  _typeKey: 5
+  _guid: 1861058482
+  _typeKey: 4
 --- !u!1 &6171685949738713303
 GameObject:
   m_ObjectHideFlags: 0

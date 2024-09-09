@@ -13,7 +13,7 @@ namespace Darklight.UnityExt.Game.Grid
     public class Cell2D_WeightComponent : Cell2D.Component, IWeightedData
     {
         const int MIN_WEIGHT = 0;
-        const int MAX_WEIGHT = 100;
+        const int MAX_WEIGHT = 10;
 
         [SerializeField, ShowOnly] int _weight;
         public int Weight => _weight;
@@ -31,30 +31,27 @@ namespace Darklight.UnityExt.Game.Grid
 
         public override void DrawGizmos()
         {
-            BaseCell.GetTransformData(out Vector3 position, out float size, out Vector3 normal);
-            //CustomGizmos.DrawFilledSquare(position, size / 2, normal, GetColor());
+            BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+            Color color = GetColor();
+            color = new Color(color.r, color.g, color.b, 0.5f);
 
+            // << DRAW RECT >>
+            Vector2 smallerDimensions = dimensions * 0.75f;
+            CustomGizmos.DrawSolidRect(position, smallerDimensions, normal, color);
+
+            // << DRAW LABEL >>
             GUIStyle style = new GUIStyle()
             {
                 fontSize = 12,
                 normal = new GUIStyleState() { textColor = GetInverseColor() },
-                alignment = TextAnchor.MiddleCenter
+                alignment = TextAnchor.MiddleLeft
             };
-
             CustomGizmos.DrawLabel($"Weight: {_weight}", position, style);
+
+
         }
 
-        public override void DrawEditorGizmos()
-        {
-            BaseCell.GetTransformData(out Vector3 position, out float size, out Vector3 normal);
-            CustomGizmos.DrawButtonHandle(position, size, normal, Color.white, () =>
-            {
-                _weight += 5;
-                if (_weight > 100) _weight = 0;
-                if (_weight < 0) _weight = 0;
-
-            }, Handles.RectangleHandleCap);
-        }
+        public override void DrawEditorGizmos() { }
 
         // -- (( GETTERS )) -------- ))
         public int GetWeight()

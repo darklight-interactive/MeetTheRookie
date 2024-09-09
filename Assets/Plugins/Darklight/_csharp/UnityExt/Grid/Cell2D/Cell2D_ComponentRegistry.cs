@@ -8,8 +8,6 @@ namespace Darklight.UnityExt.Game.Grid
 {
     partial class Cell2D
     {
-
-        [System.Serializable]
         public class ComponentRegistry
         {
             static Dictionary<Cell2D.ComponentTypeKey, Type> _componentTypeMap = new()
@@ -23,7 +21,7 @@ namespace Darklight.UnityExt.Game.Grid
             // ======== [[ FIELDS ]] ======================================================= >>>>
             Cell2D _cell;
             Dictionary<ComponentTypeKey, Component> _componentMap = new();
-            [SerializeReference, NonReorderable] List<Component> _components = new();
+            List<Component> _components = new();
 
             // ======== [[ CONSTRUCTORS ]] ======================================================= >>>>
             public ComponentRegistry(Cell2D cell)
@@ -36,12 +34,11 @@ namespace Darklight.UnityExt.Game.Grid
             public ComponentRegistry(ComponentRegistry originComposite)
             {
                 _cell = originComposite._cell;
-
                 LoadComponents(originComposite._components);
             }
 
             // ======== [[ METHODS ]] ============================================================ >>>>
-            public Component RegisterComponent(Cell2D.ComponentTypeKey type, Cell2D.Visitor visitor = null)
+            public Component RegisterComponent(ComponentTypeKey type, Visitor visitor = null)
             {
                 if (!HasComponent(type))
                 {
@@ -57,7 +54,7 @@ namespace Darklight.UnityExt.Game.Grid
                 return null;
             }
 
-            public Component GetComponent(Cell2D.ComponentTypeKey type)
+            public Component GetComponent(ComponentTypeKey type)
             {
                 if (_componentMap.ContainsKey(type))
                 {
@@ -78,6 +75,10 @@ namespace Darklight.UnityExt.Game.Grid
                 return default;
             }
 
+            public ComponentTypeKey[] GetComponentTypeKeys()
+            {
+                return _componentMap.Keys.ToArray();
+            }
 
             public void RemoveComponent(Cell2D.ComponentTypeKey type)
             {

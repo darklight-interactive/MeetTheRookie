@@ -17,7 +17,6 @@ namespace Darklight.UnityExt.Game.Grid
         public enum ComponentTypeKey
         {
             BASE,
-            CONFIG,
             OVERLAP,
             WEIGHT,
             SPAWNER,
@@ -30,7 +29,6 @@ namespace Darklight.UnityExt.Game.Grid
             private static readonly Dictionary<ComponentTypeKey, Type> _typeMap = new Dictionary<ComponentTypeKey, Type>()
             {
                 { ComponentTypeKey.BASE, typeof(Grid2D_BaseComponent) },
-                { ComponentTypeKey.CONFIG, typeof(Grid2D_ConfigComponent) },
                 { ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent) },
                 { ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent) },
                 { ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent) },
