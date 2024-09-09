@@ -20,23 +20,10 @@ using UnityEditor;
 
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
-[RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
 public class Interactable : MonoBehaviour, IInteract
 {
     private const string Prefix = "[Interactable] >> ";
     private SpriteRenderer _spriteRenderer => GetComponentInChildren<SpriteRenderer>();
-    private Grid2D_OverlapWeightSpawner _gridSpawner
-    {
-        get
-        {
-            Grid2D_OverlapWeightSpawner spawner = GetComponent<Grid2D_OverlapWeightSpawner>();
-            if (spawner == null)
-                spawner = this.gameObject.AddComponent<Grid2D_OverlapWeightSpawner>();
-
-            return spawner;
-
-        }
-    }
 
     // private references for DestinationPoints
     private GameObject Lupe;
@@ -98,8 +85,10 @@ public class Interactable : MonoBehaviour, IInteract
     [SerializeField] List<float> destinationPointsRelativeX;
     private List<GameObject> _destinationPoints = new List<GameObject>();
 
+    [Header("Grid Spawner")]
+    public Grid2D_OverlapWeightSpawner iconSpawner;
+
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-    public Grid2D_OverlapWeightSpawner gridSpawner => _gridSpawner;
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
     public bool isTarget { get => _isTarget; set => _isTarget = value; }
     public bool isActive { get => _isActive; set => _isActive = value; }
@@ -112,15 +101,7 @@ public class Interactable : MonoBehaviour, IInteract
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
     public void Awake()
     {
-        if (_gridSpawner == null)
-        {
-            GameObjectUtility.CreateGameObject("Weighted Spawner", (GameObject go) =>
-            {
-                go.transform.SetParent(this.transform);
-                go.AddComponent<Grid2D_OverlapWeightSpawner>();
-                return go;
-            }, this.transform);
-        }
+
     }
 
 
@@ -171,16 +152,28 @@ public class Interactable : MonoBehaviour, IInteract
         }
     }
 
+    public void Update()
+    {
+
+    }
+
     // ====== [[ TARGETING ]] ======================================
     public virtual void TargetSet()
     {
         isTarget = true;
+        UpdateInteractIcon();
+    }
 
-        Cell2D cell = _gridSpawner.GetBestCell();
-        cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+    public void UpdateInteractIcon()
+    {
+        if (isTarget && iconSpawner != null)
+        {
+            Cell2D cell = iconSpawner.GetBestCell();
+            cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-        if (MTR_UIManager.Instance != null)
-            MTR_UIManager.Instance.ShowInteractIcon(position, dimensions.y);
+            if (MTR_UIManager.Instance != null)
+                MTR_UIManager.Instance.ShowInteractIcon(position, dimensions.y * 2);
+        }
     }
 
     public virtual void TargetClear()

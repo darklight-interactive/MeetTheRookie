@@ -185,7 +185,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5, y: 2}
+  m_Size: {x: 0.5, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &210893148915583867
 Rigidbody2D:
@@ -295,10 +295,10 @@ MonoBehaviour:
   _isLoaded: 1
   _isInitialized: 1
   _config:
-    _lockToTransform: 1
+    _lockPosToTransform: 1
+    _lockNormalToTransform: 1
     _gridAlignment: 3
     _gridLocalPosition: {x: 0, y: 0, z: 0}
-    _gridWorldPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
     _gridDimensions: {x: 2, y: 3}
     _cellConfig:

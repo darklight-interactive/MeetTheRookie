@@ -55,8 +55,8 @@ namespace Darklight.UnityExt.Game.Grid
         [SerializeField, Range(0f, 10)] float _cellSpacingY = 1;
 
         [Space(10)]
-        [SerializeField, Range(0, 10)] float _cellBondingX = 0;
-        [SerializeField, Range(0, 10)] float _cellBondingY = 0;
+        [SerializeField, Range(-10, 10)] float _cellBondingX = 0;
+        [SerializeField, Range(-10, 10)] float _cellBondingY = 0;
 
         // ======== [[ METHODS ]] ======================================================= >>>>
         public Cell2D.SettingsConfig CreateCellConfig()

@@ -239,7 +239,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             {
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
-                    bestCell = interactable.gridSpawner.GetBestCell();
+                    bestCell = interactable.dialogueSpawner.GetBestCell();
                     bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
                     // << SET SCALE >>

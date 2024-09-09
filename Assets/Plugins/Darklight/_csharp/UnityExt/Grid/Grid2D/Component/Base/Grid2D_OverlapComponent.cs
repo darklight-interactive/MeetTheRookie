@@ -60,6 +60,13 @@ namespace Darklight.UnityExt.Game.Grid
 
         // ======== [[ METHODS ]] ================================== >>>>
         #region -- (( INTERFACE )) : IComponent -------- ))
+        public override void OnInitialize(Grid2D baseObj)
+        {
+            _colliderWeightMap.Clear();
+
+            base.OnInitialize(baseObj);
+        }
+
         public override void OnUpdate()
         {
             BaseGrid.SendVisitorToAllCells(UpdateVisitor);
@@ -100,17 +107,6 @@ namespace Darklight.UnityExt.Game.Grid
                     cells.Add(pair.Key);
             }
             return cells;
-        }
-
-        public List<Cell2D> GetCellsWithLowestColliderCount()
-        {
-            int min = int.MaxValue;
-            foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
-            {
-                if (pair.Value < min)
-                    min = pair.Value;
-            }
-            return GetCellsWithColliderCount(min);
         }
     }
 }

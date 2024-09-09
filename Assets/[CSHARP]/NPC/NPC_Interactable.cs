@@ -3,6 +3,8 @@ using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
+using Darklight.UnityExt.Game.Grid;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -31,8 +33,12 @@ public class NPC_Interactable : Interactable, IInteract
         }
     }
 
+    public Grid2D_OverlapWeightSpawner dialogueSpawner;
+
     [Dropdown("_speakerOptions")]
     public string speakerTag;
+
+
 
     public override void Start()
     {
