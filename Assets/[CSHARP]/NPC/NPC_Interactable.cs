@@ -3,6 +3,8 @@ using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
+using Darklight.UnityExt.Game.Grid2D;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -59,6 +61,15 @@ public class NPC_Interactable : Interactable, IInteract
             // If the statemachine is not null, go to the state before talked to
             stateMachine?.GoToState(stateBeforeTalkedTo);
         };
+    }
+
+    public override void TargetSet()
+    {
+        isTarget = true;
+        OverlapGrid2D_Data targetData = GetBestOverlapGridData();
+
+        if (MTR_UIManager.Instance != null)
+            MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
     }
 
     public void PlayAnimation(NPCState state)
