@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Game.Grid;
+using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Inky;
 using System.Collections;
 using Darklight.UnityExt.Utility;

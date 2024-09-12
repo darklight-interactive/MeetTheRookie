@@ -13,7 +13,7 @@ using NaughtyAttributes;
 
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Game.Grid;
+using Darklight.UnityExt.Core2D;
 
 
 #if UNITY_EDITOR
@@ -206,101 +206,94 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Cell2D bestCell = null;
-
         Vector3 texturePosition = Vector3.zero;
         Vector3 textureScale = Vector3.one;
         Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = characterColors[currentSpeaker];
 
-        // Set the Camera Target to the Player
-        if (currentSpeaker.Contains("Lupe"))
-        {
+        // Determine if the speaker is the player or an NPC
+        bool isPlayerSpeaker = currentSpeaker.Contains("Lupe");
+        Transform speakerTransform = null;
 
+        // Get the best cell and transform data based on the speaker type
+        if (isPlayerSpeaker)
+        {
             PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
             if (playerInteractor == null)
             {
                 Debug.LogError($"{Prefix} Could not find PlayerInteractor");
+                return null;
             }
 
-            // Get the Best Cell
             bestCell = playerInteractor.DialogueGridSpawner.GetBestCell();
-            bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-
-            // << SET SCALE >>
-            float width = bestCell.Data.Dimensions.x;
-            textureScale = new Vector3(width, width, 1);
-
-            // << SET POSITION >>
-            texturePosition = position;
-            texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
-
-            // Offset so that the bottom center texture lines up with the bottom center of the cell
-            texturePosition.y -= dimensions.y * 0.5f;
-
-
-            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
-
-            // Set the Bubble Direction
-            if (texturePosition.x <= playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.left;
-            }
-            else if (texturePosition.x > playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.right;
-            }
+            speakerTransform = playerInteractor.transform;
         }
         else
         {
-            // Set the Camera Target to a NPC
             NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
-            foreach (NPC_Interactable interactable in interactables)
+            foreach (var interactable in interactables)
             {
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
                     bestCell = interactable.dialogueGridSpawner.GetBestCell();
-                    bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-
-                    // << SET SCALE >>
-                    float width = bestCell.Data.Dimensions.x;
-                    textureScale = new Vector3(width, width, 1);
-
-                    // << SET POSITION >>
-                    texturePosition = position;
-                    texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
-                    Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
-
-                    // Set the Bubble Position and Direction
-                    if (texturePosition.x <= interactable.transform.position.x)
-                    {
-                        bubbleDirection = Vector2Int.left;
-                    }
-                    else if (texturePosition.x > interactable.transform.position.x)
-                    {
-                        bubbleDirection = Vector2Int.right;
-                    }
+                    speakerTransform = interactable.transform;
+                    break;
                 }
             }
         }
 
+        // Check if a valid cell was found
+        if (bestCell == null)
+        {
+            Debug.LogError($"{Prefix} No best cell found for speaker: {currentSpeaker}");
+            return null;
+        }
 
+        // Set position, scale, and direction
+        SetBubbleTransformData(bestCell, speakerTransform, ref texturePosition, ref textureScale, ref bubbleDirection);
 
+        // Apply position and scale to the speech bubble object
         speechBubbleObject.transform.position = texturePosition;
         speechBubbleObject.transform.localScale = textureScale;
 
+        // Determine which bubble sprite to use based on direction
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
-        //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
-        // Update the UI Elements
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
-        speechBubble.UpdateFontSizeToMatchScreen();
-        speechBubble.style.color = bubbleColor;
-        speechBubble.SetBackgroundSprite(bubbleSprite);
-        //speechBubble.style.width = speechBubbleWidth;
+        // Update the speech bubble UI elements
+        var speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        UpdateSpeechBubbleUI(speechBubble, bubbleColor, bubbleSprite);
 
         return speechBubble;
     }
+
+    // Helper method to set transform data
+    private void SetBubbleTransformData(Cell2D cell, Transform speakerTransform, ref Vector3 position, ref Vector3 scale, ref Vector2Int direction)
+    {
+        cell.GetTransformData(out Vector3 cellPosition, out Vector2 cellDimensions, out _);
+
+        // Set scale based on cell dimensions
+        float width = cell.Data.Dimensions.x;
+        scale = new Vector3(width, width, 1);
+
+        // Adjust position and offset it appropriately
+        position = cellPosition;
+        position.y += scale.y * 0.5f;  // Offset to align the bottom center of the texture
+        position.y -= cellDimensions.y * 0.5f;
+
+        // Set bubble direction based on the speaker's position
+        direction = position.x <= speakerTransform.position.x ? Vector2Int.left : Vector2Int.right;
+    }
+
+    // Helper method to update the UI of the speech bubble
+    private void UpdateSpeechBubbleUI(SpeechBubble speechBubble, Color color, Sprite backgroundSprite)
+    {
+        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
+        speechBubble.UpdateFontSizeToMatchScreen();
+        speechBubble.style.color = color;
+        speechBubble.SetBackgroundSprite(backgroundSprite);
+    }
+
+
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();

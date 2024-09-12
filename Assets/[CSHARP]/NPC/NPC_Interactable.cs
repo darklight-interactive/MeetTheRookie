@@ -3,7 +3,7 @@ using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
-using Darklight.UnityExt.Game.Grid;
+using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Utility;
 
 
