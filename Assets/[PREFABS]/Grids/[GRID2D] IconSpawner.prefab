@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 709104187993870665}
   - component: {fileID: 7309310622695701474}
   m_Layer: 7
-  m_Name: '[NPC] IconGrid'
+  m_Name: '[GRID2D] IconSpawner'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,11 +56,11 @@ MonoBehaviour:
     _gridAlignment: 7
     _gridLocalPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
-    _gridDimensions: {x: 5, y: 1}
+    _gridDimensions: {x: 3, y: 1}
     _cellConfig:
-      _cellDimensions: {x: 0.25, y: 0.25}
-      _cellSpacing: {x: 0, y: 0}
-      _cellBonding: {x: 0, y: 0.25}
+      _cellDimensions: {x: 0.125, y: 0.25}
+      _cellSpacing: {x: 0.25, y: 0}
+      _cellBonding: {x: 0, y: 0.125}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
   - _name: Cell2D (0,0)
@@ -69,11 +69,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 627618880
+      _guid: -535189549
       _key: {x: 0, y: 0}
-      _coordinate: {x: -2, y: 0}
-      _dimensions: {x: 0.25, y: 0.25}
-      _position: {x: 6, y: 0.75, z: 3.2632961}
+      _coordinate: {x: -1, y: 0}
+      _dimensions: {x: 0.125, y: 0.25}
+      _position: {x: -0.15625, y: 0.125, z: 0}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
     componentTypeKeys: 04000000030000000200000000000000
@@ -83,11 +83,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -454844880
+      _guid: -1600330282
       _key: {x: 1, y: 0}
-      _coordinate: {x: -1, y: 0}
-      _dimensions: {x: 0.25, y: 0.25}
-      _position: {x: 6.25, y: 0.5, z: 3.2632961}
+      _coordinate: {x: 0, y: 0}
+      _dimensions: {x: 0.125, y: 0.25}
+      _position: {x: 0, y: 0, z: 0}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
     componentTypeKeys: 04000000030000000200000000000000
@@ -97,39 +97,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1334819216
+      _guid: -1043635751
       _key: {x: 2, y: 0}
-      _coordinate: {x: 0, y: 0}
-      _dimensions: {x: 0.25, y: 0.25}
-      _position: {x: 6.5, y: 0.75, z: 3.2632961}
-      _normal: {x: 0, y: 0, z: 1}
-      _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
-  - _name: Cell2D (3,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 1438776444
-      _key: {x: 3, y: 0}
       _coordinate: {x: 1, y: 0}
-      _dimensions: {x: 0.25, y: 0.25}
-      _position: {x: 6.75, y: 0.5, z: 3.2632961}
-      _normal: {x: 0, y: 0, z: 1}
-      _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
-  - _name: Cell2D (4,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -1176872024
-      _key: {x: 4, y: 0}
-      _coordinate: {x: 2, y: 0}
-      _dimensions: {x: 0.25, y: 0.25}
-      _position: {x: 7, y: 0.75, z: 3.2632961}
+      _dimensions: {x: 0.125, y: 0.25}
+      _position: {x: 0.15625, y: 0.125, z: 0}
       _normal: {x: 0, y: 0, z: 1}
       _isDisabled: 0
     componentTypeKeys: 04000000030000000200000000000000
@@ -145,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1107190308
+  _guid: 1637432354
   _typeKey: 3
   _objectToSpawn: {fileID: 0}
 --- !u!114 &1436260659992952959
@@ -160,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1959952533
+  _guid: 531934499
   _typeKey: 2
   _showGizmos: 0
   _autoUpdate: 1
@@ -177,9 +149,6 @@ MonoBehaviour:
   - name: Cell (1,0)
     key: {x: 1, y: 0}
     weight: 0
-  - name: Cell (4,0)
-    key: {x: 4, y: 0}
-    weight: 0
 --- !u!114 &709104187993870665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,12 +161,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1017687264
+  _guid: -670722859
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
-    m_Bits: 0
-  _showGizmos: 0
+    m_Bits: 64
+  _showGizmos: 1
 --- !u!114 &7309310622695701474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,5 +179,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 901702582
+  _guid: 1113189569
   _typeKey: 4

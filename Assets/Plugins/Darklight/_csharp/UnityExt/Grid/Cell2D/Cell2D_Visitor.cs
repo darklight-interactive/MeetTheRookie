@@ -41,7 +41,7 @@ namespace Darklight.UnityExt.Game.Grid
             }
 
             // ======== [[ CONSTRUCTOR ]] ======================================================= >>>>
-            public ComponentVisitor(ComponentTypeKey type, VisitCellComponentEvent visitFunction = null)
+            public ComponentVisitor(ComponentTypeKey type, VisitCellComponentEvent visitFunction)
             {
                 _type = type;
                 VisitFunc = visitFunction;
@@ -66,7 +66,20 @@ namespace Darklight.UnityExt.Game.Grid
 
         }
 
+        public static class VisitorFactory
+        {
+            public static ComponentVisitor CreateComponentVisitor
+                (ComponentTypeKey type, VisitCellComponentEvent visitFunction)
+            {
+                return new ComponentVisitor(type, visitFunction);
+            }
 
+            public static ComponentVisitor CreateComponentVisitor
+                (Grid2D.Component gridComponent, VisitCellComponentEvent visitFunction)
+            {
+                return new ComponentVisitor(gridComponent.TypeKey, visitFunction);
+            }
+        }
 
     }
 }

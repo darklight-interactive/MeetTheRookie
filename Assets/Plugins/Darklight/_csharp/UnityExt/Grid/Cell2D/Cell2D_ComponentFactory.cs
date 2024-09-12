@@ -7,20 +7,6 @@ namespace Darklight.UnityExt.Game.Grid
 {
     partial class Cell2D
     {
-        // ======== [[ NESTED TYPES ]] ================================== >>>>
-        /// <summary>
-        /// Enum to represent the different types of components that can be attached to a cell.
-        /// Intended to be used as a bit mask to determine which components are present on a cell.
-        /// </summary>
-        public enum ComponentTypeKey
-        {
-            BASE,
-            CONFIG,
-            OVERLAP,
-            WEIGHT,
-            SPAWNER
-        }
-
         public static class ComponentFactory
         {
             private static Dictionary<ComponentTypeKey, Func<Cell2D, Component>> _componentFactory = new Dictionary<ComponentTypeKey, Func<Cell2D, Component>>();

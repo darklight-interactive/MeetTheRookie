@@ -11,8 +11,6 @@ using Ink.Runtime;
 using NaughtyAttributes;
 
 using UnityEngine;
-using GameObjectUtility = Darklight.UnityExt.Utility.GameObjectUtility;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -86,7 +84,7 @@ public class Interactable : MonoBehaviour, IInteract
     private List<GameObject> _destinationPoints = new List<GameObject>();
 
     [Header("Grid Spawner")]
-    public Grid2D_OverlapWeightSpawner iconSpawner;
+    public Grid2D_OverlapWeightSpawner iconGridSpawner;
 
     // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
     public string interactionKey { get => _interactionStitch; private set => _interactionStitch = value; }
@@ -99,8 +97,33 @@ public class Interactable : MonoBehaviour, IInteract
     public event IInteract.OnComplete OnCompleted;
 
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
-    public void Awake()
+    public virtual void Awake()
     {
+        // << ICON GRID SPAWNER >> --------------------------------------
+        if (iconGridSpawner == null)
+        {
+            // Get the icon spawner
+            iconGridSpawner = GetComponentInChildren<Grid2D_OverlapWeightSpawner>();
+            if (iconGridSpawner == null)
+            {
+                if (MTR_UIManager.Instance.iconGridSpawnerPrefab == null)
+                {
+                    Debug.LogError($"{Prefix} Icon Grid Spawner Prefab is null in MTR_UIManager", MTR_UIManager.Instance);
+                    return;
+                }
+
+                // Create the icon spawner as a child
+                iconGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                    (MTR_UIManager.Instance.iconGridSpawnerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+                iconGridSpawner.transform.localPosition = Vector3.zero;
+
+                Debug.Log($"{Prefix} Created Icon Grid Spawner", this);
+            }
+            else
+            {
+                Debug.Log($"{Prefix} Found Icon Grid Spawner", this);
+            }
+        }
 
     }
 
@@ -166,14 +189,16 @@ public class Interactable : MonoBehaviour, IInteract
 
     public void UpdateInteractIcon()
     {
-        if (isTarget && iconSpawner != null)
+        if (isTarget && iconGridSpawner != null)
         {
-            Cell2D cell = iconSpawner.GetBestCell();
+            Cell2D cell = iconGridSpawner.GetBestCell();
             cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
             if (MTR_UIManager.Instance != null)
                 MTR_UIManager.Instance.ShowInteractIcon(position, dimensions.y * 2);
         }
+
+
     }
 
     public virtual void TargetClear()
@@ -390,7 +415,7 @@ public class Interactable : MonoBehaviour, IInteract
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Interactable))]
+[CustomEditor(typeof(Interactable), true)]
 public class InteractableCustomEditor : Editor
 {
     SerializedObject _serializedObject;
@@ -405,6 +430,8 @@ public class InteractableCustomEditor : Editor
     // This is the method that is called when the inspector is drawn
     public override void OnInspectorGUI()
     {
+        _serializedObject = new SerializedObject(target);
+        _script = (Interactable)target;
         _serializedObject.Update();
 
         // Checking to see if any values have changed
@@ -421,11 +448,6 @@ public class InteractableCustomEditor : Editor
         {
             _serializedObject.ApplyModifiedProperties();
         }
-    }
-
-    public void OnSceneGUI()
-    {
-        //Handles.Label(new Vector3(0, 0, 0), "This is the origin");
     }
 }
 #endif

@@ -37,11 +37,13 @@ namespace Darklight.UnityExt.Game.Grid
         public void DestroyObject()
         {
             if (_spawnedObject == null) return;
-            GameObjectUtility.DestroyAlways(_spawnedObject);
+            ObjectUtility.DestroyAlways(_spawnedObject);
             _spawnedObject = null;
         }
 
         public override void DrawGizmos() { }
+        public override void DrawSelectedGizmos() { }
+
         public override void DrawEditorGizmos() { }
     }
 }

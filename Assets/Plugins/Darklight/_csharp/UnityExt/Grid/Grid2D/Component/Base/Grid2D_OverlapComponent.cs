@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Darklight.UnityExt.Game.Grid
 {
     [RequireComponent(typeof(Grid2D))]
-    public class Grid2D_OverlapComponent : Grid2D_Component
+    public class Grid2D_OverlapComponent : Grid2D_BaseComponent
     {
         // ======== [[ FIELDS ]] =========================== >>>>
         [SerializeField] LayerMask _layerMask;
@@ -17,7 +17,7 @@ namespace Darklight.UnityExt.Game.Grid
         #region ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( INITIALIZATION EVENT )) -------- ))
         protected Cell2D.EventRegistry.VisitCellComponentEvent InitEvent =>
-            (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_OverlapComponent overlapComponent =
                     cell.ComponentReg.GetComponent(type) as Cell2D_OverlapComponent;
@@ -33,7 +33,7 @@ namespace Darklight.UnityExt.Game.Grid
 
         // -- (( UPDATE EVENT )) -------- ))
         protected Cell2D.EventRegistry.VisitCellComponentEvent UpdateEvent =>
-            (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_OverlapComponent overlapComponent =
                     cell.ComponentReg.GetComponent<Cell2D_OverlapComponent>();
@@ -49,13 +49,9 @@ namespace Darklight.UnityExt.Game.Grid
 
         // -- (( VISITORS )) -------- ))
         protected override Cell2D.ComponentVisitor InitVisitor =>
-            Cell2D.VisitorFactory.CreateComponentVisitor(Cell2D.ComponentTypeKey.OVERLAP, InitEvent);
+            Cell2D.VisitorFactory.CreateComponentVisitor(this, InitEvent);
         protected override Cell2D.ComponentVisitor UpdateVisitor =>
-            Cell2D.VisitorFactory.CreateComponentVisitor(Cell2D.ComponentTypeKey.OVERLAP, UpdateEvent);
-        protected override Cell2D.ComponentVisitor GizmosVisitor =>
-            Cell2D.VisitorFactory.CreateBaseGizmosVisitor(Cell2D.ComponentTypeKey.OVERLAP);
-        protected override Cell2D.ComponentVisitor EditorGizmosVisitor =>
-            Cell2D.VisitorFactory.CreateBaseEditorGizmosVisitor(Cell2D.ComponentTypeKey.OVERLAP);
+            Cell2D.VisitorFactory.CreateComponentVisitor(this, UpdateEvent);
         #endregion
 
         // ======== [[ METHODS ]] ================================== >>>>

@@ -100,6 +100,41 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     private GameUIController _gameUI;
     [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
+
+
+    [Header("Synthesis Manager")]
+    private SynthesisManager _synthesisManager;
+
+    [SerializeField]
+    UXML_UIDocumentPreset _synthesisUIPreset;
+
+    [Header("Interact Icon")]
+    [SerializeField]
+    UXML_UIDocumentPreset _interactIconPreset;
+    public GameObject iconGridSpawnerPrefab;
+
+    [ShowOnly]
+    public UXML_RenderTextureObject interactIcon;
+
+
+    [Header("Speech Bubble")]
+    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+    public GameObject dialogueSpawnerPrefab;
+
+    [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
+
+    [MinMaxSlider(24, 512)]
+    public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
+
+    [SerializeField]
+    Sprite LTick_SpeechBubble;
+
+    [SerializeField]
+    Sprite RTick_SpeechBubble;
+
+
+
+    // ======== [[ PROPERTIES ]] ================================== >>>>
     public GameUIController gameUIController
     {
         get
@@ -118,11 +153,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
-    [Header("Synthesis Manager")]
-    private SynthesisManager _synthesisManager;
-
-    [SerializeField]
-    UXML_UIDocumentPreset _synthesisUIPreset;
     public SynthesisManager synthesisManager
     {
         get
@@ -140,23 +170,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
+
+
     #region ------ [[ SPEECH BUBBLE ]] ------------------------ >>
-    [Header("Speech Bubble")]
-    [SerializeField]
-    UXML_UIDocumentPreset _speechBubblePreset;
-
-    [ShowOnly]
-    public UXML_RenderTextureObject speechBubbleObject;
-
-    [MinMaxSlider(24, 512)]
-    public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
-
-    [SerializeField]
-    Sprite LTick_SpeechBubble;
-
-    [SerializeField]
-    Sprite RTick_SpeechBubble;
-
     public void CreateNewSpeechBubble(string text)
     {
         if (speechBubbleObject != null)
@@ -207,10 +223,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             }
 
             // Get the Best Cell
-            bestCell = playerInteractor.grid2D_OverlapWeightSpawner.GetBestCell();
+            bestCell = playerInteractor.DialogueGridSpawner.GetBestCell();
             bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-
-
 
             // << SET SCALE >>
             float width = bestCell.Data.Dimensions.x;
@@ -219,6 +233,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             // << SET POSITION >>
             texturePosition = position;
             texturePosition.y += textureScale.y * 0.5f; // Offset so that the bottom center is the origin
+
+            // Offset so that the bottom center texture lines up with the bottom center of the cell
+            texturePosition.y -= dimensions.y * 0.5f;
+
+
             Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {texturePosition}");
 
             // Set the Bubble Direction
@@ -239,7 +258,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             {
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
-                    bestCell = interactable.dialogueSpawner.GetBestCell();
+                    bestCell = interactable.dialogueGridSpawner.GetBestCell();
                     bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
                     // << SET SCALE >>
@@ -282,18 +301,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         return speechBubble;
     }
-
-    /*
-        public void AssignTransformToGridData(OverlapGrid2D_Data gridData)
-        {
-            if (speechBubbleObject == null)
-                return;
-
-            speechBubbleObject.transform.position = gridData.worldPosition;
-            speechBubbleObject.transform.localScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
-        }
-        */
-
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
@@ -326,12 +333,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     #endregion
 
     #region ------ [[ INTERACT ICON ]] ------------------------
-    [Header("Interact Icon")]
-    [SerializeField]
-    UXML_UIDocumentPreset _interactIconPreset;
 
-    [ShowOnly]
-    public UXML_RenderTextureObject interactIcon;
 
     public void ShowInteractIcon(Vector3 worldPosition, float scale = 1)
     {

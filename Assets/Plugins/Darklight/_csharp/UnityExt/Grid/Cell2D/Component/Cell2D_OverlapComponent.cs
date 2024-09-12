@@ -48,7 +48,7 @@ namespace Darklight.UnityExt.Game.Grid
             CustomGizmos.DrawLabel(label, labelPosition, new GUIStyle()
             {
                 fontSize = 12,
-                normal = new GUIStyleState() { textColor = color }
+                normal = new GUIStyleState() { textColor = Color.white }
             });
 
             // << DRAW OUTLINE >>
@@ -61,6 +61,8 @@ namespace Darklight.UnityExt.Game.Grid
                 CustomGizmos.DrawSolidRect(position, dimensions, normal, alphaColor);
             }
         }
+
+        public override void DrawSelectedGizmos() { }
         public override void DrawEditorGizmos() { }
 
         // ======== [[ PUBLIC METHODS ]] =========================== >>>>

@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 4448834560041087508}
   - component: {fileID: 2960267563953444121}
   - component: {fileID: 1990103957342268980}
-  m_Layer: 7
-  m_Name: '[NPC] DialogueGrid'
+  m_Layer: 0
+  m_Name: '[GRID2D] DialogueSpawner'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
     _gridAlignment: 6
     _gridLocalPosition: {x: -0.77, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
-    _gridDimensions: {x: 2, y: 3}
+    _gridDimensions: {x: 2, y: 4}
     _cellConfig:
       _cellDimensions: {x: 1.25, y: 0.2}
       _cellSpacing: {x: 0.25, y: 0.1}
@@ -69,84 +69,112 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -45259440
+      _guid: -273728484
       _key: {x: 0, y: 0}
       _coordinate: {x: 0, y: 0}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 5.73, y: 0.53742415, z: 3.2632961}
+      _position: {x: -5.041, y: 0.494, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
   - _name: Cell2D (0,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 660476530
+      _guid: -1165861144
       _key: {x: 0, y: 1}
       _coordinate: {x: 0, y: 1}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 5.73, y: 0.7574242, z: 3.2632961}
+      _position: {x: -5.041, y: 0.714, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
   - _name: Cell2D (0,2)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1798349419
+      _guid: 2107462833
       _key: {x: 0, y: 2}
       _coordinate: {x: 0, y: 2}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 5.73, y: 0.97742414, z: 3.2632961}
+      _position: {x: -5.041, y: 0.934, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
+  - _name: Cell2D (0,3)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -940152322
+      _key: {x: 0, y: 3}
+      _coordinate: {x: 0, y: 3}
+      _dimensions: {x: 1.25, y: 0.2}
+      _position: {x: -5.041, y: 1.154, z: 2.261}
+      _normal: {x: 0, y: 0, z: 2}
+      _isDisabled: 0
+    componentTypeKeys: 030000000200000001000000
   - _name: Cell2D (1,0)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 778241863
+      _guid: 1031459009
       _key: {x: 1, y: 0}
       _coordinate: {x: 1, y: 0}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 7.2925, y: 0.53742415, z: 3.2632961}
+      _position: {x: -3.4785, y: 0.494, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
   - _name: Cell2D (1,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 375185026
+      _guid: -1614266208
       _key: {x: 1, y: 1}
       _coordinate: {x: 1, y: 1}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 7.2925, y: 0.7574242, z: 3.2632961}
+      _position: {x: -3.4785, y: 0.714, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
   - _name: Cell2D (1,2)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 882518613
+      _guid: 323892692
       _key: {x: 1, y: 2}
       _coordinate: {x: 1, y: 2}
       _dimensions: {x: 1.25, y: 0.2}
-      _position: {x: 7.2925, y: 0.97742414, z: 3.2632961}
+      _position: {x: -3.4785, y: 0.934, z: 2.261}
       _normal: {x: 0, y: 0, z: 2}
       _isDisabled: 0
-    componentTypeKeys: 04000000030000000200000000000000
+    componentTypeKeys: 030000000200000001000000
+  - _name: Cell2D (1,3)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: 1882423048
+      _key: {x: 1, y: 3}
+      _coordinate: {x: 1, y: 3}
+      _dimensions: {x: 1.25, y: 0.2}
+      _position: {x: -3.4785, y: 1.154, z: 2.261}
+      _normal: {x: 0, y: 0, z: 2}
+      _isDisabled: 0
+    componentTypeKeys: 030000000200000001000000
 --- !u!114 &4957982548120597956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1341936599
+  _guid: -1065795199
   _typeKey: 3
   _objectToSpawn: {fileID: 0}
 --- !u!114 &4448834560041087508
@@ -174,9 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1915231237
+  _guid: -706560579
   _typeKey: 2
-  _showGizmos: 0
+  _showGizmos: 1
   _autoUpdate: 1
   _serializedWeightData:
   - name: Cell (0,0)
@@ -184,19 +212,25 @@ MonoBehaviour:
     weight: 0
   - name: Cell (0,1)
     key: {x: 0, y: 1}
-    weight: 0
+    weight: 5
   - name: Cell (0,2)
     key: {x: 0, y: 2}
-    weight: 0
+    weight: 10
   - name: Cell (1,0)
     key: {x: 1, y: 0}
     weight: 0
   - name: Cell (1,1)
     key: {x: 1, y: 1}
+    weight: 5
+  - name: Cell (1,2)
+    key: {x: 1, y: 2}
+    weight: 10
+  - name: Cell (1,3)
+    key: {x: 1, y: 3}
     weight: 0
   - name: Cell (1,2)
     key: {x: 1, y: 2}
-    weight: 0
+    weight: 10
 --- !u!114 &2960267563953444121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,12 +243,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 202801220
+  _guid: 183311998
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
-    m_Bits: 0
-  _showGizmos: 0
+    m_Bits: 192
+  _showGizmos: 1
 --- !u!114 &1990103957342268980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,5 +261,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1312720090
-  _typeKey: 4

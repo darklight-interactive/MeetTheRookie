@@ -10,9 +10,11 @@ namespace Darklight.UnityExt.Game.Grid
 {
     [RequireComponent(typeof(Grid2D), typeof(Grid2D_SpawnerComponent))]
     [RequireComponent(typeof(Grid2D_WeightComponent), typeof(Grid2D_OverlapComponent))]
-    public class Grid2D_OverlapWeightSpawner : Grid2D_BaseComponent
+    public class Grid2D_OverlapWeightSpawner : MonoBehaviour
     {
-        // ======== [[ PROPERTIES ]] ================================== >>>>
+        // ======== [[ FIELDS ]] ================================== >>>>
+        Grid2D _grid;
+
         // -- (( COMPONENTS )) -------- ))
         Grid2D_SpawnerComponent _spawnerComponent;
         Grid2D_WeightComponent _weightComponent;
@@ -20,27 +22,29 @@ namespace Darklight.UnityExt.Game.Grid
 
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE METHODS )) -------- ))
-        public override void OnInitialize(Grid2D baseObj)
+        public void Awake()
         {
-            base.OnInitialize(baseObj);
+            _grid = this.GetComponent<Grid2D>();
+            if (_grid == null)
+                _grid = this.gameObject.AddComponent<Grid2D>();
 
-            _spawnerComponent = baseObj.GetComponent<Grid2D_SpawnerComponent>();
+            _spawnerComponent = this.GetComponent<Grid2D_SpawnerComponent>();
             if (_spawnerComponent == null)
-                _spawnerComponent = baseObj.gameObject.AddComponent<Grid2D_SpawnerComponent>();
+                _spawnerComponent = this.gameObject.AddComponent<Grid2D_SpawnerComponent>();
 
-            _weightComponent = baseObj.GetComponent<Grid2D_WeightComponent>();
+            _weightComponent = this.GetComponent<Grid2D_WeightComponent>();
             if (_weightComponent == null)
-                _weightComponent = baseObj.gameObject.AddComponent<Grid2D_WeightComponent>();
+                _weightComponent = this.gameObject.AddComponent<Grid2D_WeightComponent>();
 
-            _overlapComponent = baseObj.GetComponent<Grid2D_OverlapComponent>();
+            _overlapComponent = this.GetComponent<Grid2D_OverlapComponent>();
             if (_overlapComponent == null)
-                _overlapComponent = baseObj.gameObject.AddComponent<Grid2D_OverlapComponent>();
+                _overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
         }
 
         public Cell2D GetBestCell()
         {
             // From all available cells, get the cells with the lowest collider count
-            List<Cell2D> availableCells = BaseGrid.GetCells();
+            List<Cell2D> availableCells = _grid.GetCells();
 
             // Get the cells with the lowest collider count
             List<Cell2D> lowestColliderCells = _overlapComponent.GetCellsWithColliderCount(0);
@@ -48,12 +52,19 @@ namespace Darklight.UnityExt.Game.Grid
             {
                 // If there are cells with no colliders, return one of them
                 Debug.Log($"Found {lowestColliderCells.Count} cells with no colliders");
-                Cell2D bestCell = _weightComponent.GetCellWithHighestWeight(lowestColliderCells.ToList());
+                Cell2D bestCell = _weightComponent.GetCellWithHighestWeight(lowestColliderCells);
+                if (bestCell == null)
+                {
+                    Debug.LogError("No best cell found");
+                    return null;
+                }
+
+                Debug.Log($"{this.name} OverlapWeightSpawner: Best cell found {bestCell.Name}");
                 return bestCell;
             }
 
             // If all cells have colliders, return the cell with the lowest weight from all available cells
-            return _weightComponent.GetCellWithHighestWeight(availableCells.ToList()); ;
+            return _weightComponent.GetCellWithHighestWeight(availableCells.ToList());
         }
     }
 }

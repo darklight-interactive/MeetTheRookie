@@ -15,12 +15,12 @@ namespace Darklight.UnityExt.Game.Grid
         {
             Cell2D _baseCell;
             [SerializeField, ShowOnly] int _guid = System.Guid.NewGuid().GetHashCode();
-            [SerializeField, ShowOnly] Cell2D.ComponentTypeKey _type;
+            [SerializeField, ShowOnly] ComponentTypeKey _typeKey;
             bool _initialized = false;
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public Cell2D BaseCell => _baseCell;
             public int GUID => _guid;
-            public ComponentTypeKey Type => GetTypeKey();
+            public ComponentTypeKey TypeKey => GetTypeKey();
             public bool Initialized => _initialized;
 
 
@@ -29,7 +29,7 @@ namespace Darklight.UnityExt.Game.Grid
             {
                 _guid = System.Guid.NewGuid().GetHashCode();
                 _baseCell = baseObj;
-                _type = GetTypeKey();
+                _typeKey = GetTypeKey();
             }
 
             // ======== [[ METHODS ]] ================================== >>>>
@@ -46,6 +46,7 @@ namespace Darklight.UnityExt.Game.Grid
 
             public virtual ComponentTypeKey GetTypeKey() => ComponentRegistry.GetTypeKey(this);
             public abstract void DrawGizmos();
+            public abstract void DrawSelectedGizmos();
             public abstract void DrawEditorGizmos();
 
             // ---- (( VISITOR METHODS )) ---- >>

@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.Game.Grid
 {
-    public class Grid2D_WeightComponent : Grid2D_Component
+    public class Grid2D_WeightComponent : Grid2D_BaseComponent
     {
         const int DEFAULT_WEIGHT = 5;
         const int MIN_WEIGHT = 0;
@@ -26,8 +26,8 @@ namespace Darklight.UnityExt.Game.Grid
         // ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( BASE VISITORS )) -------- ))
         protected override Cell2D.ComponentVisitor InitVisitor =>
-            Cell2D.VisitorFactory.CreateComponentVisitor(Cell2D.ComponentTypeKey.WEIGHT,
-            (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.WEIGHT,
+            (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
 
@@ -42,8 +42,8 @@ namespace Darklight.UnityExt.Game.Grid
             });
 
         protected override Cell2D.ComponentVisitor UpdateVisitor =>
-            Cell2D.VisitorFactory.CreateComponentVisitor(Cell2D.ComponentTypeKey.WEIGHT,
-            (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.WEIGHT,
+            (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
 
@@ -55,14 +55,10 @@ namespace Darklight.UnityExt.Game.Grid
                 weightComponent.OnUpdate();
                 return true;
             });
-        protected override Cell2D.ComponentVisitor GizmosVisitor =>
-            Cell2D.VisitorFactory.CreateBaseGizmosVisitor(Cell2D.ComponentTypeKey.WEIGHT);
-        protected override Cell2D.ComponentVisitor EditorGizmosVisitor =>
-            Cell2D.VisitorFactory.CreateBaseEditorGizmosVisitor(Cell2D.ComponentTypeKey.WEIGHT);
 
         // -- (( CUSTOM VISITORS )) -------- ))
         private Cell2D.ComponentVisitor _randomizeVisitor => Cell2D.VisitorFactory.CreateComponentVisitor
-            (Cell2D.ComponentTypeKey.WEIGHT, (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            (ComponentTypeKey.WEIGHT, (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
 
@@ -73,7 +69,7 @@ namespace Darklight.UnityExt.Game.Grid
                 return true;
             });
         private Cell2D.ComponentVisitor _resetVisitor => Cell2D.VisitorFactory.CreateComponentVisitor
-            (Cell2D.ComponentTypeKey.WEIGHT, (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            (ComponentTypeKey.WEIGHT, (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
 
@@ -85,7 +81,7 @@ namespace Darklight.UnityExt.Game.Grid
             });
 
         private Cell2D.ComponentVisitor _loadDataVisitor => Cell2D.VisitorFactory.CreateComponentVisitor
-            (Cell2D.ComponentTypeKey.WEIGHT, (Cell2D cell, Cell2D.ComponentTypeKey type) =>
+            (ComponentTypeKey.WEIGHT, (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D_WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D_WeightComponent>();
 
@@ -214,7 +210,12 @@ namespace Darklight.UnityExt.Game.Grid
 
         public Cell2D GetCellWithHighestWeight(List<Cell2D> cells)
         {
-            Cell2D highestWeightCell = null;
+            if (cells.Count == 0)
+            {
+                Debug.LogError("Cannot get cell with highest weight from empty list.", this);
+            }
+
+            Cell2D highestWeightCell = cells[0];
             int highestWeight = 0;
             foreach (Cell2D cell in cells)
             {
@@ -230,6 +231,11 @@ namespace Darklight.UnityExt.Game.Grid
 
         public Cell2D GetCellWithLowestWeight(List<Cell2D> cells)
         {
+            if (cells.Count == 0)
+            {
+                Debug.LogError("Cannot get cell with highest weight from empty list.", this);
+            }
+
             Cell2D lowestWeightCell = cells[0];
             int lowestWeight = cells[0].ComponentReg.GetComponent<Cell2D_WeightComponent>().GetWeight();
             foreach (Cell2D cell in cells)

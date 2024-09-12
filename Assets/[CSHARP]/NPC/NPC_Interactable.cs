@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using Darklight.UnityExt.Game.Grid;
+using Darklight.UnityExt.Utility;
 
 
 #if UNITY_EDITOR
@@ -13,15 +14,18 @@ using UnityEditor;
 [RequireComponent(typeof(NPC_Controller))]
 public class NPC_Interactable : Interactable, IInteract
 {
-    private NPCState stateBeforeTalkedTo = NPCState.IDLE;
-    NPC_StateMachine stateMachine => GetComponent<NPC_Controller>().stateMachine;
 
+    // ======== [[ FIELDS ]] ================================== >>>>
+    NPCState _stateBeforeTalkedTo = NPCState.IDLE;
 
-    [Header("NPC : Speech Bubble")]
+    public Grid2D_OverlapWeightSpawner dialogueGridSpawner;
 
-    // This is just a getter for the speaker tag options
-    private List<string> _speakerOptions
+    [Dropdown("_speakerOptions")] public string speakerTag;
+
+    // ======== [[ PROPERTIES ]] ================================== >>>>
+    List<string> _speakerOptions
     {
+        // This is just a getter a list of all the speakers in the story
         get
         {
             List<string> speakers = new List<string>();
@@ -32,12 +36,25 @@ public class NPC_Interactable : Interactable, IInteract
             return speakers;
         }
     }
+    NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
 
-    public Grid2D_OverlapWeightSpawner dialogueSpawner;
 
-    [Dropdown("_speakerOptions")]
-    public string speakerTag;
+    // ======== [[ METHODS ]] ================================== >>>>
+    public override void Awake()
+    {
+        base.Awake();
+        if (dialogueGridSpawner == null)
+        {
+            dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
+            if (dialogueGridSpawner == null)
+            {
 
+                dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                    (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
+                dialogueGridSpawner.transform.localPosition = Vector3.zero;
+            }
+        }
+    }
 
 
     public override void Start()
@@ -49,10 +66,10 @@ public class NPC_Interactable : Interactable, IInteract
         // >> ON FIRST INTERACTION -------------------------------
         this.OnFirstInteraction += () => 
         {
-            stateBeforeTalkedTo = stateMachine.CurrentState;
+            _stateBeforeTalkedTo = _stateMachine.CurrentState;
 
             // If the statemachine is not null, go to the speak state
-            stateMachine?.GoToState(NPCState.SPEAK);
+            _stateMachine?.GoToState(NPCState.SPEAK);
         };
 
         // >> ON INTERACT ---------------------------------------
@@ -65,7 +82,7 @@ public class NPC_Interactable : Interactable, IInteract
         this.OnCompleted += () =>
         {
             // If the statemachine is not null, go to the state before talked to
-            stateMachine?.GoToState(stateBeforeTalkedTo);
+            _stateMachine?.GoToState(_stateBeforeTalkedTo);
         };
     }
 
@@ -74,37 +91,3 @@ public class NPC_Interactable : Interactable, IInteract
         GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(NPC_Interactable))]
-public class NPC_InteractableCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    NPC_Interactable _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (NPC_Interactable)target;
-        //_script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Play Animation"))
-        {
-            _script.PlayAnimation(NPCState.PLAY_ANIMATION);
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

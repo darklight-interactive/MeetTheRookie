@@ -6,23 +6,23 @@ using UnityEngine;
 
 namespace Darklight.UnityExt.Game.Grid
 {
+
+    /// <summary>
+    /// The type of Grid2D component.
+    /// </summary>
+    /// <remarks>
+    /// <para>Each Grid2D component has a type tag that can be used to identify the component.</para>
+    /// </remarks>
+    public enum ComponentTypeKey
+    {
+        BASE,
+        OVERLAP,
+        WEIGHT,
+        SPAWNER,
+    }
+
     public partial class Grid2D
     {
-        /// <summary>
-        /// The type of Grid2D component.
-        /// </summary>
-        /// <remarks>
-        /// <para>Each Grid2D component has a type tag that can be used to identify the component.</para>
-        /// </remarks>
-        public enum ComponentTypeKey
-        {
-            BASE,
-            OVERLAP,
-            WEIGHT,
-            SPAWNER,
-            WEIGHTED_SPAWNER
-        }
-
         public class ComponentRegistry
         {
             // ======== [[ STATIC FIELDS ]] ================================== >>>>
@@ -32,14 +32,13 @@ namespace Darklight.UnityExt.Game.Grid
                 { ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent) },
                 { ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent) },
                 { ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent) },
-                { ComponentTypeKey.WEIGHTED_SPAWNER, typeof(Grid2D_OverlapWeightSpawner) }
             };
 
             // Reverse map for faster lookups in GetTypeKey methods
             private static readonly Dictionary<Type, ComponentTypeKey> _reverseTypeMap = new Dictionary<Type, ComponentTypeKey>();
 
             private readonly Grid2D _grid;
-            private List<Grid2D_Component> _components = new List<Grid2D_Component>();
+            private List<Component> _components = new List<Component>();
 
             // ======== [[ CONSTRUCTORS ]] ================================== >>>>
             static ComponentRegistry()
@@ -73,7 +72,7 @@ namespace Darklight.UnityExt.Game.Grid
             }
 
             // ---- (( STATIC METHODS )) -------- ))
-            public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Grid2D_Component
+            public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
             {
                 if (_reverseTypeMap.TryGetValue(typeof(TComponent), out var key))
                 {
@@ -84,7 +83,7 @@ namespace Darklight.UnityExt.Game.Grid
                     $"Component type {typeof(TComponent)} is not registered in the factory.");
             }
 
-            public static ComponentTypeKey GetTypeKey(Grid2D_Component component)
+            public static ComponentTypeKey GetTypeKey(Component component)
             {
                 if (_reverseTypeMap.TryGetValue(component.GetType(), out var key))
                 {

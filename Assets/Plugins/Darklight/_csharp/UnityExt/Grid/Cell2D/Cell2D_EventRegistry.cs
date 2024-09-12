@@ -65,6 +65,15 @@ namespace Darklight.UnityExt.Game.Grid
                 return true;
             };
 
+            public static VisitCellComponentEvent BaseSelectedGizmosFunc => (Cell2D cell, ComponentTypeKey type) =>
+            {
+                Component component = cell.ComponentReg.GetComponent(type);
+                if (component == null) return false;
+
+                component.DrawSelectedGizmos();
+                return true;
+            };
+
             public static VisitCellComponentEvent BaseEditorGizmosFunc => (Cell2D cell, ComponentTypeKey type) =>
             {
                 Component component = cell.ComponentReg.GetComponent(type);

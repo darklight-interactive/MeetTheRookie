@@ -10,12 +10,12 @@ namespace Darklight.UnityExt.Game.Grid
     {
         public class ComponentRegistry
         {
-            static Dictionary<Cell2D.ComponentTypeKey, Type> _componentTypeMap = new()
+            static Dictionary<ComponentTypeKey, Type> _componentTypeMap = new()
             {
-                { Cell2D.ComponentTypeKey.BASE, typeof(Cell2D_BaseComponent) },
-                { Cell2D.ComponentTypeKey.OVERLAP, typeof(Cell2D_OverlapComponent) },
-                { Cell2D.ComponentTypeKey.WEIGHT, typeof(Cell2D_WeightComponent) },
-                { Cell2D.ComponentTypeKey.SPAWNER, typeof(Cell2D_SpawnerComponent) },
+                { ComponentTypeKey.BASE, typeof(Cell2D_BaseComponent) },
+                { ComponentTypeKey.OVERLAP, typeof(Cell2D_OverlapComponent) },
+                { ComponentTypeKey.WEIGHT, typeof(Cell2D_WeightComponent) },
+                { ComponentTypeKey.SPAWNER, typeof(Cell2D_SpawnerComponent) },
             };
 
             // ======== [[ FIELDS ]] ======================================================= >>>>
@@ -27,7 +27,7 @@ namespace Darklight.UnityExt.Game.Grid
             public ComponentRegistry(Cell2D cell)
             {
                 _cell = cell;
-                _componentMap = new Dictionary<Cell2D.ComponentTypeKey, Component>();
+                _componentMap = new Dictionary<ComponentTypeKey, Component>();
                 _components = new List<Component>();
             }
 
@@ -80,7 +80,7 @@ namespace Darklight.UnityExt.Game.Grid
                 return _componentMap.Keys.ToArray();
             }
 
-            public void RemoveComponent(Cell2D.ComponentTypeKey type)
+            public void RemoveComponent(ComponentTypeKey type)
             {
                 // If the component is in the dictionary, remove it.
                 if (_componentMap.ContainsKey(type))
@@ -92,17 +92,17 @@ namespace Darklight.UnityExt.Game.Grid
 
             public void LoadComponents(List<Component> originComponents)
             {
-                _componentMap = new Dictionary<Cell2D.ComponentTypeKey, Component>();
+                _componentMap = new Dictionary<ComponentTypeKey, Component>();
                 foreach (Component component in originComponents)
                 {
-                    Cell2D.ComponentTypeKey type = component.GetTypeKey();
+                    ComponentTypeKey type = component.GetTypeKey();
                     Component newComponent = ComponentFactory.CreateComponent(type, _cell);
                     _componentMap.Add(type, newComponent);
                 }
                 Refresh();
             }
 
-            public bool HasComponent(Cell2D.ComponentTypeKey type)
+            public bool HasComponent(ComponentTypeKey type)
             {
                 if (_componentMap.ContainsKey(type))
                 {
@@ -120,7 +120,7 @@ namespace Darklight.UnityExt.Game.Grid
             }
 
             // ---- (( STATIC METHODS )) -------- ))
-            public static Cell2D.ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
+            public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
             {
                 foreach (var pair in _componentTypeMap)
                 {
@@ -133,7 +133,7 @@ namespace Darklight.UnityExt.Game.Grid
                     $"Component type {typeof(TComponent)} is not registered in the factory.");
             }
 
-            public static Cell2D.ComponentTypeKey GetTypeKey(Cell2D.Component component)
+            public static ComponentTypeKey GetTypeKey(Cell2D.Component component)
             {
                 foreach (var pair in _componentTypeMap)
                 {

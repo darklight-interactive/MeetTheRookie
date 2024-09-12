@@ -1,17 +1,18 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Game.Grid;
 using Darklight.UnityExt.Inky;
-using NaughtyAttributes;
 using System.Collections;
-using static UnityEngine.GraphicsBuffer;
+using Darklight.UnityExt.Utility;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class PlayerInteractor : MonoBehaviour
 {
-    public PlayerController playerController => GetComponent<PlayerController>();
-    public Grid2D_OverlapWeightSpawner grid2D_OverlapWeightSpawner => GetComponent<Grid2D_OverlapWeightSpawner>();
+    [SerializeField] Grid2D_OverlapWeightSpawner _dialogueGridSpawner;
+
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
     [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
@@ -21,6 +22,25 @@ public class PlayerInteractor : MonoBehaviour
     public Interactable activeInteractable;
     [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
     public Interactable previousTargetInteractable;
+
+    // ======== [[ PROPERTIES ]] ================================== >>>>
+    public PlayerController PlayerController => GetComponent<PlayerController>();
+    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueGridSpawner;
+
+    // ======== [[ METHODS ]] ================================== >>>>
+    public void Awake()
+    {
+        if (_dialogueGridSpawner == null)
+        {
+            _dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
+            if (_dialogueGridSpawner == null)
+            {
+                _dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                    (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
+                _dialogueGridSpawner.transform.localPosition = Vector3.zero;
+            }
+        }
+    }
 
 
     #region -- [[ UPDATE THE INTERACTABLE RADAR ]] ------------------------------------- >> 
@@ -33,7 +53,7 @@ public class PlayerInteractor : MonoBehaviour
     void RefreshRadar()
     {
         if (_foundInteractables.Count == 0) return;
-        if (playerController.currentState == PlayerState.INTERACTION) return;
+        if (PlayerController.currentState == PlayerState.INTERACTION) return;
         /*
         // Temporary list to hold items to be removed
         List<Interactable> toRemove = new List<Interactable>();
@@ -131,19 +151,19 @@ public class PlayerInteractor : MonoBehaviour
         {
             //Debug.LogError("No destination points found.");
             // Set the player controller state to Interaction
-            playerController.EnterInteraction();
+            PlayerController.EnterInteraction();
 
             // Set Lupe to face interactable
             Vector3 newActiveInteractablePosition = activeInteractable.gameObject.transform.position;
-            playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+            PlayerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
             activeInteractable.Interact(); // << MAIN INTERACTION
             yield break;
         }
 
         destinationPoints.Sort((a, b) =>
-            Mathf.Abs(a.transform.position.x - playerController.transform.position.x)
-                .CompareTo(Mathf.Abs(b.transform.position.x - playerController.transform.position.x))
+            Mathf.Abs(a.transform.position.x - PlayerController.transform.position.x)
+                .CompareTo(Mathf.Abs(b.transform.position.x - PlayerController.transform.position.x))
         );
         GameObject nearestDestinationPoint = destinationPoints[0];
         GameObject secondNearest = null;
@@ -198,7 +218,7 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         // Set the player controller state to Interaction
-        playerController.EnterInteraction();
+        PlayerController.EnterInteraction();
 
         if (Misra != null)
         {
@@ -207,7 +227,7 @@ public class PlayerInteractor : MonoBehaviour
 
             // Set Lupe to face interactable
             Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
-        playerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+        PlayerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
         activeInteractable.Interact(); // << MAIN INTERACTION
     }
@@ -231,7 +251,7 @@ public class PlayerInteractor : MonoBehaviour
 
         // Clean up
         MTR_UIManager.Instance.DestroySpeechBubble();
-        playerController.ExitInteraction();
+        PlayerController.ExitInteraction();
 
         // Force set the speaker to Lupe
         InkyStoryManager.Instance.SetSpeaker("Lupe");
@@ -279,4 +299,34 @@ public class PlayerInteractor : MonoBehaviour
             interactable.TargetClear();
             previousTargetInteractable = null;
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(PlayerInteractor))]
+    public class PlayerInteractorCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        PlayerInteractor _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (PlayerInteractor)target;
+            _script.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
 }

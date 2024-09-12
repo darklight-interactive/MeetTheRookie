@@ -27,7 +27,7 @@ namespace Darklight.UnityExt.Game.Grid
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE METHODS )) -------- ))
         public override void OnUpdate() { }
-        public override Cell2D.ComponentTypeKey GetTypeKey() => Cell2D.ComponentTypeKey.WEIGHT;
+        public override ComponentTypeKey GetTypeKey() => ComponentTypeKey.WEIGHT;
 
         public override void DrawGizmos()
         {
@@ -50,6 +50,7 @@ namespace Darklight.UnityExt.Game.Grid
 
 
         }
+        public override void DrawSelectedGizmos() { }
 
         public override void DrawEditorGizmos() { }
 

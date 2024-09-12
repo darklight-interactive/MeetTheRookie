@@ -70,18 +70,6 @@ namespace Darklight.UnityExt.Game.Grid
             return true;
         });
 
-        protected Cell2D.Visitor CellGizmosVisitor => new Cell2D.Visitor(cell =>
-        {
-            cell.DrawGizmos();
-            return true;
-        });
-
-        protected Cell2D.Visitor CellEditorGizmosVisitor => new Cell2D.Visitor(cell =>
-        {
-            cell.DrawEditorGizmos();
-            return true;
-        });
-
         // ======== [[ EVENTS ]] ======================================================= >>>>
         public delegate void GridEvent();
         public event GridEvent OnGridPreloaded;
@@ -153,7 +141,7 @@ namespace Darklight.UnityExt.Game.Grid
             return null;
         }
 
-        public List<Cell2D> GetCellsByComponentType(Cell2D.ComponentTypeKey type)
+        public List<Cell2D> GetCellsByComponentType(ComponentTypeKey type)
         {
             List<Cell2D> cells = new List<Cell2D>();
             foreach (Cell2D cell in cellMap.Values)
@@ -290,19 +278,6 @@ namespace Darklight.UnityExt.Game.Grid
 
             consoleGUI.Log("Cleared");
         }
-
-        void OnDrawGizmos()
-        {
-            if (!_isInitialized) return;
-            SendVisitorToAllCells(CellGizmosVisitor);
-        }
-
-        void OnDrawEditorGizmos()
-        {
-            if (!_isInitialized) return;
-            SendVisitorToAllCells(CellEditorGizmosVisitor);
-        }
-
         #endregion
 
         bool CreateCell(Vector2Int key)

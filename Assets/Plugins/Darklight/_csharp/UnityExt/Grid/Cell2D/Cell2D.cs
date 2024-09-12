@@ -121,21 +121,5 @@ namespace Darklight.UnityExt.Game.Grid
         protected void SetConfig(SettingsConfig config) => _config = config;
         protected void SetComposite(ComponentRegistry composite) => _componentReg = composite;
         protected void SetEnabled(bool enabled) => _enabled = enabled;
-
-        // (( GIZMOS )) -------- ))
-        public void DrawGizmos()
-        {
-            if (_data == null) return;
-
-            GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
-
-            Color faintWhite = new Color(1, 1, 1, 0.5f);
-            CustomGizmos.DrawWireRect(position, dimensions, normal, faintWhite);
-        }
-
-        public void DrawEditorGizmos()
-        {
-            if (_data == null) return;
-        }
     }
 }
