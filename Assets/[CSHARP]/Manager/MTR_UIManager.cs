@@ -92,7 +92,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [SerializeField, ShowOnly]
     float _screenAspectRatio;
 
-    [SerializeField] CharacterColors characterColors;
+    [SerializeField] CharacterColors _characterColors;
 
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
@@ -205,15 +205,16 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
     {
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-        Cell2D bestCell = null;
-        Vector3 texturePosition = Vector3.zero;
-        Vector3 textureScale = Vector3.one;
+        Grid2D_OverlapWeightSpawner spawner = null;
+
+
         Vector2Int bubbleDirection = Vector2Int.zero;
-        Color bubbleColor = characterColors[currentSpeaker];
+        Color bubbleColor = Color.black;
+        if (_characterColors != null && _characterColors[currentSpeaker] != null)
+            bubbleColor = _characterColors[currentSpeaker];
 
         // Determine if the speaker is the player or an NPC
         bool isPlayerSpeaker = currentSpeaker.Contains("Lupe");
-        Transform speakerTransform = null;
 
         // Get the best cell and transform data based on the speaker type
         if (isPlayerSpeaker)
@@ -224,9 +225,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 Debug.LogError($"{Prefix} Could not find PlayerInteractor");
                 return null;
             }
-
-            bestCell = playerInteractor.DialogueGridSpawner.GetBestCell();
-            speakerTransform = playerInteractor.transform;
+            spawner = playerInteractor.DialogueGridSpawner;
         }
         else
         {
@@ -235,26 +234,14 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             {
                 if (interactable.speakerTag.Contains(currentSpeaker))
                 {
-                    bestCell = interactable.dialogueGridSpawner.GetBestCell();
-                    speakerTransform = interactable.transform;
+                    spawner = interactable.DialogueGridSpawner;
                     break;
                 }
             }
         }
 
-        // Check if a valid cell was found
-        if (bestCell == null)
-        {
-            Debug.LogError($"{Prefix} No best cell found for speaker: {currentSpeaker}");
-            return null;
-        }
-
-        // Set position, scale, and direction
-        SetBubbleTransformData(bestCell, speakerTransform, ref texturePosition, ref textureScale, ref bubbleDirection);
-
-        // Apply position and scale to the speech bubble object
-        speechBubbleObject.transform.position = texturePosition;
-        speechBubbleObject.transform.localScale = textureScale;
+        // << ADJUST SPEECH BUBBLE TRANSFORM >>
+        spawner.AdjustTransformToBestCell_SquareFromWidth(speechBubbleObject.transform, SpatialUtils2D.OriginPoint.BOTTOM_CENTER, false);
 
         // Determine which bubble sprite to use based on direction
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;

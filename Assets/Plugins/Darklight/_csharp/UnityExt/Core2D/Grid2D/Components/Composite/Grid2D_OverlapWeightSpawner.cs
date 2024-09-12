@@ -41,6 +41,30 @@ namespace Darklight.UnityExt.Core2D
                 _overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
         }
 
+        public void SpawnObjectAtBestCell(GameObject obj)
+        {
+            Cell2D bestCell = GetBestCell();
+            if (bestCell == null)
+            {
+                Debug.LogError("No best cell found");
+                return;
+            }
+
+            _spawnerComponent.SpawnObjectAtCell(obj, bestCell);
+        }
+
+        public void AdjustTransformToBestCell_SquareFromWidth(Transform transform, SpatialUtils2D.OriginPoint originPoint = SpatialUtils2D.OriginPoint.CENTER, bool inheritNormal = true)
+        {
+            Cell2D bestCell = GetBestCell();
+            if (bestCell == null)
+            {
+                Debug.LogError("No best cell found");
+                return;
+            }
+
+            _spawnerComponent.AdjustTransformToSquareFromWidth(transform, bestCell, originPoint, inheritNormal);
+        }
+
         public Cell2D GetBestCell()
         {
             // From all available cells, get the cells with the lowest collider count

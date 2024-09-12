@@ -1,6 +1,7 @@
 using System;
 using Darklight.UnityExt.Utility;
 using UnityEngine;
+using static Darklight.UnityExt.Core2D.SpatialUtils2D;
 
 namespace Darklight.UnityExt.Core2D
 {
@@ -8,40 +9,56 @@ namespace Darklight.UnityExt.Core2D
     {
         public class SpawnerComponent : BaseComponent
         {
-            /* 
-            1. Spawn object at this cell position
-                - optionally have object inherit any of these Cell2D properties: 
-                    - normal
-                    - width
-                    - height
-                    - parent
-            */
-            public void SpawnObject(GameObject prefab, bool inheritNormal = false, bool inheritWidth = false, bool inheritHeight = false)
+            public void SpawnObject(GameObject prefab, OriginPoint originPoint = OriginPoint.CENTER,
+                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
                 GameObject instance = GameObject.Instantiate(prefab, BaseCell.Data.Position, Quaternion.identity);
-
-                if (inheritNormal)
-                    instance.transform.up = BaseCell.Data.Normal;
-
-                if (inheritWidth || inheritHeight)
-                {
-                    Vector3 scale = instance.transform.localScale;
-                    if (inheritWidth)
-                        scale.x = BaseCell.Data.Dimensions.x;
-                    if (inheritHeight)
-                        scale.y = BaseCell.Data.Dimensions.y;
-                    instance.transform.localScale = scale;
-                }
+                AdjustTransform(instance.transform, originPoint, inheritWidth, inheritHeight, inheritNormal);
             }
 
+            public void AdjustTransform(Transform transform, OriginPoint originPoint = OriginPoint.CENTER,
+                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            {
+                Vector3 position = BaseCell.Data.Position;
+                Vector3 normal = transform.forward;
+                Vector2 dimensions = transform.localScale;
 
-            /*
-            2. Expand upon the base spawn function to allow the object to be spawned with a specified origin point
-                - e.g. spawn the object so that the bottom left corner of the object is at the cell position
-                - use a enum to specify the origin point
-            */
+                // << GET DIMENSIONS >>
+                if (inheritWidth) dimensions.x = BaseCell.Data.Dimensions.x;
+                if (inheritHeight) dimensions.y = BaseCell.Data.Dimensions.y;
 
+                // << GET NORMAL >>
+                if (inheritNormal) normal = BaseCell.Data.Normal;
 
+                // << GET POSITION >>
+                position = SpatialUtils2D.CalculatePositionWithOriginOffset(position, dimensions, originPoint);
+
+                // << ADJUST TRANSFORM >>
+                transform.position = position;
+                transform.rotation = Quaternion.LookRotation(normal, Vector3.up);
+                transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
+            }
+
+            public void AdjustTransformToSquareFromWidth(Transform transform, OriginPoint originPoint = OriginPoint.CENTER, bool inheritNormal = true)
+            {
+                Vector3 position = BaseCell.Data.Position;
+                Vector3 normal = transform.forward;
+                Vector2 dimensions = transform.localScale;
+
+                // << GET DIMENSIONS >>
+                dimensions = new Vector2(BaseCell.Data.Dimensions.x, BaseCell.Data.Dimensions.x);
+
+                // << GET NORMAL >>
+                if (inheritNormal) normal = BaseCell.Data.Normal;
+
+                // << GET POSITION >>
+                position = SpatialUtils2D.CalculatePositionWithOriginOffset(position, dimensions, originPoint);
+
+                // << ADJUST TRANSFORM >>
+                transform.position = position;
+                transform.rotation = Quaternion.LookRotation(normal, Vector3.up);
+                transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
+            }
 
             public SpawnerComponent(Cell2D cell) : base(cell) { }
         }

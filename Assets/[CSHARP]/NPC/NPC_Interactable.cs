@@ -18,7 +18,7 @@ public class NPC_Interactable : Interactable, IInteract
     // ======== [[ FIELDS ]] ================================== >>>>
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
 
-    public Grid2D_OverlapWeightSpawner dialogueGridSpawner;
+    [SerializeField] Grid2D_OverlapWeightSpawner _dialogueGridSpawner;
 
     [Dropdown("_speakerOptions")] public string speakerTag;
 
@@ -37,21 +37,22 @@ public class NPC_Interactable : Interactable, IInteract
         }
     }
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
+    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueGridSpawner;
 
 
     // ======== [[ METHODS ]] ================================== >>>>
     public override void Awake()
     {
         base.Awake();
-        if (dialogueGridSpawner == null)
+        if (_dialogueGridSpawner == null)
         {
-            dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
-            if (dialogueGridSpawner == null)
+            _dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
+            if (_dialogueGridSpawner == null)
             {
 
-                dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                _dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
                     (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
-                dialogueGridSpawner.transform.localPosition = Vector3.zero;
+                _dialogueGridSpawner.transform.localPosition = Vector3.zero;
             }
         }
     }
