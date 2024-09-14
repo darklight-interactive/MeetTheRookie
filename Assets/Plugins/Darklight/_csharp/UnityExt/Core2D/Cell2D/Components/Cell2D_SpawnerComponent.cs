@@ -8,71 +8,77 @@ namespace Darklight.UnityExt.Core2D
     {
         public class SpawnerComponent : BaseComponent
         {
+            bool _active;
+            Spatial2D.AnchorPoint _cellOrigin = Spatial2D.AnchorPoint.CENTER;
 
             // ======== [[ FIELDS ]] ================================== >>>>
-            SpatialUtils2D.OriginPointTag _originTag = SpatialUtils2D.OriginPointTag.TOP_LEFT;
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
-            Vector3 originPosition => SpatialUtils2D.CalculateOriginOffsetPosition(BaseCell.Data.Position, BaseCell.Data.Dimensions, _originTag);
 
+            public Vector3 CellOriginPosition
+            {
+                get
+                {
+                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _cellOrigin);
+                }
+            }
 
             // ======== [[ METHODS ]] ================================== >>>>
             // ---- (( VIRUTAL METHODS )) ---- >>
             public override void DrawGizmos()
             {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawCube(originPosition, 0.025f * Vector3.one);
+                Gizmos.color = _active ? Color.green : Color.red;
+                Gizmos.DrawCube(CellOriginPosition, 0.025f * Vector3.one);
             }
 
             // ---- (( PUBLIC METHODS )) ---- >>
-            public void SetOriginPointTag(SpatialUtils2D.OriginPointTag originPointTag)
+            public void SetCellOrigin(Spatial2D.AnchorPoint cellOrigin)
             {
-                _originTag = originPointTag;
+                _cellOrigin = cellOrigin;
             }
 
             public void InstantiateObject(GameObject prefab, Transform parent = null)
             {
                 GameObject obj = GameObject.Instantiate(prefab, parent);
                 AdjustTransformToCellValues(obj.transform);
+                _active = true;
             }
 
-            public void AdjustTransformToCellValues(Transform transform,
-                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            public void AdjustTransformToCellValues(Transform transform, Spatial2D.AnchorPoint transformOrigin = Spatial2D.AnchorPoint.CENTER, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
                 Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
 
-                // << GET CELL VALUES >>
+                _active = true;
+
+                // << GET BASE ELL VALUES >>
                 BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
-                Vector3 newPosition = SpatialUtils2D.CalculateOriginOffsetPosition(cellPosition, cellDimensions, _originTag);
+                Vector3 newPosition = transform.position;
                 Vector2 newDimensions = transform.localScale;
                 Vector3 newNormal = transform.forward;
 
-                // << GET DIMENSIONS FROM CELL >>
-
+                // << CALCULATE NEW DIMENSIONS >>
                 // If both are inherited, set the scale to the dimensions
                 if (inheritWidth && inheritHeight)
                 {
-                    Debug.Log($"Setting scale to dimensions {cellDimensions}", transform);
                     newDimensions = cellDimensions;
                 }
                 // If just inherit width, set the scale to be a square with the width value
                 else if (inheritWidth)
                 {
-                    Debug.Log($"Setting scale to square {cellDimensions.x}", transform);
                     newDimensions = new Vector2(cellDimensions.x, cellDimensions.x);
                 }
                 // If just inherit height, set the scale to be a square with the height value
                 else if (inheritHeight)
                 {
-                    Debug.Log($"Setting scale to square {cellDimensions.y}", transform);
                     newDimensions = new Vector2(cellDimensions.y, cellDimensions.y);
                 }
 
                 // << GET NORMAL >>
-                if (inheritNormal) newNormal = cellNormal;
+                if (inheritNormal)
+                    Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
 
-                // << ADJUST TRANSFORM >>
-                SpatialUtils2D.SetTransformValues(transform, newPosition, newDimensions, newNormal);
+                // << CALCULATE NEW POSITION >>
+                Spatial2D.SetTransformValues_WithOffset(transform, CellOriginPosition, newDimensions, transformOrigin);
             }
 
             public SpawnerComponent(Cell2D cell) : base(cell) { }

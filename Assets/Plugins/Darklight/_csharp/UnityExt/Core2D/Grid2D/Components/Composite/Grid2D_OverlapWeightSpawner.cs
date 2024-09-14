@@ -43,7 +43,6 @@ namespace Darklight.UnityExt.Core2D
 
         public void InstantiateObjectAtBestCell(GameObject obj)
         {
-            // Get the best cell
             Cell2D bestCell = GetBestCell();
             if (bestCell == null)
             {
@@ -55,10 +54,8 @@ namespace Darklight.UnityExt.Core2D
             _grid_spawnerComponent.InstantiateObjectAtCell(obj, bestCell);
         }
 
-        public void AdjustTransformToBestCell(Transform transform,
-            bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+        public void AdjustTransformToBestCell(Transform transform)
         {
-            // Get the best cell
             Cell2D bestCell = GetBestCell();
             if (bestCell == null)
             {
@@ -67,7 +64,7 @@ namespace Darklight.UnityExt.Core2D
             }
 
             // Adjust the transform to the best cell
-            _grid_spawnerComponent.AdjustTransformToCell(transform, bestCell, inheritWidth, inheritHeight, inheritNormal);
+            _grid_spawnerComponent.AdjustTransformToCell(transform, bestCell);
         }
 
         public Cell2D GetBestCell()
@@ -80,7 +77,7 @@ namespace Darklight.UnityExt.Core2D
             if (lowestColliderCells.Count > 0)
             {
                 // If there are cells with no colliders, return one of them
-                Debug.Log($"Found {lowestColliderCells.Count} cells with no colliders");
+                //Debug.Log($"Found {lowestColliderCells.Count} cells with no colliders");
                 Cell2D bestCell = _grid_weightComponent.GetCellWithHighestWeight(lowestColliderCells);
                 if (bestCell == null)
                 {

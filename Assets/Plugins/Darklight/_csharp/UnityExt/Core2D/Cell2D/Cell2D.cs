@@ -9,7 +9,7 @@ namespace Darklight.UnityExt.Core2D
 {
 
     [System.Serializable]
-    public partial class Cell2D : IVisitable<Cell2D>
+    public partial class Cell2D : IVisitable<Cell2D>, ISpatial2D
     {
         // ======== [[ FIELDS ]] ======================================================= >>>>
         ComponentRegistry _componentReg;
@@ -29,13 +29,16 @@ namespace Darklight.UnityExt.Core2D
         public SettingsConfig Config { get => _config; }
         public SerializedData Data { get => _data; }
         public ComponentRegistry ComponentReg { get => _componentReg; }
+        public Vector3 Position { get => Data.Position; }
+        public Vector2 Dimensions { get => Data.Dimensions; }
+        public Vector3 Normal { get => Data.Normal; }
 
         // ======== [[ CONSTRUCTORS ]] ======================================================= >>>>
         public Cell2D(Vector2Int key) => Initialize(key, null);
         public Cell2D(Vector2Int key, SettingsConfig config) => Initialize(key, config);
 
         // ======== [[ METHODS ]] ============================================================ >>>>
-        // -- (( RUNTIME )) -------- )))
+        #region -- (( RUNTIME )) -------- )))
         public void Initialize(Vector2Int key, SettingsConfig config)
         {
             // Initialize the configuration
@@ -67,6 +70,7 @@ namespace Darklight.UnityExt.Core2D
             if (!_initialized) return;
             componentTypeKeys = _componentReg.GetComponentTypeKeys();
         }
+        #endregion
 
         // -- (( HANDLERS )) -------- )))
         public void RecalculateDataFromGrid(Grid2D grid)
@@ -116,6 +120,12 @@ namespace Darklight.UnityExt.Core2D
             dimensions = Data.Dimensions;
             normal = Data.Normal;
         }
+
+        public TComponent GetComponent<TComponent>() where TComponent : Component
+        {
+            return _componentReg.GetComponent<TComponent>();
+        }
+        public Component GetComponentByTypeKey(ComponentTypeKey typeKey) => _componentReg.GetComponent(typeKey);
 
         // (( SETTERS )) -------- ))
         protected void SetData(SerializedData data) => _data = data;

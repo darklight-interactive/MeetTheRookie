@@ -11,47 +11,52 @@ namespace Darklight.UnityExt.Core2D
 {
     public class Grid2D_SpawnerComponent : Grid2D_BaseComponent
     {
+        public Spatial2D.AnchorPoint anchorPointTag = Spatial2D.AnchorPoint.CENTER;
+        public bool inheritWidth = true;
+        public bool inheritHeight = true;
+        public bool inheritNormal = true;
+
+        protected Cell2D.ComponentVisitor SetOriginVisitor =>
+            Cell2D.VisitorFactory.CreateComponentVisitor(this, new Cell2D.EventRegistry.VisitCellComponentEvent((Cell2D cell, ComponentTypeKey type) =>
+            {
+                Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
+                cellSpawner.SetCellOrigin(anchorPointTag);
+                return true;
+            }));
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            BaseGrid.SendVisitorToAllCells(SetOriginVisitor);
+        }
+
+
         public void InstantiateObjectAtCell(GameObject obj, Cell2D cell)
         {
-            // << CHECK IF CELL IS NULL >>
             if (cell == null)
             {
-                Debug.LogError("Cell is null");
+                Debug.LogError("No best cell found");
                 return;
             }
 
-            // << GET SPAWNER COMPONENT OF THE CELL >>
-            Cell2D.SpawnerComponent spawnerComponent = cell.ComponentReg.GetComponent<Cell2D.SpawnerComponent>();
-            if (spawnerComponent == null)
-            {
-                Debug.LogError("Cell does not have a spawner component");
-                return;
-            }
-
-            // << INSTANTIATE OBJECT >>
-            spawnerComponent.InstantiateObject(obj);
+            // Instantiate the object at the best cell
+            Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
+            cellSpawner.InstantiateObject(obj);
         }
 
-        public void AdjustTransformToCell(Transform transform, Cell2D cell,
-            bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+        public void AdjustTransformToCell(Transform transform, Cell2D cell)
         {
-            // << CHECK IF CELL IS NULL >>
             if (cell == null)
             {
-                Debug.LogError("Cell is null");
+                Debug.LogError("No best cell found");
                 return;
             }
 
-            // << GET SPAWNER COMPONENT OF THE CELL >>
-            Cell2D.SpawnerComponent spawnerComponent = cell.ComponentReg.GetComponent<Cell2D.SpawnerComponent>();
-            if (spawnerComponent == null)
-            {
-                Debug.LogError("Cell does not have a spawner component");
-                return;
-            }
-
-            // << ADJUST TRANSFORM >>
-            spawnerComponent.AdjustTransformToCellValues(transform, inheritWidth, inheritHeight, inheritNormal);
+            // Adjust the transform to the best cell
+            Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
+            cellSpawner.AdjustTransformToCellValues(transform, anchorPointTag, inheritWidth, inheritHeight, inheritNormal);
         }
+
     }
 }
