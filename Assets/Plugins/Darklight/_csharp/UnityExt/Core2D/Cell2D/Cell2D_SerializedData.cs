@@ -19,9 +19,13 @@ namespace Darklight.UnityExt.Core2D
             [SerializeField, ShowOnly] int _guid = Guid.NewGuid().GetHashCode();
             [SerializeField, ShowOnly] Vector2Int _key = Vector2Int.zero;
             [SerializeField, ShowOnly] Vector2Int _coordinate = Vector2Int.zero;
-            [SerializeField, ShowOnly] Vector2 _dimensions = Vector2.one;
+
+            [Header("World Space Values")]
             [SerializeField, ShowOnly] Vector3 _position = Vector3.zero;
             [SerializeField, ShowOnly] Vector3 _normal = Vector3.up;
+            [SerializeField, ShowOnly] Vector2 _dimensions = Vector2.one;
+
+            [Header("Flags")]
             [SerializeField, ShowOnly] bool _isDisabled = false;
 
             // ======== [[ PROPERTIES ]] ======================================================= >>>>
@@ -67,8 +71,12 @@ namespace Darklight.UnityExt.Core2D
 
 
             // (( GETTERS )) -------- )))
-
-
+            public void GetWorldSpaceValues(out Vector3 position, out Vector2 dimensions, out Vector3 normal)
+            {
+                position = _position;
+                dimensions = _dimensions;
+                normal = _normal;
+            }
             // (( SETTERS )) -------- ))
             public void SetCoordinate(Vector2Int coordinate) => _coordinate = coordinate;
             public void SetPosition(Vector3 position) => _position = position;

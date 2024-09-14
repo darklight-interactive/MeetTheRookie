@@ -1,7 +1,6 @@
 using System;
 using Darklight.UnityExt.Utility;
 using UnityEngine;
-using static Darklight.UnityExt.Core2D.SpatialUtils2D;
 
 namespace Darklight.UnityExt.Core2D
 {
@@ -9,55 +8,71 @@ namespace Darklight.UnityExt.Core2D
     {
         public class SpawnerComponent : BaseComponent
         {
-            public void SpawnObject(GameObject prefab, OriginPoint originPoint = OriginPoint.CENTER,
-                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+
+            // ======== [[ FIELDS ]] ================================== >>>>
+            SpatialUtils2D.OriginPointTag _originTag = SpatialUtils2D.OriginPointTag.TOP_LEFT;
+
+            // ======== [[ PROPERTIES ]] ================================== >>>>
+            Vector3 originPosition => SpatialUtils2D.CalculateOriginOffsetPosition(BaseCell.Data.Position, BaseCell.Data.Dimensions, _originTag);
+
+
+            // ======== [[ METHODS ]] ================================== >>>>
+            // ---- (( VIRUTAL METHODS )) ---- >>
+            public override void DrawGizmos()
             {
-                GameObject instance = GameObject.Instantiate(prefab, BaseCell.Data.Position, Quaternion.identity);
-                AdjustTransform(instance.transform, originPoint, inheritWidth, inheritHeight, inheritNormal);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawCube(originPosition, 0.025f * Vector3.one);
             }
 
-            public void AdjustTransform(Transform transform, OriginPoint originPoint = OriginPoint.CENTER,
-                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            // ---- (( PUBLIC METHODS )) ---- >>
+            public void SetOriginPointTag(SpatialUtils2D.OriginPointTag originPointTag)
             {
-                Vector3 position = BaseCell.Data.Position;
-                Vector3 normal = transform.forward;
-                Vector2 dimensions = transform.localScale;
-
-                // << GET DIMENSIONS >>
-                if (inheritWidth) dimensions.x = BaseCell.Data.Dimensions.x;
-                if (inheritHeight) dimensions.y = BaseCell.Data.Dimensions.y;
-
-                // << GET NORMAL >>
-                if (inheritNormal) normal = BaseCell.Data.Normal;
-
-                // << GET POSITION >>
-                position = SpatialUtils2D.CalculatePositionWithOriginOffset(position, dimensions, originPoint);
-
-                // << ADJUST TRANSFORM >>
-                transform.position = position;
-                transform.rotation = Quaternion.LookRotation(normal, Vector3.up);
-                transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
+                _originTag = originPointTag;
             }
 
-            public void AdjustTransformToSquareFromWidth(Transform transform, OriginPoint originPoint = OriginPoint.CENTER, bool inheritNormal = true)
+            public void InstantiateObject(GameObject prefab, Transform parent = null)
             {
-                Vector3 position = BaseCell.Data.Position;
-                Vector3 normal = transform.forward;
-                Vector2 dimensions = transform.localScale;
+                GameObject obj = GameObject.Instantiate(prefab, parent);
+                AdjustTransformToCellValues(obj.transform);
+            }
 
-                // << GET DIMENSIONS >>
-                dimensions = new Vector2(BaseCell.Data.Dimensions.x, BaseCell.Data.Dimensions.x);
+            public void AdjustTransformToCellValues(Transform transform,
+                bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            {
+                Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
+
+                // << GET CELL VALUES >>
+                BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
+                Vector3 newPosition = SpatialUtils2D.CalculateOriginOffsetPosition(cellPosition, cellDimensions, _originTag);
+                Vector2 newDimensions = transform.localScale;
+                Vector3 newNormal = transform.forward;
+
+                // << GET DIMENSIONS FROM CELL >>
+
+                // If both are inherited, set the scale to the dimensions
+                if (inheritWidth && inheritHeight)
+                {
+                    Debug.Log($"Setting scale to dimensions {cellDimensions}", transform);
+                    newDimensions = cellDimensions;
+                }
+                // If just inherit width, set the scale to be a square with the width value
+                else if (inheritWidth)
+                {
+                    Debug.Log($"Setting scale to square {cellDimensions.x}", transform);
+                    newDimensions = new Vector2(cellDimensions.x, cellDimensions.x);
+                }
+                // If just inherit height, set the scale to be a square with the height value
+                else if (inheritHeight)
+                {
+                    Debug.Log($"Setting scale to square {cellDimensions.y}", transform);
+                    newDimensions = new Vector2(cellDimensions.y, cellDimensions.y);
+                }
 
                 // << GET NORMAL >>
-                if (inheritNormal) normal = BaseCell.Data.Normal;
-
-                // << GET POSITION >>
-                position = SpatialUtils2D.CalculatePositionWithOriginOffset(position, dimensions, originPoint);
+                if (inheritNormal) newNormal = cellNormal;
 
                 // << ADJUST TRANSFORM >>
-                transform.position = position;
-                transform.rotation = Quaternion.LookRotation(normal, Vector3.up);
-                transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
+                SpatialUtils2D.SetTransformValues(transform, newPosition, newDimensions, newNormal);
             }
 
             public SpawnerComponent(Cell2D cell) : base(cell) { }

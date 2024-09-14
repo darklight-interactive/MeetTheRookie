@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
+
 using Darklight.UnityExt.Behaviour.Interface;
 using Darklight.UnityExt.Editor;
-using Unity.Android.Gradle.Manifest;
+
 using UnityEngine;
+
 namespace Darklight.UnityExt.Core2D
 {
 

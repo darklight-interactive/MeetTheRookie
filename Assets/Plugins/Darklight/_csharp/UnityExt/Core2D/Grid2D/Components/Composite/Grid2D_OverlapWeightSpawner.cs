@@ -16,9 +16,9 @@ namespace Darklight.UnityExt.Core2D
         Grid2D _grid;
 
         // -- (( COMPONENTS )) -------- ))
-        Grid2D_SpawnerComponent _spawnerComponent;
-        Grid2D_WeightComponent _weightComponent;
-        Grid2D_OverlapComponent _overlapComponent;
+        Grid2D_SpawnerComponent _grid_spawnerComponent;
+        Grid2D_WeightComponent _grid_weightComponent;
+        Grid2D_OverlapComponent _grid_overlapComponent;
 
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE METHODS )) -------- ))
@@ -28,21 +28,22 @@ namespace Darklight.UnityExt.Core2D
             if (_grid == null)
                 _grid = this.gameObject.AddComponent<Grid2D>();
 
-            _spawnerComponent = this.GetComponent<Grid2D_SpawnerComponent>();
-            if (_spawnerComponent == null)
-                _spawnerComponent = this.gameObject.AddComponent<Grid2D_SpawnerComponent>();
+            _grid_spawnerComponent = this.GetComponent<Grid2D_SpawnerComponent>();
+            if (_grid_spawnerComponent == null)
+                _grid_spawnerComponent = this.gameObject.AddComponent<Grid2D_SpawnerComponent>();
 
-            _weightComponent = this.GetComponent<Grid2D_WeightComponent>();
-            if (_weightComponent == null)
-                _weightComponent = this.gameObject.AddComponent<Grid2D_WeightComponent>();
+            _grid_weightComponent = this.GetComponent<Grid2D_WeightComponent>();
+            if (_grid_weightComponent == null)
+                _grid_weightComponent = this.gameObject.AddComponent<Grid2D_WeightComponent>();
 
-            _overlapComponent = this.GetComponent<Grid2D_OverlapComponent>();
-            if (_overlapComponent == null)
-                _overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
+            _grid_overlapComponent = this.GetComponent<Grid2D_OverlapComponent>();
+            if (_grid_overlapComponent == null)
+                _grid_overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
         }
 
-        public void SpawnObjectAtBestCell(GameObject obj)
+        public void InstantiateObjectAtBestCell(GameObject obj)
         {
+            // Get the best cell
             Cell2D bestCell = GetBestCell();
             if (bestCell == null)
             {
@@ -50,11 +51,14 @@ namespace Darklight.UnityExt.Core2D
                 return;
             }
 
-            _spawnerComponent.SpawnObjectAtCell(obj, bestCell);
+            // Instantiate the object at the best cell
+            _grid_spawnerComponent.InstantiateObjectAtCell(obj, bestCell);
         }
 
-        public void AdjustTransformToBestCell_SquareFromWidth(Transform transform, SpatialUtils2D.OriginPoint originPoint = SpatialUtils2D.OriginPoint.CENTER, bool inheritNormal = true)
+        public void AdjustTransformToBestCell(Transform transform,
+            bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
         {
+            // Get the best cell
             Cell2D bestCell = GetBestCell();
             if (bestCell == null)
             {
@@ -62,7 +66,8 @@ namespace Darklight.UnityExt.Core2D
                 return;
             }
 
-            _spawnerComponent.AdjustTransformToSquareFromWidth(transform, bestCell, originPoint, inheritNormal);
+            // Adjust the transform to the best cell
+            _grid_spawnerComponent.AdjustTransformToCell(transform, bestCell, inheritWidth, inheritHeight, inheritNormal);
         }
 
         public Cell2D GetBestCell()
@@ -71,12 +76,12 @@ namespace Darklight.UnityExt.Core2D
             List<Cell2D> availableCells = _grid.GetCells();
 
             // Get the cells with the lowest collider count
-            List<Cell2D> lowestColliderCells = _overlapComponent.GetCellsWithColliderCount(0);
+            List<Cell2D> lowestColliderCells = _grid_overlapComponent.GetCellsWithColliderCount(0);
             if (lowestColliderCells.Count > 0)
             {
                 // If there are cells with no colliders, return one of them
                 Debug.Log($"Found {lowestColliderCells.Count} cells with no colliders");
-                Cell2D bestCell = _weightComponent.GetCellWithHighestWeight(lowestColliderCells);
+                Cell2D bestCell = _grid_weightComponent.GetCellWithHighestWeight(lowestColliderCells);
                 if (bestCell == null)
                 {
                     Debug.LogError("No best cell found");
@@ -88,7 +93,7 @@ namespace Darklight.UnityExt.Core2D
             }
 
             // If all cells have colliders, return the cell with the lowest weight from all available cells
-            return _weightComponent.GetCellWithHighestWeight(availableCells.ToList());
+            return _grid_weightComponent.GetCellWithHighestWeight(availableCells.ToList());
         }
     }
 }

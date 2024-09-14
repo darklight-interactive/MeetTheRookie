@@ -241,7 +241,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        spawner.AdjustTransformToBestCell_SquareFromWidth(speechBubbleObject.transform, SpatialUtils2D.OriginPoint.BOTTOM_CENTER, false);
+        spawner.AdjustTransformToBestCell(speechBubbleObject.transform, true, false, true);
 
         // Determine which bubble sprite to use based on direction
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
