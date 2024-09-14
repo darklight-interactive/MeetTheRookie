@@ -118,6 +118,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
 
     [Header("Speech Bubble")]
+    [SerializeField, Expandable] SpeechBubbleDataObject _speechBubbleDataObject;
+
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
     public GameObject dialogueSpawnerPrefab;
 
@@ -126,11 +128,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [MinMaxSlider(24, 512)]
     public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
 
-    [SerializeField]
-    Sprite LTick_SpeechBubble;
 
-    [SerializeField]
-    Sprite RTick_SpeechBubble;
 
 
 
@@ -207,8 +205,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         string currentSpeaker = InkyStoryManager.CurrentSpeaker;
         Grid2D_OverlapWeightSpawner spawner = null;
 
+        Debug.Log($"Creating speech bubble for {currentSpeaker}");
 
-        Vector2Int bubbleDirection = Vector2Int.zero;
         Color bubbleColor = Color.black;
         if (_characterColors != null && _characterColors[currentSpeaker] != null)
             bubbleColor = _characterColors[currentSpeaker];
@@ -243,32 +241,23 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
         spawner.AdjustTransformToBestCell(speechBubbleObject.transform);
 
+        Cell2D bestCell = spawner.GetBestCell();
+
         // Determine which bubble sprite to use based on direction
-        Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
+        Spatial2D.AnchorPoint anchor = spawner.GetAnchorPointFromCell(bestCell);
+        Spatial2D.AnchorPoint origin = spawner.GetOriginPointFromCell(bestCell);
+
+        Sprite bubbleSprite = _speechBubbleDataObject.GetSprite(anchor);
 
         // Update the speech bubble UI elements
-        var speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         UpdateSpeechBubbleUI(speechBubble, bubbleColor, bubbleSprite);
+        speechBubble.SetAnchorPoint(anchor);
+        speechBubble.SetOriginPoint(origin);
+
+        Debug.Log($"Created speech bubble for {currentSpeaker} with anchor {anchor} and origin {origin}");
 
         return speechBubble;
-    }
-
-    // Helper method to set transform data
-    private void SetBubbleTransformData(Cell2D cell, Transform speakerTransform, ref Vector3 position, ref Vector3 scale, ref Vector2Int direction)
-    {
-        cell.GetTransformData(out Vector3 cellPosition, out Vector2 cellDimensions, out _);
-
-        // Set scale based on cell dimensions
-        float width = cell.Data.Dimensions.x;
-        scale = new Vector3(width, width, 1);
-
-        // Adjust position and offset it appropriately
-        position = cellPosition;
-        position.y += scale.y * 0.5f;  // Offset to align the bottom center of the texture
-        position.y -= cellDimensions.y * 0.5f;
-
-        // Set bubble direction based on the speaker's position
-        direction = position.x <= speakerTransform.position.x ? Vector2Int.left : Vector2Int.right;
     }
 
     // Helper method to update the UI of the speech bubble
@@ -402,6 +391,11 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             _screenAspectRatioProperty.floatValue = ScreenInfoUtility.GetScreenAspectRatio();
 
             base.OnInspectorGUI();
+
+            if (GUILayout.Button("Create New Speech Bubble"))
+            {
+                _script.CreateNewSpeechBubble("Hello World!");
+            }
 
             _serializedObject.ApplyModifiedProperties();
         }

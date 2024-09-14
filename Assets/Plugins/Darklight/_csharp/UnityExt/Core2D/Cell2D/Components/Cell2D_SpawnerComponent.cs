@@ -6,20 +6,29 @@ namespace Darklight.UnityExt.Core2D
 {
     public partial class Cell2D
     {
+        [ExecuteAlways]
         public class SpawnerComponent : BaseComponent
         {
             bool _active;
-            Spatial2D.AnchorPoint _cellOrigin = Spatial2D.AnchorPoint.CENTER;
+            Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
+            Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
 
             // ======== [[ FIELDS ]] ================================== >>>>
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
-
             public Vector3 CellOriginPosition
             {
                 get
                 {
-                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _cellOrigin);
+                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _originPoint);
+                }
+            }
+
+            public Vector3 CellAnchorPosition
+            {
+                get
+                {
+                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _anchorPoint);
                 }
             }
 
@@ -27,14 +36,22 @@ namespace Darklight.UnityExt.Core2D
             // ---- (( VIRUTAL METHODS )) ---- >>
             public override void DrawGizmos()
             {
-                Gizmos.color = _active ? Color.green : Color.red;
+                Gizmos.color = Color.grey;
                 Gizmos.DrawCube(CellOriginPosition, 0.025f * Vector3.one);
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawCube(CellAnchorPosition, 0.025f * Vector3.one);
             }
 
             // ---- (( PUBLIC METHODS )) ---- >>
-            public void SetCellOrigin(Spatial2D.AnchorPoint cellOrigin)
+            public void SetCellOrigin(Spatial2D.AnchorPoint origin)
             {
-                _cellOrigin = cellOrigin;
+                _originPoint = origin;
+            }
+
+            public void SetCellAnchor(Spatial2D.AnchorPoint anchor)
+            {
+                _anchorPoint = anchor;
             }
 
             public void InstantiateObject(GameObject prefab, Transform parent = null)
@@ -78,7 +95,7 @@ namespace Darklight.UnityExt.Core2D
                     Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
 
                 // << CALCULATE NEW POSITION >>
-                Spatial2D.SetTransformValues_WithOffset(transform, CellOriginPosition, newDimensions, transformOrigin);
+                Spatial2D.SetTransformValues_WithOffset(transform, CellOriginPosition, newDimensions, _originPoint);
             }
 
             public SpawnerComponent(Cell2D cell) : base(cell) { }

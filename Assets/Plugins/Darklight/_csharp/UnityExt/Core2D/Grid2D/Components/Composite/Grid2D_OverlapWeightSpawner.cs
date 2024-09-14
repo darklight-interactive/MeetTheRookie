@@ -64,7 +64,7 @@ namespace Darklight.UnityExt.Core2D
             }
 
             // Adjust the transform to the best cell
-            _grid_spawnerComponent.AdjustTransformToCell(transform, bestCell);
+            _grid_spawnerComponent.AdjustTransformToCellOrigin(transform, bestCell);
         }
 
         public Cell2D GetBestCell()
@@ -91,6 +91,16 @@ namespace Darklight.UnityExt.Core2D
 
             // If all cells have colliders, return the cell with the lowest weight from all available cells
             return _grid_weightComponent.GetCellWithHighestWeight(availableCells.ToList());
+        }
+
+        public Spatial2D.AnchorPoint GetAnchorPointFromCell(Cell2D cell)
+        {
+            return _grid_spawnerComponent.GetAnchorPointFromCell(cell);
+        }
+
+        public Spatial2D.AnchorPoint GetOriginPointFromCell(Cell2D cell)
+        {
+            return _grid_spawnerComponent.GetOriginPointFromCell(cell);
         }
     }
 }
