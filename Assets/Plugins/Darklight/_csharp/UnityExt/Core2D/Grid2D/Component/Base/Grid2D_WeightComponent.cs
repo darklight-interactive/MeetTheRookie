@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.Core2D
 {
-    public class Grid2D_WeightComponent : Grid2D_BaseComponent
+    public class Grid2D_WeightComponent : Grid2D.BaseComponent
     {
         const int DEFAULT_WEIGHT = 5;
         const int MIN_WEIGHT = 0;

@@ -245,7 +245,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Cell2D bestCell = compositeSpawner.GetBestCell();
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        compositeSpawner.SpawnerComponent.AdjustTransformToCellOrigin(speechBubbleObject.transform, bestCell);
+        compositeSpawner.SpawnerComponent.AssignGameObjectToCell(speechBubbleObject.transform, bestCell);
 
         // Determine which bubble sprite to use based on direction
         Spatial2D.AnchorPoint anchor = compositeSpawner.GetAnchorPointFromCell(bestCell);

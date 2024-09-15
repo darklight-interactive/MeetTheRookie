@@ -9,11 +9,12 @@ namespace Darklight.UnityExt.Core2D
 {
     public partial class Cell2D
     {
-        public class SpawnerComponent : BaseComponent
+        public class SpawnerComponent : BaseComponent, IUnityEditorListener
         {
+            GameObject _spawnedObject;
+
             // ======== [[ FIELDS ]] ================================== >>>>
             SpawnData _data;
-
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public SpawnData Data { get => _data; set => _data = value; }
@@ -37,6 +38,11 @@ namespace Darklight.UnityExt.Core2D
 
             // ======== [[ METHODS ]] ================================== >>>>
             // ---- (( INTERFACE )) ---- >>
+            public void OnEditorReloaded()
+            {
+                DestroySpawnedObject();
+            }
+
             public override void OnInitialize(Cell2D cell)
             {
                 base.OnInitialize(cell);
@@ -65,14 +71,17 @@ namespace Darklight.UnityExt.Core2D
                 TargetAnchorPoint = anchor;
             }
 
-            public void InstantiateObject(GameObject prefab, Transform parent = null)
+            public void DestroySpawnedObject()
             {
-                GameObject obj = GameObject.Instantiate(prefab, parent);
-                AdjustTransformToCellValues(obj.transform);
+                if (_spawnedObject != null)
+                {
+                    ObjectUtility.DestroyAlways(_spawnedObject);
+                }
             }
 
-            public void AdjustTransformToCellValues(Transform transform, Spatial2D.AnchorPoint transformOrigin = Spatial2D.AnchorPoint.CENTER, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            public void AssignGameObjectToCell(GameObject gameObject, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
+                Transform transform = gameObject.transform;
                 Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
 
                 // << GET BASE ELL VALUES >>

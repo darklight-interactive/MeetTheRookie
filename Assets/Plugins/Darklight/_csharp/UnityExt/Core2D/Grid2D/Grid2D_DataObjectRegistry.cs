@@ -8,7 +8,7 @@ namespace Darklight.UnityExt.Core2D
         {
             public const string ASSET_PATH = "Assets/Resources/Darklight/Grid2D";
             public const string CONFIG_PATH = ASSET_PATH + "/Config";
-            public const string DATA_PATH = ASSET_PATH + "/SerializedData";
+            public const string DATA_PATH = ASSET_PATH + "/Data";
         }
     }
 }

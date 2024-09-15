@@ -138,5 +138,19 @@ namespace Darklight.UnityExt.Core2D
             }
 #endif
         }
+
+        public abstract class BaseComponent : Component
+        {
+            protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
+                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseInitFunc);
+            protected override Cell2D.ComponentVisitor CellComponent_UpdateVisitor =>
+                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseUpdateFunc);
+            protected override Cell2D.ComponentVisitor CellComponent_BaseGizmosVisitor =>
+                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseGizmosFunc);
+            protected override Cell2D.ComponentVisitor CellComponent_SelectedGizmosVisitor =>
+                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseSelectedGizmosFunc);
+            protected override Cell2D.ComponentVisitor CellComponent_EditorGizmosVisitor =>
+                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseEditorGizmosFunc);
+        }
     }
 }

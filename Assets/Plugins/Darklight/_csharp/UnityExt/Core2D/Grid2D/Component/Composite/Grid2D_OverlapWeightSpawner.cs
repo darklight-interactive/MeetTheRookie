@@ -8,9 +8,9 @@ using UnityEditor;
 #endif
 namespace Darklight.UnityExt.Core2D
 {
-    [RequireComponent(typeof(Grid2D), typeof(Grid2D_SpawnerComponent))]
+    [RequireComponent(typeof(Grid2D))]
     [RequireComponent(typeof(Grid2D_WeightComponent), typeof(Grid2D_OverlapComponent))]
-    public class Grid2D_OverlapWeightSpawner : MonoBehaviour
+    public class Grid2D_OverlapWeightSpawner : Grid2D_SpawnerComponent
     {
         // ======== [[ FIELDS ]] ================================== >>>>
         Grid2D _grid;
@@ -26,7 +26,7 @@ namespace Darklight.UnityExt.Core2D
 
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE METHODS )) -------- ))
-        public void Awake()
+        public override void OnInitialize(Grid2D grid)
         {
             if (_grid == null)
             {
@@ -46,6 +46,8 @@ namespace Darklight.UnityExt.Core2D
             _grid_overlapComponent = this.GetComponent<Grid2D_OverlapComponent>();
             if (_grid_overlapComponent == null)
                 _grid_overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
+
+            base.OnInitialize(grid);
         }
 
         public Cell2D GetBestCell()

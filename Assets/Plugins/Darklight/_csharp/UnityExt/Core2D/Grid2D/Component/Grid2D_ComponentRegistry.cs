@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Darklight.UnityExt.Editor;
 using UnityEngine;
 
 namespace Darklight.UnityExt.Core2D
 {
-
     /// <summary>
     /// The type of Grid2D component.
     /// </summary>
@@ -26,30 +26,18 @@ namespace Darklight.UnityExt.Core2D
         public class ComponentRegistry
         {
             // ======== [[ STATIC FIELDS ]] ================================== >>>>
-            private static readonly Dictionary<ComponentTypeKey, Type> _typeMap = new Dictionary<ComponentTypeKey, Type>()
+            private static readonly Dictionary<ComponentTypeKey, Type> _typeMap = new Dictionary<ComponentTypeKey, Type>
             {
-                { ComponentTypeKey.BASE, typeof(Grid2D_BaseComponent) },
-                { ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent) },
-                { ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent) },
-                { ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent) },
+                {ComponentTypeKey.BASE, typeof(Component)},
+                {ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent)},
+                {ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent)},
+                {ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent)},
             };
-
-            // Reverse map for faster lookups in GetTypeKey methods
-            private static readonly Dictionary<Type, ComponentTypeKey> _reverseTypeMap = new Dictionary<Type, ComponentTypeKey>();
 
             private readonly Grid2D _grid;
             private List<Component> _components = new List<Component>();
 
             // ======== [[ CONSTRUCTORS ]] ================================== >>>>
-            static ComponentRegistry()
-            {
-                // Initialize reverse map for constant time lookups
-                foreach (var pair in _typeMap)
-                {
-                    _reverseTypeMap[pair.Value] = pair.Key;
-                }
-            }
-
             public ComponentRegistry(Grid2D grid)
             {
                 _grid = grid;
@@ -71,12 +59,18 @@ namespace Darklight.UnityExt.Core2D
                 _components.ForEach(component => component.Update());
             }
 
-            // ---- (( STATIC METHODS )) -------- ))
+            // ---- (( STATIC METHODS )) -------- )))
             public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
             {
-                if (_reverseTypeMap.TryGetValue(typeof(TComponent), out var key))
+                Type type = typeof(TComponent);
+                foreach (Type t in _typeMap.Values)
                 {
-                    return key;
+                    // Check if the type is the same or a subclass of the type.
+                    if (t == type || type.IsSubclassOf(t))
+                    {
+                        // Return the key that corresponds to the type.
+                        return _typeMap.First(pair => pair.Value == t).Key;
+                    }
                 }
 
                 throw new InvalidEnumArgumentException(
@@ -85,14 +79,21 @@ namespace Darklight.UnityExt.Core2D
 
             public static ComponentTypeKey GetTypeKey(Component component)
             {
-                if (_reverseTypeMap.TryGetValue(component.GetType(), out var key))
+                Type type = component.GetType();
+                foreach (Type t in _typeMap.Values)
                 {
-                    return key;
+                    // Check if the type is the same or a subclass of the type.
+                    if (t == type || type.IsSubclassOf(t))
+                    {
+                        // Return the key that corresponds to the type.
+                        return _typeMap.First(pair => pair.Value == t).Key;
+                    }
                 }
 
                 throw new InvalidEnumArgumentException(
                     $"Component type {component.GetType()} is not registered in the factory.");
             }
+
         }
     }
 }

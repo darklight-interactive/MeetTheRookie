@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Darklight.UnityExt.Core2D
 {
     [RequireComponent(typeof(Grid2D))]
-    public class Grid2D_OverlapComponent : Grid2D_BaseComponent
+    public class Grid2D_OverlapComponent : Grid2D.BaseComponent
     {
         // ======== [[ FIELDS ]] =========================== >>>>
         [SerializeField] LayerMask _layerMask;
