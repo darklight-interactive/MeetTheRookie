@@ -17,7 +17,7 @@ namespace Darklight.UnityExt.Core2D
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public SpawnData Data { get => _data; set => _data = value; }
-            public Spatial2D.AnchorPoint OriginAnchorPoint { get => _data.originPoint; set => _data.originPoint = value; }
+            public Spatial2D.AnchorPoint OriginAnchorPoint { get => _data.OriginAnchor; set => _data.OriginAnchor = value; }
             public Vector3 OriginAnchorPosition
             {
                 get
@@ -26,7 +26,7 @@ namespace Darklight.UnityExt.Core2D
                 }
             }
 
-            public Spatial2D.AnchorPoint TargetAnchorPoint { get => _data.anchorPoint; set => _data.anchorPoint = value; }
+            public Spatial2D.AnchorPoint TargetAnchorPoint { get => _data.TargetAnchor; set => _data.TargetAnchor = value; }
             public Vector3 TargetAnchorPosition
             {
                 get
@@ -114,37 +114,55 @@ namespace Darklight.UnityExt.Core2D
             [System.Serializable]
             public class SpawnData
             {
+                Object _objectToSpawn = null;
+
                 [SerializeField, ShowOnly] Vector2Int _cellKey = Vector2Int.zero;
-                [SerializeField, ShowOnly] string _objectTypeName = "";
-                [SerializeField, ShowAssetPreview] Object _objectToSpawn = null;
-                public Spatial2D.AnchorPoint originPoint = Spatial2D.AnchorPoint.CENTER;
-                public Spatial2D.AnchorPoint anchorPoint = Spatial2D.AnchorPoint.CENTER;
+
+
+                [Space(10)]
+                [SerializeField, ShowOnly] string _objectType = "";
+                [SerializeField, ShowOnly] string _objectName = "";
+
+                [Space(10)]
+                [Tooltip("This determines the origin point of the object to be spawned and the cell anchor point that the object will be placed on")]
+                [SerializeField] Spatial2D.AnchorPoint _originAnchor = Spatial2D.AnchorPoint.CENTER;
+                [Tooltip("This is an identifier for the cell to be used as a 'direction anchor' to determine properties of the spawned object")]
+                [SerializeField] Spatial2D.AnchorPoint _targetAnchor = Spatial2D.AnchorPoint.CENTER;
 
                 public Vector2Int CellKey { get => _cellKey; set => _cellKey = value; }
                 public Object ObjectToSpawn
                 {
-                    get => _objectToSpawn;
+                    get
+                    {
+                        if (_objectToSpawn != null)
+                        {
+                            _objectType = _objectToSpawn.GetType().Name;
+                            _objectName = _objectToSpawn.name;
+                        }
+                        else
+                        {
+                            _objectType = "NULL";
+                            _objectName = "NULL";
+                        }
+                        return _objectToSpawn;
+                    }
                     set
                     {
                         _objectToSpawn = value;
-                        _objectTypeName = value.GetType().Name;
-                    }
-                }
-                public Type ObjectType
-                {
-                    get
-                    {
-                        if (_objectToSpawn == null)
+                        if (_objectToSpawn != null)
                         {
-                            _objectTypeName = "NULL";
-                            return null;
+                            _objectType = _objectToSpawn.GetType().Name;
+                            _objectName = _objectToSpawn.name;
                         }
-
-                        Type type = _objectToSpawn.GetType();
-                        _objectTypeName = type.Name;
-                        return type;
+                        else
+                        {
+                            _objectType = "NULL";
+                            _objectName = "NULL";
+                        }
                     }
                 }
+                public Spatial2D.AnchorPoint OriginAnchor { get => _originAnchor; set => _originAnchor = value; }
+                public Spatial2D.AnchorPoint TargetAnchor { get => _targetAnchor; set => _targetAnchor = value; }
 
                 public SpawnData(Vector2Int key)
                 {
@@ -154,27 +172,27 @@ namespace Darklight.UnityExt.Core2D
                 public SpawnData(Vector2Int key, Spatial2D.AnchorPoint origin, Spatial2D.AnchorPoint anchor, Object obj)
                 {
                     _cellKey = key;
-                    originPoint = origin;
-                    anchorPoint = anchor;
+                    _originAnchor = origin;
+                    _targetAnchor = anchor;
                     _objectToSpawn = obj;
 
                     if (_objectToSpawn != null)
-                        _objectTypeName = _objectToSpawn.GetType().Name;
+                        _objectType = _objectToSpawn.GetType().Name;
                     else
-                        _objectTypeName = "NULL";
+                        _objectType = "NULL";
                 }
 
                 public SpawnData(SpawnData data)
                 {
                     _cellKey = data.CellKey;
                     _objectToSpawn = data.ObjectToSpawn;
-                    originPoint = data.originPoint;
-                    anchorPoint = data.anchorPoint;
+                    _originAnchor = data._originAnchor;
+                    _targetAnchor = data._targetAnchor;
 
                     if (_objectToSpawn != null)
-                        _objectTypeName = _objectToSpawn.GetType().Name;
+                        _objectType = _objectToSpawn.GetType().Name;
                     else
-                        _objectTypeName = "NULL";
+                        _objectType = "NULL";
                 }
             }
         }

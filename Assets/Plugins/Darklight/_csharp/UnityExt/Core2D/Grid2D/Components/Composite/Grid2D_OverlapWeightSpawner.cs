@@ -76,12 +76,12 @@ namespace Darklight.UnityExt.Core2D
 
         public Spatial2D.AnchorPoint GetAnchorPointFromCell(Cell2D cell)
         {
-            return _grid_spawnerComponent.GetAnchorPointFromCell(cell);
+            return _grid_spawnerComponent.GetTargetAnchor(cell);
         }
 
         public Spatial2D.AnchorPoint GetOriginPointFromCell(Cell2D cell)
         {
-            return _grid_spawnerComponent.GetOriginPointFromCell(cell);
+            return _grid_spawnerComponent.GetOriginAnchor(cell);
         }
     }
 }

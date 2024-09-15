@@ -69,7 +69,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -815290652
+      _guid: 1612091348
       _key: {x: 0, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -4.77, y: 0.494, z: 2.261}
@@ -83,7 +83,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -838108816
+      _guid: 862992470
       _key: {x: 0, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -4.77, y: 0.714, z: 2.261}
@@ -97,7 +97,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -742496444
+      _guid: -39431260
       _key: {x: 0, y: 2}
       _coordinate: {x: 0, y: 2}
       _position: {x: -4.77, y: 0.934, z: 2.261}
@@ -111,7 +111,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1751355037
+      _guid: -1303005732
       _key: {x: 0, y: 3}
       _coordinate: {x: 0, y: 3}
       _position: {x: -4.77, y: 1.154, z: 2.261}
@@ -125,7 +125,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1134162785
+      _guid: 481791846
       _key: {x: 1, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -3.2075, y: 0.494, z: 2.261}
@@ -139,7 +139,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1167612056
+      _guid: 137503975
       _key: {x: 1, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -3.2075, y: 0.714, z: 2.261}
@@ -153,7 +153,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1016471107
+      _guid: 485576809
       _key: {x: 1, y: 2}
       _coordinate: {x: 1, y: 2}
       _position: {x: -3.2075, y: 0.934, z: 2.261}
@@ -167,7 +167,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1246161114
+      _guid: -874529807
       _key: {x: 1, y: 3}
       _coordinate: {x: 1, y: 3}
       _position: {x: -3.2075, y: 1.154, z: 2.261}
@@ -199,56 +199,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -648624179
+  _guid: 624811906
   _typeKey: 3
   _showGizmos: 0
   _inheritCellWidth: 1
   _inheritCellHeight: 0
   _inheritCellNormal: 1
   _default_OriginAnchorPoint: 7
-  _default_TargetAnchorPoint: 4
+  _default_TargetAnchorPoint: 2
   _default_ObjectToSpawn: {fileID: -2321979834598943144, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
+  _objectTargetAnchorPairs:
+  - targetAnchor: 2
+    obj: {fileID: -1102619388, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
+  - targetAnchor: 8
+    obj: {fileID: 622900083, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
+  - targetAnchor: 0
+    obj: {fileID: -759050726, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
+  - targetAnchor: 6
+    obj: {fileID: -733496751421358507, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
   _serializedSpawnData:
   - _cellKey: {x: 0, y: 0}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -1102619388, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 1
-    anchorPoint: 2
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_4
+    _originAnchor: 1
+    _targetAnchor: 2
   - _cellKey: {x: 0, y: 1}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -1102619388, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 1
-    anchorPoint: 2
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_4
+    _originAnchor: 1
+    _targetAnchor: 2
   - _cellKey: {x: 0, y: 2}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: 622900083, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 7
-    anchorPoint: 8
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_2
+    _originAnchor: 7
+    _targetAnchor: 8
   - _cellKey: {x: 0, y: 3}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: 622900083, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 7
-    anchorPoint: 8
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_2
+    _originAnchor: 7
+    _targetAnchor: 8
   - _cellKey: {x: 1, y: 0}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -759050726, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 1
-    anchorPoint: 0
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_3
+    _originAnchor: 1
+    _targetAnchor: 0
   - _cellKey: {x: 1, y: 1}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -759050726, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 1
-    anchorPoint: 0
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_3
+    _originAnchor: 1
+    _targetAnchor: 0
   - _cellKey: {x: 1, y: 2}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -733496751421358507, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 7
-    anchorPoint: 6
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_1
+    _originAnchor: 7
+    _targetAnchor: 6
   - _cellKey: {x: 1, y: 3}
-    _objectTypeName: Sprite
-    _objectToSpawn: {fileID: -733496751421358507, guid: 42000a28e0abe064dad8ea5cf3dd2e21, type: 3}
-    originPoint: 7
-    anchorPoint: 6
+    _objectType: Sprite
+    _objectName: MTR_SpeechBubble_1
+    _originAnchor: 7
+    _targetAnchor: 6
 --- !u!114 &4448834560041087508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 32396160
+  _guid: 404510505
   _typeKey: 2
   _showGizmos: 0
   _autoUpdate: 1
@@ -302,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1889555354
+  _guid: -396607998
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
