@@ -63,35 +63,37 @@ namespace Darklight.UnityExt.Core2D
             public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
             {
                 Type type = typeof(TComponent);
+                ComponentTypeKey typeKey = ComponentTypeKey.BASE;
                 foreach (Type t in _typeMap.Values)
                 {
                     // Check if the type is the same or a subclass of the type.
-                    if (t == type || type.IsSubclassOf(t))
+                    if (t == type || t.IsAssignableFrom(type))
                     {
                         // Return the key that corresponds to the type.
-                        return _typeMap.First(pair => pair.Value == t).Key;
+                        typeKey = _typeMap.First(pair => pair.Value == t).Key;
+                        if (typeKey != ComponentTypeKey.BASE)
+                            return typeKey;
                     }
                 }
-
-                throw new InvalidEnumArgumentException(
-                    $"Component type {typeof(TComponent)} is not registered in the factory.");
+                return typeKey;
             }
 
             public static ComponentTypeKey GetTypeKey(Component component)
             {
                 Type type = component.GetType();
+                ComponentTypeKey typeKey = ComponentTypeKey.BASE;
                 foreach (Type t in _typeMap.Values)
                 {
                     // Check if the type is the same or a subclass of the type.
-                    if (t == type || type.IsSubclassOf(t))
+                    if (t == type || t.IsAssignableFrom(type))
                     {
                         // Return the key that corresponds to the type.
-                        return _typeMap.First(pair => pair.Value == t).Key;
+                        typeKey = _typeMap.First(pair => pair.Value == t).Key;
+                        if (typeKey != ComponentTypeKey.BASE)
+                            return typeKey;
                     }
                 }
-
-                throw new InvalidEnumArgumentException(
-                    $"Component type {component.GetType()} is not registered in the factory.");
+                return typeKey;
             }
 
         }
