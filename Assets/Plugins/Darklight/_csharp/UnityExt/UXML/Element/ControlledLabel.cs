@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Editor;
 using NaughtyAttributes;
+using System.Data;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -169,7 +171,14 @@ namespace Darklight.UnityExt.UXML
 
         void SetTextToIndex(int index)
         {
-            _currentIndex = Mathf.Min(index, fullText.Length);
+            int ind = Mathf.Min(index, fullText.Length-1);
+            if(fullText[ind]=='<'){
+                while(fullText[ind]!='>' || ind>=fullText.Length){
+                    ind++;
+                }
+                ind++;
+            }
+            _currentIndex = Mathf.Min(ind, fullText.Length);
             this.text = fullText.Substring(0, _currentIndex);
         }
 
