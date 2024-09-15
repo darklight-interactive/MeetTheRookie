@@ -48,9 +48,9 @@ namespace Darklight.UnityExt.Core2D
             };
 
         // -- (( VISITORS )) -------- ))
-        protected override Cell2D.ComponentVisitor InitVisitor =>
+        protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(this, InitEvent);
-        protected override Cell2D.ComponentVisitor UpdateVisitor =>
+        protected override Cell2D.ComponentVisitor CellComponent_UpdateVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(this, UpdateEvent);
         #endregion
 
@@ -65,19 +65,19 @@ namespace Darklight.UnityExt.Core2D
 
         public override void OnUpdate()
         {
-            BaseGrid.SendVisitorToAllCells(UpdateVisitor);
+            BaseGrid.SendVisitorToAllCells(CellComponent_UpdateVisitor);
         }
 
         public override void DrawGizmos()
         {
             if (!_showGizmos) return;
-            BaseGrid.SendVisitorToAllCells(GizmosVisitor);
+            BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
         }
 
         public override void DrawEditorGizmos()
         {
             if (!_showGizmos) return;
-            BaseGrid.SendVisitorToAllCells(EditorGizmosVisitor);
+            BaseGrid.SendVisitorToAllCells(CellComponent_EditorGizmosVisitor);
         }
         #endregion
 

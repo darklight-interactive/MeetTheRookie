@@ -25,7 +25,7 @@ namespace Darklight.UnityExt.Core2D
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( BASE VISITORS )) -------- ))
-        protected override Cell2D.ComponentVisitor InitVisitor =>
+        protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.WEIGHT,
             (Cell2D cell, ComponentTypeKey type) =>
             {
@@ -41,7 +41,7 @@ namespace Darklight.UnityExt.Core2D
                 return true;
             });
 
-        protected override Cell2D.ComponentVisitor UpdateVisitor =>
+        protected override Cell2D.ComponentVisitor CellComponent_UpdateVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.WEIGHT,
             (Cell2D cell, ComponentTypeKey type) =>
             {

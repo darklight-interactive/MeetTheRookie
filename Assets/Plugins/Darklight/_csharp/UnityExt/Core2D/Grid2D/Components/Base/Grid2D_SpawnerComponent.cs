@@ -13,32 +13,32 @@ namespace Darklight.UnityExt.Core2D
 {
     public class Grid2D_SpawnerComponent : Grid2D_BaseComponent
     {
-        Dictionary<Vector2Int, CellAnchorData> _cellAnchorData = new Dictionary<Vector2Int, CellAnchorData>();
 
-        [System.Serializable]
-        public class CellAnchorData
-        {
-            [ShowOnly] public Vector2Int cellKey;
-            public Spatial2D.AnchorPoint originPoint;
-            public Spatial2D.AnchorPoint anchorPoint;
-            public CellAnchorData(Vector2Int key, Spatial2D.AnchorPoint anchor)
-            {
-                cellKey = key;
-                anchorPoint = anchor;
-            }
-        }
+        // ======== [[ FIELDS ]] ================================== >>>>
+        [SerializeField] bool _showGizmos = true;
 
-        public bool showGizmos = true;
-        public bool inheritWidth = true;
-        public bool inheritHeight = true;
-        public bool inheritNormal = true;
+        [Header("Cell Spawner Flags")]
+        [SerializeField] bool _inheritCellWidth = true;
+        [SerializeField] bool _inheritCellHeight = true;
+        [SerializeField] bool _inheritCellNormal = true;
+
+        [SerializeField] Spatial2D.AnchorPoint _default_OriginAnchorPoint = Spatial2D.AnchorPoint.CENTER;
+        [SerializeField] Spatial2D.AnchorPoint _default_TargetAnchorPoint = Spatial2D.AnchorPoint.CENTER;
+        [SerializeField] Object _default_ObjectToSpawn;
 
 
-        [SerializeField]
-        public List<CellAnchorData> cellAnchorData;
+        /// <summary>
+        /// The main dictionary that references all cell spawner data.
+        /// </summary>
+        Dictionary<Vector2Int, Cell2D.SpawnerComponent.SpawnData> _dataMap = new Dictionary<Vector2Int, Cell2D.SpawnerComponent.SpawnData>();
 
+        /// <summary>
+        /// Serialized Data modified by user in the inspector. This data is used to update the data map.
+        /// </summary>
+        [SerializeField, NonReorderable] List<Cell2D.SpawnerComponent.SpawnData> _serializedSpawnData;
 
-        protected override Cell2D.ComponentVisitor InitVisitor =>
+        // ======== [[ PROPERTIES ]] ================================== >>>>
+        protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.SPAWNER,
             (Cell2D cell, ComponentTypeKey type) =>
             {
@@ -46,55 +46,107 @@ namespace Darklight.UnityExt.Core2D
                 return true;
             });
 
-        protected override Cell2D.ComponentVisitor UpdateVisitor =>
+        protected override Cell2D.ComponentVisitor CellComponent_UpdateVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.SPAWNER,
             (Cell2D cell, ComponentTypeKey type) =>
             {
                 Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
-
-                // Update the cell anchor data dictionary to match the serialized data
-                if (cellAnchorData != null)
-                {
-                    foreach (CellAnchorData data in cellAnchorData)
-                    {
-                        if (!_cellAnchorData.ContainsKey(data.cellKey))
-                            _cellAnchorData.Add(data.cellKey, data);
-                        else
-                            _cellAnchorData[data.cellKey] = data;
-                    }
-                }
-
-                if (_cellAnchorData == null || _cellAnchorData.ContainsKey(cell.Key) == false)
-                {
-                    //Debug.LogError($"No cell anchor data found for cell: {cell.Key}");
-                    return false;
-                }
-                spawnerComponent.SetCellOrigin(_cellAnchorData[cell.Key].originPoint);
-                spawnerComponent.SetCellAnchor(_cellAnchorData[cell.Key].anchorPoint);
+                VisitCellSpawner(spawnerComponent);
                 spawnerComponent.OnUpdate();
-
-                cellAnchorData = new List<CellAnchorData>(_cellAnchorData.Values);
                 return true;
             });
+
+        // ======== [[ METHODS ]] ================================== >>>>
+        // ---- (( INTERFACE )) ---- >>
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            HashSet<Vector2Int> validKeys = new HashSet<Vector2Int>(BaseGrid.CellKeys);
+            List<Vector2Int> keysToRemove = new List<Vector2Int>();
+
+            // << REMOVE INVALID DATA MAP KEYS >>
+            foreach (Vector2Int key in _dataMap.Keys)
+            {
+                if (!validKeys.Contains(key))
+                    keysToRemove.Add(key);
+            }
+            foreach (Vector2Int key in keysToRemove)
+                _dataMap.Remove(key);
+
+            // << SERIALIZED DATA ITERATOR >>
+            keysToRemove.Clear();
+            foreach (Cell2D.SpawnerComponent.SpawnData data in _serializedSpawnData)
+            {
+                if (!validKeys.Contains(data.CellKey))
+                    keysToRemove.Add(data.CellKey);
+                else
+                {
+                    // Assign default object if the object to spawn is null
+                    if (data.ObjectToSpawn == null && _default_ObjectToSpawn != null)
+                        data.ObjectToSpawn = _default_ObjectToSpawn;
+                }
+            }
+            foreach (Vector2Int key in keysToRemove)
+                _serializedSpawnData.RemoveAll(x => x.CellKey == key);
+
+            // Sort the _serializedSpawnData by CellKey in ascending order
+            _serializedSpawnData.Sort((data1, data2) =>
+            {
+                int xComparison = data1.CellKey.x.CompareTo(data2.CellKey.x);
+                if (xComparison == 0)
+                {
+                    // If x values are the same, compare y values
+                    return data1.CellKey.y.CompareTo(data2.CellKey.y);
+                }
+                return xComparison;
+            });
+        }
 
         public override void DrawGizmos()
         {
-            if (!showGizmos) return;
+            if (!_showGizmos) return;
             base.DrawGizmos();
         }
 
-
-        public void InstantiateObjectAtCell(GameObject obj, Cell2D cell)
+        // ---- (( HANDLE DATA )) ---- >>
+        void VisitCellSpawner(Cell2D.SpawnerComponent cellSpawner)
         {
-            if (cell == null)
+            Cell2D cell = cellSpawner.BaseCell;
+
+            // << CELL SPAWNER DATA >>
+            // Initialize the cell spawner data if it is null
+            if (cellSpawner.Data == null)
+                cellSpawner.Data = new Cell2D.SpawnerComponent.SpawnData(cell.Key, _default_OriginAnchorPoint, _default_TargetAnchorPoint, _default_ObjectToSpawn);
+
+            // << DATA MAP >>
+            // Initialize the data map if it is null
+            if (_dataMap == null)
+                _dataMap = new Dictionary<Vector2Int, Cell2D.SpawnerComponent.SpawnData>();
+            // Else If the cell is not in the data map, add it
+            else if (!_dataMap.ContainsKey(cell.Key))
+                _dataMap.Add(cell.Key, cellSpawner.Data);
+
+            // << SERIALIZED DATA >>
+            // Initialize the serialized data if it is null
+            if (_serializedSpawnData == null)
+                _serializedSpawnData = new List<Cell2D.SpawnerComponent.SpawnData>();
+            // Else If the serialized data is empty, add the cell spawner data
+            else if (_serializedSpawnData.Count == 0)
             {
-                Debug.LogError("No best cell found");
+                _serializedSpawnData.Add(cellSpawner.Data);
                 return;
             }
-
-            // Instantiate the object at the best cell
-            Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
-            cellSpawner.InstantiateObject(obj);
+            // Else If the data key is not found in the serialized data, add it
+            else if (!_serializedSpawnData.Exists(x => x.CellKey == cellSpawner.Data.CellKey))
+                _serializedSpawnData.Add(cellSpawner.Data);
+            // Else Update the data map from the serialized data
+            else
+            {
+                Cell2D.SpawnerComponent.SpawnData savedSerializedData = _serializedSpawnData.Find(x => x.CellKey == cellSpawner.Data.CellKey);
+                _dataMap[cellSpawner.Data.CellKey] = savedSerializedData;
+                cellSpawner.Data = new Cell2D.SpawnerComponent.SpawnData(savedSerializedData);
+            }
         }
 
         public void AdjustTransformToCellOrigin(Transform transform, Cell2D cell)
@@ -108,21 +160,31 @@ namespace Darklight.UnityExt.Core2D
             // Adjust the transform to the best cell
             Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
             Spatial2D.AnchorPoint anchorPoint = GetAnchorPointFromCell(cell);
-            cellSpawner.AdjustTransformToCellValues(transform, anchorPoint, inheritWidth, inheritHeight, inheritNormal);
+            cellSpawner.AdjustTransformToCellValues(transform, anchorPoint, _inheritCellWidth, _inheritCellHeight, _inheritCellNormal);
         }
 
         public Spatial2D.AnchorPoint GetOriginPointFromCell(Cell2D cell)
         {
-            if (_cellAnchorData.ContainsKey(cell.Key))
-                return _cellAnchorData[cell.Key].originPoint;
+            if (_dataMap.ContainsKey(cell.Key))
+                return _dataMap[cell.Key].originPoint;
             return Spatial2D.AnchorPoint.CENTER;
         }
 
         public Spatial2D.AnchorPoint GetAnchorPointFromCell(Cell2D cell)
         {
-            if (_cellAnchorData.ContainsKey(cell.Key))
-                return _cellAnchorData[cell.Key].anchorPoint;
+            if (_dataMap.ContainsKey(cell.Key))
+                return _dataMap[cell.Key].anchorPoint;
             return Spatial2D.AnchorPoint.CENTER;
+        }
+
+        public void SetAllCellsToDefault()
+        {
+            foreach (Cell2D.SpawnerComponent.SpawnData data in _serializedSpawnData)
+            {
+                data.originPoint = _default_OriginAnchorPoint;
+                data.anchorPoint = _default_TargetAnchorPoint;
+                data.ObjectToSpawn = _default_ObjectToSpawn;
+            }
         }
 
 #if UNITY_EDITOR
@@ -145,6 +207,11 @@ namespace Darklight.UnityExt.Core2D
                 EditorGUI.BeginChangeCheck();
 
                 base.OnInspectorGUI();
+
+                if (GUILayout.Button("Set All Cells to Default"))
+                {
+                    _script.SetAllCellsToDefault();
+                }
 
                 if (EditorGUI.EndChangeCheck())
                 {

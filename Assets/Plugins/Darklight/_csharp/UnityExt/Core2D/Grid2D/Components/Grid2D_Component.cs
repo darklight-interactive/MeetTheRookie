@@ -49,11 +49,11 @@ namespace Darklight.UnityExt.Core2D
             }
 
             // -- (( VISITORS )) -------- ))
-            protected abstract Cell2D.ComponentVisitor InitVisitor { get; }
-            protected abstract Cell2D.ComponentVisitor UpdateVisitor { get; }
-            protected abstract Cell2D.ComponentVisitor GizmosVisitor { get; }
-            protected abstract Cell2D.ComponentVisitor SelectedGizmosVisitor { get; }
-            protected abstract Cell2D.ComponentVisitor EditorGizmosVisitor { get; }
+            protected abstract Cell2D.ComponentVisitor CellComponent_InitVisitor { get; }
+            protected abstract Cell2D.ComponentVisitor CellComponent_UpdateVisitor { get; }
+            protected abstract Cell2D.ComponentVisitor CellComponent_BaseGizmosVisitor { get; }
+            protected abstract Cell2D.ComponentVisitor CellComponent_SelectedGizmosVisitor { get; }
+            protected abstract Cell2D.ComponentVisitor CellComponent_EditorGizmosVisitor { get; }
 
             // ======== [[ METHODS ]] ================================== >>>>
 
@@ -74,25 +74,25 @@ namespace Darklight.UnityExt.Core2D
                     Debug.LogError("Grid2D_Component: BaseGrid is null. Cannot initialize component.");
                     return;
                 }
-                BaseGrid.SendVisitorToAllCells(InitVisitor);
+                BaseGrid.SendVisitorToAllCells(CellComponent_InitVisitor);
             }
             public virtual void OnUpdate()
             {
-                BaseGrid.SendVisitorToAllCells(UpdateVisitor);
+                BaseGrid.SendVisitorToAllCells(CellComponent_UpdateVisitor);
             }
             public virtual void DrawGizmos()
             {
-                BaseGrid.SendVisitorToAllCells(GizmosVisitor);
+                BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
             }
 
             public virtual void DrawSelectedGizmos()
             {
-                BaseGrid.SendVisitorToAllCells(SelectedGizmosVisitor);
+                BaseGrid.SendVisitorToAllCells(CellComponent_SelectedGizmosVisitor);
             }
 
             public virtual void DrawEditorGizmos()
             {
-                BaseGrid.SendVisitorToAllCells(EditorGizmosVisitor);
+                BaseGrid.SendVisitorToAllCells(CellComponent_EditorGizmosVisitor);
             }
 
             // -- (( GETTERS )) -------- ))

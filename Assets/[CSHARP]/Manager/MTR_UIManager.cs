@@ -118,8 +118,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
 
     [Header("Speech Bubble")]
-    [SerializeField, Expandable] SpeechBubbleDataObject _speechBubbleDataObject;
-
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
     public GameObject dialogueSpawnerPrefab;
 
@@ -238,35 +236,39 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             }
         }
 
-        // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        spawner.AdjustTransformToBestCell(speechBubbleObject.transform);
-
-        Cell2D bestCell = spawner.GetBestCell();
-
-        // Determine which bubble sprite to use based on direction
-        Spatial2D.AnchorPoint anchor = spawner.GetAnchorPointFromCell(bestCell);
-        Spatial2D.AnchorPoint origin = spawner.GetOriginPointFromCell(bestCell);
-
-        Sprite bubbleSprite = _speechBubbleDataObject.GetSprite(anchor);
-
-        // Update the speech bubble UI elements
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        UpdateSpeechBubbleUI(speechBubble, bubbleColor, bubbleSprite);
-        speechBubble.SetAnchorPoint(anchor);
-        speechBubble.SetOriginPoint(origin);
-
-        Debug.Log($"Created speech bubble for {currentSpeaker} with anchor {anchor} and origin {origin}");
-
-        return speechBubble;
+        return UpdateSpeechBubbleUI(spawner);
     }
 
     // Helper method to update the UI of the speech bubble
-    private void UpdateSpeechBubbleUI(SpeechBubble speechBubble, Color color, Sprite backgroundSprite)
+    private SpeechBubble UpdateSpeechBubbleUI(Grid2D_OverlapWeightSpawner compositeSpawner)
     {
+        Cell2D bestCell = compositeSpawner.GetBestCell();
+
+        // << ADJUST SPEECH BUBBLE TRANSFORM >>
+        compositeSpawner.SpawnerComponent.AdjustTransformToCellOrigin(speechBubbleObject.transform, bestCell);
+
+        // Determine which bubble sprite to use based on direction
+        Spatial2D.AnchorPoint anchor = compositeSpawner.GetAnchorPointFromCell(bestCell);
+        Spatial2D.AnchorPoint origin = compositeSpawner.GetOriginPointFromCell(bestCell);
+
+        UnityEngine.Object objectToSpawn = bestCell.ComponentReg.GetComponent<Cell2D.SpawnerComponent>().Data.ObjectToSpawn;
+        Sprite bubbleSprite = null;
+        if (objectToSpawn is Sprite)
+        {
+            bubbleSprite = objectToSpawn as Sprite;
+        }
+
+        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+
         speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
         speechBubble.UpdateFontSizeToMatchScreen();
-        speechBubble.style.color = color;
-        speechBubble.SetBackgroundSprite(backgroundSprite);
+        //speechBubble.style.color = color;
+        speechBubble.SetBackgroundSprite(bubbleSprite);
+
+        speechBubble.SetAnchorPoint(anchor);
+        speechBubble.SetOriginPoint(origin);
+
+        return speechBubble;
     }
 
 

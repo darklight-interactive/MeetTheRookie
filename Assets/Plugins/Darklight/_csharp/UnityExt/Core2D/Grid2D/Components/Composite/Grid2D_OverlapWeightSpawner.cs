@@ -14,19 +14,26 @@ namespace Darklight.UnityExt.Core2D
     {
         // ======== [[ FIELDS ]] ================================== >>>>
         Grid2D _grid;
-
-        // -- (( COMPONENTS )) -------- ))
         Grid2D_SpawnerComponent _grid_spawnerComponent;
         Grid2D_WeightComponent _grid_weightComponent;
         Grid2D_OverlapComponent _grid_overlapComponent;
+
+        // ======== [[ PROPERTIES ]] ================================== >>>>    
+        public Grid2D Grid { get => _grid; }
+        public Grid2D_SpawnerComponent SpawnerComponent { get => _grid_spawnerComponent; }
+        public Grid2D_WeightComponent WeightComponent { get => _grid_weightComponent; }
+        public Grid2D_OverlapComponent OverlapComponent { get => _grid_overlapComponent; }
 
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE METHODS )) -------- ))
         public void Awake()
         {
-            _grid = this.GetComponent<Grid2D>();
             if (_grid == null)
-                _grid = this.gameObject.AddComponent<Grid2D>();
+            {
+                _grid = this.GetComponent<Grid2D>();
+                if (_grid == null)
+                    _grid = this.gameObject.AddComponent<Grid2D>();
+            }
 
             _grid_spawnerComponent = this.GetComponent<Grid2D_SpawnerComponent>();
             if (_grid_spawnerComponent == null)
@@ -39,32 +46,6 @@ namespace Darklight.UnityExt.Core2D
             _grid_overlapComponent = this.GetComponent<Grid2D_OverlapComponent>();
             if (_grid_overlapComponent == null)
                 _grid_overlapComponent = this.gameObject.AddComponent<Grid2D_OverlapComponent>();
-        }
-
-        public void InstantiateObjectAtBestCell(GameObject obj)
-        {
-            Cell2D bestCell = GetBestCell();
-            if (bestCell == null)
-            {
-                Debug.LogError("No best cell found");
-                return;
-            }
-
-            // Instantiate the object at the best cell
-            _grid_spawnerComponent.InstantiateObjectAtCell(obj, bestCell);
-        }
-
-        public void AdjustTransformToBestCell(Transform transform)
-        {
-            Cell2D bestCell = GetBestCell();
-            if (bestCell == null)
-            {
-                Debug.LogError("No best cell found");
-                return;
-            }
-
-            // Adjust the transform to the best cell
-            _grid_spawnerComponent.AdjustTransformToCellOrigin(transform, bestCell);
         }
 
         public Cell2D GetBestCell()

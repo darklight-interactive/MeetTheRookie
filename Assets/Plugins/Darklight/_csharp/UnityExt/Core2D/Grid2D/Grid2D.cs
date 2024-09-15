@@ -22,7 +22,7 @@ namespace Darklight.UnityExt.Core2D
         protected const string CONSOLE_PREFIX = "[GRID2D]";
 
         // ======== [[ FIELDS ]] ======================================================= >>>>
-        ConsoleGUI _console = new ConsoleGUI();
+        ConsoleGUI _consoleGUI = new ConsoleGUI();
         Dictionary<Vector2Int, Cell2D> _cellMap;
         ComponentRegistry _componentRegistry;
 
@@ -40,7 +40,7 @@ namespace Darklight.UnityExt.Core2D
 
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
-        protected Config config
+        public Config Configuration
         {
             get
             {
@@ -48,9 +48,10 @@ namespace Darklight.UnityExt.Core2D
                     _config = new Config();
                 return _config;
             }
-            set { _config = value; }
+            protected set { _config = value; }
         }
-        protected Dictionary<Vector2Int, Cell2D> cellMap
+
+        public Dictionary<Vector2Int, Cell2D> CellMap
         {
             get
             {
@@ -58,9 +59,11 @@ namespace Darklight.UnityExt.Core2D
                     _cellMap = new Dictionary<Vector2Int, Cell2D>();
                 return _cellMap;
             }
-            set { _cellMap = value; }
+            protected set { _cellMap = value; }
         }
-        protected ConsoleGUI consoleGUI => _console;
+        public HashSet<Vector2Int> CellKeys => new HashSet<Vector2Int>(CellMap.Keys);
+        public HashSet<Cell2D> CellValues => new HashSet<Cell2D>(CellMap.Values);
+        protected ConsoleGUI consoleGUI => _consoleGUI;
 
         // -- (( VISITORS )) ------------------ >>
         protected Cell2D.Visitor CellUpdateVisitor => new Cell2D.Visitor(cell =>
@@ -79,7 +82,7 @@ namespace Darklight.UnityExt.Core2D
         // ======== [[ PUBLIC METHODS ]] ============================================================ >>>>
         public void OnEditorReloaded()
         {
-            _console.Clear();
+            _consoleGUI.Clear();
             Reset();
         }
 
@@ -94,28 +97,28 @@ namespace Darklight.UnityExt.Core2D
         #region -- (( VISITOR PATTERN )) -------- )))
         public void SendVisitorToCell(Vector2Int key, IVisitor<Cell2D> visitor)
         {
-            if (cellMap == null) return;
+            if (CellMap == null) return;
 
             // Skip if the key is not in the map
-            if (!cellMap.ContainsKey(key)) return;
+            if (!CellMap.ContainsKey(key)) return;
 
             // Apply the map function to the cell
-            Cell2D cell = cellMap[key];
+            Cell2D cell = CellMap[key];
             cell.Accept(visitor);
         }
 
         public void SendVisitorToAllCells(IVisitor<Cell2D> visitor)
         {
-            if (cellMap == null) return;
+            if (CellMap == null) return;
 
-            List<Vector2Int> keys = new List<Vector2Int>(cellMap.Keys);
+            List<Vector2Int> keys = new List<Vector2Int>(CellMap.Keys);
             foreach (Vector2Int key in keys)
             {
                 // Skip if the key is not in the map
-                if (!cellMap.ContainsKey(key)) continue;
+                if (!CellMap.ContainsKey(key)) continue;
 
                 // Apply the map function to the cell
-                Cell2D cell = cellMap[key];
+                Cell2D cell = CellMap[key];
                 cell.Accept(visitor);
             }
         }
@@ -131,20 +134,20 @@ namespace Darklight.UnityExt.Core2D
 
         public List<Cell2D> GetCells()
         {
-            return new List<Cell2D>(cellMap.Values);
+            return new List<Cell2D>(CellMap.Values);
         }
 
         public Cell2D GetCell(Vector2Int key)
         {
-            if (cellMap.ContainsKey(key))
-                return cellMap[key];
+            if (CellMap.ContainsKey(key))
+                return CellMap[key];
             return null;
         }
 
         public List<Cell2D> GetCellsByComponentType(ComponentTypeKey type)
         {
             List<Cell2D> cells = new List<Cell2D>();
-            foreach (Cell2D cell in cellMap.Values)
+            foreach (Cell2D cell in CellMap.Values)
             {
                 if (cell.ComponentReg.HasComponent(type))
                 {
@@ -158,7 +161,7 @@ namespace Darklight.UnityExt.Core2D
             where TComponent : Cell2D.Component
         {
             List<TComponent> components = new List<TComponent>();
-            foreach (Cell2D cell in cellMap.Values)
+            foreach (Cell2D cell in CellMap.Values)
             {
                 TComponent component = cell.ComponentReg.GetComponent<TComponent>();
                 if (component != null)
@@ -178,10 +181,10 @@ namespace Darklight.UnityExt.Core2D
             foreach (Cell2D cell in cells)
             {
                 if (cell == null) continue;
-                if (cellMap.ContainsKey(cell.Key))
-                    cellMap[cell.Key] = cell;
+                if (CellMap.ContainsKey(cell.Key))
+                    CellMap[cell.Key] = cell;
                 else
-                    cellMap.Add(cell.Key, cell);
+                    CellMap.Add(cell.Key, cell);
             }
         }
 
@@ -261,7 +264,7 @@ namespace Darklight.UnityExt.Core2D
             // Resize the grid if the dimensions have changed
             ResizeCellMap();
 
-            _cellsInMap = new List<Cell2D>(cellMap.Values);
+            _cellsInMap = new List<Cell2D>(CellMap.Values);
 
             // Update the cells
             SendVisitorToAllCells(CellUpdateVisitor);
@@ -273,8 +276,8 @@ namespace Darklight.UnityExt.Core2D
             _isLoaded = false;
             _isInitialized = false;
 
-            if (cellMap != null)
-                cellMap.Clear(); // << Clear the map
+            if (CellMap != null)
+                CellMap.Clear(); // << Clear the map
 
             consoleGUI.Log("Cleared");
         }
@@ -308,7 +311,7 @@ namespace Darklight.UnityExt.Core2D
             _cellMap.Clear();
 
             // Iterate through the grid dimensions and create cells
-            Vector2Int dimensions = config.GridDimensions;
+            Vector2Int dimensions = Configuration.GridDimensions;
             for (int x = 0; x < dimensions.x; x++)
             {
                 for (int y = 0; y < dimensions.y; y++)
@@ -325,15 +328,15 @@ namespace Darklight.UnityExt.Core2D
         void ResizeCellMap()
         {
             if (!_isInitialized) return;
-            Vector2Int newDimensions = config.GridDimensions;
+            Vector2Int newDimensions = Configuration.GridDimensions;
 
             // Check if the dimensions have changed
             int newGridArea = newDimensions.x * newDimensions.y;
-            int oldGridArea = cellMap.Count;
+            int oldGridArea = CellMap.Count;
             if (newGridArea == oldGridArea) return;
 
             // Remove cells that are out of bounds
-            List<Vector2Int> keys = new List<Vector2Int>(cellMap.Keys);
+            List<Vector2Int> keys = new List<Vector2Int>(CellMap.Keys);
             foreach (Vector2Int key in keys)
             {
                 if (key.x >= newDimensions.x || key.y >= newDimensions.y)
@@ -408,7 +411,7 @@ namespace Darklight.UnityExt.Core2D
 
                 // < CONSOLE > ------------------ >>
                 CustomInspectorGUI.DrawHorizontalLine(Color.gray, 4, 10);
-                _script._console.DrawInEditor();
+                _script._consoleGUI.DrawInEditor();
 
                 // Apply changes if any
                 if (EditorGUI.EndChangeCheck())

@@ -1,71 +1,79 @@
 using System;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Darklight.UnityExt.Core2D
 {
     public partial class Cell2D
     {
-        [ExecuteAlways]
         public class SpawnerComponent : BaseComponent
         {
-            bool _active;
-            Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
-            Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
-
             // ======== [[ FIELDS ]] ================================== >>>>
+            SpawnData _data;
+
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
-            public Vector3 CellOriginPosition
+            public SpawnData Data { get => _data; set => _data = value; }
+            public Spatial2D.AnchorPoint OriginAnchorPoint { get => _data.originPoint; set => _data.originPoint = value; }
+            public Vector3 OriginAnchorPosition
             {
                 get
                 {
-                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _originPoint);
+                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, OriginAnchorPoint);
                 }
             }
 
-            public Vector3 CellAnchorPosition
+            public Spatial2D.AnchorPoint TargetAnchorPoint { get => _data.anchorPoint; set => _data.anchorPoint = value; }
+            public Vector3 TargetAnchorPosition
             {
                 get
                 {
-                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, _anchorPoint);
+                    return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, TargetAnchorPoint);
                 }
             }
 
             // ======== [[ METHODS ]] ================================== >>>>
-            // ---- (( VIRUTAL METHODS )) ---- >>
+            // ---- (( INTERFACE )) ---- >>
+            public override void OnInitialize(Cell2D cell)
+            {
+                base.OnInitialize(cell);
+                _data = new SpawnData(cell.Key);
+            }
+
             public override void DrawGizmos()
             {
+                base.DrawGizmos();
+
                 Gizmos.color = Color.grey;
-                Gizmos.DrawCube(CellOriginPosition, 0.025f * Vector3.one);
+                Gizmos.DrawCube(OriginAnchorPosition, 0.025f * Vector3.one);
 
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawCube(CellAnchorPosition, 0.025f * Vector3.one);
+                Gizmos.DrawCube(TargetAnchorPosition, 0.025f * Vector3.one);
             }
 
             // ---- (( PUBLIC METHODS )) ---- >>
             public void SetCellOrigin(Spatial2D.AnchorPoint origin)
             {
-                _originPoint = origin;
+                OriginAnchorPoint = origin;
             }
 
             public void SetCellAnchor(Spatial2D.AnchorPoint anchor)
             {
-                _anchorPoint = anchor;
+                TargetAnchorPoint = anchor;
             }
 
             public void InstantiateObject(GameObject prefab, Transform parent = null)
             {
                 GameObject obj = GameObject.Instantiate(prefab, parent);
                 AdjustTransformToCellValues(obj.transform);
-                _active = true;
             }
 
             public void AdjustTransformToCellValues(Transform transform, Spatial2D.AnchorPoint transformOrigin = Spatial2D.AnchorPoint.CENTER, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
                 Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
-
-                _active = true;
 
                 // << GET BASE ELL VALUES >>
                 BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
@@ -95,10 +103,82 @@ namespace Darklight.UnityExt.Core2D
                     Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
 
                 // << CALCULATE NEW POSITION >>
-                Spatial2D.SetTransformValues_WithOffset(transform, CellOriginPosition, newDimensions, _originPoint);
+                Spatial2D.SetTransformValues_WithOffset(transform, OriginAnchorPosition, newDimensions, OriginAnchorPoint);
             }
 
+            // ======== [[ CONSTRUCTORS ]] ================================== >>>>
             public SpawnerComponent(Cell2D cell) : base(cell) { }
+
+
+            // ======== [[ NESTED CLASSES ]] ================================== >>>>
+            [System.Serializable]
+            public class SpawnData
+            {
+                [SerializeField, ShowOnly] Vector2Int _cellKey = Vector2Int.zero;
+                [SerializeField, ShowOnly] string _objectTypeName = "";
+                [SerializeField, ShowAssetPreview] Object _objectToSpawn = null;
+                public Spatial2D.AnchorPoint originPoint = Spatial2D.AnchorPoint.CENTER;
+                public Spatial2D.AnchorPoint anchorPoint = Spatial2D.AnchorPoint.CENTER;
+
+                public Vector2Int CellKey { get => _cellKey; set => _cellKey = value; }
+                public Object ObjectToSpawn
+                {
+                    get => _objectToSpawn;
+                    set
+                    {
+                        _objectToSpawn = value;
+                        _objectTypeName = value.GetType().Name;
+                    }
+                }
+                public Type ObjectType
+                {
+                    get
+                    {
+                        if (_objectToSpawn == null)
+                        {
+                            _objectTypeName = "NULL";
+                            return null;
+                        }
+
+                        Type type = _objectToSpawn.GetType();
+                        _objectTypeName = type.Name;
+                        return type;
+                    }
+                }
+
+                public SpawnData(Vector2Int key)
+                {
+                    _cellKey = key;
+                }
+
+                public SpawnData(Vector2Int key, Spatial2D.AnchorPoint origin, Spatial2D.AnchorPoint anchor, Object obj)
+                {
+                    _cellKey = key;
+                    originPoint = origin;
+                    anchorPoint = anchor;
+                    _objectToSpawn = obj;
+
+                    if (_objectToSpawn != null)
+                        _objectTypeName = _objectToSpawn.GetType().Name;
+                    else
+                        _objectTypeName = "NULL";
+                }
+
+                public SpawnData(SpawnData data)
+                {
+                    _cellKey = data.CellKey;
+                    _objectToSpawn = data.ObjectToSpawn;
+                    originPoint = data.originPoint;
+                    anchorPoint = data.anchorPoint;
+
+                    if (_objectToSpawn != null)
+                        _objectTypeName = _objectToSpawn.GetType().Name;
+                    else
+                        _objectTypeName = "NULL";
+                }
+            }
         }
+
+
     }
 }
