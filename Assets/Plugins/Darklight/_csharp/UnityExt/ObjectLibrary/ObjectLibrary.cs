@@ -11,7 +11,8 @@ namespace Darklight.UnityExt.ObjectLibrary
     public class ObjectLibrary<TObject> : ScriptableObject, IObjectLibrary<TObject>
         where TObject : Object
     {
-        [SerializeField] List<TObject> _objects = new List<TObject>();
+        [SerializeField] protected TObject _defaultObject;
+        [SerializeField] protected List<TObject> _objects;
 
         public List<TObject> Objects => _objects;
         public Type ObjectType => typeof(TObject);
@@ -45,21 +46,56 @@ namespace Darklight.UnityExt.ObjectLibrary
         where TObject : Object
     {
         Dictionary<TKey, TObject> _dictionary = new Dictionary<TKey, TObject>();
-        [SerializeField] List<TKey> _keys = new List<TKey>();
+        [SerializeField] List<TKey> _keys;
+
+        public void RebuildDictionary()
+        {
+            _dictionary.Clear();
+            for (int i = 0; i < _keys.Count; i++)
+            {
+                if (_objects[i] == null)
+                    _objects[i] = _defaultObject;
+                _dictionary.Add(_keys[i], _objects[i]);
+            }
+        }
+
+        public void RegisterKey(TKey key)
+        {
+            RebuildDictionary();
+            if (_dictionary.ContainsKey(key))
+                return;
+
+            _dictionary.Add(key, null);
+            RefreshSerializedData();
+        }
 
         public void RegisterObject(TKey key, TObject value)
         {
+            RebuildDictionary();
+
             _dictionary[key] = value;
+            RefreshSerializedData();
         }
 
         public bool RemoveObjectAt(TKey key)
         {
-            return _dictionary.Remove(key);
+            bool flag = _dictionary.Remove(key);
+            RefreshSerializedData();
+            return flag;
         }
 
         public TObject GetObject(TKey key)
         {
             return _dictionary.TryGetValue(key, out TObject value) ? value : null;
+        }
+
+        public void RefreshSerializedData()
+        {
+            _keys.Clear();
+            _keys.AddRange(_dictionary.Keys);
+
+            _objects.Clear();
+            _objects.AddRange(_dictionary.Values);
         }
 
     }

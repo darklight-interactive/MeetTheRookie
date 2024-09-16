@@ -17,11 +17,18 @@ namespace Darklight.UnityExt.ObjectLibrary
     }
 
 
-
+    // ======== [[ PRIMITIVE LIBRARIES ]] ================================== >>>>
     [CreateAssetMenu(menuName = ObjectLibraryPath.PRIMITIVE_PATH + "SpriteLibrary")]
     public class SpriteLibrary : ObjectLibrary<Sprite> { }
 
+
+    // ======== [[ KEY VALUE LIBRARIES ]] ================================== >>>>
     [CreateAssetMenu(menuName = ObjectLibraryPath.KEY_VALUE_PATH + "StringObjectLibrary")]
     public class StringObjectLibrary : ObjectLibrary<string, Object> { }
 
+    [CreateAssetMenu(menuName = ObjectLibraryPath.KEY_VALUE_PATH + "IntObjectLibrary")]
+    public class IntObjectLibrary : ObjectLibrary<int, Object> { }
+
+    [CreateAssetMenu(menuName = ObjectLibraryPath.KEY_VALUE_PATH + "EnumObjectLibrary")]
+    public class EnumObjectLibrary : ObjectLibrary<System.Enum, Object> { }
 }

@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.ObjectLibrary;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 {
     UXML_RenderTextureObject speechBubbleObject;
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+
+    [SerializeField, Expandable] DialogueBubbleLibrary _dialogueBubbleLibrary;
+
     [Dropdown("_speakerOptions")] public string speakerTag;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -28,10 +36,29 @@ public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
         }
     }
 
+    public override void OnInitialize(Grid2D grid)
+    {
+        if (_dialogueBubbleLibrary == null)
+        {
+            _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<DialogueBubbleLibrary>();
+        }
+
+        List<Cell2D> cells = BaseGrid.GetCells();
+        foreach (Cell2D cell in cells)
+        {
+            Spatial2D.AnchorPoint anchor = GetAnchorPointFromCell(cell);
+            _dialogueBubbleLibrary.RegisterKey(anchor);
+        }
+
+        base.OnInitialize(grid);
+    }
+
     public override void OnUpdate()
     {
         base.OnUpdate();
         UpdateSpeechBubble();
+
+
     }
 
     public void CreateNewSpeechBubble(string text)
@@ -41,11 +68,10 @@ public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
             DestroySpeechBubble();
         }
 
-        // Return if the application is not playing
-        if (!Application.isPlaying) { return; }
-
         // Create a new Bubble
         speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
+        speechBubbleObject.transform.SetParent(transform);
+
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
@@ -62,6 +88,7 @@ public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
         speechBubble.SetFullText(text);
         speechBubble.InstantCompleteText(); // Temporarily display full text
 
+        UpdateSpeechBubble();
     }
 
     // Helper method to update the UI of the speech bubble
@@ -81,12 +108,8 @@ public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
         Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(bestCell);
         Spatial2D.AnchorPoint origin = this.GetOriginPointFromCell(bestCell);
 
-        UnityEngine.Object objectToSpawn = bestCell.ComponentReg.GetComponent<Cell2D.SpawnerComponent>().Data.ObjectToSpawn;
-        Sprite bubbleSprite = null;
-        if (objectToSpawn is Sprite)
-        {
-            bubbleSprite = objectToSpawn as Sprite;
-        }
+        // Get the bubble sprite from the library
+        Sprite bubbleSprite = _dialogueBubbleLibrary.GetObject(anchor);
 
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.UpdateFontSizeToMatchScreen();
@@ -125,4 +148,46 @@ public class DialogueBubbleSpawner : Grid2D_OverlapWeightSpawner
         }
         speechBubbleObject = null;
     }
+
+    [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
+    public class DialogueBubbleLibrary : ObjectLibrary<Spatial2D.AnchorPoint, Sprite> { }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(DialogueInteractionHandler))]
+    public class DialogueInteractionHandlerCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        DialogueInteractionHandler _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (DialogueInteractionHandler)target;
+            _script.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (_script.speechBubbleObject == null && GUILayout.Button("Create New Speech Bubble"))
+            {
+                _script.CreateNewSpeechBubble("Hello World");
+            }
+            else if (_script.speechBubbleObject != null && GUILayout.Button("Destroy Speech Bubble"))
+            {
+                _script.DestroySpeechBubble();
+            }
+
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }

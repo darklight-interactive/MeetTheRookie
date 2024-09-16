@@ -19,7 +19,6 @@ namespace Darklight.UnityExt.Core2D
 
         [Header("Objects")]
         [SerializeField] Object _default_ObjectToSpawn;
-        [SerializeField, NonReorderable] List<Grid2D_SpawnerComponent.ObjectAnchorPair> _objectAnchorPairs;
 
         [Header("Serialized Data")]
         /// <summary>
@@ -33,7 +32,6 @@ namespace Darklight.UnityExt.Core2D
         public Spatial2D.AnchorPoint DefaultOriginAnchor => _default_OriginAnchorPoint;
         public Spatial2D.AnchorPoint DefaultTargetAnchor => _default_TargetAnchorPoint;
         public Object DefaultObjectToSpawn => _default_ObjectToSpawn;
-        public List<Grid2D_SpawnerComponent.ObjectAnchorPair> ObjectAnchorPairs { get => _objectAnchorPairs; set => _objectAnchorPairs = value; }
         public List<Cell2D.SpawnerComponent.SpawnData> SerializedSpawnData { get => _serializedCellSpawnData; set => _serializedCellSpawnData = value; }
     }
 }

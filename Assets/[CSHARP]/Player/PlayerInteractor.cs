@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [SerializeField] DialogueBubbleSpawner _dialogueHandler;
+    [SerializeField] DialogueInteractionHandler _dialogueHandler;
 
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
@@ -25,17 +25,17 @@ public class PlayerInteractor : MonoBehaviour
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public DialogueBubbleSpawner DialogueGridSpawner => _dialogueHandler;
+    public DialogueInteractionHandler DialogueInteractionHandler => _dialogueHandler;
 
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
     {
         if (_dialogueHandler == null)
         {
-            _dialogueHandler = GetComponentInChildren<DialogueBubbleSpawner>();
+            _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
             if (_dialogueHandler == null)
             {
-                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueBubbleSpawner>
+                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueInteractionHandler>
                     (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
                 _dialogueHandler.transform.localPosition = Vector3.zero;
             }

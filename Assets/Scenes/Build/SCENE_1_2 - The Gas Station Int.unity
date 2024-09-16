@@ -705,7 +705,6 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX:
   - 0.32
-  iconGridSpawner: {fileID: 982271133}
 --- !u!61 &256807744
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1128,7 +1127,6 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX:
   - -0.19
-  iconGridSpawner: {fileID: 1129468137}
 --- !u!61 &407943209
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2512,17 +2510,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
   m_PrefabInstance: {fileID: 630941523}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &630941525 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7309310622695701474, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 630941523}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &654085721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3174,17 +3161,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
   m_PrefabInstance: {fileID: 1328542758}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &982271133 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7309310622695701474, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 1328542758}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1090897439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3606,17 +3582,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
   m_PrefabInstance: {fileID: 1129468135}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1129468137 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7309310622695701474, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 1129468135}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!43 &1196925402
 Mesh:
   m_ObjectHideFlags: 0
@@ -5782,6 +5747,10 @@ PrefabInstance:
       propertyPath: _guid
       value: 29068051
       objectReference: {fileID: 0}
+    - target: {fileID: 7063435251903615789, guid: 4b1868b2577ce7e47a1a3f3440559158, type: 3}
+      propertyPath: speakerTag
+      value: Speaker.Beth
+      objectReference: {fileID: 0}
     - target: {fileID: 7152001243824678401, guid: 4b1868b2577ce7e47a1a3f3440559158, type: 3}
       propertyPath: m_Name
       value: '[NPC] Jess Gas Employee'
@@ -6299,7 +6268,6 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX:
   - 0.3
-  iconGridSpawner: {fileID: 630941525}
 --- !u!1 &1791120686
 GameObject:
   m_ObjectHideFlags: 0

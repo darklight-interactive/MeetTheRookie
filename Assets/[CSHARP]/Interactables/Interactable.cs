@@ -28,7 +28,7 @@ public class Interactable : MonoBehaviour, IInteract
     private GameObject Misra;
 
     // -- (( ICON GRID SPAWNER )) -------- >>
-    InteractIconSpawner _interactIconSpawner;
+    IconInteractionHandler _interactIconSpawner;
 
 
     [Header("Interactable")]
@@ -101,7 +101,7 @@ public class Interactable : MonoBehaviour, IInteract
         if (_interactIconSpawner == null)
         {
             // Get the icon spawner
-            _interactIconSpawner = GetComponentInChildren<InteractIconSpawner>();
+            _interactIconSpawner = GetComponentInChildren<IconInteractionHandler>();
             if (_interactIconSpawner == null)
             {
                 if (MTR_UIManager.Instance.interactIconSpawnerPrefab == null)
@@ -111,7 +111,7 @@ public class Interactable : MonoBehaviour, IInteract
                 }
 
                 // Create the icon spawner as a child
-                _interactIconSpawner = ObjectUtility.InstantiatePrefabWithComponent<InteractIconSpawner>
+                _interactIconSpawner = ObjectUtility.InstantiatePrefabWithComponent<IconInteractionHandler>
                     (MTR_UIManager.Instance.interactIconSpawnerPrefab,
                     Vector3.zero, Quaternion.identity, this.transform);
 

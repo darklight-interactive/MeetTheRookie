@@ -158,14 +158,7 @@ namespace Darklight.UnityExt.Core2D
             [System.Serializable]
             public class SpawnData
             {
-                Object _objectToSpawn = null;
-
                 [SerializeField, ShowOnly] Vector2Int _cellKey = Vector2Int.zero;
-
-
-                [Space(10)]
-                [SerializeField, ShowOnly] string _objectType = "";
-                [SerializeField, ShowOnly] string _objectName = "";
 
                 [Space(10)]
                 [Tooltip("This determines the origin point of the object to be spawned and the cell anchor point that the object will be placed on")]
@@ -174,37 +167,6 @@ namespace Darklight.UnityExt.Core2D
                 [SerializeField] Spatial2D.AnchorPoint _targetAnchor = Spatial2D.AnchorPoint.CENTER;
 
                 public Vector2Int CellKey { get => _cellKey; set => _cellKey = value; }
-                public Object ObjectToSpawn
-                {
-                    get
-                    {
-                        if (_objectToSpawn != null)
-                        {
-                            _objectType = _objectToSpawn.GetType().Name;
-                            _objectName = _objectToSpawn.name;
-                        }
-                        else
-                        {
-                            _objectType = "NULL";
-                            _objectName = "NULL";
-                        }
-                        return _objectToSpawn;
-                    }
-                    set
-                    {
-                        _objectToSpawn = value;
-                        if (_objectToSpawn != null)
-                        {
-                            _objectType = _objectToSpawn.GetType().Name;
-                            _objectName = _objectToSpawn.name;
-                        }
-                        else
-                        {
-                            _objectType = "NULL";
-                            _objectName = "NULL";
-                        }
-                    }
-                }
                 public Spatial2D.AnchorPoint OriginAnchor { get => _originAnchor; set => _originAnchor = value; }
                 public Spatial2D.AnchorPoint TargetAnchor { get => _targetAnchor; set => _targetAnchor = value; }
 
@@ -218,25 +180,13 @@ namespace Darklight.UnityExt.Core2D
                     _cellKey = key;
                     _originAnchor = origin;
                     _targetAnchor = anchor;
-                    _objectToSpawn = obj;
-
-                    if (_objectToSpawn != null)
-                        _objectType = _objectToSpawn.GetType().Name;
-                    else
-                        _objectType = "NULL";
                 }
 
                 public SpawnData(SpawnData data)
                 {
                     _cellKey = data.CellKey;
-                    _objectToSpawn = data.ObjectToSpawn;
                     _originAnchor = data._originAnchor;
                     _targetAnchor = data._targetAnchor;
-
-                    if (_objectToSpawn != null)
-                        _objectType = _objectToSpawn.GetType().Name;
-                    else
-                        _objectType = "NULL";
                 }
             }
         }

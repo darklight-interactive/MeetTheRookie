@@ -10,7 +10,7 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-public class InteractIconSpawner : Grid2D_OverlapWeightSpawner
+public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
 {
     [SerializeField, Expandable] UXML_UIDocumentPreset _interactIconPreset;
     [SerializeField, ShowOnly] UXML_RenderTextureObject _interactIconObject;
@@ -66,15 +66,15 @@ public class InteractIconSpawner : Grid2D_OverlapWeightSpawner
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(InteractIconSpawner))]
+    [CustomEditor(typeof(IconInteractionHandler))]
     public class InteractIconSpawnerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        InteractIconSpawner _script;
+        IconInteractionHandler _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (InteractIconSpawner)target;
+            _script = (IconInteractionHandler)target;
             _script.Awake();
         }
 

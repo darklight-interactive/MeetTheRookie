@@ -18,7 +18,7 @@ public class NPC_Interactable : Interactable, IInteract
     // ======== [[ FIELDS ]] ================================== >>>>
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
 
-    [SerializeField] DialogueBubbleSpawner _dialogueHandler;
+    [SerializeField] DialogueInteractionHandler _dialogueHandler;
 
 
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
@@ -32,11 +32,11 @@ public class NPC_Interactable : Interactable, IInteract
         base.Awake();
         if (_dialogueHandler == null)
         {
-            _dialogueHandler = GetComponent<DialogueBubbleSpawner>();
+            _dialogueHandler = GetComponent<DialogueInteractionHandler>();
             if (_dialogueHandler == null)
             {
 
-                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueBubbleSpawner>
+                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueInteractionHandler>
                     (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
                 _dialogueHandler.transform.localPosition = Vector3.zero;
             }

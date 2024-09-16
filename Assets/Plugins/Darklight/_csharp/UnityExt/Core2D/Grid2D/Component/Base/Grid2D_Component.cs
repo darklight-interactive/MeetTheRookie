@@ -84,12 +84,10 @@ namespace Darklight.UnityExt.Core2D
             {
                 BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
             }
-
             public virtual void DrawSelectedGizmos()
             {
                 BaseGrid.SendVisitorToAllCells(CellComponent_SelectedGizmosVisitor);
             }
-
             public virtual void DrawEditorGizmos()
             {
                 BaseGrid.SendVisitorToAllCells(CellComponent_EditorGizmosVisitor);
@@ -151,6 +149,41 @@ namespace Darklight.UnityExt.Core2D
                 Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseSelectedGizmosFunc);
             protected override Cell2D.ComponentVisitor CellComponent_EditorGizmosVisitor =>
                 Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseEditorGizmosFunc);
+        }
+
+        public abstract class CompositeComponent<TComponentA, TComponentB> : BaseComponent
+            where TComponentA : Component
+            where TComponentB : Component
+        {
+            protected TComponentA _componentA;
+            protected TComponentB _componentB;
+
+            public override void OnInitialize(Grid2D baseObj)
+            {
+                if (_componentA == null) _componentA = GetComponent<TComponentA>();
+                if (_componentA == null) _componentA = gameObject.AddComponent<TComponentA>();
+
+                if (_componentB == null) _componentB = GetComponent<TComponentB>();
+                if (_componentB == null) _componentB = gameObject.AddComponent<TComponentB>();
+
+                base.OnInitialize(baseObj);
+            }
+        }
+
+        public abstract class CompositeComponent<TComponentA, TComponentB, TComponentC> : CompositeComponent<TComponentA, TComponentB>
+            where TComponentA : Component
+            where TComponentB : Component
+            where TComponentC : Component
+        {
+            protected TComponentC _componentC;
+
+            public override void OnInitialize(Grid2D baseObj)
+            {
+                if (_componentC == null) _componentC = GetComponent<TComponentC>();
+                if (_componentC == null) _componentC = gameObject.AddComponent<TComponentC>();
+
+                base.OnInitialize(baseObj);
+            }
         }
     }
 }
