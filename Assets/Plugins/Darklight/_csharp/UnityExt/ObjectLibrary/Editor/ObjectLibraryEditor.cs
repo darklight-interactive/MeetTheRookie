@@ -28,14 +28,10 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
         {
             serializedObject.Update();
 
-            if (keysProperty == null)
-            {
-                base.OnInspectorGUI();
-                return;
-            }
-
             // Draw the ReorderableList
             reorderableList.DoLayoutList();
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         protected virtual void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -63,7 +59,6 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
             EditorGUI.PropertyField(valueRect, objProp, GUIContent.none);
         }
 
-
         private void DrawHeaderCallback(Rect rect)
         {
             float halfWidth = rect.width / 2 - 5;
@@ -79,12 +74,16 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
             int index = list.count;
             keysProperty.InsertArrayElementAtIndex(index);
             objectsProperty.InsertArrayElementAtIndex(index);
+            serializedObject.ApplyModifiedProperties();
+            //Debug.Log($"OnAddCallback: inserting at index {index}");
         }
 
         protected virtual void OnRemoveCallback(ReorderableList list)
         {
             keysProperty.DeleteArrayElementAtIndex(list.index);
             objectsProperty.DeleteArrayElementAtIndex(list.index);
+            serializedObject.ApplyModifiedProperties();
+            //Debug.Log($"OnRemoveCallback: removing at index {list.index}");
         }
 
 

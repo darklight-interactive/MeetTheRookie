@@ -18,20 +18,53 @@ namespace Darklight.UnityExt.Core2D
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public SpawnData Data { get => _data; set => _data = value; }
-            public Spatial2D.AnchorPoint OriginAnchorPoint { get => _data.OriginAnchor; set => _data.OriginAnchor = value; }
+            public Spatial2D.AnchorPoint OriginAnchorPoint
+            {
+                get
+                {
+                    if (_data == null)
+                        return Spatial2D.AnchorPoint.CENTER;
+                    return _data.OriginAnchor;
+                }
+                set
+                {
+                    if (_data == null)
+                        _data = new SpawnData(BaseCell.Key);
+                    _data.OriginAnchor = value;
+                }
+            }
             public Vector3 OriginAnchorPosition
             {
                 get
                 {
+                    if (BaseCell == null)
+                        return Vector3.zero;
                     return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, OriginAnchorPoint);
                 }
             }
 
-            public Spatial2D.AnchorPoint TargetAnchorPoint { get => _data.TargetAnchor; set => _data.TargetAnchor = value; }
+            public Spatial2D.AnchorPoint TargetAnchorPoint
+            {
+                get
+                {
+                    if (_data == null)
+                        return Spatial2D.AnchorPoint.CENTER;
+                    return _data.TargetAnchor;
+                }
+                set
+                {
+                    if (_data == null)
+                        _data = new SpawnData(BaseCell.Key);
+                    _data.TargetAnchor = value;
+                }
+            }
+
             public Vector3 TargetAnchorPosition
             {
                 get
                 {
+                    if (BaseCell == null)
+                        return Vector3.zero;
                     return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, TargetAnchorPoint);
                 }
             }
