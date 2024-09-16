@@ -15,9 +15,9 @@ public class MTR_MusicObject : FMODExt_MusicObject
     /// Building off of the class inside "FMOD_MusicObject", this is a class to store a scene, event reference, and music intensity parameter for background music.
     /// </summary>
     [System.Serializable]
-    public new class MTR_BackgroundMusicEvent : BackgroundMusicEvent
+    public class MTR_BackgroundMusicEvent : BackgroundMusicEvent
     { 
-        [Range(0f, 2f)] // Based on the set parameter range in FMOD
+        [Range(0f, 2f)] // Based on the fixed parameter range in FMOD
         public int musicIntensityValue;
     }
 

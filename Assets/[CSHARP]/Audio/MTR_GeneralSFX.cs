@@ -41,8 +41,24 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     public EventReference misraAndTentacle;
 
 
-    //----------------VOICE ACTING AUDIO----------------//
+    //----------------DATING SIM AUDIO----------------//
     [Header("Dating Audio")]
-    public EventReference voiceLupe;
-    public EventReference voiceMisra;
+
+    // ANIMALESE
+    //public EventReference animalese;
+    //public string parameterNameAnimalese;
+    //[Range(0, 1)] public float animalesePitchDefault;
+    //[Range(0, 1)] public float animalesePitchLupe;
+    //[Range(0, 1)] public float animalesePitchMisra;
+
+    public EventReference rollingTextDefault;
+    public EventReference rollingTextLupe;
+    public EventReference rollingTextMisra;
+
+    // HUMAN VOICE
+    //public EventReference voiceLupe;
+    //public EventReference voiceMisra;
+    //// String values for parameter changes
+    //public string parameterNameLupe;
+    //public string parameterNameMisra;
 }

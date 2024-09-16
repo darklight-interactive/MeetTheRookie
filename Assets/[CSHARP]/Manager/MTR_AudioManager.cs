@@ -9,7 +9,7 @@ public class MTR_AudioManager : FMODExt_EventManager
     public static new MTR_AudioManager Instance => FMODExt_EventManager.Instance as MTR_AudioManager;
 
     // Overwrite the generalSFX property to return the instance of the MTR_GeneralSFX class
-    private new MTR_GeneralSFX generalSFX => base.generalSFX as MTR_GeneralSFX;
+    public new MTR_GeneralSFX generalSFX => base.generalSFX as MTR_GeneralSFX;
     // Overwrite the backgroundMusic property to return the instance of the MTR_MusicObject class
     public new MTR_MusicObject backgroundMusic => base.backgroundMusic as MTR_MusicObject;
 
@@ -25,14 +25,20 @@ public class MTR_AudioManager : FMODExt_EventManager
     //    if (reverbValue >= 0 &&  reverbValue <= 1) { FMODUnity.RuntimeManager.StudioSystem.setParameterByName(Reverb, reverbValue); }
     //}
 
+    //public void SetFMODGlobalParameter(string parameterName, float parameterValue)
+    //{
+    //    FMODUnity.RuntimeManager.StudioSystem.setParameterByName(parameterName, parameterValue);
+    //    Debug.Log("Set parameter " + parameterName + " to " + parameterValue);
+    //}
+
 
     GameObject player;
-    Coroutine repeatEventCoroutine;
+    Coroutine repeatFootstepCoroutine;
     public void StartFootstepEvent()
     {
         if (player == null) { player = GameObject.Find("[PLAYER] Lupe"); }
         
-        repeatEventCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
+        repeatFootstepCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
     }
 
     // Handling spatialized repeated events
@@ -45,8 +51,8 @@ public class MTR_AudioManager : FMODExt_EventManager
         }
     }
 
-    public new void StopRepeatingEvent()
+    public void StopFootstepEvent()
     {
-        StopCoroutine(repeatEventCoroutine);
+        StopCoroutine(repeatFootstepCoroutine);
     }
 }

@@ -31,6 +31,9 @@
 		<relationship name="parameters">
 			<destination>{a84cd816-5d97-483d-944b-9121ad2498e5}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{22bc96d2-6bcc-4622-aaad-7092ccde5821}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{8fb7b53c-31f0-47ec-9469-ebaf178c7869}">
 		<relationship name="masterBus">
@@ -53,7 +56,7 @@
 			<destination>{bae28bdf-0cb7-410c-a9e9-93cdd7931e36}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{18025da7-146c-4825-bc3f-e85a53a9afd8}</destination>
+			<destination>{a00b0524-cb27-4eb5-973d-594f9c0a32b4}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{de99b306-410d-4048-bf10-148ef43ee6ec}" />
@@ -69,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{d8f21e2a-2106-4d69-8114-f444936f4a95}">
+		<property name="volume">
+			<value>-5.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{32193f28-a504-4701-83a1-e36b21654765}</destination>
 		</relationship>
@@ -101,20 +107,20 @@
 		<property name="pitch">
 			<value>0.5</value>
 		</property>
-		<property name="looping">
-			<value>true</value>
-		</property>
-		<property name="playCount">
-			<value>14</value>
-		</property>
 		<relationship name="audioFile">
 			<destination>{6b819f7f-a737-42af-9273-679de4f2a410}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{98e50a2d-1650-490a-844c-034a44ab8194}" />
 	<object class="ThreeEQEffect" id="{38db4dd4-ea59-42a3-8655-b4ec63843aa2}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="lowGain">
+			<value>-4.5</value>
+		</property>
 		<property name="highGain">
-			<value>-8.5</value>
+			<value>-5</value>
 		</property>
 		<property name="highCrossover">
 			<value>2200</value>

@@ -35,9 +35,6 @@
 		<relationship name="parameters">
 			<destination>{64448d2c-082c-44b2-9795-aa0e9c4830ee}</destination>
 		</relationship>
-		<relationship name="banks">
-			<destination>{22bc96d2-6bcc-4622-aaad-7092ccde5821}</destination>
-		</relationship>
 	</object>
 	<object class="EventMixer" id="{cbc6ef8f-1553-4668-9a80-3e65eebe4d92}">
 		<relationship name="masterBus">
@@ -57,7 +54,7 @@
 			<destination>{eb4176a7-9162-42ab-8004-b914a4070a19}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{1808e19a-27df-402f-b904-640d3348cfda}</destination>
+			<destination>{a00b0524-cb27-4eb5-973d-594f9c0a32b4}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{3e8b583e-d2f0-423d-a45b-f9c7a9c639ef}" />
@@ -76,14 +73,6 @@
 		</relationship>
 	</object>
 	<object class="GroupTrack" id="{346b99be-7044-480f-9782-4dea9056e7f0}">
-		<relationship name="modules">
-			<destination>{9efef482-237b-4cce-be7b-7c626e48344d}</destination>
-			<destination>{d974b2ee-a0cd-47dc-8eca-d744d253fe09}</destination>
-			<destination>{089e6593-f31c-4044-ae0b-6e4cc9486732}</destination>
-			<destination>{669752fd-3e08-4484-b8d9-4033512c8cbf}</destination>
-			<destination>{35d97163-9c2c-4304-8aae-b5f4e79cf90b}</destination>
-			<destination>{9c530fd7-2944-4214-a503-322977ce43c2}</destination>
-		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{1e7900e7-e140-43f6-9497-ab0bf8c6da33}</destination>
 		</relationship>
@@ -101,12 +90,6 @@
 			<destination>{c42084a3-84a5-4e44-b900-cdb2eb64c615}</destination>
 			<destination>{21ef7786-7ec9-49b5-b66e-6f6bc6e80460}</destination>
 			<destination>{2c8c3872-dea9-4169-b925-72699a3c37b5}</destination>
-			<destination>{9efef482-237b-4cce-be7b-7c626e48344d}</destination>
-			<destination>{d974b2ee-a0cd-47dc-8eca-d744d253fe09}</destination>
-			<destination>{089e6593-f31c-4044-ae0b-6e4cc9486732}</destination>
-			<destination>{669752fd-3e08-4484-b8d9-4033512c8cbf}</destination>
-			<destination>{35d97163-9c2c-4304-8aae-b5f4e79cf90b}</destination>
-			<destination>{9c530fd7-2944-4214-a503-322977ce43c2}</destination>
 		</relationship>
 		<relationship name="preset">
 			<destination>{ca054913-d118-4466-a365-cc46ad7aae47}</destination>
@@ -201,51 +184,6 @@
 		</relationship>
 		<relationship name="output">
 			<destination>{ccb52ddc-9960-48fe-9cb0-35bba28c903b}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{9efef482-237b-4cce-be7b-7c626e48344d}">
-		<property name="start">
-			<value>5</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{fc1171ba-632a-431f-8bcc-9ef140877120}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{d974b2ee-a0cd-47dc-8eca-d744d253fe09}">
-		<property name="start">
-			<value>1</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{388498ee-dba8-48f5-bf85-d90c8789ca7f}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{089e6593-f31c-4044-ae0b-6e4cc9486732}">
-		<property name="start">
-			<value>2</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{388498ee-dba8-48f5-bf85-d90c8789ca7f}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{669752fd-3e08-4484-b8d9-4033512c8cbf}">
-		<property name="start">
-			<value>4</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{4f46e01a-e9b1-4bcf-a1cf-5146e00a177f}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{35d97163-9c2c-4304-8aae-b5f4e79cf90b}">
-		<relationship name="audioFile">
-			<destination>{c6202f9f-1316-4040-9fb0-33cb309077a2}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{9c530fd7-2944-4214-a503-322977ce43c2}">
-		<property name="start">
-			<value>3</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{6b0c3f52-63eb-4a1e-84ab-e84970f718a0}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{1e7900e7-e140-43f6-9497-ab0bf8c6da33}">

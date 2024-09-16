@@ -16,7 +16,7 @@ public class PlayerAudioController : MonoBehaviour
 
     public void OnDestroy()
     {
-        MTR_AudioManager.Instance.StopRepeatingEvent();
+        MTR_AudioManager.Instance.StopFootstepEvent();
     }
 
     private PlayerState lastState = PlayerState.NONE;
@@ -31,7 +31,7 @@ public class PlayerAudioController : MonoBehaviour
 
         if (lastState == PlayerState.WALK && newState != PlayerState.WALK)
         {
-            MTR_AudioManager.Instance.StopRepeatingEvent();
+            MTR_AudioManager.Instance.StopFootstepEvent();
         }
 
         lastState = newState;
