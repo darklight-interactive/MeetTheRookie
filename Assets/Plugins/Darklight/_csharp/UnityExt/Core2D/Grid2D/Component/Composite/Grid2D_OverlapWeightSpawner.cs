@@ -8,9 +8,8 @@ using UnityEditor;
 #endif
 namespace Darklight.UnityExt.Core2D
 {
-    [RequireComponent(typeof(Grid2D))]
-    [RequireComponent(typeof(Grid2D_WeightComponent), typeof(Grid2D_OverlapComponent))]
-    public class Grid2D_OverlapWeightSpawner : Grid2D_SpawnerComponent
+    [RequireComponent(typeof(Grid2D)), RequireComponent(typeof(Grid2D_SpawnerComponent)), RequireComponent(typeof(Grid2D_WeightComponent)), RequireComponent(typeof(Grid2D_OverlapComponent))]
+    public class Grid2D_OverlapWeightSpawner : Grid2D.BaseComponent
     {
         // ======== [[ FIELDS ]] ================================== >>>>
         Grid2D _grid;
@@ -34,7 +33,6 @@ namespace Darklight.UnityExt.Core2D
                 if (_grid == null)
                     _grid = this.gameObject.AddComponent<Grid2D>();
             }
-
             _grid_spawnerComponent = this.GetComponent<Grid2D_SpawnerComponent>();
             if (_grid_spawnerComponent == null)
                 _grid_spawnerComponent = this.gameObject.AddComponent<Grid2D_SpawnerComponent>();
@@ -68,7 +66,7 @@ namespace Darklight.UnityExt.Core2D
                     return null;
                 }
 
-                Debug.Log($"{this.name} OverlapWeightSpawner: Best cell found {bestCell.Name}");
+                //Debug.Log($"{this.name} OverlapWeightSpawner: Best cell found {bestCell.Name}");
                 return bestCell;
             }
 
@@ -78,12 +76,12 @@ namespace Darklight.UnityExt.Core2D
 
         public Spatial2D.AnchorPoint GetAnchorPointFromCell(Cell2D cell)
         {
-            return _grid_spawnerComponent.GetTargetAnchor(cell);
+            return SpawnerComponent.GetTargetAnchor(cell);
         }
 
         public Spatial2D.AnchorPoint GetOriginPointFromCell(Cell2D cell)
         {
-            return _grid_spawnerComponent.GetOriginAnchor(cell);
+            return SpawnerComponent.GetOriginAnchor(cell);
         }
     }
 }

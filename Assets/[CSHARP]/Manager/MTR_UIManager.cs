@@ -14,6 +14,8 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Core2D;
+using System.Linq;
+
 
 
 #if UNITY_EDITOR
@@ -29,60 +31,6 @@ using UnityEditor;
 /// </summary>
 public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
-    #region ======= [[ STATIC METHODS ]] ============================================= >>>>
-
-    /// <summary>
-    /// Creates a new UIDocumentObject from a given preset.
-    /// </summary>
-    /// <param name="preset"></param>
-    /// <returns></returns>
-    public static TDocument CreateUIDocumentObject<TDocument>(UXML_UIDocumentPreset preset)
-        where TDocument : UXML_UIDocumentObject
-    {
-        GameObject go = new GameObject($"UXML_UIDocument : {preset.name}");
-        //go.hideFlags = HideFlags.NotEditable;
-        TDocument uiDocument = go.AddComponent<TDocument>();
-        uiDocument.Initialize(preset);
-        return uiDocument;
-    }
-
-    /// <summary>
-    /// Sets the position of a UI Toolkit element to correspond to a world position.
-    /// Optionally centers the element on the screen position.
-    /// </summary>
-    /// <param name="element">The UI Toolkit element to position.</param>
-    /// <param name="worldPosition">The world position to map to screen space.</param>
-    /// <param name="center">Optional parameter to center the element at the screen position (default false).</param>
-    public static void SetWorldToScreenPoint(
-        VisualElement element,
-        Vector3 worldPosition,
-        bool center = false
-    )
-    {
-        Camera cam = Camera.main;
-        if (cam == null)
-            throw new System.Exception("No main camera found.");
-
-        // Convert world position to screen position
-        Vector3 screenPosition = cam.WorldToScreenPoint(worldPosition);
-        screenPosition.y = cam.pixelHeight - screenPosition.y; // UI Toolkit uses top-left origin
-        screenPosition.z = 0;
-
-        if (center)
-        {
-            // Adjust position to center the element
-            screenPosition.x -= element.resolvedStyle.width / 2;
-            screenPosition.y -= element.resolvedStyle.height / 2;
-        }
-
-        // Set positions using left and top in style
-        element.style.left = screenPosition.x;
-        element.style.top = screenPosition.y;
-
-        Debug.Log($"Set Element Position: {screenPosition}");
-    }
-
-    #endregion <<< ======= [[ STATIC METHODS ]] =======
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
 
@@ -108,26 +56,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [SerializeField]
     UXML_UIDocumentPreset _synthesisUIPreset;
 
-    [Header("Interact Icon")]
-    [SerializeField]
-    UXML_UIDocumentPreset _interactIconPreset;
-    public GameObject iconGridSpawnerPrefab;
-
-    [ShowOnly]
-    public UXML_RenderTextureObject interactIcon;
-
-
-    [Header("Speech Bubble")]
-    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+    [Header("World Space UI")]
+    public GameObject interactIconSpawnerPrefab;
     public GameObject dialogueSpawnerPrefab;
-
-    [ShowOnly] public UXML_RenderTextureObject speechBubbleObject;
-
-    [MinMaxSlider(24, 512)]
-    public Vector2Int speechBubbleFontSizeRange = new Vector2Int(64, 128);
-
-
-
 
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -143,7 +74,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 return _gameUI;
 
             // Create a new GameUIController if it doesn't
-            _gameUI = CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            _gameUI = UXML_Utility.CreateUIDocumentObject<GameUIController>(_gameUIPreset);
             _gameUI.transform.SetParent(transform);
             return _gameUI;
         }
@@ -161,7 +92,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 return _synthesisManager;
 
             // Create a new SynthesisManager if it doesn't
-            _synthesisManager = CreateUIDocumentObject<SynthesisManager>(_synthesisUIPreset);
+            _synthesisManager = UXML_Utility.CreateUIDocumentObject<SynthesisManager>(_synthesisUIPreset);
             return _synthesisManager;
         }
     }
@@ -169,164 +100,46 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
 
     #region ------ [[ SPEECH BUBBLE ]] ------------------------ >>
-    public void CreateNewSpeechBubble(string text)
+    public void CreateSpeechBubbleAtSpeaker(string speaker, string text)
     {
-        if (speechBubbleObject != null)
+        List<DialogueBubbleSpawner> dialogueHandlers = FindObjectsByType<DialogueBubbleSpawner>(FindObjectsSortMode.InstanceID).ToList();
+
+        DialogueBubbleSpawner dialogueHandler = null;
+        foreach (DialogueBubbleSpawner d in dialogueHandlers)
         {
-            DestroySpeechBubble();
-        }
+            d.DestroySpeechBubble();
 
-        // Return if the application is not playing
-        if (!Application.isPlaying) { return; }
-
-        // Create a new Bubble
-        speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
-        SpeechBubble speechBubble = CreateSpeechBubbleAtCurrentSpeaker();
-        speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
-        {
-            float fullTextHeight = evt.newRect.height;
-            float fullTextWidth = evt.newRect.width;
-
-            speechBubble.style.height = fullTextHeight;
-            speechBubble.style.width = fullTextWidth;
-
-            speechBubble.SetFullText(text);
-            StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
-        });
-
-        speechBubble.SetFullText(text);
-        speechBubble.InstantCompleteText(); // Temporarily display full text
-
-    }
-    SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
-    {
-        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-        Grid2D_OverlapWeightSpawner spawner = null;
-
-        Debug.Log($"Creating speech bubble for {currentSpeaker}");
-
-        Color bubbleColor = Color.black;
-        if (_characterColors != null && _characterColors[currentSpeaker] != null)
-            bubbleColor = _characterColors[currentSpeaker];
-
-        // Determine if the speaker is the player or an NPC
-        bool isPlayerSpeaker = currentSpeaker.Contains("Lupe");
-
-        // Get the best cell and transform data based on the speaker type
-        if (isPlayerSpeaker)
-        {
-            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            if (playerInteractor == null)
+            if (d.speakerTag.Contains(speaker))
             {
-                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-                return null;
-            }
-            spawner = playerInteractor.DialogueGridSpawner;
-        }
-        else
-        {
-            NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
-            foreach (var interactable in interactables)
-            {
-                if (interactable.speakerTag.Contains(currentSpeaker))
-                {
-                    spawner = interactable.DialogueGridSpawner;
-                    break;
-                }
+                dialogueHandler = d;
             }
         }
-
-        return UpdateSpeechBubbleUI(spawner);
-    }
-
-    // Helper method to update the UI of the speech bubble
-    private SpeechBubble UpdateSpeechBubbleUI(Grid2D_OverlapWeightSpawner compositeSpawner)
-    {
-        Cell2D bestCell = compositeSpawner.GetBestCell();
-
-        // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        compositeSpawner.SpawnerComponent.AssignGameObjectToCell(speechBubbleObject.transform, bestCell);
-
-        // Determine which bubble sprite to use based on direction
-        Spatial2D.AnchorPoint anchor = compositeSpawner.GetAnchorPointFromCell(bestCell);
-        Spatial2D.AnchorPoint origin = compositeSpawner.GetOriginPointFromCell(bestCell);
-
-        UnityEngine.Object objectToSpawn = bestCell.ComponentReg.GetComponent<Cell2D.SpawnerComponent>().Data.ObjectToSpawn;
-        Sprite bubbleSprite = null;
-        if (objectToSpawn is Sprite)
+        if (dialogueHandler == null)
         {
-            bubbleSprite = objectToSpawn as Sprite;
-        }
-
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-
-        speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
-        speechBubble.UpdateFontSizeToMatchScreen();
-        //speechBubble.style.color = color;
-        speechBubble.SetBackgroundSprite(bubbleSprite);
-
-        speechBubble.SetAnchorPoint(anchor);
-        speechBubble.SetOriginPoint(origin);
-
-        return speechBubble;
-    }
-
-
-    IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
-    {
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.SetFullText(fullText);
-
-        while (true)
-        {
-            for (int i = 0; i < speechBubble.fullText.Length; i++)
-            {
-                speechBubble.RollingTextStep();
-                yield return new WaitForSeconds(interval);
-            }
-            yield return null;
-        }
-    }
-    public void DestroySpeechBubble()
-    {
-        if (speechBubbleObject != null)
-        {
-            if (Application.isPlaying)
-                Destroy(speechBubbleObject.gameObject);
-            else
-                DestroyImmediate(speechBubbleObject.gameObject);
-        }
-        speechBubbleObject = null;
-    }
-
-
-
-    #endregion
-
-    #region ------ [[ INTERACT ICON ]] ------------------------
-
-
-    public void ShowInteractIcon(Vector3 worldPosition, float scale = 1)
-    {
-        if (interactIcon == null)
-            interactIcon = CreateUXMLRenderTextureObject(_interactIconPreset);
-        interactIcon.transform.position = worldPosition;
-        interactIcon.SetLocalScale(scale);
-
-        //VisualElement icon = interactIcon.ElementQuery<VisualElement>();
-        //ScaleElementToScreenSize(icon, scale);
-    }
-
-    public void RemoveInteractIcon()
-    {
-        if (interactIcon == null)
+            Debug.LogError("No Dialogue Handler found for speaker: " + speaker);
             return;
-        if (Application.isPlaying)
-            interactIcon.Destroy();
-        else
-            DestroyImmediate(interactIcon.gameObject);
-        interactIcon = null;
+        }
+
+        dialogueHandler.CreateNewSpeechBubble(text);
+        Debug.Log("Creating Speech Bubble for speaker: " + speaker);
     }
+
+
+    public void DestroyAllSpeechBubbles()
+    {
+        List<DialogueBubbleSpawner> dialogueHandlers = FindObjectsByType<DialogueBubbleSpawner>(FindObjectsSortMode.InstanceID).ToList();
+
+        foreach (DialogueBubbleSpawner d in dialogueHandlers)
+        {
+            d.DestroySpeechBubble();
+        }
+    }
+
+
+
+
+
+
     #endregion
 
     // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
@@ -338,33 +151,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     public override void Initialize() { }
 
     // ----- [[ PRIVATE METHODS ]] ------------------------------------>
-    /// <summary>
-    /// Creates a new GameObject with a UXML_RenderTextureObject component.
-    /// This allows for the rendering of a UXML Element to a In-World RenderTexture.
-    /// </summary>
-    /// <param name="preset">
-    ///     The UXML_UIDocumentPreset to use for the RenderTextureObject.
-    /// </param>
-    /// <returns></returns>
-    ///
-    UXML_RenderTextureObject CreateUXMLRenderTextureObject(UXML_UIDocumentPreset preset)
-    {
-        string name = $"UXMLRenderTexture : unknown";
-        if (preset != null)
-            name = $"UXMLRenderTexture : {preset.name}";
-        GameObject go = new GameObject(name);
 
-        //go.hideFlags = HideFlags.NotEditable;
-        UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
-        renderTextureObject.Initialize(
-            preset,
-            null,
-            UXML_RenderTextureMaterial,
-            UXML_RenderTexture
-        );
-        renderTextureObject.TextureUpdate();
-        return renderTextureObject;
-    }
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(MTR_UIManager))]
@@ -393,11 +180,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             _screenAspectRatioProperty.floatValue = ScreenInfoUtility.GetScreenAspectRatio();
 
             base.OnInspectorGUI();
-
-            if (GUILayout.Button("Create New Speech Bubble"))
-            {
-                _script.CreateNewSpeechBubble("Hello World!");
-            }
 
             _serializedObject.ApplyModifiedProperties();
         }

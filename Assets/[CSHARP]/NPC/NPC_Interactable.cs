@@ -18,41 +18,27 @@ public class NPC_Interactable : Interactable, IInteract
     // ======== [[ FIELDS ]] ================================== >>>>
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
 
-    [SerializeField] Grid2D_OverlapWeightSpawner _dialogueGridSpawner;
+    [SerializeField] DialogueBubbleSpawner _dialogueHandler;
 
-    [Dropdown("_speakerOptions")] public string speakerTag;
 
-    // ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions
-    {
-        // This is just a getter a list of all the speakers in the story
-        get
-        {
-            List<string> speakers = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                speakers = InkyStoryManager.SpeakerList;
-            }
-            return speakers;
-        }
-    }
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
-    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueGridSpawner;
+    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueHandler;
+    public string speakerTag => _dialogueHandler.speakerTag;
 
 
     // ======== [[ METHODS ]] ================================== >>>>
     public override void Awake()
     {
         base.Awake();
-        if (_dialogueGridSpawner == null)
+        if (_dialogueHandler == null)
         {
-            _dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
-            if (_dialogueGridSpawner == null)
+            _dialogueHandler = GetComponent<DialogueBubbleSpawner>();
+            if (_dialogueHandler == null)
             {
 
-                _dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueBubbleSpawner>
                     (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
-                _dialogueGridSpawner.transform.localPosition = Vector3.zero;
+                _dialogueHandler.transform.localPosition = Vector3.zero;
             }
         }
     }

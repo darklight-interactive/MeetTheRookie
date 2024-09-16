@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [SerializeField] Grid2D_OverlapWeightSpawner _dialogueGridSpawner;
+    [SerializeField] DialogueBubbleSpawner _dialogueHandler;
 
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
@@ -25,19 +25,19 @@ public class PlayerInteractor : MonoBehaviour
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueGridSpawner;
+    public DialogueBubbleSpawner DialogueGridSpawner => _dialogueHandler;
 
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
     {
-        if (_dialogueGridSpawner == null)
+        if (_dialogueHandler == null)
         {
-            _dialogueGridSpawner = GetComponent<Grid2D_OverlapWeightSpawner>();
-            if (_dialogueGridSpawner == null)
+            _dialogueHandler = GetComponentInChildren<DialogueBubbleSpawner>();
+            if (_dialogueHandler == null)
             {
-                _dialogueGridSpawner = ObjectUtility.InstantiatePrefabWithComponent<Grid2D_OverlapWeightSpawner>
+                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueBubbleSpawner>
                     (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
-                _dialogueGridSpawner.transform.localPosition = Vector3.zero;
+                _dialogueHandler.transform.localPosition = Vector3.zero;
             }
         }
     }
@@ -127,7 +127,6 @@ public class PlayerInteractor : MonoBehaviour
             // Set the active interactable
             activeInteractable = targetInteractable;
 
-            // Subscribe to the OnComplete event
             activeInteractable.OnCompleted += ExitInteraction;
 
             StartCoroutine(MoveToPosition());
@@ -250,7 +249,7 @@ public class PlayerInteractor : MonoBehaviour
         Debug.Log("Player Interactor :: Exit Interaction");
 
         // Clean up
-        MTR_UIManager.Instance.DestroySpeechBubble();
+        //MTR_UIManager.Instance.DestroySpeechBubble();
         PlayerController.ExitInteraction();
 
         // Force set the speaker to Lupe

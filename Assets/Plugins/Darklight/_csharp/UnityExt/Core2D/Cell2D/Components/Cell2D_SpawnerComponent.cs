@@ -81,8 +81,10 @@ namespace Darklight.UnityExt.Core2D
 
             public void AssignGameObjectToCell(GameObject gameObject, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
+                if (_spawnedObject) return;
+
                 Transform transform = gameObject.transform;
-                Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
+                //Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
 
                 // << GET BASE ELL VALUES >>
                 BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);

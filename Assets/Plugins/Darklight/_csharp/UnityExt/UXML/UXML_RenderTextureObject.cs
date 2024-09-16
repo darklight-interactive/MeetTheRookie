@@ -91,5 +91,38 @@ namespace Darklight.UnityExt.UXML
         {
             CustomGizmos.DrawWireRect(this.transform.position, this.transform.localScale, Vector3.forward, Color.white);
         }
+
+#if UNITY_EDITOR
+        [CustomEditor(typeof(UXML_RenderTextureObject))]
+        public class UXML_RenderTextureObjectCustomEditor : UnityEditor.Editor
+        {
+            SerializedObject _serializedObject;
+            UXML_RenderTextureObject _script;
+            private void OnEnable()
+            {
+                _serializedObject = new SerializedObject(target);
+                _script = (UXML_RenderTextureObject)target;
+            }
+
+            public override void OnInspectorGUI()
+            {
+                _serializedObject.Update();
+
+                EditorGUI.BeginChangeCheck();
+
+                base.OnInspectorGUI();
+
+                if (GUILayout.Button("Update Texture"))
+                {
+                    _script.TextureUpdate();
+                }
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _serializedObject.ApplyModifiedProperties();
+                }
+            }
+        }
+#endif
     }
 }
