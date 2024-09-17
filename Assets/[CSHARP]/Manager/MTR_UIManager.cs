@@ -13,6 +13,8 @@ using NaughtyAttributes;
 
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Game.Grid2D;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -91,11 +93,12 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     [SerializeField] CharacterColors characterColors;
 
+    [SerializeField, Range(1, 2)] float _speechBubbleScaleModifier = 1.5f;
+
     // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
 
-    // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     private GameUIController _gameUI;
     [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
     public GameUIController gameUIController
@@ -170,23 +173,118 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
         // Create a new Bubble
         speechBubbleObject = CreateUXMLRenderTextureObject(_speechBubblePreset);
+        SpeechBubble speechBubble = CreateSpeechBubbleAtCurrentSpeaker();
+        speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+            float fullTextHeight = evt.newRect.height;
+            float fullTextWidth = evt.newRect.width;
 
-        // TODO: omg this line HAS to be done better lmao
-        (Vector3, Vector2Int, Color) bubbleData = GetSpeakerSpeechBubblePositionAndDirectionAndColor();
-        speechBubbleObject.transform.position = bubbleData.Item1;
-        Vector2Int bubbleDirection = bubbleData.Item2;
+            speechBubble.style.height = fullTextHeight;
+            speechBubble.style.width = fullTextWidth;
+
+            speechBubble.SetFullText(text);
+            StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+        });
+        speechBubble.SetFullText(text);
+        speechBubble.InstantCompleteText(); // Temporarily display full text
+
+    }
+    SpeechBubble CreateSpeechBubbleAtCurrentSpeaker()
+    {
+        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
+        OverlapGrid2D_Data gridData;
+
+        Vector3 bubblePosition = Vector3.zero;
+        Vector3 bubbleScale = Vector3.one;
+        Vector2Int bubbleDirection = Vector2Int.zero;
+        Color bubbleColor = characterColors[currentSpeaker];
+
+        // Set the Camera Target to the Player
+        if (currentSpeaker.Contains("Lupe"))
+        {
+            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            if (playerInteractor == null)
+            {
+                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
+            }
+
+            gridData = playerInteractor.GetBestOverlapGridData();
+
+            // Set the Bubble Position
+            bubblePosition = gridData.worldPosition;
+            Debug.Log($"{Prefix} :: Created Speech Bubble At Player|| position {bubblePosition}");
+
+            // Set the Bubble Direction
+            if (bubblePosition.x <= playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.left;
+            }
+            else if (bubblePosition.x > playerInteractor.transform.position.x)
+            {
+                bubbleDirection = Vector2Int.right;
+            }
+
+            // Set the Bubble Scale
+            bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+        }
+        else
+        {
+            // Set the Camera Target to a NPC
+            NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.InstanceID);
+            foreach (NPC_Interactable interactable in interactables)
+            {
+                if (interactable.speakerTag.Contains(currentSpeaker))
+                {
+                    gridData = interactable.GetBestOverlapGridData();
+
+                    // Set the Bubble Position and Direction
+                    bubblePosition = gridData.worldPosition;
+                    bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
+                    if (bubblePosition.x <= interactable.transform.position.x)
+                    {
+                        bubbleDirection = Vector2Int.left;
+                    }
+                    else if (bubblePosition.x > interactable.transform.position.x)
+                    {
+                        bubbleDirection = Vector2Int.right;
+                    }
+
+                    // Set the Bubble Scale
+                    bubbleScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+                }
+            }
+        }
+
+
+
+        speechBubbleObject.transform.position = bubblePosition;
+
+        bubbleScale *= _speechBubbleScaleModifier;
+        speechBubbleObject.transform.localScale = bubbleScale;
+
         Sprite bubbleSprite = bubbleDirection == Vector2Int.left ? RTick_SpeechBubble : LTick_SpeechBubble;
         //Debug.Log($"{Prefix} :: Created Speech Bubble || direction {bubbleDirection}");
 
+        // Update the UI Elements
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.SetFontSizeRange(speechBubbleFontSizeRange);
         speechBubble.UpdateFontSizeToMatchScreen();
-        speechBubble.style.color = bubbleData.Item3;
+        speechBubble.style.color = bubbleColor;
         speechBubble.SetBackgroundSprite(bubbleSprite);
         speechBubble.style.width = speechBubbleWidth;
 
-        StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
+        return speechBubble;
     }
+
+    public void AssignTransformToGridData(OverlapGrid2D_Data gridData)
+    {
+        if (speechBubbleObject == null)
+            return;
+
+        speechBubbleObject.transform.position = gridData.worldPosition;
+        speechBubbleObject.transform.localScale = new Vector3(gridData.cellSize, gridData.cellSize, 1);
+    }
+
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
         SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
@@ -213,60 +311,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
         speechBubbleObject = null;
     }
-    (Vector3, Vector2Int, Color) GetSpeakerSpeechBubblePositionAndDirectionAndColor()
-    {
-        string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-        Vector3 bubblePosition = Vector3.zero;
-        Vector2Int bubbleDirection = Vector2Int.zero;
-        Color bubbleColor = characterColors[currentSpeaker];
 
-        // Set the Camera Target to the Player
-        if (currentSpeaker.Contains("Lupe"))
-        {
-            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            if (playerInteractor == null)
-            {
-                Debug.LogError($"{Prefix} Could not find PlayerInteractor");
-                return (bubblePosition, bubbleDirection, bubbleColor);
-            }
 
-            bubblePosition = playerInteractor.GetBestOverlapGridData().worldPosition;
-            if (bubblePosition.x <= playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.left;
-            }
-            else if (bubblePosition.x > playerInteractor.transform.position.x)
-            {
-                bubbleDirection = Vector2Int.right;
-            }
-            return (bubblePosition, bubbleDirection, bubbleColor);
-        }
 
-        // Set the Camera Target to a NPC
-        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(
-            FindObjectsSortMode.None
-        );
-        foreach (NPC_Interactable interactable in interactables)
-        {
-            if (interactable.speakerTag.Contains(currentSpeaker))
-            {
-                bubblePosition = interactable.GetBestOverlapGridData().worldPosition;
-                bubblePosition.z = interactable.transform.position.z; // Set the Z position to the NPC's Z position
-                if (bubblePosition.x <= interactable.transform.position.x)
-                {
-                    bubbleDirection = Vector2Int.left;
-                }
-                else if (bubblePosition.x > interactable.transform.position.x)
-                {
-                    bubbleDirection = Vector2Int.right;
-                }
-                return (bubblePosition, bubbleDirection, bubbleColor);
-            }
-        }
-
-        Debug.LogError($"{Prefix} Could not find Speaker: {currentSpeaker}");
-        return (bubblePosition, bubbleDirection, bubbleColor);
-    }
     #endregion
 
     #region ------ [[ INTERACT ICON ]] ------------------------

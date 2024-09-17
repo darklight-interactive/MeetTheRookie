@@ -132,7 +132,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     void PopulateChoices()
     {
         Story currentStory = storyObject.StoryValue;
-        choiceParent.style.display = DisplayStyle.Flex;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
         foreach (Choice choice in currentStory.currentChoices)
@@ -190,7 +189,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             StopAllCoroutines();
             //MTR_AudioManager.Instance.StopRepeatingEvent();
             dialogueText.InstantCompleteText();
+            if(choicesActive){
+                choiceParent.style.display = DisplayStyle.Flex;
+            }
             isRolling = false;
+            continueTriangle.visible = true;
         }
         else if (choicesActive)
         {
@@ -285,6 +288,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     IEnumerator RollingTextRoutine(string fullText, float interval, string speakerName)
     {
         isRolling = true;
+        continueTriangle.visible = false;
         dialogueText.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
@@ -302,7 +306,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
         //if (isRolling) { MTR_AudioManager.Instance.StopRepeatingEvent(); }
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
+        if(choicesActive){
+            choiceParent.style.display = DisplayStyle.Flex;
+        }
         isRolling = false;
+        continueTriangle.visible = true;
     }
 
     /// <summary>

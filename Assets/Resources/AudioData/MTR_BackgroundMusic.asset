@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bb7fc674046cb841bdceeed47b368c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 13e83a50b74a26d4fa46194ebdedbca2, type: 3}
   m_Name: MTR_BackgroundMusic
   m_EditorClassIdentifier: 
   backgroundMusicEvents:
   - scene:
-      m_SceneName: MAIN_MENU
+      m_SceneName: SCENE_1_0 - Intro
     eventReference:
       Guid:
         Data1: -676630717
@@ -22,3 +22,57 @@ MonoBehaviour:
         Data3: -783550817
         Data4: 2002162249
       Path: event:/Music/townEmpty
+  - scene:
+      m_SceneName: SCENE_1_1 - The Gas Station Ext
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - scene:
+      m_SceneName: SCENE_1_2 - The Gas Station Int
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - scene:
+      m_SceneName: SCENE_1_3 - The Gas Station Int Bathroom
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - scene:
+      m_SceneName: SCENE_1_4 - The Gas Station Ext.
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+  - scene:
+      m_SceneName: SCENE_2_0 - The Precinct - Dating Sim
+    eventReference:
+      Guid:
+        Data1: 1214400848
+        Data2: 1121225987
+        Data3: -1898062926
+        Data4: 1934244084
+      Path: event:/Music/datingGeneric
+  - scene:
+      m_SceneName: SCENE_3_1 - The Winery Ext.
+    eventReference:
+      Guid:
+        Data1: 1009970235
+        Data2: 1170209264
+        Data3: -62989660
+        Data4: -619185197
+      Path: event:/Music/investigateSoft

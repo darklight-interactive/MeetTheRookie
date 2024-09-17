@@ -1,6 +1,5 @@
 === scene4_4 ===
 // FUNC SCENE CHANGE
-TODO SFX DOOR CLOSE
 
 # Location: The Rockin Kettle, Bar 
 # Only accessible after Gen Store and Arcade have been visited
@@ -12,6 +11,7 @@ TODO SFX DOOR CLOSE
 + [bleach_bottle] -> DONE
 
 = intro
+    ~ closeDoor()
     -> Irene_Dialogue.irene_intro_cutscene
 = irene_text
     -> Irene_Dialogue

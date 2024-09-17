@@ -497,18 +497,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1624106581333338020, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: attenuationObject
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2895742502396242152, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
       propertyPath: m_Name
       value: '[EXTERIOR CAM CONTROLLER]'
       objectReference: {fileID: 0}
-    - target: {fileID: 5939015022877323775, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: attenuationObject
-      value: 
-      objectReference: {fileID: 1498399906}
     - target: {fileID: 7167559734855225826, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
       propertyPath: _focusTarget
       value: 
@@ -1837,16 +1829,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1103200859854054853, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
-      propertyPath: player
+      propertyPath: fmodProjectFolder
       value: 
-      objectReference: {fileID: 1498399906}
+      objectReference: {fileID: 102900000, guid: b0c125b7fa6f15d4fbd18f5e0a1e87cf, type: 3}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.x
-      value: 974.80005
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.y
-      value: 426
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: speechBubbleWidth
@@ -1854,7 +1846,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenAspectRatio
-      value: 2.288263
+      value: 1.7777778
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _speechBubbleScaleModifier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: speechBubbleFontSizeRange.x
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: speechBubbleFontSizeRange.y
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 5054830795790530424, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3409,12 +3413,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3278491017653917099, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: currentFrame
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -5622,11 +5626,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1498399906 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-  m_PrefabInstance: {fileID: 833330028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1503134804
 Mesh:
   m_ObjectHideFlags: 0
@@ -5917,6 +5916,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 197613928859329457, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 202055536052928161, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -5977,10 +5980,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 896532672}
-    - target: {fileID: 2096089371704848911, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 30.7
-      objectReference: {fileID: 0}
     - target: {fileID: 2187762135769028868, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6157,10 +6156,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 137938925}
-    - target: {fileID: 5701292795787293735, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.25
-      objectReference: {fileID: 0}
     - target: {fileID: 5776155728641906314, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6338,8 +6333,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1056522415}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 7560276519219371486, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8236e67d0fa7e2f459a5de48f2efe7e0, type: 3}

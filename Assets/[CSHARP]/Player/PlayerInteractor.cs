@@ -4,6 +4,7 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Game.Grid2D;
 using Darklight.UnityExt.Inky;
+using NaughtyAttributes;
 
 public class PlayerInteractor : OverlapGrid2D
 {
@@ -15,6 +16,9 @@ public class PlayerInteractor : OverlapGrid2D
 
     [ShowOnly, Tooltip("The Interactable that the player is currently interacting with. Can be null.")]
     public Interactable activeInteractable;
+    [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
+    public Interactable previousTargetInteractable;
+        
 
     #region -- [[ UPDATE THE INTERACTABLE RADAR ]] ------------------------------------- >> 
 
@@ -28,7 +32,7 @@ public class PlayerInteractor : OverlapGrid2D
     {
         if (_foundInteractables.Count == 0) return;
         if (playerController.currentState == PlayerState.INTERACTION) return;
-
+        /*
         // Temporary list to hold items to be removed
         List<Interactable> toRemove = new List<Interactable>();
 
@@ -49,18 +53,20 @@ public class PlayerInteractor : OverlapGrid2D
         {
             _foundInteractables.Remove(completedInteraction);
         }
-
+        */
         // Update the target interactable
         targetInteractable = GetClosestInteractable();
-
         // Only set the target if the interactable is not the active target
-        if (targetInteractable != activeInteractable)
+        if (targetInteractable != activeInteractable && !targetInteractable.isComplete)
         {
-            targetInteractable.TargetSet();
+            if(previousTargetInteractable == null || targetInteractable != previousTargetInteractable){
+                targetInteractable.TargetSet();
+                previousTargetInteractable = targetInteractable;
+            }
         }
-        else if (targetInteractable != null)
-        {
+        else if (targetInteractable != null){
             targetInteractable.TargetClear();
+            previousTargetInteractable = null;
         }
     }
 
@@ -92,7 +98,7 @@ public class PlayerInteractor : OverlapGrid2D
         if (targetInteractable.isComplete) return false;
 
         targetInteractable.TargetClear();
-
+        previousTargetInteractable = null;
         // If first interaction
         if (activeInteractable != targetInteractable)
         {
@@ -111,7 +117,6 @@ public class PlayerInteractor : OverlapGrid2D
         }
 
         activeInteractable.Interact(); // << MAIN INTERACTION
-
         return true;
     }
 
@@ -178,6 +183,8 @@ public class PlayerInteractor : OverlapGrid2D
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable == null) return;
         _foundInteractables.Remove(interactable);
-        interactable.TargetClear();
+        if(targetInteractable == interactable)
+            interactable.TargetClear();
+            previousTargetInteractable = null;
     }
 }

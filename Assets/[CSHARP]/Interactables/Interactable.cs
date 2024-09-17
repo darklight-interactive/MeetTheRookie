@@ -122,6 +122,8 @@ public class Interactable : OverlapGrid2D, IInteract
 
         if (MTR_UIManager.Instance != null)
             MTR_UIManager.Instance.ShowInteractIcon(transform.position, targetData.cellSize);
+
+        StartCoroutine(FlashRoutine(Color.gray, 0.15f));
     }
 
     public virtual void TargetClear()
@@ -189,7 +191,6 @@ public class Interactable : OverlapGrid2D, IInteract
         else
         {
             OnInteraction?.Invoke(StoryIterator.CurrentText);
-
             Debug.Log($"INTERACTABLE :: {name} >> Continue Interaction");
         }
     }
@@ -205,7 +206,7 @@ public class Interactable : OverlapGrid2D, IInteract
         isComplete = true;
 
         // Reset the interactable after 1 second
-        Invoke(nameof(Reset), 1.0f);
+        Invoke(nameof(Reset), 0.7f);
     }
 
     /// <summary>
@@ -235,6 +236,15 @@ public class Interactable : OverlapGrid2D, IInteract
 
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
+    }
+
+    private IEnumerator FlashRoutine(Color newColor, float duration)
+    {
+        if (_spriteRenderer == null) yield break;
+        _spriteRenderer.color = newColor;
+
+        yield return new WaitForSeconds(duration);
+        _spriteRenderer.color = _defaultTint;
     }
 
     private void EnableOutline(bool enable)

@@ -30,6 +30,6 @@ public class MTR_SceneData : BuildSceneData
         base.InitializeData(path);
 
         _savedKnotData = knot;
-        Debug.Log("InitializeData: " + _savedKnotData);
+        //Debug.Log("InitializeData: " + _savedKnotData);
     }
 }

@@ -8,8 +8,17 @@ using UnityEngine;
 public class FMODExt_MusicObject : ScriptableObject
 {
 
+    List<string> _sceneNames = new List<string>();
+    public void LoadNames(List<string> sceneNames)
+    {
+        _sceneNames = sceneNames;
+    }
+
+
+    #region ================== BACKGROUND MUSIC ==================
+
     /// <summary>
-    /// A generic class to store a scene and an event reference for background music.
+    /// A generic, serialized class to store a scene and an event reference for background music.
     /// </summary>
     [System.Serializable]
     public class BackgroundMusicEvent
@@ -34,4 +43,6 @@ public class FMODExt_MusicObject : ScriptableObject
         }
         return backgroundMusicEvent.eventReference;
     }
+    #endregion
+
 }

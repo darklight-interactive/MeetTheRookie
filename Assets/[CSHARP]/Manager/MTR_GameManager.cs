@@ -1,7 +1,6 @@
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.Behaviour;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,6 +29,10 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         {
             PlaySpecialAnimation(speaker);
         });
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySFX", (string sfx) =>
+        {
+            PlayInkySFX(sfx);
+        });
     }
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
@@ -53,6 +56,12 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
                 interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
             }
         }
+    }
+
+    public void PlayInkySFX(string eventName)
+    {
+        string eventPath = "event:/SFX/" + eventName;
+        FMODUnity.RuntimeManager.PlayOneShot(eventPath);
     }
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
