@@ -54,7 +54,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
             Lupe = tempLupe.gameObject;
         }
 
-        var tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
+        MTR_Misra_Controller tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
         if (tempMisra != null)
         {
             Misra = tempMisra.gameObject;
@@ -64,7 +64,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
         {
             if (sceneInfo.spawnPoints.Count == 0)
             {
-                Debug.LogError("Cannot spawn Lupe. No Spawn Points");
+                Debug.LogError("Cannot spawn Lupe. No Spawn Points", this);
                 return;
             }
             Lupe.transform.position = new Vector3(sceneInfo.spawnPoints[0], Lupe.transform.position.y, Lupe.transform.position.z);

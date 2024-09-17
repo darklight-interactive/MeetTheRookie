@@ -109,7 +109,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         {
             d.DestroySpeechBubble();
 
-            if (d.speakerTag.Contains(speaker))
+            // Sometimes the speaker tag is formatted as "Speaker.{speakerName}"
+            if (d.SpeakerTag.Contains(speaker))
             {
                 dialogueHandler = d;
             }

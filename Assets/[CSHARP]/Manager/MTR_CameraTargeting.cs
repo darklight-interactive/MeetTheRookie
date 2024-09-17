@@ -43,7 +43,7 @@ public class MTR_CameraTargeting : MonoBehaviour
         NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
         foreach (NPC_Interactable interactable in interactables)
         {
-            if (interactable.speakerTag.Contains(_currentSpeaker))
+            if (interactable.SpeakerTag.Contains(_currentSpeaker))
             {
                 _cameraController.SetFocusTarget(interactable.transform);
             }

@@ -11,7 +11,7 @@ namespace Darklight.UnityExt.ObjectLibrary
     public class ObjectLibrary<TObject> : ScriptableObject, IObjectLibrary<TObject>
         where TObject : Object
     {
-        [SerializeField] protected TObject _defaultObject;
+        protected TObject _defaultObject;
         [SerializeField] protected List<TObject> _objects;
 
         public List<TObject> Objects => _objects;
@@ -50,6 +50,11 @@ namespace Darklight.UnityExt.ObjectLibrary
 
         public void RebuildDictionary()
         {
+            if (_objects == null)
+                _objects = new List<TObject>();
+            if (_keys == null)
+                _keys = new List<TKey>();
+
             _dictionary.Clear();
             for (int i = 0; i < _keys.Count; i++)
             {

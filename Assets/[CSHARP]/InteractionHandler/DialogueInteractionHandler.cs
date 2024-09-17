@@ -7,6 +7,8 @@ using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,27 +16,13 @@ using UnityEditor;
 
 public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 {
-    UXML_RenderTextureObject speechBubbleObject;
+    UXML_RenderTextureObject _speechBubbleObject;
+    [SerializeField, ShowOnly] string _speakerTag = "";
     [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
+    [SerializeField] DialogueBubbleLibrary _dialogueBubbleLibrary;
 
-    [SerializeField, Expandable] DialogueBubbleLibrary _dialogueBubbleLibrary;
+    public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
 
-    [Dropdown("_speakerOptions")] public string speakerTag;
-
-    // ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions
-    {
-        // This is just a getter a list of all the speakers in the story
-        get
-        {
-            List<string> speakers = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                speakers = InkyStoryManager.SpeakerList;
-            }
-            return speakers;
-        }
-    }
 
     public override void OnInitialize(Grid2D grid)
     {
@@ -43,6 +31,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
             _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<DialogueBubbleLibrary>();
         }
 
+        // Register all the anchor points in the library
         List<Cell2D> cells = BaseGrid.GetCells();
         foreach (Cell2D cell in cells)
         {
@@ -57,22 +46,20 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     {
         base.OnUpdate();
         UpdateSpeechBubble();
-
-
     }
 
     public void CreateNewSpeechBubble(string text)
     {
-        if (speechBubbleObject != null)
+        if (_speechBubbleObject != null)
         {
             DestroySpeechBubble();
         }
 
         // Create a new Bubble
-        speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
-        speechBubbleObject.transform.SetParent(transform);
+        _speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
+        _speechBubbleObject.transform.SetParent(transform);
 
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float fullTextHeight = evt.newRect.height;
@@ -94,7 +81,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     // Helper method to update the UI of the speech bubble
     SpeechBubble UpdateSpeechBubble()
     {
-        if (speechBubbleObject == null)
+        if (_speechBubbleObject == null)
         {
             return null;
         }
@@ -102,7 +89,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         Cell2D bestCell = this.GetBestCell();
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        SpawnerComponent.AssignGameObjectToCell(speechBubbleObject.transform, bestCell);
+        SpawnerComponent.AssignGameObjectToCell(_speechBubbleObject.transform, bestCell);
 
         // Determine which bubble sprite to use based on direction
         Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(bestCell);
@@ -111,7 +98,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         // Get the bubble sprite from the library
         Sprite bubbleSprite = _dialogueBubbleLibrary.GetObject(anchor);
 
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.UpdateFontSizeToMatchScreen();
         //speechBubble.style.color = color;
         speechBubble.SetBackgroundSprite(bubbleSprite);
@@ -124,7 +111,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
-        SpeechBubble speechBubble = speechBubbleObject.ElementQuery<SpeechBubble>();
+        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.SetFullText(fullText);
 
         while (true)
@@ -139,18 +126,15 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     }
     public void DestroySpeechBubble()
     {
-        if (speechBubbleObject != null)
+        if (_speechBubbleObject != null)
         {
             if (Application.isPlaying)
-                Destroy(speechBubbleObject.gameObject);
+                Destroy(_speechBubbleObject.gameObject);
             else
-                DestroyImmediate(speechBubbleObject.gameObject);
+                DestroyImmediate(_speechBubbleObject.gameObject);
         }
-        speechBubbleObject = null;
+        _speechBubbleObject = null;
     }
-
-    [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
-    public class DialogueBubbleLibrary : ObjectLibrary<Spatial2D.AnchorPoint, Sprite> { }
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(DialogueInteractionHandler))]
@@ -173,11 +157,11 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
             base.OnInspectorGUI();
 
-            if (_script.speechBubbleObject == null && GUILayout.Button("Create New Speech Bubble"))
+            if (_script._speechBubbleObject == null && GUILayout.Button("Create New Speech Bubble"))
             {
                 _script.CreateNewSpeechBubble("Hello World");
             }
-            else if (_script.speechBubbleObject != null && GUILayout.Button("Destroy Speech Bubble"))
+            else if (_script._speechBubbleObject != null && GUILayout.Button("Destroy Speech Bubble"))
             {
                 _script.DestroySpeechBubble();
             }

@@ -32,6 +32,8 @@ namespace Darklight.UnityExt.Inky
         string _currentSpeaker;
 
         // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
+
+
         public static InkyStoryIterator Iterator { get; private set; }
 
         public static InkyStoryObject GlobalStoryObject

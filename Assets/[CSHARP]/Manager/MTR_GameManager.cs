@@ -51,7 +51,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
         foreach (NPC_Interactable interactable in interactables)
         {
-            if (interactable.speakerTag.Contains(speakerName))
+            if (interactable.SpeakerTag.Contains(speakerName))
             {
                 interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
             }

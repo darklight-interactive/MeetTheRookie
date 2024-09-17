@@ -5,6 +5,8 @@ using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Inky;
 using System.Collections;
 using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,7 +14,20 @@ using UnityEditor;
 public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] DialogueInteractionHandler _dialogueHandler;
-
+    List<string> _speakerOptions
+    {
+        // This is just a getter a list of all the speakers in the story
+        get
+        {
+            List<string> speakers = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                speakers = InkyStoryManager.SpeakerList;
+            }
+            return speakers;
+        }
+    }
+    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
     [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
     [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
@@ -25,7 +40,8 @@ public class PlayerInteractor : MonoBehaviour
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public DialogueInteractionHandler DialogueInteractionHandler => _dialogueHandler;
+    public DialogueInteractionHandler DialogueHandler => _dialogueHandler;
+    public string SpeakerTag => _speakerTag;
 
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
@@ -40,6 +56,7 @@ public class PlayerInteractor : MonoBehaviour
                 _dialogueHandler.transform.localPosition = Vector3.zero;
             }
         }
+        _dialogueHandler.SpeakerTag = _speakerTag;
     }
 
 

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2960267563953444121}
   - component: {fileID: 6179963154844760035}
   m_Layer: 0
-  m_Name: '[GRID2D] Dialogue Bubble Spawner'
+  m_Name: '[GRID2D] Dialogue Interaction Handler'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,11 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b427fd34310ed246a648c6d1a27750d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1066436989
+  _guid: -1473605603
   _typeKey: 0
   _speechBubblePreset: {fileID: 11400000, guid: 9c492d3781fcb6f48b1e59445437799b, type: 2}
-  _dialogueBubbleLibrary: {fileID: 0}
-  speakerTag: Speaker.Unknown
+  _dialogueBubbleLibrary: {fileID: 11400000, guid: 00ce11dd03a3ef44e8d75a075e4faac4, type: 2}
 --- !u!114 &4178348049751273322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,10 +85,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1226206337
+      _guid: -389340781
       _key: {x: 0, y: 0}
       _coordinate: {x: 0, y: 0}
-      _position: {x: -4.2, y: 0.41242415, z: 3.2632961}
+      _position: {x: -3.506908, y: 0.375, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -100,10 +99,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1285243315
+      _guid: -815100256
       _key: {x: 0, y: 1}
       _coordinate: {x: 0, y: 1}
-      _position: {x: -4.2, y: 0.66242415, z: 3.2632961}
+      _position: {x: -3.506908, y: 0.625, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -114,10 +113,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1596387535
+      _guid: 2083400876
       _key: {x: 0, y: 2}
       _coordinate: {x: 0, y: 2}
-      _position: {x: -4.2, y: 0.91242415, z: 3.2632961}
+      _position: {x: -3.506908, y: 0.875, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -128,10 +127,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1587492607
+      _guid: -1237403864
       _key: {x: 0, y: 3}
       _coordinate: {x: 0, y: 3}
-      _position: {x: -4.2, y: 1.1624241, z: 3.2632961}
+      _position: {x: -3.506908, y: 1.125, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -142,10 +141,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 799547807
+      _guid: 660405657
       _key: {x: 1, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: -2.7937498, y: 0.41242415, z: 3.2632961}
+      _position: {x: -2.100658, y: 0.375, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -156,10 +155,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 298549995
+      _guid: 1755764482
       _key: {x: 1, y: 1}
       _coordinate: {x: 1, y: 1}
-      _position: {x: -2.7937498, y: 0.66242415, z: 3.2632961}
+      _position: {x: -2.100658, y: 0.625, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -170,10 +169,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -852465937
+      _guid: 1046498038
       _key: {x: 1, y: 2}
       _coordinate: {x: 1, y: 2}
-      _position: {x: -2.7937498, y: 0.91242415, z: 3.2632961}
+      _position: {x: -2.100658, y: 0.875, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -184,10 +183,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1014966772
+      _guid: 463249518
       _key: {x: 1, y: 3}
       _coordinate: {x: 1, y: 3}
-      _position: {x: -2.7937498, y: 1.1624241, z: 3.2632961}
+      _position: {x: -2.100658, y: 1.125, z: 2.8038187}
       _normal: {x: 0, y: 0, z: 2}
       _dimensions: {x: 1.25, y: 0.2}
       _isDisabled: 0
@@ -204,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -44493256
+  _guid: -1077772017
   _typeKey: 2
   _showGizmos: 0
   _autoUpdate: 1
@@ -245,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -915829175
+  _guid: -939247181
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -263,8 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 423983304
+  _guid: -2113481805
   _typeKey: 3
   _showGizmos: 1
   _dataObject: {fileID: 11400000, guid: 7f488816f1a981546b35f6cfc7fb1be2, type: 2}
-  _objectLibrary: {fileID: 0}

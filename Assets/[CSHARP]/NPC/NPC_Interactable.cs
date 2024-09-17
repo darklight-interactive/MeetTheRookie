@@ -18,12 +18,29 @@ public class NPC_Interactable : Interactable, IInteract
     // ======== [[ FIELDS ]] ================================== >>>>
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
 
+    List<string> _speakerOptions
+    {
+        // This is just a getter a list of all the speakers in the story
+        get
+        {
+            List<string> speakers = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                speakers = InkyStoryManager.SpeakerList;
+            }
+            return speakers;
+        }
+    }
+    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
+
     [SerializeField] DialogueInteractionHandler _dialogueHandler;
+
+    // ======== [[ PROPERTIES ]] ================================== >>>>
 
 
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
     public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueHandler;
-    public string speakerTag => _dialogueHandler.speakerTag;
+    public string SpeakerTag => _speakerTag;
 
 
     // ======== [[ METHODS ]] ================================== >>>>
@@ -32,7 +49,7 @@ public class NPC_Interactable : Interactable, IInteract
         base.Awake();
         if (_dialogueHandler == null)
         {
-            _dialogueHandler = GetComponent<DialogueInteractionHandler>();
+            _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
             if (_dialogueHandler == null)
             {
 
@@ -41,6 +58,7 @@ public class NPC_Interactable : Interactable, IInteract
                 _dialogueHandler.transform.localPosition = Vector3.zero;
             }
         }
+        _dialogueHandler.SpeakerTag = _speakerTag;
     }
 
 
