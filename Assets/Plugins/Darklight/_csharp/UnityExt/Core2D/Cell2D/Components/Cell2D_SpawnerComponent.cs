@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Utility;
 using NaughtyAttributes;
@@ -11,7 +12,7 @@ namespace Darklight.UnityExt.Core2D
     {
         public class SpawnerComponent : BaseComponent, IUnityEditorListener
         {
-            GameObject _spawnedObject;
+            List<Transform> _attachedTransforms = new List<Transform>();
 
             // ======== [[ FIELDS ]] ================================== >>>>
             SpawnData _data;
@@ -73,7 +74,7 @@ namespace Darklight.UnityExt.Core2D
             // ---- (( INTERFACE )) ---- >>
             public void OnEditorReloaded()
             {
-                DestroySpawnedObject();
+                DestroyAllAttachedTransforms();
             }
 
             public override void OnInitialize(Cell2D cell)
@@ -85,6 +86,11 @@ namespace Darklight.UnityExt.Core2D
             public override void DrawGizmos()
             {
                 base.DrawGizmos();
+            }
+
+            public override void DrawSelectedGizmos()
+            {
+                base.DrawSelectedGizmos();
 
                 Gizmos.color = Color.grey;
                 Gizmos.DrawCube(OriginAnchorPosition, 0.025f * Vector3.one);
@@ -104,50 +110,58 @@ namespace Darklight.UnityExt.Core2D
                 TargetAnchorPoint = anchor;
             }
 
-            public void DestroySpawnedObject()
+            public void DestroyAllAttachedTransforms()
             {
-                if (_spawnedObject != null)
+                for (int i = 0; i < _attachedTransforms.Count; i++)
                 {
-                    ObjectUtility.DestroyAlways(_spawnedObject);
+                    ObjectUtility.DestroyAlways(_attachedTransforms[i].gameObject);
                 }
+                _attachedTransforms.Clear();
             }
 
-            public void AssignGameObjectToCell(GameObject gameObject, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            public void AttachTransformToCell(Transform transform, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
-                if (_spawnedObject) return;
-
-                Transform transform = gameObject.transform;
-                //Debug.Log($"Adjusting transform to cell values :: inheritWidth: {inheritWidth}, inheritHeight: {inheritHeight}, inheritNormal: {inheritNormal}", transform);
-
-                // << GET BASE ELL VALUES >>
-                BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
+                if (!_attachedTransforms.Contains(transform))
+                    _attachedTransforms.Add(transform);
+                // << GET DEFAULT VALUES >>
                 Vector3 newPosition = transform.position;
                 Vector2 newDimensions = transform.localScale;
                 Vector3 newNormal = transform.forward;
 
-                // << CALCULATE NEW DIMENSIONS >>
+                // << GET BASE CELL VALUES >>
+                BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
+
+                // << SET SCALE >>
+                SetTransformToCellDimensions(transform, inheritWidth, inheritHeight);
+
+                // << SET NORMAL >>
+                if (inheritNormal)
+                    Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
+
+                // << SET NEW POSITION >>
+                Spatial2D.SetTransformPos_ToAnchor(transform, OriginAnchorPosition, newDimensions, OriginAnchorPoint);
+            }
+
+            public void SetTransformToCellDimensions(Transform transform, bool inheritWidth = true, bool inheritHeight = true)
+            {
+                Vector2 cellDimensions = BaseCell.Data.Dimensions;
+
+                // << SET NEW DIMENSIONS >>
                 // If both are inherited, set the scale to the dimensions
                 if (inheritWidth && inheritHeight)
                 {
-                    newDimensions = cellDimensions;
+                    Spatial2D.SetTransformScale_ToDimensions(transform, cellDimensions);
                 }
                 // If just inherit width, set the scale to be a square with the width value
                 else if (inheritWidth)
                 {
-                    newDimensions = new Vector2(cellDimensions.x, cellDimensions.x);
+                    Spatial2D.SetTransformScale_ToSquareRatio(transform, cellDimensions.x);
                 }
                 // If just inherit height, set the scale to be a square with the height value
                 else if (inheritHeight)
                 {
-                    newDimensions = new Vector2(cellDimensions.y, cellDimensions.y);
+                    Spatial2D.SetTransformScale_ToSquareRatio(transform, cellDimensions.y);
                 }
-
-                // << GET NORMAL >>
-                if (inheritNormal)
-                    Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
-
-                // << CALCULATE NEW POSITION >>
-                Spatial2D.SetTransformValues_WithOffset(transform, OriginAnchorPosition, newDimensions, OriginAnchorPoint);
             }
 
             // ======== [[ CONSTRUCTORS ]] ================================== >>>>

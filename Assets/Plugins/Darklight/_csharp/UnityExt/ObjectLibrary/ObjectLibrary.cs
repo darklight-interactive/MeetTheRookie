@@ -7,46 +7,65 @@ using Darklight.UnityExt.Editor;
 
 namespace Darklight.UnityExt.ObjectLibrary
 {
-
-    public class ObjectLibrary<TObject> : ScriptableObject, IObjectLibrary<TObject>
-        where TObject : Object
+    public interface IObjectLibrary<TKey, TObject>
+        where TKey : notnull
+        where TObject : UnityEngine.Object
     {
-        protected TObject _defaultObject;
-        [SerializeField] protected List<TObject> _objects;
+        List<TKey> AllKeys { get; }
+        Type KeyType { get; }
+        List<TObject> AllObjects { get; }
+        Type ObjectType { get; }
 
-        public List<TObject> Objects => _objects;
-        public Type ObjectType => typeof(TObject);
-        public TObject DefaultObject => _objects.Count > 0 ? _objects[0] : null;
+        TKey CreateDefaultKey();
+        TObject CreateDefaultObject();
 
-        public void AddDefaultObject()
-        {
-            _objects.Add(DefaultObject);
-        }
-
-        public void Add(TObject value)
-        {
-            if (!_objects.Contains(value))
-                _objects.Add(value);
-        }
-
-        public bool Remove(TObject value)
-        {
-            return _objects.Remove(value);
-        }
-
-        public bool Contains(TObject value)
-        {
-            return _objects.Contains(value);
-        }
-
+        void RegisterKey(TKey key);
+        void RegisterObject(TKey key, TObject value);
+        bool RemoveObjectAt(TKey key);
+        TObject GetObject(TKey key);
     }
 
-    public class ObjectLibrary<TKey, TObject> : ObjectLibrary<TObject>, IObjectLibrary<TKey, TObject>
+    public abstract class ObjectLibrary<TKey, TObject> : ScriptableObject, IObjectLibrary<TKey, TObject>
         where TKey : notnull
         where TObject : Object
     {
         Dictionary<TKey, TObject> _dictionary = new Dictionary<TKey, TObject>();
+        [SerializeField] TObject _defaultObject;
+        [SerializeField] List<TObject> _objects;
         [SerializeField] List<TKey> _keys;
+
+        // ======== [[ PROPERTIES ]] ================================== >>>>
+        public TObject DefaultObject => _defaultObject;
+        public List<TKey> AllKeys
+        {
+            get
+            {
+                if (_keys == null)
+                    _keys = new List<TKey>();
+                return _keys;
+            }
+        }
+        public Type KeyType => typeof(TKey);
+        public List<TObject> AllObjects
+        {
+            get
+            {
+                if (_objects == null)
+                    _objects = new List<TObject>();
+                return _objects;
+            }
+        }
+        public Type ObjectType => typeof(TObject);
+
+        public virtual TKey CreateDefaultKey()
+        {
+            return default;
+        }
+
+        public virtual TObject CreateDefaultObject()
+        {
+            return _defaultObject;
+        }
 
         public void RebuildDictionary()
         {
@@ -58,8 +77,10 @@ namespace Darklight.UnityExt.ObjectLibrary
             _dictionary.Clear();
             for (int i = 0; i < _keys.Count; i++)
             {
+                if (_keys[i] == null)
+                    _keys[i] = CreateDefaultKey();
                 if (_objects[i] == null)
-                    _objects[i] = _defaultObject;
+                    _objects[i] = CreateDefaultObject();
                 _dictionary.Add(_keys[i], _objects[i]);
             }
         }
@@ -67,11 +88,12 @@ namespace Darklight.UnityExt.ObjectLibrary
         public void RegisterKey(TKey key)
         {
             RebuildDictionary();
-            if (_dictionary.ContainsKey(key))
-                return;
 
-            _dictionary.Add(key, null);
-            RefreshSerializedData();
+            if (!_dictionary.ContainsKey(key))
+            {
+                _dictionary.Add(key, CreateDefaultObject());
+                RefreshSerializedData();
+            }
         }
 
         public void RegisterObject(TKey key, TObject value)
@@ -102,6 +124,19 @@ namespace Darklight.UnityExt.ObjectLibrary
             _objects.Clear();
             _objects.AddRange(_dictionary.Values);
         }
+    }
 
+    public abstract class ObjectLibrary<TObject> : ObjectLibrary<int, TObject>
+        where TObject : Object
+    {
+        public override int CreateDefaultKey()
+        {
+            return 0;
+        }
+
+        public override TObject CreateDefaultObject()
+        {
+            return null;
+        }
     }
 }

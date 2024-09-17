@@ -61,6 +61,7 @@ namespace Darklight.UnityExt.Core2D
             public void Awake() => OnInitialize(BaseGrid);
             public void Update() => OnUpdate();
             public void OnDrawGizmos() => DrawGizmos();
+            public void OnDrawGizmosSelected() => DrawSelectedGizmos();
 
             // -- (( INTERFACE METHODS )) -------- ))
             public virtual void OnInitialize(Grid2D baseObj)

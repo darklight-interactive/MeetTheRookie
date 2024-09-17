@@ -91,24 +91,17 @@ namespace Darklight.UnityExt.Core2D
             transform.rotation = Quaternion.identity;
         }
 
-        public static void SetTransformValues(Transform transform, Vector3 position, Vector2 dimensions)
-        {
-            transform.position = position;
-            transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
-        }
-
         public static void SetTransformValues(Transform transform, Vector3 position, Vector2 dimensions, Vector3 normal)
         {
             transform.position = position;
-            transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
-            transform.localRotation = Quaternion.LookRotation(normal, Vector3.up);
+            SetTransformScale_ToDimensions(transform, dimensions);
+            SetTransformRotation_ToNormal(transform, normal);
         }
 
-        public static void SetTransformValues_WithOffset(Transform transform, Vector3 position, Vector2 dimensions, AnchorPoint anchorTag)
+        public static void SetTransformPos_ToAnchor(Transform transform, Vector3 position, Vector2 dimensions, AnchorPoint anchorTag)
         {
             Vector3 positionOffset = CalculateAnchorPointOffset(dimensions, anchorTag);
             transform.position = position - positionOffset;
-            transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
         }
 
         public static void SetTransformScale_ToDimensions(Transform transform, Vector2 dimensions)
@@ -116,7 +109,7 @@ namespace Darklight.UnityExt.Core2D
             transform.localScale = new Vector3(dimensions.x, dimensions.y, 1);
         }
 
-        public static void SetTransformScale_ToSquare(Transform transform, float size)
+        public static void SetTransformScale_ToSquareRatio(Transform transform, float size)
         {
             transform.localScale = new Vector3(size, size, 1);
         }

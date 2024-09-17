@@ -164,10 +164,10 @@ namespace Darklight.UnityExt.Core2D
             });
         }
 
-        public void AssignGameObjectToCell(Transform transform, Cell2D cell)
+        public void AssignTransformToCell(Transform transform, Cell2D cell)
         {
             Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
-            cellSpawner.AssignGameObjectToCell(transform.gameObject, _dataObject.InheritCellWidth, _dataObject.InheritCellHeight, _dataObject.InheritCellNormal);
+            cellSpawner.AttachTransformToCell(transform, _dataObject.InheritCellWidth, _dataObject.InheritCellHeight, _dataObject.InheritCellNormal);
         }
 
         public Spatial2D.AnchorPoint GetOriginAnchor(Cell2D cell)

@@ -22,8 +22,6 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     [SerializeField] DialogueBubbleLibrary _dialogueBubbleLibrary;
 
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
-
-
     public override void OnInitialize(Grid2D grid)
     {
         if (_dialogueBubbleLibrary == null)
@@ -89,7 +87,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         Cell2D bestCell = this.GetBestCell();
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        SpawnerComponent.AssignGameObjectToCell(_speechBubbleObject.transform, bestCell);
+        SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, bestCell);
 
         // Determine which bubble sprite to use based on direction
         Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(bestCell);

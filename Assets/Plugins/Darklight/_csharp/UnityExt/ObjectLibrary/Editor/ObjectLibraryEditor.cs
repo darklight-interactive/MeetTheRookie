@@ -1,10 +1,11 @@
+using Darklight.UnityExt.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
 namespace Darklight.UnityExt.ObjectLibrary.Editor
 {
-    [CustomEditor(typeof(ObjectLibrary<>), true)]
+    [CustomEditor(typeof(ObjectLibrary<,>), true)]
     public class ObjectLibraryEditorBase : UnityEditor.Editor
     {
         protected SerializedProperty keysProperty;
@@ -30,6 +31,10 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
 
             // Draw the ReorderableList
             reorderableList.DoLayoutList();
+
+            // Draw the rest of the inspector
+            CustomInspectorGUI.DrawHorizontalLine(Color.grey);
+            base.OnInspectorGUI();
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -72,7 +77,8 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
         protected virtual void OnAddCallback(ReorderableList list)
         {
             int index = list.count;
-            keysProperty.InsertArrayElementAtIndex(index);
+            if (keysProperty != null)
+                keysProperty.InsertArrayElementAtIndex(index);
             objectsProperty.InsertArrayElementAtIndex(index);
             serializedObject.ApplyModifiedProperties();
             //Debug.Log($"OnAddCallback: inserting at index {index}");
@@ -80,7 +86,8 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
 
         protected virtual void OnRemoveCallback(ReorderableList list)
         {
-            keysProperty.DeleteArrayElementAtIndex(list.index);
+            if (keysProperty != null)
+                keysProperty.DeleteArrayElementAtIndex(list.index);
             objectsProperty.DeleteArrayElementAtIndex(list.index);
             serializedObject.ApplyModifiedProperties();
             //Debug.Log($"OnRemoveCallback: removing at index {list.index}");
