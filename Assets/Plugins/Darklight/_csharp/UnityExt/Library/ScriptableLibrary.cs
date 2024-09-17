@@ -15,10 +15,10 @@ namespace Darklight.UnityExt.Library
         where TKey : notnull
         where TValue : notnull
     {
-        public Library<TKey, TValue> _library = new Library<TKey, TValue>();
+        [SerializeField] Library<TKey, TValue> _library = new Library<TKey, TValue>();
 
+        // ======== [[ PROPERTIES ]] ================================== >>>>
         public TValue this[TKey key] { get => _library[key]; set => _library[key] = value; }
-
         public ICollection<TKey> Keys => _library.Keys;
         public ICollection<TValue> Values => _library.Values;
 
@@ -30,7 +30,8 @@ namespace Darklight.UnityExt.Library
         public event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
 
         // ======== [[ METHODS ]] ===================================== >>>>
-        #region == (( Library<> Methods )) =====================================  ))
+
+        #region == (( Library<> Methods )) ========  ))
         public void Add(TKey key, TValue value) => _library.Add(key, value);
         public void Add(KeyValuePair<TKey, TValue> item) => _library.Add(item);
         public void Clear() => _library.Clear();
@@ -50,94 +51,4 @@ namespace Darklight.UnityExt.Library
     }
 
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(ScriptableLibrary<,>), true)]
-    public class ScriptableLibraryEditor : UnityEditor.Editor
-    {
-        protected SerializedProperty keysProperty;
-        protected SerializedProperty valuesProperty;
-        protected ReorderableList reorderableList;
-
-        protected virtual void OnEnable()
-        {
-            keysProperty = serializedObject.FindProperty("_keys");
-            valuesProperty = serializedObject.FindProperty("_values");
-
-            reorderableList = new ReorderableList(serializedObject, keysProperty, true, true, true, true);
-
-            reorderableList.drawElementCallback = DrawElementCallback;
-            reorderableList.drawHeaderCallback = DrawHeaderCallback;
-            reorderableList.onAddCallback = OnAddCallback;
-            reorderableList.onRemoveCallback = OnRemoveCallback;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            // Draw the ReorderableList
-            reorderableList.DoLayoutList();
-
-            // Draw the rest of the inspector
-            CustomInspectorGUI.DrawHorizontalLine(Color.grey);
-            base.OnInspectorGUI();
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        protected virtual void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            Rect keyRect = new Rect(rect.x, rect.y, rect.width / 2 - 5, EditorGUIUtility.singleLineHeight);
-            Rect valueRect = new Rect(rect.x + rect.width / 2 + 5, rect.y, rect.width / 2 - 5, EditorGUIUtility.singleLineHeight);
-
-            SerializedProperty keyProp = keysProperty.GetArrayElementAtIndex(index);
-            SerializedProperty objProp = valuesProperty.GetArrayElementAtIndex(index);
-
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
-            if (EditorGUI.EndChangeCheck())
-            {
-                // Check for duplicate keys
-                for (int i = 0; i < keysProperty.arraySize; i++)
-                {
-                    if (i != index && SerializedProperty.DataEquals(keyProp, keysProperty.GetArrayElementAtIndex(i)))
-                    {
-                        EditorUtility.DisplayDialog("Duplicate Key", "Keys must be unique.", "OK");
-                        break;
-                    }
-                }
-            }
-            EditorGUI.PropertyField(valueRect, objProp, GUIContent.none);
-        }
-
-        private void DrawHeaderCallback(Rect rect)
-        {
-            float halfWidth = rect.width / 2 - 5;
-            Rect keyHeaderRect = new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
-            Rect valueHeaderRect = new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
-
-            EditorGUI.LabelField(keyHeaderRect, "Key");
-            EditorGUI.LabelField(valueHeaderRect, "Object");
-        }
-
-        protected virtual void OnAddCallback(ReorderableList list)
-        {
-            int index = list.count;
-            if (keysProperty != null)
-                keysProperty.InsertArrayElementAtIndex(index);
-            valuesProperty.InsertArrayElementAtIndex(index);
-            serializedObject.ApplyModifiedProperties();
-            //Debug.Log($"OnAddCallback: inserting at index {index}");
-        }
-
-        protected virtual void OnRemoveCallback(ReorderableList list)
-        {
-            if (keysProperty != null)
-                keysProperty.DeleteArrayElementAtIndex(list.index);
-            valuesProperty.DeleteArrayElementAtIndex(list.index);
-            serializedObject.ApplyModifiedProperties();
-            //Debug.Log($"OnRemoveCallback: removing at index {list.index}");
-        }
-#endif
-    }
 }

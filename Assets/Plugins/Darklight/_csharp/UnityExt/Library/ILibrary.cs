@@ -1,10 +1,16 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Darklight.UnityExt.Library
 {
-    public interface ILibrary<TKey, TValue> : IDictionary<TKey, TValue>
+    public interface ILibrary
+    {
+        void AddDefaultItem();
+    }
+
+    public interface ILibrary<TKey, TValue> : IDictionary<TKey, TValue>, ILibrary
         where TKey : notnull
         where TValue : notnull
     {
@@ -12,7 +18,6 @@ namespace Darklight.UnityExt.Library
 
         TKey CreateDefaultKey();
         TValue CreateDefaultValue();
-        void AddDefaultItem();
 
         event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
         event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
