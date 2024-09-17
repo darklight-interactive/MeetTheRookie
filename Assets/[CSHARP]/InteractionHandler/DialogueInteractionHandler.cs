@@ -24,6 +24,8 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
     public override void OnInitialize(Grid2D grid)
     {
+        base.OnInitialize(grid);
+
         if (_dialogueBubbleLibrary == null)
         {
             _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<DialogueBubbleLibrary>();
@@ -31,13 +33,16 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
         // Register all the anchor points in the library
         List<Cell2D> cells = BaseGrid.GetCells();
+        List<Spatial2D.AnchorPoint> anchorPoints = new List<Spatial2D.AnchorPoint>();
         foreach (Cell2D cell in cells)
         {
-            Spatial2D.AnchorPoint anchor = GetAnchorPointFromCell(cell);
-            _dialogueBubbleLibrary.TryAdd(anchor, default);
+            Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(cell);
+            if (!anchorPoints.Contains(anchor))
+            {
+                anchorPoints.Add(anchor);
+            }
         }
-
-        base.OnInitialize(grid);
+        _dialogueBubbleLibrary.AddKeys(anchorPoints);
     }
 
     public override void OnUpdate()

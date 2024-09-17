@@ -25,7 +25,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
     {
         if (_choiceBubbleLibrary == null)
         {
-            //_choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
+            _choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
         }
     }
 
@@ -88,7 +88,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
 
             if (_script._attachedBubbles.Count == 0 && GUILayout.Button("Create Default Sprite At All"))
             {
-                _script.CreateBubbleAtAllCells(_script._choiceBubbleLibrary.DefaultValue);
+                //_script.CreateBubbleAtAllCells(_script._choiceBubbleLibrary.DefaultValue);
             }
             else if (_script._attachedBubbles.Count > 0 && GUILayout.Button("Destroy All Sprites"))
             {

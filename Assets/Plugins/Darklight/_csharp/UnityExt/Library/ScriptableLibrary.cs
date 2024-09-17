@@ -24,7 +24,6 @@ namespace Darklight.UnityExt.Library
 
         public int Count => _library.Count;
         public bool IsReadOnly => _library.IsReadOnly;
-        public TValue DefaultValue => _library.DefaultValue;
 
         public event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
         public event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
@@ -45,10 +44,20 @@ namespace Darklight.UnityExt.Library
         IEnumerator IEnumerable.GetEnumerator() => _library.GetEnumerator();
         #endregion
 
-        public void AddDefaultItem() => _library.AddDefaultItem();
-        public TKey CreateDefaultKey() => _library.CreateDefaultKey();
-        public TValue CreateDefaultValue() => _library.CreateDefaultValue();
-    }
+        public virtual TValue CreateDefaultValue() => default(TValue);
+        public virtual void AddKeys(IEnumerable<TKey> keys) => _library.AddKeys(keys);
 
+        public void UpdateSerializedValues()
+        {
+            foreach (var item in _library.Items)
+            {
+                if (item.Value == null)
+                {
+                    item.Value = CreateDefaultValue();
+                }
+            }
+        }
+
+    }
 
 }

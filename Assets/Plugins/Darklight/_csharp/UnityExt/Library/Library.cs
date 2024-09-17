@@ -3,6 +3,10 @@ using UnityEngine;
 using System;
 using UnityEditorInternal;
 using Darklight.UnityExt.Editor;
+using System.Linq;
+using UnityEngine.PlayerLoop;
+
+
 
 
 
@@ -29,16 +33,13 @@ namespace Darklight.UnityExt.Library
     {
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-        [SerializeField] protected List<KeyValuePair> _items = new List<KeyValuePair>();
-        [SerializeField] protected TValue _defaultValue;
+        [SerializeField] protected List<SerializableKeyValuePair> _items = new List<SerializableKeyValuePair>();
 
         // ======== [[ EVENTS ]] ===================================== >>>>
         public event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
         public event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
-        public TValue DefaultValue => _defaultValue;
-
         #region -- (( IDictionary<TKey, TValue> )) --
         public TValue this[TKey key]
         {
@@ -71,10 +72,12 @@ namespace Darklight.UnityExt.Library
         public bool IsReadOnly => false;
         #endregion
 
+        public List<SerializableKeyValuePair> Items => _items;
+
         // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
         public Library()
         {
-            _items = new List<KeyValuePair>();
+            _items = new List<SerializableKeyValuePair>();
         }
 
         // ======== [[ METHODS ]] ===================================== >>>>        
@@ -85,6 +88,7 @@ namespace Darklight.UnityExt.Library
                 return;
 
             _dictionary.Add(key, value);
+            _items.Add(new SerializableKeyValuePair(key, value));
             OnItemAdded(key, value);
         }
 
@@ -173,19 +177,68 @@ namespace Darklight.UnityExt.Library
 
         #endregion
 
-        public virtual TKey CreateDefaultKey()
+        public void Add(SerializableKeyValuePair item)
         {
-            return default;
+            if (!_dictionary.ContainsKey(item.Key))
+            {
+                _dictionary.Add(item.Key, item.Value);
+                _items.Add(item);
+                OnItemAdded(item.Key, item.Value);
+            }
+            else
+            {
+                Debug.LogWarning($"Key '{item.Key}' already exists in the library. Skipping.");
+            }
         }
 
         public virtual TValue CreateDefaultValue()
         {
-            return _defaultValue;
+            return default;
         }
 
-        public void AddDefaultItem()
+
+        public virtual void AddKeys(IEnumerable<TKey> keys)
         {
-            Add(CreateDefaultKey(), CreateDefaultValue());
+            foreach (TKey key in keys)
+            {
+                if (!_dictionary.ContainsKey(key))
+                {
+                    Add(key, CreateDefaultValue());
+                }
+                else
+                {
+                    if (this[key] == null || this[key].Equals(default(TValue)))
+                    {
+                        this[key] = CreateDefaultValue();
+                    }
+                }
+            }
+        }
+
+        public void RemoveAllKeysExcept(IEnumerable<TKey> keys)
+        {
+            List<TKey> keysToRemove = new List<TKey>();
+            foreach (TKey key in _dictionary.Keys)
+            {
+                if (!keys.Contains(key))
+                {
+                    keysToRemove.Add(key);
+                }
+            }
+
+            foreach (TKey key in keysToRemove)
+            {
+                Remove(key);
+            }
+        }
+
+        public void RebuildLibrary()
+        {
+            _dictionary.Clear();
+            foreach (var item in _items)
+            {
+                _dictionary.Add(item.Key, item.Value);
+            }
         }
 
         // Event Invokers
@@ -199,12 +252,20 @@ namespace Darklight.UnityExt.Library
             ItemRemoved?.Invoke(this, new ItemRemovedEventArgs<TKey>(key));
         }
 
+
         // ======== [[ NESTED CLASEES ]] ===================================== >>>>
         [System.Serializable]
-        public class KeyValuePair
+        public class SerializableKeyValuePair
         {
             public TKey Key;
             public TValue Value;
+            public SerializableKeyValuePair() { }
+            public SerializableKeyValuePair(TKey key) { Key = key; }
+            public SerializableKeyValuePair(TKey key, TValue value)
+            {
+                Key = key;
+                Value = value;
+            }
         }
 
     }
@@ -219,8 +280,11 @@ namespace Darklight.UnityExt.Library
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            EditorGUI.BeginProperty(position, label, property);
+
             SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
 
+            // Initialize the ReorderableList if necessary
             if (_list == null)
             {
                 _list = new ReorderableList(property.serializedObject, itemsProperty, true, true, true, true);
@@ -230,7 +294,14 @@ namespace Darklight.UnityExt.Library
                 _list.onRemoveCallback = OnRemoveCallback;
             }
 
+            // Update the serialized object and ReorderableList
             _list.DoList(position);
+            property.serializedObject.Update();
+            property.serializedObject.ApplyModifiedProperties();
+
+            // Add some space at the bottom
+            EditorGUILayout.Space(EditorGUIUtility.singleLineHeight * 2);
+            EditorGUI.EndProperty();
         }
 
         private void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
