@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.ObjectLibrary;
+using Darklight.UnityExt.Library;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
@@ -34,7 +34,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         foreach (Cell2D cell in cells)
         {
             Spatial2D.AnchorPoint anchor = GetAnchorPointFromCell(cell);
-            _dialogueBubbleLibrary.RegisterKey(anchor);
+            _dialogueBubbleLibrary.TryAdd(anchor, default);
         }
 
         base.OnInitialize(grid);
@@ -94,7 +94,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         Spatial2D.AnchorPoint origin = this.GetOriginPointFromCell(bestCell);
 
         // Get the bubble sprite from the library
-        Sprite bubbleSprite = _dialogueBubbleLibrary.GetObject(anchor);
+        Sprite bubbleSprite = _dialogueBubbleLibrary[anchor];
 
         SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
         speechBubble.UpdateFontSizeToMatchScreen();

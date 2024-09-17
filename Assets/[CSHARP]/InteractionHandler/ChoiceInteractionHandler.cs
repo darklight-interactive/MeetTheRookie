@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Core2D;
-using Darklight.UnityExt.ObjectLibrary;
+using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
 using UnityEngine;
 using NaughtyAttributes;
@@ -25,7 +25,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
     {
         if (_choiceBubbleLibrary == null)
         {
-            _choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
+            //_choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
         }
     }
 
@@ -88,7 +88,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
 
             if (_script._attachedBubbles.Count == 0 && GUILayout.Button("Create Default Sprite At All"))
             {
-                _script.CreateBubbleAtAllCells(_script._choiceBubbleLibrary.DefaultObject);
+                _script.CreateBubbleAtAllCells(_script._choiceBubbleLibrary.DefaultValue);
             }
             else if (_script._attachedBubbles.Count > 0 && GUILayout.Button("Destroy All Sprites"))
             {
@@ -103,12 +103,6 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
         }
     }
 #endif
-}
-
-[CreateAssetMenu(menuName = "MeetTheRookie/Library/ChoiceBubbleLibrary")]
-public class ChoiceBubbleLibrary : ObjectLibrary<Sprite>
-{
-
 }
 
 

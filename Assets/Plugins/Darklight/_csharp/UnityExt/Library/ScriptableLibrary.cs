@@ -1,21 +1,67 @@
-using Darklight.UnityExt.Editor;
-using UnityEditor;
-using UnityEditorInternal;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEditorInternal;
+using Darklight.UnityExt.Editor;
 
-namespace Darklight.UnityExt.ObjectLibrary.Editor
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+namespace Darklight.UnityExt.Library
 {
-    [CustomEditor(typeof(ObjectLibrary<,>), true)]
-    public class ObjectLibraryEditorBase : UnityEditor.Editor
+    public class ScriptableLibrary<TKey, TValue> : ScriptableObject, ILibrary<TKey, TValue>
+        where TKey : notnull
+        where TValue : notnull
+    {
+        public Library<TKey, TValue> _library = new Library<TKey, TValue>();
+
+        public TValue this[TKey key] { get => _library[key]; set => _library[key] = value; }
+
+        public ICollection<TKey> Keys => _library.Keys;
+        public ICollection<TValue> Values => _library.Values;
+
+        public int Count => _library.Count;
+        public bool IsReadOnly => _library.IsReadOnly;
+        public TValue DefaultValue => _library.DefaultValue;
+
+        public event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
+        public event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
+
+        // ======== [[ METHODS ]] ===================================== >>>>
+        #region == (( Library<> Methods )) =====================================  ))
+        public void Add(TKey key, TValue value) => _library.Add(key, value);
+        public void Add(KeyValuePair<TKey, TValue> item) => _library.Add(item);
+        public void Clear() => _library.Clear();
+        public bool Contains(KeyValuePair<TKey, TValue> item) => _library.Contains(item);
+        public bool ContainsKey(TKey key) => _library.ContainsKey(key);
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => _library.CopyTo(array, arrayIndex);
+        public bool Remove(TKey key) => _library.Remove(key);
+        public bool Remove(KeyValuePair<TKey, TValue> item) => _library.Remove(item);
+        public bool TryGetValue(TKey key, out TValue value) => _library.TryGetValue(key, out value);
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _library.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => _library.GetEnumerator();
+        #endregion
+
+        public void AddDefaultItem() => _library.AddDefaultItem();
+        public TKey CreateDefaultKey() => _library.CreateDefaultKey();
+        public TValue CreateDefaultValue() => _library.CreateDefaultValue();
+    }
+
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(ScriptableLibrary<,>), true)]
+    public class ScriptableLibraryEditor : UnityEditor.Editor
     {
         protected SerializedProperty keysProperty;
-        protected SerializedProperty objectsProperty;
+        protected SerializedProperty valuesProperty;
         protected ReorderableList reorderableList;
 
         protected virtual void OnEnable()
         {
             keysProperty = serializedObject.FindProperty("_keys");
-            objectsProperty = serializedObject.FindProperty("_objects");
+            valuesProperty = serializedObject.FindProperty("_values");
 
             reorderableList = new ReorderableList(serializedObject, keysProperty, true, true, true, true);
 
@@ -45,7 +91,7 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
             Rect valueRect = new Rect(rect.x + rect.width / 2 + 5, rect.y, rect.width / 2 - 5, EditorGUIUtility.singleLineHeight);
 
             SerializedProperty keyProp = keysProperty.GetArrayElementAtIndex(index);
-            SerializedProperty objProp = objectsProperty.GetArrayElementAtIndex(index);
+            SerializedProperty objProp = valuesProperty.GetArrayElementAtIndex(index);
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
@@ -79,7 +125,7 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
             int index = list.count;
             if (keysProperty != null)
                 keysProperty.InsertArrayElementAtIndex(index);
-            objectsProperty.InsertArrayElementAtIndex(index);
+            valuesProperty.InsertArrayElementAtIndex(index);
             serializedObject.ApplyModifiedProperties();
             //Debug.Log($"OnAddCallback: inserting at index {index}");
         }
@@ -88,12 +134,10 @@ namespace Darklight.UnityExt.ObjectLibrary.Editor
         {
             if (keysProperty != null)
                 keysProperty.DeleteArrayElementAtIndex(list.index);
-            objectsProperty.DeleteArrayElementAtIndex(list.index);
+            valuesProperty.DeleteArrayElementAtIndex(list.index);
             serializedObject.ApplyModifiedProperties();
             //Debug.Log($"OnRemoveCallback: removing at index {list.index}");
         }
-
-
+#endif
     }
 }
-

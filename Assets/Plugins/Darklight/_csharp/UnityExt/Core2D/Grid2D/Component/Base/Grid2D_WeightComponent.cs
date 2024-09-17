@@ -20,11 +20,10 @@ namespace Darklight.UnityExt.Core2D
         [SerializeField] bool _showGizmos;
 
         [Header("Serialized Data")]
-        [SerializeField] bool _autoUpdate = true;
         [SerializeField] List<Weighted_SerializedCellData> _serializedWeightData;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
-        // -- (( BASE VISITORS )) -------- ))
+        #region -- (( BASE VISITORS )) -------- ))
         protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
             Cell2D.VisitorFactory.CreateComponentVisitor(ComponentTypeKey.WEIGHT,
             (Cell2D cell, ComponentTypeKey type) =>
@@ -90,6 +89,7 @@ namespace Darklight.UnityExt.Core2D
                     weightComponent.SetWeight(_weightData[cell.Key]);
                 return true;
             });
+        #endregion
 
         // ======== [[ METHODS ]] ================================== >>>>
         // -- (( INTERFACE )) : IComponent -------- ))
@@ -279,12 +279,6 @@ namespace Darklight.UnityExt.Core2D
                 // If the weight data does not contain the key, remove the serialized data
                 if (!_weightData.ContainsKey(_serializedWeightData[i].key))
                     _serializedWeightData.RemoveAt(i);
-            }
-
-            // << AUTO SAVE >>
-            if (_autoUpdate)
-            {
-                LoadWeightDataToCells();
             }
         }
 
