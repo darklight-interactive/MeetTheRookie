@@ -188,7 +188,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         if (isRolling)
         {
             StopAllCoroutines();
-            MTR_AudioManager.Instance.StopRepeatingEvent();
+            //MTR_AudioManager.Instance.StopRepeatingEvent();
             dialogueText.InstantCompleteText();
             isRolling = false;
         }
@@ -289,9 +289,9 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         float buffer = 1f;
 
         // Start text SFX
-        if (speakerName == "lupe") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
-        else if (speakerName == "misra") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
-        else { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }
+        //if (speakerName == "lupe") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
+        //else if (speakerName == "misra") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
+        //else { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }
 
         for (int i = 0; i < dialogueText.fullText.Length; i++)
         {
@@ -300,7 +300,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             yield return new WaitForSeconds(interval);
         }
 
-        if (isRolling) { MTR_AudioManager.Instance.StopRepeatingEvent(); }
+        //if (isRolling) { MTR_AudioManager.Instance.StopRepeatingEvent(); }
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
         isRolling = false;
     }
@@ -327,14 +327,14 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         emote = emote.Trim().ToLower();
 
         success = emotes.SetEmote(name, emote);
-        //if (name == "lupe")
-        //{
-        //    FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote));
-        //}
-        //else if (name == "misra")
-        //{
-        //    FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote));
-        //}
+        if (name == "lupe")
+        {
+            FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote));
+        }
+        else if (name == "misra")
+        {
+            FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote));
+        }
 
         return success;
     }

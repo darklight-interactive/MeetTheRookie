@@ -56,9 +56,9 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     public EventReference rollingTextMisra;
 
     // HUMAN VOICE
-    //public EventReference voiceLupe;
-    //public EventReference voiceMisra;
-    //// String values for parameter changes
-    //public string parameterNameLupe;
-    //public string parameterNameMisra;
+    public EventReference voiceLupe;
+    public EventReference voiceMisra;
+    // String values for parameter changes
+    public string parameterNameLupe;
+    public string parameterNameMisra;
 }
