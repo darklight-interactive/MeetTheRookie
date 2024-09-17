@@ -25,6 +25,8 @@ namespace Darklight.UnityExt.UXML
 
         protected Label label;
 
+        // ======== [[ PROPERTIES ]] ================================== >>>>
+        // -- (( UXML Attributes )) -------- >> 
         [UxmlAttribute, ShowOnly]
         public Vector2 screenSize
         {
@@ -49,7 +51,6 @@ namespace Darklight.UnityExt.UXML
                 label.style.fontSize = value;
             }
         }
-
 
         [UxmlAttribute, Range(12, 512)]
         public int fontSizeMin
@@ -171,16 +172,23 @@ namespace Darklight.UnityExt.UXML
 
         void SetTextToIndex(int index)
         {
-            int ind = Mathf.Min(index, fullText.Length-1);
-            if(fullText[ind]=='<'){
-                while(fullText[ind]!='>' || ind>=fullText.Length){
+            int ind = Mathf.Min(index, fullText.Length);
+
+            // Skip over any HTML tags
+            if (fullText.Length > ind && fullText[ind] == '<')
+            {
+                while (ind < fullText.Length && fullText[ind] != '>')
+                {
                     ind++;
                 }
-                ind++;
+                ind++; // Move past the '>'
             }
+
+            // Ensure _currentIndex stays within bounds
             _currentIndex = Mathf.Min(ind, fullText.Length);
             this.text = fullText.Substring(0, _currentIndex);
         }
+
 
         public void InstantCompleteText()
         {
