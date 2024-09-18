@@ -4,7 +4,7 @@ using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Core2D;
 
 [UxmlElement]
-public partial class SpeechBubble : ControlledLabel
+public partial class TextBubble : ControlledLabel
 {
     Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
@@ -30,9 +30,9 @@ public partial class SpeechBubble : ControlledLabel
         set { SetOriginPoint(value); }
     }
 
-    public VisualElement Container { get => FindOrCreateContainer(); }
+    //public VisualElement Container { get => FindOrCreateContainer(); }
 
-    public SpeechBubble()
+    public TextBubble()
     {
         FindOrCreateContainer();
         SetBackgroundSprite(BubbleSprite);
@@ -131,7 +131,7 @@ public partial class SpeechBubble : ControlledLabel
 
     public void SetContainerJustifyContent(Justify justify)
     {
-        Container.style.justifyContent = justify;
+        //Container.style.justifyContent = justify;
     }
 
     public void SetAlignSelf(Align align)
@@ -147,6 +147,6 @@ public partial class SpeechBubble : ControlledLabel
             this.style.backgroundImage = new StyleBackground(sprite);
     }
 
-    public new class UxmlFactory : UxmlFactory<SpeechBubble> { }
+    public new class UxmlFactory : UxmlFactory<TextBubble> { }
 
 }

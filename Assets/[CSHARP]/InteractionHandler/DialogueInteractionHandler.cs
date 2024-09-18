@@ -48,7 +48,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     public override void OnUpdate()
     {
         base.OnUpdate();
-        UpdateSpeechBubble();
+        UpdateTextBubble();
     }
 
     public void CreateNewSpeechBubble(string text)
@@ -62,27 +62,27 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         _speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
         _speechBubbleObject.transform.SetParent(transform);
 
-        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
-        speechBubble.RegisterCallback<GeometryChangedEvent>(evt =>
+        TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
+        textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float fullTextHeight = evt.newRect.height;
             float fullTextWidth = evt.newRect.width;
 
-            speechBubble.style.height = fullTextHeight;
-            speechBubble.style.width = fullTextWidth;
+            textBubble.style.height = fullTextHeight;
+            textBubble.style.width = fullTextWidth;
 
-            speechBubble.SetFullText(text);
+            textBubble.SetFullText(text);
             StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
         });
 
-        speechBubble.SetFullText(text);
-        speechBubble.InstantCompleteText(); // Temporarily display full text
+        textBubble.SetFullText(text);
+        textBubble.InstantCompleteText(); // Temporarily display full text
 
-        UpdateSpeechBubble();
+        UpdateTextBubble();
     }
 
     // Helper method to update the UI of the speech bubble
-    SpeechBubble UpdateSpeechBubble()
+    TextBubble UpdateTextBubble()
     {
         if (_speechBubbleObject == null)
         {
@@ -101,7 +101,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         // Get the bubble sprite from the library
         Sprite bubbleSprite = _dialogueBubbleLibrary[anchor];
 
-        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
+        TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
         speechBubble.UpdateFontSizeToMatchScreen();
         //speechBubble.style.color = color;
         speechBubble.SetBackgroundSprite(bubbleSprite);
@@ -114,7 +114,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
-        SpeechBubble speechBubble = _speechBubbleObject.ElementQuery<SpeechBubble>();
+        TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
         speechBubble.SetFullText(fullText);
 
         while (true)
