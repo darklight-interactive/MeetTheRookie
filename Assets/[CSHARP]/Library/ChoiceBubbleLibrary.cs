@@ -3,4 +3,5 @@ using Darklight.UnityExt.Library;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/ChoiceBubbleLibrary")]
-public class ChoiceBubbleLibrary : ScriptableLibrary<int, Sprite> { }
+public class ChoiceBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
+{ }

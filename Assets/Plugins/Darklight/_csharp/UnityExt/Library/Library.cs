@@ -1,33 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEditorInternal;
-using Darklight.UnityExt.Editor;
 using System.Linq;
-using UnityEngine.PlayerLoop;
 
-
-
-
-
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Darklight.UnityExt.Library
 {
-    public interface ILibrary<TKey, TValue> : IDictionary<TKey, TValue>
-        where TKey : notnull
-        where TValue : notnull
-    {
-        TValue CreateDefaultValue();
 
-        event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
-        event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
+    public interface ILibrary
+    {
+        void SetToDefaults();
     }
 
+    public interface ILibrary<TKey, TValue> : ILibrary, IDictionary<TKey, TValue>
+    {
+        TKey CreateDefaultKey();
+        TValue CreateDefaultValue();
+    }
 
     [System.Serializable]
     public class LibraryItem<TKey, TValue>
@@ -47,19 +36,15 @@ namespace Darklight.UnityExt.Library
 
     #region == (( CLASS : Library<TKey, TValue> )) ============================================= ))
     [System.Serializable]
-    public class Library<TKey, TValue> : ILibrary<TKey, TValue>, ISerializationCallbackReceiver
+    public abstract class Library<TKey, TValue> : ILibrary<TKey, TValue>, ISerializationCallbackReceiver
         where TKey : notnull
         where TValue : notnull
     {
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-        [SerializeField] protected List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
+        [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
 
-        // ======== [[ EVENTS ]] ===================================== >>>>
-        public event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
-        public event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
-
-        // ======== [[ PROPERTIES ]] ================================== >>>>
+        #region ======== [[ PROPERTIES ]] ================================== >>>>
         #region -- (( IDictionary<TKey, TValue> )) --
         public TValue this[TKey key]
         {
@@ -93,6 +78,10 @@ namespace Darklight.UnityExt.Library
         #endregion
 
         public List<LibraryItem<TKey, TValue>> Items => _items;
+        #endregion
+
+        public event Action<TKey, TValue> ItemAdded;
+        public event Action<TKey> ItemRemoved;
 
         // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
         public Library()
@@ -109,8 +98,8 @@ namespace Darklight.UnityExt.Library
 
             _dictionary.Add(key, value);
             _items.Add(new LibraryItem<TKey, TValue>(key, value));
-            OnItemAdded(key, value);
-            Debug.Log($"Added key '{key}' to library.");
+
+            ItemAdded?.Invoke(key, value);
         }
 
         public bool ContainsKey(TKey key)
@@ -122,12 +111,11 @@ namespace Darklight.UnityExt.Library
         {
             if (_dictionary.Remove(key))
             {
-                var item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
+                LibraryItem<TKey, TValue> item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
                 if (item != null)
                 {
                     _items.Remove(item);
                 }
-                OnItemRemoved(key);
                 return true;
             }
             return false;
@@ -177,16 +165,20 @@ namespace Darklight.UnityExt.Library
         #endregion
 
         #region -- (( ISerializationCallbackReceiver )) --
-        public void OnBeforeSerialize()
-        {
-
-        }
-
+        public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
         {
             _dictionary.Clear();
-            foreach (var entry in _items)
+            if (_items == null || _items.Count == 0) return;
+
+            foreach (LibraryItem<TKey, TValue> entry in _items)
             {
+                if (entry == null)
+                {
+                    Debug.LogWarning("Null entry found during deserialization. Skipping.");
+                    continue;
+                }
+
                 if (!_dictionary.ContainsKey(entry.Key))
                 {
                     _dictionary.Add(entry.Key, entry.Value);
@@ -207,7 +199,6 @@ namespace Darklight.UnityExt.Library
             {
                 _dictionary.Add(item.Key, item.Value);
                 _items.Add(item);
-                OnItemAdded(item.Key, item.Value);
             }
             else
             {
@@ -215,87 +206,27 @@ namespace Darklight.UnityExt.Library
             }
         }
 
-        public virtual TValue CreateDefaultValue()
+        public abstract TKey CreateDefaultKey();
+        public abstract TValue CreateDefaultValue();
+        public virtual void SetToDefaults()
         {
-            return default;
-        }
-
-
-        public virtual void AddKeys(IEnumerable<TKey> keys)
-        {
-            foreach (TKey key in keys)
-            {
-                if (!_dictionary.ContainsKey(key))
-                {
-                    Add(key, CreateDefaultValue());
-                }
-                else
-                {
-                    if (this[key] == null || this[key].Equals(default(TValue)))
-                    {
-                        this[key] = CreateDefaultValue();
-                    }
-                }
-            }
-        }
-
-        public void RemoveAllKeysExcept(IEnumerable<TKey> keys)
-        {
-            List<TKey> keysToRemove = new List<TKey>();
-            foreach (TKey key in _dictionary.Keys)
-            {
-                if (!keys.Contains(key))
-                {
-                    keysToRemove.Add(key);
-                }
-            }
-
-            foreach (TKey key in keysToRemove)
-            {
-                Remove(key);
-            }
-        }
-
-        public void RebuildLibrary()
-        {
-            _dictionary.Clear();
-            foreach (var item in _items)
-            {
-                _dictionary.Add(item.Key, item.Value);
-            }
-        }
-
-        // Event Invokers
-        protected virtual void OnItemAdded(TKey key, TValue value)
-        {
-            ItemAdded?.Invoke(this, new ItemAddedEventArgs<TKey, TValue>(key, value));
-        }
-
-        protected virtual void OnItemRemoved(TKey key)
-        {
-            ItemRemoved?.Invoke(this, new ItemRemovedEventArgs<TKey>(key));
+            Clear();
+            Add(CreateDefaultKey(), CreateDefaultValue());
         }
     }
+    #endregion
 
-    public class ItemAddedEventArgs<TKey, TValue> : EventArgs
+    [Serializable]
+    public class StringObjectLibrary : Library<string, UnityEngine.Object>
     {
-        public TKey Key { get; }
-        public TValue Value { get; }
-
-        public ItemAddedEventArgs(TKey key, TValue value)
+        public override string CreateDefaultKey()
         {
-            Key = key;
-            Value = value;
+            return "Default";
         }
-    }
 
-    public class ItemRemovedEventArgs<TKey> : EventArgs
-    {
-        public TKey Key { get; }
-
-        public ItemRemovedEventArgs(TKey key)
+        public override UnityEngine.Object CreateDefaultValue()
         {
-            Key = key;
+            return default(UnityEngine.Object);
         }
     }
 
@@ -305,8 +236,5 @@ namespace Darklight.UnityExt.Library
         public const string PRIMITIVE_PATH = LIBRARY_PATH + "Primitive/";
         public const string KEY_VALUE_PATH = LIBRARY_PATH + "KeyValue/";
     }
-    #endregion
-
-
 
 }

@@ -1,42 +1,126 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 using UnityEditorInternal;
-namespace Darklight.UnityExt.Library
+
+namespace Darklight.UnityExt.Library.Editor
 {
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
-        private ReorderableList _list;
+        protected ReorderableList _list;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            // Begin the property scope
             EditorGUI.BeginProperty(position, label, property);
 
-            SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
+            // Create copies to iterate through properties
+            SerializedProperty iterator = property.Copy();
+            SerializedProperty endProperty = iterator.GetEndProperty();
 
-            // Initialize the ReorderableList if necessary
-            if (_list == null)
+            // Initialize variables for positioning
+            float y = position.y;
+            float indent = EditorGUI.indentLevel * 15f;
+
+            // Draw the foldout
+            property.isExpanded = EditorGUI.Foldout(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.isExpanded, label, true);
+            y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            if (property.isExpanded)
             {
-                _list = new ReorderableList(property.serializedObject, itemsProperty, true, true, true, true);
+                // Increase indent level for child properties
+                EditorGUI.indentLevel++;
+
+                // Iterate through the properties of the object
+                iterator.NextVisible(true); // Move to the first child property
+
+                while (iterator.NextVisible(false) && !SerializedProperty.EqualContents(iterator, endProperty))
+                {
+                    // Skip the '_items' property since we'll handle it with the ReorderableList
+                    if (iterator.name == "_items")
+                        continue;
+
+                    // Calculate the height for the property
+                    float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
+
+                    // Draw the property field
+                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, propertyHeight), iterator, true);
+
+                    // Increment y position
+                    y += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
+                }
+
+                // Ensure the ReorderableList is initialized
+                SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
+                InitializeReorderableList(itemsProperty, property.serializedObject);
+
+                // Calculate the height for the list
+                float listHeight = _list.GetHeight();
+
+                // Draw the ReorderableList
+                _list.DoList(new Rect(position.x, y, position.width, listHeight));
+                y += listHeight + EditorGUIUtility.standardVerticalSpacing;
+
+                // Decrease indent level back
+                EditorGUI.indentLevel--;
+            }
+
+            // End the property scope
+            EditorGUI.EndProperty();
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            // Start with the height of the foldout
+            float totalHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            if (property.isExpanded)
+            {
+                // Increase indent level
+                EditorGUI.indentLevel++;
+
+                // Create copies to iterate through properties
+                SerializedProperty iterator = property.Copy();
+                SerializedProperty endProperty = iterator.GetEndProperty();
+
+                iterator.NextVisible(true); // Move to the first child property
+
+                // Iterate through all properties
+                while (iterator.NextVisible(false) && !SerializedProperty.EqualContents(iterator, endProperty))
+                {
+                    // Skip the '_items' property
+                    if (iterator.name == "_items")
+                        continue;
+
+                    // Add the height of the property
+                    totalHeight += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
+                }
+
+                // Add the height of the ReorderableList
+                SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
+                InitializeReorderableList(itemsProperty, property.serializedObject);
+                totalHeight += _list.GetHeight() + EditorGUIUtility.standardVerticalSpacing;
+
+                // Decrease indent level
+                EditorGUI.indentLevel--;
+            }
+
+            return totalHeight;
+        }
+
+        private void InitializeReorderableList(SerializedProperty itemsProperty, SerializedObject serializedObject)
+        {
+            if (_list == null || _list.serializedProperty != itemsProperty)
+            {
+                _list = new ReorderableList(serializedObject, itemsProperty, false, true, true, true);
                 _list.drawElementCallback = DrawElementCallback;
                 _list.drawHeaderCallback = DrawHeaderCallback;
                 _list.onAddCallback = OnAddCallback;
                 _list.onRemoveCallback = OnRemoveCallback;
             }
-
-            // Update the serialized object and ReorderableList
-            _list.DoList(position);
-            //property.serializedObject.Update();
-            //property.serializedObject.ApplyModifiedProperties();
-
-            // Add some space at the bottom
-            EditorGUILayout.Space(EditorGUIUtility.singleLineHeight * 2);
-            EditorGUI.EndProperty();
         }
 
-        private void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
+        protected virtual void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty itemsProperty = _list.serializedProperty;
             SerializedProperty itemProp = itemsProperty.GetArrayElementAtIndex(index);
@@ -44,30 +128,30 @@ namespace Darklight.UnityExt.Library
             SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
 
             rect.y += 2;
-            float halfWidth = rect.width / 2 - 5;
+            float halfWidth = (rect.width - 10) / 2;
 
             Rect keyRect = new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
             Rect valueRect = new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
 
-            if (keyProp != null)
+            if (keyProp == null)
+                EditorGUI.LabelField(keyRect, "Null Key");
+            else
                 EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
-            else
-                EditorGUI.LabelField(keyRect, "null");
 
-            if (valueProp != null)
-                EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
+            if (keyProp == null)
+                EditorGUI.LabelField(valueRect, "Null Value");
             else
-                EditorGUI.LabelField(valueRect, "null");
+                EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
         }
 
-        private void DrawHeaderCallback(Rect rect)
+        protected virtual void DrawHeaderCallback(Rect rect)
         {
-            float halfWidth = rect.width / 2 - 5;
+            float halfWidth = (rect.width - 10) / 2;
             EditorGUI.LabelField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight), "Key");
             EditorGUI.LabelField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight), "Value");
         }
 
-        private void OnAddCallback(ReorderableList list)
+        protected virtual void OnAddCallback(ReorderableList list)
         {
             SerializedProperty itemsProperty = list.serializedProperty;
             itemsProperty.arraySize++;
@@ -78,26 +162,18 @@ namespace Darklight.UnityExt.Library
             SerializedProperty valueProp = newItem.FindPropertyRelative("_value");
 
             // Initialize the new KeyValuePair with default values
-            InitializeProperty(keyProp);
+            if (keyProp != null)
+                InitializeProperty(keyProp);
             InitializeProperty(valueProp);
 
             itemsProperty.serializedObject.ApplyModifiedProperties();
         }
 
-        private void OnRemoveCallback(ReorderableList list)
+        protected virtual void OnRemoveCallback(ReorderableList list)
         {
             SerializedProperty itemsProperty = list.serializedProperty;
             itemsProperty.DeleteArrayElementAtIndex(list.index);
             itemsProperty.serializedObject.ApplyModifiedProperties();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            if (_list != null)
-            {
-                return _list.GetHeight();
-            }
-            return base.GetPropertyHeight(property, label);
         }
 
         private void InitializeProperty(SerializedProperty property)

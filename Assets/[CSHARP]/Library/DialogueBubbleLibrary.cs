@@ -11,28 +11,8 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
 public class DialogueBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
-    public UXML_UIDocumentPreset dialogueBubblePreset;
-    public Sprite defaultSprite;
 
-    public override void AddKeys(IEnumerable<Spatial2D.AnchorPoint> keys)
-    {
-        foreach (var key in keys)
-        {
-            if (!ContainsKey(key))
-            {
-                Add(key, this.CreateDefaultValue());
-            }
-            else if (this[key] == null)
-            {
-                this[key] = this.CreateDefaultValue();
-            }
-        }
-    }
 
-    public override Sprite CreateDefaultValue()
-    {
-        return defaultSprite;
-    }
 }
 
 #if UNITY_EDITOR
@@ -57,17 +37,7 @@ public class DialogueBubbleLibraryCustomEditor : UnityEditor.Editor
 
         if (GUILayout.Button("Set To Defaults"))
         {
-            _script.SetToDefaults();
-        }
-
-        if (GUILayout.Button("Update Serialized Values"))
-        {
-            _script.UpdateSerializedValues();
-        }
-
-        if (GUILayout.Button("Clear"))
-        {
-            _script.Clear();
+            _script.Library.SetToDefaults();
         }
 
 

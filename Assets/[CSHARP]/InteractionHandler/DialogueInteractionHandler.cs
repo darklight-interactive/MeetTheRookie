@@ -42,7 +42,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
                 anchorPoints.Add(anchor);
             }
         }
-        _dialogueBubbleLibrary.AddKeys(anchorPoints);
+        //_dialogueBubbleLibrary.AddKeys(anchorPoints);
     }
 
     public override void OnUpdate()
@@ -102,10 +102,10 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         Spatial2D.AnchorPoint origin = this.GetOriginPointFromCell(bestCell);
 
         // Get the bubble sprite from the library
-        Sprite bubbleSprite = _dialogueBubbleLibrary[anchor];
+        //Sprite bubbleSprite = _dialogueBubbleLibrary[anchor];
 
         TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
-        speechBubble.SetBackgroundSprite(bubbleSprite);
+        //speechBubble.SetBackgroundSprite(bubbleSprite);
 
         speechBubble.SetAnchorPoint(anchor);
         speechBubble.SetOriginPoint(origin);
