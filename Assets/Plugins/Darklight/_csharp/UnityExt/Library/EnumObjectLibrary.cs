@@ -15,7 +15,7 @@ namespace Darklight.UnityExt.Library
         /// Resets the library to contain all possible keys from the enum TKey,
         /// with each value set to the default value of TValue.
         /// </summary>
-        public void ResetLibrary()
+        public void SetToDefaults()
         {
             // Get all possible values of the enum TKey
             IEnumerable<TKey> enumValues = Enum.GetValues(typeof(TKey)).Cast<TKey>();

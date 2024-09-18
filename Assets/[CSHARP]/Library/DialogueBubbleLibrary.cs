@@ -52,6 +52,11 @@ public class DialogueBubbleLibraryCustomEditor : UnityEditor.Editor
 
         base.OnInspectorGUI();
 
+        if (GUILayout.Button("Set To Defaults"))
+        {
+            _script.SetToDefaults();
+        }
+
         if (GUILayout.Button("Update Serialized Values"))
         {
             _script.UpdateSerializedValues();

@@ -427,7 +427,7 @@ namespace Darklight.UnityExt.Core2D
 
             void OnSceneGUI()
             {
-                _script.Refresh();
+                //_script.Refresh();
             }
         }
 #endif
