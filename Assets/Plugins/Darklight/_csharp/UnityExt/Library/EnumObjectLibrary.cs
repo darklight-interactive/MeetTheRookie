@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Darklight.UnityExt.Library
 {
-    public class EnumObjectLibrary<TKey, TValue> : Library<TKey, TValue>
+    public class EnumObjectScriptableLibrary<TKey, TValue> : ScriptableLibrary<TKey, TValue>
         where TKey : System.Enum
         where TValue : UnityEngine.Object
     {

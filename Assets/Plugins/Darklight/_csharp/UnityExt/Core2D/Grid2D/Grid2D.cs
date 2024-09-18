@@ -418,7 +418,7 @@ namespace Darklight.UnityExt.Core2D
                 {
                     _serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(target);
-                    Repaint();
+                    //Repaint();
                     _script.Refresh();
 
                 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
-public class DialogueBubbleLibrary : ScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
+public class DialogueBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
     public Sprite defaultSprite;
 

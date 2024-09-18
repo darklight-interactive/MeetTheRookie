@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEditorInternal;
 namespace Darklight.UnityExt.Library
 {
     [CustomPropertyDrawer(typeof(Library<,>), true)]

@@ -56,9 +56,6 @@ public class MTR_SceneDataObjectCustomEditor : Editor
         {
             _serializedObject.ApplyModifiedProperties();
         }
-
-        Repaint();
-
     }
 }
 #endif
