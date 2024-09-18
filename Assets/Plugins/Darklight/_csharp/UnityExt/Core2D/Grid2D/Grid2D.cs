@@ -14,7 +14,7 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.Core2D
 {
-    [ExecuteAlways]
+    //[ExecuteAlways]
     public partial class Grid2D : MonoBehaviour, IUnityEditorListener
     {
         // ======== [[ CONSTANTS ]] ======================================================= >>>>

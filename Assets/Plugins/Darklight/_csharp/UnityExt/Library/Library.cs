@@ -28,6 +28,8 @@ namespace Darklight.UnityExt.Library
         event EventHandler<ItemRemovedEventArgs<TKey>> ItemRemoved;
     }
 
+
+    [System.Serializable]
     public class LibraryItem<TKey, TValue>
     {
         public TKey Key { get; set; }

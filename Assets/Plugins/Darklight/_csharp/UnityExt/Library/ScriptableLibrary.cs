@@ -57,7 +57,5 @@ namespace Darklight.UnityExt.Library
                 }
             }
         }
-
     }
-
 }
