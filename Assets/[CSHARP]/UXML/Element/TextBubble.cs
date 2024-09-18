@@ -6,8 +6,16 @@ using Darklight.UnityExt.Core2D;
 [UxmlElement]
 public partial class TextBubble : ControlledLabel
 {
+    DialogueBubbleLibrary _library;
     Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
+
+    [UxmlAttribute]
+    public DialogueBubbleLibrary Library
+    {
+        get { return _library; }
+        set { _library = value; }
+    }
 
     [UxmlAttribute]
     public Sprite BubbleSprite

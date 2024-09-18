@@ -49,7 +49,7 @@ namespace Darklight.UnityExt.Library
 
         public void UpdateSerializedValues()
         {
-            foreach (var item in _library.Items)
+            foreach (LibraryItem<TKey, TValue> item in _library.Items)
             {
                 if (item.Value == null)
                 {

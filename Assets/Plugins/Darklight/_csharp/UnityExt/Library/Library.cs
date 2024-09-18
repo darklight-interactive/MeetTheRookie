@@ -25,6 +25,18 @@ namespace Darklight.UnityExt.Library
         public const string KEY_VALUE_PATH = OBJECT_LIBRARY_PATH + "KeyValue/";
     }
 
+    public class LibraryItem<TKey, TValue>
+    {
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
+
+        public LibraryItem(TKey key, TValue value)
+        {
+            Key = key;
+            Value = value;
+        }
+    }
+
     #region == (( CLASS : Library<TKey, TValue> )) ============================================= ))
     [System.Serializable]
     public class Library<TKey, TValue> : ILibrary<TKey, TValue>, ISerializationCallbackReceiver
@@ -33,7 +45,7 @@ namespace Darklight.UnityExt.Library
     {
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-        [SerializeField] protected List<SerializableKeyValuePair> _items = new List<SerializableKeyValuePair>();
+        [SerializeField] protected List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
 
         // ======== [[ EVENTS ]] ===================================== >>>>
         public event EventHandler<ItemAddedEventArgs<TKey, TValue>> ItemAdded;
@@ -72,12 +84,12 @@ namespace Darklight.UnityExt.Library
         public bool IsReadOnly => false;
         #endregion
 
-        public List<SerializableKeyValuePair> Items => _items;
+        public List<LibraryItem<TKey, TValue>> Items => _items;
 
         // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
         public Library()
         {
-            _items = new List<SerializableKeyValuePair>();
+            _items = new List<LibraryItem<TKey, TValue>>();
         }
 
         // ======== [[ METHODS ]] ===================================== >>>>        
@@ -88,7 +100,7 @@ namespace Darklight.UnityExt.Library
                 return;
 
             _dictionary.Add(key, value);
-            _items.Add(new SerializableKeyValuePair(key, value));
+            _items.Add(new LibraryItem<TKey, TValue>(key, value));
             OnItemAdded(key, value);
         }
 
@@ -177,7 +189,7 @@ namespace Darklight.UnityExt.Library
 
         #endregion
 
-        public void Add(SerializableKeyValuePair item)
+        public void Add(LibraryItem<TKey, TValue> item)
         {
             if (!_dictionary.ContainsKey(item.Key))
             {
@@ -253,20 +265,6 @@ namespace Darklight.UnityExt.Library
         }
 
 
-        // ======== [[ NESTED CLASEES ]] ===================================== >>>>
-        [System.Serializable]
-        public class SerializableKeyValuePair
-        {
-            public TKey Key;
-            public TValue Value;
-            public SerializableKeyValuePair() { }
-            public SerializableKeyValuePair(TKey key) { Key = key; }
-            public SerializableKeyValuePair(TKey key, TValue value)
-            {
-                Key = key;
-                Value = value;
-            }
-        }
 
     }
     #endregion
