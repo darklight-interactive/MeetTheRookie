@@ -17,11 +17,10 @@ namespace Darklight.UnityExt.UXML
     public partial class ControlledLabel : VisualElement
     {
         public class ControlledSizeLabelFactory : UxmlFactory<ControlledLabel> { }
-        private VisualElement _container;
-        private float _rollingTextPercentValue;
-        private int _currentIndex;
-        private int _fontSize;
-        private Vector2Int _fontSizeRange = new Vector2Int(96, 128);
+        VisualElement _container;
+        float _rollingTextPercentValue = 1;
+        int _currentIndex;
+        int _fontSize = 20;
 
         protected Label label;
 
@@ -41,7 +40,7 @@ namespace Darklight.UnityExt.UXML
             set { }
         }
 
-        [UxmlAttribute, ShowOnly]
+        [UxmlAttribute, Range(12, 240)]
         public int fontSize
         {
             get { return _fontSize; }
@@ -52,29 +51,8 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
-        [UxmlAttribute, Range(12, 512)]
-        public int fontSizeMin
-        {
-            get { return _fontSizeRange.x; }
-            set
-            {
-                _fontSizeRange.x = value;
-                UpdateFontSizeToMatchScreen();
-            }
-        }
 
-
-        [UxmlAttribute, Range(12, 512)]
-        public int fontSizeMax
-        {
-            get { return _fontSizeRange.y; }
-            set
-            {
-                _fontSizeRange.y = value;
-                UpdateFontSizeToMatchScreen();
-            }
-        }
-
+        [Header("Text Properties")]
         [UxmlAttribute, TextArea(3, 10)]
         public string fullText =
             "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
@@ -130,39 +108,16 @@ namespace Darklight.UnityExt.UXML
                 }
             };
 
-            UpdateFontSizeToMatchScreen();
-
-
             _container.Add(label);
             Add(_container);
+
+            label.style.fontSize = _fontSize;
         }
 
         public void SetFullText(string fullText)
         {
             this.fullText = fullText;
             SetTextToIndex(0);
-        }
-
-        public void OLDUpdateFontSizeToMatchScreen(){
-            screenSize = ScreenInfoUtility.ScreenSize;
-            aspectRatio = ScreenInfoUtility.GetScreenAspectRatio();
-
-            // Get the font size based on the screen size
-            int fontSizeMin = (int)_fontSizeRange.x;
-            int fontSizeMax = (int)_fontSizeRange.y;
-
-            // Divide the max font size by the aspect ratio
-            float fontSizeByAspectRatio = fontSizeMax / aspectRatio;
-
-            // Clamp the font size to the set range
-            fontSize = (int)Mathf.Clamp(fontSizeByAspectRatio, _fontSizeRange.x, _fontSizeRange.y);
-        }
-        public void UpdateFontSizeToMatchScreen()
-        {
-            OLDUpdateFontSizeToMatchScreen();
-
-            //assuming font size is set assuming the screen is 1920x1080
-            //this.style.fontSize = new Length(fontSizeMax, LengthUnit.Percent);
         }
 
         public void RollingTextStep()
@@ -193,12 +148,6 @@ namespace Darklight.UnityExt.UXML
         public void InstantCompleteText()
         {
             SetTextToIndex(fullText.Length);
-        }
-
-        public void SetFontSizeRange(Vector2Int range)
-        {
-            _fontSizeRange = range;
-            UpdateFontSizeToMatchScreen();
         }
     }
 }

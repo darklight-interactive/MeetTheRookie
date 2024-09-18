@@ -34,10 +34,8 @@ public partial class TextBubble : ControlledLabel
 
     public TextBubble()
     {
-        FindOrCreateContainer();
+        //FindOrCreateContainer();
         SetBackgroundSprite(BubbleSprite);
-        UpdateFontSizeToMatchScreen();
-
     }
 
     // Method to find the parent element with the ID 'container'

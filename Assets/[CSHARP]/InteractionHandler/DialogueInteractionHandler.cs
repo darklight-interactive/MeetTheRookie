@@ -102,8 +102,6 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         Sprite bubbleSprite = _dialogueBubbleLibrary[anchor];
 
         TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
-        speechBubble.UpdateFontSizeToMatchScreen();
-        //speechBubble.style.color = color;
         speechBubble.SetBackgroundSprite(bubbleSprite);
 
         speechBubble.SetAnchorPoint(anchor);

@@ -22,8 +22,6 @@ public partial class SynthesisClueElement : ControlledLabel
     public SynthesisClueElement()
     {
         this.fullText = "New Synthesis Clue";
-        this.fontSizeMin = 24;
-        this.fontSizeMax = 48;
         this.rollingTextPercentage = 1;
         //backgroundSprite = AssetDatabase.LoadAssetAtPath<Sprite>(DEFAULT_BACKGROUND);
 

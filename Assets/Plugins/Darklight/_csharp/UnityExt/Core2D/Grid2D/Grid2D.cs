@@ -419,9 +419,10 @@ namespace Darklight.UnityExt.Core2D
                     _serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(target);
                     Repaint();
+                    _script.Refresh();
+
                 }
 
-                _script.Refresh();
             }
 
             void OnSceneGUI()
