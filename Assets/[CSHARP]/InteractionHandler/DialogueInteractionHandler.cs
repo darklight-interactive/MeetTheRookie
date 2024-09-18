@@ -62,6 +62,9 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         _speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
         _speechBubbleObject.transform.SetParent(transform);
 
+        SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, GetBestCell());
+
+
         TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
         textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {

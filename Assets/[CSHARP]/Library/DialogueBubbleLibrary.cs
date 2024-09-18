@@ -2,6 +2,8 @@ using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Library;
 using UnityEngine;
 using System.Collections.Generic;
+using Darklight.UnityExt.UXML;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,6 +11,7 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
 public class DialogueBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
+    public UXML_UIDocumentPreset dialogueBubblePreset;
     public Sprite defaultSprite;
 
     public override void AddKeys(IEnumerable<Spatial2D.AnchorPoint> keys)

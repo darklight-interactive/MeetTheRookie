@@ -5,7 +5,6 @@ using UnityEditor.UIElements;
 using UnityEditorInternal;
 namespace Darklight.UnityExt.Library
 {
-    /*
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
@@ -75,8 +74,8 @@ namespace Darklight.UnityExt.Library
             list.index = itemsProperty.arraySize - 1;
 
             SerializedProperty newItem = itemsProperty.GetArrayElementAtIndex(list.index);
-            SerializedProperty keyProp = newItem.FindPropertyRelative("Key");
-            SerializedProperty valueProp = newItem.FindPropertyRelative("Value");
+            SerializedProperty keyProp = newItem.FindPropertyRelative("_key");
+            SerializedProperty valueProp = newItem.FindPropertyRelative("_value");
 
             // Initialize the new KeyValuePair with default values
             InitializeProperty(keyProp);
@@ -184,5 +183,4 @@ namespace Darklight.UnityExt.Library
             }
         }
     }
-    */
 }
