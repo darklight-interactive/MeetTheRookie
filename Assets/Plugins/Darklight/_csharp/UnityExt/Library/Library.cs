@@ -32,8 +32,11 @@ namespace Darklight.UnityExt.Library
     [System.Serializable]
     public class LibraryItem<TKey, TValue>
     {
-        public TKey Key { get; set; }
-        public TValue Value { get; set; }
+        [SerializeField] TKey _key;
+        [SerializeField] TValue _value;
+
+        public TKey Key { get => _key; set => _key = value; }
+        public TValue Value { get => _value; set => _value = value; }
 
         public LibraryItem(TKey key, TValue value)
         {
@@ -107,6 +110,7 @@ namespace Darklight.UnityExt.Library
             _dictionary.Add(key, value);
             _items.Add(new LibraryItem<TKey, TValue>(key, value));
             OnItemAdded(key, value);
+            Debug.Log($"Added key '{key}' to library.");
         }
 
         public bool ContainsKey(TKey key)
@@ -116,17 +120,19 @@ namespace Darklight.UnityExt.Library
 
         public bool Remove(TKey key)
         {
-            if (_dictionary.TryGetValue(key, out TValue value))
+            if (_dictionary.Remove(key))
             {
-                bool removed = _dictionary.Remove(key);
-                if (removed)
+                var item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
+                if (item != null)
                 {
-                    OnItemRemoved(key);
+                    _items.Remove(item);
                 }
-                return removed;
+                OnItemRemoved(key);
+                return true;
             }
             return false;
         }
+
 
         public bool TryGetValue(TKey key, out TValue value)
         {
@@ -141,6 +147,7 @@ namespace Darklight.UnityExt.Library
         public void Clear()
         {
             _dictionary.Clear();
+            _items.Clear();
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)

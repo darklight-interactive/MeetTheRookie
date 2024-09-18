@@ -62,6 +62,11 @@ public class DialogueBubbleLibraryCustomEditor : UnityEditor.Editor
             _script.UpdateSerializedValues();
         }
 
+        if (GUILayout.Button("Clear"))
+        {
+            _script.Clear();
+        }
+
 
         if (EditorGUI.EndChangeCheck())
         {

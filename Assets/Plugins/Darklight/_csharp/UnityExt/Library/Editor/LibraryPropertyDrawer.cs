@@ -5,6 +5,7 @@ using UnityEditor.UIElements;
 using UnityEditorInternal;
 namespace Darklight.UnityExt.Library
 {
+    /*
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
@@ -40,8 +41,8 @@ namespace Darklight.UnityExt.Library
         {
             SerializedProperty itemsProperty = _list.serializedProperty;
             SerializedProperty itemProp = itemsProperty.GetArrayElementAtIndex(index);
-            SerializedProperty keyProp = itemProp.FindPropertyRelative("Key");
-            SerializedProperty valueProp = itemProp.FindPropertyRelative("Value");
+            SerializedProperty keyProp = itemProp.FindPropertyRelative("_key");
+            SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
 
             rect.y += 2;
             float halfWidth = rect.width / 2 - 5;
@@ -49,8 +50,15 @@ namespace Darklight.UnityExt.Library
             Rect keyRect = new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
             Rect valueRect = new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
 
-            EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
-            EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
+            if (keyProp != null)
+                EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
+            else
+                EditorGUI.LabelField(keyRect, "null");
+
+            if (valueProp != null)
+                EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
+            else
+                EditorGUI.LabelField(valueRect, "null");
         }
 
         private void DrawHeaderCallback(Rect rect)
@@ -176,4 +184,5 @@ namespace Darklight.UnityExt.Library
             }
         }
     }
+    */
 }
