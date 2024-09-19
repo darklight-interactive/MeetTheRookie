@@ -5,13 +5,12 @@ using Darklight.UnityExt.Core2D;
 using NaughtyAttributes;
 using UnityEditor.EditorTools;
 using UnityEditor;
+using Unity.VisualScripting;
 
 [UxmlElement]
 public partial class TextBubble : ControlledLabel
 {
     const string TAG = "TextBubble";
-
-    VisualElement _bubbleContainer;
 
     TextBubbleLibrary _library;
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
@@ -21,17 +20,17 @@ public partial class TextBubble : ControlledLabel
 
     [Header("[TEXT_BUBBLE] ================ >>>>")]
     [UxmlAttribute]
-    public Spatial2D.AnchorPoint OriginPoint
-    {
-        get { return _originPoint; }
-        set { AlignToOriginPoint(value); }
-    }
-
-    [UxmlAttribute]
     public TextBubbleLibrary Library
     {
         get { return _library; }
         set { _library = value; }
+    }
+
+    [UxmlAttribute]
+    public Spatial2D.AnchorPoint OriginPoint
+    {
+        get { return _originPoint; }
+        set { AlignToOriginPoint(value); }
     }
 
     [UxmlAttribute, Tooltip("The directional anchor point of the bubble. Determines the alignment of the bubble and what sprite is used.")]
@@ -41,25 +40,13 @@ public partial class TextBubble : ControlledLabel
         set { AlignToDirectionPoint(value); }
     }
 
-    public VisualElement bubbleContainer { get { return _bubbleContainer; } set { _bubbleContainer = value; } }
-
     public TextBubble()
     {
         this.style.flexGrow = 1;
         this.style.flexDirection = FlexDirection.Column;
         this.style.alignSelf = Align.Stretch;
 
-        // << (( CREATE BUBBLE CONTAINER )) ---- >>>
-        _bubbleContainer = new VisualElement
-        {
-            name = $"{TAG}-container",
-            style =
-            {
-                flexDirection = FlexDirection.Row,
-            }
-        };
-        //_bubbleContainer.Add(labelContainer);
-        //this.Add(_bubbleContainer);
+        UpdateBubbleSprite();
     }
 
     public void AlignBubble(Spatial2D.AnchorPoint originPoint, Spatial2D.AnchorPoint directionPoint)
@@ -117,7 +104,39 @@ public partial class TextBubble : ControlledLabel
 
     void AlignToDirectionPoint(Spatial2D.AnchorPoint directionPoint)
     {
+        _directionPoint = directionPoint;
+        switch (directionPoint)
+        {
+            case Spatial2D.AnchorPoint.TOP_LEFT:
+            case Spatial2D.AnchorPoint.CENTER_LEFT:
+            case Spatial2D.AnchorPoint.BOTTOM_LEFT:
+                this.style.alignItems = Align.FlexStart;
+                break;
+            case Spatial2D.AnchorPoint.TOP_CENTER:
+            case Spatial2D.AnchorPoint.CENTER:
+            case Spatial2D.AnchorPoint.BOTTOM_CENTER:
+                this.style.alignItems = Align.Center;
+                break;
+            case Spatial2D.AnchorPoint.TOP_RIGHT:
+            case Spatial2D.AnchorPoint.CENTER_RIGHT:
+            case Spatial2D.AnchorPoint.BOTTOM_RIGHT:
+                this.style.alignItems = Align.FlexEnd;
+                break;
+        }
 
+        UpdateBubbleSprite();
+    }
+
+    void UpdateBubbleSprite()
+    {
+        if (_library != null)
+        {
+            if (_library.ContainsKey(_directionPoint))
+            {
+                Sprite sprite = _library[_directionPoint];
+                BackgroundImage = sprite;
+            }
+        }
     }
 
     public new class UxmlFactory : UxmlFactory<TextBubble> { }

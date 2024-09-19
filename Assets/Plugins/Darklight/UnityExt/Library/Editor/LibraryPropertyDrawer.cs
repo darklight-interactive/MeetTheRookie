@@ -28,7 +28,6 @@ namespace Darklight.UnityExt.Library.Editor
         protected Type serializedObjectType => _serializedObject.targetObject.GetType();
         protected string serializedObjectName => serializedObjectType.Name;
         protected float singleLineHeight => EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
-        protected float currentIndent => EditorGUI.indentLevel * INDENT_WIDTH;
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
@@ -40,22 +39,27 @@ namespace Darklight.UnityExt.Library.Editor
             if (_itemsProperty == null)
                 _itemsProperty = property.FindPropertyRelative("_items");
 
-            // Initialize variables for positioning
-            Vector2 position = new Vector2(rect.x, rect.y);
-
             // << DRAW PROPERTY >>
             // Begin the property scope
             EditorGUI.BeginProperty(rect, label, property);
 
-            DrawHeader(rect, out float headerHeight);
+            Vector2 position = new Vector2(rect.x, rect.y);
+
+            // ( Header )-----------------------------------------------------
+            Rect headerRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
+            DrawHeader(headerRect, out float headerHeight);
             position.y += headerHeight;
 
+            // ( Properties )-------------------------------------------------
             Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
             DrawProperties(propRect, out float propertiesHeight);
             position.y += propertiesHeight;
 
-            // Draw the ReorderableList
-            DrawReorderableList(position, rect.width, out float listHeight);
+            // ( ReorderableList )--------------------------------------------
+            position.x += GetCurrentIndentValue();
+            Rect listRect = new Rect(position.x, position.y, rect.width - position.x, rect.height - position.y);
+            DrawReorderableList(listRect, out float listHeight);
+            position.y += listHeight;
 
             EditorGUILayout.Space(singleLineHeight);
 
@@ -176,8 +180,6 @@ namespace Darklight.UnityExt.Library.Editor
         #endregion
 
         // ======== [[ DRAW METHODS ]] ===================================== >>>>
-
-
         void DrawHeader(Rect rect, out float headerHeight)
         {
             int btnWidth = 50;
@@ -185,33 +187,24 @@ namespace Darklight.UnityExt.Library.Editor
 
             Rect titleRect = rect;
             PropertyDrawerUtility.DrawLabel(rect, serializedObjectName, HeaderStyle, out float titleHeight);
+            position.y += titleHeight;
 
-            position.x = rect.x + rect.width;
-            position.x -= btnWidth * 2;
-
+            EditorGUI.indentLevel++;
+            position.x += GetCurrentIndentValue();
             Rect btn1Rect = new Rect(position.x, position.y, btnWidth, singleLineHeight);
             PropertyDrawerUtility.DrawButton(btn1Rect, "Reset", out float resetButtonHeight, () =>
             {
                 InvokeSerializedObjectMethod("Reset");
             });
 
-            Rect btn2Rect = new Rect(position.x + btnWidth, position.y, btnWidth, singleLineHeight);
+            Rect btn2Rect = new Rect(btn1Rect.x + btnWidth, position.y, btnWidth, singleLineHeight);
             PropertyDrawerUtility.DrawButton(btn2Rect, "Clear", out float clearButtonHeight, () =>
             {
                 InvokeSerializedObjectMethod("Clear");
             });
-            headerHeight = singleLineHeight;
-        }
+            position.y += singleLineHeight;
 
-        void DrawReorderableList(Vector2 position, float width, out float listHeight)
-        {
-            InitializeReorderableList();
-
-            // Calculate the height for the list
-            listHeight = _list.GetHeight();
-
-            // Draw the ReorderableList
-            _list.DoList(new Rect(position.x, position.y, width, listHeight));
+            headerHeight = position.y - rect.y;
         }
 
         void DrawProperties(Rect rect, out float height)
@@ -221,9 +214,6 @@ namespace Darklight.UnityExt.Library.Editor
             // Create copies to iterate through properties
             SerializedProperty iterator = _property.Copy();
             SerializedProperty endProperty = iterator.GetEndProperty();
-
-            // Increase indent level for child properties
-            EditorGUI.indentLevel++;
 
             // Iterate through the properties of the object
             iterator.NextVisible(true); // Move to the first child property
@@ -238,7 +228,7 @@ namespace Darklight.UnityExt.Library.Editor
                 float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
 
                 // Draw the property field
-                EditorGUI.PropertyField(new Rect(rect.x, currentYPos, rect.width, propertyHeight), iterator, true);
+                EditorGUI.PropertyField(new Rect(rect.x, currentYPos, rect.width - GetCurrentIndentValue() - EditorGUIUtility.standardVerticalSpacing, propertyHeight), iterator, true);
 
                 // Increment y position
                 currentYPos += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
@@ -247,7 +237,23 @@ namespace Darklight.UnityExt.Library.Editor
             height = currentYPos - rect.y;
         }
 
+        void DrawReorderableList(Rect rect, out float listHeight)
+        {
+            InitializeReorderableList();
+
+            // Calculate the height for the list
+            listHeight = _list.GetHeight();
+
+            // Draw the ReorderableList
+            _list.DoList(new Rect(rect.x, rect.y, rect.width, listHeight));
+        }
+
         // ======== [[ HELPER METHODS ]] ===================================== >>>>
+        float GetCurrentIndentValue()
+        {
+            return EditorGUI.indentLevel * INDENT_WIDTH;
+        }
+
         void InvokeSerializedObjectMethod(string methodName)
         {
             // Get the target object

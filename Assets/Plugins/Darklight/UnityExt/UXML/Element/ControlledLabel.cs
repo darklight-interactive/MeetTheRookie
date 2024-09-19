@@ -105,15 +105,10 @@ namespace Darklight.UnityExt.UXML
                 {
                     overflow = Overflow.Hidden,
 
-                    paddingTop = 50,
-                    paddingBottom = 50,
-                    paddingLeft = 50,
-                    paddingRight = 50,
-
-                    marginTop = 25,
-                    marginBottom = 25,
-                    marginLeft = 25,
-                    marginRight = 25,
+                    paddingTop = Length.Percent(5),
+                    paddingBottom = Length.Percent(5),
+                    paddingLeft = Length.Percent(5),
+                    paddingRight = Length.Percent(5)
                 }
             };
 
