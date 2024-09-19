@@ -3,16 +3,29 @@ using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Core2D;
 using NaughtyAttributes;
+using UnityEditor.EditorTools;
+using UnityEditor;
 
 [UxmlElement]
 public partial class TextBubble : ControlledLabel
 {
-    VisualElement _container;
-    ControlledLabel _controlledLabel;
+    const string TAG = "TextBubble";
+
+    VisualElement _bubbleContainer;
 
     TextBubbleLibrary _library;
-    Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
+    Spatial2D.AnchorPoint _directionPoint = Spatial2D.AnchorPoint.CENTER;
+
+
+
+    [Header("[TEXT_BUBBLE] ================ >>>>")]
+    [UxmlAttribute]
+    public Spatial2D.AnchorPoint OriginPoint
+    {
+        get { return _originPoint; }
+        set { AlignToOriginPoint(value); }
+    }
 
     [UxmlAttribute]
     public TextBubbleLibrary Library
@@ -21,97 +34,90 @@ public partial class TextBubble : ControlledLabel
         set { _library = value; }
     }
 
-    [UxmlAttribute]
-    public Sprite BubbleSprite
+    [UxmlAttribute, Tooltip("The directional anchor point of the bubble. Determines the alignment of the bubble and what sprite is used.")]
+    public Spatial2D.AnchorPoint DirectionPoint
     {
-        get { return this.style.backgroundImage.value.sprite; }
-        set { SetBackgroundSprite(value); }
+        get { return _directionPoint; }
+        set { AlignToDirectionPoint(value); }
     }
 
-    [UxmlAttribute]
-    public Spatial2D.AnchorPoint AnchorPoint
+    public VisualElement bubbleContainer { get { return _bubbleContainer; } set { _bubbleContainer = value; } }
+
+    public TextBubble()
     {
-        get { return _anchorPoint; }
-        set { SetAnchorPoint(value); }
-    }
+        this.style.flexGrow = 1;
+        this.style.flexDirection = FlexDirection.Column;
+        this.style.alignSelf = Align.Stretch;
 
-    [UxmlAttribute]
-    public Spatial2D.AnchorPoint OriginPoint
-    {
-        get { return _originPoint; }
-        set { SetOriginPoint(value); }
-    }
-
-    public TextBubble() { }
-
-    public void SetAnchorPoint(Spatial2D.AnchorPoint anchorPoint)
-    {
-        _anchorPoint = anchorPoint;
-
-        switch (anchorPoint)
+        // << (( CREATE BUBBLE CONTAINER )) ---- >>>
+        _bubbleContainer = new VisualElement
         {
-            case Spatial2D.AnchorPoint.TOP_LEFT:
-            case Spatial2D.AnchorPoint.CENTER_LEFT:
-            case Spatial2D.AnchorPoint.BOTTOM_LEFT:
-                SetAlignSelf(Align.FlexStart);
-                break;
-
-            case Spatial2D.AnchorPoint.TOP_CENTER:
-            case Spatial2D.AnchorPoint.CENTER:
-            case Spatial2D.AnchorPoint.BOTTOM_CENTER:
-                SetAlignSelf(Align.Center);
-                break;
-
-            case Spatial2D.AnchorPoint.TOP_RIGHT:
-            case Spatial2D.AnchorPoint.CENTER_RIGHT:
-            case Spatial2D.AnchorPoint.BOTTOM_RIGHT:
-                SetAlignSelf(Align.FlexEnd);
-                break;
-        }
+            name = $"{TAG}-container",
+            style =
+            {
+                flexDirection = FlexDirection.Row,
+            }
+        };
+        //_bubbleContainer.Add(labelContainer);
+        //this.Add(_bubbleContainer);
     }
 
-    public void SetOriginPoint(Spatial2D.AnchorPoint originPoint)
+    public void AlignBubble(Spatial2D.AnchorPoint originPoint, Spatial2D.AnchorPoint directionPoint)
+    {
+        AlignToOriginPoint(originPoint);
+        AlignToDirectionPoint(directionPoint);
+    }
+    public void AlignBubble() => AlignBubble(_originPoint, _directionPoint);
+
+    void AlignToOriginPoint(Spatial2D.AnchorPoint originPoint)
     {
         _originPoint = originPoint;
-
         switch (originPoint)
         {
             case Spatial2D.AnchorPoint.TOP_LEFT:
+                this.style.justifyContent = Justify.FlexStart;
+                this.style.alignItems = Align.FlexStart;
+                break;
             case Spatial2D.AnchorPoint.TOP_CENTER:
+                this.style.justifyContent = Justify.FlexStart;
+                this.style.alignItems = Align.Center;
+                break;
             case Spatial2D.AnchorPoint.TOP_RIGHT:
-                SetContainerJustifyContent(Justify.FlexStart);
+                this.style.justifyContent = Justify.FlexStart;
+                this.style.alignItems = Align.FlexEnd;
                 break;
-
             case Spatial2D.AnchorPoint.CENTER_LEFT:
+                this.style.justifyContent = Justify.Center;
+                this.style.alignItems = Align.FlexStart;
+                break;
             case Spatial2D.AnchorPoint.CENTER:
+                this.style.justifyContent = Justify.Center;
+                this.style.alignItems = Align.Center;
+                break;
             case Spatial2D.AnchorPoint.CENTER_RIGHT:
-                SetContainerJustifyContent(Justify.Center);
+                this.style.justifyContent = Justify.Center;
+                this.style.alignItems = Align.FlexEnd;
                 break;
-
             case Spatial2D.AnchorPoint.BOTTOM_LEFT:
-            case Spatial2D.AnchorPoint.BOTTOM_CENTER:
-            case Spatial2D.AnchorPoint.BOTTOM_RIGHT:
-                SetContainerJustifyContent(Justify.FlexEnd);
+                this.style.justifyContent = Justify.FlexEnd;
+                this.style.alignItems = Align.FlexStart;
                 break;
+            case Spatial2D.AnchorPoint.BOTTOM_CENTER:
+                this.style.justifyContent = Justify.FlexEnd;
+                this.style.alignItems = Align.Center;
+                break;
+            case Spatial2D.AnchorPoint.BOTTOM_RIGHT:
+                this.style.justifyContent = Justify.FlexEnd;
+                this.style.alignItems = Align.FlexEnd;
+                break;
+
         }
+
     }
 
-    public void SetContainerJustifyContent(Justify justify)
+    void AlignToDirectionPoint(Spatial2D.AnchorPoint directionPoint)
     {
-        //Container.style.justifyContent = justify;
-    }
 
-    public void SetAlignSelf(Align align)
-    {
-        this.style.alignSelf = align;
-    }
-
-    public void SetBackgroundSprite(Sprite sprite)
-    {
-        if (sprite == null)
-            this.style.backgroundImage = null;
-        else
-            this.style.backgroundImage = new StyleBackground(sprite);
     }
 
     public new class UxmlFactory : UxmlFactory<TextBubble> { }

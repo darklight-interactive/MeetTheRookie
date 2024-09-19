@@ -107,8 +107,8 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
         //speechBubble.SetBackgroundSprite(bubbleSprite);
 
-        speechBubble.SetAnchorPoint(anchor);
-        speechBubble.SetOriginPoint(origin);
+        speechBubble.DirectionPoint = anchor;
+        speechBubble.OriginPoint = origin;
 
         return speechBubble;
     }
@@ -120,7 +120,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
         while (true)
         {
-            for (int i = 0; i < speechBubble.fullText.Length; i++)
+            for (int i = 0; i < speechBubble.FullText.Length; i++)
             {
                 speechBubble.RollingTextStep();
                 yield return new WaitForSeconds(interval);
@@ -128,6 +128,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
             yield return null;
         }
     }
+
     public void DestroySpeechBubble()
     {
         if (_speechBubbleObject != null)

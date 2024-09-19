@@ -17,5 +17,6 @@ namespace Darklight.UnityExt.Library
         [SerializeField] TLibrary _library = default(TLibrary);
 
         public TLibrary Library => _library;
+
     }
 }

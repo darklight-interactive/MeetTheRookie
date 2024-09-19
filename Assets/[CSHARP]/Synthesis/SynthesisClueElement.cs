@@ -21,8 +21,8 @@ public partial class SynthesisClueElement : ControlledLabel
 
     public SynthesisClueElement()
     {
-        this.fullText = "New Synthesis Clue";
-        this.rollingTextPercentage = 1;
+        this.FullText = "New Synthesis Clue";
+        this.RollingTextPercentage = 1;
         //backgroundSprite = AssetDatabase.LoadAssetAtPath<Sprite>(DEFAULT_BACKGROUND);
 
         this.style.justifyContent = Justify.Center;

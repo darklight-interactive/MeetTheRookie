@@ -93,7 +93,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     {
         Debug.Log("Synthesis Adding clue: " + clue);
         SynthesisClueElement newClue = new SynthesisClueElement();
-        newClue.text = clue;
+        newClue.CurrentText = clue;
 
         //mystery1Container = ElementQuery<GroupBox>("mystery1");
         //mystery1Container.Add(newClue);

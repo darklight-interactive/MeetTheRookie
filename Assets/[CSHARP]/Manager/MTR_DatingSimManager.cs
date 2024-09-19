@@ -288,7 +288,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         dialogueText.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
-        for (int i = 0; i < dialogueText.fullText.Length; i++)
+        for (int i = 0; i < dialogueText.FullText.Length; i++)
         {
             dialogueText.RollingTextStep();
             buffer -= interval;
