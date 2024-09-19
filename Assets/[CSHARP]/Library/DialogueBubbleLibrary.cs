@@ -15,37 +15,3 @@ public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoi
 
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(TextBubbleLibrary))]
-public class DialogueBubbleLibraryCustomEditor : UnityEditor.Editor
-{
-    SerializedObject _serializedObject;
-    TextBubbleLibrary _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (TextBubbleLibrary)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button("Set To Defaults"))
-        {
-            _script.Library.SetToDefaults();
-        }
-
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif
-

@@ -6,16 +6,14 @@ using System.Linq;
 
 namespace Darklight.UnityExt.Library
 {
-
-    public interface ILibrary
+    public interface ILibrary<TKey, TValue> : IDictionary<TKey, TValue>
     {
-        void SetToDefaults();
-    }
+        List<LibraryItem<TKey, TValue>> Items { get; }
 
-    public interface ILibrary<TKey, TValue> : ILibrary, IDictionary<TKey, TValue>
-    {
         TKey CreateDefaultKey();
         TValue CreateDefaultValue();
+        void AddDefaultItem();
+        void Reset();
     }
 
     [System.Serializable]
@@ -34,9 +32,14 @@ namespace Darklight.UnityExt.Library
         }
     }
 
+    public abstract class LibraryBase
+    {
+        public LibraryBase() { }
+    }
+
     #region == (( CLASS : Library<TKey, TValue> )) ============================================= ))
     [System.Serializable]
-    public abstract class Library<TKey, TValue> : ILibrary<TKey, TValue>, ISerializationCallbackReceiver
+    public class Library<TKey, TValue> : LibraryBase, ILibrary<TKey, TValue>, ISerializationCallbackReceiver
         where TKey : notnull
         where TValue : notnull
     {
@@ -89,82 +92,28 @@ namespace Darklight.UnityExt.Library
             _items = new List<LibraryItem<TKey, TValue>>();
         }
 
-        // ======== [[ METHODS ]] ===================================== >>>>        
-        #region -- (( IDictionary<TKey, TValue> )) --
-        public void Add(TKey key, TValue value)
-        {
-            if (_dictionary.ContainsKey(key))
-                return;
-
-            _dictionary.Add(key, value);
-            _items.Add(new LibraryItem<TKey, TValue>(key, value));
-
-            ItemAdded?.Invoke(key, value);
-        }
-
-        public bool ContainsKey(TKey key)
-        {
-            return _dictionary.ContainsKey(key);
-        }
-
-        public bool Remove(TKey key)
-        {
-            if (_dictionary.Remove(key))
-            {
-                LibraryItem<TKey, TValue> item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
-                if (item != null)
-                {
-                    _items.Remove(item);
-                }
-                return true;
-            }
-            return false;
-        }
-
-
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            return _dictionary.TryGetValue(key, out value);
-        }
-
-        public void Add(KeyValuePair<TKey, TValue> item)
-        {
-            Add(item.Key, item.Value);
-        }
-
-        public void Clear()
-        {
-            _dictionary.Clear();
-            _items.Clear();
-        }
-
+        // ======== [[ METHODS ]] ===================================== >>>>
+        #region -- <PUBLIC_METHODS> (( IDictionary<TKey, TValue> )) --
+        public void Add(TKey key, TValue value) => InternalAdd(key, value);
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             return _dictionary.ContainsKey(item.Key) && EqualityComparer<TValue>.Default.Equals(_dictionary[item.Key], item.Value);
         }
-
+        public bool ContainsKey(TKey key) => _dictionary.ContainsKey(key);
+        public bool Remove(TKey key) => InternalRemove(key);
+        public bool Remove(KeyValuePair<TKey, TValue> item) => Remove(item.Key);
+        public bool TryGetValue(TKey key, out TValue value) => _dictionary.TryGetValue(key, out value);
+        public void Add(KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
+        public void Clear() => InternalClear();
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).CopyTo(array, arrayIndex);
+            _dictionary.ToList().CopyTo(array, arrayIndex);
         }
-
-        public bool Remove(KeyValuePair<TKey, TValue> item)
-        {
-            return Remove(item.Key);
-        }
-
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return _dictionary.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _dictionary.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _dictionary.GetEnumerator();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
-        #region -- (( ISerializationCallbackReceiver )) --
+        #region -- <PUBLIC_METHODS> (( ISerializationCallbackReceiver )) --
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
         {
@@ -193,40 +142,100 @@ namespace Darklight.UnityExt.Library
 
         #endregion
 
-        public void Add(LibraryItem<TKey, TValue> item)
+        #region -- <PRIVATE_METHODS> (( Internal Methods )) --
+        void InternalAdd(TKey key, TValue value)
         {
-            if (!_dictionary.ContainsKey(item.Key))
-            {
-                _dictionary.Add(item.Key, item.Value);
-                _items.Add(item);
-            }
-            else
-            {
-                Debug.LogWarning($"Key '{item.Key}' already exists in the library. Skipping.");
-            }
+            if (_dictionary.ContainsKey(key))
+                return;
+
+            _dictionary.Add(key, value);
+            _items.Add(new LibraryItem<TKey, TValue>(key, value));
+
+            ItemAdded?.Invoke(key, value);
         }
 
-        public abstract TKey CreateDefaultKey();
-        public abstract TValue CreateDefaultValue();
-        public virtual void SetToDefaults()
+        bool InternalRemove(TKey key)
         {
-            Clear();
-            Add(CreateDefaultKey(), CreateDefaultValue());
+            if (_dictionary.Remove(key))
+            {
+                LibraryItem<TKey, TValue> item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
+                if (item != null)
+                {
+                    _items.Remove(item);
+                }
+                return true;
+            }
+            return false;
         }
+
+        void InternalClear()
+        {
+            _dictionary.Clear();
+            _items.Clear();
+        }
+        #endregion
+
+        public virtual TKey CreateDefaultKey() => default(TKey);
+        public virtual TValue CreateDefaultValue() => default(TValue);
+        public virtual void AddDefaultItem() => Add(CreateDefaultKey(), CreateDefaultValue());
+        public virtual void Reset() => Clear();
     }
     #endregion
 
-    [Serializable]
-    public class StringObjectLibrary : Library<string, UnityEngine.Object>
+    public abstract class EnumKeyLibrary<TKey, TValue> : Library<TKey, TValue>
+        where TKey : System.Enum
+        where TValue : notnull
     {
-        public override string CreateDefaultKey()
+        List<TKey> _enumValues = Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
+        TKey GetAvailableKey()
         {
-            return "Default";
+            _enumValues = Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
+            foreach (TKey key in _enumValues)
+            {
+                if (!ContainsKey(key))
+                {
+                    return key;
+                }
+            }
+            return CreateDefaultKey();
         }
 
-        public override UnityEngine.Object CreateDefaultValue()
+        public override TKey CreateDefaultKey() => GetAvailableKey();
+        public override void AddDefaultItem() => Add(GetAvailableKey(), CreateDefaultValue());
+        public override void Reset()
         {
-            return default(UnityEngine.Object);
+            base.Reset();
+            foreach (TKey key in _enumValues)
+            {
+                Add(key, CreateDefaultValue());
+            }
+        }
+    }
+
+    public abstract class IntKeyLibrary<TValue> : Library<int, TValue>
+        where TValue : notnull
+    {
+        public override void Reset()
+        {
+            base.Reset();
+            for (int i = 0; i < 10; i++)
+            {
+                Add(i, CreateDefaultValue());
+            }
+        }
+    }
+
+    public abstract class StringKeyLibrary<TValue> : Library<string, TValue>
+        where TValue : notnull
+    {
+        public override void Reset()
+        {
+            base.Reset();
+            for (int i = 0; i < 10; i++)
+            {
+                string key = $"DefaultKey_{i}";
+                Add(i.ToString(), CreateDefaultValue());
+            }
         }
     }
 

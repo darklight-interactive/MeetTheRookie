@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Darklight.UnityExt.Library
 {
+
+
     [Serializable]
     public class EnumObjectLibrary<TEnum, TObj> : EnumKeyLibrary<TEnum, TObj>
         where TEnum : System.Enum

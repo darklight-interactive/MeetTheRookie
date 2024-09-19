@@ -1,69 +1,63 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
+using System;
+using System.Reflection;
+using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
 
 namespace Darklight.UnityExt.Library.Editor
 {
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
-        protected ReorderableList _list;
+        const float INDENT_WIDTH = 15f;
+        readonly List<string> PROP_BLACKLIST = new List<string> { "_items" };
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public static GUIStyle HeaderStyle = new GUIStyle(EditorStyles.largeLabel)
         {
-            // Begin the property scope
-            EditorGUI.BeginProperty(position, label, property);
+            fontStyle = FontStyle.Bold
+        };
 
-            // Create copies to iterate through properties
-            SerializedProperty iterator = property.Copy();
-            SerializedProperty endProperty = iterator.GetEndProperty();
+
+        ReorderableList _list;
+        SerializedObject _serializedObject;
+        SerializedProperty _property;
+        SerializedProperty _itemsProperty;
+
+        protected Type serializedObjectType => _serializedObject.targetObject.GetType();
+        protected string serializedObjectName => serializedObjectType.Name;
+        protected float singleLineHeight => EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
+        protected float currentIndent => EditorGUI.indentLevel * INDENT_WIDTH;
+
+        public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
+        {
+            // << INITIALIZATION >>
+            if (_serializedObject == null)
+                _serializedObject = property.serializedObject;
+            if (_property == null)
+                _property = property;
+            if (_itemsProperty == null)
+                _itemsProperty = property.FindPropertyRelative("_items");
 
             // Initialize variables for positioning
-            float y = position.y;
-            float indent = EditorGUI.indentLevel * 15f;
+            Vector2 position = new Vector2(rect.x, rect.y);
 
-            // Draw the foldout
-            property.isExpanded = EditorGUI.Foldout(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.isExpanded, label, true);
-            y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            // << DRAW PROPERTY >>
+            // Begin the property scope
+            EditorGUI.BeginProperty(rect, label, property);
 
-            if (property.isExpanded)
-            {
-                // Increase indent level for child properties
-                EditorGUI.indentLevel++;
+            DrawHeader(rect, out float headerHeight);
+            position.y += headerHeight;
 
-                // Iterate through the properties of the object
-                iterator.NextVisible(true); // Move to the first child property
+            Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
+            DrawProperties(propRect, out float propertiesHeight);
+            position.y += propertiesHeight;
 
-                while (iterator.NextVisible(false) && !SerializedProperty.EqualContents(iterator, endProperty))
-                {
-                    // Skip the '_items' property since we'll handle it with the ReorderableList
-                    if (iterator.name == "_items")
-                        continue;
+            // Draw the ReorderableList
+            DrawReorderableList(position, rect.width, out float listHeight);
 
-                    // Calculate the height for the property
-                    float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
-
-                    // Draw the property field
-                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, propertyHeight), iterator, true);
-
-                    // Increment y position
-                    y += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
-                }
-
-                // Ensure the ReorderableList is initialized
-                SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
-                InitializeReorderableList(itemsProperty, property.serializedObject);
-
-                // Calculate the height for the list
-                float listHeight = _list.GetHeight();
-
-                // Draw the ReorderableList
-                _list.DoList(new Rect(position.x, y, position.width, listHeight));
-                y += listHeight + EditorGUIUtility.standardVerticalSpacing;
-
-                // Decrease indent level back
-                EditorGUI.indentLevel--;
-            }
+            EditorGUILayout.Space(singleLineHeight);
 
             // End the property scope
             EditorGUI.EndProperty();
@@ -72,7 +66,7 @@ namespace Darklight.UnityExt.Library.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             // Start with the height of the foldout
-            float totalHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            float totalHeight = singleLineHeight;
 
             if (property.isExpanded)
             {
@@ -97,8 +91,7 @@ namespace Darklight.UnityExt.Library.Editor
                 }
 
                 // Add the height of the ReorderableList
-                SerializedProperty itemsProperty = property.FindPropertyRelative("_items");
-                InitializeReorderableList(itemsProperty, property.serializedObject);
+                InitializeReorderableList();
                 totalHeight += _list.GetHeight() + EditorGUIUtility.standardVerticalSpacing;
 
                 // Decrease indent level
@@ -108,11 +101,12 @@ namespace Darklight.UnityExt.Library.Editor
             return totalHeight;
         }
 
-        private void InitializeReorderableList(SerializedProperty itemsProperty, SerializedObject serializedObject)
+        #region ======== [[ REORDERABLE LIST ]] ===================================== >>>>
+        protected void InitializeReorderableList()
         {
-            if (_list == null || _list.serializedProperty != itemsProperty)
+            if (_list == null || _list.serializedProperty != _itemsProperty)
             {
-                _list = new ReorderableList(serializedObject, itemsProperty, false, true, true, true);
+                _list = new ReorderableList(_serializedObject, _itemsProperty, false, true, true, true);
                 _list.drawElementCallback = DrawElementCallback;
                 _list.drawHeaderCallback = DrawHeaderCallback;
                 _list.onAddCallback = OnAddCallback;
@@ -153,6 +147,7 @@ namespace Darklight.UnityExt.Library.Editor
 
         protected virtual void OnAddCallback(ReorderableList list)
         {
+            /*
             SerializedProperty itemsProperty = list.serializedProperty;
             itemsProperty.arraySize++;
             list.index = itemsProperty.arraySize - 1;
@@ -165,8 +160,11 @@ namespace Darklight.UnityExt.Library.Editor
             if (keyProp != null)
                 InitializeProperty(keyProp);
             InitializeProperty(valueProp);
+            */
 
-            itemsProperty.serializedObject.ApplyModifiedProperties();
+            InvokeSerializedObjectMethod("AddDefaultItem");
+
+            _serializedObject.ApplyModifiedProperties();
         }
 
         protected virtual void OnRemoveCallback(ReorderableList list)
@@ -175,8 +173,119 @@ namespace Darklight.UnityExt.Library.Editor
             itemsProperty.DeleteArrayElementAtIndex(list.index);
             itemsProperty.serializedObject.ApplyModifiedProperties();
         }
+        #endregion
 
-        private void InitializeProperty(SerializedProperty property)
+        // ======== [[ DRAW METHODS ]] ===================================== >>>>
+
+
+        void DrawHeader(Rect rect, out float headerHeight)
+        {
+            int btnWidth = 50;
+            Vector2 position = new Vector2(rect.x, rect.y);
+
+            Rect titleRect = rect;
+            PropertyDrawerUtility.DrawLabel(rect, serializedObjectName, HeaderStyle, out float titleHeight);
+
+            position.x = rect.x + rect.width;
+            position.x -= btnWidth * 2;
+
+            Rect btn1Rect = new Rect(position.x, position.y, btnWidth, singleLineHeight);
+            PropertyDrawerUtility.DrawButton(btn1Rect, "Reset", out float resetButtonHeight, () =>
+            {
+                InvokeSerializedObjectMethod("Reset");
+            });
+
+            Rect btn2Rect = new Rect(position.x + btnWidth, position.y, btnWidth, singleLineHeight);
+            PropertyDrawerUtility.DrawButton(btn2Rect, "Clear", out float clearButtonHeight, () =>
+            {
+                InvokeSerializedObjectMethod("Clear");
+            });
+            headerHeight = singleLineHeight;
+        }
+
+        void DrawReorderableList(Vector2 position, float width, out float listHeight)
+        {
+            InitializeReorderableList();
+
+            // Calculate the height for the list
+            listHeight = _list.GetHeight();
+
+            // Draw the ReorderableList
+            _list.DoList(new Rect(position.x, position.y, width, listHeight));
+        }
+
+        void DrawProperties(Rect rect, out float height)
+        {
+            float currentYPos = rect.y;
+
+            // Create copies to iterate through properties
+            SerializedProperty iterator = _property.Copy();
+            SerializedProperty endProperty = iterator.GetEndProperty();
+
+            // Increase indent level for child properties
+            EditorGUI.indentLevel++;
+
+            // Iterate through the properties of the object
+            iterator.NextVisible(true); // Move to the first child property
+
+            while (iterator.NextVisible(false) && !SerializedProperty.EqualContents(iterator, endProperty))
+            {
+                // Skip any properties in the blacklist
+                if (PROP_BLACKLIST.Contains(iterator.name))
+                    continue;
+
+                // Calculate the height for the property
+                float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
+
+                // Draw the property field
+                EditorGUI.PropertyField(new Rect(rect.x, currentYPos, rect.width, propertyHeight), iterator, true);
+
+                // Increment y position
+                currentYPos += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
+            }
+
+            height = currentYPos - rect.y;
+        }
+
+        // ======== [[ HELPER METHODS ]] ===================================== >>>>
+        void InvokeSerializedObjectMethod(string methodName)
+        {
+            // Get the target object
+            UnityEngine.Object targetObject = _serializedObject.targetObject;
+
+            // Check if the method exists on the target object and invoke it
+            MethodInfo methodInfo = targetObject.GetType().GetMethod(methodName);
+            if (methodInfo != null)
+            {
+                methodInfo.Invoke(targetObject, null);
+                _serializedObject.ApplyModifiedProperties();
+            }
+            else
+            {
+                Debug.LogWarning($"Method '{methodName}' not found on type '{targetObject.GetType()}'.");
+            }
+        }
+
+        private void InvokeSerializedObjectMethod(string methodName, object[] parameters)
+        {
+            UnityEngine.Object targetObject = _serializedObject.targetObject;
+
+            // Get the method information, matching the number and types of parameters
+            MethodInfo methodInfo = targetObject.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            if (methodInfo != null)
+            {
+                // Invoke the method with the provided parameters
+                methodInfo.Invoke(targetObject, parameters);
+                _serializedObject.ApplyModifiedProperties();
+            }
+            else
+            {
+                Debug.LogWarning($"Method '{methodName}' with specified parameters not found on type '{targetObject.GetType()}'.");
+            }
+        }
+
+        void InitializeProperty(SerializedProperty property)
         {
             switch (property.propertyType)
             {
