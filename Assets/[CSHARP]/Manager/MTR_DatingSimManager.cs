@@ -187,6 +187,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         if (isRolling)
         {
             StopAllCoroutines();
+            //MTR_AudioManager.Instance.StopRepeatingEvent();
             dialogueText.InstantCompleteText();
             if(choicesActive){
                 choiceParent.style.display = DisplayStyle.Flex;
@@ -233,6 +234,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         Story currentStory = storyObject.StoryValue;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
+        string speakerName = "";
         foreach (string tag in tags)
         {
             Debug.Log(tag);
@@ -247,6 +249,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagMisra");
                     lupeImage.RemoveFromClassList("Inactive");
                     misraImage.AddToClassList("Inactive");
+                    speakerName = "lupe";
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
@@ -256,6 +259,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     nameTag.RemoveFromClassList("NameTagLupe");
                     misraImage.RemoveFromClassList("Inactive");
                     lupeImage.AddToClassList("Inactive");
+                    speakerName = "misra";
                 }
             }
             else if (splitTag[0].Trim() == "emote")
@@ -278,15 +282,20 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             }
         }
 
-        StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
+        StartCoroutine(RollingTextRoutine(dialogue, 0.025f, speakerName));
     }
 
-    IEnumerator RollingTextRoutine(string fullText, float interval)
+    IEnumerator RollingTextRoutine(string fullText, float interval, string speakerName)
     {
         isRolling = true;
         continueTriangle.visible = false;
         dialogueText.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
+
+        // Start text SFX
+        //if (speakerName == "lupe") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
+        //else if (speakerName == "misra") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
+        //else { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }
 
         for (int i = 0; i < dialogueText.fullText.Length; i++)
         {
@@ -295,6 +304,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
             yield return new WaitForSeconds(interval);
         }
 
+        //if (isRolling) { MTR_AudioManager.Instance.StopRepeatingEvent(); }
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
         if(choicesActive){
             choiceParent.style.display = DisplayStyle.Flex;
@@ -327,11 +337,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         success = emotes.SetEmote(name, emote);
         if (name == "lupe")
         {
-            FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceLupeEvent, (emotes.fmodLupeParameterName, emote));
+            FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote));
         }
         else if (name == "misra")
         {
-            FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceMisraEvent, (emotes.fmodMisraParameterName, emote));
+            FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote));
         }
 
         return success;
