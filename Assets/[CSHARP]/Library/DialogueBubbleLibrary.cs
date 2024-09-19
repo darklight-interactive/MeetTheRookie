@@ -9,22 +9,22 @@ using Darklight.UnityExt.UXML;
 using UnityEditor;
 #endif
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
-public class DialogueBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
+public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
 
 
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(DialogueBubbleLibrary))]
+[CustomEditor(typeof(TextBubbleLibrary))]
 public class DialogueBubbleLibraryCustomEditor : UnityEditor.Editor
 {
     SerializedObject _serializedObject;
-    DialogueBubbleLibrary _script;
+    TextBubbleLibrary _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (DialogueBubbleLibrary)target;
+        _script = (TextBubbleLibrary)target;
     }
 
     public override void OnInspectorGUI()

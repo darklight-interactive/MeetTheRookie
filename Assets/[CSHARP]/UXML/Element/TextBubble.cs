@@ -2,16 +2,20 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Core2D;
+using NaughtyAttributes;
 
 [UxmlElement]
 public partial class TextBubble : ControlledLabel
 {
-    DialogueBubbleLibrary _library;
+    VisualElement _container;
+    ControlledLabel _controlledLabel;
+
+    TextBubbleLibrary _library;
     Spatial2D.AnchorPoint _anchorPoint = Spatial2D.AnchorPoint.CENTER;
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
 
     [UxmlAttribute]
-    public DialogueBubbleLibrary Library
+    public TextBubbleLibrary Library
     {
         get { return _library; }
         set { _library = value; }
@@ -38,50 +42,7 @@ public partial class TextBubble : ControlledLabel
         set { SetOriginPoint(value); }
     }
 
-    //public VisualElement Container { get => FindOrCreateContainer(); }
-
-    public TextBubble()
-    {
-        //FindOrCreateContainer();
-        SetBackgroundSprite(BubbleSprite);
-    }
-
-    // Method to find the parent element with the ID 'container'
-
-    private VisualElement FindOrCreateContainer()
-    {
-        // Try to find the container by traversing the hierarchy upwards
-        VisualElement container = FindParentById(this, "container");
-
-        // If not found, create a new container
-        if (container == null)
-        {
-            container = new VisualElement { name = "container" };
-            // Set up the container's styles or properties as needed
-            container.style.flexDirection = FlexDirection.Column;
-
-            // Add the new container to the root or desired parent
-            // Assuming root or another parent context exists, adjust as necessary
-            this.parent?.Add(container);
-        }
-
-        return container;
-    }
-
-
-    private VisualElement FindParentById(VisualElement element, string id)
-    {
-        // Traverse upwards to find a parent with the specified ID
-        while (element != null)
-        {
-            if (element.name == id)
-            {
-                return element;
-            }
-            element = element.parent;
-        }
-        return null;
-    }
+    public TextBubble() { }
 
     public void SetAnchorPoint(Spatial2D.AnchorPoint anchorPoint)
     {

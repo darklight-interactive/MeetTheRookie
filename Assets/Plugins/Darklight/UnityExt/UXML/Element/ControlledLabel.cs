@@ -16,8 +16,11 @@ namespace Darklight.UnityExt.UXML
     [UxmlElement]
     public partial class ControlledLabel : VisualElement
     {
+        const string DEFAULT_BKG_PATH = "Assets/Plugins/Darklight/_csharp/UnityExt/UXML/Element/ControlledLabel.uxml";
+
+
         public class ControlledSizeLabelFactory : UxmlFactory<ControlledLabel> { }
-        VisualElement _container;
+        VisualElement _innerContainer;
         float _rollingTextPercentValue = 1;
         int _currentIndex;
         int _fontSize = 20;
@@ -26,20 +29,6 @@ namespace Darklight.UnityExt.UXML
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         // -- (( UXML Attributes )) -------- >> 
-        [UxmlAttribute, ShowOnly]
-        public Vector2 screenSize
-        {
-            get { return ScreenInfoUtility.ScreenSize; }
-            set { }
-        }
-
-        [UxmlAttribute, ShowOnly]
-        public float aspectRatio
-        {
-            get { return ScreenInfoUtility.GetScreenAspectRatio(); }
-            set { }
-        }
-
         [UxmlAttribute, Range(12, 240)]
         public int fontSize
         {
@@ -83,11 +72,12 @@ namespace Darklight.UnityExt.UXML
             set { label.style.unityTextAlign = value; }
         }
 
+        // ======== [[ CONSTRUCTORS ]] =============================== >>>>
         public ControlledLabel()
         {
-            _container = new VisualElement
+            _innerContainer = new VisualElement
             {
-                name = "contained-label",
+                name = "controlledLabel-container",
                 style =
                 {
                     flexGrow = 1,
@@ -99,6 +89,7 @@ namespace Darklight.UnityExt.UXML
 
             label = new Label
             {
+                name = "controlledLabel",
                 text = fullText,
                 style =
                 {
@@ -108,8 +99,10 @@ namespace Darklight.UnityExt.UXML
                 }
             };
 
-            _container.Add(label);
-            Add(_container);
+            // Add the label to the container
+            _innerContainer.Add(label);
+            this.Add(_innerContainer);
+
 
             label.style.fontSize = _fontSize;
         }

@@ -9,6 +9,11 @@ namespace Darklight.UnityExt.Library
         where TObj : UnityEngine.Object
     {
         [SerializeField] TObj _defaultObject = default(TObj);
+        public override TEnum CreateDefaultKey()
+        {
+            return default(TEnum);
+        }
+
         public override TObj CreateDefaultValue()
         {
             return _defaultObject;

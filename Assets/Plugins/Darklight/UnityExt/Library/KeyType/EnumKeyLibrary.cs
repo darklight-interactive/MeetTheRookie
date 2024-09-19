@@ -10,13 +10,6 @@ namespace Darklight.UnityExt.Library
         where TKey : System.Enum
         where TValue : notnull
     {
-        [SerializeField] TKey _defaultKey;
-
-        public override TKey CreateDefaultKey()
-        {
-            return _defaultKey;
-        }
-
         public override void SetToDefaults()
         {
             Clear();

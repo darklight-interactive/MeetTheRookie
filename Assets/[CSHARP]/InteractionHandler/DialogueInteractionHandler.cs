@@ -18,8 +18,8 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 {
     UXML_RenderTextureObject _speechBubbleObject;
     [SerializeField, ShowOnly] string _speakerTag = "";
-    [SerializeField] UXML_UIDocumentPreset _speechBubblePreset;
-    [SerializeField, Expandable] DialogueBubbleLibrary _dialogueBubbleLibrary;
+    [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
+    [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
     public override void OnInitialize(Grid2D grid)
@@ -28,7 +28,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
 
         if (_dialogueBubbleLibrary == null)
         {
-            _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<DialogueBubbleLibrary>();
+            _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
         }
 
         // Register all the anchor points in the library
