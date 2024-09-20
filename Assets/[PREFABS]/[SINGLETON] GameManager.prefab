@@ -407,6 +407,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeaae59828a8b67478718dea29de25de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerLayer: Player
+  _npcLayer: NPC
+  _interactableLayer: Interactable
+  _playerInteractor: {fileID: 0}
+  _interactableRegistry:
+    _items:
+    - _id: 0
+      _key: <EXAMPLE> Interactable
+      _value: {fileID: 0}
   _iconInteractionHandlerPrefab: {fileID: 863848289328599988, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
   _dialogueInteractionHandlerPrefab: {fileID: 6598154582557312995, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
   _choiceInteractionHandlerPrefab: {fileID: 0}

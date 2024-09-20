@@ -12,51 +12,80 @@ using UnityEditor;
 public interface IInteractor
 {
     LayerMask LayerMask { get; }
-    List<Interactable> Interactables { get; }
-    List<Interactable> GetOverlapInteractables();
+    Library<string, Interactable> NearbyInteractables { get; }
+    Interactable TargetInteractable { get; }
+
     void TryAddInteractable(Interactable interactable);
     void RemoveInteractable(Interactable interactable);
+
+    List<Interactable> FindInteractables();
     Interactable GetInteractable(string name);
     Interactable GetClosestInteractableTo(Vector3 position);
-    void Refresh();
+
+    void SetTarget(Interactable interactable);
+    void ClearTarget();
+
+    bool InteractWith(Interactable interactable);
+    bool InteractWithTarget();
+
+    void RefreshNearbyInteractables();
 }
 
 [ExecuteAlways]
 public class Interactor : MonoBehaviour, IInteractor
 {
-    const string PREFIX = "Interactor:";
+    protected const string PREFIX = "Interactor:";
+
+    Interactable _lastTarget;
 
     [Header("Interactor Settings")]
     [SerializeField] LayerMask _layerMask;
     [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
 
-    [Header("Nearby Interactables")]
+    [Header("Interactables")]
+    [SerializeField, ShowOnly] Interactable _targetInteractable;
     [SerializeField] Library<string, Interactable> _nearbyInteractables = new Library<string, Interactable>();
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    public List<Interactable> Interactables => new List<Interactable>(_nearbyInteractables.Values);
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
+    public Library<string, Interactable> NearbyInteractables => _nearbyInteractables;
+    public Interactable TargetInteractable => _targetInteractable;
+
     public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
     protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
 
+    #region ======== <METHODS> (( UNITY RUNTIME )) ================================== >>>>
     public virtual void Update()
     {
-        Refresh();
+        RefreshNearbyInteractables();
+
+        _targetInteractable = GetClosestInteractableTo(OverlapCenter);
     }
 
-    public void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
         foreach (Interactable interactable in _nearbyInteractables.Values)
         {
-            Gizmos.color = Color.yellow;
+            if (interactable == null) continue;
+            if (interactable == _targetInteractable)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, interactable.transform.position);
+            }
+            else
+            {
+                Gizmos.color = Color.yellow;
+            }
+
             Gizmos.DrawSphere(interactable.transform.position, 0.1f);
         }
     }
+    #endregion
 
     #region ======== <PUBLIC_METHODS> (( IInteractor )) ================================== >>>>
-    public List<Interactable> GetOverlapInteractables()
+    public List<Interactable> FindInteractables()
     {
         List<Interactable> interactables = new List<Interactable>();
         Collider2D[] colliders = Physics2D.OverlapBoxAll(OverlapCenter, _dimensions, 0, _layerMask);
@@ -109,10 +138,33 @@ public class Interactor : MonoBehaviour, IInteractor
         return closestInteractable;
     }
 
-    public void Refresh()
+    public void SetTarget(Interactable interactable)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ClearTarget()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractWith(Interactable interactable)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractWithTarget()
+    {
+        if (_targetInteractable == null) return false;
+
+        bool result = _targetInteractable.AcceptInteraction(this);
+        return result;
+    }
+
+    public void RefreshNearbyInteractables()
     {
         // Update the interactables dictionary with the overlap interactables.
-        List<Interactable> overlapInteractables = GetOverlapInteractables();
+        List<Interactable> overlapInteractables = FindInteractables();
         foreach (Interactable interactable in overlapInteractables)
         {
             TryAddInteractable(interactable);
@@ -133,5 +185,6 @@ public class Interactor : MonoBehaviour, IInteractor
             RemoveInteractable(interactable);
         }
     }
+
     #endregion
 }

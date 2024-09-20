@@ -15,7 +15,7 @@ using UnityEditor;
 public class PlayerInteractor : Interactor
 {
     const float INTERACTOR_X_OFFSET = 0.75f;
-
+    Interactable _lastTarget;
     DialogueInteractionHandler _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
 
@@ -23,13 +23,8 @@ public class PlayerInteractor : Interactor
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     [Header("Interactable Radar")]
-    [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
-    public Interactable targetInteractable;
-
-    [ShowOnly, Tooltip("The Interactable that the player is currently interacting with. Can be null.")]
-    public Interactable activeInteractable;
-    [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
-    public Interactable previousTargetInteractable;
+    [SerializeField, ShowOnly] Interactable _targetInteractable;
+    [SerializeField, ShowOnly] Interactable _activeInteractable;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
@@ -45,7 +40,6 @@ public class PlayerInteractor : Interactor
             return speakers;
         }
     }
-
     public MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
     public PlayerController PlayerController => GetComponent<PlayerController>();
     public DialogueInteractionHandler DialogueHandler
@@ -81,42 +75,24 @@ public class PlayerInteractor : Interactor
     {
         base.Update();
 
+        // << SET INTERACTOR OFFSET POSITION >>
         if (PlayerController.Facing == PlayerFacing.LEFT)
             OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
         else if (PlayerController.Facing == PlayerFacing.RIGHT)
             OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
-    }
 
-    public bool InteractWithTarget()
-    {
-        if (targetInteractable == null) return false;
-        if (targetInteractable.isComplete) return false;
-
-        targetInteractable.TargetClear();
-        previousTargetInteractable = null;
-        // If first interaction
-        if (activeInteractable != targetInteractable)
-        {
-            // Set the active interactable
-            activeInteractable = targetInteractable;
-
-            activeInteractable.OnCompleted += ExitInteraction;
-
-            StartCoroutine(MoveToPosition());
-
-            return true;
-        }
-
-        activeInteractable.Interact(); // << MAIN INTERACTION
-        return true;
+        // << UPDATE TARGET INTERACTABLE >>
+        _targetInteractable = GetClosestInteractableTo(PlayerController.transform.position);
     }
 
     private IEnumerator MoveToPosition()
     {
         PlayerController controller = gameObject.GetComponent<PlayerController>();
+        yield return new WaitForSeconds(0.1f);
 
+        /*
         // Set up destination points and sort by nearest
-        List<GameObject> destinationPoints = activeInteractable.GetDestinationPoints();
+        List<GameObject> destinationPoints = _activeInteractable.GetDestinationPoints();
 
         // Ensure there are enough destination points
         if (destinationPoints == null || destinationPoints.Count == 0)
@@ -126,10 +102,10 @@ public class PlayerInteractor : Interactor
             PlayerController.EnterInteraction();
 
             // Set Lupe to face interactable
-            Vector3 newActiveInteractablePosition = activeInteractable.gameObject.transform.position;
+            Vector3 newActiveInteractablePosition = _activeInteractable.gameObject.transform.position;
             //PlayerController.Animator.FrameAnimationPlayer.FlipSprite(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
-            activeInteractable.Interact(); // << MAIN INTERACTION
+            //_activeInteractable.AcceptInteraction(); // << MAIN INTERACTION
             yield break;
         }
 
@@ -189,19 +165,23 @@ public class PlayerInteractor : Interactor
             break;
         }
 
-        // Set the player controller state to Interaction
-        PlayerController.EnterInteraction();
-
         if (Misra != null)
         {
             Misra.GetComponent<MTR_Misra_Controller>().stateMachine.GoToState(NPCState.FOLLOW);
         }
 
-            // Set Lupe to face interactable
-            Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
+        */
+
+        // Set the player controller state to Interaction
+        PlayerController.EnterInteraction();
+
+
+
+        // Set Lupe to face interactable
+        Vector3 activeInteractablePosition = _activeInteractable.gameObject.transform.position;
         //PlayerController.Animator.FrameAnimationPlayer.FlipSprite(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
-        activeInteractable.Interact(); // << MAIN INTERACTION
+        //_activeInteractable.AcceptInteraction(); // << MAIN INTERACTION
     }
 
     public void ForceInteract(Interactable interactable)
@@ -210,8 +190,8 @@ public class PlayerInteractor : Interactor
         Debug.Log($"Player Interactor :: Force Interact with {interactable.name}");
 
         // Set the target interactable
-        targetInteractable = interactable;
-        targetInteractable.TargetSet();
+        _targetInteractable = interactable;
+        _targetInteractable.AcceptTarget(this);
 
         // Interact with the target
         InteractWithTarget();
@@ -229,9 +209,8 @@ public class PlayerInteractor : Interactor
         InkyStoryManager.Instance.SetSpeaker("Lupe");
 
         // Unsubscribe from the OnComplete event
-        activeInteractable.OnCompleted -= ExitInteraction;
-        targetInteractable = null;
-        activeInteractable = null;
+        _targetInteractable = null;
+        _activeInteractable = null;
     }
 
 #if UNITY_EDITOR

@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(NPC_Controller))]
-public class NPC_Interactable : Interactable, IInteractable
+public class NPC_Interactable : MTR_Interactable, IInteractable
 {
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
@@ -47,38 +47,37 @@ public class NPC_Interactable : Interactable, IInteractable
 
 
     // ======== [[ METHODS ]] ================================== >>>>
-    public override void Awake()
+    public override void Initialize()
     {
-        base.Awake();
-    }
+        base.Initialize();
 
-    public override void Start()
-    {
         SpawnDestinationPoints();
 
         Reset();
 
-        // >> ON FIRST INTERACTION -------------------------------
-        this.OnFirstInteraction += () => 
-        {
-            _stateBeforeTalkedTo = _stateMachine.CurrentState;
+        /*
+            // >> ON FIRST INTERACTION -------------------------------
+            this.OnStartInteraction += () =>
+            {
+                _stateBeforeTalkedTo = _stateMachine.CurrentState;
 
-            // If the statemachine is not null, go to the speak state
-            _stateMachine?.GoToState(NPCState.SPEAK);
-        };
+                // If the statemachine is not null, go to the speak state
+                _stateMachine?.GoToState(NPCState.SPEAK);
+            };
 
-        // >> ON INTERACT ---------------------------------------
-        // NOTE :: This event is only called when an Interaction is confirmed
-        this.OnInteraction += (string text) =>
-        {
+            // >> ON INTERACT ---------------------------------------
+            // NOTE :: This event is only called when an Interaction is confirmed
+            this.OnContinueInteraction += (string text) =>
+            {
 
-        };
+            };
 
-        this.OnCompleted += () =>
-        {
-            // If the statemachine is not null, go to the state before talked to
-            _stateMachine?.GoToState(_stateBeforeTalkedTo);
-        };
+            this.OnCompleteInteraction += () =>
+            {
+                // If the statemachine is not null, go to the state before talked to
+                _stateMachine?.GoToState(_stateBeforeTalkedTo);
+            };
+            */
     }
 
     public void PlayAnimation(NPCState state)

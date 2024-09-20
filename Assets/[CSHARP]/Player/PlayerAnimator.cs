@@ -88,7 +88,11 @@ public class PlayerAnimationEditor : UnityEditor.Editor
         {
             if (_script.animationStateOverride != PlayerState.NULL)
             {
-                _script.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
+                SpriteSheet spriteSheet = _script.GetSpriteSheetWithState(_script.animationStateOverride);
+                if (spriteSheet != null)
+                {
+                    _script.Initialize(spriteSheet);
+                }
             }
 
             _serializedObject.ApplyModifiedProperties();

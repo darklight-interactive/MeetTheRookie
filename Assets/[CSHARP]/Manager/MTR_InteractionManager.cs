@@ -40,10 +40,11 @@ public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionMana
     #region ======== <PUBLIC_STATIC_METHODS> [[ INTERACTABLE REGISTRY ]] ================================== >>>>
     public static void RegisterInteractable(Interactable interactable)
     {
-        if (Instance._interactableRegistry.ContainsKey(interactable.name)) return;
+        // << ADD INTERACTABLE TO REGISTRY >>
+        if (!Instance._interactableRegistry.ContainsKey(interactable.name))
+            Instance._interactableRegistry.Add(interactable.name, interactable);
 
         // << BASE INTERACTABLE >>
-        Instance._interactableRegistry.Add(interactable.name, interactable);
         InitializeIconInteractionHandler(interactable);
 
         // << NPC INTERACTABLE >>

@@ -22,7 +22,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void SceneChanged(Scene oldScene, Scene newScene)
@@ -32,11 +32,13 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
 
         List<GameObject> interactableObjects = GetAllInteractables();
 
+        /*
         foreach (GameObject interactable in interactableObjects)
         {
             // ensure the interactable knows where its DestinationPoints are
             interactable.GetComponent<Interactable>().FindDestinationPoints();
         }
+        */
 
         if (!scenes.ContainsKey(currentScene.name))
         {
@@ -137,6 +139,7 @@ public class SceneInteractableInfo
         {
             Interactable script = interactable.GetComponent<Interactable>();
 
+            /*
             if (!script.isSpawn) { continue; }
 
             List<GameObject> destinationPoints = script.GetDestinationPoints();
@@ -144,6 +147,7 @@ public class SceneInteractableInfo
             {
                 spawnPoints.Add(destinationPoint.transform.position.x);
             }
+            */
         }
         return spawnPoints;
     }
