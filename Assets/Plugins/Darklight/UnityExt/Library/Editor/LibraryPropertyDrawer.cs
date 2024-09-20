@@ -12,32 +12,30 @@ namespace Darklight.UnityExt.Library.Editor
     public class LibraryPropertyDrawer : PropertyDrawer
     {
         const float INDENT_WIDTH = 15f;
+        const float PADDING = 5f;
         readonly List<string> PROP_BLACKLIST = new List<string> { "_items" };
-
-        public static GUIStyle HeaderStyle = new GUIStyle(EditorStyles.largeLabel)
-        {
-            fontStyle = FontStyle.Bold
-        };
-
 
         ReorderableList _list;
         SerializedObject _serializedObject;
-        SerializedProperty _property;
+        SerializedProperty _libraryProperty;
         SerializedProperty _itemsProperty;
         bool _foldoutToggle;
         float _propertyHeight;
 
-        protected Type serializedObjectType => _serializedObject.targetObject.GetType();
-        protected string serializedObjectName => serializedObjectType.Name;
-        protected float singleLineHeight => EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
+        protected Type libraryType => _libraryProperty.GetType();
+        protected string libraryName => libraryType.Name;
+        protected Type objectType => _serializedObject.targetObject.GetType();
+        protected string objectName => objectType.Name;
+        protected float singleLineHeight = EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
+        protected float indentWidth => EditorGUI.indentLevel * INDENT_WIDTH;
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
             // << INITIALIZATION >>
             if (_serializedObject == null)
                 _serializedObject = property.serializedObject;
-            if (_property == null)
-                _property = property;
+            if (_libraryProperty == null)
+                _libraryProperty = property;
             if (_itemsProperty == null)
                 _itemsProperty = property.FindPropertyRelative("_items");
 
@@ -45,7 +43,7 @@ namespace Darklight.UnityExt.Library.Editor
             // Begin the property scope
             EditorGUI.BeginProperty(rect, label, property);
 
-            Vector2 position = new Vector2(rect.x, rect.y);
+            Vector2 position = new Vector2(rect.x + indentWidth, rect.y);
 
             // ( Foldout Toggle )---------------------------------------------
             Rect foldoutRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
@@ -54,28 +52,21 @@ namespace Darklight.UnityExt.Library.Editor
 
             if (_foldoutToggle)
             {
-                // ( Header )-----------------------------------------------------
-                Rect headerRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
-                DrawHeader(headerRect, out float headerHeight);
-                position.y += headerHeight;
-
                 // ( Properties )-------------------------------------------------
                 Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
                 DrawProperties(propRect, out float propertiesHeight);
                 position.y += propertiesHeight;
 
                 // ( ReorderableList )--------------------------------------------
-                position.x += GetCurrentIndentValue();
-                Rect listRect = new Rect(position.x, position.y, rect.width - position.x, rect.height - position.y);
+                EditorGUI.indentLevel++;
+                position.x = rect.x + indentWidth;
+                float listWidth = rect.width - (indentWidth * 2);
+                Rect listRect = new Rect(position.x, position.y, listWidth, rect.height - position.y);
                 DrawReorderableList(listRect, out float listHeight);
                 position.y += listHeight;
 
-                EditorGUILayout.Space(singleLineHeight);
-
                 _propertyHeight = position.y - rect.y;
             }
-
-
 
             // End the property scope
             EditorGUI.EndProperty();
@@ -99,36 +90,56 @@ namespace Darklight.UnityExt.Library.Editor
             }
         }
 
+        protected virtual void DrawHeaderCallback(Rect rect)
+        {
+            float fullWidth = rect.width - (PADDING * 2);
+            float idWidth = fullWidth / 4; // 25% of the full width
+            float itemWidth = (fullWidth - idWidth) / 2; // Take 50% of the remaining width
+
+            Rect idRect = new Rect(rect.x, rect.y, idWidth, EditorGUIUtility.singleLineHeight);
+            Rect keyRect = new Rect(idRect.x + idWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
+            Rect valueRect = new Rect(keyRect.x + itemWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
+
+            EditorGUI.LabelField(idRect, "ID");
+            EditorGUI.LabelField(keyRect, "Key");
+            EditorGUI.LabelField(valueRect, "Value");
+        }
+
         protected virtual void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty itemsProperty = _list.serializedProperty;
             SerializedProperty itemProp = itemsProperty.GetArrayElementAtIndex(index);
+            SerializedProperty idProp = itemProp.FindPropertyRelative("_id");
             SerializedProperty keyProp = itemProp.FindPropertyRelative("_key");
             SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
 
+            rect.x += PADDING * 2;
             rect.y += 2;
-            float halfWidth = (rect.width - 10) / 2;
+            float fullWidth = rect.width - (PADDING * 2);
+            float idWidth = fullWidth / 4; // 25% of the full width
+            float itemWidth = (fullWidth - idWidth) / 2; // Take 50% of the remaining width
 
-            Rect keyRect = new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
-            Rect valueRect = new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight);
+            Rect idRect = new Rect(rect.x + PADDING, rect.y, idWidth, EditorGUIUtility.singleLineHeight);
+            Rect keyRect = new Rect(idRect.x + idWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
+            Rect valueRect = new Rect(keyRect.x + itemWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
 
+            // << DRAW INDEX >>
+            EditorGUI.LabelField(idRect, idProp.intValue.ToString());
+
+            // << DRAW KEY >>
             if (keyProp == null)
                 EditorGUI.LabelField(keyRect, "Null Key");
             else
                 EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
 
+            // << DRAW VALUE >>
             if (keyProp == null)
                 EditorGUI.LabelField(valueRect, "Null Value");
             else
                 EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
         }
 
-        protected virtual void DrawHeaderCallback(Rect rect)
-        {
-            float halfWidth = (rect.width - 10) / 2;
-            EditorGUI.LabelField(new Rect(rect.x, rect.y, halfWidth, EditorGUIUtility.singleLineHeight), "Key");
-            EditorGUI.LabelField(new Rect(rect.x + halfWidth + 10, rect.y, halfWidth, EditorGUIUtility.singleLineHeight), "Value");
-        }
+
 
         protected virtual void OnAddCallback(ReorderableList list)
         {
@@ -161,14 +172,11 @@ namespace Darklight.UnityExt.Library.Editor
         #endregion
 
         // ======== [[ DRAW METHODS ]] ===================================== >>>>
+        /*
         void DrawHeader(Rect rect, out float headerHeight)
         {
             int btnWidth = 50;
             Vector2 position = new Vector2(rect.x, rect.y);
-
-            Rect titleRect = rect;
-            PropertyDrawerUtility.DrawLabel(rect, serializedObjectName, HeaderStyle, out float titleHeight);
-            position.y += titleHeight;
 
             EditorGUI.indentLevel++;
             position.x += GetCurrentIndentValue();
@@ -187,13 +195,14 @@ namespace Darklight.UnityExt.Library.Editor
 
             headerHeight = position.y - rect.y;
         }
+        */
 
         void DrawProperties(Rect rect, out float height)
         {
             float currentYPos = rect.y;
 
             // Create copies to iterate through properties
-            SerializedProperty iterator = _property.Copy();
+            SerializedProperty iterator = _libraryProperty.Copy();
             SerializedProperty endProperty = iterator.GetEndProperty();
 
             // Iterate through the properties of the object
@@ -209,7 +218,7 @@ namespace Darklight.UnityExt.Library.Editor
                 float propertyHeight = EditorGUI.GetPropertyHeight(iterator, true);
 
                 // Draw the property field
-                EditorGUI.PropertyField(new Rect(rect.x, currentYPos, rect.width - GetCurrentIndentValue() - EditorGUIUtility.standardVerticalSpacing, propertyHeight), iterator, true);
+                EditorGUI.PropertyField(new Rect(rect.x, currentYPos, rect.width, propertyHeight), iterator, true);
 
                 // Increment y position
                 currentYPos += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
@@ -230,10 +239,6 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
         // ======== [[ HELPER METHODS ]] ===================================== >>>>
-        float GetCurrentIndentValue()
-        {
-            return EditorGUI.indentLevel * INDENT_WIDTH;
-        }
 
         void InvokeSerializedObjectMethod(string methodName)
         {

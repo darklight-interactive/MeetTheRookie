@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Darklight.UnityExt.Editor;
 
 
 namespace Darklight.UnityExt.Library
@@ -19,16 +20,19 @@ namespace Darklight.UnityExt.Library
     [System.Serializable]
     public class LibraryItem<TKey, TValue>
     {
-        [SerializeField] TKey _key;
-        [SerializeField] TValue _value;
+        [SerializeField, ShowOnly] int _id;
+        [SerializeField, ShowOnly] TKey _key;
+        [SerializeField, ShowOnly] TValue _value;
 
+        public int Id { get => _id; }
         public TKey Key { get => _key; set => _key = value; }
         public TValue Value { get => _value; set => _value = value; }
 
-        public LibraryItem(TKey key, TValue value)
+        public LibraryItem(int id, TKey key, TValue value)
         {
-            Key = key;
-            Value = value;
+            _id = id;
+            _key = key;
+            _value = value;
         }
     }
 
@@ -149,7 +153,7 @@ namespace Darklight.UnityExt.Library
                 return;
 
             _dictionary.Add(key, value);
-            _items.Add(new LibraryItem<TKey, TValue>(key, value));
+            InternalRefresh();
 
             ItemAdded?.Invoke(key, value);
         }
@@ -158,14 +162,22 @@ namespace Darklight.UnityExt.Library
         {
             if (_dictionary.Remove(key))
             {
-                LibraryItem<TKey, TValue> item = _items.FirstOrDefault(i => EqualityComparer<TKey>.Default.Equals(i.Key, key));
-                if (item != null)
-                {
-                    _items.Remove(item);
-                }
+                InternalRefresh();
+                ItemRemoved?.Invoke(key);
                 return true;
             }
             return false;
+        }
+
+        void InternalRefresh()
+        {
+            _items.Clear();
+            int index = 0;
+            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
+            {
+                _items.Add(new LibraryItem<TKey, TValue>(index, entry.Key, entry.Value));
+                index++;
+            }
         }
 
         void InternalClear()
