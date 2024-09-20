@@ -69,6 +69,7 @@ public class Interactable : MonoBehaviour, IInteractable
                 _iconHandler = GetComponentInChildren<IconInteractionHandler>();
             return _iconHandler;
         }
+        set => _iconHandler = value;
     }
     protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
 
@@ -107,11 +108,7 @@ public class Interactable : MonoBehaviour, IInteractable
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
     public virtual void Awake()
     {
-        // << ICON GRID SPAWNER >> --------------------------------------
-        if (IconHandler == null)
-        {
-            _iconHandler = MTR_InteractionManager.InitializeIconInteractionHandler(this);
-        }
+        MTR_InteractionManager.RegisterInteractable(this);
     }
 
 

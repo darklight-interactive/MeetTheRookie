@@ -1,86 +1,134 @@
 using System.Collections.Generic;
 using System.Linq;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
-using UnityEditor;
+using NaughtyAttributes;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionManager>
 {
+    [Header("Interaction Layers")]
+    [SerializeField, Layer] string _playerLayer = "Player";
+    [SerializeField, Layer] string _npcLayer = "NPC";
+    [SerializeField, Layer] string _interactableLayer = "Interactable";
+
+    [Header("Interactors")]
+    [SerializeField] PlayerInteractor _playerInteractor;
+
+    [Header("Interactables")]
+    [SerializeField] Library<string, Interactable> _interactableLibrary = new Library<string, Interactable>();
+
     [Header("Interaction Handler Prefabs")]
     [SerializeField] GameObject _iconInteractionHandlerPrefab;
     [SerializeField] GameObject _dialogueInteractionHandlerPrefab;
     [SerializeField] GameObject _choiceInteractionHandlerPrefab;
 
-    PlayerInteractor _playerInteractor;
-    List<NPC_Interactable> _npcInteractables = new List<NPC_Interactable>();
-    List<Interactable> _interactables = new List<Interactable>();
-
-    public PlayerInteractor PlayerInteractor
+    public override void Initialize()
     {
-        get
+        // Refresh InteractableRegistry if in Editor
+        if (!Application.isPlaying)
         {
-            if (_playerInteractor == null)
-                _playerInteractor = FindObjectsByType<PlayerInteractor>(FindObjectsSortMode.None)[0];
-            return _playerInteractor;
-        }
-    }
-    public List<NPC_Interactable> NPCInteractables
-    {
-        get
-        {
-            if (_npcInteractables.Count == 0)
-                _npcInteractables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None).ToList();
-            return _npcInteractables;
-        }
-    }
-    public List<Interactable> Interactables
-    {
-        get
-        {
-            if (_interactables.Count == 0)
-                _interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None).ToList();
-            return _interactables;
+            RefreshInteractables();
+            RefreshInteractors();
         }
     }
 
-    public override void Initialize() { }
-
-    #region ======== <STATIC_METHODS> [[ INITIALIZE INTERACTION HANDLER ]] ================================== >>>>
-    public static IconInteractionHandler InitializeIconInteractionHandler(Interactable interactable)
+    #region ======== <PUBLIC_STATIC_METHODS> [[ INTERACTABLE REGISTRY ]] ================================== >>>>
+    public static void RegisterInteractable(Interactable interactable)
     {
-        if (interactable.IconHandler != null)
-            return interactable.IconHandler;
-        IconInteractionHandler iconHandler = ObjectUtility.InstantiatePrefabAsComponent<IconInteractionHandler>(Instance._iconInteractionHandlerPrefab, interactable.transform);
-        Debug.Log($"{Prefix} Instantiated Icon Interaction Handler for {interactable.name}", interactable);
-        return iconHandler;
+        if (Instance._interactableLibrary.ContainsKey(interactable.name))
+        {
+            //Debug.LogWarning($"{Prefix} Interactable {interactable.name} already registered", interactable);
+            return;
+        }
+
+        // << BASE INTERACTABLE >>
+        Instance._interactableLibrary.Add(interactable.name, interactable);
+        InitializeIconInteractionHandler(interactable);
+
+        // << NPC INTERACTABLE >>
+        if (interactable is NPC_Interactable npc)
+        {
+            InitializeDialogueInteractionHandler(npc);
+            //Debug.Log($"{Prefix} Registered NPC Interactable {interactable.name}", interactable);
+        }
+        else
+        {
+            //Debug.Log($"{Prefix} Registered Interactable {interactable.name}", interactable);
+        }
     }
 
-    public static DialogueInteractionHandler InitializeDialogueInteractionHandler(NPC_Interactable npc)
+    static void RefreshInteractables()
     {
-        if (npc.DialogueHandler != null)
-            return npc.DialogueHandler;
-        DialogueInteractionHandler dialogueHandler = ObjectUtility.InstantiatePrefabAsComponent<DialogueInteractionHandler>(Instance._dialogueInteractionHandlerPrefab, npc.transform);
-        Debug.Log($"{Prefix} Instantiated Dialogue Interaction Handler for {npc.name}", npc);
-        return dialogueHandler;
+        Instance._interactableLibrary.Clear();
+        Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        foreach (Interactable interactable in interactables)
+        {
+            RegisterInteractable(interactable);
+        }
+        Debug.Log($"{Prefix} Refreshed Interactable Registry : Found {Instance._interactableLibrary.Count} interactables", Instance);
     }
 
-    public static DialogueInteractionHandler InitializeDialogueInteractionHandler(PlayerInteractor player)
+    static void RefreshInteractors()
     {
-        if (player.DialogueHandler != null)
-            return player.DialogueHandler;
-        DialogueInteractionHandler dialogueHandler = ObjectUtility.InstantiatePrefabAsComponent<DialogueInteractionHandler>(Instance._dialogueInteractionHandlerPrefab, player.transform);
+        Instance._playerInteractor = FindObjectsByType<PlayerInteractor>(FindObjectsSortMode.None).FirstOrDefault();
+        if (Instance._playerInteractor == null)
+        {
+            Debug.LogWarning($"{Prefix} Player Interactor not found in scene", Instance);
+        }
+        else
+        {
+            RegisterPlayerInteractor(Instance._playerInteractor);
+        }
+    }
+
+    #endregion
+
+    #region ======== <PUBLIC_STATIC_METHODS> [[ INTERACTIOR REGISTRY ]] =========================== >>>>
+    public static void RegisterPlayerInteractor(PlayerInteractor player)
+    {
+        if (Instance._playerInteractor != null)
+        {
+            Debug.LogWarning($"{Prefix} Player Interactor already registered", player);
+            return;
+        }
+        Instance._playerInteractor = player;
+        InitializeDialogueInteractionHandler(player);
+        InitializeChoiceInteractionHandler(player);
+        Debug.Log($"{Prefix} Registered Player Interactor {player.name}", player);
+    }
+    #endregion
+
+    #region ======== <PRIVATE_STATIC_METHODS> [[ INITIALIZE INTERACTION HANDLER ]] =========================== >>>>
+    static void InitializeIconInteractionHandler(Interactable interactable)
+    {
+        if (interactable.IconHandler != null) return;
+        interactable.IconHandler = ObjectUtility.InstantiatePrefabAsComponent<IconInteractionHandler>(Instance._iconInteractionHandlerPrefab, interactable.transform);
+    }
+
+    static void InitializeDialogueInteractionHandler(PlayerInteractor player)
+    {
+        if (player.DialogueHandler != null) return;
+        player.DialogueHandler = ObjectUtility.InstantiatePrefabAsComponent<DialogueInteractionHandler>(Instance._dialogueInteractionHandlerPrefab, player.transform);
         Debug.Log($"{Prefix} Instantiated Dialogue Interaction Handler for {player.name}", player);
-        return dialogueHandler;
     }
 
-    public static ChoiceInteractionHandler InitializeChoiceInteractionHandler(PlayerInteractor player)
+    static void InitializeDialogueInteractionHandler(NPC_Interactable npc)
     {
-        if (player.ChoiceHandler != null)
-            return player.ChoiceHandler;
-        ChoiceInteractionHandler choiceHandler = ObjectUtility.InstantiatePrefabAsComponent<ChoiceInteractionHandler>(Instance._choiceInteractionHandlerPrefab, player.transform);
+        if (npc.DialogueHandler != null) return;
+        npc.DialogueHandler = ObjectUtility.InstantiatePrefabAsComponent<DialogueInteractionHandler>(Instance._dialogueInteractionHandlerPrefab, npc.transform);
+        Debug.Log($"{Prefix} Instantiated Dialogue Interaction Handler for {npc.name}", npc);
+    }
+
+    static void InitializeChoiceInteractionHandler(PlayerInteractor player)
+    {
+        if (player.ChoiceHandler != null) return;
+        player.ChoiceHandler = ObjectUtility.InstantiatePrefabAsComponent<ChoiceInteractionHandler>(Instance._choiceInteractionHandlerPrefab, player.transform);
         Debug.Log($"{Prefix} Instantiated Choice Interaction Handler for {player.name}", player);
-        return choiceHandler;
     }
     #endregion
 
@@ -90,3 +138,33 @@ public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionMana
 
     #endregion
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(MTR_InteractionManager))]
+public class MTR_InteractionManagerCustomEditor : UnityEditor.Editor
+{
+    SerializedObject _serializedObject;
+    MTR_InteractionManager _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (MTR_InteractionManager)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
+

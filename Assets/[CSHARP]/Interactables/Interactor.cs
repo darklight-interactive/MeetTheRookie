@@ -25,11 +25,11 @@ public interface IInteractor
 public class Interactor : MonoBehaviour, IInteractor
 {
     const string PREFIX = "Interactor:";
-    [SerializeField] Library<string, Interactable> _interactables = new Library<string, Interactable>();
+    [SerializeField] Library<string, Interactable> _interactableLibrary = new Library<string, Interactable>();
     [SerializeField] LayerMask _layerMask;
     [SerializeField, Range(0.1f, 100f)] float _scale = 1f;
 
-    public List<Interactable> Interactables => new List<Interactable>(_interactables.Values);
+    public List<Interactable> Interactables => new List<Interactable>(_interactableLibrary.Values);
     public LayerMask LayerMask => _layerMask;
 
     void Update()
@@ -40,6 +40,12 @@ public class Interactor : MonoBehaviour, IInteractor
     public void OnDrawGizmosSelected()
     {
         CustomGizmos.DrawWireSquare(transform.position, _scale, Vector3.forward, Color.green);
+
+        foreach (Interactable interactable in _interactableLibrary.Values)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(interactable.transform.position, 0.1f);
+        }
     }
 
     #region ======== <PUBLIC_METHODS> (( IInteractor )) ================================== >>>>
@@ -60,20 +66,20 @@ public class Interactor : MonoBehaviour, IInteractor
 
     public void TryAddInteractable(Interactable interactable)
     {
-        if (!_interactables.ContainsKey(interactable.name))
-            _interactables.Add(interactable.name, interactable);
+        if (!_interactableLibrary.ContainsKey(interactable.name))
+            _interactableLibrary.Add(interactable.name, interactable);
     }
 
     public void RemoveInteractable(Interactable interactable)
     {
-        if (_interactables.ContainsKey(interactable.name))
-            _interactables.Remove(interactable.name);
+        if (_interactableLibrary.ContainsKey(interactable.name))
+            _interactableLibrary.Remove(interactable.name);
     }
 
     public Interactable GetInteractable(string name)
     {
         // Retrieve the interactable by name if it exists.
-        if (_interactables.TryGetValue(name, out var interactable))
+        if (_interactableLibrary.TryGetValue(name, out var interactable))
         {
             return interactable;
         }
@@ -84,7 +90,7 @@ public class Interactor : MonoBehaviour, IInteractor
     {
         Interactable closestInteractable = null;
         float closestDistance = float.MaxValue;
-        foreach (Interactable interactable in _interactables.Values)
+        foreach (Interactable interactable in _interactableLibrary.Values)
         {
             float distance = Vector3.Distance(interactable.transform.position, position);
             if (distance < closestDistance)
@@ -106,7 +112,7 @@ public class Interactor : MonoBehaviour, IInteractor
         }
 
         // Remove interactables from the dict that are no longer in the overlap interactables.
-        List<Interactable> dictInteractables = new List<Interactable>(_interactables.Values);
+        List<Interactable> dictInteractables = new List<Interactable>(_interactableLibrary.Values);
         List<Interactable> interactablesToRemove = new List<Interactable>();
         foreach (Interactable interactable in dictInteractables)
         {

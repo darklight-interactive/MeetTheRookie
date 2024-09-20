@@ -54,6 +54,7 @@ public class PlayerInteractor : MonoBehaviour
                 _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
             return _dialogueHandler;
         }
+        set => _dialogueHandler = value;
     }
     public ChoiceInteractionHandler ChoiceHandler
     {
@@ -63,6 +64,7 @@ public class PlayerInteractor : MonoBehaviour
                 _choiceHandler = GetComponentInChildren<ChoiceInteractionHandler>();
             return _choiceHandler;
         }
+        set => _choiceHandler = value;
     }
     public string SpeakerTag => _speakerTag;
     #endregion
@@ -70,12 +72,7 @@ public class PlayerInteractor : MonoBehaviour
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
     {
-        if (DialogueHandler == null)
-            _dialogueHandler = MTR_InteractionManager.InitializeDialogueInteractionHandler(this);
-        DialogueHandler.SpeakerTag = _speakerTag;
-
-        if (ChoiceHandler == null)
-            _choiceHandler = MTR_InteractionManager.InitializeChoiceInteractionHandler(this);
+        MTR_InteractionManager.RegisterPlayerInteractor(this);
     }
 
 

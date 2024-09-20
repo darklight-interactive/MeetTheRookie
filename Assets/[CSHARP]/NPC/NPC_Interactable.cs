@@ -41,6 +41,7 @@ public class NPC_Interactable : Interactable, IInteractable
                 _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
             return _dialogueHandler;
         }
+        set => _dialogueHandler = value;
     }
     public string SpeakerTag => _speakerTag;
 
@@ -49,12 +50,7 @@ public class NPC_Interactable : Interactable, IInteractable
     public override void Awake()
     {
         base.Awake();
-
-        if (DialogueHandler == null)
-            _dialogueHandler = MTR_InteractionManager.InitializeDialogueInteractionHandler(this);
-        DialogueHandler.SpeakerTag = _speakerTag;
     }
-
 
     public override void Start()
     {
