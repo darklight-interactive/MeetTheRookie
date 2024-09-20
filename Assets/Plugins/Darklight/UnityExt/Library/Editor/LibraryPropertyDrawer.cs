@@ -24,6 +24,8 @@ namespace Darklight.UnityExt.Library.Editor
         SerializedObject _serializedObject;
         SerializedProperty _property;
         SerializedProperty _itemsProperty;
+        bool _foldoutToggle;
+        float _propertyHeight;
 
         protected Type serializedObjectType => _serializedObject.targetObject.GetType();
         protected string serializedObjectName => serializedObjectType.Name;
@@ -45,23 +47,35 @@ namespace Darklight.UnityExt.Library.Editor
 
             Vector2 position = new Vector2(rect.x, rect.y);
 
-            // ( Header )-----------------------------------------------------
-            Rect headerRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
-            DrawHeader(headerRect, out float headerHeight);
-            position.y += headerHeight;
+            // ( Foldout Toggle )---------------------------------------------
+            Rect foldoutRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
+            _foldoutToggle = EditorGUI.Foldout(foldoutRect, _foldoutToggle, label, true);
+            position.y += EditorGUIUtility.singleLineHeight;
 
-            // ( Properties )-------------------------------------------------
-            Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
-            DrawProperties(propRect, out float propertiesHeight);
-            position.y += propertiesHeight;
+            if (_foldoutToggle)
+            {
+                // ( Header )-----------------------------------------------------
+                Rect headerRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
+                DrawHeader(headerRect, out float headerHeight);
+                position.y += headerHeight;
 
-            // ( ReorderableList )--------------------------------------------
-            position.x += GetCurrentIndentValue();
-            Rect listRect = new Rect(position.x, position.y, rect.width - position.x, rect.height - position.y);
-            DrawReorderableList(listRect, out float listHeight);
-            position.y += listHeight;
+                // ( Properties )-------------------------------------------------
+                Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
+                DrawProperties(propRect, out float propertiesHeight);
+                position.y += propertiesHeight;
 
-            EditorGUILayout.Space(singleLineHeight);
+                // ( ReorderableList )--------------------------------------------
+                position.x += GetCurrentIndentValue();
+                Rect listRect = new Rect(position.x, position.y, rect.width - position.x, rect.height - position.y);
+                DrawReorderableList(listRect, out float listHeight);
+                position.y += listHeight;
+
+                EditorGUILayout.Space(singleLineHeight);
+
+                _propertyHeight = position.y - rect.y;
+            }
+
+
 
             // End the property scope
             EditorGUI.EndProperty();
@@ -69,40 +83,7 @@ namespace Darklight.UnityExt.Library.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            // Start with the height of the foldout
-            float totalHeight = singleLineHeight;
-
-            if (property.isExpanded)
-            {
-                // Increase indent level
-                EditorGUI.indentLevel++;
-
-                // Create copies to iterate through properties
-                SerializedProperty iterator = property.Copy();
-                SerializedProperty endProperty = iterator.GetEndProperty();
-
-                iterator.NextVisible(true); // Move to the first child property
-
-                // Iterate through all properties
-                while (iterator.NextVisible(false) && !SerializedProperty.EqualContents(iterator, endProperty))
-                {
-                    // Skip the '_items' property
-                    if (iterator.name == "_items")
-                        continue;
-
-                    // Add the height of the property
-                    totalHeight += EditorGUI.GetPropertyHeight(iterator, true) + EditorGUIUtility.standardVerticalSpacing;
-                }
-
-                // Add the height of the ReorderableList
-                InitializeReorderableList();
-                totalHeight += _list.GetHeight() + EditorGUIUtility.standardVerticalSpacing;
-
-                // Decrease indent level
-                EditorGUI.indentLevel--;
-            }
-
-            return totalHeight;
+            return _foldoutToggle ? _propertyHeight : EditorGUIUtility.singleLineHeight;
         }
 
         #region ======== [[ REORDERABLE LIST ]] ===================================== >>>>

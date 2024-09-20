@@ -18,7 +18,7 @@ using UnityEditor;
 
 
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
-public class Interactable : MonoBehaviour, IInteract
+public class Interactable : MonoBehaviour, IInteractable
 {
     // ====== [[ FIELDS ]] ====================================== >>>>
     const string Prefix = "[Interactable] >> ";
@@ -28,7 +28,7 @@ public class Interactable : MonoBehaviour, IInteract
     private GameObject Misra;
 
     // -- (( ICON GRID SPAWNER )) -------- >>
-    IconInteractionHandler _interactIconSpawner;
+    IconInteractionHandler _iconHandler;
 
 
     [Header("Interactable")]
@@ -60,7 +60,17 @@ public class Interactable : MonoBehaviour, IInteract
 
 
     // ====== [[ PROPERTIES ]] ================================== >>>>
-    SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
+    public string Name => this.gameObject.name;
+    public IconInteractionHandler IconHandler
+    {
+        get
+        {
+            if (_iconHandler == null)
+                _iconHandler = GetComponentInChildren<IconInteractionHandler>();
+            return _iconHandler;
+        }
+    }
+    protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
 
     // private access to knots for dropdown
     List<string> _sceneKnots
@@ -90,41 +100,18 @@ public class Interactable : MonoBehaviour, IInteract
     public bool isActive { get => _isActive; set => _isActive = value; }
     public bool isComplete { get => _isComplete; set => _isComplete = value; }
 
-    public event IInteract.OnFirstInteract OnFirstInteraction;
-    public event IInteract.OnInteract OnInteraction;
-    public event IInteract.OnComplete OnCompleted;
+    public event IInteractable.OnFirstInteract OnFirstInteraction;
+    public event IInteractable.OnInteract OnInteraction;
+    public event IInteractable.OnComplete OnCompleted;
 
     // ------------------- [[ PUBLIC METHODS ]] ------------------- >>
     public virtual void Awake()
     {
         // << ICON GRID SPAWNER >> --------------------------------------
-        if (_interactIconSpawner == null)
+        if (IconHandler == null)
         {
-            // Get the icon spawner
-            _interactIconSpawner = GetComponentInChildren<IconInteractionHandler>();
-            if (_interactIconSpawner == null)
-            {
-                if (MTR_UIManager.Instance.interactIconSpawnerPrefab == null)
-                {
-                    Debug.LogError($"{Prefix} Icon Grid Spawner Prefab is null in MTR_UIManager", MTR_UIManager.Instance);
-                    return;
-                }
-
-                // Create the icon spawner as a child
-                _interactIconSpawner = ObjectUtility.InstantiatePrefabWithComponent<IconInteractionHandler>
-                    (MTR_UIManager.Instance.interactIconSpawnerPrefab,
-                    Vector3.zero, Quaternion.identity, this.transform);
-
-                _interactIconSpawner.transform.localPosition = Vector3.zero;
-
-                Debug.Log($"{Prefix} Created Icon Grid Spawner", this);
-            }
-            else
-            {
-                Debug.Log($"{Prefix} Found Icon Grid Spawner", this);
-            }
+            _iconHandler = MTR_InteractionManager.InitializeIconInteractionHandler(this);
         }
-
     }
 
 
@@ -135,11 +122,11 @@ public class Interactable : MonoBehaviour, IInteract
         // << SET THE INITIAL SPRITE >> ------------------------------------
         // Prioritize the initial sprite that is set in the sprite renderer
         // Its assumed that the sprite renderer has a null sprite when the interactable is first created
-        if (_spriteRenderer.sprite == null)
-            _spriteRenderer.sprite = _sprite;
+        if (spriteRenderer.sprite == null)
+            spriteRenderer.sprite = _sprite;
         else
-            _sprite = _spriteRenderer.sprite;
-        _spriteRenderer.color = _defaultTint;
+            _sprite = spriteRenderer.sprite;
+        spriteRenderer.color = _defaultTint;
 
         if (Application.isPlaying)
         {
@@ -189,9 +176,9 @@ public class Interactable : MonoBehaviour, IInteract
 
     public void UpdateInteractIcon()
     {
-        if (isTarget && _interactIconSpawner != null)
+        if (isTarget && _iconHandler != null)
         {
-            _interactIconSpawner.ShowInteractIcon();
+            _iconHandler.ShowInteractIcon();
         }
     }
 
@@ -199,7 +186,7 @@ public class Interactable : MonoBehaviour, IInteract
     {
         isTarget = false;
 
-        _interactIconSpawner.HideInteractIcon();
+        _iconHandler.HideInteractIcon();
     }
 
     // ====== [[ INTERACTION ]] ======================================
@@ -219,7 +206,7 @@ public class Interactable : MonoBehaviour, IInteract
             // Subscribe to OnInteraction
             OnInteraction += (string text) =>
             {
-                MTR_UIManager.Instance.CreateSpeechBubbleAtSpeaker(InkyStoryManager.CurrentSpeaker, text);
+                //MTR_UIManager.Instance.CreateSpeechBubbleAtSpeaker(InkyStoryManager.CurrentSpeaker, text);
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
             };
 
@@ -254,7 +241,7 @@ public class Interactable : MonoBehaviour, IInteract
         else if (StoryIterator.CurrentState == InkyStoryIterator.State.CHOICE)
         {
             List<Choice> choices = StoryIterator.GetCurrentChoices();
-            MTR_UIManager.Instance.gameUIController.LoadChoices(choices);
+            //MTR_UIManager.Instance.gameUIController.LoadChoices(choices);
             Debug.Log($"INTERACTABLE :: {name} >> Choices Found");
         }
         else
@@ -287,7 +274,7 @@ public class Interactable : MonoBehaviour, IInteract
         isActive = false;
         isComplete = false;
 
-        _spriteRenderer.color = _defaultTint;
+        spriteRenderer.color = _defaultTint;
     }
 
     public virtual void OnDestroy()
@@ -299,19 +286,19 @@ public class Interactable : MonoBehaviour, IInteract
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {
-        if (_spriteRenderer == null) yield break;
-        Color originalColor = _spriteRenderer.color;
-        _spriteRenderer.color = newColor;
+        if (spriteRenderer == null) yield break;
+        Color originalColor = spriteRenderer.color;
+        spriteRenderer.color = newColor;
 
         yield return new WaitForSeconds(duration);
-        _spriteRenderer.color = originalColor;
+        spriteRenderer.color = originalColor;
     }
 
     private void EnableOutline(bool enable)
     {
-        if (_spriteRenderer != null)
+        if (spriteRenderer != null)
         {
-            _spriteRenderer.material = enable ? _outlineMaterial : null;
+            spriteRenderer.material = enable ? _outlineMaterial : null;
         }
     }
 

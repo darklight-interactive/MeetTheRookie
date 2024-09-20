@@ -44,6 +44,17 @@ namespace Darklight.UnityExt.Core2D
             return WeightComponent.GetCellWithHighestWeight(availableCells.ToList());
         }
 
+        public Cell2D GetNextAvailableCell()
+        {
+            List<Cell2D> availableCells = OverlapComponent.GetCellsWithColliderCount(0);
+            if (availableCells.Count > 0)
+            {
+                return WeightComponent.GetCellWithHighestWeight(availableCells);
+            }
+
+            return null;
+        }
+
         public Spatial2D.AnchorPoint GetAnchorPointFromCell(Cell2D cell)
         {
             return SpawnerComponent.GetTargetAnchor(cell);

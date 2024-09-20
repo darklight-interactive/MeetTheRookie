@@ -5,6 +5,10 @@ using Darklight.UnityExt.Utility;
 using UnityEngine;
 using NaughtyAttributes;
 using Darklight.UnityExt.UXML;
+using Ink.Runtime;
+using System;
+
+
 
 
 
@@ -29,28 +33,29 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
         }
     }
 
-    public void CreateBubbleAtAllCells(Sprite sprite)
+    public void CreateBubbleAtNextAvailableCell(string fullText)
     {
-        List<Cell2D> cells = BaseGrid.GetCells();
-        foreach (Cell2D cell in cells)
+        Cell2D cell = GetNextAvailableCell();
+        if (cell != null)
         {
-            CreateBubbleAt(cell, sprite);
+            CreateBubbleAt(cell, fullText);
         }
     }
 
-    void CreateBubbleAt(Cell2D cell, Sprite sprite)
+    void CreateBubbleAt(Cell2D cell, string fullText)
     {
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
         {
-            UXML_RenderTextureObject spriteObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, material, renderTexture);
-            _attachedBubbles.Add(cell.Key, spriteObject);
+            UXML_RenderTextureObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, material, renderTexture);
+            _attachedBubbles.Add(cell.Key, choiceBubbleObject);
 
-            spawnerComponent.AttachTransformToCell(spriteObject.transform);
-            //spriteObject.transform.localScale *= 0.1f;
+            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform);
+            choiceBubbleObject.transform.SetParent(this.transform);
 
-            spriteObject.transform.SetParent(this.transform);
-
+            TextBubble textBubble = choiceBubbleObject.ElementQuery<TextBubble>();
+            textBubble.SetFullText(fullText);
+            textBubble.InstantCompleteText();
         }
     }
 
@@ -61,6 +66,47 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
         {
             ObjectUtility.DestroyAlways(bubbles[i].gameObject);
         }
+    }
+
+
+    public void LoadChoices(List<Choice> choices)
+    {
+        foreach (Choice choice in choices)
+        {
+            CreateBubbleAtNextAvailableCell(choice.text);
+        }
+    }
+
+    public void ConfirmChoice(Choice choice)
+    {
+        //InkyStoryManager.Iterator.ChooseChoice(choice);
+        MTR_AudioManager.Instance.PlayMenuSelectEvent();
+    }
+
+    void Select(SelectableButton newSelection)
+    {
+        /*
+        if (newSelection == null || lockSelection) return;
+        if (newSelection == selectedButton) return;
+
+        // Transfer the selection
+        previousButton = selectedButton;
+        selectedButton = newSelection;
+
+        // Set the selection classes
+        previousButton?.Deselect();
+        newSelection.SetSelected();
+
+        lockSelection = true;
+        */
+
+        MTR_AudioManager.Instance.PlayMenuHoverEvent();
+        Invoke(nameof(UnlockSelection), 0.1f);
+    }
+
+    void UnlockSelection()
+    {
+        //lockSelection = false;
     }
 
 #if UNITY_EDITOR

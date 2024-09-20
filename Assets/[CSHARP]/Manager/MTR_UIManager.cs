@@ -33,7 +33,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
 
     // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
-
     [SerializeField, ShowOnly]
     Vector2 _screenSize;
 
@@ -55,10 +54,6 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     [SerializeField]
     UXML_UIDocumentPreset _synthesisUIPreset;
-
-    [Header("World Space UI")]
-    public GameObject interactIconSpawnerPrefab;
-    public GameObject dialogueSpawnerPrefab;
 
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -99,8 +94,8 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
 
 
-    #region ------ [[ SPEECH BUBBLE ]] ------------------------ >>
-    public void CreateSpeechBubbleAtSpeaker(string speaker, string text)
+    #region ------ [[ DIALOGUE BUBBLE ]] ------------------------ >>
+    public void CreateDialogueBubbleAtSpeaker(string speaker, string text)
     {
         List<DialogueInteractionHandler> dialogueHandlers = FindObjectsByType<DialogueInteractionHandler>(FindObjectsSortMode.InstanceID).ToList();
 
@@ -135,11 +130,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
             d.DestroySpeechBubble();
         }
     }
+    #endregion
 
-
-
-
-
+    #region ------ [[ CHOICE BUBBLE ]] ------------------------ >>
 
     #endregion
 

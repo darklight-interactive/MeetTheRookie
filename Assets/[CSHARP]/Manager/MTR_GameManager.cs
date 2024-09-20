@@ -3,14 +3,25 @@ using Darklight.UnityExt.Input;
 using Darklight.UnityExt.Behaviour;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(UniversalInputManager))]
+[RequireComponent(typeof(MTR_SceneManager))]
+[RequireComponent(typeof(InkyStoryManager))]
+[RequireComponent(typeof(MTR_UIManager))]
+[RequireComponent(typeof(MTR_InteractionManager))]
+[RequireComponent(typeof(MTR_AudioManager))]
 public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
+    public static MTR_SceneManager SceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
+    public static MTR_UIManager UIManager => MTR_UIManager.Instance;
+    public static MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
+    public static MTR_AudioManager AudioManager => MTR_AudioManager.Instance;
     public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
+
 
     public override void Awake()
     {
@@ -21,7 +32,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
     {
         Cursor.visible = false;
 
-        GameSceneManager.OnSceneChanged += OnSceneChanged;
+        SceneManager.OnSceneChanged += OnSceneChanged;
 
 
 
@@ -40,7 +51,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         //InputManager.Reset();
         InputManager.Awake();
 
-        MTR_SceneData newSceneData = GameSceneManager.GetSceneData(newScene.name);
+        MTR_SceneData newSceneData = SceneManager.GetSceneData(newScene.name);
         InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
         MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }

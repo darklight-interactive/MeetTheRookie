@@ -13,7 +13,23 @@ using UnityEditor;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [SerializeField] DialogueInteractionHandler _dialogueHandler;
+    DialogueInteractionHandler _dialogueHandler;
+    ChoiceInteractionHandler _choiceHandler;
+    List<Interactable> _nearbyInteractables = new List<Interactable>();
+
+
+    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
+
+    [Header("Interactable Radar")]
+    [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
+    public Interactable targetInteractable;
+
+    [ShowOnly, Tooltip("The Interactable that the player is currently interacting with. Can be null.")]
+    public Interactable activeInteractable;
+    [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
+    public Interactable previousTargetInteractable;
+
+    #region ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
     {
         // This is just a getter a list of all the speakers in the story
@@ -27,36 +43,39 @@ public class PlayerInteractor : MonoBehaviour
             return speakers;
         }
     }
-    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
-    [SerializeField, ShowOnly] protected List<Interactable> _foundInteractables = new List<Interactable>();
 
-    [ShowOnly, Tooltip("The Interactable that the player is currently targeting.")]
-    public Interactable targetInteractable;
-
-    [ShowOnly, Tooltip("The Interactable that the player is currently interacting with. Can be null.")]
-    public Interactable activeInteractable;
-    [ShowOnly, Tooltip("The Interactable that the player was previously targeting. Can be null.")]
-    public Interactable previousTargetInteractable;
-
-    // ======== [[ PROPERTIES ]] ================================== >>>>
+    public MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public DialogueInteractionHandler DialogueHandler => _dialogueHandler;
+    public DialogueInteractionHandler DialogueHandler
+    {
+        get
+        {
+            if (_dialogueHandler == null)
+                _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
+            return _dialogueHandler;
+        }
+    }
+    public ChoiceInteractionHandler ChoiceHandler
+    {
+        get
+        {
+            if (_choiceHandler == null)
+                _choiceHandler = GetComponentInChildren<ChoiceInteractionHandler>();
+            return _choiceHandler;
+        }
+    }
     public string SpeakerTag => _speakerTag;
+    #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
     {
-        if (_dialogueHandler == null)
-        {
-            _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
-            if (_dialogueHandler == null)
-            {
-                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueInteractionHandler>
-                    (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
-                _dialogueHandler.transform.localPosition = Vector3.zero;
-            }
-        }
-        _dialogueHandler.SpeakerTag = _speakerTag;
+        if (DialogueHandler == null)
+            _dialogueHandler = MTR_InteractionManager.InitializeDialogueInteractionHandler(this);
+        DialogueHandler.SpeakerTag = _speakerTag;
+
+        if (ChoiceHandler == null)
+            _choiceHandler = MTR_InteractionManager.InitializeChoiceInteractionHandler(this);
     }
 
 
@@ -69,7 +88,7 @@ public class PlayerInteractor : MonoBehaviour
 
     void RefreshRadar()
     {
-        if (_foundInteractables.Count == 0) return;
+        if (_nearbyInteractables.Count == 0) return;
         if (PlayerController.currentState == PlayerState.INTERACTION) return;
         /*
         // Temporary list to hold items to be removed
@@ -113,12 +132,12 @@ public class PlayerInteractor : MonoBehaviour
 
     Interactable GetClosestInteractable()
     {
-        if (_foundInteractables.Count == 0) return null;
+        if (_nearbyInteractables.Count == 0) return null;
 
         Interactable closest = null;
         float closestDistance = float.MaxValue;
 
-        foreach (Interactable interactable in _foundInteractables)
+        foreach (Interactable interactable in _nearbyInteractables)
         {
             float distance = Vector2.Distance(transform.position, interactable.transform.position);
             if (distance < closestDistance)
@@ -283,11 +302,11 @@ public class PlayerInteractor : MonoBehaviour
     /// </summary>
     public void ClearInteractables()
     {
-        foreach (Interactable interactable in _foundInteractables)
+        foreach (Interactable interactable in _nearbyInteractables)
         {
             interactable.TargetClear();
         }
-        _foundInteractables.Clear();
+        _nearbyInteractables.Clear();
     }
 
 
@@ -298,7 +317,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (interactable == null) return;
         if (interactable.isComplete) return;
-        _foundInteractables.Add(interactable);
+        _nearbyInteractables.Add(interactable);
 
         // Set as target
         targetInteractable = interactable;
@@ -310,8 +329,8 @@ public class PlayerInteractor : MonoBehaviour
     {
         Interactable interactable = other.GetComponent<Interactable>();
         if (interactable == null) return;
-        _foundInteractables.Remove(interactable);
-        if(targetInteractable == interactable)
+        _nearbyInteractables.Remove(interactable);
+        if (targetInteractable == interactable)
             interactable.TargetClear();
             previousTargetInteractable = null;
     }

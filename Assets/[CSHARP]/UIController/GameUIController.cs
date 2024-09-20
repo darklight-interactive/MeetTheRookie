@@ -134,7 +134,6 @@ public class GameUIController : UXML_UIDocumentObject
         if (selectedChoiceIndex < 0) selectedChoiceIndex = _choiceButtons.Count - 1;
         if (selectedChoiceIndex >= _choiceButtons.Count) selectedChoiceIndex = 0;
 
-        Select(_choiceButtons[selectedChoiceIndex]);
     }
 
     void OnPrimaryInteractAction()
@@ -163,66 +162,6 @@ public class GameUIController : UXML_UIDocumentObject
         }
     }
 
-    public void LoadChoices(List<Choice> choices)
-    {
-        _choiceBox = ElementQuery<GroupBox>("ChoiceBox");
-        _choiceBox.Clear();
-        _choiceButtons.Clear();
-        _buttonHandlers.Clear();
 
-        foreach (Choice choice in choices)
-        {
-            SelectableButton button = new SelectableButton();
-            button.text = choice.text;
-
-            Action handler = () => ConfirmChoice(choice);
-            button.OnClick += handler;
-            _buttonHandlers[button] = handler;
-
-            _choiceBox.Add(button);
-            _choiceButtons.Add(button);
-        }
-
-        // Select the first button
-        Select(_choiceButtons[0]);
-
-        _choicePanel.style.visibility = Visibility.Visible;
-        _choicePanel.AddToClassList("visible");
-        this.SetVisibility(true);
-    }
-
-    public void ConfirmChoice(Choice choice)
-    {
-        InkyStoryManager.Iterator.ChooseChoice(choice);
-        MTR_AudioManager.Instance.PlayMenuSelectEvent();
-
-        _choiceBox.Clear();
-        _choicePanel.style.visibility = Visibility.Hidden;
-        _choicePanel.RemoveFromClassList("visible");
-    }
-
-    void Select(SelectableButton newSelection)
-    {
-        if (newSelection == null || lockSelection) return;
-        if (newSelection == selectedButton) return;
-
-        // Transfer the selection
-        previousButton = selectedButton;
-        selectedButton = newSelection;
-
-        // Set the selection classes
-        previousButton?.Deselect();
-        newSelection.SetSelected();
-
-        lockSelection = true;
-        MTR_AudioManager.Instance.PlayMenuHoverEvent();
-        Invoke(nameof(UnlockSelection), 0.1f);
-
-    }
-
-    void UnlockSelection()
-    {
-        lockSelection = false;
-    }
 
 }

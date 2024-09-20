@@ -1,5 +1,6 @@
-public interface IInteract
+public interface IInteractable
 {
+    public string Name { get; }
 
     #region ------------------ >> STATE FLAGS
     /// <summary>

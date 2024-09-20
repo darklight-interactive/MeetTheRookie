@@ -12,12 +12,13 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(NPC_Controller))]
-public class NPC_Interactable : Interactable, IInteract
+public class NPC_Interactable : Interactable, IInteractable
 {
-
-    // ======== [[ FIELDS ]] ================================== >>>>
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
+    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
+    [SerializeField] DialogueInteractionHandler _dialogueHandler;
 
+    // ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
     {
         // This is just a getter a list of all the speakers in the story
@@ -31,15 +32,16 @@ public class NPC_Interactable : Interactable, IInteract
             return speakers;
         }
     }
-    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
-
-    [SerializeField] DialogueInteractionHandler _dialogueHandler;
-
-    // ======== [[ PROPERTIES ]] ================================== >>>>
-
-
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
-    public Grid2D_OverlapWeightSpawner DialogueGridSpawner => _dialogueHandler;
+    public DialogueInteractionHandler DialogueHandler
+    {
+        get
+        {
+            if (_dialogueHandler == null)
+                _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
+            return _dialogueHandler;
+        }
+    }
     public string SpeakerTag => _speakerTag;
 
 
@@ -47,18 +49,10 @@ public class NPC_Interactable : Interactable, IInteract
     public override void Awake()
     {
         base.Awake();
-        if (_dialogueHandler == null)
-        {
-            _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
-            if (_dialogueHandler == null)
-            {
 
-                _dialogueHandler = ObjectUtility.InstantiatePrefabWithComponent<DialogueInteractionHandler>
-                    (MTR_UIManager.Instance.dialogueSpawnerPrefab, Vector3.zero, Quaternion.identity, transform);
-                _dialogueHandler.transform.localPosition = Vector3.zero;
-            }
-        }
-        _dialogueHandler.SpeakerTag = _speakerTag;
+        if (DialogueHandler == null)
+            _dialogueHandler = MTR_InteractionManager.InitializeDialogueInteractionHandler(this);
+        DialogueHandler.SpeakerTag = _speakerTag;
     }
 
 
