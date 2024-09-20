@@ -20,8 +20,6 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
     public static MTR_UIManager UIManager => MTR_UIManager.Instance;
     public static MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
     public static MTR_AudioManager AudioManager => MTR_AudioManager.Instance;
-    public static GameStateMachine StateMachine = new GameStateMachine(GameState.NULL);
-
 
     public override void Awake()
     {
@@ -81,19 +79,3 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
     }
 }
 
-// ================================================================================================= //
-// ------------ [[ GameStateMachine ]] ------------ //
-public enum GameState { NULL, MAIN_MENU, LOADING_SCENE }
-public class GameStateMachine : SimpleStateMachine<GameState>
-{
-    public GameStateMachine(GameState baseState) : base(baseState) { }
-    public override void GoToState(GameState newState)
-    {
-        base.GoToState(newState);
-    }
-
-    public override void OnStateChanged(GameState previousState, GameState newState)
-    {
-        base.OnStateChanged(previousState, newState);
-    }
-}

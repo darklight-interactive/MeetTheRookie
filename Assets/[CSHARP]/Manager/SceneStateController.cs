@@ -7,7 +7,7 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
-public class SceneStates : MonoBehaviour
+public class SceneStateController : MonoBehaviour
 {
     [NonSerialized] public SceneStateMachine stateMachine;
     public SceneState startingState = SceneState.INITIALIZE;
@@ -62,13 +62,13 @@ public class SceneStates : MonoBehaviour
 
 public enum SceneState { INITIALIZE, ENTER, PLAYMODE, CINEMAMODE, PAUSEMODE, SYNTHESISMODE, EXIT, LOADING, CHOICEMODE }
 
-public class SceneStateMachine: FiniteStateMachine<SceneState>
+public class SceneStateMachine : FiniteStateMachine<SceneState>
 {
-    public SceneStates controller;
+    public SceneStateController controller;
 
     public SceneStateMachine(Dictionary<SceneState, FiniteState<SceneState>> possibleStates, SceneState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
-        controller = (SceneStates)args[0];
+        controller = (SceneStateController)args[0];
     }
 
     public override void Step()
