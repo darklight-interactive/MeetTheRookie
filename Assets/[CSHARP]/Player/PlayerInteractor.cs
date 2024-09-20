@@ -11,12 +11,10 @@ using NaughtyAttributes;
 using UnityEditor;
 #endif
 
-public class PlayerInteractor : MonoBehaviour
+public class PlayerInteractor : Interactor
 {
     DialogueInteractionHandler _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
-    List<Interactable> _nearbyInteractables = new List<Interactable>();
-
 
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
@@ -73,78 +71,6 @@ public class PlayerInteractor : MonoBehaviour
     public void Awake()
     {
         MTR_InteractionManager.RegisterPlayerInteractor(this);
-    }
-
-
-    #region -- [[ UPDATE THE INTERACTABLE RADAR ]] ------------------------------------- >> 
-
-    public void Update()
-    {
-        RefreshRadar();
-    }
-
-    void RefreshRadar()
-    {
-        if (_nearbyInteractables.Count == 0) return;
-        if (PlayerController.currentState == PlayerState.INTERACTION) return;
-        /*
-        // Temporary list to hold items to be removed
-        List<Interactable> toRemove = new List<Interactable>();
-
-        // Iterate through the found interactables
-        foreach (Interactable interactable in _foundInteractables)
-        {
-            if (interactable == null) continue;
-            if (interactable.isComplete)
-            {
-                // Mark the interaction for removal
-                toRemove.Add(interactable);
-                interactable.TargetClear();
-            }
-        }
-
-        // Remove the completed interactions from the HashSet
-        foreach (Interactable completedInteraction in toRemove)
-        {
-            _foundInteractables.Remove(completedInteraction);
-        }
-        */
-        // Update the target interactable
-        targetInteractable = GetClosestInteractable();
-        // Only set the target if the interactable is not the active target
-        if (targetInteractable != activeInteractable && !targetInteractable.isComplete)
-        {
-            if(previousTargetInteractable == null || targetInteractable != previousTargetInteractable){
-                targetInteractable.TargetSet();
-                previousTargetInteractable = targetInteractable;
-            }
-        }
-        else if (targetInteractable != null){
-            targetInteractable.TargetClear();
-            previousTargetInteractable = null;
-        }
-    }
-
-    #endregion
-
-    Interactable GetClosestInteractable()
-    {
-        if (_nearbyInteractables.Count == 0) return null;
-
-        Interactable closest = null;
-        float closestDistance = float.MaxValue;
-
-        foreach (Interactable interactable in _nearbyInteractables)
-        {
-            float distance = Vector2.Distance(transform.position, interactable.transform.position);
-            if (distance < closestDistance)
-            {
-                closest = interactable;
-                closestDistance = distance;
-            }
-        }
-
-        return closest;
     }
 
     public bool InteractWithTarget()
@@ -292,44 +218,6 @@ public class PlayerInteractor : MonoBehaviour
         activeInteractable.OnCompleted -= ExitInteraction;
         targetInteractable = null;
         activeInteractable = null;
-    }
-
-    /// <summary>
-    /// Remove interactables from the local list and clear their target state. 
-    /// </summary>
-    public void ClearInteractables()
-    {
-        foreach (Interactable interactable in _nearbyInteractables)
-        {
-            interactable.TargetClear();
-        }
-        _nearbyInteractables.Clear();
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Interactable interactable = other.GetComponent<Interactable>();
-        Debug.Log($"Player Interactor :: {interactable}");
-
-        if (interactable == null) return;
-        if (interactable.isComplete) return;
-        _nearbyInteractables.Add(interactable);
-
-        // Set as target
-        targetInteractable = interactable;
-        interactable.TargetSet();
-    }
-
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        Interactable interactable = other.GetComponent<Interactable>();
-        if (interactable == null) return;
-        _nearbyInteractables.Remove(interactable);
-        if (targetInteractable == interactable)
-            interactable.TargetClear();
-            previousTargetInteractable = null;
     }
 
 #if UNITY_EDITOR

@@ -20,7 +20,7 @@ public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionMana
     [SerializeField] PlayerInteractor _playerInteractor;
 
     [Header("Interactables")]
-    [SerializeField] Library<string, Interactable> _interactableLibrary = new Library<string, Interactable>();
+    [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
     [Header("Interaction Handler Prefabs")]
     [SerializeField] GameObject _iconInteractionHandlerPrefab;
@@ -40,37 +40,33 @@ public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionMana
     #region ======== <PUBLIC_STATIC_METHODS> [[ INTERACTABLE REGISTRY ]] ================================== >>>>
     public static void RegisterInteractable(Interactable interactable)
     {
-        if (Instance._interactableLibrary.ContainsKey(interactable.name))
-        {
-            //Debug.LogWarning($"{Prefix} Interactable {interactable.name} already registered", interactable);
-            return;
-        }
+        if (Instance._interactableRegistry.ContainsKey(interactable.name)) return;
 
         // << BASE INTERACTABLE >>
-        Instance._interactableLibrary.Add(interactable.name, interactable);
+        Instance._interactableRegistry.Add(interactable.name, interactable);
         InitializeIconInteractionHandler(interactable);
 
         // << NPC INTERACTABLE >>
         if (interactable is NPC_Interactable npc)
         {
             InitializeDialogueInteractionHandler(npc);
-            //Debug.Log($"{Prefix} Registered NPC Interactable {interactable.name}", interactable);
+            npc.gameObject.layer = LayerMask.NameToLayer(Instance._npcLayer);
         }
         else
         {
-            //Debug.Log($"{Prefix} Registered Interactable {interactable.name}", interactable);
+            interactable.gameObject.layer = LayerMask.NameToLayer(Instance._interactableLayer);
         }
     }
 
     static void RefreshInteractables()
     {
-        Instance._interactableLibrary.Clear();
+        Instance._interactableRegistry.Clear();
         Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         foreach (Interactable interactable in interactables)
         {
             RegisterInteractable(interactable);
         }
-        Debug.Log($"{Prefix} Refreshed Interactable Registry : Found {Instance._interactableLibrary.Count} interactables", Instance);
+        Debug.Log($"{Prefix} Refreshed Interactable Registry : Found {Instance._interactableRegistry.Count} interactables", Instance);
     }
 
     static void RefreshInteractors()
@@ -130,12 +126,6 @@ public class MTR_InteractionManager : MonoBehaviourSingleton<MTR_InteractionMana
         player.ChoiceHandler = ObjectUtility.InstantiatePrefabAsComponent<ChoiceInteractionHandler>(Instance._choiceInteractionHandlerPrefab, player.transform);
         Debug.Log($"{Prefix} Instantiated Choice Interaction Handler for {player.name}", player);
     }
-    #endregion
-
-    #region ======== <STATIC_METHODS> [[ VISIT INTERACTABLES ]] ================================== >>>>
-
-
-
     #endregion
 }
 
