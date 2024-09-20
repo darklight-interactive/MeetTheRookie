@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 6736551505315507451}
   - component: {fileID: 255471297845677017}
   - component: {fileID: 6518913931919201701}
+  - component: {fileID: 3111666815096095956}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -387,8 +388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1468, y: 826}
-  _screenAspectRatio: 1.7772397
+  _screenSize: {x: 727, y: 409}
+  _screenAspectRatio: 1.7775061
   _characterColors: {fileID: 0}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
@@ -525,3 +526,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3c1aefa25d1fd4cb20cd0f4c950bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3111666815096095956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c2e6f36a48805e4a8cdb400f6f1d717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingState: 1
+  currentState: 0

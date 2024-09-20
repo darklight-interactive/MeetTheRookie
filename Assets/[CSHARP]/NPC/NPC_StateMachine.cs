@@ -227,8 +227,6 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Enter()
     {
-        Debug.Log("Entering Follow State");
-
         if (player == null) { player = _stateMachine.controller.player; }
 
          coroutine = _coroutineRunner.StartCoroutine(FollowCheck());

@@ -1,4 +1,5 @@
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,16 +7,24 @@ using System.ComponentModel;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
-public class SceneStateController : MonoBehaviour
+public class SceneStateController : MonoBehaviourSingleton<SceneStateController>
 {
+    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
+
     [NonSerialized] public SceneStateMachine stateMachine;
     public SceneState startingState = SceneState.INITIALIZE;
-    public SceneState currentState;
+    [SerializeField, ShowOnly] SceneState currentState;
+
+    public override void Initialize()
+    {
+        GameSceneManager.OnSceneChanged += SceneChanged;
+    }
 
     void Start()
     {
-        InitializeState initializeState = new(stateMachine, SceneState.INITIALIZE, new object[] { stateMachine });
+        InitializeState initializeState = new(stateMachine, SceneState.INITIALIZE);
         EnterState enterState = new(stateMachine, SceneState.ENTER, new object[] { stateMachine });
         PlayModeState playModeState = new(stateMachine, SceneState.PLAYMODE, new object[] { stateMachine });
         CinemaModeState cinemaModeState = new(stateMachine, SceneState.CINEMAMODE, new object[] { stateMachine });
@@ -51,6 +60,8 @@ public class SceneStateController : MonoBehaviour
         exitState._stateMachine = stateMachine;
         loadingState._stateMachine = stateMachine;
         choiceModeState._stateMachine = stateMachine;
+
+        stateMachine.GoToState(SceneState.INITIALIZE);
     }
 
     void Update()
@@ -58,9 +69,19 @@ public class SceneStateController : MonoBehaviour
         stateMachine.Step();
         currentState = stateMachine.CurrentState;
     }
+
+    private void SceneChanged(Scene oldScene, Scene newScene)
+    {
+        if (stateMachine == null) 
+        {
+            return;
+        }
+
+        stateMachine.GoToState(SceneState.INITIALIZE);
+    }
 }
 
-public enum SceneState { INITIALIZE, ENTER, PLAYMODE, CINEMAMODE, PAUSEMODE, SYNTHESISMODE, EXIT, LOADING, CHOICEMODE }
+public enum SceneState { NONE, INITIALIZE, ENTER, PLAYMODE, CINEMAMODE, PAUSEMODE, SYNTHESISMODE, EXIT, LOADING, CHOICEMODE }
 
 public class SceneStateMachine : FiniteStateMachine<SceneState>
 {
@@ -79,6 +100,7 @@ public class SceneStateMachine : FiniteStateMachine<SceneState>
     public override bool GoToState(SceneState newState)
     {
         bool result = base.GoToState(newState);
+        possibleStates[newState].Enter();
         return result;
     }
 }
@@ -88,14 +110,20 @@ public class SceneStateMachine : FiniteStateMachine<SceneState>
 public class InitializeState : FiniteState<SceneState>
 {
     public SceneStateMachine _stateMachine;
-    public InitializeState(SceneStateMachine stateMachine, SceneState stateType, params object[] args) : base(stateMachine, stateType)
+    public InitializeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType)
     {
-        _stateMachine = (SceneStateMachine)args[0];
     }
 
     public override void Enter()
     {
+        // Confirm Closed Transition
 
+        // Move Entities to start positions 
+        //  SpawnHandler SceneChanged()
+
+        // Start Background Music
+
+        _stateMachine.GoToState(SceneState.ENTER);
     }
 
     public override void Exit()
@@ -103,7 +131,9 @@ public class InitializeState : FiniteState<SceneState>
 
     }
 
-    public override void Execute() { }
+    public override void Execute()
+    {
+    }
 }
 
 #endregion
@@ -120,7 +150,14 @@ public class EnterState : FiniteState<SceneState>
 
     public override void Enter()
     {
+        // Open Transition
 
+        // invoke OnStart
+        //  start cutscene
+        //  start interaction
+        //  direct NPCs
+
+        _stateMachine.GoToState(SceneState.PLAYMODE);
     }
 
     public override void Exit()
