@@ -4,6 +4,8 @@ using Darklight.UnityExt.UXML;
 using UnityEngine;
 using NaughtyAttributes;
 using Darklight.UnityExt.Editor;
+using System.Collections;
+
 
 
 #if UNITY_EDITOR
@@ -12,6 +14,8 @@ using UnityEditor;
 
 public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
 {
+    bool _initialized = false;
+
     [SerializeField, Expandable] UXML_UIDocumentPreset _interactIconPreset;
     [SerializeField, ShowOnly] UXML_RenderTextureObject _interactIconObject;
     [SerializeField, ShowOnly] bool _visible = false;
@@ -27,6 +31,16 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
         Cell2D cell = GetBestCell();
         cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
+        if (cell != null)
+        {
+            if (cell.Position == Vector3.zero && cell.Dimensions == Vector2.one)
+            {
+                Debug.LogError($"Cell {cell.Name} has default values, calling ShowInteractIcon() again.");
+                Invoke(nameof(ShowInteractIcon), 0.5f);
+                return;
+            }
+        }
+
         // << Create a new interact icon >>
         if (_interactIconObject == null)
         {
@@ -37,7 +51,7 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
             _interactIconObject.transform.SetParent(transform);
         }
 
-        _interactIconObject.transform.position = position;
+        _interactIconObject.transform.position = position + (normal * 0.1f);
         _interactIconObject.SetLocalScale(dimensions.y);
         _interactIconObject.SetVisibility(true);
         _interactIconObject.TextureUpdate();
@@ -47,18 +61,22 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
 
     public void HideInteractIcon()
     {
-        if (_interactIconObject == null)
-            return;
+        if (_interactIconObject == null) return;
+
+        DestroyInteractIcon();
+
+        /*
         _interactIconObject.SetVisibility(false);
         _interactIconObject.TextureUpdate();
 
         _visible = false;
+        */
     }
 
     public void DestroyInteractIcon()
     {
-        if (_interactIconObject == null)
-            return;
+        if (_interactIconObject == null) return;
+
         ObjectUtility.DestroyAlways(_interactIconObject.gameObject);
         _interactIconObject = null;
 
@@ -103,14 +121,26 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
         {
             EditorGUILayout.BeginHorizontal();
 
-            if (!_script.IsVisible && GUILayout.Button("Show Interact Icon"))
+            if (!_script.IsVisible || _script._interactIconObject == null)
             {
-                _script.ShowInteractIcon();
+                if (GUILayout.Button("Show Interact Icon"))
+                {
+                    _script.ShowInteractIcon();
+                }
             }
-            else if (_script.IsVisible && GUILayout.Button("Hide Interact Icon"))
+            else if (_script._interactIconObject != null)
             {
-                _script.HideInteractIcon();
+                if (_script.IsVisible && GUILayout.Button("Hide Interact Icon"))
+                {
+                    _script.HideInteractIcon();
+                }
+
+                if (GUILayout.Button("Destroy Interact Icon"))
+                {
+                    _script.DestroyInteractIcon();
+                }
             }
+
             EditorGUILayout.EndHorizontal();
         }
     }

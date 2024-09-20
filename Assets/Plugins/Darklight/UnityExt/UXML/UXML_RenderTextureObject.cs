@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
+using UnityEngine.UI;
+
 
 
 
@@ -20,12 +22,8 @@ namespace Darklight.UnityExt.UXML
     [ExecuteAlways]
     public class UXML_RenderTextureObject : UXML_UIDocumentObject, IUnityEditorListener
     {
-        public void OnEditorReloaded()
-        {
-#if UNITY_EDITOR
-            DestroyImmediate(this.gameObject);
-#endif
-        }
+        Material _materialInstance;
+        RenderTexture _renderTextureInstance;
 
         [SerializeField, ShowOnly] GameObject _quad;
         [SerializeField, ShowOnly] MeshRenderer _meshRenderer;
@@ -35,6 +33,13 @@ namespace Darklight.UnityExt.UXML
         // -- Element Changed Event --
         public delegate void OnChange();
         protected OnChange OnElementChanged;
+
+        public void OnEditorReloaded()
+        {
+#if UNITY_EDITOR
+            DestroyImmediate(this.gameObject);
+#endif
+        }
 
         public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
@@ -54,20 +59,46 @@ namespace Darklight.UnityExt.UXML
                 _quad.transform.SetParent(this.transform);
                 _quad.transform.localPosition = Vector3.zero;
                 _meshRenderer = _quad.GetComponent<MeshRenderer>();
+
+                gameObject.layer = LayerMask.NameToLayer("UI");
+                _quad.layer = LayerMask.NameToLayer("UI");
             }
 
-            gameObject.layer = LayerMask.NameToLayer("UI");
-            _quad.layer = LayerMask.NameToLayer("UI");
+            // Create a new material instance
+            if (_materialInstance == null)
+                _materialInstance = new Material(_material);
+
+            // Create a new render texture instance
+            if (_renderTextureInstance == null)
+                _renderTextureInstance = new RenderTexture(_renderTexture);
+
+            // Assign the render texture to the panel settings and material
+            document.panelSettings.targetTexture = _renderTextureInstance;
+            _materialInstance.mainTexture = _renderTextureInstance;
+
+            // Assign the material to the mesh renderer
+            _meshRenderer.sharedMaterial = _materialInstance;
+
 
             OnElementChanged?.Invoke();
         }
 
         public void TextureUpdate()
         {
-            // Set the material and texture
-            _meshRenderer.sharedMaterial = new Material(_material); // << clone the material
-            document.panelSettings.targetTexture = new RenderTexture(_renderTexture); // << set UIDocument target texture to clone
-            _meshRenderer.sharedMaterial.mainTexture = document.panelSettings.targetTexture; // << set the material texture
+            if (_renderTextureInstance == null || _materialInstance == null)
+            {
+                Debug.LogWarning("Material or RenderTexture instance is not initialized.");
+                return;
+            }
+
+            // Force the UI document to repaint
+            document.rootVisualElement.MarkDirtyRepaint();
+
+            RenderTexture cloneTexture = new RenderTexture(_renderTextureInstance);
+            document.panelSettings.targetTexture = cloneTexture;
+            _materialInstance.mainTexture = cloneTexture;
+            _meshRenderer.sharedMaterial = _materialInstance;
+
         }
 
         public void SetLocalScale(float scale)

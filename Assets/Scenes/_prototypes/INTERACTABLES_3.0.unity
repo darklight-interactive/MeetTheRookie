@@ -458,6 +458,10 @@ PrefabInstance:
       value: -673211431
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _offsetPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _targetInteractable
       value: 
       objectReference: {fileID: 2133541903}
@@ -475,7 +479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[1]._key
-      value: <EXAMPLE> Interactable (2)
+      value: <EXAMPLE> Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[0]._value
@@ -484,7 +488,7 @@ PrefabInstance:
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[1]._value
       value: 
-      objectReference: {fileID: 1541940983}
+      objectReference: {fileID: 1352654846}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -503,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1268,6 +1272,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &774791284 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 151502979}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1273029733
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1458,7 @@ GameObject:
   - component: {fileID: 1352654845}
   - component: {fileID: 1352654844}
   m_Layer: 8
-  m_Name: <EXAMPLE> Interactable
+  m_Name: <INTERACTABLE> purple_arcade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1583,8 +1592,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainSprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
+  _currentState: 0
   _iconHandler: {fileID: 227294716}
+  _mainSprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1001 &1390970843
@@ -1741,7 +1751,7 @@ GameObject:
   - component: {fileID: 1541940986}
   - component: {fileID: 1541940985}
   m_Layer: 8
-  m_Name: <EXAMPLE> Interactable (2)
+  m_Name: <INTERACTABLE> yellow_arcade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1759,8 +1769,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainSprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
+  _currentState: 0
   _iconHandler: {fileID: 358884264}
+  _mainSprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &1541940984
@@ -1905,7 +1916,7 @@ Transform:
   m_GameObject: {fileID: 1724537136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.414, y: 0.483, z: 0}
+  m_LocalPosition: {x: 1.962, y: 0.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1928,12 +1939,10 @@ MonoBehaviour:
     m_Bits: 384
   _dimensions: {x: 1, y: 1}
   _offsetPosition: {x: 0, y: 0}
-  _targetInteractable: {fileID: 1541940983}
+  _lastTarget: {fileID: 0}
+  _target: {fileID: 0}
   _nearbyInteractables:
-    _items:
-    - _id: 0
-      _key: <EXAMPLE> Interactable (2)
-      _value: {fileID: 1541940983}
+    _items: []
 --- !u!1 &2133541902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1947,7 +1956,7 @@ GameObject:
   - component: {fileID: 2133541906}
   - component: {fileID: 2133541905}
   m_Layer: 8
-  m_Name: <EXAMPLE> Interactable (1)
+  m_Name: <INTERACTABLE> blue_arcade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1965,8 +1974,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainSprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
+  _currentState: 0
   _iconHandler: {fileID: 1390970844}
+  _mainSprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &2133541904
@@ -2107,15 +2117,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -40
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9999951
+      value: 0.9999805
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0031249544
+      value: -0.0062496345
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.y
@@ -2154,16 +2164,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
-      propertyPath: _distanceZ
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _currentFOV
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTarget
+      value: 
+      objectReference: {fileID: 774791284}
+    - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _offsetPosition.z
-      value: -40
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _focusTargetPosition.x
+      value: -0.922
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

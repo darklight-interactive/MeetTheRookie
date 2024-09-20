@@ -14,7 +14,7 @@ using UnityEditor;
 [ExecuteAlways]
 public class PlayerInteractor : Interactor
 {
-    const float INTERACTOR_X_OFFSET = 0.75f;
+    const float INTERACTOR_X_OFFSET = 0.35f;
     DialogueInteractionHandler _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
 

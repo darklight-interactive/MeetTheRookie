@@ -61,22 +61,8 @@ public class MTR_Interactable : Interactable
     public bool IsComplete { get => _isComplete; set => _isComplete = value; }
     #endregion
 
-
-
-    #region ======== <METHODS> [[ UNITY RUNTIME ]] ================================== >>>>
-    public virtual void Awake()
-    {
-        MTR_InteractionManager.RegisterInteractable(this);
-    }
-    #endregion
-
-    #region ======== <PUBLIC_METHODS>[[ IInteractable METHODS ]] ================================== >>>>
-
-    #endregion
-
     public override void Initialize()
     {
-        base.Initialize();
 
         var tempLupe = FindFirstObjectByType<PlayerController>();
         if (tempLupe != null)
@@ -101,6 +87,8 @@ public class MTR_Interactable : Interactable
         {
             destinationPointsRelativeX = new List<float> { -1, 1 };
         }
+
+        base.Initialize();
     }
 
     void OnStart()

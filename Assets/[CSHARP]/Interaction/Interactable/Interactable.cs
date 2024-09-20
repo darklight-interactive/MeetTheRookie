@@ -71,19 +71,6 @@ public partial class Interactable : MonoBehaviour, IInteractable
     }
 
     InkyStoryIterator storyIterator => InkyStoryManager.Iterator;
-    protected StateMachine stateMachine
-    {
-        get
-        {
-            if (_stateMachine == null)
-            {
-                _stateMachine = new StateMachine(this);
-                _stateMachine.GoToState(IInteractable.State.NULL);
-            }
-            return _stateMachine;
-        }
-    }
-
     public string Name => this.gameObject.name;
     public string SceneKnot => _sceneKnot;
     public string InteractionStitch => _interactionStitch;
@@ -91,14 +78,14 @@ public partial class Interactable : MonoBehaviour, IInteractable
     {
         get
         {
-            try
+            if (_stateMachine == null)
+                _currentState = IInteractable.State.NULL;
+            else
             {
-                return stateMachine.CurrentState;
+                try { _currentState = _stateMachine.CurrentState; }
+                catch { _currentState = IInteractable.State.NULL; }
             }
-            catch (System.Exception)
-            {
-                return IInteractable.State.NULL;
-            }
+            return _currentState;
         }
     }
     public Sprite MainSprite { get => _mainSprite; set => _mainSprite = value; }
@@ -120,7 +107,7 @@ public partial class Interactable : MonoBehaviour, IInteractable
 
     void OnDrawGizmos()
     {
-        Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.5f);
+        Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.25f);
         CustomGizmos.DrawLabel(CurrentState.ToString(), labelPos, new GUIStyle()
         {
             fontSize = 12,
@@ -152,8 +139,11 @@ public partial class Interactable : MonoBehaviour, IInteractable
         if (_collider == null)
             _collider = this.gameObject.AddComponent<BoxCollider2D>();
 
+        // << CREATE THE STATE MACHINE >> ------------------------------------
+        _stateMachine = new StateMachine(this);
+
         // << SUBSCRIBE TO STATE CHANGES >> ------------------------------------
-        stateMachine.OnStateChanged += (IInteractable.State state) =>
+        _stateMachine.OnStateChanged += (IInteractable.State state) =>
         {
             _currentState = state;
             //Debug.Log($"[{Name}] State Changed: {state}");
@@ -163,18 +153,20 @@ public partial class Interactable : MonoBehaviour, IInteractable
         MTR_InteractionManager.RegisterInteractable(this);
 
         // << GO TO READY STATE >> ------------------------------------
-        stateMachine.GoToState(IInteractable.State.READY);
+        _stateMachine.GoToState(IInteractable.State.READY);
+
+        Debug.Log($"<INTERACTABLE> {Name} Initialized. Current State: {CurrentState}");
     }
 
     public virtual void Refresh()
     {
         // << Refresh Serialized Fields >> ------------------------------------
-        _currentState = CurrentState;
+        //_currentState = CurrentState;
     }
 
     public virtual void Reset()
     {
-        stateMachine.GoToState(IInteractable.State.READY);
+        _stateMachine.GoToState(IInteractable.State.READY);
     }
 
     public virtual bool AcceptTarget(IInteractor interactor, bool force = false)
@@ -189,7 +181,7 @@ public partial class Interactable : MonoBehaviour, IInteractable
         }
 
         // << ACCEPT TARGET >> ------------------------------------
-        stateMachine.GoToState(IInteractable.State.TARGET);
+        _stateMachine.GoToState(IInteractable.State.TARGET);
         return true;
     }
 
@@ -205,9 +197,9 @@ public partial class Interactable : MonoBehaviour, IInteractable
 
         // << ACCEPT INTERACTION >> ------------------------------------
         if (CurrentState == IInteractable.State.START)
-            stateMachine.GoToState(IInteractable.State.CONTINUE);
+            _stateMachine.GoToState(IInteractable.State.CONTINUE);
         else
-            stateMachine.GoToState(IInteractable.State.START);
+            _stateMachine.GoToState(IInteractable.State.START);
         return true;
     }
 
@@ -233,7 +225,6 @@ public partial class Interactable : MonoBehaviour, IInteractable
         {
             _serializedObject = new SerializedObject(target);
             _script = (Interactable)target;
-            _script.Awake();
         }
 
         public override void OnInspectorGUI()
@@ -243,11 +234,6 @@ public partial class Interactable : MonoBehaviour, IInteractable
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
-
-            if (GUILayout.Button("Initialize"))
-            {
-                _script.Initialize();
-            }
 
             if (EditorGUI.EndChangeCheck())
             {

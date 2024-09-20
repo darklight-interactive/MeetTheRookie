@@ -69,7 +69,11 @@ public partial class Interactable
         public class ReadyState : BaseInteractState
         {
             public ReadyState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.READY) { }
-            public override void Enter() { }
+            public override void Enter()
+            {
+                // Confirm that the icon is hidden
+                interactable.IconHandler?.HideInteractIcon();
+            }
             public override void Execute() { }
             public override void Exit() { }
         }

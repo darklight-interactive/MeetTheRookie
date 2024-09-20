@@ -44,6 +44,10 @@ public class Interactor : MonoBehaviour, IInteractor
     [Header("Interactables")]
     [SerializeField, ShowOnly] Interactable _lastTarget;
     [SerializeField, ShowOnly] Interactable _target;
+
+    [Space(10)]
+    [SerializeField, ShowOnly] Interactable _closestInteractable;
+
     [SerializeField] Library<string, Interactable> _nearbyInteractables = new Library<string, Interactable>();
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -60,8 +64,8 @@ public class Interactor : MonoBehaviour, IInteractor
         RefreshNearbyInteractables();
 
         // << UPDATE TARGET >> --------
-        Interactable closestInteractable = GetClosestReadyInteractable(OverlapCenter);
-        TryAssignTarget(closestInteractable);
+        _closestInteractable = GetClosestReadyInteractable(OverlapCenter);
+        TryAssignTarget(_closestInteractable);
     }
 
     void OnDrawGizmos()
@@ -103,12 +107,16 @@ public class Interactor : MonoBehaviour, IInteractor
 
     public void TryAddInteractable(Interactable interactable)
     {
+        if (interactable == null) return;
         if (!_nearbyInteractables.ContainsKey(interactable.name))
             _nearbyInteractables.Add(interactable.name, interactable);
+        else
+            _nearbyInteractables[interactable.name] = interactable;
     }
 
     public void RemoveInteractable(Interactable interactable)
     {
+        if (interactable == null) return;
         if (_nearbyInteractables.ContainsKey(interactable.name))
             _nearbyInteractables.Remove(interactable.name);
     }
@@ -132,6 +140,8 @@ public class Interactor : MonoBehaviour, IInteractor
         float closestDistance = float.MaxValue;
         foreach (Interactable interactable in _nearbyInteractables.Values)
         {
+            if (interactable == null) continue;
+
             // Calculate the distance to the interactable.
             float distance = Vector3.Distance(interactable.transform.position, position);
             if (distance < closestDistance)
