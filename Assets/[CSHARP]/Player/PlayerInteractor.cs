@@ -15,16 +15,11 @@ using UnityEditor;
 public class PlayerInteractor : Interactor
 {
     const float INTERACTOR_X_OFFSET = 0.75f;
-    Interactable _lastTarget;
     DialogueInteractionHandler _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
-
-    [Header("Interactable Radar")]
-    [SerializeField, ShowOnly] Interactable _targetInteractable;
-    [SerializeField, ShowOnly] Interactable _activeInteractable;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
@@ -75,14 +70,25 @@ public class PlayerInteractor : Interactor
     {
         base.Update();
 
-        // << SET INTERACTOR OFFSET POSITION >>
+        // << UPDATE FACING >> --------
         if (PlayerController.Facing == PlayerFacing.LEFT)
+        {
             OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
+
+            // If the target is to the right of the player, clear the target
+            if (TargetInteractable != null &&
+                TargetInteractable.transform.position.x > transform.position.x)
+                ClearTarget();
+        }
         else if (PlayerController.Facing == PlayerFacing.RIGHT)
+        {
             OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
 
-        // << UPDATE TARGET INTERACTABLE >>
-        _targetInteractable = GetClosestInteractableTo(PlayerController.transform.position);
+            // If the target is to the left of the player, clear the target
+            if (TargetInteractable != null &&
+                TargetInteractable.transform.position.x < transform.position.x)
+                ClearTarget();
+        }
     }
 
     private IEnumerator MoveToPosition()
@@ -178,23 +184,10 @@ public class PlayerInteractor : Interactor
 
 
         // Set Lupe to face interactable
-        Vector3 activeInteractablePosition = _activeInteractable.gameObject.transform.position;
+        //Vector3 activeInteractablePosition = _activeInteractable.gameObject.transform.position;
         //PlayerController.Animator.FrameAnimationPlayer.FlipSprite(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
         //_activeInteractable.AcceptInteraction(); // << MAIN INTERACTION
-    }
-
-    public void ForceInteract(Interactable interactable)
-    {
-        if (interactable == null) return;
-        Debug.Log($"Player Interactor :: Force Interact with {interactable.name}");
-
-        // Set the target interactable
-        _targetInteractable = interactable;
-        _targetInteractable.AcceptTarget(this);
-
-        // Interact with the target
-        InteractWithTarget();
     }
 
     public void ExitInteraction()
@@ -207,10 +200,6 @@ public class PlayerInteractor : Interactor
 
         // Force set the speaker to Lupe
         InkyStoryManager.Instance.SetSpeaker("Lupe");
-
-        // Unsubscribe from the OnComplete event
-        _targetInteractable = null;
-        _activeInteractable = null;
     }
 
 #if UNITY_EDITOR

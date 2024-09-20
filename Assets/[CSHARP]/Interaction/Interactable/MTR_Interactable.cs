@@ -108,7 +108,7 @@ public class MTR_Interactable : Interactable
         if (onStart)
         {
             PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
-            playerInteractor.ForceInteract(this);
+            playerInteractor.InteractWith(this, true);
         }
     }
 

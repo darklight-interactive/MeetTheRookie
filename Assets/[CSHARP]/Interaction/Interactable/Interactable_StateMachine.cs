@@ -22,7 +22,10 @@ public partial class Interactable
             _interactable = interactable;
             _storyIterator = InkyStoryManager.Iterator;
 
-            AddState(new NullState(this));
+            NullState nullState = new NullState(this);
+            this.currentFiniteState = nullState;
+
+            AddState(nullState);
             AddState(new ReadyState(this));
             AddState(new TargetState(this));
             AddState(new StartState(this));

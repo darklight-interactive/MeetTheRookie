@@ -134,14 +134,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camerasInChildren:
   - {fileID: 294617130321755958}
+  - {fileID: 5663657954300164996}
   - {fileID: 1148548231494987092}
   - {fileID: 6029335792472997658}
-  - {fileID: 5663657954300164996}
   _focusTarget: {fileID: 0}
   _focusTargetPosition: {x: 0, y: 0, z: 0}
   _focusTargetPositionOffset: {x: 0, y: 0.25, z: 0}
   _focusOffsetY: 0.25
-  _offsetPosition: {x: 0, y: 0, z: -187}
+  _offsetPosition: {x: 0, y: 0, z: -20}
   _positionLerpSpeed: 10
   _rotationLerpSpeed: 10
   _fovLerpSpeed: 10
@@ -150,7 +150,7 @@ MonoBehaviour:
   _distanceZ: -20
   _baseFOV: 5
   _offsetFOV: 0
-  _currentFOV: 10
+  _currentFOV: 5
 --- !u!1 &3605313824413459967
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +217,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 10
+  field of view: 5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -311,9 +311,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3768953934943051033}
   - {fileID: 2752063185994480251}
   - {fileID: 5409168742065500744}
-  - {fileID: 3768953934943051033}
   m_Father: {fileID: 348082412807241120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &294617130321755958
@@ -349,7 +349,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 10
+  field of view: 5
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -384,8 +384,8 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras:
-  - {fileID: 1148548231494987092}
   - {fileID: 5663657954300164996}
+  - {fileID: 1148548231494987092}
   - {fileID: 6029335792472997658}
   m_RendererIndex: 0
   m_VolumeLayerMask:
@@ -493,7 +493,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 10
+  field of view: 5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -733,7 +733,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 10
+  field of view: 5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2

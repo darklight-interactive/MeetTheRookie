@@ -30,18 +30,16 @@ namespace Darklight.UnityExt.Animation
         protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
         protected float timePerFrame => 1 / (float)_frameRate; // Time each frame should be displayed
 
-        public void Awake() => Initialize(_spriteSheet);
+        public void Awake() => Initialize();
         public virtual void Update()
         {
             if (_spriteSheet == null) return;
             UpdateFrame();
         }
 
-        public virtual void Initialize(SpriteSheet spriteSheet)
+        public virtual void Initialize()
         {
-            if (spriteSheet == null) return;
-
-            _spriteSheet = spriteSheet;
+            if (_spriteSheet == null) return;
             LoadSpriteSheet(_spriteSheet);
         }
 
@@ -78,7 +76,8 @@ namespace Darklight.UnityExt.Animation
             }
 
             _spriteSheet = spriteSheet;
-            spriteRenderer.sprite = _spriteSheet.GetSpriteAtFrame(0);
+            _currentSprite = _spriteSheet.GetSpriteAtFrame(0);
+            spriteRenderer.sprite = _currentSprite;
 
             _animationDone = false;
             _currentFrame = 0;

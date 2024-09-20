@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         Interactor = GetComponent<PlayerInteractor>();
         Animator = GetComponent<PlayerAnimator>();
+        Animator.SetFacing(SpriteDirection.RIGHT);
 
         WalkOverride walkOverride = new WalkOverride(StateMachine, PlayerState.WALKOVERRIDE, _destinationPoint);
 

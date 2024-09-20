@@ -18,25 +18,38 @@ public class PlayerAnimator : FrameAnimationPlayer
     public PlayerState animationStateOverride = PlayerState.NULL;
     public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
 
-    public override void Initialize(SpriteSheet spriteSheet)
+    public override void Initialize()
     {
-        base.Initialize(spriteSheet);
         animationStateOverride = spriteSheets[0].state;
 
+        if (animationStateOverride != PlayerState.NULL)
+        {
+            SpriteSheet spriteSheet = GetSpriteSheetWithState(animationStateOverride);
+            if (spriteSheet != null)
+                LoadSpriteSheet(spriteSheet);
+            else
+                Debug.LogError("No sprite sheet found for state: " + animationStateOverride);
+        }
+        else { Debug.LogError("No animation state set for player animator"); }
+
         _playerController = GetComponent<PlayerController>();
+        UpdateFacing();
     }
 
     public override void Update()
     {
         base.Update();
+        UpdateFacing();
+    }
 
+    void UpdateFacing()
+    {
         // Update facing direction from the player controller
         if (_playerController == null) return;
         if (_playerController.Facing == PlayerFacing.LEFT)
             SetFacing(SpriteDirection.LEFT);
         else if (_playerController.Facing == PlayerFacing.RIGHT)
             SetFacing(SpriteDirection.RIGHT);
-
     }
 
     public void PlayStateAnimation(PlayerState state)
@@ -86,14 +99,7 @@ public class PlayerAnimationEditor : UnityEditor.Editor
 
         if (EditorGUI.EndChangeCheck())
         {
-            if (_script.animationStateOverride != PlayerState.NULL)
-            {
-                SpriteSheet spriteSheet = _script.GetSpriteSheetWithState(_script.animationStateOverride);
-                if (spriteSheet != null)
-                {
-                    _script.Initialize(spriteSheet);
-                }
-            }
+
 
             _serializedObject.ApplyModifiedProperties();
         }

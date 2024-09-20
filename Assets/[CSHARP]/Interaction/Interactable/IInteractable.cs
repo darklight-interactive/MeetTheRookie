@@ -13,12 +13,14 @@ public interface IInteractable
     delegate void InteractionEvent();
     delegate void InteractionDialogueEvent(string text);
 
-
     // ===================== [[ METHODS ]] =====================
     void Initialize();
-    bool AcceptTarget(IInteractor interactor);
-    bool AcceptInteraction(IInteractor interactor);
+    void Refresh();
     void Reset();
+
+    bool AcceptTarget(IInteractor interactor, bool force = false);
+    bool AcceptInteraction(IInteractor interactor, bool force = false);
+
 
     // ===================== [[ NESTED TYPES ]] =====================
     public enum State

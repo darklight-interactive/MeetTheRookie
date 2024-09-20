@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Library;
-
-
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,12 +19,12 @@ public interface IInteractor
 
     List<Interactable> FindInteractables();
     Interactable GetInteractable(string name);
-    Interactable GetClosestInteractableTo(Vector3 position);
+    Interactable GetClosestReadyInteractable(Vector3 position);
 
-    void SetTarget(Interactable interactable);
+    bool TryAssignTarget(Interactable interactable);
     void ClearTarget();
 
-    bool InteractWith(Interactable interactable);
+    bool InteractWith(Interactable interactable, bool force = false);
     bool InteractWithTarget();
 
     void RefreshNearbyInteractables();
@@ -36,7 +35,6 @@ public class Interactor : MonoBehaviour, IInteractor
 {
     protected const string PREFIX = "Interactor:";
 
-    Interactable _lastTarget;
 
     [Header("Interactor Settings")]
     [SerializeField] LayerMask _layerMask;
@@ -44,13 +42,14 @@ public class Interactor : MonoBehaviour, IInteractor
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
 
     [Header("Interactables")]
-    [SerializeField, ShowOnly] Interactable _targetInteractable;
+    [SerializeField, ShowOnly] Interactable _lastTarget;
+    [SerializeField, ShowOnly] Interactable _target;
     [SerializeField] Library<string, Interactable> _nearbyInteractables = new Library<string, Interactable>();
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
     public Library<string, Interactable> NearbyInteractables => _nearbyInteractables;
-    public Interactable TargetInteractable => _targetInteractable;
+    public Interactable TargetInteractable => _target;
 
     public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
     protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
@@ -60,16 +59,18 @@ public class Interactor : MonoBehaviour, IInteractor
     {
         RefreshNearbyInteractables();
 
-        _targetInteractable = GetClosestInteractableTo(OverlapCenter);
+        // << UPDATE TARGET >> --------
+        Interactable closestInteractable = GetClosestReadyInteractable(OverlapCenter);
+        TryAssignTarget(closestInteractable);
     }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
         foreach (Interactable interactable in _nearbyInteractables.Values)
         {
             if (interactable == null) continue;
-            if (interactable == _targetInteractable)
+            if (interactable == _target)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(transform.position, interactable.transform.position);
@@ -79,7 +80,7 @@ public class Interactor : MonoBehaviour, IInteractor
                 Gizmos.color = Color.yellow;
             }
 
-            Gizmos.DrawSphere(interactable.transform.position, 0.1f);
+            Gizmos.DrawSphere(interactable.transform.position, 0.025f);
         }
     }
     #endregion
@@ -122,12 +123,16 @@ public class Interactor : MonoBehaviour, IInteractor
         return null;
     }
 
-    public Interactable GetClosestInteractableTo(Vector3 position)
+    public Interactable GetClosestReadyInteractable(Vector3 position)
     {
-        Interactable closestInteractable = null;
+        if (_nearbyInteractables.Count == 0) return null;
+        if (_nearbyInteractables.Count == 1) return _nearbyInteractables.Values.First();
+
+        Interactable closestInteractable = _nearbyInteractables.Values.First();
         float closestDistance = float.MaxValue;
         foreach (Interactable interactable in _nearbyInteractables.Values)
         {
+            // Calculate the distance to the interactable.
             float distance = Vector3.Distance(interactable.transform.position, position);
             if (distance < closestDistance)
             {
@@ -138,28 +143,40 @@ public class Interactor : MonoBehaviour, IInteractor
         return closestInteractable;
     }
 
-    public void SetTarget(Interactable interactable)
+    public bool TryAssignTarget(Interactable interactable)
     {
-        throw new System.NotImplementedException();
+        if (interactable == null) return false;
+        if (_target == interactable) return false;
+        if (_lastTarget == interactable) return false;
+
+        bool result = interactable.AcceptTarget(this);
+        if (result)
+        {
+            _lastTarget = _target;
+            _target = interactable;
+
+            if (_lastTarget != null)
+                _lastTarget.Reset();
+        }
+        //Debug.Log($"[{name}] TryAssignTarget: {interactable.name} => {result}");
+        return result;
     }
 
     public void ClearTarget()
     {
-        throw new System.NotImplementedException();
+        _lastTarget = _target;
+        _target = null;
+
+        _lastTarget.Reset();
     }
 
-    public bool InteractWith(Interactable interactable)
+    public bool InteractWith(Interactable interactable, bool force = false)
     {
-        throw new System.NotImplementedException();
+        if (interactable == null) return false;
+        return interactable.AcceptInteraction(this, force);
     }
 
-    public bool InteractWithTarget()
-    {
-        if (_targetInteractable == null) return false;
-
-        bool result = _targetInteractable.AcceptInteraction(this);
-        return result;
-    }
+    public bool InteractWithTarget() => InteractWith(_target);
 
     public void RefreshNearbyInteractables()
     {
@@ -188,3 +205,32 @@ public class Interactor : MonoBehaviour, IInteractor
 
     #endregion
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Interactor), true)]
+public class InteractorCustomEditor : UnityEditor.Editor
+{
+    SerializedObject _serializedObject;
+    Interactor _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (Interactor)target;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

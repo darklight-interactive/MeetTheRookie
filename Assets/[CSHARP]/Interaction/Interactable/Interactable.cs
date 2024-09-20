@@ -29,8 +29,10 @@ public partial class Interactable : MonoBehaviour, IInteractable
     Collider2D _collider;
     StateMachine _stateMachine;
 
-    [SerializeField] Sprite _mainSprite;
+    [SerializeField, ShowOnly] IInteractable.State _currentState;
     [SerializeField, ShowOnly] IconInteractionHandler _iconHandler;
+    [SerializeField] Sprite _mainSprite;
+
 
     [Header("InkyStory")]
     [DropdownAttribute("_sceneKnots")]
@@ -74,7 +76,10 @@ public partial class Interactable : MonoBehaviour, IInteractable
         get
         {
             if (_stateMachine == null)
+            {
                 _stateMachine = new StateMachine(this);
+                _stateMachine.GoToState(IInteractable.State.NULL);
+            }
             return _stateMachine;
         }
     }
@@ -82,7 +87,20 @@ public partial class Interactable : MonoBehaviour, IInteractable
     public string Name => this.gameObject.name;
     public string SceneKnot => _sceneKnot;
     public string InteractionStitch => _interactionStitch;
-    public IInteractable.State CurrentState => stateMachine.CurrentState;
+    public IInteractable.State CurrentState
+    {
+        get
+        {
+            try
+            {
+                return stateMachine.CurrentState;
+            }
+            catch (System.Exception)
+            {
+                return IInteractable.State.NULL;
+            }
+        }
+    }
     public Sprite MainSprite { get => _mainSprite; set => _mainSprite = value; }
     public IconInteractionHandler IconHandler
     {
@@ -98,6 +116,19 @@ public partial class Interactable : MonoBehaviour, IInteractable
 
     #region ======== <PRIVATE_METHODS> [[ UNITY RUNTIME ]] ================================== >>>>
     void Awake() => Initialize();
+    void Update() => Refresh();
+
+    void OnDrawGizmos()
+    {
+        Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.5f);
+        CustomGizmos.DrawLabel(CurrentState.ToString(), labelPos, new GUIStyle()
+        {
+            fontSize = 12,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+            normal = new GUIStyleState() { textColor = Color.white }
+        });
+    }
     #endregion
 
     public virtual void Initialize()
@@ -121,6 +152,13 @@ public partial class Interactable : MonoBehaviour, IInteractable
         if (_collider == null)
             _collider = this.gameObject.AddComponent<BoxCollider2D>();
 
+        // << SUBSCRIBE TO STATE CHANGES >> ------------------------------------
+        stateMachine.OnStateChanged += (IInteractable.State state) =>
+        {
+            _currentState = state;
+            //Debug.Log($"[{Name}] State Changed: {state}");
+        };
+
         // << REGISTER THE INTERACTABLE >> ------------------------------------
         MTR_InteractionManager.RegisterInteractable(this);
 
@@ -128,47 +166,52 @@ public partial class Interactable : MonoBehaviour, IInteractable
         stateMachine.GoToState(IInteractable.State.READY);
     }
 
-    public virtual bool AcceptTarget(IInteractor interactor)
+    public virtual void Refresh()
     {
-        if (interactor == null) return false;
-        if (CurrentState != IInteractable.State.READY) return false;
-
-
-        stateMachine.GoToState(IInteractable.State.TARGET);
-        return true;
-    }
-
-    public virtual bool AcceptInteraction(IInteractor interactor)
-    {
-        if (interactor == null) return false;
-        if (!VALID_INTERACTION_STATES.Contains(CurrentState)) return false;
-
-        _iconHandler?.HideInteractIcon();
-
-        if (CurrentState == IInteractable.State.TARGET)
-            stateMachine.GoToState(IInteractable.State.START);
-        else if (CurrentState == IInteractable.State.START)
-            stateMachine.GoToState(IInteractable.State.CONTINUE);
-
-        return true;
-    }
-
-    public void ForceAcceptInteraction()
-    {
-        _iconHandler?.HideInteractIcon();
-
-        // Go to start if any other state
-        if (CurrentState != IInteractable.State.START)
-            stateMachine.GoToState(IInteractable.State.START);
-        else
-            stateMachine.GoToState(IInteractable.State.CONTINUE);
-
+        // << Refresh Serialized Fields >> ------------------------------------
+        _currentState = CurrentState;
     }
 
     public virtual void Reset()
     {
         stateMachine.GoToState(IInteractable.State.READY);
     }
+
+    public virtual bool AcceptTarget(IInteractor interactor, bool force = false)
+    {
+        if (interactor == null) return false;
+
+        // If not forced, check to make sure the interactable is in a valid state
+        if (!force)
+        {
+            // << CONFIRM VALIDITY >> ------------------------------------
+            if (CurrentState != IInteractable.State.READY) return false;
+        }
+
+        // << ACCEPT TARGET >> ------------------------------------
+        stateMachine.GoToState(IInteractable.State.TARGET);
+        return true;
+    }
+
+    public virtual bool AcceptInteraction(IInteractor interactor, bool force = false)
+    {
+        if (interactor == null) return false;
+
+        if (!force)
+        {
+            // << CONFIRM VALIDITY >> ------------------------------------
+            if (!VALID_INTERACTION_STATES.Contains(CurrentState)) return false;
+        }
+
+        // << ACCEPT INTERACTION >> ------------------------------------
+        if (CurrentState == IInteractable.State.START)
+            stateMachine.GoToState(IInteractable.State.CONTINUE);
+        else
+            stateMachine.GoToState(IInteractable.State.START);
+        return true;
+    }
+
+
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {
@@ -201,9 +244,13 @@ public partial class Interactable : MonoBehaviour, IInteractable
 
             base.OnInspectorGUI();
 
-            if (EditorGUI.EndChangeCheck())
+            if (GUILayout.Button("Initialize"))
             {
                 _script.Initialize();
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
                 _serializedObject.ApplyModifiedProperties();
             }
         }
