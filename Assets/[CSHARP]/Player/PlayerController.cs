@@ -5,10 +5,14 @@ using Darklight.UnityExt.Input;
 using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Behaviour;
-using static WalkState;
+using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE, WALKOVERRIDE }
+public enum PlayerState { NULL, IDLE, WALK, INTERACTION, HIDE, WALKOVERRIDE }
+public enum PlayerFacing { RIGHT, LEFT }
 
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
@@ -16,6 +20,162 @@ public enum PlayerState { NONE, IDLE, WALK, INTERACTION, HIDE, WALKOVERRIDE }
 [RequireComponent(typeof(PlayerController), typeof(PlayerInteractor), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
+    SceneBounds _sceneBounds;
+    CurrentDestinationPoint _destinationPoint = new CurrentDestinationPoint();
+
+    [Header("Debug")]
+    [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
+    [SerializeField] PlayerFacing _facing;
+
+    [Header("Settings")]
+    [Range(0.1f, 5f)] public float playerSpeed = 1f;
+
+    public PlayerInteractor Interactor { get; private set; }
+    public PlayerAnimator Animator { get; private set; }
+    public PlayerStateMachine StateMachine { get; private set; }
+    public PlayerState CurrentState => StateMachine.CurrentState;
+    public CurrentDestinationPoint DestinationPoint => _destinationPoint;
+    public PlayerFacing Facing => _facing;
+
+    public void Awake()
+    {
+        Interactor = GetComponent<PlayerInteractor>();
+        Animator = GetComponent<PlayerAnimator>();
+
+        WalkOverride walkOverride = new WalkOverride(StateMachine, PlayerState.WALKOVERRIDE, _destinationPoint);
+
+        StateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
+            {PlayerState.NULL, new FinitePlayerState(StateMachine, PlayerState.NULL)},
+            {PlayerState.IDLE, new FinitePlayerState(StateMachine, PlayerState.IDLE)},
+            {PlayerState.WALK, new FinitePlayerState(StateMachine, PlayerState.WALK)},
+            {PlayerState.INTERACTION, new FinitePlayerState(StateMachine, PlayerState.INTERACTION)},
+            {PlayerState.HIDE, new FinitePlayerState(StateMachine, PlayerState.HIDE)},
+            {PlayerState.WALKOVERRIDE, walkOverride}
+        }, PlayerState.IDLE, this);
+
+        walkOverride._stateMachine = StateMachine;
+    }
+
+    void Start()
+    {
+        UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
+        UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
+        UniversalInputManager.OnPrimaryInteract += () => Interactor.InteractWithTarget();
+        UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
+
+        // << Find SceneBounds >>
+        SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        if (bounds.Length > 0)
+        {
+            _sceneBounds = bounds[0];
+        }
+        else
+        {
+            _sceneBounds = null;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        StateMachine.Step();
+        HandleMovement();
+    }
+
+    public void OnDestroy()
+    {
+        UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
+        UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
+        UniversalInputManager.OnPrimaryInteract -= () => Interactor.InteractWithTarget();
+        UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
+    }
+
+    void HandleMovement()
+    {
+        // If the player is in an interaction state, do not allow movement
+        if (CurrentState == PlayerState.INTERACTION) return;
+        if (CurrentState == PlayerState.WALKOVERRIDE) return;
+
+        // << HANDLE INPUT >>
+        Vector2 moveDirection = new Vector2(_activeMoveInput.x, 0); // Get the horizontal input
+        moveDirection *= playerSpeed; // Scalar
+
+        // << SET FACING >>
+        if (moveDirection.x > 0) _facing = PlayerFacing.RIGHT;
+        if (moveDirection.x < 0) _facing = PlayerFacing.LEFT;
+
+        // Set Target Position & Apply
+        Vector3 targetPosition = transform.position + (Vector3)moveDirection;
+
+        // Don't allow moving outside of SceneBounds
+        if (_sceneBounds)
+        {
+            if ((transform.position.x > _sceneBounds.leftBound && moveDirection.x < 0) || (transform.position.x < _sceneBounds.rightBound && moveDirection.x > 0))
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+            }
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+        }
+
+        // Update the Animator
+        if (Facing == PlayerFacing.RIGHT)
+            Animator.SetFacing(SpriteDirection.RIGHT);
+        else if (Facing == PlayerFacing.LEFT)
+            Animator.SetFacing(SpriteDirection.LEFT);
+
+        // Update the State Machine
+        if (moveDirection.magnitude > 0.1f)
+            StateMachine.GoToState(PlayerState.WALK);
+        else
+            StateMachine.GoToState(PlayerState.IDLE);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (StateMachine.CurrentState == PlayerState.INTERACTION) return;
+
+        // Get Hidden Object Component
+        Hideable_Object hiddenObject = other.GetComponent<Hideable_Object>();
+        if (hiddenObject != null)
+        {
+            // debug.log for proof
+            Debug.Log("Character is hidden");
+            StateMachine.GoToState(PlayerState.HIDE);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // Reset state to Walk/Idle 
+        if (other.GetComponent<Hideable_Object>() != null)
+        {
+            StateMachine.GoToState(PlayerState.IDLE);
+        }
+    }
+
+    /// <summary>
+    /// Moves the player into the interaction state
+    /// </summary>
+    public void EnterInteraction()
+    {
+        if (StateMachine == null) return;
+        StateMachine.GoToState(PlayerState.INTERACTION);
+        //Debug.Log("Player Controller :: Enter Interaction");
+    }
+
+    /// <summary>
+    /// Removes the player from the interaction state
+    /// </summary>
+    public void ExitInteraction()
+    {
+        StateMachine.GoToState(PlayerState.IDLE);
+        //Debug.Log("Player Controller :: Exit Interaction");
+    }
+
+
     #region  [[ STATE MACHINE ]] ======================================================== >>
 
     public class FinitePlayerState : FiniteState<PlayerState>
@@ -91,7 +251,7 @@ public class PlayerController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
 
             // Update the Animation
-            _stateMachine._animator.FrameAnimationPlayer.FlipTransform(new Vector2(_walkDirection, 0));
+            //_stateMachine._animator.FrameAnimationPlayer.FlipSprite(new Vector2(_walkDirection, 0));
         }
 
     }
@@ -109,154 +269,8 @@ public class PlayerController : MonoBehaviour
             destinationPoint = null;
         }
     }
-
     #endregion
 
-    public PlayerInteractor interactor { get; private set; }
-    public PlayerAnimator animator { get; private set; }
-    public PlayerCameraController cameraController => FindFirstObjectByType<PlayerCameraController>();
-    public PlayerStateMachine stateMachine { get; private set; }
-    public PlayerState currentState;
-    [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
-
-
-    [Header("Settings")]
-    [Range(0.1f, 5f)] public float playerSpeed = 1f;
-    public Vector2 moveVector = Vector2.zero; // this is the vector that the player is moving on
-    private SceneBounds sceneBounds;
-    public CurrentDestinationPoint destinationPoint = new CurrentDestinationPoint();
-
-    void Awake()
-    {
-        interactor = GetComponent<PlayerInteractor>();
-        animator = GetComponent<PlayerAnimator>();
-
-        WalkOverride walkOverride = new WalkOverride(stateMachine, PlayerState.WALKOVERRIDE, destinationPoint);
-
-        stateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NONE, new FinitePlayerState(stateMachine, PlayerState.NONE)},
-            {PlayerState.IDLE, new FinitePlayerState(stateMachine, PlayerState.IDLE)},
-            {PlayerState.WALK, new FinitePlayerState(stateMachine, PlayerState.WALK)},
-            {PlayerState.INTERACTION, new FinitePlayerState(stateMachine, PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new FinitePlayerState(stateMachine, PlayerState.HIDE)},
-            {PlayerState.WALKOVERRIDE, walkOverride}
-        }, PlayerState.IDLE, this);
-
-        walkOverride._stateMachine = stateMachine;
-    }
-
-    void Start()
-    {
-        UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
-        UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract += () => interactor.InteractWithTarget();
-        UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
-
-        // << Find SceneBounds >>
-        SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        if (bounds.Length > 0)
-        {
-            sceneBounds = bounds[0];
-        }
-        else
-        {
-            sceneBounds = null;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        stateMachine.Step();
-        HandleMovement();
-        currentState = stateMachine.CurrentState;
-    }
-
-    public void OnDestroy()
-    {
-        UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
-        UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract -= () => interactor.InteractWithTarget();
-        UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
-    }
-
-    void HandleMovement()
-    {
-        // If the player is in an interaction state, do not allow movement
-        if (stateMachine.CurrentState == PlayerState.INTERACTION || stateMachine.CurrentState == PlayerState.WALKOVERRIDE) return;
-
-        Vector2 moveDirection = _activeMoveInput; // Get the base Vec2 Input value
-        moveDirection *= playerSpeed; // Scalar
-        moveDirection *= moveVector; // Nullify the Y axis { Force movement on given axis only }
-
-        // Set Target Position & Apply
-        Vector3 targetPosition = transform.position + (Vector3)moveDirection;
-
-        // Don't allow moving outside of SceneBounds
-        if (sceneBounds)
-        {
-            if ((transform.position.x > sceneBounds.leftBound && moveDirection.x < 0) || (transform.position.x < sceneBounds.rightBound && moveDirection.x > 0))
-            {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
-            }
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
-        }
-
-        // Update the Animation
-        if (animator == null || animator.FrameAnimationPlayer == null) { Debug.Log("Player Controller has no FrameAnimationPlayer"); }
-        animator.FrameAnimationPlayer.FlipTransform(moveDirection);
-
-        // Update the State Machine
-        if (moveDirection.magnitude > 0.1f)
-            stateMachine.GoToState(PlayerState.WALK);
-        else
-            stateMachine.GoToState(PlayerState.IDLE);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (stateMachine.CurrentState == PlayerState.INTERACTION) return;
-
-        // Get Hidden Object Component
-        Hideable_Object hiddenObject = other.GetComponent<Hideable_Object>();
-        if (hiddenObject != null)
-        {
-            // debug.log for proof
-            Debug.Log("Character is hidden");
-            stateMachine.GoToState(PlayerState.HIDE);
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        // Reset state to Walk/Idle 
-        if (other.GetComponent<Hideable_Object>() != null)
-        {
-            stateMachine.GoToState(PlayerState.IDLE);
-        }
-    }
-
-    /// <summary>
-    /// Moves the player into the interaction state
-    /// </summary>
-    public void EnterInteraction()
-    {
-        if (stateMachine == null) return;
-        stateMachine.GoToState(PlayerState.INTERACTION);
-        //Debug.Log("Player Controller :: Enter Interaction");
-    }
-
-    /// <summary>
-    /// Removes the player from the interaction state
-    /// </summary>
-    public void ExitInteraction()
-    {
-        stateMachine.GoToState(PlayerState.IDLE);
-        //Debug.Log("Player Controller :: Exit Interaction");
-    }
 
     #region Synthesis Management
     bool synthesisEnabled = false;
@@ -264,10 +278,40 @@ public class PlayerController : MonoBehaviour
     {
         synthesisEnabled = !synthesisEnabled;
         MTR_UIManager.Instance.synthesisManager.Show(synthesisEnabled);
-        stateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
+        StateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion
-
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(PlayerController))]
+public class PlayerControllerCustomEditor : UnityEditor.Editor
+{
+    SerializedObject _serializedObject;
+    PlayerController _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (PlayerController)target;
+        _script.Awake();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
+
+
 
 

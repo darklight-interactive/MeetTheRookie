@@ -11,11 +11,15 @@ using NaughtyAttributes;
 using UnityEditor;
 #endif
 
+[ExecuteAlways]
 public class PlayerInteractor : Interactor
 {
+    const float INTERACTOR_X_OFFSET = 0.75f;
+
     DialogueInteractionHandler _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
 
+    [HorizontalLine(color: EColor.Gray)]
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     [Header("Interactable Radar")]
@@ -73,6 +77,16 @@ public class PlayerInteractor : Interactor
         MTR_InteractionManager.RegisterPlayerInteractor(this);
     }
 
+    public override void Update()
+    {
+        base.Update();
+
+        if (PlayerController.Facing == PlayerFacing.LEFT)
+            OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
+        else if (PlayerController.Facing == PlayerFacing.RIGHT)
+            OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
+    }
+
     public bool InteractWithTarget()
     {
         if (targetInteractable == null) return false;
@@ -113,7 +127,7 @@ public class PlayerInteractor : Interactor
 
             // Set Lupe to face interactable
             Vector3 newActiveInteractablePosition = activeInteractable.gameObject.transform.position;
-            PlayerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+            //PlayerController.Animator.FrameAnimationPlayer.FlipSprite(new Vector2(newActiveInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
             activeInteractable.Interact(); // << MAIN INTERACTION
             yield break;
@@ -143,8 +157,8 @@ public class PlayerInteractor : Interactor
         }
 
         // Make Lupe and Misra walk to the points
-        controller.destinationPoint.destinationPoint = nearestDestinationPoint.GetComponent<DestinationPoint>();
-        controller.stateMachine.GoToState(PlayerState.WALKOVERRIDE);
+        controller.DestinationPoint.destinationPoint = nearestDestinationPoint.GetComponent<DestinationPoint>();
+        controller.StateMachine.GoToState(PlayerState.WALKOVERRIDE);
 
         if (Misra != null)
         {
@@ -185,7 +199,7 @@ public class PlayerInteractor : Interactor
 
             // Set Lupe to face interactable
             Vector3 activeInteractablePosition = activeInteractable.gameObject.transform.position;
-        PlayerController.animator.FrameAnimationPlayer.FlipTransform(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
+        //PlayerController.Animator.FrameAnimationPlayer.FlipSprite(new Vector2(activeInteractablePosition.x < gameObject.transform.position.x ? -1 : 1, 0));
 
         activeInteractable.Interact(); // << MAIN INTERACTION
     }

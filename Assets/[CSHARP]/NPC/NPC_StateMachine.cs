@@ -151,7 +151,7 @@ public class WalkState : FiniteState<NPCState>
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
 
         // Update the Animation
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-_walkDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-_walkDirection, 0));
     }
 
     // Wrapper class
@@ -248,7 +248,7 @@ public class FollowState : FiniteState<NPCState>
     public override void Execute()
     {
         int followDirection = (currentFollowDistance < 0) ? -1 : 1;
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-followDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-followDirection, 0));
 
         if (movingInFollowState)
         {
@@ -348,7 +348,7 @@ public class HideState : FiniteState<NPCState>
             npc.transform.position = Vector3.Lerp(npc.transform.position,
                 new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
                 Time.deltaTime);
-            _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-hideDirection, 0));
+            //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-hideDirection, 0));
         }
     }
 
@@ -462,7 +462,7 @@ public class ChaseState : FiniteState<NPCState>
 
         // move the character
         npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-chaseDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-chaseDirection, 0));
     }
 }
 

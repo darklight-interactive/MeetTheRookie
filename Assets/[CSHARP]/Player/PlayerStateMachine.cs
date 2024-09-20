@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 {
     public PlayerController _controller;
-    public PlayerAnimator _animator => _controller.animator;
+    public PlayerAnimator _animator => _controller.Animator;
 
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )

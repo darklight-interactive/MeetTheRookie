@@ -1,51 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
 using UnityEngine;
+using NaughtyAttributes;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace Darklight.UnityExt.Animation
 {
-
-    /// <summary>
-    /// Plays a frame animation on a sprite renderer
-    /// </summary>
+    [ExecuteAlways]
     [RequireComponent(typeof(SpriteRenderer))]
     public class FrameAnimationPlayer : MonoBehaviour
     {
-        public int frameRate = 4; // Global frame rate for all animations
-        private float _timePerFrame => 1 / (float)frameRate; // Time each frame should be displayed
-        private float _timer = 0f; // Timer to track when to switch to the next frame
+        public enum SpriteDirection { NONE, LEFT, RIGHT, UP, DOWN }
+        protected const string PREFIX = "FrameAnimationPlayer";
 
-        private bool _animationDone = false; 
+        float _timer = 0f; // Timer to track when to switch to the next frame
+        bool _animationDone = false;
 
-        private SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
-        public SpriteSheet spriteSheet = null;
-        public int currentFrame = 0;
+        [SerializeField, ShowOnly] int _currentFrame = 0;
+        [SerializeField, ShowOnly] SpriteDirection _currentDirection = SpriteDirection.NONE;
+        [SerializeField, ShowAssetPreview] Sprite _currentSprite;
+        [SerializeField, Range(0, 16)] int _frameRate = 4;
+        [SerializeField] SpriteDirection _defaultDirection = SpriteDirection.NONE;
+        SpriteSheet _spriteSheet;
 
-        private void Start()
+
+        public SpriteSheet SpriteSheet => _spriteSheet;
+        protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
+        protected float timePerFrame => 1 / (float)_frameRate; // Time each frame should be displayed
+
+        public void Awake() => Initialize(_spriteSheet);
+        public virtual void Update()
         {
-            InitializeSprite();
+            if (_spriteSheet == null) return;
+            UpdateFrame();
         }
 
-        private void Update()
-        {
-            UpdateAnimation();
-        }
-
-        private void InitializeSprite()
-        {
-            if (spriteSheet != null && spriteSheet.Length > 0)
-            {
-                _spriteRenderer.sprite = spriteSheet.GetSpriteAtFrame(currentFrame);
-            }
-        }
-
-        public void UpdateAnimation()
+        public virtual void Initialize(SpriteSheet spriteSheet)
         {
             if (spriteSheet == null) return;
-            if (currentFrame + 1 == spriteSheet.Length && !spriteSheet.loop) {
+
+            _spriteSheet = spriteSheet;
+            LoadSpriteSheet(_spriteSheet);
+        }
+
+        void UpdateFrame()
+        {
+            if (_spriteSheet == null) return;
+            if (_currentFrame + 1 == _spriteSheet.Length && !_spriteSheet.loop)
+            {
                 _animationDone = true;
                 return;
             }
@@ -53,58 +57,51 @@ namespace Darklight.UnityExt.Animation
             _timer += Time.deltaTime; // Update Timer
 
             // Check if it's time to update to the next frame
-            if (_timer >= _timePerFrame)
+            if (_timer >= timePerFrame)
             {
-                currentFrame = (currentFrame + 1) % spriteSheet.Length;
-                _spriteRenderer.sprite = spriteSheet.GetSpriteAtFrame(currentFrame);
+                _currentFrame = (_currentFrame + 1) % _spriteSheet.Length;
+                spriteRenderer.sprite = _spriteSheet.GetSpriteAtFrame(_currentFrame);
+                _currentSprite = spriteRenderer.sprite;
 
                 // Reset the timer, accounting for any "overflow" time past the expected frame duration
-                _timer -= _timePerFrame;
+                _timer -= timePerFrame;
             }
         }
 
         // Timer to track when to switch to the next frame
         public void LoadSpriteSheet(SpriteSheet spriteSheet)
         {
-            this.spriteSheet = spriteSheet;
-            try
+            if (spriteSheet == null)
             {
-                Sprite sprite = spriteSheet.GetSpriteAtFrame(0);
-                if (sprite != null)
-                {
-                    _spriteRenderer.sprite = sprite;
-                }
+                Debug.LogError($"{PREFIX} SpriteSheet is null.", this);
+                return;
             }
-            catch { }
+
+            _spriteSheet = spriteSheet;
+            spriteRenderer.sprite = _spriteSheet.GetSpriteAtFrame(0);
 
             _animationDone = false;
-            currentFrame = 0;
+            _currentFrame = 0;
             _timer = 0f;
         }
 
         public void Clear()
         {
-            spriteSheet = null;
-            _spriteRenderer.sprite = null;
+            _spriteSheet = null;
+            spriteRenderer.sprite = null;
         }
 
-        public void FlipTransform(Vector2 moveInput)
+        public void SetFacing(SpriteDirection direction)
         {
-            // Flip the sprite based on the input direction only if the player is moving
-            float x = moveInput.x;
-            if (x > 0.1f || x < -0.1f)
-            {
-                _spriteRenderer.flipX = moveInput.x > 0f;
-            }
+            if (_currentDirection == direction) return;
 
-            //how many ways can you flip a sprite?
+            _currentDirection = direction;
+            if (_spriteSheet == null) return;
 
-            /*
-            if (moveInput.x < 0) { _spriteRenderer.flipX = true; }
-            else if (moveInput.x > 0) { _spriteRenderer.flipX = false; }
-            */
-
-            //_spriteRenderer.transform.localRotation = Quaternion.Euler(new Vector3(0, 180 * _flipMultiplier, 0));
+            if (_currentDirection == SpriteDirection.LEFT)
+                spriteRenderer.flipX = false;
+            else if (_currentDirection == SpriteDirection.RIGHT)
+                spriteRenderer.flipX = true;
         }
 
         public bool AnimationIsOver() {
@@ -114,67 +111,32 @@ namespace Darklight.UnityExt.Animation
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(FrameAnimationPlayer))]
-    public class FrameAnimationPlayerEditor : Editor
+    public class FrameAnimationPlayerCustomEditor : UnityEditor.Editor
     {
-        private SerializedObject _serializedObject;
-        private FrameAnimationPlayer _script;
+        SerializedObject _serializedObject;
+        FrameAnimationPlayer _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
             _script = (FrameAnimationPlayer)target;
-
-            EditorApplication.update += OnUpdate;
-        }
-
-        private void OnDisable()
-        {
-            EditorApplication.update -= OnUpdate;
-        }
-
-        private void OnUpdate()
-        {
-            // Only use this in the editor
-            if (Application.isPlaying) return;
-
-            // do things
-            _script.UpdateAnimation();
-
-            // force loop update so that inputs aren't required
-            EditorApplication.QueuePlayerLoopUpdate();
+            _script.Awake();
         }
 
         public override void OnInspectorGUI()
         {
             _serializedObject.Update();
 
-            // Ensure there's a Spritesheet and it has frames
-            if (_script == null) return;
+            EditorGUI.BeginChangeCheck();
 
-            SerializedProperty frameRateProp = _serializedObject.FindProperty("frameRate");
-            EditorGUILayout.PropertyField(frameRateProp);
-            _script.frameRate = frameRateProp.intValue;
+            base.OnInspectorGUI();
 
-            Sprite currentSprite = _script.spriteSheet.GetSpriteAtFrame(_script.currentFrame);
-            if (currentSprite == null) return;
-
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.BeginHorizontal();
-
-            Texture2D texture = AssetPreview.GetAssetPreview(currentSprite);
-            GUILayout.Label(texture);
-
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField($"Global Frame Rate: {_script.frameRate.ToString()}");
-            EditorGUILayout.LabelField($"Current Frame: {_script.currentFrame}");
-            EditorGUILayout.LabelField($"Sprite: {currentSprite.name}");
-            EditorGUILayout.LabelField($"Loop: {_script.spriteSheet.loop}");
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
-
-            _serializedObject.ApplyModifiedProperties();
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+                _script.Awake();
+            }
         }
     }
 #endif
+
 }

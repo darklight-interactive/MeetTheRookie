@@ -1,38 +1,51 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Animation;
 using UnityEngine;
+using NaughtyAttributes;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(SpriteRenderer), typeof(FrameAnimationPlayer))]
-public class PlayerAnimator : MonoBehaviour
+[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(SpriteRenderer))]
+public class PlayerAnimator : FrameAnimationPlayer
 {
-    public PlayerState animationStateOverride = PlayerState.NONE;
+    PlayerController _playerController;
+
+    [HorizontalLine(color: EColor.Gray)]
+    [Header("Player Animator")]
+    public PlayerState animationStateOverride = PlayerState.NULL;
     public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
 
-    #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
-    public FrameAnimationPlayer FrameAnimationPlayer => GetComponent<FrameAnimationPlayer>();
+    public override void Initialize(SpriteSheet spriteSheet)
+    {
+        base.Initialize(spriteSheet);
+        animationStateOverride = spriteSheets[0].state;
+
+        _playerController = GetComponent<PlayerController>();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        // Update facing direction from the player controller
+        if (_playerController == null) return;
+        if (_playerController.Facing == PlayerFacing.LEFT)
+            SetFacing(SpriteDirection.LEFT);
+        else if (_playerController.Facing == PlayerFacing.RIGHT)
+            SetFacing(SpriteDirection.RIGHT);
+
+    }
+
     public void PlayStateAnimation(PlayerState state)
     {
         // If there is a sprite sheet with the state, load it
         if (spriteSheets.Find(x => x.state == state) != null)
         {
-            FrameAnimationPlayer.LoadSpriteSheet(spriteSheets.Find(x => x.state == state).spriteSheet);
+            LoadSpriteSheet(spriteSheets.Find(x => x.state == state).spriteSheet);
             animationStateOverride = state;
-        }
-    }
-
-    public void CreateFrameAnimationPlayer()
-    {
-
-        FrameAnimationPlayer.Clear();
-
-        // Load the default sprite sheet
-        if (spriteSheets.Count > 0)
-        {
-            FrameAnimationPlayer.LoadSpriteSheet(spriteSheets[0].spriteSheet);
-            animationStateOverride = spriteSheets[0].state;
         }
     }
 
@@ -47,19 +60,12 @@ public class PlayerAnimator : MonoBehaviour
         }
         return null;
     }
-
-    #endregion
-
-    public void Awake()
-    {
-        CreateFrameAnimationPlayer();
-    }
 }
 
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(PlayerAnimator)), CanEditMultipleObjects]
-public class PlayerAnimationEditor : Editor
+public class PlayerAnimationEditor : UnityEditor.Editor
 {
     SerializedObject _serializedObject;
     PlayerAnimator _script;
@@ -67,7 +73,7 @@ public class PlayerAnimationEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (PlayerAnimator)target;
-        _script.CreateFrameAnimationPlayer();
+        _script.Awake();
     }
 
     public override void OnInspectorGUI()
@@ -80,9 +86,9 @@ public class PlayerAnimationEditor : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
-            if (_script.animationStateOverride != PlayerState.NONE)
+            if (_script.animationStateOverride != PlayerState.NULL)
             {
-                _script.FrameAnimationPlayer.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
+                _script.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
             }
 
             _serializedObject.ApplyModifiedProperties();

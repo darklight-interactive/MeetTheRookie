@@ -25,23 +25,30 @@ public interface IInteractor
 public class Interactor : MonoBehaviour, IInteractor
 {
     const string PREFIX = "Interactor:";
-    [SerializeField] Library<string, Interactable> _interactableLibrary = new Library<string, Interactable>();
+
+    [Header("Interactor Settings")]
     [SerializeField] LayerMask _layerMask;
-    [SerializeField, Range(0.1f, 100f)] float _scale = 1f;
+    [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
+    [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
 
-    public List<Interactable> Interactables => new List<Interactable>(_interactableLibrary.Values);
-    public LayerMask LayerMask => _layerMask;
+    [Header("Nearby Interactables")]
+    [SerializeField] Library<string, Interactable> _nearbyInteractables = new Library<string, Interactable>();
 
-    void Update()
+    // ======== [[ PROPERTIES ]] ================================== >>>>
+    public List<Interactable> Interactables => new List<Interactable>(_nearbyInteractables.Values);
+    public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
+    public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
+    protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
+
+    public virtual void Update()
     {
         Refresh();
     }
 
     public void OnDrawGizmosSelected()
     {
-        CustomGizmos.DrawWireSquare(transform.position, _scale, Vector3.forward, Color.green);
-
-        foreach (Interactable interactable in _interactableLibrary.Values)
+        CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
+        foreach (Interactable interactable in _nearbyInteractables.Values)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(interactable.transform.position, 0.1f);
@@ -52,7 +59,7 @@ public class Interactor : MonoBehaviour, IInteractor
     public List<Interactable> GetOverlapInteractables()
     {
         List<Interactable> interactables = new List<Interactable>();
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, Vector2.one * _scale, 0, LayerMask);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(OverlapCenter, _dimensions, 0, _layerMask);
         foreach (Collider2D collider in colliders)
         {
             Interactable interactable = collider.GetComponent<Interactable>();
@@ -66,20 +73,20 @@ public class Interactor : MonoBehaviour, IInteractor
 
     public void TryAddInteractable(Interactable interactable)
     {
-        if (!_interactableLibrary.ContainsKey(interactable.name))
-            _interactableLibrary.Add(interactable.name, interactable);
+        if (!_nearbyInteractables.ContainsKey(interactable.name))
+            _nearbyInteractables.Add(interactable.name, interactable);
     }
 
     public void RemoveInteractable(Interactable interactable)
     {
-        if (_interactableLibrary.ContainsKey(interactable.name))
-            _interactableLibrary.Remove(interactable.name);
+        if (_nearbyInteractables.ContainsKey(interactable.name))
+            _nearbyInteractables.Remove(interactable.name);
     }
 
     public Interactable GetInteractable(string name)
     {
         // Retrieve the interactable by name if it exists.
-        if (_interactableLibrary.TryGetValue(name, out var interactable))
+        if (_nearbyInteractables.TryGetValue(name, out var interactable))
         {
             return interactable;
         }
@@ -90,7 +97,7 @@ public class Interactor : MonoBehaviour, IInteractor
     {
         Interactable closestInteractable = null;
         float closestDistance = float.MaxValue;
-        foreach (Interactable interactable in _interactableLibrary.Values)
+        foreach (Interactable interactable in _nearbyInteractables.Values)
         {
             float distance = Vector3.Distance(interactable.transform.position, position);
             if (distance < closestDistance)
@@ -112,7 +119,7 @@ public class Interactor : MonoBehaviour, IInteractor
         }
 
         // Remove interactables from the dict that are no longer in the overlap interactables.
-        List<Interactable> dictInteractables = new List<Interactable>(_interactableLibrary.Values);
+        List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Values);
         List<Interactable> interactablesToRemove = new List<Interactable>();
         foreach (Interactable interactable in dictInteractables)
         {

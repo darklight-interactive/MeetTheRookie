@@ -10,10 +10,10 @@ public class PlayerAudioController : MonoBehaviour
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
-        playerController.stateMachine.OnStateChanged += OnStateChanged;     
+        playerController.StateMachine.OnStateChanged += OnStateChanged;
     }
 
-    private PlayerState lastState = PlayerState.NONE;
+    private PlayerState lastState = PlayerState.NULL;
     public void OnStateChanged(PlayerState newState)
     {
         switch (newState)
