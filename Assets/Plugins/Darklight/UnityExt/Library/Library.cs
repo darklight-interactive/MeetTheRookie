@@ -136,16 +136,12 @@ namespace Darklight.UnityExt.Library
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
         {
-            _dictionary.Clear();
+            _dictionary = new Dictionary<TKey, TValue>();
             if (_items == null || _items.Count == 0) return;
-
             foreach (LibraryItem<TKey, TValue> entry in _items)
             {
-                if (entry == null)
-                {
-                    Debug.LogWarning("Null entry found during deserialization. Skipping.");
+                if (entry == null || entry.Key == null)
                     continue;
-                }
 
                 if (!_dictionary.ContainsKey(entry.Key))
                 {

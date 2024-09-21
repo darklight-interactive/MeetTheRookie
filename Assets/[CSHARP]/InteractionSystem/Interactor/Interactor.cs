@@ -48,7 +48,7 @@ public class Interactor : MonoBehaviour, IInteractor
     [SerializeField, ShowOnly] Interactable _closestInteractable;
 
     [SerializeField]
-    Library<Interactable, string> _nearbyInteractables
+    protected Library<Interactable, string> _nearbyInteractables
         = new Library<Interactable, string>(true, true);
 
     // ======== [[ PROPERTIES ]] ================================== >>>>

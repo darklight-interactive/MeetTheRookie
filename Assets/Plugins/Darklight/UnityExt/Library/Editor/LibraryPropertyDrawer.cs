@@ -131,9 +131,9 @@ namespace Darklight.UnityExt.Library.Editor
             currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING / 2;
 
             // ( Properties )-------------------------------------------------
-            Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            DrawLibraryProperties(propRect, ref currentYPos);
-            currentYPos += VERTICAL_SPACING / 2;
+            //Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
+            //DrawLibraryProperties(propRect, ref currentYPos);
+            //currentYPos += VERTICAL_SPACING / 2;
 
             // ( ReorderableList )--------------------------------------------
             Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);

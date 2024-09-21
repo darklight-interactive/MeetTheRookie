@@ -5,6 +5,8 @@ using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
 using Codice.CM.SEIDInfo;
+using Darklight.UnityExt.Utility;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -146,6 +148,24 @@ public partial class Interactable : MonoBehaviour,
         if (_layer == string.Empty) _layer = DEFAULT_LAYER;
         this.gameObject.name = $"{PREFIX} {Key} : {Name}";
     }
+
+    void RemoveInteractionHandlers()
+    {
+        // Get all child components that implement IInteractionHandler
+        IInteractionHandler[] interactionHandlers = GetComponentsInChildren<IInteractionHandler>();
+
+        // Loop through each component and destroy the GameObject it is attached to
+        foreach (IInteractionHandler handler in interactionHandlers)
+        {
+            if (handler is MonoBehaviour)
+            {
+                MonoBehaviour monoBehaviour = handler as MonoBehaviour;
+                if (monoBehaviour != null)
+                    ObjectUtility.DestroyAlways(monoBehaviour.gameObject);
+            }
+        }
+    }
+
     #endregion
 
     #region ======== <PUBLIC_METHODS> [[ IUnityEditorListener ]] ================================== >>>>
@@ -157,6 +177,7 @@ public partial class Interactable : MonoBehaviour,
     {
         PreloadSpriteRenderer();
         PreloadBoxCollider();
+        RemoveInteractionHandlers();
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------
         _isRegistered = InteractionSystem.Registry.TryRegister(this);
