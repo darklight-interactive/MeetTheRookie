@@ -63,7 +63,9 @@ public class MTR_Interactable : Interactable
 
     public override void Initialize()
     {
+        base.Initialize();
 
+        // << DESTINATION POINTS >>
         var tempLupe = FindFirstObjectByType<PlayerController>();
         if (tempLupe != null)
         {

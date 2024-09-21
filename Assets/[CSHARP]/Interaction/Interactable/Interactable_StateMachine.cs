@@ -8,6 +8,11 @@ using UnityEngine;
 
 public partial class Interactable
 {
+
+    /// <summary>
+    /// Interactable Internal State Machine <br/>
+    /// This class hanndles the functions and events of the Interactable class
+    /// </summary>
     [Serializable]
     public class StateMachine : FiniteStateMachine<IInteractable.State>
     {
@@ -37,21 +42,59 @@ public partial class Interactable
             GoToState(IInteractable.State.NULL);
         }
 
-        #region ---- <ABSTRACT_CLASS> [[ InteractState ]] ------------------------------------ >>>>
+        void InvokeStateEvent(IInteractable.State state)
+        {
+            switch (state)
+            {
+                case IInteractable.State.READY:
+                    _interactable.OnReadyEvent.Invoke();
+                    break;
+                case IInteractable.State.TARGET:
+                    _interactable.OnTargetEvent.Invoke();
+                    break;
+                case IInteractable.State.START:
+                    _interactable.OnStartEvent.Invoke();
+                    break;
+                case IInteractable.State.CONTINUE:
+                    _interactable.OnContinueEvent.Invoke();
+                    break;
+                case IInteractable.State.COMPLETE:
+                    _interactable.OnCompleteEvent.Invoke();
+                    break;
+                case IInteractable.State.DISABLED:
+                    _interactable.OnDisabledEvent.Invoke();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #region ---- <ABSTRACT_STATE_CLASS> [[ BaseInteractState ]] ------------------------------------ >>>>
         public abstract class BaseInteractState : FiniteState<IInteractable.State>
         {
             // Protected reference to the Interactable for inherited states to use
             protected Interactable interactable;
             protected StateMachine stateMachine;
+            protected IInteractable.State stateType;
             protected InkyStoryIterator storyIterator => InkyStoryManager.Iterator;
-            public BaseInteractState(StateMachine stateMachine, IInteractable.State stateType) : base(stateMachine, stateType)
+            public BaseInteractState(StateMachine stateMachine, IInteractable.State stateType)
+                : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
+                this.stateType = stateType;
+
 
                 // Set the interactable reference
                 // This can be done here because this class is nested within the InteractableStateMachine
                 interactable = stateMachine._interactable;
             }
+
+            public override void Enter()
+            {
+                stateMachine.InvokeStateEvent(stateType);
+            }
+            public override void Execute() { }
+            public override void Exit() { }
         }
         #endregion
 
@@ -71,11 +114,8 @@ public partial class Interactable
             public ReadyState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.READY) { }
             public override void Enter()
             {
-                // Confirm that the icon is hidden
-                interactable.IconHandler?.HideInteractIcon();
+                base.Enter();
             }
-            public override void Execute() { }
-            public override void Exit() { }
         }
         #endregion
 
@@ -85,6 +125,7 @@ public partial class Interactable
             public TargetState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.TARGET) { }
             public override void Enter()
             {
+                base.Enter();
                 interactable._iconHandler?.ShowInteractIcon();
             }
             public override void Execute() { }
@@ -101,6 +142,7 @@ public partial class Interactable
             public StartState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.START) { }
             public override void Enter()
             {
+                base.Enter();
                 storyIterator.GoToKnotOrStitch(interactable.InteractionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
             }
@@ -115,12 +157,20 @@ public partial class Interactable
             public ContinueState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.CONTINUE) { }
             public override void Enter()
             {
+                base.Enter();
+
                 storyIterator.ContinueStory();
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
 
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
                 switch (storyState)
                 {
+                    case InkyStoryIterator.State.START:
+                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Start Interaction");
+                        break;
+                    case InkyStoryIterator.State.DIALOGUE:
+                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Dialogue Found");
+                        break;
                     case InkyStoryIterator.State.CHOICE:
                         Debug.Log($"INTERACTABLE :: {interactable.Name} >> Choices Found");
                         break;
@@ -143,6 +193,7 @@ public partial class Interactable
             public CompleteState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.COMPLETE) { }
             public override void Enter()
             {
+                base.Enter();
                 MTR_AudioManager.Instance.PlayEndInteractionEvent();
             }
             public override void Execute() { }
@@ -154,7 +205,11 @@ public partial class Interactable
         public class DisabledState : BaseInteractState
         {
             public DisabledState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.DISABLED) { }
-            public override void Enter() { }
+            public override void Enter()
+            {
+                base.Enter();
+
+            }
             public override void Execute() { }
             public override void Exit() { }
         }

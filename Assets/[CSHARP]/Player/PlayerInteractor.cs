@@ -35,7 +35,6 @@ public class PlayerInteractor : Interactor
             return speakers;
         }
     }
-    public MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
     public PlayerController PlayerController => GetComponent<PlayerController>();
     public DialogueInteractionHandler DialogueHandler
     {

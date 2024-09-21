@@ -8,9 +8,12 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(SpriteRenderer))]
-public partial class Interactable : MonoBehaviour, IInteractable
+[RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(BoxCollider2D))]
+public partial class Interactable : MonoBehaviour,
+    IInteractable, IUnityEditorListener
 {
+    const string PREFIX = "<INTERACTABLE>";
+
     #region ---- <READONLY> [[ VALID_STATES ]] ------------------------------------ >>>>
     readonly List<IInteractable.State> VALID_TARGET_STATES = new List<IInteractable.State>
     {
@@ -23,31 +26,8 @@ public partial class Interactable : MonoBehaviour, IInteractable
         IInteractable.State.START,
         IInteractable.State.CONTINUE
     };
-    #endregion
 
-    SpriteRenderer _spriteRenderer;
-    Collider2D _collider;
-    StateMachine _stateMachine;
-
-    [SerializeField, ShowOnly] IInteractable.State _currentState;
-    [SerializeField, ShowOnly] IconInteractionHandler _iconHandler;
-    [SerializeField] Sprite _mainSprite;
-
-
-    [Header("InkyStory")]
-    [DropdownAttribute("_sceneKnots")]
-    string _sceneKnot = "scene1_0";
-
-    [DropdownAttribute("_interactionStitches")]
-    string _interactionStitch;
-
-    [Header("Colors")]
-    [SerializeField] Color _defaultTint = Color.white;
-    [SerializeField] Color _interactionTint = Color.yellow;
-
-    #region ======== [[ PROPERTIES ]] ================================== >>>>
-    // private access to knots for dropdown
-    List<string> _sceneKnots
+    protected List<string> dropdown_sceneKnotList
     {
         get
         {
@@ -58,8 +38,7 @@ public partial class Interactable : MonoBehaviour, IInteractable
         }
     }
 
-    // private access to stitches for dropdown
-    List<string> _interactionStitches
+    List<string> dropdown_interactionStitchList
     {
         get
         {
@@ -69,8 +48,35 @@ public partial class Interactable : MonoBehaviour, IInteractable
             return InkyStoryObject.GetAllStitchesInKnot(storyObject.StoryValue, _sceneKnot);
         }
     }
+    #endregion
 
-    InkyStoryIterator storyIterator => InkyStoryManager.Iterator;
+    SpriteRenderer _spriteRenderer;
+    BoxCollider2D _collider;
+    StateMachine _stateMachine;
+
+    [SerializeField, ShowOnly] bool _isPreloaded = false;
+    [SerializeField, ShowOnly] bool _isInitialized = false;
+
+    [Header(" (( INTERACTABLE VALUES )) -------- >>")]
+    [SerializeField, ShowOnly] IInteractable.State _currentState;
+    [SerializeField] Sprite _mainSprite;
+
+    [Header(" (( INKY STORY KEYS )) -------- >>")]
+    [Dropdown("dropdown_sceneKnotList")]
+    [SerializeField] string _sceneKnot = "scene1_0";
+
+    [Dropdown("dropdown_interactionStitchList")]
+    [SerializeField] string _interactionStitch;
+
+    [Header(" (( INTERACTION SETTINGS )) -------- >>")]
+    [SerializeField] Color _defaultTint = Color.white;
+    [SerializeField] Color _interactionTint = Color.yellow;
+
+    [Header(" (( INTERACTION HANDLERS )) -------- >>")]
+    [SerializeField, ShowOnly] IconInteractionHandler _iconHandler;
+
+
+    #region ======== [[ PROPERTIES ]] ================================== >>>>
     public string Name => this.gameObject.name;
     public string SceneKnot => _sceneKnot;
     public string InteractionStitch => _interactionStitch;
@@ -89,22 +95,26 @@ public partial class Interactable : MonoBehaviour, IInteractable
         }
     }
     public Sprite MainSprite { get => _mainSprite; set => _mainSprite = value; }
-    public IconInteractionHandler IconHandler
-    {
-        get
-        {
-            if (_iconHandler == null)
-                _iconHandler = GetComponentInChildren<IconInteractionHandler>();
-            return _iconHandler;
-        }
-        set => _iconHandler = value;
-    }
+    public bool IsPreloaded => _isPreloaded;
+    public bool IsInitialized => _isInitialized;
+
+
+    public IconInteractionHandler IconHandler { get => _iconHandler; set => _iconHandler = value; }
+
+    #endregion
+
+    #region ======== [[ EVENTS ]] ================================== >>>>
+    public event IInteractable.InteractionEvent OnReadyEvent;
+    public event IInteractable.InteractionEvent OnTargetEvent;
+    public event IInteractable.InteractionEvent OnStartEvent;
+    public event IInteractable.InteractionEvent OnContinueEvent;
+    public event IInteractable.InteractionEvent OnCompleteEvent;
+    public event IInteractable.InteractionEvent OnDisabledEvent;
     #endregion
 
     #region ======== <PRIVATE_METHODS> [[ UNITY RUNTIME ]] ================================== >>>>
     void Awake() => Initialize();
     void Update() => Refresh();
-
     void OnDrawGizmos()
     {
         Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.25f);
@@ -118,9 +128,10 @@ public partial class Interactable : MonoBehaviour, IInteractable
     }
     #endregion
 
-    public virtual void Initialize()
+    #region ======== <PRIVATE_METHODS> [[ Internal Methods ]] ================================== >>>>
+
+    void PreloadSpriteRenderer()
     {
-        // << GET THE SPRITE RENDERER >> ------------------------------------
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer == null)
             _spriteRenderer = this.gameObject.AddComponent<SpriteRenderer>();
@@ -131,13 +142,52 @@ public partial class Interactable : MonoBehaviour, IInteractable
         else if (_spriteRenderer.sprite != null)
             _mainSprite = _spriteRenderer.sprite;
 
-        // Set the default tint
+        // << SET THE DEFAULT TINT >> ------------------------------------
         _spriteRenderer.color = _defaultTint;
+    }
 
-        // << GET THE COLLIDER >> ------------------------------------
-        _collider = GetComponent<Collider2D>();
+    void PreloadBoxCollider()
+    {
+        _collider = GetComponent<BoxCollider2D>();
         if (_collider == null)
             _collider = this.gameObject.AddComponent<BoxCollider2D>();
+
+        // << SET THE COLLIDER SIZE >> ------------------------------------
+        // Set the collider size to half the size of the transform scale
+        _collider.size = Vector2.one * transform.localScale.x * 0.5f;
+
+    }
+
+
+    #endregion
+
+    #region ======== <PUBLIC_METHODS> [[ IUnityEditorListener ]] ================================== >>>>
+    public void OnEditorReloaded() => Preload();
+    #endregion
+
+    #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
+    public virtual void Preload()
+    {
+        PreloadSpriteRenderer();
+        PreloadBoxCollider();
+
+        // << REGISTER THE INTERACTABLE >> ------------------------------------
+        InteractionRegistry.RegisterInteractable(this);
+
+        _isPreloaded = true;
+    }
+
+    public virtual void Initialize()
+    {
+        if (!_isPreloaded) Preload();
+
+        // << SUBSCRIBE TO EVENTS >> ------------------------------------
+        OnReadyEvent += () => Debug.Log($"{PREFIX} {Name} :: OnReadyEvent");
+        OnTargetEvent += () => Debug.Log($"{PREFIX} {Name} :: OnTargetEvent");
+        OnStartEvent += () => Debug.Log($"{PREFIX} {Name} :: OnStartEvent");
+        OnContinueEvent += () => Debug.Log($"{PREFIX} {Name} :: OnContinueEvent");
+        OnCompleteEvent += () => Debug.Log($"{PREFIX} {Name} :: OnCompleteEvent");
+        OnDisabledEvent += () => Debug.Log($"{PREFIX} {Name} :: OnDisabledEvent");
 
         // << CREATE THE STATE MACHINE >> ------------------------------------
         _stateMachine = new StateMachine(this);
@@ -146,16 +196,12 @@ public partial class Interactable : MonoBehaviour, IInteractable
         _stateMachine.OnStateChanged += (IInteractable.State state) =>
         {
             _currentState = state;
-            //Debug.Log($"[{Name}] State Changed: {state}");
         };
-
-        // << REGISTER THE INTERACTABLE >> ------------------------------------
-        MTR_InteractionManager.RegisterInteractable(this);
 
         // << GO TO READY STATE >> ------------------------------------
         _stateMachine.GoToState(IInteractable.State.READY);
 
-        Debug.Log($"<INTERACTABLE> {Name} Initialized. Current State: {CurrentState}");
+        _isInitialized = true;
     }
 
     public virtual void Refresh()
@@ -204,6 +250,7 @@ public partial class Interactable : MonoBehaviour, IInteractable
     }
 
 
+    #endregion
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
     {

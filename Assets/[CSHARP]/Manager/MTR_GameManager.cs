@@ -18,7 +18,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
     public static MTR_SceneManager SceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static MTR_UIManager UIManager => MTR_UIManager.Instance;
-    public static MTR_InteractionManager InteractionManager => MTR_InteractionManager.Instance;
+    public static InteractionRegistry InteractionRegistry => InteractionRegistry.Instance;
     public static MTR_AudioManager AudioManager => MTR_AudioManager.Instance;
 
     public override void Awake()

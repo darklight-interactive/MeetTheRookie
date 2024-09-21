@@ -31,6 +31,8 @@ namespace Darklight.UnityExt.Inky
         [SerializeField, ShowOnly]
         string _currentSpeaker;
 
+
+
         // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
 
 
