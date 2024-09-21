@@ -33,7 +33,8 @@ namespace Darklight.UnityExt.Library.Editor
         SerializedObject _serializedObject;
         SerializedProperty _libraryProperty;
         SerializedProperty _itemsProperty;
-        SerializedProperty _showOnlyProperty;
+        SerializedProperty _readOnlyKeyProperty;
+        SerializedProperty _readOnlyValueProperty;
         ReorderableList _list;
 
         /// <summary>
@@ -98,12 +99,18 @@ namespace Darklight.UnityExt.Library.Editor
             // Store the serialized object and properties
             if (_serializedObject == null)
                 _serializedObject = property.serializedObject;
-            if (_libraryProperty == null)
+            if (_libraryProperty == null || _libraryProperty.propertyPath != property.propertyPath)
                 _libraryProperty = property;
-            if (_itemsProperty == null)
+            if (_itemsProperty == null || _itemsProperty.propertyPath != property.FindPropertyRelative("_items").propertyPath)
                 _itemsProperty = property.FindPropertyRelative("_items");
-            if (_showOnlyProperty == null)
-                _showOnlyProperty = property.FindPropertyRelative("_showOnly");
+
+            if (_readOnlyKeyProperty == null
+                || _readOnlyKeyProperty.propertyPath != property.FindPropertyRelative("_readOnlyKey").propertyPath)
+                _readOnlyKeyProperty = property.FindPropertyRelative("_readOnlyKey");
+            if (_readOnlyValueProperty == null
+                || _readOnlyValueProperty.propertyPath != property.FindPropertyRelative("_readOnlyValue").propertyPath)
+                _readOnlyValueProperty = property.FindPropertyRelative("_readOnlyValue");
+
 
             _fullPropertyStartXPos = rect.x;
             _fullPropertyWidth = rect.width;
@@ -146,11 +153,11 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
         #region ======== [[ REORDERABLE LIST ]] ===================================== >>>>
-        protected void InitializeReorderableList()
+        protected void InitializeReorderableList(SerializedProperty property)
         {
-            if (_list == null || _list.serializedProperty != _itemsProperty)
+            if (_list == null || _list.serializedProperty != property.FindPropertyRelative("_items"))
             {
-                _list = new ReorderableList(_serializedObject, _itemsProperty, false, true, false, false);
+                _list = new ReorderableList(property.serializedObject, _itemsProperty, false, true, true, false);
 
                 _list.drawHeaderCallback = DrawHeaderCallback;
                 _list.drawElementCallback = DrawElementCallback;
@@ -158,10 +165,25 @@ namespace Darklight.UnityExt.Library.Editor
 
                 _list.elementHeightCallback = ElementHeightCallback;
 
-                _list.onAddCallback = OnAddCallback;
+                //_list.onAddCallback = OnAddCallback;
                 _list.onRemoveCallback = OnRemoveCallback;
+
+                _list.onAddDropdownCallback = OnAddDropdownCallback;
             }
+
         }
+
+        void DrawReorderableList(Rect rect, out float listHeight)
+        {
+            InitializeReorderableList(_libraryProperty);
+
+            // Calculate the height for the list
+            listHeight = _list.GetHeight();
+
+            // Draw the ReorderableList
+            _list.DoList(new Rect(rect.x, rect.y, rect.width, listHeight));
+        }
+
 
         void DrawHeaderCallback(Rect rect)
         {
@@ -187,7 +209,8 @@ namespace Darklight.UnityExt.Library.Editor
 
         void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
-            bool showOnly = _showOnlyProperty.boolValue;
+            bool readOnlyKey = _readOnlyKeyProperty.boolValue;
+            bool readOnlyValue = _readOnlyValueProperty.boolValue;
 
             SerializedProperty itemProp = _itemsProperty.GetArrayElementAtIndex(index);
             SerializedProperty idProp = itemProp.FindPropertyRelative("_id");
@@ -198,14 +221,15 @@ namespace Darklight.UnityExt.Library.Editor
             float elementY = rect.y;
             elementY += (element_fullHeight - element_propHeight) / 2; // Center the element vertically
 
+            // Create rects for the properties
             Rect idRect = new Rect(itemID_PropX, elementY, itemID_PropWidth, element_propHeight);
             Rect keyRect = new Rect(itemKey_PropX, elementY, itemKey_PropWidth, element_propHeight);
             Rect valueRect = new Rect(itemValue_PropX, elementY, itemValue_PropWidth, element_propHeight);
 
+            // Draw the properties
             EditorGUI.LabelField(idRect, idProp.intValue.ToString(), LABEL_STYLE);
-
-            TryDrawProperty(keyRect, keyProp, showOnly);
-            TryDrawProperty(valueRect, valueProp, showOnly);
+            DrawElementProperty(keyRect, keyProp, readOnlyKey);
+            DrawElementProperty(valueRect, valueProp, readOnlyValue);
         }
 
         void DrawElementBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -226,11 +250,21 @@ namespace Darklight.UnityExt.Library.Editor
 
         float ElementHeightCallback(int index) => element_fullHeight;
 
-        void OnAddCallback(ReorderableList list)
+        void OnAddDropdownCallback(Rect rect, ReorderableList list)
         {
-            InvokeLibraryMethod("AddDefaultItem", out object result);
-            _serializedObject.ApplyModifiedProperties();
+            GenericMenu menu = new GenericMenu();
+
+            // Custom icon
+            GUIContent resetContent = new GUIContent("Reset", EditorGUIUtility.IconContent("d_Refresh").image);
+            menu.AddItem(resetContent, false, () =>
+            {
+                InvokeLibraryMethod("Reset", out object result);
+                _serializedObject.ApplyModifiedProperties();
+            });
+
+            menu.ShowAsContext();
         }
+
 
         void OnRemoveCallback(ReorderableList list)
         {
@@ -238,10 +272,11 @@ namespace Darklight.UnityExt.Library.Editor
             itemsProperty.DeleteArrayElementAtIndex(list.index);
             itemsProperty.serializedObject.ApplyModifiedProperties();
         }
+
         #endregion
 
         // ======== [[ DRAW METHODS ]] ===================================== >>>>
-        void TryDrawProperty(Rect rect, SerializedProperty property, bool showOnly = false)
+        void DrawElementProperty(Rect rect, SerializedProperty property, bool readOnly = false)
         {
             if (property == null)
             {
@@ -249,7 +284,7 @@ namespace Darklight.UnityExt.Library.Editor
                 return;
             }
 
-            if (showOnly)
+            if (readOnly)
             {
                 // Convert simple types to strings
                 if (SerializedPropertyUtility.IsSimpleType(property) && !SerializedPropertyUtility.IsReferenceType(property))
@@ -273,7 +308,7 @@ namespace Darklight.UnityExt.Library.Editor
         void DrawLibraryProperties(Rect rect, ref float currentYPos)
         {
             // Get the Library<,> instance
-            object libraryInstance = GetLibraryInstance();
+            object libraryInstance = GetLibraryInstance(_libraryProperty);
 
             // If the Library<,> instance is not found, return
             if (libraryInstance == null)
@@ -332,84 +367,87 @@ namespace Darklight.UnityExt.Library.Editor
             }
         }
 
-        void DrawReorderableList(Rect rect, out float listHeight)
-        {
-            InitializeReorderableList();
-
-            // Calculate the height for the list
-            listHeight = _list.GetHeight();
-
-            // Draw the ReorderableList
-            _list.DoList(new Rect(rect.x, rect.y, rect.width, listHeight));
-        }
 
         // ======== [[ HELPER METHODS ]] ===================================== >>>>
-        object GetLibraryInstance()
+        /// <summary>
+        /// Gets the instance of the Library<,> for the current SerializedProperty.
+        /// </summary>
+        /// <param name="property">The SerializedProperty representing the Library<,> field.</param>
+        /// <returns>The Library<,> instance, or null if not found.</returns>
+        object GetLibraryInstance(SerializedProperty property)
         {
             // Get the target object (the script holding the Library<,> field)
-            UnityEngine.Object targetObject = _serializedObject.targetObject;
+            UnityEngine.Object targetObject = property.serializedObject.targetObject;
             Type targetType = targetObject.GetType();
 
-            // Find the Library<,> field
+            // Find the Library<,> field that matches the property
             foreach (FieldInfo field in targetType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Library<,>))
                 {
-                    return field.GetValue(targetObject);
+                    if (property.name == field.Name)
+                    {
+                        return field.GetValue(targetObject);
+                    }
                 }
             }
 
-            Debug.LogWarning($"No Library<,> instance found on type '{targetType}'.");
+            Debug.LogWarning($"No matching Library<,> instance found for property '{property.name}' on type '{targetType}'.");
             return null;
         }
+
 
 
         void InvokeLibraryMethod(string methodName, out object returnValue, object[] parameters = null)
         {
             returnValue = null;
 
-            // Get the target object (the script holding the Library<,> field)
-            UnityEngine.Object targetObject = _serializedObject.targetObject;
+            SerializedProperty property = _libraryProperty;
 
-            // Get the type of the target object
+
+            // Get the target object (the script holding the Library<,> field)
+            UnityEngine.Object targetObject = property.serializedObject.targetObject;
+
+            // Get the type of the target object (MonoBehaviour)
             Type targetType = targetObject.GetType();
 
-            // Iterate over all fields to find the Library<,> instance
-            FieldInfo libraryField = null;
-            object libraryInstance = null;
+            // Find the specific field that matches the SerializedProperty
+            FieldInfo libraryField = targetType.GetField(property.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-            foreach (FieldInfo field in targetType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            if (libraryField != null)
             {
-                // Check if the field is of type Library<,>
-                if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Library<,>))
+                // Get the instance of Library<,> (or its derived type) from the field
+                object libraryInstance = libraryField.GetValue(targetObject);
+
+                // Ensure that the instance is a subclass of LibraryBase
+                if (libraryInstance != null && libraryInstance.GetType().IsSubclassOf(typeof(LibraryBase)))
                 {
-                    libraryField = field;
-                    libraryInstance = libraryField.GetValue(targetObject);
-                    break;
+                    // Get the method information from the Library<,> instance
+                    MethodInfo methodInfo = libraryInstance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (methodInfo != null)
+                    {
+                        // Invoke the method on the specific Library<,> type instance
+                        returnValue = methodInfo.Invoke(libraryInstance, parameters);
+                        property.serializedObject.ApplyModifiedProperties();
+                        Debug.Log($"Method '{methodName}' called on {libraryInstance.GetType().Name}.");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Method '{methodName}' not found on type '{libraryInstance.GetType().Name}'.");
+                    }
                 }
-            }
-
-            // If no Library<,> field was found, log a warning and return
-            if (libraryField == null || libraryInstance == null)
-            {
-                Debug.LogWarning($"No Library<,> field found on type '{targetType}'.");
-                return;
-            }
-
-            // Get the method information from the Library<,> instance
-            MethodInfo methodInfo = libraryInstance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-            if (methodInfo != null)
-            {
-                // Invoke the method on the Library<,> instance
-                returnValue = methodInfo.Invoke(libraryInstance, parameters);
-                _serializedObject.ApplyModifiedProperties();
+                else
+                {
+                    Debug.LogWarning($"The field '{property.name}' is not a Library<,> instance or its subclass.");
+                }
             }
             else
             {
-                Debug.LogWarning($"Method '{methodName}' not found on type '{libraryInstance.GetType()}'.");
+                Debug.LogWarning($"Field '{property.name}' not found on type '{targetType}'.");
             }
         }
+
 
 
         string GetGenericTypeName(Type type)

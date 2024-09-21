@@ -14,13 +14,14 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
+public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionHandler
 {
     UXML_RenderTextureObject _speechBubbleObject;
     [SerializeField, ShowOnly] string _speakerTag = "";
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
+    public InteractionTypeKey TypeKey => InteractionTypeKey.DIALOGUE;
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
     public override void OnInitialize(Grid2D grid)
     {

@@ -29,7 +29,6 @@ public class MTR_Interactable : Interactable
 
 
     [Header("Interactable")]
-    [SerializeField, ShowAssetPreview] Sprite _sprite;
     [SerializeField] bool onStart;
     public bool isSpawn;
 

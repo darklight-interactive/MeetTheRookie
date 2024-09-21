@@ -3,14 +3,13 @@ using UnityEngine;
 
 namespace Darklight.UnityExt.Library
 {
-
-
     [Serializable]
     public class EnumObjectLibrary<TEnum, TObj> : EnumKeyLibrary<TEnum, TObj>
         where TEnum : System.Enum
         where TObj : UnityEngine.Object
     {
         [SerializeField] TObj _defaultObject = default(TObj);
+
         public override TEnum CreateDefaultKey()
         {
             return default(TEnum);
@@ -19,6 +18,11 @@ namespace Darklight.UnityExt.Library
         public override TObj CreateDefaultValue()
         {
             return _defaultObject;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
         }
     }
 }

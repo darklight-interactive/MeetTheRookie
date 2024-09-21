@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IInteractable
 {
+    string Name { get; }
     string Key { get; }
     string Layer { get; set; }
     State CurrentState { get; }

@@ -12,10 +12,8 @@ using System.Collections;
 using UnityEditor;
 #endif
 
-public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
+public class IconInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionHandler
 {
-    bool _initialized = false;
-
     [SerializeField, Expandable] UXML_UIDocumentPreset _interactIconPreset;
     [SerializeField, ShowOnly] UXML_RenderTextureObject _interactIconObject;
     [SerializeField, ShowOnly] bool _visible = false;
@@ -23,6 +21,7 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner
     Material material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 
+    public InteractionTypeKey TypeKey => InteractionTypeKey.ICON;
     public bool IsVisible => _visible;
 
     public void ShowInteractIcon()

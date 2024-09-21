@@ -123,12 +123,12 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
-                interactable._iconHandler?.ShowInteractIcon();
+                //interactable._iconHandler?.ShowInteractIcon();
             }
             public override void Execute() { }
             public override void Exit()
             {
-                interactable._iconHandler?.HideInteractIcon();
+                //interactable._iconHandler?.HideInteractIcon();
             }
         }
         #endregion
@@ -140,7 +140,7 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
-                storyIterator.GoToKnotOrStitch(interactable.InteractionStitch);
+                //storyIterator.GoToKnotOrStitch(interactable.InteractionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
             }
             public override void Execute() { }

@@ -2,16 +2,31 @@ using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Library;
 using NaughtyAttributes;
 using UnityEngine;
+using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+public enum InteractionTypeKey
+{
+    SIMPLE,
+    TOGGLE,
+    ICON,
+    DIALOGUE,
+    CHOICE
+}
 
 [ExecuteAlways]
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>
 {
     [SerializeField, Expandable] SystemSettings _settings;
-    [SerializeField] Library<string, Interactable> _registry = new Library<string, Interactable>();
 
+    [HorizontalLine(4, color: EColor.Gray)]
+    [SerializeField] Library<string, Interactable> _registryLibrary = new Library<string, Interactable>();
+
+    [HorizontalLine(4, color: EColor.Gray)]
+    [SerializeField] EnumObjectLibrary<InteractionTypeKey, GameObject> _handlerPrefabs = new EnumObjectLibrary<InteractionTypeKey, GameObject>();
 
     public static SystemSettings Settings { get => Instance._settings; }
 
@@ -24,17 +39,19 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
     void Update()
     {
-        _registry = Registry.GetLibrary();
+        _registryLibrary = Registry.GetLibrary();
     }
 
     public static class Factory
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InteractionSystem";
+
         public static SystemSettings CreateSettings()
         {
             SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, "InteractionSystemSettings");
             return settings;
         }
+
     }
 
     public static class Registry

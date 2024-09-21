@@ -11,14 +11,13 @@ using UnityEditor;
 public interface IInteractor
 {
     LayerMask LayerMask { get; }
-    Library<string, Interactable> NearbyInteractables { get; }
+    public Library<Interactable, string> NearbyInteractables { get; }
     Interactable TargetInteractable { get; }
 
     void TryAddInteractable(Interactable interactable);
     void RemoveInteractable(Interactable interactable);
 
     List<Interactable> FindInteractables();
-    Interactable GetInteractable(string name);
     Interactable GetClosestReadyInteractable(Vector3 position);
 
     bool TryAssignTarget(Interactable interactable);
@@ -48,11 +47,13 @@ public class Interactor : MonoBehaviour, IInteractor
     [Space(10)]
     [SerializeField, ShowOnly] Interactable _closestInteractable;
 
-    [SerializeField] Library<string, Interactable> _nearbyInteractables = new Library<string, Interactable>();
+    [SerializeField]
+    Library<Interactable, string> _nearbyInteractables
+        = new Library<Interactable, string>(true, true);
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
-    public Library<string, Interactable> NearbyInteractables => _nearbyInteractables;
+    public Library<Interactable, string> NearbyInteractables => _nearbyInteractables;
     public Interactable TargetInteractable => _target;
 
     public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
@@ -71,7 +72,7 @@ public class Interactor : MonoBehaviour, IInteractor
     void OnDrawGizmos()
     {
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
-        foreach (Interactable interactable in _nearbyInteractables.Values)
+        foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
             if (interactable == null) continue;
             if (interactable == _target)
@@ -84,7 +85,7 @@ public class Interactor : MonoBehaviour, IInteractor
                 Gizmos.color = Color.yellow;
             }
 
-            Gizmos.DrawSphere(interactable.transform.position, 0.025f);
+            Gizmos.DrawSphere(interactable.transform.position, 0.05f);
         }
     }
     #endregion
@@ -108,37 +109,27 @@ public class Interactor : MonoBehaviour, IInteractor
     public void TryAddInteractable(Interactable interactable)
     {
         if (interactable == null) return;
-        if (!_nearbyInteractables.ContainsKey(interactable.name))
-            _nearbyInteractables.Add(interactable.name, interactable);
+        if (!_nearbyInteractables.ContainsKey(interactable))
+            _nearbyInteractables.Add(interactable, interactable.Name);
         else
-            _nearbyInteractables[interactable.name] = interactable;
+            _nearbyInteractables[interactable] = interactable.Name;
     }
 
     public void RemoveInteractable(Interactable interactable)
     {
         if (interactable == null) return;
-        if (_nearbyInteractables.ContainsKey(interactable.name))
-            _nearbyInteractables.Remove(interactable.name);
-    }
-
-    public Interactable GetInteractable(string name)
-    {
-        // Retrieve the interactable by name if it exists.
-        if (_nearbyInteractables.TryGetValue(name, out var interactable))
-        {
-            return interactable;
-        }
-        return null;
+        if (_nearbyInteractables.ContainsKey(interactable))
+            _nearbyInteractables.Remove(interactable);
     }
 
     public Interactable GetClosestReadyInteractable(Vector3 position)
     {
         if (_nearbyInteractables.Count == 0) return null;
-        if (_nearbyInteractables.Count == 1) return _nearbyInteractables.Values.First();
+        if (_nearbyInteractables.Count == 1) return _nearbyInteractables.Keys.First();
 
-        Interactable closestInteractable = _nearbyInteractables.Values.First();
+        Interactable closestInteractable = _nearbyInteractables.Keys.First();
         float closestDistance = float.MaxValue;
-        foreach (Interactable interactable in _nearbyInteractables.Values)
+        foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
             if (interactable == null) continue;
 
@@ -197,8 +188,20 @@ public class Interactor : MonoBehaviour, IInteractor
             TryAddInteractable(interactable);
         }
 
+        if (_target != null && !overlapInteractables.Contains(_target))
+        {
+            _target.Reset();
+            _target = null;
+        }
+
+        if (_lastTarget != null && !overlapInteractables.Contains(_lastTarget))
+        {
+            _lastTarget.Reset();
+            _lastTarget = null;
+        }
+
         // Remove interactables from the dict that are no longer in the overlap interactables.
-        List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Values);
+        List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Keys);
         List<Interactable> interactablesToRemove = new List<Interactable>();
         foreach (Interactable interactable in dictInteractables)
         {

@@ -50,8 +50,10 @@ namespace Darklight.UnityExt.Library
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
 
-        [SerializeField, ShowOnly] bool _showOnly = true;
+
         [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
+        [SerializeField] bool _readOnlyKey = false;
+        [SerializeField] bool _readOnlyValue = false;
 
         #region ======== [[ PROPERTIES ]] ================================== >>>>
         #region -- (( IDictionary<TKey, TValue> )) --
@@ -86,7 +88,11 @@ namespace Darklight.UnityExt.Library
         public bool IsReadOnly => false;
         #endregion
 
+        protected bool readOnlyKey { get => _readOnlyKey; set => _readOnlyKey = value; }
+        protected bool readOnlyValue { get => _readOnlyValue; set => _readOnlyValue = value; }
+
         public List<LibraryItem<TKey, TValue>> Items => _items;
+
         #endregion
 
         public event Action<TKey, TValue> ItemAdded;
@@ -96,11 +102,13 @@ namespace Darklight.UnityExt.Library
         public Library()
         {
             _items = new List<LibraryItem<TKey, TValue>>();
+            Reset();
         }
 
-        public Library(bool showOnly) : this()
+        public Library(bool readOnlyKey, bool readOnlyValue) : base()
         {
-            _showOnly = showOnly;
+            _readOnlyKey = readOnlyKey;
+            _readOnlyValue = readOnlyValue;
         }
 
         // ======== [[ METHODS ]] ===================================== >>>>
@@ -149,8 +157,6 @@ namespace Darklight.UnityExt.Library
                 }
             }
         }
-
-
         #endregion
 
         #region -- <PRIVATE_METHODS> (( Internal Methods )) --
@@ -205,11 +211,16 @@ namespace Darklight.UnityExt.Library
         where TKey : System.Enum
         where TValue : notnull
     {
-        List<TKey> _enumValues = Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
+        List<TKey> enumValues => Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
+
+        public EnumKeyLibrary() : base()
+        {
+            Reset();
+        }
+
         TKey GetAvailableKey()
         {
-            _enumValues = Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
-            foreach (TKey key in _enumValues)
+            foreach (TKey key in enumValues)
             {
                 if (!ContainsKey(key))
                 {
@@ -224,10 +235,15 @@ namespace Darklight.UnityExt.Library
         public override void Reset()
         {
             base.Reset();
-            foreach (TKey key in _enumValues)
+
+            readOnlyKey = true;
+            readOnlyValue = false;
+
+            foreach (TKey key in enumValues)
             {
                 Add(key, CreateDefaultValue());
             }
+            Debug.Log($"Reset {GetType().Name}");
         }
     }
 

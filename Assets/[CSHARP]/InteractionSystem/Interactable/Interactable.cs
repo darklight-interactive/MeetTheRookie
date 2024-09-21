@@ -4,6 +4,8 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
+using Codice.CM.SEIDInfo;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,7 +14,10 @@ using UnityEditor;
 public partial class Interactable : MonoBehaviour,
     IInteractable, IUnityEditorListener
 {
-    const string PREFIX = "<INTERACTABLE>";
+    const string PREFIX = "<INT>";
+    const string DEFAULT_NAME = "DefaultName";
+    const string DEFAULT_KEY = "DefaultKey";
+    const string DEFAULT_LAYER = "Interactable";
 
     #region ---- <READONLY> [[ VALID_STATES ]] ------------------------------------ >>>>
     readonly List<IInteractable.State> VALID_TARGET_STATES = new List<IInteractable.State>
@@ -27,61 +32,31 @@ public partial class Interactable : MonoBehaviour,
         IInteractable.State.CONTINUE
     };
 
-    protected List<string> dropdown_sceneKnotList
-    {
-        get
-        {
-            List<string> names = new List<string>();
-            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
-            if (storyObject == null) return names;
-            return InkyStoryObject.GetAllKnots(storyObject.StoryValue);
-        }
-    }
-
-    List<string> dropdown_interactionStitchList
-    {
-        get
-        {
-            List<string> names = new List<string>();
-            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
-            if (storyObject == null) return names;
-            return InkyStoryObject.GetAllStitchesInKnot(storyObject.StoryValue, _sceneKnot);
-        }
-    }
     #endregion
 
     SpriteRenderer _spriteRenderer;
     BoxCollider2D _collider;
     StateMachine _stateMachine;
 
-    [Header(" (( FLAGS )) -------- >>")]
     [SerializeField, ShowOnly] bool _isRegistered = false;
     [SerializeField, ShowOnly] bool _isPreloaded = false;
     [SerializeField, ShowOnly] bool _isInitialized = false;
 
     [Header(" (( VALUES )) -------- >>")]
-    [SerializeField, ShowOnly] string _key;
-    [SerializeField, ShowOnly] string _layer;
+    [SerializeField] string _name = DEFAULT_NAME;
+    [SerializeField] string _key = DEFAULT_KEY;
+    [SerializeField, ShowOnly] string _layer = DEFAULT_LAYER;
     [SerializeField, ShowOnly] IInteractable.State _currentState;
-    [SerializeField] Sprite _mainSprite;
-
-    [Header(" (( INKY STORY KEYS )) -------- >>")]
-    [Dropdown("dropdown_sceneKnotList")]
-    [SerializeField] string _sceneKnot = "scene1_0";
-
-    [Dropdown("dropdown_interactionStitchList")]
-    [SerializeField] string _interactionStitch;
+    [SerializeField, ShowAssetPreview] Sprite _sprite;
 
     [Header(" (( INTERACTION SETTINGS )) -------- >>")]
     [SerializeField] Color _defaultTint = Color.white;
     [SerializeField] Color _interactionTint = Color.yellow;
 
-    [Header(" (( INTERACTION HANDLERS )) -------- >>")]
-    [SerializeField, ShowOnly] IconInteractionHandler _iconHandler;
-
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    public string Key => _key = InteractionStitch;
+    public string Name { get => _name; set => _name = value; }
+    public string Key { get => _key; set => _key = value; }
     public string Layer
     {
         get => _layer = gameObject.layer.ToString();
@@ -105,12 +80,6 @@ public partial class Interactable : MonoBehaviour,
             return _currentState;
         }
     }
-
-    public string Name => gameObject.name;
-    public string SceneKnot => _sceneKnot;
-    public string InteractionStitch => _interactionStitch;
-    public IconInteractionHandler IconHandler { get => _iconHandler; set => _iconHandler = value; }
-
     #endregion
 
     #region ======== [[ EVENTS ]] ================================== >>>>
@@ -146,10 +115,10 @@ public partial class Interactable : MonoBehaviour,
             _spriteRenderer = this.gameObject.AddComponent<SpriteRenderer>();
 
         // << SET THE INITIAL SPRITE >> ------------------------------------
-        if (_mainSprite != null)
-            _spriteRenderer.sprite = _mainSprite;
+        if (_sprite != null)
+            _spriteRenderer.sprite = _sprite;
         else if (_spriteRenderer.sprite != null)
-            _mainSprite = _spriteRenderer.sprite;
+            _sprite = _spriteRenderer.sprite;
 
         // << SET THE DEFAULT TINT >> ------------------------------------
         _spriteRenderer.color = _defaultTint;
@@ -164,7 +133,18 @@ public partial class Interactable : MonoBehaviour,
         // << SET THE COLLIDER SIZE >> ------------------------------------
         // Set the collider size to half the size of the transform scale
         _collider.size = Vector2.one * transform.localScale.x * 0.5f;
+    }
 
+    void UpdateGameObjectName()
+    {
+        // Set name to sprite name if Default, Default if null
+        if (_name == string.Empty) _name = DEFAULT_NAME;
+        if (_name == DEFAULT_NAME && _sprite != null) _name = _sprite.name;
+
+
+        if (_key == string.Empty) _key = DEFAULT_KEY;
+        if (_layer == string.Empty) _layer = DEFAULT_LAYER;
+        this.gameObject.name = $"{PREFIX} {Key} : {Name}";
     }
     #endregion
 
@@ -180,7 +160,9 @@ public partial class Interactable : MonoBehaviour,
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------
         _isRegistered = InteractionSystem.Registry.TryRegister(this);
-        _isPreloaded = true;
+        _isPreloaded = _isRegistered;
+
+        UpdateGameObjectName();
     }
 
     public virtual void Initialize()
@@ -191,6 +173,8 @@ public partial class Interactable : MonoBehaviour,
             Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
             return;
         }
+
+        UpdateGameObjectName();
 
         // << SUBSCRIBE TO EVENTS >> ------------------------------------
         OnReadyEvent += () => Debug.Log($"{PREFIX} {Name} :: OnReadyEvent");
@@ -286,3 +270,32 @@ public partial class Interactable : MonoBehaviour,
 
 }
 
+#if UNITY_EDITOR
+[CustomEditor(typeof(Interactable))]
+public class InteractableCustomEditor : UnityEditor.Editor
+{
+    SerializedObject _serializedObject;
+    Interactable _script;
+    private void OnEnable()
+    {
+        _serializedObject = new SerializedObject(target);
+        _script = (Interactable)target;
+        _script.Initialize();
+    }
+
+    public override void OnInspectorGUI()
+    {
+        _serializedObject.Update();
+
+        EditorGUI.BeginChangeCheck();
+
+        base.OnInspectorGUI();
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _script.Initialize();
+            _serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif

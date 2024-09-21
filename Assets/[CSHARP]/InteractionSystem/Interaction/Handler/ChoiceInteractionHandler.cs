@@ -16,14 +16,16 @@ using System;
 using UnityEditor;
 #endif
 
-public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
+public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionHandler
 {
     Dictionary<Vector2Int, UXML_RenderTextureObject> _attachedBubbles = new Dictionary<Vector2Int, UXML_RenderTextureObject>();
     [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
-    Material material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
-    RenderTexture renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
+
+    public InteractionTypeKey TypeKey => InteractionTypeKey.CHOICE;
+    Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
+    RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 
     public override void OnInitialize(Grid2D grid)
     {
@@ -47,7 +49,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
         {
-            UXML_RenderTextureObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, material, renderTexture);
+            UXML_RenderTextureObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, _material, _renderTexture);
             _attachedBubbles.Add(cell.Key, choiceBubbleObject);
 
             spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform);

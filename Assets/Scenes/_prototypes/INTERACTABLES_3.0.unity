@@ -458,13 +458,21 @@ PrefabInstance:
       value: -673211431
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _dimensions.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _offsetPosition.x
-      value: -0.5
+      value: -0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _targetInteractable
       value: 
       objectReference: {fileID: 2133541903}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _closestInteractable
+      value: 
+      objectReference: {fileID: 1352654846}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.size
       value: 2
@@ -475,20 +483,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[0]._key
-      value: <EXAMPLE> Interactable (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-      propertyPath: _nearbyInteractables._items.Array.data[1]._key
-      value: <EXAMPLE> Interactable
-      objectReference: {fileID: 0}
-    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-      propertyPath: _nearbyInteractables._items.Array.data[0]._value
       value: 
       objectReference: {fileID: 2133541903}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-      propertyPath: _nearbyInteractables._items.Array.data[1]._value
+      propertyPath: _nearbyInteractables._items.Array.data[1]._key
       value: 
       objectReference: {fileID: 1352654846}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _nearbyInteractables._items.Array.data[0]._value
+      value: arcade_machineHOSI_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _nearbyInteractables._items.Array.data[1]._value
+      value: PurpleArcadeMachine
+      objectReference: {fileID: 0}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -496,7 +504,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -995,17 +1003,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
---- !u!114 &227294716 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 355094287116948949, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 227294715}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44cf4ee7e0a872a4590180590a64d79f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &227294717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
@@ -1136,17 +1133,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
---- !u!114 &358884264 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 355094287116948949, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 358884263}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44cf4ee7e0a872a4590180590a64d79f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &358884265 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
@@ -1488,7 +1474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _registryLibrary._items.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _registry._items.Array.data[0]._key
@@ -1500,12 +1486,28 @@ PrefabInstance:
       objectReference: {fileID: 1352654846}
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _registryLibrary._items.Array.data[0]._id
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _registryLibrary._items.Array.data[1]._id
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _registryLibrary._items.Array.data[0]._key
       value: scene1_0.intro
       objectReference: {fileID: 0}
+    - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _registryLibrary._items.Array.data[1]._key
+      value: DefaultKey
+      objectReference: {fileID: 0}
+    - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _registryLibrary._items.Array.data[0]._value
+      value: 
+      objectReference: {fileID: 1352654846}
+    - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _registryLibrary._items.Array.data[1]._value
+      value: 
+      objectReference: {fileID: 1541940983}
     - target: {fileID: 8875938405744345426, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: m_Name
       value: '[SINGLETON] GameManager'
@@ -1532,7 +1534,7 @@ GameObject:
   - component: {fileID: 1352654845}
   - component: {fileID: 1352654844}
   m_Layer: 8
-  m_Name: <INTERACTABLE> purple_arcade
+  m_Name: '<INT> DefaultKey2 : PurpleArcadeMachine'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1547,7 +1549,7 @@ Transform:
   m_GameObject: {fileID: 1352654842}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.25, z: 0.5}
+  m_LocalPosition: {x: -0.5, y: 0.25, z: 0.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1668,16 +1670,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isRegistered: 1
   _isPreloaded: 1
-  _isInitialized: 0
-  _key: scene1_0.intro
-  _layer: 
+  _isInitialized: 1
+  _name: PurpleArcadeMachine
+  _key: DefaultKey2
+  _layer: Interactable
   _currentState: 0
-  _mainSprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
-  _sceneKnot: scene1_0
-  _interactionStitch: scene1_0.intro
+  _sprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _iconHandler: {fileID: 227294716}
 --- !u!1001 &1390970843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1803,17 +1803,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
---- !u!114 &1390970844 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 355094287116948949, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 1390970843}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44cf4ee7e0a872a4590180590a64d79f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1390970845 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
@@ -1832,7 +1821,7 @@ GameObject:
   - component: {fileID: 1541940986}
   - component: {fileID: 1541940985}
   m_Layer: 8
-  m_Name: <INTERACTABLE> yellow_arcade
+  m_Name: '<INT> DefaultKey0 : Yellow Arcade Machine'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1852,16 +1841,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isRegistered: 1
   _isPreloaded: 1
-  _isInitialized: 0
-  _key: 
-  _layer: 
+  _isInitialized: 1
+  _name: Yellow Arcade Machine
+  _key: DefaultKey0
+  _layer: Interactable
   _currentState: 0
-  _mainSprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
-  _sceneKnot: scene1_0
-  _interactionStitch: 
+  _sprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _iconHandler: {fileID: 358884264}
 --- !u!4 &1541940984
 Transform:
   m_ObjectHideFlags: 0
@@ -1871,7 +1858,7 @@ Transform:
   m_GameObject: {fileID: 1541940982}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1, y: 0.25, z: 0.5}
+  m_LocalPosition: {x: 0.5, y: 0.25, z: 0.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2032,6 +2019,8 @@ MonoBehaviour:
   _closestInteractable: {fileID: 0}
   _nearbyInteractables:
     _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
 --- !u!1 &2133541902
 GameObject:
   m_ObjectHideFlags: 0
@@ -2045,7 +2034,7 @@ GameObject:
   - component: {fileID: 2133541906}
   - component: {fileID: 2133541905}
   m_Layer: 8
-  m_Name: <INTERACTABLE> blue_arcade
+  m_Name: '<INT> DefaultKey15 : arcade_machineHOSI_0'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2063,18 +2052,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isRegistered: 0
+  _isRegistered: 1
   _isPreloaded: 1
-  _isInitialized: 0
-  _key: 
-  _layer: 
+  _isInitialized: 1
+  _name: arcade_machineHOSI_0
+  _key: DefaultKey15
+  _layer: Interactable
   _currentState: 0
-  _mainSprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
-  _sceneKnot: scene1_0
-  _interactionStitch: 
+  _sprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _iconHandler: {fileID: 1390970844}
 --- !u!4 &2133541904
 Transform:
   m_ObjectHideFlags: 0
