@@ -249,10 +249,25 @@ namespace Darklight.UnityExt.Library.Editor
                 return;
             }
 
-            if (!showOnly)
+            if (showOnly)
+            {
+                // Convert simple types to strings
+                if (SerializedPropertyUtility.IsSimpleType(property) && !SerializedPropertyUtility.IsReferenceType(property))
+                {
+                    EditorGUI.LabelField(rect, SerializedPropertyUtility.ConvertPropertyToString(property));
+                    return;
+                }
+
+                // Draw the property as disabled
+                EditorGUI.BeginDisabledGroup(true);
                 EditorGUI.PropertyField(rect, property, GUIContent.none);
+                EditorGUI.EndDisabledGroup();
+                return;
+            }
             else
-                EditorGUI.LabelField(rect, SerializedPropertyUtility.ConvertPropertyToString(property));
+            {
+                EditorGUI.PropertyField(rect, property, GUIContent.none);
+            }
         }
 
         void DrawLibraryProperties(Rect rect, ref float currentYPos)
@@ -314,14 +329,8 @@ namespace Darklight.UnityExt.Library.Editor
                 // Increment y position
                 currentYPos += propertyHeight + EditorGUIUtility.standardVerticalSpacing;
                 count++;
-
-                Debug.Log($"#{count} Field '{field.Name}' of type '{field.FieldType}' drawn.");
             }
         }
-
-
-
-
 
         void DrawReorderableList(Rect rect, out float listHeight)
         {

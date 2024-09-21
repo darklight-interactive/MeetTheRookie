@@ -50,7 +50,7 @@ namespace Darklight.UnityExt.Library
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
 
-        [SerializeField] bool _showOnly = false;
+        [SerializeField, ShowOnly] bool _showOnly = true;
         [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
 
         #region ======== [[ PROPERTIES ]] ================================== >>>>
