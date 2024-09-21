@@ -63,6 +63,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   clueLibrary: {fileID: 11400000, guid: a3f42b5a64f1aa24bacc88d2196c2e28, type: 2}
+--- !u!1 &747062332810990951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2643191072141248278}
+  - component: {fileID: 8037528104237056105}
+  m_Layer: 0
+  m_Name: '[ INTERACTION_SYSTEM ]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2643191072141248278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747062332810990951}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054830795790530424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8037528104237056105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747062332810990951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a736164a30cf61b47a143e523543a222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 0}
 --- !u!1 &3100972142227852913
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +261,6 @@ GameObject:
   - component: {fileID: 5342227784319069846}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
-  - component: {fileID: 2762869711112403417}
   - component: {fileID: 5155693147541508910}
   - component: {fileID: 1103200859854054853}
   - component: {fileID: 6736551505315507451}
@@ -242,6 +286,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2643191072141248278}
   - {fileID: 7313103818091379476}
   - {fileID: 3073816321907884251}
   - {fileID: 5312689513072785689}
@@ -395,30 +440,6 @@ MonoBehaviour:
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
   UXML_RenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
---- !u!114 &2762869711112403417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeaae59828a8b67478718dea29de25de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerLayer: Player
-  _npcLayer: NPC
-  _interactableLayer: Interactable
-  _playerInteractor: {fileID: 0}
-  _interactableRegistry:
-    _items:
-    - _id: 0
-      _key: <EXAMPLE> Interactable
-      _value: {fileID: 0}
-  _iconInteractionHandlerPrefab: {fileID: 863848289328599988, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  _dialogueInteractionHandlerPrefab: {fileID: 6598154582557312995, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
-  _choiceInteractionHandlerPrefab: {fileID: 0}
 --- !u!114 &5155693147541508910
 MonoBehaviour:
   m_ObjectHideFlags: 0

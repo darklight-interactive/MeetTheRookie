@@ -13,14 +13,11 @@ public partial class Interactable
     /// Interactable Internal State Machine <br/>
     /// This class hanndles the functions and events of the Interactable class
     /// </summary>
-    [Serializable]
-    public class StateMachine : FiniteStateMachine<IInteractable.State>
+    protected class StateMachine : FiniteStateMachine<IInteractable.State>
     {
         Interactable _interactable;
         InkyStoryIterator _storyIterator;
-
-        [Header("State Machine")]
-        [SerializeField, ShowOnly] IInteractable.State _currentState;
+        IInteractable.State _currentState;
 
         public StateMachine(Interactable interactable) : base()
         {
@@ -163,22 +160,21 @@ public partial class Interactable
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
 
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
+                Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStory,State.{storyState}");
+
+
                 switch (storyState)
                 {
                     case InkyStoryIterator.State.START:
-                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Start Interaction");
                         break;
                     case InkyStoryIterator.State.DIALOGUE:
-                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Dialogue Found");
                         break;
                     case InkyStoryIterator.State.CHOICE:
-                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Choices Found");
                         break;
                     case InkyStoryIterator.State.END:
                         stateMachine.GoToState(IInteractable.State.COMPLETE);
                         break;
                     default:
-                        Debug.Log($"INTERACTABLE :: {interactable.Name} >> Continue Interaction");
                         break;
                 }
             }

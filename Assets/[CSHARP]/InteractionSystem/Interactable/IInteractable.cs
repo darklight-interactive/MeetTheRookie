@@ -3,13 +3,9 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    string Name { get; }
-    string SceneKnot { get; }
-    string InteractionStitch { get; }
+    string Key { get; }
+    string Layer { get; set; }
     State CurrentState { get; }
-    Sprite MainSprite { get; }
-    bool IsPreloaded { get; }
-    bool IsInitialized { get; }
 
     // ===================== [[ EVENTS ]] =====================
     delegate void InteractionEvent();

@@ -21,8 +21,8 @@ namespace Darklight.UnityExt.Library
     public class LibraryItem<TKey, TValue>
     {
         [SerializeField, ShowOnly] int _id;
-        [SerializeField, ShowOnly] TKey _key;
-        [SerializeField, ShowOnly] TValue _value;
+        [SerializeField] TKey _key;
+        [SerializeField] TValue _value;
 
         public int Id { get => _id; }
         public TKey Key { get => _key; set => _key = value; }

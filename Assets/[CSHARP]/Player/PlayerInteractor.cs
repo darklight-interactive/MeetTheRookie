@@ -62,7 +62,7 @@ public class PlayerInteractor : Interactor
     // ======== [[ METHODS ]] ================================== >>>>
     public void Awake()
     {
-        MTR_InteractionManager.RegisterPlayerInteractor(this);
+        //MTR_InteractionManager.RegisterPlayerInteractor(this);
     }
 
     public override void Update()

@@ -496,7 +496,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -1304,13 +1304,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1273029733}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.01745245, y: 0, z: 0, w: 0.99984777}
   m_LocalPosition: {x: 0, y: -1, z: 10}
   m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 425132954}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -2, y: 0, z: 0}
 --- !u!65 &1273029735
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1524,7 +1524,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.35, y: 0.35}
   m_EdgeRadius: 0
 --- !u!212 &1352654845
 SpriteRenderer:
@@ -1592,11 +1592,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isRegistered: 1
+  _isPreloaded: 1
+  _isInitialized: 0
+  _key: scene1_0.intro
+  _layer: 
   _currentState: 0
-  _iconHandler: {fileID: 227294716}
   _mainSprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
+  _sceneKnot: scene1_0
+  _interactionStitch: scene1_0.intro
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _iconHandler: {fileID: 227294716}
 --- !u!1001 &1390970843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1769,11 +1776,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isRegistered: 0
+  _isPreloaded: 1
+  _isInitialized: 0
+  _key: 
+  _layer: 
   _currentState: 0
-  _iconHandler: {fileID: 358884264}
   _mainSprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
+  _sceneKnot: scene1_0
+  _interactionStitch: 
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _iconHandler: {fileID: 358884264}
 --- !u!4 &1541940984
 Transform:
   m_ObjectHideFlags: 0
@@ -1834,7 +1848,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.35, y: 0.35}
   m_EdgeRadius: 0
 --- !u!212 &1541940986
 SpriteRenderer:
@@ -1941,6 +1955,7 @@ MonoBehaviour:
   _offsetPosition: {x: 0, y: 0}
   _lastTarget: {fileID: 0}
   _target: {fileID: 0}
+  _closestInteractable: {fileID: 0}
   _nearbyInteractables:
     _items: []
 --- !u!1 &2133541902
@@ -1974,11 +1989,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630ea14a7b5fed141869cbd64bab5639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isRegistered: 1
+  _isPreloaded: 1
+  _isInitialized: 0
+  _key: 
+  _layer: 
   _currentState: 0
-  _iconHandler: {fileID: 1390970844}
   _mainSprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
+  _sceneKnot: scene1_0
+  _interactionStitch: 
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _iconHandler: {fileID: 1390970844}
 --- !u!4 &2133541904
 Transform:
   m_ObjectHideFlags: 0
@@ -2039,7 +2061,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.35, y: 0.35}
   m_EdgeRadius: 0
 --- !u!212 &2133541906
 SpriteRenderer:

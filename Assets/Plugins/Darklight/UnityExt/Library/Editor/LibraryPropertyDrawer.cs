@@ -11,27 +11,50 @@ namespace Darklight.UnityExt.Library.Editor
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
-        const float INDENT_WIDTH = 15f;
-        const float PADDING = 5f;
+        const float ITEM_PROP_SPACING = 10f;
         readonly List<string> PROP_BLACKLIST = new List<string> { "_items" };
+        readonly float SINGLE_LINE_HEIGHT = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-        ReorderableList _list;
         SerializedObject _serializedObject;
         SerializedProperty _libraryProperty;
         SerializedProperty _itemsProperty;
-        bool _foldoutToggle;
-        float _propertyHeight;
 
-        protected Type libraryType => _libraryProperty.GetType();
-        protected string libraryName => libraryType.Name;
-        protected Type objectType => _serializedObject.targetObject.GetType();
-        protected string objectName => objectType.Name;
-        protected float singleLineHeight = EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight;
-        protected float indentWidth => EditorGUI.indentLevel * INDENT_WIDTH;
+        /// <summary>
+        /// The full height of the property drawer. <br/>
+        /// Calculated at the end of the OnGUI method and returned in GetPropertyHeight.
+        /// </summary>
+        float _fullPropertyHeight;
+
+        /// <summary>
+        /// The full width of the property drawer. <br/>
+        /// Calculated at the beginning of the OnGUI method as the width of the rect.
+        /// </summary>
+        float _fullPropertyWidth;
+        float _fullPropertyStartXPos;
+
+        ReorderableList _list;
+        float list_itemID_XPos => _fullPropertyStartXPos + ITEM_PROP_SPACING;
+        float list_itemID_Width => ITEM_PROP_SPACING * 2;
+        float list_itemProp_Width
+        {
+            get
+            {
+                float outWidth = _fullPropertyWidth;
+
+                // Subract the width of the ID and the surrounding spacing
+                float id_columnWidth = ITEM_PROP_SPACING + list_itemID_Width + ITEM_PROP_SPACING;
+                outWidth -= id_columnWidth;
+
+                // Subtract the right-side spacing of two properties
+                outWidth -= ITEM_PROP_SPACING * 2;
+                return outWidth / 2; // Divide the remaining width by 2 to return the width of each individual property
+            }
+        }
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
             // << INITIALIZATION >>
+            // Store the serialized object and properties
             if (_serializedObject == null)
                 _serializedObject = property.serializedObject;
             if (_libraryProperty == null)
@@ -39,34 +62,36 @@ namespace Darklight.UnityExt.Library.Editor
             if (_itemsProperty == null)
                 _itemsProperty = property.FindPropertyRelative("_items");
 
-            // << DRAW PROPERTY >>
+            _fullPropertyStartXPos = rect.x;
+            _fullPropertyWidth = rect.width;
+
+            // << BEGIN PROPERTY SCOPE >> -------------------------------------
             // Begin the property scope
             EditorGUI.BeginProperty(rect, label, property);
 
-            Vector2 position = new Vector2(rect.x + indentWidth, rect.y);
+            Vector2 position = new Vector2(rect.x, rect.y);
 
-            // ( Foldout Toggle )---------------------------------------------
-            Rect foldoutRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
-            _foldoutToggle = EditorGUI.Foldout(foldoutRect, _foldoutToggle, label, true);
-            position.y += EditorGUIUtility.singleLineHeight;
+            // << Get the Field Type and Generic Arguments >>
+            Type libraryFieldType = fieldInfo.FieldType;
+            string typeName = GetGenericTypeName(libraryFieldType);
 
-            if (_foldoutToggle)
-            {
-                // ( Properties )-------------------------------------------------
-                Rect propRect = new Rect(position.x, position.y, rect.width, EditorGUIUtility.singleLineHeight);
-                DrawProperties(propRect, out float propertiesHeight);
-                position.y += propertiesHeight;
+            // ( Title )---------------------------------------------
+            Rect titleRect = new Rect(position.x, position.y, rect.width, SINGLE_LINE_HEIGHT);
+            EditorGUI.LabelField(titleRect, $"{label} : {typeName}", new GUIStyle(EditorStyles.boldLabel));
+            position.y += SINGLE_LINE_HEIGHT;
 
-                // ( ReorderableList )--------------------------------------------
-                EditorGUI.indentLevel++;
-                position.x = rect.x + indentWidth;
-                float listWidth = rect.width - (indentWidth * 2);
-                Rect listRect = new Rect(position.x, position.y, listWidth, rect.height - position.y);
-                DrawReorderableList(listRect, out float listHeight);
-                position.y += listHeight;
+            // ( Properties )-------------------------------------------------
+            Rect propRect = new Rect(position.x, position.y, rect.width, SINGLE_LINE_HEIGHT);
+            DrawProperties(propRect, out float propertiesHeight);
+            position.y += propertiesHeight;
 
-                _propertyHeight = position.y - rect.y;
-            }
+            // ( ReorderableList )--------------------------------------------
+            Rect listRect = new Rect(position.x, position.y, rect.width, SINGLE_LINE_HEIGHT);
+            DrawReorderableList(listRect, out float listHeight);
+            position.y += listHeight;
+
+            // (Calculate Property Height)-------------------------------------
+            _fullPropertyHeight = position.y - rect.y;
 
             // End the property scope
             EditorGUI.EndProperty();
@@ -74,7 +99,7 @@ namespace Darklight.UnityExt.Library.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return _foldoutToggle ? _propertyHeight : EditorGUIUtility.singleLineHeight;
+            return _fullPropertyHeight;
         }
 
         #region ======== [[ REORDERABLE LIST ]] ===================================== >>>>
@@ -92,13 +117,11 @@ namespace Darklight.UnityExt.Library.Editor
 
         protected virtual void DrawHeaderCallback(Rect rect)
         {
-            float fullWidth = rect.width - (PADDING * 2);
-            float idWidth = fullWidth / 4; // 25% of the full width
-            float itemWidth = (fullWidth - idWidth) / 2; // Take 50% of the remaining width
+            Rect idRect = new Rect(list_itemID_XPos, rect.y, list_itemID_Width, SINGLE_LINE_HEIGHT);
 
-            Rect idRect = new Rect(rect.x, rect.y, idWidth, EditorGUIUtility.singleLineHeight);
-            Rect keyRect = new Rect(idRect.x + idWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
-            Rect valueRect = new Rect(keyRect.x + itemWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
+            Rect keyRect = new Rect(idRect.x + list_itemID_Width + ITEM_PROP_SPACING, rect.y, list_itemProp_Width, SINGLE_LINE_HEIGHT);
+
+            Rect valueRect = new Rect(keyRect.x + list_itemProp_Width + ITEM_PROP_SPACING, rect.y, list_itemProp_Width, SINGLE_LINE_HEIGHT);
 
             EditorGUI.LabelField(idRect, "ID");
             EditorGUI.LabelField(keyRect, "Key");
@@ -113,15 +136,11 @@ namespace Darklight.UnityExt.Library.Editor
             SerializedProperty keyProp = itemProp.FindPropertyRelative("_key");
             SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
 
-            rect.x += PADDING * 2;
-            rect.y += 2;
-            float fullWidth = rect.width - (PADDING * 2);
-            float idWidth = fullWidth / 4; // 25% of the full width
-            float itemWidth = (fullWidth - idWidth) / 2; // Take 50% of the remaining width
+            Rect idRect = new Rect(list_itemID_XPos, rect.y, list_itemID_Width, SINGLE_LINE_HEIGHT);
 
-            Rect idRect = new Rect(rect.x + PADDING, rect.y, idWidth, EditorGUIUtility.singleLineHeight);
-            Rect keyRect = new Rect(idRect.x + idWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
-            Rect valueRect = new Rect(keyRect.x + itemWidth + PADDING, rect.y, itemWidth, EditorGUIUtility.singleLineHeight);
+            Rect keyRect = new Rect(idRect.x + list_itemID_Width + ITEM_PROP_SPACING, rect.y, list_itemProp_Width, SINGLE_LINE_HEIGHT);
+
+            Rect valueRect = new Rect(keyRect.x + list_itemProp_Width + ITEM_PROP_SPACING, rect.y, list_itemProp_Width, SINGLE_LINE_HEIGHT);
 
             // << DRAW INDEX >>
             EditorGUI.LabelField(idRect, idProp.intValue.ToString());
@@ -133,7 +152,7 @@ namespace Darklight.UnityExt.Library.Editor
                 EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
 
             // << DRAW VALUE >>
-            if (keyProp == null)
+            if (valueProp == null)
                 EditorGUI.LabelField(valueRect, "Null Value");
             else
                 EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
@@ -180,18 +199,18 @@ namespace Darklight.UnityExt.Library.Editor
 
             EditorGUI.indentLevel++;
             position.x += GetCurrentIndentValue();
-            Rect btn1Rect = new Rect(position.x, position.y, btnWidth, singleLineHeight);
+            Rect btn1Rect = new Rect(position.x, position.y, btnWidth, SINGLE_LINE_HEIGHT);
             PropertyDrawerUtility.DrawButton(btn1Rect, "Reset", out float resetButtonHeight, () =>
             {
                 InvokeSerializedObjectMethod("Reset");
             });
 
-            Rect btn2Rect = new Rect(btn1Rect.x + btnWidth, position.y, btnWidth, singleLineHeight);
+            Rect btn2Rect = new Rect(btn1Rect.x + btnWidth, position.y, btnWidth, SINGLE_LINE_HEIGHT);
             PropertyDrawerUtility.DrawButton(btn2Rect, "Clear", out float clearButtonHeight, () =>
             {
                 InvokeSerializedObjectMethod("Clear");
             });
-            position.y += singleLineHeight;
+            position.y += SINGLE_LINE_HEIGHT;
 
             headerHeight = position.y - rect.y;
         }
@@ -277,87 +296,32 @@ namespace Darklight.UnityExt.Library.Editor
             }
         }
 
-        void InitializeProperty(SerializedProperty property)
+        string GetGenericTypeName(Type type)
         {
-            switch (property.propertyType)
+            if (type == null)
+                return "Unknown Type";
+
+            // Get the generic type arguments
+            Type[] genericArgs = type.GetGenericArguments();
+
+            // Remove the backtick and number from the type name if it exists
+            string baseTypeName = type.Name;
+            int backtickIndex = baseTypeName.IndexOf('`');
+            if (backtickIndex > 0)
             {
-                case SerializedPropertyType.Integer:
-                    property.intValue = default;
-                    break;
-                case SerializedPropertyType.Boolean:
-                    property.boolValue = default;
-                    break;
-                case SerializedPropertyType.Float:
-                    property.floatValue = default;
-                    break;
-                case SerializedPropertyType.String:
-                    property.stringValue = string.Empty;
-                    break;
-                case SerializedPropertyType.Color:
-                    property.colorValue = Color.white;
-                    break;
-                case SerializedPropertyType.ObjectReference:
-                    property.objectReferenceValue = null;
-                    break;
-                case SerializedPropertyType.LayerMask:
-                    property.intValue = default;
-                    break;
-                case SerializedPropertyType.Enum:
-                    property.enumValueIndex = 0;
-                    break;
-                case SerializedPropertyType.Vector2:
-                    property.vector2Value = Vector2.zero;
-                    break;
-                case SerializedPropertyType.Vector3:
-                    property.vector3Value = Vector3.zero;
-                    break;
-                case SerializedPropertyType.Vector4:
-                    property.vector4Value = Vector4.zero;
-                    break;
-                case SerializedPropertyType.Rect:
-                    property.rectValue = new Rect();
-                    break;
-                case SerializedPropertyType.ArraySize:
-                    property.intValue = default;
-                    break;
-                case SerializedPropertyType.Character:
-                    property.intValue = default;
-                    break;
-                case SerializedPropertyType.AnimationCurve:
-                    property.animationCurveValue = new AnimationCurve();
-                    break;
-                case SerializedPropertyType.Bounds:
-                    property.boundsValue = new Bounds();
-                    break;
-                case SerializedPropertyType.Gradient:
-                    // Gradient cannot be set directly
-                    break;
-                case SerializedPropertyType.Quaternion:
-                    property.quaternionValue = Quaternion.identity;
-                    break;
-                case SerializedPropertyType.ExposedReference:
-                    property.exposedReferenceValue = null;
-                    break;
-                case SerializedPropertyType.Vector2Int:
-                    property.vector2IntValue = Vector2Int.zero;
-                    break;
-                case SerializedPropertyType.Vector3Int:
-                    property.vector3IntValue = Vector3Int.zero;
-                    break;
-                case SerializedPropertyType.RectInt:
-                    property.rectIntValue = new RectInt();
-                    break;
-                case SerializedPropertyType.BoundsInt:
-                    property.boundsIntValue = new BoundsInt();
-                    break;
-                case SerializedPropertyType.ManagedReference:
-                    property.managedReferenceValue = null;
-                    break;
-                default:
-                    // For any other property types, set to default or null
-                    property.managedReferenceValue = null;
-                    break;
+                baseTypeName = baseTypeName.Substring(0, backtickIndex);
             }
+
+            // If the type has generic arguments, format them
+            if (genericArgs.Length > 0)
+            {
+                string genericArgsString = string.Join(", ", Array.ConvertAll(genericArgs, t => t.Name));
+                return $"{baseTypeName}<{genericArgsString}>";
+            }
+
+            // Return the cleaned-up type name
+            return baseTypeName;
         }
+
     }
 }

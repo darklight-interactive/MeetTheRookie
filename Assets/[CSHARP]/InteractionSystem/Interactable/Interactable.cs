@@ -54,10 +54,14 @@ public partial class Interactable : MonoBehaviour,
     BoxCollider2D _collider;
     StateMachine _stateMachine;
 
+    [Header(" (( FLAGS )) -------- >>")]
+    [SerializeField, ShowOnly] bool _isRegistered = false;
     [SerializeField, ShowOnly] bool _isPreloaded = false;
     [SerializeField, ShowOnly] bool _isInitialized = false;
 
-    [Header(" (( INTERACTABLE VALUES )) -------- >>")]
+    [Header(" (( VALUES )) -------- >>")]
+    [SerializeField, ShowOnly] string _key;
+    [SerializeField, ShowOnly] string _layer;
     [SerializeField, ShowOnly] IInteractable.State _currentState;
     [SerializeField] Sprite _mainSprite;
 
@@ -77,9 +81,16 @@ public partial class Interactable : MonoBehaviour,
 
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    public string Name => this.gameObject.name;
-    public string SceneKnot => _sceneKnot;
-    public string InteractionStitch => _interactionStitch;
+    public string Key => _key = InteractionStitch;
+    public string Layer
+    {
+        get => _layer = gameObject.layer.ToString();
+        set
+        {
+            _layer = value;
+            gameObject.layer = LayerMask.NameToLayer(value);
+        }
+    }
     public IInteractable.State CurrentState
     {
         get
@@ -94,11 +105,10 @@ public partial class Interactable : MonoBehaviour,
             return _currentState;
         }
     }
-    public Sprite MainSprite { get => _mainSprite; set => _mainSprite = value; }
-    public bool IsPreloaded => _isPreloaded;
-    public bool IsInitialized => _isInitialized;
 
-
+    public string Name => gameObject.name;
+    public string SceneKnot => _sceneKnot;
+    public string InteractionStitch => _interactionStitch;
     public IconInteractionHandler IconHandler { get => _iconHandler; set => _iconHandler = value; }
 
     #endregion
@@ -129,7 +139,6 @@ public partial class Interactable : MonoBehaviour,
     #endregion
 
     #region ======== <PRIVATE_METHODS> [[ Internal Methods ]] ================================== >>>>
-
     void PreloadSpriteRenderer()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -157,8 +166,6 @@ public partial class Interactable : MonoBehaviour,
         _collider.size = Vector2.one * transform.localScale.x * 0.5f;
 
     }
-
-
     #endregion
 
     #region ======== <PUBLIC_METHODS> [[ IUnityEditorListener ]] ================================== >>>>
@@ -172,14 +179,18 @@ public partial class Interactable : MonoBehaviour,
         PreloadBoxCollider();
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------
-        InteractionRegistry.RegisterInteractable(this);
-
+        _isRegistered = InteractionSystem.Registry.TryRegister(this);
         _isPreloaded = true;
     }
 
     public virtual void Initialize()
     {
         if (!_isPreloaded) Preload();
+        if (!_isRegistered)
+        {
+            Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
+            return;
+        }
 
         // << SUBSCRIBE TO EVENTS >> ------------------------------------
         OnReadyEvent += () => Debug.Log($"{PREFIX} {Name} :: OnReadyEvent");
@@ -242,10 +253,21 @@ public partial class Interactable : MonoBehaviour,
         }
 
         // << ACCEPT INTERACTION >> ------------------------------------
-        if (CurrentState == IInteractable.State.START)
-            _stateMachine.GoToState(IInteractable.State.CONTINUE);
-        else
-            _stateMachine.GoToState(IInteractable.State.START);
+        switch (CurrentState)
+        {
+            case IInteractable.State.START:
+            case IInteractable.State.CONTINUE:
+                _stateMachine.GoToState(IInteractable.State.CONTINUE);
+                break;
+            case IInteractable.State.COMPLETE:
+            case IInteractable.State.DISABLED:
+                Debug.LogError($"{PREFIX} {Name} :: Cannot interact in state: {CurrentState}");
+                break;
+            default:
+                _stateMachine.GoToState(IInteractable.State.START);
+                break;
+        }
+
         return true;
     }
 
@@ -261,34 +283,6 @@ public partial class Interactable : MonoBehaviour,
         yield return new WaitForSeconds(duration);
         _spriteRenderer.color = originalColor;
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(Interactable), true)]
-    public class InteractableCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        Interactable _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (Interactable)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
 
 }
 

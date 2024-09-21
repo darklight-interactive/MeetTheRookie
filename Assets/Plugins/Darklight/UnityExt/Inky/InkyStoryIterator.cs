@@ -3,6 +3,9 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Behaviour;
 using Ink.Runtime;
 using UnityEngine;
+using UnityEditorInternal;
+using System.Linq;
+using UnityEngine.XR;
 
 namespace Darklight.UnityExt.Inky
 {
@@ -12,29 +15,31 @@ namespace Darklight.UnityExt.Inky
     /// </summary>
     public class InkyStoryIterator : SimpleStateMachine<InkyStoryIterator.State>
     {
-        public enum State
+        const string PREFIX = "[InkyStoryIterator]";
+        InkyStoryObject _storyObject;
+        Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
+
+        string _currentStoryKnot;
+        string _currentStoryDialogue;
+        List<Choice> _currentChoices;
+
+
+        // ======== [[ PROPERTIES ]] ================================ >>
+        public string CurrentStoryKnot { get => _currentStoryKnot; set => _currentStoryKnot = value; }
+        public string CurrentStoryDialogue
         {
-            NULL,
-            START,
-            DIALOGUE,
-            CHOICE,
-            END
+            get => _currentStoryDialogue = _storyObject.StoryValue.currentText.Trim();
+        }
+        public List<Choice> CurrentChoices
+        {
+            get => _currentChoices = _choiceMap.Keys.ToList();
         }
 
-        private const string Prefix = "[InkyKnot] >> ";
-        private InkyStoryObject _storyObject;
-        private Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
-
-        // ------------------- [[ PUBLIC ACCESSORS ]] -------------------
-        /// <summary>
-        /// This is the active text that is currently being displayed in the story, for easy reference.
-        /// </summary>
-        public string CurrentText => _storyObject.StoryValue.currentText.Trim();
-        public string CurrentKnot {get; private set;}
-
-        // ------------------- [[ EVENTS ]] -------------------
-        public delegate void OnDialogue(string currentText);
-        public event OnDialogue OnKnotDialogue;
+        // ======== [[ EVENTS ]] ================================ >>
+        public delegate void StoryDialogueEvent(string text, string speaker = "");
+        public delegate void StoryChoiceEvent(List<Choice> choices);
+        public event StoryDialogueEvent OnDialogue;
+        public event StoryChoiceEvent OnChoice;
 
         // ------------------- [[ CONSTRUCTORS ]] -------------------
         public InkyStoryIterator(InkyStoryObject inkyStoryObject, State initialState = State.NULL)
@@ -44,124 +49,55 @@ namespace Darklight.UnityExt.Inky
             GoToState(initialState);
         }
 
-        public void GoToKnotOrStitch(string knotName)
+        // ======== <PRIVATE_METHODS> ================================ >>
+        void HandleStoryDialogue(Story story)
         {
-            try
-            {
-                _storyObject.StoryValue.ChoosePathString(knotName);
-                CurrentKnot = knotName;
-            }
-            catch (System.Exception e)
-            {
-                //InkyStoryManager.Console.Log($"{Prefix} Error: {e.Message}", 0, LogSeverity.Error);
-                Debug.LogError($"{Prefix} Error: {e.Message}, this");
-            }
-            finally
-            {
-                GoToState(State.START);
-                //InkyStoryManager.Console.Log($"{Prefix} Moved to Knot: {knotName}");
-                Debug.Log($"{Prefix} Moved to Knot: {knotName}");
-            }
-        }
+            GoToState(State.DIALOGUE);
+            story.Continue();
 
-        public void ContinueStory()
-        {
-            // Check if null
-            if (_storyObject == null || CurrentState == State.NULL)
+            // Check if empty, if so, continue again
+            if (CurrentStoryDialogue == null || CurrentStoryDialogue == "" || CurrentStoryDialogue == "\n")
             {
-                //InkyStoryManager.Console.Log($"{Prefix} Story is null", 0, LogSeverity.Error);
-                Debug.LogError($"{Prefix} Error: Story is null");
+                ContinueStory();
                 return;
             }
 
-            // Get the story
-            Story story = _storyObject.StoryValue;
-
-            // Check if end
-            if (CurrentState == State.END)
-            {
-                //InkyStoryManager.Console.Log($"{Prefix} Knot has ended", 0, LogSeverity.Warning);
-                Debug.LogWarning($"{Prefix} Knot has ended");
-                return;
-            }
-
-            // -- ( DIALOGUE STATE ) --------------- >>
-            if (story.canContinue)
-            {
-                GoToState(State.DIALOGUE);
-                story.Continue();
-
-                // Check if empty, if so, continue again
-                if (CurrentText == null || CurrentText == "" || CurrentText == "\n")
-                {
-                    ContinueStory();
-                    return;
-                }
-
-                // Invoke the Dialogue Event
-                OnKnotDialogue?.Invoke(CurrentText);
-                Debug.Log($"Current Text {CurrentText}");
-
-                HandleTags();
-
-                //InkyStoryManager.Console.Log($"{Prefix} Continue Dialogue: {CurrentText}");
-            }
-            // -- ( CHOICE STATE ) --------------- >>
-            else if (story.currentChoices.Count > 0)
-            {
-                // Go To Choice State and store the choice data
-                if (CurrentState != State.CHOICE)
-                {
-                    GoToState(State.CHOICE);
-                    //InkyStoryManager.Console.Log($"{Prefix} Choices: {story.currentChoices.Count}", 1);
-                    foreach (Choice choice in story.currentChoices)
-                    {
-                        _choiceMap.Add(choice, choice.index);
-                        //InkyStoryManager.Console.Log($"{Prefix} Choice: {choice.text}", 1);
-                    }
-                    return;
-                }
-            }
-            // -- ( END STATE ) --------------- >>
-            else
-            {
-                GoToState(State.END);
-                //InkyStoryManager.Console.Log($"{Prefix} End of Knot");
-                Debug.Log($"{Prefix} End of Knot");
-            }
-
-            // -- ( TAG HANDLING ) ------------------ >>
-            List<string> tags = story.currentTags;
-            if (tags != null && tags.Count > 0)
-            {
-                foreach (string tag in tags)
-                {
-                    //InkyStoryManager.Console.Log($"{Prefix} Found Tag: {tag}", 3);
-                }
-            }
+            // Invoke the Dialogue Event
+            OnDialogue?.Invoke(CurrentStoryDialogue);
+            Debug.Log($"{PREFIX} Dialogue: {CurrentStoryDialogue}");
         }
 
-        public List<Choice> GetCurrentChoices()
+        void HandleStoryChoices(Story story)
         {
-            List<Choice> choices = new List<Choice>();
-            foreach (Choice choice in _storyObject.StoryValue.currentChoices)
-            {
-                choices.Add(choice);
-            }
-            return choices;
-        }
+            // Return if already in choice state
+            if (CurrentState == State.CHOICE) return;
 
-        public void ChooseChoice(Choice choice)
-        {
-            Debug.Log($"{Prefix} Choice Selected: {choice.text}");
-            _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
+            // Go To Choice State
+            GoToState(State.CHOICE);
+
+            // Set the choiceMap
             _choiceMap.Clear();
-            ContinueStory();
+            foreach (Choice choice in story.currentChoices)
+            {
+                _choiceMap.Add(choice, choice.index);
+            }
+
+            // Invoke the Choice Event
+            OnChoice?.Invoke(story.currentChoices);
+            Debug.Log($"{PREFIX} Choices: {story.currentChoices.Count}");
         }
 
-        private void HandleTags()
+        void HandleStoryEnd()
+        {
+            GoToState(State.END);
+
+            Debug.Log($"{PREFIX} End of Knot");
+        }
+
+        void HandleTags()
         {
             List<string> currentTags = _storyObject.StoryValue.currentTags;
+
             // loop through each tag and handle it accordingly
             foreach (string tag in currentTags)
             {
@@ -169,13 +105,7 @@ namespace Darklight.UnityExt.Inky
                 string[] splitTag = tag.Split(':');
                 if (splitTag.Length != 2)
                 {
-                    /*
-                    InkyStoryManager.Console.Log(
-                        $"{Prefix} Tag is not formatted correctly: {tag}",
-                        0,
-                        LogSeverity.Error
-                    );
-                    */
+                    Debug.LogError($"{PREFIX} Error: Tag is not formatted correctly: {tag}");
                 }
                 else
                 {
@@ -186,17 +116,83 @@ namespace Darklight.UnityExt.Inky
                     switch (tagKey)
                     {
                         default:
-                            /*
-                                InkyStoryManager.Console.Log(
-                                    $"{Prefix} Tag came in but is not currently being handled: {tag}",
-                                    0,
-                                    LogSeverity.Warning
-                                );
-                              */
+                            Debug.LogWarning($"{PREFIX} Tag not handled: {tag}");
                             break;
                     }
                 }
             }
+        }
+
+
+        // ======== <PUBLIC_METHODS> ================================ >>
+        public void GoToKnotOrStitch(string knotName)
+        {
+            try
+            {
+                _storyObject.StoryValue.ChoosePathString(knotName);
+                CurrentStoryKnot = knotName;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"{PREFIX} Error: {e.Message}, this");
+            }
+            finally
+            {
+                GoToState(State.START);
+                Debug.Log($"{PREFIX} Moved to Knot: {knotName}");
+            }
+        }
+
+        public void ContinueStory()
+        {
+            // Check if null
+            if (_storyObject == null || CurrentState == State.NULL)
+            {
+                Debug.LogError($"{PREFIX} Error: Story is null");
+                return;
+            }
+
+            // Get the story
+            Story story = _storyObject.StoryValue;
+
+            // Check if end
+            if (CurrentState == State.END)
+            {
+                Debug.LogWarning($"{PREFIX} Knot has ended");
+                return;
+            }
+
+            // << HANDLE STORY STATE >> ------------------------------------ >>
+            // -- ( DIALOGUE STATE ) ----
+            if (story.canContinue) HandleStoryDialogue(story);
+
+            // -- ( CHOICE STATE ) ----
+            else if (story.currentChoices.Count > 0) HandleStoryChoices(story);
+
+            // -- ( END STATE ) ----
+            else HandleStoryEnd();
+
+            // << HANDLE TAGS >> ------------------------------------ >>
+            HandleTags();
+        }
+
+        public void ChooseChoice(Choice choice)
+        {
+            Debug.Log($"{PREFIX} Choice Selected: {choice.text}");
+            _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
+            _choiceMap.Clear();
+            ContinueStory();
+        }
+
+
+
+        public enum State
+        {
+            NULL,
+            START,
+            DIALOGUE,
+            CHOICE,
+            END
         }
     }
 }
