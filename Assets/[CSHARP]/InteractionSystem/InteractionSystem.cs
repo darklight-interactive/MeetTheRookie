@@ -10,7 +10,7 @@ using UnityEditor;
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>
 {
     [SerializeField, Expandable] SystemSettings _settings;
-    [SerializeField] Library<string, Interactable> _registryLibrary = new Library<string, Interactable>();
+    [SerializeField] Library<string, Interactable> _registry = new Library<string, Interactable>();
 
 
     public static SystemSettings Settings { get => Instance._settings; }
@@ -24,7 +24,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
     void Update()
     {
-        _registryLibrary = Registry.GetLibrary();
+        _registry = Registry.GetLibrary();
     }
 
     public static class Factory
