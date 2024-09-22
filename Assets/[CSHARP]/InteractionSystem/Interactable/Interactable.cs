@@ -6,6 +6,8 @@ using NaughtyAttributes;
 using UnityEngine;
 using Codice.CM.SEIDInfo;
 using Darklight.UnityExt.Utility;
+using System.Linq;
+
 
 
 #if UNITY_EDITOR
@@ -53,7 +55,7 @@ public partial class Interactable : MonoBehaviour,
     [SerializeField, ShowAssetPreview] Sprite _sprite;
 
     [Header(" (( INTERACTION HANDLERS )) -------- >>")]
-    [SerializeField] InteractionHandlerLibrary _handlers = new InteractionHandlerLibrary();
+    [SerializeField] InteractionHandlerLibrary _handlerLibrary;
 
     [Header(" (( INTERACTION SETTINGS )) -------- >>")]
     [SerializeField] Color _defaultTint = Color.white;
@@ -139,10 +141,64 @@ public partial class Interactable : MonoBehaviour,
         // Set the collider size to half the size of the transform scale
         _collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
+
     void PreloadInteractionHandlers()
     {
+        RemoveUnusedHandlers();
+        List<InteractionTypeKey> keys = _handlerLibrary.Keys.ToList();
+        foreach (InteractionTypeKey key in keys)
+        {
+            InteractionHandler currentHandlerValue = _handlerLibrary[key];
+            if (currentHandlerValue == null)
+            {
+                InteractionHandler handlerInChild = GetHandlerInChildren(key);
+                if (handlerInChild != null)
+                {
+                    _handlerLibrary[key] = handlerInChild;
+                    continue;
+                }
 
+                GameObject handlerGO = InteractionSystem.Factory.CreateInteractionHandler(key);
+                if (handlerGO == null) continue;
+
+                InteractionHandler handler = handlerGO.GetComponent<InteractionHandler>();
+                if (handler == null) continue;
+
+                handler.transform.SetParent(this.transform);
+                handler.transform.localPosition = Vector3.zero;
+                handler.transform.localRotation = Quaternion.identity;
+                handler.transform.localScale = Vector3.one;
+
+                _handlerLibrary[key] = handler;
+            }
+        }
+
+        Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
     }
+
+    InteractionHandler GetHandlerInChildren(InteractionTypeKey key)
+    {
+        InteractionHandler[] handlers = GetComponentsInChildren<InteractionHandler>();
+        foreach (InteractionHandler handler in handlers)
+        {
+            if (handler.TypeKey == key)
+                return handler;
+        }
+        return null;
+    }
+
+    void RemoveUnusedHandlers()
+    {
+        InteractionHandler[] interactionHandlers = GetComponentsInChildren<InteractionHandler>();
+        foreach (InteractionHandler interactionHandler in interactionHandlers)
+        {
+            if (!_handlerLibrary.ContainsKey(interactionHandler.TypeKey) || _handlerLibrary[interactionHandler.TypeKey] != null)
+            {
+                ObjectUtility.DestroyAlways(interactionHandler.gameObject);
+            }
+        }
+    }
+
 
 
     void UpdateGameObjectName()
@@ -157,23 +213,6 @@ public partial class Interactable : MonoBehaviour,
         this.gameObject.name = $"{PREFIX} {Key} : {Name}";
     }
 
-    void RemoveInteractionHandlers()
-    {
-        // Get all child components that implement IInteractionHandler
-        InteractionHandler[] interactionHandlers = GetComponentsInChildren<InteractionHandler>();
-
-        // Loop through each component and destroy the GameObject it is attached to
-        foreach (InteractionHandler handler in interactionHandlers)
-        {
-            if (handler is MonoBehaviour)
-            {
-                MonoBehaviour monoBehaviour = handler as MonoBehaviour;
-                if (monoBehaviour != null)
-                    ObjectUtility.DestroyAlways(monoBehaviour.gameObject);
-            }
-        }
-    }
-
     #endregion
 
     #region ======== <PUBLIC_METHODS> [[ IUnityEditorListener ]] ================================== >>>>
@@ -184,23 +223,16 @@ public partial class Interactable : MonoBehaviour,
 
     public virtual void Preload()
     {
+        _isPreloaded = false;
+        _isRegistered = false;
+        _isInitialized = false;
+
         PreloadSpriteRenderer();
         PreloadBoxCollider();
-
-
-
-        RemoveInteractionHandlers();
+        PreloadInteractionHandlers();
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------
         _isRegistered = InteractionSystem.Registry.TryRegister(this);
-        _isPreloaded = _isRegistered;
-
-        UpdateGameObjectName();
-    }
-
-    public virtual void Initialize()
-    {
-        if (!_isPreloaded) Preload();
         if (!_isRegistered)
         {
             Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
@@ -208,6 +240,25 @@ public partial class Interactable : MonoBehaviour,
         }
 
         UpdateGameObjectName();
+    }
+
+    public virtual void Initialize()
+    {
+        _isPreloaded = _isRegistered
+            && !_handlerLibrary.HasUnsetKeysOrValues()
+            && _handlerLibrary.Count > 0;
+        if (!_isPreloaded)
+        {
+            if (!_isRegistered)
+                Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
+            else if (_handlerLibrary.HasUnsetKeysOrValues())
+                Debug.LogError($"{PREFIX} {Name} :: Interaction Handlers are not preloaded. Check for null or unset handlers.");
+            else if (_handlerLibrary.Count == 0)
+                Debug.LogError($"{PREFIX} {Name} :: Interaction Handlers are empty.");
+
+            Preload();
+            return;
+        }
 
         // << SUBSCRIBE TO EVENTS >> ------------------------------------
         OnReadyEvent += () => Debug.Log($"{PREFIX} {Name} :: OnReadyEvent");
@@ -301,34 +352,43 @@ public partial class Interactable : MonoBehaviour,
         _spriteRenderer.color = originalColor;
     }
 
-}
-
 #if UNITY_EDITOR
-[CustomEditor(typeof(Interactable))]
-public class InteractableCustomEditor : UnityEditor.Editor
-{
-    SerializedObject _serializedObject;
-    Interactable _script;
-    private void OnEnable()
+    [CustomEditor(typeof(Interactable))]
+    public class InteractableCustomEditor : UnityEditor.Editor
     {
-        _serializedObject = new SerializedObject(target);
-        _script = (Interactable)target;
-        _script.Initialize();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
+        SerializedObject _serializedObject;
+        Interactable _script;
+        private void OnEnable()
         {
-            _script.Initialize();
-            _serializedObject.ApplyModifiedProperties();
+            _serializedObject = new SerializedObject(target);
+            _script = (Interactable)target;
+            _script.Preload();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            // << INITIALIZE BUTTON >> ------------------------------------
+            if (_script._isInitialized == false
+                && GUILayout.Button("Initialize"))
+            {
+                _script.Initialize();
+            }
+
+            // << DRAW DEFAULT INSPECTOR >> ------------------------------------
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
         }
     }
-}
 #endif
+
+}
+
+

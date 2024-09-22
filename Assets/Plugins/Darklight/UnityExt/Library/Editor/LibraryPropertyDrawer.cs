@@ -15,6 +15,10 @@ namespace Darklight.UnityExt.Library.Editor
     {
         const float ELEMENT_PADDING = 10f;
 
+        const string ITEMS_PROP = "_items";
+        const string READ_ONLY_KEY = "readOnlyKey";
+        const string READ_ONLY_VALUE = "readOnlyValue";
+
         readonly float SINGLE_LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
         readonly float VERTICAL_SPACING = EditorGUIUtility.singleLineHeight * 0.5f;
 
@@ -44,20 +48,42 @@ namespace Darklight.UnityExt.Library.Editor
                 _serializedObject = property.serializedObject;
             if (_libraryProperty == null || _libraryProperty.propertyPath != property.propertyPath)
                 _libraryProperty = property;
-            if (_itemsProperty == null || _itemsProperty.propertyPath != property.FindPropertyRelative("_items").propertyPath)
-                _itemsProperty = property.FindPropertyRelative("_items");
+            if (_itemsProperty == null || _itemsProperty.propertyPath != property.FindPropertyRelative(ITEMS_PROP).propertyPath)
+                _itemsProperty = property.FindPropertyRelative(ITEMS_PROP);
 
             if (_readOnlyKeyProperty == null
-                || _readOnlyKeyProperty.propertyPath != property.FindPropertyRelative("_readOnlyKey").propertyPath)
-                _readOnlyKeyProperty = property.FindPropertyRelative("_readOnlyKey");
+                || _readOnlyKeyProperty.propertyPath != property.FindPropertyRelative(READ_ONLY_KEY).propertyPath)
+                _readOnlyKeyProperty = property.FindPropertyRelative(READ_ONLY_KEY);
             if (_readOnlyValueProperty == null
-                || _readOnlyValueProperty.propertyPath != property.FindPropertyRelative("_readOnlyValue").propertyPath)
-                _readOnlyValueProperty = property.FindPropertyRelative("_readOnlyValue");
+                || _readOnlyValueProperty.propertyPath != property.FindPropertyRelative(READ_ONLY_VALUE).propertyPath)
+                _readOnlyValueProperty = property.FindPropertyRelative(READ_ONLY_VALUE);
 
             // Initialize the ReorderableList
             if (_list == null)
             {
                 _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty);
+                _list.onAddDropdownCallback = (rect, list) =>
+                {
+                    GenericMenu menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("Add Item"), false, () =>
+                    {
+                        InvokeLibraryMethod("AddDefaultItem", out object returnValue);
+                    });
+                    menu.AddItem(new GUIContent("Reset Library"), false, () =>
+                    {
+                        InvokeLibraryMethod("Reset", out object returnValue);
+                    });
+                    menu.AddItem(new GUIContent("Clear Library"), false, () =>
+                    {
+                        InvokeLibraryMethod("Clear", out object returnValue);
+                    });
+                    menu.ShowAsContext();
+                };
+
+                _list.drawNoneElementCallback = (rect) =>
+                {
+                    EditorGUI.LabelField(rect, "No items in library.", LABEL_STYLE);
+                };
             }
 
             float currentYPos = rect.y;
@@ -83,7 +109,7 @@ namespace Darklight.UnityExt.Library.Editor
             // ( ReorderableList )--------------------------------------------
             Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
             _list.DrawList(listRect);
-            currentYPos += _list.GetHeight();
+            currentYPos += _list.GetHeight() + VERTICAL_SPACING;
 
             // (Calculate Property Height)-------------------------------------
             _fullPropertyHeight = currentYPos - rect.y;

@@ -1,10 +1,9 @@
 using System;
 using Darklight.UnityExt.Library;
+using UnityEngine;
 
 [Serializable]
-public class InteractionHandlerLibrary : EnumObjectLibrary<InteractionTypeKey, InteractionHandler>
+public class InteractionHandlerLibrary : Library<InteractionTypeKey, InteractionHandler>
 {
-    public InteractionHandlerLibrary() : base(false, false, false)
-    {
-    }
+
 }

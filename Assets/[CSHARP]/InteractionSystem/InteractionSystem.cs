@@ -3,6 +3,8 @@ using Darklight.UnityExt.Library;
 using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
+using Darklight.UnityExt.Utility;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -26,7 +28,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     [SerializeField] Library<string, Interactable> _registryLibrary = new Library<string, Interactable>();
 
     [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] EnumObjectLibrary<InteractionTypeKey, GameObject> _handlerPrefabs = new EnumObjectLibrary<InteractionTypeKey, GameObject>();
+    [SerializeField] EnumObjectLibrary<InteractionTypeKey, InteractionHandler> _handlerLibrary = new EnumObjectLibrary<InteractionTypeKey, InteractionHandler>(true);
 
     public static SystemSettings Settings { get => Instance._settings; }
 
@@ -54,13 +56,16 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
         public static GameObject CreateInteractionHandler(InteractionTypeKey key)
         {
-            InteractionSystem.Instance._handlerPrefabs.TryGetValue(key, out GameObject handlerPrefab);
-            if (handlerPrefab == null)
+            InteractionSystem.Instance._handlerLibrary.TryGetValue(key, out InteractionHandler handler);
+            if (handler == null)
             {
-                Debug.LogError($"Interaction Handler Prefab not found for {key}");
+                Debug.LogWarning($"Interaction Handler not found for key {key}");
                 return null;
             }
-            return Instantiate(handlerPrefab);
+
+            GameObject go = new GameObject($"{key}InteractionHandler");
+            go.AddComponent(handler.GetType());
+            return go;
         }
 
     }
@@ -92,6 +97,10 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             if (!_library.ContainsKey(interactable.Key))
             {
                 _library.Add(interactable.Key, interactable);
+                return true;
+            }
+            else if (_library[interactable.Key] == interactable)
+            {
                 return true;
             }
             else if (overwrite)

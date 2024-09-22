@@ -8,7 +8,9 @@ namespace Darklight.UnityExt.Library.Editor
 {
     public class LibraryReorderableList : ReorderableList
     {
-        public readonly float ELEMENT_HEIGHT = EditorGUIUtility.singleLineHeight;
+
+        readonly float ELEMENT_PROP_HEIGHT = EditorGUIUtility.singleLineHeight;
+        readonly float ELEMENT_HEIGHT = EditorGUIUtility.singleLineHeight + (EditorGUIUtility.standardVerticalSpacing * 2);
         public const int COLUMN_COUNT = 3;
         public readonly float[] COLUMN_PERCENTAGES = new float[] { 0.025f };
 
@@ -18,7 +20,7 @@ namespace Darklight.UnityExt.Library.Editor
 
         // GUI constants
         private readonly float ELEMENT_PADDING = 10f;
-        private readonly GUIStyle LABEL_STYLE = new GUIStyle(EditorStyles.label)
+        private readonly GUIStyle CENTERED_LABEL_STYLE = new GUIStyle(EditorStyles.label)
         {
             alignment = TextAnchor.MiddleCenter
         };
@@ -28,17 +30,21 @@ namespace Darklight.UnityExt.Library.Editor
         readonly Color HEADER_COLOR_2 = Color.white * 0.6f;
         readonly Color COLUMN_COLOR_2 = Color.white * 0.6f;
 
-        private int columnCount => 3;
-        private float[] columnPercentages;
+        const bool DRAGGABLE = false;
+        private int _columnCount = 3;
+        private float[] _columnPercentages;
 
         public LibraryReorderableList(SerializedObject serializedObject, SerializedProperty itemsProperty, SerializedProperty readOnlyKeyProperty, SerializedProperty readOnlyValueProperty)
-            : base(serializedObject, itemsProperty, true, true, true, true)
+            : base(serializedObject, itemsProperty, DRAGGABLE, true, true, true)
         {
             _itemsProperty = itemsProperty;
             _readOnlyKeyProperty = readOnlyKeyProperty;
             _readOnlyValueProperty = readOnlyValueProperty;
 
-            this.columnPercentages = ValidateAndNormalizePercentages(COLUMN_COUNT, COLUMN_PERCENTAGES);
+            this._columnPercentages = ValidateAndNormalizePercentages(COLUMN_COUNT, COLUMN_PERCENTAGES);
+
+            headerHeight = ELEMENT_HEIGHT;
+            elementHeight = ELEMENT_HEIGHT;
 
             drawHeaderCallback = DrawHeader;
             drawElementCallback = DrawElement;
@@ -54,16 +60,16 @@ namespace Darklight.UnityExt.Library.Editor
 
         private void DrawHeader(Rect rect)
         {
-            float[] columnWidths = CalculateColumnWidths(rect.width, columnCount);
+            float[] columnWidths = CalculateColumnWidths(rect.width, _columnCount);
 
-            if (draggable) rect.x += ELEMENT_PADDING + 4;
+            if (draggable) rect.x += ELEMENT_PADDING + 5;
 
-            Rect idRect = CalculatePropertyRect(rect, 0, 0, columnWidths);
-            Rect keyRect = CalculatePropertyRect(rect, 0, 1, columnWidths);
-            Rect valueRect = CalculatePropertyRect(rect, 0, 2, columnWidths);
+            Rect idRect = CalculatePropertyRect(rect, 0, columnWidths);
+            Rect keyRect = CalculatePropertyRect(rect, 1, columnWidths);
+            Rect valueRect = CalculatePropertyRect(rect, 2, columnWidths);
             if (draggable) valueRect.x -= ELEMENT_PADDING;
 
-            EditorGUI.LabelField(idRect, "ID");
+            EditorGUI.LabelField(idRect, "ID", CENTERED_LABEL_STYLE);
             EditorGUI.LabelField(keyRect, "Key");
             EditorGUI.LabelField(valueRect, "Value");
         }
@@ -75,21 +81,19 @@ namespace Darklight.UnityExt.Library.Editor
             SerializedProperty keyProp = itemProp.FindPropertyRelative("_key");
             SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
 
-            float[] columnWidths = CalculateColumnWidths(rect.width, columnCount);
+            float[] columnWidths = CalculateColumnWidths(rect.width, _columnCount);
 
-            Rect idRect = CalculatePropertyRect(rect, index, 0, columnWidths);
-            Rect keyRect = CalculatePropertyRect(rect, index, 1, columnWidths);
-            Rect valueRect = CalculatePropertyRect(rect, index, 2, columnWidths);
+            Rect idRect = CalculatePropertyRect(rect, 0, columnWidths);
+            Rect keyRect = CalculatePropertyRect(rect, 1, columnWidths);
+            Rect valueRect = CalculatePropertyRect(rect, 2, columnWidths);
 
-            EditorGUI.LabelField(idRect, idProp.intValue.ToString());
+            EditorGUI.LabelField(idRect, idProp.intValue.ToString(), CENTERED_LABEL_STYLE);
             DrawElementProperty(keyRect, keyProp, _readOnlyKeyProperty.boolValue);
             DrawElementProperty(valueRect, valueProp, _readOnlyValueProperty.boolValue);
         }
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
         {
-            rect.height = ELEMENT_HEIGHT;
-
             if (isActive)
             {
                 EditorGUI.DrawRect(rect, new Color(0.24f, 0.49f, 0.90f, 0.3f));
@@ -123,18 +127,16 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
         // Method to calculate the rect for a specific property based on its row and column
-        private Rect CalculatePropertyRect(Rect baseRect, int row, int column, float[] columnWidths)
+        private Rect CalculatePropertyRect(Rect baseElementRect, int column, float[] columnWidths)
         {
-            float xPosition = baseRect.x + ELEMENT_PADDING;
-
+            float xPosition = baseElementRect.x + ELEMENT_PADDING;
             for (int i = 0; i < column; i++)
             {
                 xPosition += columnWidths[i] + ELEMENT_PADDING;
             }
 
-            float yPosition = baseRect.y + row;
-
-            return new Rect(xPosition, yPosition, columnWidths[column], ELEMENT_HEIGHT);
+            float yPosition = baseElementRect.y + (ELEMENT_HEIGHT - ELEMENT_PROP_HEIGHT) / 2;
+            return new Rect(xPosition, yPosition, columnWidths[column], ELEMENT_PROP_HEIGHT);
         }
 
         // Dynamic column width calculation
@@ -142,7 +144,7 @@ namespace Darklight.UnityExt.Library.Editor
         {
             float totalPadding = ELEMENT_PADDING * (numColumns + 1);
             float availableWidth = totalWidth - totalPadding;
-            return columnPercentages.Select(p => availableWidth * p).ToArray();
+            return _columnPercentages.Select(p => availableWidth * p).ToArray();
         }
 
         // Validation and normalization of percentages

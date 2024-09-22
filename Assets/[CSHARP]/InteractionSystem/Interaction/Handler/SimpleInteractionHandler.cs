@@ -1,15 +1,15 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class SimpleInteractionHandler : InteractionHandler
 {
     IInteractionCommand _command;
 
-    public InteractionTypeKey InteractionType => InteractionTypeKey.SIMPLE;
-    public IInteractionCommand Command { get; private set; }
-
+    public override InteractionTypeKey TypeKey => InteractionTypeKey.SIMPLE;
     public override void RecieveCommand(IInteractionCommand command)
     {
-        if (command.InteractionType == InteractionType)
+        if (command.InteractionType == TypeKey)
             _command = command;
     }
 

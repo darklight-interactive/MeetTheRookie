@@ -23,10 +23,5 @@ namespace Darklight.UnityExt.Library
         {
             return _defaultObject;
         }
-
-        public override void Reset()
-        {
-            base.Reset();
-        }
     }
 }

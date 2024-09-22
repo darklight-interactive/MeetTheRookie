@@ -11,7 +11,7 @@ using UnityEditor;
 #endif
 namespace Darklight.UnityExt.Library
 {
-    public abstract class ScriptableLibrary<TKey, TValue> : ScriptableObject, ILibrary<TKey, TValue>
+    public abstract class ScriptableLibrary<TKey, TValue> : ScriptableObject, HasNullOrUnsetItems<TKey, TValue>
         where TKey : notnull
         where TValue : notnull
     {
@@ -46,6 +46,7 @@ namespace Darklight.UnityExt.Library
         public TValue CreateDefaultValue() => library.CreateDefaultValue();
         public void AddDefaultItem() => library.AddDefaultItem();
         public void Reset() => library.Reset();
+        public bool HasUnsetKeysOrValues() => library.HasUnsetKeysOrValues();
 
     }
 
