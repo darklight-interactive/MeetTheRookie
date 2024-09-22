@@ -185,7 +185,9 @@ public class PlayModeState : FiniteState<SceneState>
 
     public override void Enter()
     {
+        // Unlock movement controls
 
+        // unlock interactor
     }
 
     public override void Exit()
@@ -210,7 +212,10 @@ public class CinemaModeState : FiniteState<SceneState>
 
     public override void Enter()
     {
-
+        // lock movement controls
+        // lock all controls
+        // iterate through cutscene dialogue
+        // set cinema view
     }
 
     public override void Exit()
@@ -235,12 +240,13 @@ public class PauseModeState : FiniteState<SceneState>
 
     public override void Enter()
     {
-
+        // lock movement controls
+        // unlock menu controls
     }
 
     public override void Exit()
     {
-
+        // lock menu controls
     }
 
     public override void Execute() { }
@@ -260,12 +266,13 @@ public class SynthesisModeState : FiniteState<SceneState>
 
     public override void Enter()
     {
-
+        // lock movement controls
+        // unlock synthesis controls
     }
 
     public override void Exit()
     {
-
+        // lock synthesis controls
     }
 
     public override void Execute() { }
@@ -285,7 +292,8 @@ public class ExitState : FiniteState<SceneState>
 
     public override void Enter()
     {
-
+        // close transition
+        // invoke "OnExit"
     }
 
     public override void Exit()
@@ -335,12 +343,13 @@ public class ChoiceModeState : FiniteState<SceneState>
 
     public override void Enter()
     {
-
+        // unlock choice controls
+        // lock movement
     }
 
     public override void Exit()
     {
-
+        // lock choice controls
     }
 
     public override void Execute() { }
