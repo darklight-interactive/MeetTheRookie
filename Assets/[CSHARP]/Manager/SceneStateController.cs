@@ -61,6 +61,7 @@ public class SceneStateController : MonoBehaviourSingleton<SceneStateController>
         loadingState._stateMachine = stateMachine;
         choiceModeState._stateMachine = stateMachine;
 
+        stateMachine.currentActiveScene = SceneManager.GetActiveScene();
         stateMachine.GoToState(SceneState.INITIALIZE);
     }
 
@@ -76,7 +77,7 @@ public class SceneStateController : MonoBehaviourSingleton<SceneStateController>
         {
             return;
         }
-
+        stateMachine.currentActiveScene = newScene;
         stateMachine.GoToState(SceneState.INITIALIZE);
     }
 }
@@ -86,6 +87,7 @@ public enum SceneState { NONE, INITIALIZE, ENTER, PLAYMODE, CINEMAMODE, PAUSEMOD
 public class SceneStateMachine : FiniteStateMachine<SceneState>
 {
     public SceneStateController controller;
+    public Scene currentActiveScene;
 
     public SceneStateMachine(Dictionary<SceneState, FiniteState<SceneState>> possibleStates, SceneState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
@@ -122,6 +124,7 @@ public class InitializeState : FiniteState<SceneState>
         //  SpawnHandler SceneChanged()
 
         // Start Background Music
+        MTR_AudioManager.Instance.PlaySceneBackgroundMusic(_stateMachine.currentActiveScene.name);
 
         _stateMachine.GoToState(SceneState.ENTER);
     }

@@ -51,7 +51,6 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 
         MTR_SceneData newSceneData = SceneManager.GetSceneData(newScene.name);
         InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
-        MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }
 
     public void PlaySpecialAnimation(string speakerName)
