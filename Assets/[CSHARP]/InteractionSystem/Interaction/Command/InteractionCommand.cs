@@ -2,16 +2,14 @@ using UnityEngine;
 
 public interface IInteractionCommand
 {
-    InteractionTypeKey Type { get; }
+    InteractionTypeKey InteractionType { get; }
     void Execute();
 }
 
-public class InteractionCommand : IInteractionCommand
+public abstract class BaseInteractionCommand : IInteractionCommand
 {
-    public InteractionTypeKey Type => InteractionTypeKey.SIMPLE;
+    public abstract InteractionTypeKey InteractionType { get; }
 
-    public void Execute()
-    {
-        throw new System.NotImplementedException();
-    }
+    public BaseInteractionCommand() { }
+    public void Execute() { }
 }

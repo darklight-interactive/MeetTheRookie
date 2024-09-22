@@ -49,8 +49,6 @@ namespace Darklight.UnityExt.Library
     {
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-
-
         [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
         [SerializeField] bool _readOnlyKey = false;
         [SerializeField] bool _readOnlyValue = false;
@@ -101,11 +99,18 @@ namespace Darklight.UnityExt.Library
         // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
         public Library()
         {
+            _readOnlyKey = readOnlyKey;
+            _readOnlyValue = readOnlyValue;
             _items = new List<LibraryItem<TKey, TValue>>();
             Reset();
         }
 
-        public Library(bool readOnlyKey, bool readOnlyValue) : base()
+        public Library(bool readOnlyKey) : this()
+        {
+            _readOnlyKey = readOnlyKey;
+        }
+
+        public Library(bool readOnlyKey, bool readOnlyValue) : this()
         {
             _readOnlyKey = readOnlyKey;
             _readOnlyValue = readOnlyValue;
@@ -198,8 +203,8 @@ namespace Darklight.UnityExt.Library
 
         public virtual TKey CreateDefaultKey() => default(TKey);
         public virtual TValue CreateDefaultValue() => default(TValue);
-        public virtual void AddDefaultItem() => Add(CreateDefaultKey(), CreateDefaultValue());
-        public virtual void Reset() => Clear();
+        public virtual void AddDefaultItem() => InternalAdd(CreateDefaultKey(), CreateDefaultValue());
+        public virtual void Reset() => InternalClear();
     }
     #endregion
 
@@ -207,11 +212,13 @@ namespace Darklight.UnityExt.Library
         where TKey : System.Enum
         where TValue : notnull
     {
+        bool _containAllKeyValues = false;
         List<TKey> enumValues => Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
 
-        public EnumKeyLibrary() : base()
+        public EnumKeyLibrary(bool containAllKeyValues, bool readOnlyKey, bool readOnlyValue)
+            : base(readOnlyKey, readOnlyValue)
         {
-            Reset();
+            _containAllKeyValues = containAllKeyValues;
         }
 
         TKey GetAvailableKey()
@@ -231,21 +238,26 @@ namespace Darklight.UnityExt.Library
         public override void Reset()
         {
             base.Reset();
+            Debug.Log($"Resetting {GetType().Name} :  containAllKeyValues = {_containAllKeyValues}");
 
-            readOnlyKey = true;
-            readOnlyValue = false;
-
-            foreach (TKey key in enumValues)
+            if (_containAllKeyValues)
             {
-                Add(key, CreateDefaultValue());
+                foreach (TKey key in enumValues)
+                {
+                    Add(key, CreateDefaultValue());
+                }
             }
-            Debug.Log($"Reset {GetType().Name}");
         }
     }
 
     public abstract class IntKeyLibrary<TValue> : Library<int, TValue>
         where TValue : notnull
     {
+        public IntKeyLibrary(bool readOnlyKey, bool readOnlyValue)
+            : base(readOnlyKey, readOnlyValue)
+        {
+        }
+
         public override void Reset()
         {
             base.Reset();
@@ -259,6 +271,11 @@ namespace Darklight.UnityExt.Library
     public abstract class StringKeyLibrary<TValue> : Library<string, TValue>
         where TValue : notnull
     {
+        public StringKeyLibrary(bool readOnlyKey, bool readOnlyValue)
+            : base(readOnlyKey, readOnlyValue)
+        {
+        }
+
         public override void Reset()
         {
             base.Reset();

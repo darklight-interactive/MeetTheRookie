@@ -12,7 +12,7 @@ using System.Collections;
 using UnityEditor;
 #endif
 
-public class IconInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionHandler
+public class TargetInteractionHandler : Grid2D_OverlapWeightSpawner
 {
     [SerializeField, Expandable] UXML_UIDocumentPreset _interactIconPreset;
     [SerializeField, ShowOnly] UXML_RenderTextureObject _interactIconObject;
@@ -21,7 +21,7 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionH
     Material material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 
-    public InteractionTypeKey TypeKey => InteractionTypeKey.ICON;
+    public InteractionTypeKey InteractionType => InteractionTypeKey.ICON;
     public bool IsVisible => _visible;
 
     public void ShowInteractIcon()
@@ -83,15 +83,15 @@ public class IconInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionH
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(IconInteractionHandler))]
+    [CustomEditor(typeof(TargetInteractionHandler))]
     public class InteractIconSpawnerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        IconInteractionHandler _script;
+        TargetInteractionHandler _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (IconInteractionHandler)target;
+            _script = (TargetInteractionHandler)target;
             _script.Awake();
         }
 

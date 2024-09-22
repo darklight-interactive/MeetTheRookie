@@ -40,6 +40,7 @@ public partial class Interactable : MonoBehaviour,
     BoxCollider2D _collider;
     StateMachine _stateMachine;
 
+    [Header(" (( FLAGS )) -------- >>")]
     [SerializeField, ShowOnly] bool _isRegistered = false;
     [SerializeField, ShowOnly] bool _isPreloaded = false;
     [SerializeField, ShowOnly] bool _isInitialized = false;
@@ -50,6 +51,9 @@ public partial class Interactable : MonoBehaviour,
     [SerializeField, ShowOnly] string _layer = DEFAULT_LAYER;
     [SerializeField, ShowOnly] IInteractable.State _currentState;
     [SerializeField, ShowAssetPreview] Sprite _sprite;
+
+    [Header(" (( INTERACTION HANDLERS )) -------- >>")]
+    [SerializeField] InteractionHandlerLibrary _handlers = new InteractionHandlerLibrary();
 
     [Header(" (( INTERACTION SETTINGS )) -------- >>")]
     [SerializeField] Color _defaultTint = Color.white;
@@ -125,7 +129,6 @@ public partial class Interactable : MonoBehaviour,
         // << SET THE DEFAULT TINT >> ------------------------------------
         _spriteRenderer.color = _defaultTint;
     }
-
     void PreloadBoxCollider()
     {
         _collider = GetComponent<BoxCollider2D>();
@@ -136,6 +139,11 @@ public partial class Interactable : MonoBehaviour,
         // Set the collider size to half the size of the transform scale
         _collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
+    void PreloadInteractionHandlers()
+    {
+
+    }
+
 
     void UpdateGameObjectName()
     {
@@ -152,10 +160,10 @@ public partial class Interactable : MonoBehaviour,
     void RemoveInteractionHandlers()
     {
         // Get all child components that implement IInteractionHandler
-        IInteractionHandler[] interactionHandlers = GetComponentsInChildren<IInteractionHandler>();
+        InteractionHandler[] interactionHandlers = GetComponentsInChildren<InteractionHandler>();
 
         // Loop through each component and destroy the GameObject it is attached to
-        foreach (IInteractionHandler handler in interactionHandlers)
+        foreach (InteractionHandler handler in interactionHandlers)
         {
             if (handler is MonoBehaviour)
             {
@@ -173,10 +181,14 @@ public partial class Interactable : MonoBehaviour,
     #endregion
 
     #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
+
     public virtual void Preload()
     {
         PreloadSpriteRenderer();
         PreloadBoxCollider();
+
+
+
         RemoveInteractionHandlers();
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------

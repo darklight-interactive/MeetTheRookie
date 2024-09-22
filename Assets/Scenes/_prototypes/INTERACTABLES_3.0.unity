@@ -1012,7 +1012,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1232177052}
-  - component: {fileID: 1232177051}
+  - component: {fileID: 1232177054}
+  - component: {fileID: 1232177053}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1020,20 +1021,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1232177051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232177050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c648fa38906cd4eb6e6307ff765142, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data_:
-    list_: 000000000000000000000000
 --- !u!4 &1232177052
 Transform:
   m_ObjectHideFlags: 0
@@ -1049,6 +1036,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1232177053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232177050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d06d82bff4750438a99864c7909a67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tempClass:
+    myList:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+--- !u!114 &1232177054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232177050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c3b61ec91feda46ae57bdbd6cfb86c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  universeLibrary:
+    _items:
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+    _defaultObject: {fileID: 0}
 --- !u!1 &1273029733
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1247,7 @@ PrefabInstance:
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _settings
       value: 
-      objectReference: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8037528104237056105, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _registry._items.Array.size
       value: 0
@@ -1415,6 +1455,26 @@ MonoBehaviour:
   _layer: Interactable
   _currentState: 0
   _sprite: {fileID: -9043670660215605358, guid: 2cee579a38f3cd6468baeb83f995f099, type: 3}
+  _handlers:
+    _items:
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 1
+      _key: 1
+      _value: {fileID: 0}
+    - _id: 2
+      _key: 2
+      _value: {fileID: 0}
+    - _id: 3
+      _key: 3
+      _value: {fileID: 0}
+    - _id: 4
+      _key: 4
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 0
+    _defaultObject: {fileID: 0}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1541940982
@@ -1454,8 +1514,28 @@ MonoBehaviour:
   _name: Yellow Arcade Machine
   _key: DefaultKey0
   _layer: Interactable
-  _currentState: 1
+  _currentState: 0
   _sprite: {fileID: 5457406682537577892, guid: 85c5f6c6c13bf0046ba3adfb810af353, type: 3}
+  _handlers:
+    _items:
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 1
+      _key: 1
+      _value: {fileID: 0}
+    - _id: 2
+      _key: 2
+      _value: {fileID: 0}
+    - _id: 3
+      _key: 3
+      _value: {fileID: 0}
+    - _id: 4
+      _key: 4
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 0
+    _defaultObject: {fileID: 0}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &1541940984
@@ -1668,6 +1748,26 @@ MonoBehaviour:
   _layer: Interactable
   _currentState: 0
   _sprite: {fileID: 8507710829450705700, guid: b732641e5a8629d419b14eb216cea9ce, type: 3}
+  _handlers:
+    _items:
+    - _id: 0
+      _key: 0
+      _value: {fileID: 0}
+    - _id: 1
+      _key: 1
+      _value: {fileID: 0}
+    - _id: 2
+      _key: 2
+      _value: {fileID: 0}
+    - _id: 3
+      _key: 3
+      _value: {fileID: 0}
+    - _id: 4
+      _key: 4
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 0
+    _defaultObject: {fileID: 0}
   _defaultTint: {r: 1, g: 1, b: 1, a: 1}
   _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &2133541904

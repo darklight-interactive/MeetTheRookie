@@ -52,14 +52,25 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return settings;
         }
 
+        public static GameObject CreateInteractionHandler(InteractionTypeKey key)
+        {
+            InteractionSystem.Instance._handlerPrefabs.TryGetValue(key, out GameObject handlerPrefab);
+            if (handlerPrefab == null)
+            {
+                Debug.LogError($"Interaction Handler Prefab not found for {key}");
+                return null;
+            }
+            return Instantiate(handlerPrefab);
+        }
+
     }
 
     public static class Registry
     {
-        static Library<string, Interactable> _library = new Library<string, Interactable>();
+        static Library<string, Interactable> _library = new Library<string, Interactable>(true, false);
 
         #region ======== <PRIVATE_STATIC_METHODS > [[ Internal Methods ]] =========================== >>>>
-        static void InitializeInteractable(Interactable interactable)
+        static void AssignHandlersToInteractable(Interactable interactable)
         {
 
         }

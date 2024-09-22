@@ -15,14 +15,10 @@ namespace Darklight.UnityExt.Library.Editor
     {
         const float ELEMENT_PADDING = 10f;
 
-        readonly List<string> PROP_BLACKLIST = new List<string> { "_items" };
         readonly float SINGLE_LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
         readonly float VERTICAL_SPACING = EditorGUIUtility.singleLineHeight * 0.5f;
 
-        readonly Color HEADER_COLOR_1 = Color.white * 0.1f;
-        readonly Color COLUMN_COLOR_1 = Color.white * 0.2f;
-        readonly Color HEADER_COLOR_2 = Color.white * 0.3f;
-        readonly Color COLUMN_COLOR_2 = Color.white * 0.4f;
+
 
         readonly GUIStyle LABEL_STYLE = new GUIStyle(EditorStyles.label)
         {
@@ -35,63 +31,10 @@ namespace Darklight.UnityExt.Library.Editor
         SerializedProperty _itemsProperty;
         SerializedProperty _readOnlyKeyProperty;
         SerializedProperty _readOnlyValueProperty;
-        ReorderableList _list;
+        LibraryReorderableList _list;
 
-        /// <summary>
-        /// The full height of the property drawer. <br/>
-        /// Calculated at the end of the OnGUI method and returned in GetPropertyHeight.
-        /// </summary>
         float _fullPropertyHeight;
 
-        /// <summary>
-        /// The full width of the property drawer. <br/>
-        /// Calculated at the beginning of the OnGUI method as the width of the rect.
-        /// </summary>
-        float _fullPropertyWidth;
-        float _fullPropertyStartXPos;
-
-        float element_propHeight => SINGLE_LINE_HEIGHT;
-        float element_fullHeight => element_propHeight + VERTICAL_SPACING;
-
-        float itemID_ColumnStartX => _fullPropertyStartXPos;
-        float itemID_PropX => itemID_ColumnStartX + ELEMENT_PADDING;
-        float itemID_PropWidth = ELEMENT_PADDING * 2;
-        float itemID_ColumnWidth => itemID_PropWidth + (ELEMENT_PADDING * 2);
-        float itemID_ColumnEndX => itemID_ColumnStartX + itemID_ColumnWidth;
-
-        float itemElement_PropWidth
-        {
-            get
-            {
-                float outWidth = _fullPropertyWidth;
-
-                // Subract the full width of the ID Column
-                outWidth -= itemID_ColumnWidth;
-
-                // Subtract the KeyProp padding
-                outWidth -= ELEMENT_PADDING * 2;
-
-                // Subtract the ValueProp padding
-                outWidth -= ELEMENT_PADDING * 2;
-
-                // Divide the remaining width by 2
-                outWidth /= 2;
-                return outWidth;
-            }
-        }
-
-
-        float itemKey_ColumnStartX => itemID_ColumnEndX;
-        float itemKey_PropX => itemKey_ColumnStartX + ELEMENT_PADDING;
-        float itemKey_PropWidth => itemElement_PropWidth;
-        float itemKey_ColumnWidth => itemKey_PropWidth + ELEMENT_PADDING * 2;
-        float itemKey_ColumnEndX => itemKey_ColumnStartX + itemKey_ColumnWidth;
-
-        float itemValue_ColumnStartX => itemKey_ColumnEndX;
-        float itemValue_PropX => itemValue_ColumnStartX + ELEMENT_PADDING;
-        float itemValue_PropWidth => itemElement_PropWidth;
-        float itemValue_ColumnWidth => itemValue_PropWidth + ELEMENT_PADDING * 2;
-        float itemValue_ColumnEndX => itemValue_ColumnStartX + itemValue_ColumnWidth;
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
         {
@@ -111,9 +54,11 @@ namespace Darklight.UnityExt.Library.Editor
                 || _readOnlyValueProperty.propertyPath != property.FindPropertyRelative("_readOnlyValue").propertyPath)
                 _readOnlyValueProperty = property.FindPropertyRelative("_readOnlyValue");
 
-
-            _fullPropertyStartXPos = rect.x;
-            _fullPropertyWidth = rect.width;
+            // Initialize the ReorderableList
+            if (_list == null)
+            {
+                _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty);
+            }
 
             float currentYPos = rect.y;
 
@@ -137,8 +82,8 @@ namespace Darklight.UnityExt.Library.Editor
 
             // ( ReorderableList )--------------------------------------------
             Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            DrawReorderableList(listRect, out float listHeight);
-            currentYPos += listHeight;
+            _list.DrawList(listRect);
+            currentYPos += _list.GetHeight();
 
             // (Calculate Property Height)-------------------------------------
             _fullPropertyHeight = currentYPos - rect.y;
@@ -152,159 +97,8 @@ namespace Darklight.UnityExt.Library.Editor
             return _fullPropertyHeight;
         }
 
-        #region ======== [[ REORDERABLE LIST ]] ===================================== >>>>
-        protected void InitializeReorderableList(SerializedProperty property)
-        {
-            if (_list == null || _list.serializedProperty != property.FindPropertyRelative("_items"))
-            {
-                _list = new ReorderableList(property.serializedObject, _itemsProperty, false, true, true, false);
 
-                _list.drawHeaderCallback = DrawHeaderCallback;
-                _list.drawElementCallback = DrawElementCallback;
-                _list.drawElementBackgroundCallback = DrawElementBackgroundCallback;
-
-                _list.elementHeightCallback = ElementHeightCallback;
-
-                //_list.onAddCallback = OnAddCallback;
-                _list.onRemoveCallback = OnRemoveCallback;
-
-                _list.onAddDropdownCallback = OnAddDropdownCallback;
-            }
-
-        }
-
-        void DrawReorderableList(Rect rect, out float listHeight)
-        {
-            InitializeReorderableList(_libraryProperty);
-
-            // Calculate the height for the list
-            listHeight = _list.GetHeight();
-
-            // Draw the ReorderableList
-            _list.DoList(new Rect(rect.x, rect.y, rect.width, listHeight));
-        }
-
-
-        void DrawHeaderCallback(Rect rect)
-        {
-            float headerHeight = rect.height;
-
-            // << DRAW LABELS >> ------------------------------------- >>
-            Rect idRect = new Rect(itemID_PropX, rect.y, itemID_PropWidth, headerHeight);
-            Rect keyRect = new Rect(itemKey_PropX, rect.y, itemKey_PropWidth, headerHeight);
-            Rect valueRect = new Rect(itemValue_PropX, rect.y, itemValue_PropWidth, headerHeight);
-            EditorGUI.LabelField(idRect, "ID", LABEL_STYLE);
-            EditorGUI.LabelField(keyRect, "Key");
-            EditorGUI.LabelField(valueRect, "Value");
-
-            // << DRAW BACKGROUND >> ------------------------------------- >>
-            Rect idBkgRect = new Rect(itemID_ColumnStartX, rect.y, itemID_ColumnWidth, SINGLE_LINE_HEIGHT);
-            Rect keyBkgRect = new Rect(itemKey_ColumnStartX, rect.y, itemKey_ColumnWidth, SINGLE_LINE_HEIGHT);
-            Rect valueBkgRect = new Rect(itemValue_ColumnStartX, rect.y, itemValue_ColumnWidth, SINGLE_LINE_HEIGHT);
-            EditorGUI.DrawRect(idBkgRect, HEADER_COLOR_1);
-            EditorGUI.DrawRect(keyBkgRect, HEADER_COLOR_2);
-            EditorGUI.DrawRect(valueBkgRect, HEADER_COLOR_1);
-        }
-
-
-        void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            bool readOnlyKey = _readOnlyKeyProperty.boolValue;
-            bool readOnlyValue = _readOnlyValueProperty.boolValue;
-
-            SerializedProperty itemProp = _itemsProperty.GetArrayElementAtIndex(index);
-            SerializedProperty idProp = itemProp.FindPropertyRelative("_id");
-            SerializedProperty keyProp = itemProp.FindPropertyRelative("_key");
-            SerializedProperty valueProp = itemProp.FindPropertyRelative("_value");
-
-            // << DRAW VALUES >> ------------------------------------- >>
-            float elementY = rect.y;
-            elementY += (element_fullHeight - element_propHeight) / 2; // Center the element vertically
-
-            // Create rects for the properties
-            Rect idRect = new Rect(itemID_PropX, elementY, itemID_PropWidth, element_propHeight);
-            Rect keyRect = new Rect(itemKey_PropX, elementY, itemKey_PropWidth, element_propHeight);
-            Rect valueRect = new Rect(itemValue_PropX, elementY, itemValue_PropWidth, element_propHeight);
-
-            // Draw the properties
-            EditorGUI.LabelField(idRect, idProp.intValue.ToString(), LABEL_STYLE);
-            DrawElementProperty(keyRect, keyProp, readOnlyKey);
-            DrawElementProperty(valueRect, valueProp, readOnlyValue);
-        }
-
-        void DrawElementBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            rect.height = element_fullHeight;
-
-            // << DRAW BACKGROUND >> ------------------------------------- >>
-            float backgroundY = rect.y;
-            float backgroundHeight = rect.height;
-
-            Rect idBkgRect = new Rect(itemID_ColumnStartX, backgroundY, itemID_ColumnWidth, backgroundHeight);
-            Rect keyBkgRect = new Rect(itemKey_ColumnStartX, backgroundY, itemKey_ColumnWidth, backgroundHeight);
-            Rect valueBkgRect = new Rect(itemValue_ColumnStartX, backgroundY, itemValue_ColumnWidth, backgroundHeight);
-            EditorGUI.DrawRect(idBkgRect, COLUMN_COLOR_1);
-            EditorGUI.DrawRect(keyBkgRect, COLUMN_COLOR_2);
-            EditorGUI.DrawRect(valueBkgRect, COLUMN_COLOR_1);
-        }
-
-        float ElementHeightCallback(int index) => element_fullHeight;
-
-        void OnAddDropdownCallback(Rect rect, ReorderableList list)
-        {
-            GenericMenu menu = new GenericMenu();
-
-            // Custom icon
-            GUIContent resetContent = new GUIContent("Reset", EditorGUIUtility.IconContent("d_Refresh").image);
-            menu.AddItem(resetContent, false, () =>
-            {
-                InvokeLibraryMethod("Reset", out object result);
-                _serializedObject.ApplyModifiedProperties();
-            });
-
-            menu.ShowAsContext();
-        }
-
-
-        void OnRemoveCallback(ReorderableList list)
-        {
-            SerializedProperty itemsProperty = list.serializedProperty;
-            itemsProperty.DeleteArrayElementAtIndex(list.index);
-            itemsProperty.serializedObject.ApplyModifiedProperties();
-        }
-
-        #endregion
-
-        // ======== [[ DRAW METHODS ]] ===================================== >>>>
-        void DrawElementProperty(Rect rect, SerializedProperty property, bool readOnly = false)
-        {
-            if (property == null)
-            {
-                EditorGUI.LabelField(rect, "Null Property");
-                return;
-            }
-
-            if (readOnly)
-            {
-                // Convert simple types to strings
-                if (SerializedPropertyUtility.IsSimpleType(property) && !SerializedPropertyUtility.IsReferenceType(property))
-                {
-                    EditorGUI.LabelField(rect, SerializedPropertyUtility.ConvertPropertyToString(property));
-                    return;
-                }
-
-                // Draw the property as disabled
-                EditorGUI.BeginDisabledGroup(true);
-                EditorGUI.PropertyField(rect, property, GUIContent.none);
-                EditorGUI.EndDisabledGroup();
-                return;
-            }
-            else
-            {
-                EditorGUI.PropertyField(rect, property, GUIContent.none);
-            }
-        }
-
+        /*
         void DrawLibraryProperties(Rect rect, ref float currentYPos)
         {
             // Get the Library<,> instance
@@ -366,7 +160,7 @@ namespace Darklight.UnityExt.Library.Editor
                 count++;
             }
         }
-
+        */
 
         // ======== [[ HELPER METHODS ]] ===================================== >>>>
         /// <summary>

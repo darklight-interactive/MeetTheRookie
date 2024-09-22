@@ -16,14 +16,13 @@ using System;
 using UnityEditor;
 #endif
 
-public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner, IInteractionHandler
+public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
 {
     Dictionary<Vector2Int, UXML_RenderTextureObject> _attachedBubbles = new Dictionary<Vector2Int, UXML_RenderTextureObject>();
     [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
-
-    public InteractionTypeKey TypeKey => InteractionTypeKey.CHOICE;
+    public InteractionTypeKey InteractionType => InteractionTypeKey.CHOICE;
     Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 

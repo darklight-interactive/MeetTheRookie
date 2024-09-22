@@ -6,6 +6,10 @@ using NaughtyAttributes;
 using Darklight.UnityExt.Editor;
 using System.Collections;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Library;
+using System;
+
+
 
 
 
@@ -14,9 +18,9 @@ using Darklight.UnityExt.Behaviour;
 using UnityEditor;
 #endif
 
-
-
-public interface IInteractionHandler
+public abstract class InteractionHandler : MonoBehaviour
 {
-    InteractionTypeKey TypeKey { get; }
+    public abstract void RecieveCommand(IInteractionCommand command);
+    public abstract void HandleCommand();
 }
+
