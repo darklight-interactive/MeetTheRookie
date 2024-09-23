@@ -8,16 +8,24 @@ using System.Collections;
 
 namespace Darklight.UnityExt.Library
 {
-    public interface HasNullOrUnsetItems<TKey, TValue> : IDictionary<TKey, TValue>
+    public interface ILibrary<TKey, TValue> : IDictionary<TKey, TValue>
     {
+        bool ReadOnlyKey { get; set; }
+        bool ReadOnlyValue { get; set; }
+        IEnumerable<TKey> RequiredKeys { get; set; }
         List<LibraryItem<TKey, TValue>> Items { get; }
 
         TKey CreateDefaultKey();
         TValue CreateDefaultValue();
         void AddDefaultItem();
+        void AddItemWithDefaultValue(TKey key);
+        void RemoveAt(int index);
+        void Refresh();
         void Reset();
 
         bool HasUnsetKeysOrValues();
+        bool TryGetKeyByValue(TValue value, out TKey key);
+        bool TryGetKeyByValue<T>(out TKey key) where T : TValue;
     }
 
     [System.Serializable]
@@ -53,18 +61,257 @@ namespace Darklight.UnityExt.Library
 
     #region == (( CLASS : Library<TKey, TValue> )) ============================================= ))
     [System.Serializable]
-    public class Library<TKey, TValue> : LibraryBase, HasNullOrUnsetItems<TKey, TValue>, ISerializationCallbackReceiver
+    public class Library<TKey, TValue> : LibraryBase, ILibrary<TKey, TValue>, ISerializationCallbackReceiver
         where TKey : notnull
         where TValue : notnull
     {
         // ======== [[ FIELDS ]] ===================================== >>>>
         Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-        [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
-        [SerializeField] protected bool readOnlyKey = false;
-        [SerializeField] protected bool readOnlyValue = false;
+        Dictionary<TValue, TKey> _reverseDictionary = new Dictionary<TValue, TKey>();
+        HashSet<TKey> _requiredKeys = new HashSet<TKey>();
 
-        #region ======== [[ PROPERTIES ]] ================================== >>>>
-        #region -- (( IDictionary<TKey, TValue> )) --
+        [SerializeField] List<LibraryItem<TKey, TValue>> _items = new List<LibraryItem<TKey, TValue>>();
+        [SerializeField] bool _readOnlyKey = false;
+        [SerializeField] bool _readOnlyValue = false;
+
+        #region ==== [[ PROPERTIES ]] ================================== >>>>
+        public bool ReadOnlyKey { get => _readOnlyKey; set => _readOnlyKey = value; }
+        public bool ReadOnlyValue { get => _readOnlyValue; set => _readOnlyValue = value; }
+        public IEnumerable<TKey> RequiredKeys
+        {
+            get => _requiredKeys.ToList();
+            set => _requiredKeys = new HashSet<TKey>(value);
+        }
+
+        public List<LibraryItem<TKey, TValue>> Items => _items;
+        #endregion
+
+        #region ==== [[ EVENTS ]] ===================================== >>>>
+        public event Action<TKey, TValue> ItemAdded;
+        public event Action<TKey> ItemRemoved;
+        #endregion
+
+        // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
+        public Library() => InternalReset();
+
+        // ======== [[ METHODS ]] ===================================== >>>>
+        #region -- ( InternalUtility ) <PRIVATE_METHODS> --
+
+        /// <summary>
+        /// Check if the object is the default value. This is used to check for default values of types.
+        /// </summary>
+        bool IsDefault<T>(T obj)
+        {
+            // Handle nullable types
+            if (Nullable.GetUnderlyingType(typeof(T)) != null)
+            {
+                return obj == null;
+            }
+            return EqualityComparer<T>.Default.Equals(obj, default(T));
+        }
+
+        /// <summary>
+        /// Check if the object is empty. This is used to check for empty strings or collections.
+        /// </summary>
+        bool IsEmpty<T>(T obj)
+        {
+            if (obj is string str)
+                return str == string.Empty;
+
+            if (obj is ICollection collection)
+                return collection.Count == 0;
+
+            return false;
+        }
+
+        void GenerateReverseDictionary()
+        {
+            _reverseDictionary.Clear();
+            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
+            {
+                _reverseDictionary.Add(entry.Value, entry.Key);
+            }
+        }
+
+        void EnsureRequiredKeys()
+        {
+            foreach (TKey key in _requiredKeys)
+            {
+                if (!ContainsKey(key))
+                {
+                    AddItemWithDefaultValue(key);
+                }
+            }
+        }
+        #endregion -- (( Utility Methods )) --
+
+        #region -- ( Internal ) <PROTECTED_METHODS> --
+
+        protected virtual void InternalAdd(TKey key, TValue value)
+        {
+            if (_dictionary.ContainsKey(key))
+                return;
+
+            // Add the new item
+            _dictionary.Add(key, value);
+
+            InternalRefresh();
+            ItemAdded?.Invoke(key, value);
+        }
+
+        protected virtual bool InternalRemove(TKey key)
+        {
+            if (_requiredKeys.Contains(key))
+            {
+                Debug.LogError($"Cannot remove required key '{key}' from the library.");
+                return false;
+            }
+
+            if (_dictionary.Remove(key))
+            {
+                InternalRefresh();
+                ItemRemoved?.Invoke(key);
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual void InternalAddOrUpdateItem(TKey key, TValue value)
+        {
+            if (_dictionary.ContainsKey(key))
+            {
+                _dictionary[key] = value;
+            }
+            else
+            {
+                _dictionary.Add(key, value);
+            }
+            InternalRefresh();
+        }
+
+        protected virtual void InternalRefresh()
+        {
+            int index = 0;
+            EnsureRequiredKeys();
+
+            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
+            {
+                InternalItemRefresh(entry, index);
+                index++;
+            }
+
+            // If there are extra items in _items, remove them
+            if (index < _items.Count)
+            {
+                _items.RemoveRange(index, _items.Count - index);
+            }
+        }
+
+        protected virtual void InternalItemRefresh(KeyValuePair<TKey, TValue> entry, int index)
+        {
+            if (index < _items.Count)
+            {
+                LibraryItem<TKey, TValue> item = _items[index];
+
+                // Check if current item needs updating
+                if (!EqualityComparer<TKey>.Default.Equals(item.Key, entry.Key) ||
+                    !EqualityComparer<TValue>.Default.Equals(item.Value, entry.Value))
+                {
+                    // Update the item and mark that a refresh was needed
+                    item.Update(index, entry.Key, entry.Value);
+                }
+            }
+            else
+            {
+                // Add new item if index exceeds current _items count
+                _items.Add(new LibraryItem<TKey, TValue>(index, entry.Key, entry.Value));
+            }
+        }
+
+
+        protected virtual void InternalClear()
+        {
+            _dictionary.Clear();
+            _items.Clear();
+        }
+
+        protected virtual void InternalReset()
+        {
+            InternalClear();
+            InternalRefresh();
+        }
+
+        #endregion
+
+        #region -- ( Public Handlers ) <PUBLIC_METHODS> --
+        public bool HasUnsetKeysOrValues()
+        {
+            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
+            {
+                // Null check for both key and value
+                if (entry.Key == null || entry.Value == null)
+                    return true;
+
+                // Check if key or value is an enum, in which case only null checks are relevant
+                bool keyIsEnum = typeof(TKey).IsEnum;
+                bool valueIsEnum = typeof(TValue).IsEnum;
+
+                // Check for default values if the key or value is not an enum or nullable
+                if ((!keyIsEnum && IsDefault(entry.Key)) || (!valueIsEnum && IsDefault(entry.Value)))
+                    return true;
+
+                // Additional checks for empty collections or strings
+                if (IsEmpty(entry.Key) || IsEmpty(entry.Value))
+                    return true;
+            }
+            return false;
+        }
+        public bool TryGetValue<T>(TKey key, out T value) where T : TValue
+        {
+            if (_dictionary.TryGetValue(key, out TValue val) && val is T)
+            {
+                value = (T)val;
+                return true;
+            }
+            value = default(T);
+            return false;
+        }
+        public bool TryGetKeyByValue(TValue value, out TKey key)
+        {
+            GenerateReverseDictionary();
+            return _reverseDictionary.TryGetValue(value, out key);
+        }
+        public bool TryGetKeyByValue<T>(out TKey key) where T : TValue
+        {
+            GenerateReverseDictionary();
+            foreach (KeyValuePair<TValue, TKey> entry in _reverseDictionary)
+            {
+                if (entry.Key is T)
+                {
+                    key = entry.Value;
+                    return true;
+                }
+            }
+            key = default(TKey);
+            return false;
+        }
+        #endregion
+
+        public virtual TKey CreateDefaultKey() => default(TKey);
+        public virtual TValue CreateDefaultValue() => default(TValue);
+        public virtual void AddDefaultItem() => InternalAdd(CreateDefaultKey(), CreateDefaultValue());
+        public virtual void AddItemWithDefaultValue(TKey key) => InternalAdd(key, CreateDefaultValue());
+        public void RemoveAt(int index) => InternalRemove(_items[index].Key);
+        public void Refresh() => InternalRefresh();
+        public void Reset() => InternalReset();
+        public void SetRequiredKeys(IEnumerable<TKey> keys)
+        {
+            _requiredKeys = new HashSet<TKey>(keys);
+            EnsureRequiredKeys();
+        }
+
+        #region ==== [[ INTERFACE IMPLEMENTATION ]] ================================== >>>>
+        #region -- ( IDictionary<TKey, TValue> ) <PUBLIC_INTERFACE_METHODS> --
         public TValue this[TKey key]
         {
             get
@@ -84,27 +331,6 @@ namespace Darklight.UnityExt.Library
         public ICollection<TValue> Values => _dictionary.Values;
         public int Count => _dictionary.Count;
         public bool IsReadOnly => false;
-        #endregion
-
-        public List<LibraryItem<TKey, TValue>> Items => _items;
-
-        #endregion
-
-        public event Action<TKey, TValue> ItemAdded;
-        public event Action<TKey> ItemRemoved;
-
-        // ======== [[ CONSTRUCTORS ]] ===================================== >>>>
-        public Library()
-        {
-            _items = new List<LibraryItem<TKey, TValue>>();
-            Reset();
-        }
-
-        public Library(bool readOnlyKey) : this() => this.readOnlyKey = readOnlyKey;
-        public Library(bool readOnlyKey, bool readOnlyValue) : this(readOnlyKey) => this.readOnlyValue = readOnlyValue;
-
-        // ======== [[ METHODS ]] ===================================== >>>>
-        #region -- <PUBLIC_METHODS> (( IDictionary<TKey, TValue> )) --
         public void Add(TKey key, TValue value) => InternalAdd(key, value);
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
@@ -121,10 +347,10 @@ namespace Darklight.UnityExt.Library
             _dictionary.ToList().CopyTo(array, arrayIndex);
         }
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _dictionary.GetEnumerator();
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+        System.Collections.IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
-        #region -- <PUBLIC_METHODS> (( ISerializationCallbackReceiver )) --
+        #region -- ( ISerializationCallbackReceiver ) <PUBLIC_INTERFACE_METHODS> --
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
         {
@@ -153,144 +379,7 @@ namespace Darklight.UnityExt.Library
             }
         }
         #endregion
-
-        #region -- <PRIVATE_METHODS> (( Internal Methods )) --
-        void InternalAdd(TKey key, TValue value)
-        {
-            if (_dictionary.ContainsKey(key))
-                return;
-
-            // Add the new item
-            _dictionary.Add(key, value);
-
-            InternalRefresh();
-            ItemAdded?.Invoke(key, value);
-        }
-
-        bool InternalRemove(TKey key)
-        {
-            if (_dictionary.Remove(key))
-            {
-                InternalRefresh();
-                ItemRemoved?.Invoke(key);
-                return true;
-            }
-            return false;
-        }
-
-        void InternalAddOrUpdateItem(TKey key, TValue value)
-        {
-            if (_dictionary.ContainsKey(key))
-            {
-                _dictionary[key] = value;
-            }
-            else
-            {
-                _dictionary.Add(key, value);
-            }
-            InternalRefresh();
-        }
-
-        void InternalRefresh()
-        {
-            int index = 0;
-            bool needsRefresh = false;
-
-            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
-            {
-                if (index < _items.Count)
-                {
-                    LibraryItem<TKey, TValue> item = _items[index];
-
-                    // Check if current item needs updating
-                    if (!EqualityComparer<TKey>.Default.Equals(item.Key, entry.Key) ||
-                        !EqualityComparer<TValue>.Default.Equals(item.Value, entry.Value))
-                    {
-                        // Update the item and mark that a refresh was needed
-                        item.Update(index, entry.Key, entry.Value);
-                        needsRefresh = true;
-                    }
-                }
-                else
-                {
-                    // Add new item if index exceeds current _items count
-                    _items.Add(new LibraryItem<TKey, TValue>(index, entry.Key, entry.Value));
-                    needsRefresh = true;
-                }
-                index++;
-            }
-
-            // If there are extra items in _items, remove them
-            if (index < _items.Count)
-            {
-                _items.RemoveRange(index, _items.Count - index);
-                needsRefresh = true;
-            }
-
-            // Log refresh if needed
-            if (needsRefresh)
-            {
-                Debug.Log($"{GetType().Name} has been refreshed.");
-            }
-        }
-
-        void InternalClear()
-        {
-            _dictionary.Clear();
-            _items.Clear();
-            Debug.Log($"{GetType().Name} has been cleared.");
-        }
         #endregion
-
-        public virtual TKey CreateDefaultKey() => default(TKey);
-        public virtual TValue CreateDefaultValue() => default(TValue);
-        public virtual void AddDefaultItem() => InternalAdd(CreateDefaultKey(), CreateDefaultValue());
-        public virtual void Reset() => InternalClear();
-        public bool HasUnsetKeysOrValues()
-        {
-            foreach (KeyValuePair<TKey, TValue> entry in _dictionary)
-            {
-                // Null check for both key and value
-                if (entry.Key == null || entry.Value == null)
-                    return true;
-
-                // Check if key or value is an enum, in which case only null checks are relevant
-                bool keyIsEnum = typeof(TKey).IsEnum;
-                bool valueIsEnum = typeof(TValue).IsEnum;
-
-                // Check for default values if the key or value is not an enum or nullable
-                if ((!keyIsEnum && IsDefault(entry.Key)) || (!valueIsEnum && IsDefault(entry.Value)))
-                    return true;
-
-                // Additional checks for empty collections or strings
-                if (IsEmpty(entry.Key) || IsEmpty(entry.Value))
-                    return true;
-            }
-            return false;
-        }
-
-        // Helper method to check if a value is default for its type
-        private bool IsDefault<T>(T obj)
-        {
-            // Handle nullable types
-            if (Nullable.GetUnderlyingType(typeof(T)) != null)
-            {
-                return obj == null;
-            }
-            return EqualityComparer<T>.Default.Equals(obj, default(T));
-        }
-
-        // Helper method to check if a value is empty (e.g., string or collection)
-        private bool IsEmpty<T>(T obj)
-        {
-            if (obj is string str)
-                return str == string.Empty;
-
-            if (obj is ICollection collection)
-                return collection.Count == 0;
-
-            return false;
-        }
     }
     #endregion
 
@@ -298,18 +387,16 @@ namespace Darklight.UnityExt.Library
         where TKey : System.Enum
         where TValue : notnull
     {
-        protected bool containAllKeyValues = false;
-        List<TKey> enumValues => Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
-
-        public EnumKeyLibrary(bool containAllKeyValues, bool readOnlyKey, bool readOnlyValue)
-            : base(readOnlyKey, readOnlyValue)
+        [SerializeField] bool _defaultToAllKeys = false;
+        public EnumKeyLibrary(bool defaultToAllKeys = false) : base()
         {
-            this.containAllKeyValues = containAllKeyValues;
+            _defaultToAllKeys = defaultToAllKeys;
         }
 
+        protected List<TKey> allEnumKeys => Enum.GetValues(typeof(TKey)).Cast<TKey>().ToList();
         TKey GetAvailableKey()
         {
-            foreach (TKey key in enumValues)
+            foreach (TKey key in allEnumKeys)
             {
                 if (!ContainsKey(key))
                 {
@@ -319,32 +406,26 @@ namespace Darklight.UnityExt.Library
             return CreateDefaultKey();
         }
 
-        public override TKey CreateDefaultKey() => GetAvailableKey();
-        public override void AddDefaultItem() => Add(GetAvailableKey(), CreateDefaultValue());
-        public override void Reset()
+        public sealed override TKey CreateDefaultKey() => GetAvailableKey();
+        public sealed override void AddDefaultItem()
         {
-            base.Reset();
-            //Debug.Log($"Resetting {GetType().Name} :  containAllKeyValues = {containAllKeyValues}");
+            TKey key = GetAvailableKey();
+            Add(key, CreateDefaultValue());
 
-            if (containAllKeyValues)
-            {
-                foreach (TKey key in enumValues)
-                {
-                    Add(key, CreateDefaultValue());
-                }
-            }
+            Debug.LogWarning("Added default item with key: " + key);
+        }
+
+        protected sealed override void InternalRefresh()
+        {
+            if (_defaultToAllKeys) SetRequiredKeys(allEnumKeys);
+            base.InternalRefresh();
         }
     }
 
     public abstract class IntKeyLibrary<TValue> : Library<int, TValue>
         where TValue : notnull
     {
-        public IntKeyLibrary(bool readOnlyKey, bool readOnlyValue)
-            : base(readOnlyKey, readOnlyValue)
-        {
-        }
-
-        public override void Reset()
+        protected override void InternalReset()
         {
             base.Reset();
             for (int i = 0; i < 10; i++)
@@ -354,15 +435,10 @@ namespace Darklight.UnityExt.Library
         }
     }
 
-    public abstract class StringKeyLibrary<TValue> : Library<string, TValue>
+    public class StringKeyLibrary<TValue> : Library<string, TValue>
         where TValue : notnull
     {
-        public StringKeyLibrary(bool readOnlyKey, bool readOnlyValue)
-            : base(readOnlyKey, readOnlyValue)
-        {
-        }
-
-        public override void Reset()
+        protected override void InternalReset()
         {
             base.Reset();
             for (int i = 0; i < 10; i++)

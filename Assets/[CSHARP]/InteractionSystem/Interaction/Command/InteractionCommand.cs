@@ -2,14 +2,35 @@ using UnityEngine;
 
 public interface IInteractionCommand
 {
-    InteractionTypeKey InteractionType { get; }
     void Execute();
 }
 
-public abstract class BaseInteractionCommand : IInteractionCommand
+public abstract class InteractionCommand<IReciever> : IInteractionCommand
+    where IReciever : InteractionReciever
 {
-    public abstract InteractionTypeKey InteractionType { get; }
+    protected IReciever _reciever;
+    public InteractionCommand(IReciever reciever)
+    {
+        _reciever = reciever;
+    }
+    public abstract void Execute();
+}
 
-    public BaseInteractionCommand() { }
-    public void Execute() { }
+
+public class TargetInteractionCommand : InteractionCommand<TargetInteractionReciever>
+{
+    bool _visible;
+
+    public TargetInteractionCommand(TargetInteractionReciever reciever, bool visible) : base(reciever)
+    {
+        _visible = visible;
+    }
+
+    public override void Execute()
+    {
+        if (_visible)
+            _reciever.ShowInteractIcon();
+        else
+            _reciever.HideInteractIcon();
+    }
 }

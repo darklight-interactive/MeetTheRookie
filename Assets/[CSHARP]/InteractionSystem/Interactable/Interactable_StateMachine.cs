@@ -123,12 +123,18 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
-                //interactable._iconHandler?.ShowInteractIcon();
+
+                interactable._recievers.TryGetValue(InteractionTypeKey.TARGET, out TargetInteractionReciever reciever);
+                if (reciever != null)
+                    InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
             }
+
             public override void Execute() { }
             public override void Exit()
             {
-                //interactable._iconHandler?.HideInteractIcon();
+                interactable._recievers.TryGetValue(InteractionTypeKey.TARGET, out TargetInteractionReciever reciever);
+                if (reciever != null)
+                    InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
             }
         }
         #endregion

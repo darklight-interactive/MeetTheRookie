@@ -48,7 +48,11 @@ namespace Darklight.UnityExt.Core2D
             // ======== [[ METHODS ]] ================================== >>>>
             private void InitializeComponents()
             {
-                _components.Clear();
+                _components = new List<Component>();
+
+                if (_grid == null)
+                    return;
+
                 _grid.GetComponentsInChildren(_components);
 
                 _components.ForEach(component => component.OnInitialize(_grid));

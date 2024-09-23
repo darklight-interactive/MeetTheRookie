@@ -14,7 +14,7 @@ public enum InteractionTypeKey
 {
     SIMPLE,
     TOGGLE,
-    ICON,
+    TARGET,
     DIALOGUE,
     CHOICE
 }
@@ -23,62 +23,105 @@ public enum InteractionTypeKey
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>
 {
     [SerializeField, Expandable] SystemSettings _settings;
+    [SerializeField, Expandable] InteractionRequestPreset _interactable_interactionRequestPreset;
+
+
 
     [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] Library<string, Interactable> _registryLibrary = new Library<string, Interactable>();
-
-    [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] EnumObjectLibrary<InteractionTypeKey, InteractionHandler> _handlerLibrary = new EnumObjectLibrary<InteractionTypeKey, InteractionHandler>(true);
+    [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
     public static SystemSettings Settings { get => Instance._settings; }
+    public static InteractionRequestPreset InteractableInteractionRequestPreset { get => Instance._interactable_interactionRequestPreset; }
 
     public override void Initialize()
     {
         // Confirm Settings are loaded
         if (_settings == null)
             _settings = Factory.CreateSettings();
+
+        if (_interactable_interactionRequestPreset == null)
+            _interactable_interactionRequestPreset = Factory.CreateOrLoadRequestPreset();
     }
 
     void Update()
     {
-        _registryLibrary = Registry.GetLibrary();
+        _interactableRegistry = Registry.GetLibrary();
     }
 
+    public static void Invoke(IInteractionCommand command)
+    {
+        Invoker.ExecuteCommand(command);
+    }
+
+    #region == INVOKER <STATIC_CLASS> == [[ Command Invoker ]] =========================== >>>>
+    public static class Invoker
+    {
+        static IInteractionCommand _command;
+
+        public static void SetCommand(IInteractionCommand command)
+        {
+            _command = command;
+        }
+
+        public static void ExecuteCommand()
+        {
+            _command.Execute();
+        }
+
+        public static void ExecuteCommand(IInteractionCommand command)
+        {
+            SetCommand(command);
+            ExecuteCommand();
+        }
+    }
+    #endregion
+
+    #region == FACTORY <STATIC_CLASS> == [[ Factory Methods ]] =========================== >>>>
     public static class Factory
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InteractionSystem";
+        const string SETTINGS_PATH = ASSET_PATH + "/Settings";
+        const string REQUEST_PRESET_PATH = ASSET_PATH + "/RequestPreset";
 
         public static SystemSettings CreateSettings()
         {
-            SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, "InteractionSystemSettings");
+            string defaultName = "InteractionSystemSettings";
+            SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, defaultName);
             return settings;
+        }
+
+        public static InteractionRequestPreset CreateOrLoadRequestPreset()
+        {
+            InteractionRequestPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestPreset>(REQUEST_PRESET_PATH);
+            return preset;
         }
 
         public static GameObject CreateInteractionHandler(InteractionTypeKey key)
         {
-            InteractionSystem.Instance._handlerLibrary.TryGetValue(key, out InteractionHandler handler);
-            if (handler == null)
+            InteractableInteractionRequestPreset.TryGetValue(key, out GameObject handlerPrefab);
+            if (handlerPrefab == null)
             {
                 Debug.LogWarning($"Interaction Handler not found for key {key}");
                 return null;
             }
 
-            GameObject go = new GameObject($"{key}InteractionHandler");
-            go.AddComponent(handler.GetType());
+            GameObject go = Instantiate(handlerPrefab);
+            go.name = $"{key} Interaction Handler";
             return go;
         }
 
     }
+    #endregion
 
+    #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-        static Library<string, Interactable> _library = new Library<string, Interactable>(true, false);
 
-        #region ======== <PRIVATE_STATIC_METHODS > [[ Internal Methods ]] =========================== >>>>
-        static void AssignHandlersToInteractable(Interactable interactable)
+        static Library<string, Interactable> _library = new Library<string, Interactable>()
         {
-
-        }
+            ReadOnlyKey = true,
+            ReadOnlyValue = true
+        };
 
         static void RefreshInteractables()
         {
@@ -89,20 +132,30 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 TryRegister(interactable);
             }
         }
-        #endregion
 
-        #region ======== <PUBLIC_STATIC_METHODS> [[ Public Handler Methods ]] =========================== >>>>
+        /// <summary>
+        /// Attempt to register an interactable. <br/>
+        /// 1. If the interactable is not in the library, add it. <br/>
+        /// 2. If the interactable is in the library and the same reference, return true. <br/>
+        /// 3. If the interactable is in the library and not the same reference, overwrite if allowed. <br/>
+        /// </summary>
+        /// <param name="interactable"></param>
+        /// <param name="overwrite"></param>
+        /// <returns></returns>
         public static bool TryRegister(Interactable interactable, bool overwrite = false)
         {
+            // If the interactable is not in the library, add it
             if (!_library.ContainsKey(interactable.Key))
             {
                 _library.Add(interactable.Key, interactable);
                 return true;
             }
+            // If the interactable is in the library and the same reference, return true
             else if (_library[interactable.Key] == interactable)
             {
                 return true;
             }
+            // If the interactable is in the library and not the same reference, overwrite if allowed
             else if (overwrite)
             {
                 _library[interactable.Key] = interactable;
@@ -237,6 +290,8 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 if (EditorGUI.EndChangeCheck())
                 {
                     _serializedObject.ApplyModifiedProperties();
+                    Repaint();
+                    EditorUtility.SetDirty(_script);
                 }
             }
         }

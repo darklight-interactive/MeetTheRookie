@@ -6,6 +6,8 @@ using Darklight.UnityExt.Editor;
 using UnityEngine;
 using System;
 using NaughtyAttributes;
+using Darklight.UnityExt.Utility;
+
 
 
 #if UNITY_EDITOR
@@ -192,6 +194,7 @@ namespace Darklight.UnityExt.Core2D
         {
             _isLoaded = false;
             _isInitialized = false;
+            _consoleGUI.Clear();
 
             Initialize();
         }

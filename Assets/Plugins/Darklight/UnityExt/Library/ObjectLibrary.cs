@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Darklight.UnityExt.Library
@@ -8,20 +9,34 @@ namespace Darklight.UnityExt.Library
         where TEnum : System.Enum
         where TObj : UnityEngine.Object
     {
-        [SerializeField] TObj _defaultObject = default(TObj);
+        public EnumObjectLibrary() { }
+        public EnumObjectLibrary(bool defaultToAllKeys = false) : base(defaultToAllKeys) { }
+    }
 
-        public EnumObjectLibrary() : base(false, false, false) { }
-        public EnumObjectLibrary(bool containAllKeyValues) : base(containAllKeyValues, true, false) { }
-        public EnumObjectLibrary(bool containAllKeyValues, bool readOnlyKey, bool readOnlyValue) : base(containAllKeyValues, readOnlyKey, readOnlyValue) { }
-
-        public override TEnum CreateDefaultKey()
+    [Serializable]
+    public class EnumGameObjectLibrary<TEnum> : EnumObjectLibrary<TEnum, GameObject>
+        where TEnum : System.Enum
+    {
+        public EnumGameObjectLibrary() { }
+        public TComponent TryGetComponent<TComponent>(TEnum key) where TComponent : Component
         {
-            return default(TEnum);
-        }
+            if (TryGetValue(key, out GameObject obj))
+            {
+                if (obj != null)
+                {
+                    return obj.GetComponent<TComponent>();
+                }
+            }
 
-        public override TObj CreateDefaultValue()
-        {
-            return _defaultObject;
+            return null;
         }
+    }
+
+    [Serializable]
+    public class EnumComponentLibrary<TEnum, TComponent> : EnumObjectLibrary<TEnum, TComponent>
+        where TEnum : System.Enum
+        where TComponent : Component
+    {
+
     }
 }

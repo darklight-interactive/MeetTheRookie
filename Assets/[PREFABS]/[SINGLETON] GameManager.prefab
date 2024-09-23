@@ -63,75 +63,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   clueLibrary: {fileID: 11400000, guid: a3f42b5a64f1aa24bacc88d2196c2e28, type: 2}
---- !u!1 &747062332810990951
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2643191072141248278}
-  - component: {fileID: 8037528104237056105}
-  m_Layer: 0
-  m_Name: '[ INTERACTION_SYSTEM ]'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2643191072141248278
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747062332810990951}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5054830795790530424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8037528104237056105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747062332810990951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a736164a30cf61b47a143e523543a222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _settings: {fileID: 0}
-  _registryLibrary:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
-  _handlerPrefabs:
-    _items:
-    - _id: 0
-      _key: 0
-      _value: {fileID: 0}
-    - _id: 1
-      _key: 1
-      _value: {fileID: 0}
-    - _id: 2
-      _key: 2
-      _value: {fileID: 863848289328599988, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-    - _id: 3
-      _key: 3
-      _value: {fileID: 6598154582557312995, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
-    - _id: 4
-      _key: 4
-      _value: {fileID: 0}
-    _readOnlyKey: 1
-    _readOnlyValue: 0
-    _defaultObject: {fileID: 0}
 --- !u!1 &3100972142227852913
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +221,7 @@ GameObject:
   - component: {fileID: 6736551505315507451}
   - component: {fileID: 255471297845677017}
   - component: {fileID: 6518913931919201701}
+  - component: {fileID: 6845598666414133514}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -310,7 +242,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2643191072141248278}
   - {fileID: 7313103818091379476}
   - {fileID: 3073816321907884251}
   - {fileID: 5312689513072785689}
@@ -456,8 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1468, y: 826}
-  _screenAspectRatio: 1.7772397
+  _screenSize: {x: 1522, y: 856}
+  _screenAspectRatio: 1.7780374
   _characterColors: {fileID: 0}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
@@ -579,3 +510,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3c1aefa25d1fd4cb20cd0f4c950bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6845598666414133514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a736164a30cf61b47a143e523543a222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
+  _interactable_interactionRequestPreset: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
+  _interactableRegistry:
+    _items:
+    - _id: 0
+      _key: DefaultKey0
+      _value: {fileID: 0}
+    - _id: 1
+      _key: DefaultKey2
+      _value: {fileID: 0}
+    - _id: 2
+      _key: DefaultKey15
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 1

@@ -16,8 +16,8 @@ namespace Darklight.UnityExt.Library.Editor
         const float ELEMENT_PADDING = 10f;
 
         const string ITEMS_PROP = "_items";
-        const string READ_ONLY_KEY = "readOnlyKey";
-        const string READ_ONLY_VALUE = "readOnlyValue";
+        const string READ_ONLY_KEY = "_readOnlyKey";
+        const string READ_ONLY_VALUE = "_readOnlyValue";
 
         readonly float SINGLE_LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
         readonly float VERTICAL_SPACING = EditorGUIUtility.singleLineHeight * 0.5f;
@@ -78,6 +78,11 @@ namespace Darklight.UnityExt.Library.Editor
                         InvokeLibraryMethod("Clear", out object returnValue);
                     });
                     menu.ShowAsContext();
+                };
+
+                _list.onRemoveCallback = (list) =>
+                {
+                    InvokeLibraryMethod("RemoveAt", out object returnValue, new object[] { list.index });
                 };
 
                 _list.drawNoneElementCallback = (rect) =>
@@ -249,8 +254,22 @@ namespace Darklight.UnityExt.Library.Editor
                     {
                         // Invoke the method on the specific Library<,> type instance
                         returnValue = methodInfo.Invoke(libraryInstance, parameters);
+
+                        // Apply modified properties to ensure they are serialized
                         property.serializedObject.ApplyModifiedProperties();
-                        Debug.Log($"Method '{methodName}' called on {libraryInstance.GetType().Name}.");
+
+                        // Mark the target object as dirty to ensure the changes are saved and visible
+                        EditorUtility.SetDirty(targetObject);
+
+                        // Force the editor to repaint the Inspector
+                        property.serializedObject.UpdateIfRequiredOrScript();
+                        property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                        EditorApplication.QueuePlayerLoopUpdate(); // Repaints Scene view if necessary
+                        Debug.Log($"Method '{methodName}' called on {targetObject.name}" +
+                            $" with Library<,> instance '{libraryInstance.GetType().Name}'.", targetObject);
+
+                        // Force a repaint of the inspector window
+                        EditorWindow.focusedWindow?.Repaint();
                     }
                     else
                     {

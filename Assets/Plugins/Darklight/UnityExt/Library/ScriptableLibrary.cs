@@ -11,11 +11,12 @@ using UnityEditor;
 #endif
 namespace Darklight.UnityExt.Library
 {
-    public abstract class ScriptableLibrary<TKey, TValue> : ScriptableObject, HasNullOrUnsetItems<TKey, TValue>
+    public abstract class ScriptableLibrary<TKey, TValue, TLib> : ScriptableObject, ILibrary<TKey, TValue>
         where TKey : notnull
         where TValue : notnull
+        where TLib : Library<TKey, TValue>, new()
     {
-        protected abstract Library<TKey, TValue> library { get; }
+        protected TLib library = new TLib();
 
         #region -- (( IDictionary<TKey, TValue> )) --
         public TValue this[TKey key]
@@ -41,21 +42,43 @@ namespace Darklight.UnityExt.Library
         #endregion
 
         // ILibrary<TKey, TValue> members
+        public bool ReadOnlyKey { get => library.ReadOnlyKey; set => library.ReadOnlyKey = value; }
+        public bool ReadOnlyValue { get => library.ReadOnlyValue; set => library.ReadOnlyValue = value; }
+        public IEnumerable<TKey> RequiredKeys { get => library.RequiredKeys; set => library.RequiredKeys = value; }
         public List<LibraryItem<TKey, TValue>> Items => library.Items;
         public TKey CreateDefaultKey() => library.CreateDefaultKey();
         public TValue CreateDefaultValue() => library.CreateDefaultValue();
         public void AddDefaultItem() => library.AddDefaultItem();
+        public void AddItemWithDefaultValue(TKey key) => library.AddItemWithDefaultValue(key);
+        public void RemoveAt(int index) => library.RemoveAt(index);
+        public void Refresh() => library.Refresh();
         public void Reset() => library.Reset();
         public bool HasUnsetKeysOrValues() => library.HasUnsetKeysOrValues();
-
+        public bool HasUnsetKeys() => library.HasUnsetKeysOrValues();
+        public bool TryGetKeyByValue(TValue value, out TKey key) => library.TryGetKeyByValue(value, out key);
+        public bool TryGetKeyByValue<T>(out TKey key) where T : TValue => library.TryGetKeyByValue<T>(out key);
     }
 
-    public class EnumObjectScriptableLibrary<TEnum, TObj> : ScriptableLibrary<TEnum, TObj>
-        where TEnum : System.Enum
-        where TObj : UnityEngine.Object
+    public abstract class EnumObjectScriptableLibrary<TKey, TValue> : ScriptableLibrary<TKey, TValue, EnumObjectLibrary<TKey, TValue>>
+        where TKey : Enum
+        where TValue : UnityEngine.Object
     {
-        [SerializeField] EnumObjectLibrary<TEnum, TObj> _library = new EnumObjectLibrary<TEnum, TObj>();
+    }
 
-        protected override Library<TEnum, TObj> library => _library;
+    public abstract class EnumGameObjectScriptableLibrary<TKey> : ScriptableLibrary<TKey, GameObject, EnumGameObjectLibrary<TKey>>
+        where TKey : Enum
+    {
+        public TComponent TryGetComponent<TComponent>(TKey key) where TComponent : Component
+        {
+            if (TryGetValue(key, out GameObject obj))
+            {
+                if (obj != null)
+                {
+                    return obj.GetComponent<TComponent>();
+                }
+            }
+
+            return null;
+        }
     }
 }

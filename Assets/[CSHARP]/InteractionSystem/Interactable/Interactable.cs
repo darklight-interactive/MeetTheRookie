@@ -7,6 +7,8 @@ using UnityEngine;
 using Codice.CM.SEIDInfo;
 using Darklight.UnityExt.Utility;
 using System.Linq;
+using Darklight.UnityExt.Library;
+
 
 
 
@@ -18,7 +20,7 @@ using UnityEditor;
 public partial class Interactable : MonoBehaviour,
     IInteractable, IUnityEditorListener
 {
-    const string PREFIX = "<INT>";
+    public const string PREFIX = "<INT>";
     const string DEFAULT_NAME = "DefaultName";
     const string DEFAULT_KEY = "DefaultKey";
     const string DEFAULT_LAYER = "Interactable";
@@ -55,7 +57,18 @@ public partial class Interactable : MonoBehaviour,
     [SerializeField, ShowAssetPreview] Sprite _sprite;
 
     [Header(" (( INTERACTION HANDLERS )) -------- >>")]
-    [SerializeField] InteractionHandlerLibrary _handlerLibrary;
+    [SerializeField, Expandable] InteractionRequestPreset _preset;
+    [SerializeField]
+    EnumComponentLibrary<InteractionTypeKey, InteractionReciever> _recievers = new EnumComponentLibrary<InteractionTypeKey, InteractionReciever>()
+    {
+        ReadOnlyKey = true,
+        ReadOnlyValue = false,
+        RequiredKeys = new InteractionTypeKey[]
+        {
+            InteractionTypeKey.TARGET
+        },
+    };
+
 
     [Header(" (( INTERACTION SETTINGS )) -------- >>")]
     [SerializeField] Color _defaultTint = Color.white;
@@ -116,6 +129,16 @@ public partial class Interactable : MonoBehaviour,
     #endregion
 
     #region ======== <PRIVATE_METHODS> [[ Internal Methods ]] ================================== >>>>
+
+    #region ---- ( Preload ) ---- ))
+    void PreloadRequestPreset()
+    {
+        if (_preset == null)
+        {
+            _preset = InteractionSystem.Factory.CreateOrLoadRequestPreset();
+        }
+    }
+
     void PreloadSpriteRenderer()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -142,59 +165,101 @@ public partial class Interactable : MonoBehaviour,
         _collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
 
-    void PreloadInteractionHandlers()
+    void PreloadRecievers()
     {
-        RemoveUnusedHandlers();
-        List<InteractionTypeKey> keys = _handlerLibrary.Keys.ToList();
+        RemoveUnusedRecievers();
+
+        _recievers.Reset();
+
+        List<InteractionTypeKey> keys = _recievers.Keys.ToList();
         foreach (InteractionTypeKey key in keys)
         {
-            InteractionHandler currentHandlerValue = _handlerLibrary[key];
+            _recievers.TryGetValue(key, out InteractionReciever currentHandlerValue);
             if (currentHandlerValue == null)
             {
-                InteractionHandler handlerInChild = GetHandlerInChildren(key);
-                if (handlerInChild != null)
+                InteractionReciever recieverInChild = GetRecieverInChildren(key);
+                if (recieverInChild != null)
                 {
-                    _handlerLibrary[key] = handlerInChild;
+                    _recievers[key] = recieverInChild;
                     continue;
                 }
 
-                GameObject handlerGO = InteractionSystem.Factory.CreateInteractionHandler(key);
-                if (handlerGO == null) continue;
+                GameObject recieverGameObject = _preset.CreateRecieverGameObject(key);
+                if (recieverGameObject == null)
+                {
+                    Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", this);
+                    continue;
+                }
+                else
+                {
+                    recieverGameObject.transform.SetParent(this.transform);
+                    recieverGameObject.transform.localPosition = Vector3.zero;
+                    recieverGameObject.transform.localRotation = Quaternion.identity;
+                    recieverGameObject.transform.localScale = Vector3.one;
+                    recieverGameObject.name = $"{key} Interaction Handler";
+                }
 
-                InteractionHandler handler = handlerGO.GetComponent<InteractionHandler>();
-                if (handler == null) continue;
+                InteractionReciever handler = recieverGameObject.GetComponent<InteractionReciever>();
+                if (handler == null)
+                {
+                    Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", this);
+                    ObjectUtility.DestroyAlways(recieverGameObject);
+                    continue;
+                }
 
-                handler.transform.SetParent(this.transform);
-                handler.transform.localPosition = Vector3.zero;
-                handler.transform.localRotation = Quaternion.identity;
-                handler.transform.localScale = Vector3.one;
 
-                _handlerLibrary[key] = handler;
+
+                _recievers[key] = handler;
             }
         }
 
-        Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
+        //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
     }
 
-    InteractionHandler GetHandlerInChildren(InteractionTypeKey key)
+    bool IsPreloadValid(bool logErrors = false)
     {
-        InteractionHandler[] handlers = GetComponentsInChildren<InteractionHandler>();
-        foreach (InteractionHandler handler in handlers)
+        bool isValid = _isRegistered
+            && _recievers.Count > 0
+            && !_recievers.HasUnsetKeysOrValues();
+
+        if (!isValid && logErrors)
         {
-            if (handler.TypeKey == key)
+            string outLog = $"{PREFIX} {Name} :: Preload Validation Failed";
+            if (!_isRegistered)
+                outLog += " :: Not Registered";
+            if (_recievers.Count == 0)
+                outLog += " :: No Recievers Requested";
+            if (_recievers.HasUnsetKeysOrValues())
+                outLog += " :: Found Unset Recievers";
+            Debug.LogError(outLog, this);
+        }
+
+        return isValid;
+    }
+
+
+    #endregion ---- ( Preload ) ------------------------------------ >>>>
+
+    InteractionReciever GetRecieverInChildren(InteractionTypeKey key)
+    {
+        InteractionReciever[] handlers = GetComponentsInChildren<InteractionReciever>();
+        foreach (InteractionReciever handler in handlers)
+        {
+            if (handler.InteractionType == key)
                 return handler;
         }
         return null;
     }
 
-    void RemoveUnusedHandlers()
+    void RemoveUnusedRecievers()
     {
-        InteractionHandler[] interactionHandlers = GetComponentsInChildren<InteractionHandler>();
-        foreach (InteractionHandler interactionHandler in interactionHandlers)
+        InteractionReciever[] allRecieversInChildren = GetComponentsInChildren<InteractionReciever>();
+        foreach (InteractionReciever childReciever in allRecieversInChildren)
         {
-            if (!_handlerLibrary.ContainsKey(interactionHandler.TypeKey) || _handlerLibrary[interactionHandler.TypeKey] != null)
+            if (!_recievers.ContainsKey(childReciever.InteractionType)
+                || _recievers[childReciever.InteractionType] != null)
             {
-                ObjectUtility.DestroyAlways(interactionHandler.gameObject);
+                ObjectUtility.DestroyAlways(childReciever.gameObject);
             }
         }
     }
@@ -220,45 +285,29 @@ public partial class Interactable : MonoBehaviour,
     #endregion
 
     #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
-
     public virtual void Preload()
     {
         _isPreloaded = false;
         _isRegistered = false;
         _isInitialized = false;
 
+
+        PreloadRequestPreset();
         PreloadSpriteRenderer();
         PreloadBoxCollider();
-        PreloadInteractionHandlers();
+        PreloadRecievers();
 
         // << REGISTER THE INTERACTABLE >> ------------------------------------
         _isRegistered = InteractionSystem.Registry.TryRegister(this);
-        if (!_isRegistered)
-        {
-            Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
-            return;
-        }
 
-        UpdateGameObjectName();
+        // << Determine if the Interactable is Preloaded >> ------------------------------------
+        _isPreloaded = IsPreloadValid(true);
+
     }
 
     public virtual void Initialize()
     {
-        _isPreloaded = _isRegistered
-            && !_handlerLibrary.HasUnsetKeysOrValues()
-            && _handlerLibrary.Count > 0;
-        if (!_isPreloaded)
-        {
-            if (!_isRegistered)
-                Debug.LogError($"{PREFIX} {Name} :: Not registered with the Interaction System.");
-            else if (_handlerLibrary.HasUnsetKeysOrValues())
-                Debug.LogError($"{PREFIX} {Name} :: Interaction Handlers are not preloaded. Check for null or unset handlers.");
-            else if (_handlerLibrary.Count == 0)
-                Debug.LogError($"{PREFIX} {Name} :: Interaction Handlers are empty.");
-
-            Preload();
-            return;
-        }
+        if (!_isPreloaded) Preload();
 
         // << SUBSCRIBE TO EVENTS >> ------------------------------------
         OnReadyEvent += () => Debug.Log($"{PREFIX} {Name} :: OnReadyEvent");
@@ -338,8 +387,6 @@ public partial class Interactable : MonoBehaviour,
 
         return true;
     }
-
-
     #endregion
 
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)
@@ -371,11 +418,20 @@ public partial class Interactable : MonoBehaviour,
 
             EditorGUI.BeginChangeCheck();
 
-            // << INITIALIZE BUTTON >> ------------------------------------
-            if (_script._isInitialized == false
-                && GUILayout.Button("Initialize"))
+            // << BUTTONS >> ------------------------------------
+            if (!_script._isPreloaded)
             {
-                _script.Initialize();
+                if (GUILayout.Button("Preload"))
+                {
+                    _script.Preload();
+                }
+            }
+            else if (!_script._isInitialized)
+            {
+                if (GUILayout.Button("Initialize"))
+                {
+                    _script.Initialize();
+                }
             }
 
             // << DRAW DEFAULT INSPECTOR >> ------------------------------------

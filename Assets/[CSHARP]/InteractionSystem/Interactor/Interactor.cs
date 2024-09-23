@@ -49,7 +49,11 @@ public class Interactor : MonoBehaviour, IInteractor
 
     [SerializeField]
     protected Library<Interactable, string> _nearbyInteractables
-        = new Library<Interactable, string>(true, true);
+        = new Library<Interactable, string>()
+        {
+            ReadOnlyKey = true,
+            ReadOnlyValue = true
+        };
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
