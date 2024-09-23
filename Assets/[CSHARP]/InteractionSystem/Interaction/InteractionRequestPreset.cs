@@ -5,24 +5,22 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Darklight/Interaction/Interactable/RequestPreset")]
 public class InteractionRequestPreset : EnumGameObjectScriptableLibrary<InteractionTypeKey>
 {
-    [SerializeField]
-    EnumObjectLibrary<InteractionTypeKey, GameObject> _recieverPrefabLibrary = new EnumObjectLibrary<InteractionTypeKey, GameObject>()
+    protected override EnumGameObjectLibrary<InteractionTypeKey> CreateNewLibrary()
     {
-        ReadOnlyKey = true,
-        ReadOnlyValue = false,
-        RequiredKeys = new List<InteractionTypeKey>()
+        return new EnumGameObjectLibrary<InteractionTypeKey>()
         {
-            InteractionTypeKey.TARGET
-        }
-    };
+            ReadOnlyKey = true,
+            ReadOnlyValue = false,
+        };
+    }
 
     public GameObject CreateRecieverGameObject(InteractionTypeKey key)
     {
-        if (_recieverPrefabLibrary.TryGetValue(key, out GameObject prefab))
+        TryGetValue(key, out GameObject go);
+        if (go != null)
         {
-            return Instantiate(prefab);
+            return Instantiate(go);
         }
-
         return null;
     }
 }

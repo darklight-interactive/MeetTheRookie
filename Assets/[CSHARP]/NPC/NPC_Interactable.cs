@@ -16,7 +16,7 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
 {
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
-    [SerializeField] DialogueInteractionHandler _dialogueHandler;
+    [SerializeField] DialogueInteractionReciever _dialogueHandler;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
@@ -33,12 +33,12 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
         }
     }
     NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
-    public DialogueInteractionHandler DialogueHandler
+    public DialogueInteractionReciever DialogueHandler
     {
         get
         {
             if (_dialogueHandler == null)
-                _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
+                _dialogueHandler = GetComponentInChildren<DialogueInteractionReciever>();
             return _dialogueHandler;
         }
         set => _dialogueHandler = value;

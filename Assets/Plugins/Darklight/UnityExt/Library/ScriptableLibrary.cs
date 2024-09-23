@@ -16,7 +16,10 @@ namespace Darklight.UnityExt.Library
         where TValue : notnull
         where TLib : Library<TKey, TValue>, new()
     {
+        [SerializeReference]
         protected TLib library = new TLib();
+
+        protected abstract TLib CreateNewLibrary();
 
         #region -- (( IDictionary<TKey, TValue> )) --
         public TValue this[TKey key]

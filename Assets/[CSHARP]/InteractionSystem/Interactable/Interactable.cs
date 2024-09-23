@@ -50,19 +50,19 @@ public partial class Interactable : MonoBehaviour,
     [SerializeField, ShowOnly] bool _isInitialized = false;
 
     [Header(" (( VALUES )) -------- >>")]
-    [SerializeField] string _name = DEFAULT_NAME;
-    [SerializeField] string _key = DEFAULT_KEY;
+    [SerializeField, ShowOnly] string _name = DEFAULT_NAME;
+    [SerializeField, ShowOnly] string _key = DEFAULT_KEY;
     [SerializeField, ShowOnly] string _layer = DEFAULT_LAYER;
     [SerializeField, ShowOnly] IInteractable.State _currentState;
     [SerializeField, ShowAssetPreview] Sprite _sprite;
 
     [Header(" (( INTERACTION HANDLERS )) -------- >>")]
-    [SerializeField, Expandable] InteractionRequestPreset _preset;
+    [SerializeField] InteractionRequestPreset _preset;
     [SerializeField]
     EnumComponentLibrary<InteractionTypeKey, InteractionReciever> _recievers = new EnumComponentLibrary<InteractionTypeKey, InteractionReciever>()
     {
         ReadOnlyKey = true,
-        ReadOnlyValue = false,
+        ReadOnlyValue = true,
         RequiredKeys = new InteractionTypeKey[]
         {
             InteractionTypeKey.TARGET
@@ -340,6 +340,8 @@ public partial class Interactable : MonoBehaviour,
 
     public virtual void Reset()
     {
+        if (_stateMachine == null)
+            return;
         _stateMachine.GoToState(IInteractable.State.READY);
     }
 
@@ -370,6 +372,7 @@ public partial class Interactable : MonoBehaviour,
         }
 
         // << ACCEPT INTERACTION >> ------------------------------------
+        Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {interactor}", this);
         switch (CurrentState)
         {
             case IInteractable.State.START:
@@ -400,7 +403,7 @@ public partial class Interactable : MonoBehaviour,
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Interactable))]
+    [CustomEditor(typeof(Interactable), true)]
     public class InteractableCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;

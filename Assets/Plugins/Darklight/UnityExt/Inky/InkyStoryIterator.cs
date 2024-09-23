@@ -30,7 +30,7 @@ namespace Darklight.UnityExt.Inky
         {
             get => _currentStoryDialogue = _storyObject.StoryValue.currentText.Trim();
         }
-        public List<Choice> CurrentChoices
+        public List<Choice> CurrentStoryChoices
         {
             get => _currentChoices = _choiceMap.Keys.ToList();
         }

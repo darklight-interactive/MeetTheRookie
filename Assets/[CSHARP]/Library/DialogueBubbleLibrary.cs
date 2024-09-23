@@ -11,7 +11,14 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
 public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
-
+    protected override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> CreateNewLibrary()
+    {
+        return new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
+        {
+            ReadOnlyKey = true,
+            ReadOnlyValue = false,
+        };
+    }
 
 }
 

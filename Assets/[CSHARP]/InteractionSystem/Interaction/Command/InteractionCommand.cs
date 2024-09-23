@@ -34,3 +34,26 @@ public class TargetInteractionCommand : InteractionCommand<TargetInteractionReci
             _reciever.HideInteractIcon();
     }
 }
+
+public class DialogueInteractionCommand : InteractionCommand<DialogueInteractionReciever>
+{
+    bool _destroy;
+    string _text;
+    public DialogueInteractionCommand(DialogueInteractionReciever reciever, bool destroy) : base(reciever)
+    {
+        _destroy = destroy;
+    }
+
+    public DialogueInteractionCommand(DialogueInteractionReciever reciever, string text) : base(reciever)
+    {
+        _text = text;
+    }
+
+    public override void Execute()
+    {
+        if (_destroy)
+            _reciever.DestroySpeechBubble();
+        else
+            _reciever.CreateNewSpeechBubble(_text);
+    }
+}

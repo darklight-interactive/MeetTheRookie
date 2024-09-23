@@ -20,23 +20,21 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class MTR_Interactable : Interactable
 {
-    // ====== [[ FIELDS ]] ====================================== >>>>
-    const string Prefix = "<INTERACTABLE>";
+    const string DEFAULT_KNOT = "scene_default";
+    const string DEFAULT_STITCH = "interaction_default";
 
     // -- (( DESTINATION POINTS )) -------- >>
     GameObject Lupe;
     GameObject Misra;
 
+    [Dropdown("dropdown_sceneKnotList"), SerializeField]
+    string _sceneKnot = DEFAULT_KNOT;
+    [Dropdown("dropdown_interactionStitchList"), SerializeField]
+    string _interactionStitch = DEFAULT_STITCH;
 
     [Header("Interactable")]
     [SerializeField] bool onStart;
     public bool isSpawn;
-
-
-
-    [Header("State Flags")]
-    [ShowOnly, SerializeField] bool _isTarget;
-    [ShowOnly, SerializeField] bool _isActive; [ShowOnly, SerializeField] bool _isComplete;
 
 
 
@@ -50,19 +48,39 @@ public class MTR_Interactable : Interactable
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
 
-
     SpriteRenderer _spriteRenderer => GetComponent<SpriteRenderer>();
 
 
+    protected List<string> dropdown_sceneKnotList
+    {
+        get
+        {
+            List<string> names = new List<string>();
+            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
+            if (storyObject == null) return names;
+            return InkyStoryObject.GetAllKnots(storyObject.StoryValue);
+        }
+    }
 
-    public bool IsTarget { get => _isTarget; set => _isTarget = value; }
-    public bool IsActive { get => _isActive; set => _isActive = value; }
-    public bool IsComplete { get => _isComplete; set => _isComplete = value; }
+    List<string> dropdown_interactionStitchList
+    {
+        get
+        {
+            List<string> names = new List<string>();
+            InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
+            if (storyObject == null) return names;
+            return InkyStoryObject.GetAllStitchesInKnot(storyObject.StoryValue, _sceneKnot);
+        }
+    }
+
     #endregion
 
     public override void Initialize()
     {
         base.Initialize();
+
+        // -- Assign the interaction stitch
+        Key = _interactionStitch;
 
         // << DESTINATION POINTS >>
         var tempLupe = FindFirstObjectByType<PlayerController>();

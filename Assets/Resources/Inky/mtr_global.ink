@@ -126,5 +126,9 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
 -> DONE
 
 
-
-
+=== scene_default ===
+= interaction_default
+~ SetSpeaker(Speaker.Lupe)
+Hey, it's Lupe. Had to change my route; 
+tank was running low.
+-> DONE

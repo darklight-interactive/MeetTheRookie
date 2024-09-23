@@ -90,42 +90,35 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return settings;
         }
 
-        public static InteractionRequestPreset CreateOrLoadRequestPreset()
+        public static InteractionRequestPreset CreateOrLoadRequestPreset(string name = "InteractionRequestPreset")
         {
-            InteractionRequestPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestPreset>(REQUEST_PRESET_PATH);
+            InteractionRequestPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestPreset>(REQUEST_PRESET_PATH, name);
             return preset;
         }
 
-        public static GameObject CreateInteractionHandler(InteractionTypeKey key)
+        public static InteractionRequestPreset CreateOrLoadRequestPreset(out InteractionRequestPreset preset, string name = "InteractionRequestPreset")
         {
-            InteractableInteractionRequestPreset.TryGetValue(key, out GameObject handlerPrefab);
-            if (handlerPrefab == null)
-            {
-                Debug.LogWarning($"Interaction Handler not found for key {key}");
-                return null;
-            }
-
-            GameObject go = Instantiate(handlerPrefab);
-            go.name = $"{key} Interaction Handler";
-            return go;
+            preset = CreateOrLoadRequestPreset(name);
+            return preset;
         }
-
     }
     #endregion
 
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-
-        static Library<string, Interactable> _library = new Library<string, Interactable>()
+        public static PlayerInteractor PlayerInteractor { get; private set; }
+        public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = true
         };
 
+
+
         static void RefreshInteractables()
         {
-            _library.Clear();
+            Interactables.Clear();
             Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
             foreach (Interactable interactable in interactables)
             {
@@ -145,28 +138,39 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         public static bool TryRegister(Interactable interactable, bool overwrite = false)
         {
             // If the interactable is not in the library, add it
-            if (!_library.ContainsKey(interactable.Key))
+            if (!Interactables.ContainsKey(interactable.Key))
             {
-                _library.Add(interactable.Key, interactable);
+                Interactables.Add(interactable.Key, interactable);
                 return true;
             }
             // If the interactable is in the library and the same reference, return true
-            else if (_library[interactable.Key] == interactable)
+            else if (Interactables[interactable.Key] == interactable)
             {
                 return true;
             }
             // If the interactable is in the library and not the same reference, overwrite if allowed
             else if (overwrite)
             {
-                _library[interactable.Key] = interactable;
+                Interactables[interactable.Key] = interactable;
                 return true;
             }
             return false;
         }
 
+        public static bool RegisterPlayerInteractor(PlayerInteractor player)
+        {
+            if (PlayerInteractor != null)
+            {
+                Debug.LogWarning($"{Prefix} Player Interactor already registered", player);
+                return false;
+            }
+            PlayerInteractor = player;
+            return true;
+        }
+
         public static Library<string, Interactable> GetLibrary()
         {
-            return _library;
+            return Interactables;
         }
 
         #endregion

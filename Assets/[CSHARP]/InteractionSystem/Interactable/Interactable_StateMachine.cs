@@ -146,7 +146,7 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
-                //storyIterator.GoToKnotOrStitch(interactable.InteractionStitch);
+                storyIterator.GoToKnotOrStitch(interactable.Key);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
             }
             public override void Execute() { }
@@ -168,16 +168,18 @@ public partial class Interactable
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
                 Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStory,State.{storyState}");
 
+                string text = storyIterator.CurrentStoryDialogue;
+                DialogueInteractionReciever playerDialogueReciever = InteractionSystem.Registry.PlayerInteractor.DialogueReciever;
 
                 switch (storyState)
                 {
-                    case InkyStoryIterator.State.START:
-                        break;
                     case InkyStoryIterator.State.DIALOGUE:
+                        InteractionSystem.Invoke(new DialogueInteractionCommand(playerDialogueReciever, text));
                         break;
                     case InkyStoryIterator.State.CHOICE:
                         break;
                     case InkyStoryIterator.State.END:
+                        InteractionSystem.Invoke(new DialogueInteractionCommand(playerDialogueReciever, true));
                         stateMachine.GoToState(IInteractable.State.COMPLETE);
                         break;
                     default:

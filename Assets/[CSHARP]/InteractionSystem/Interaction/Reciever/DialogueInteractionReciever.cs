@@ -14,40 +14,38 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
+[RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
+public class DialogueInteractionReciever : InteractionReciever
 {
+    Grid2D_OverlapWeightSpawner _grid;
     UXML_RenderTextureObject _speechBubbleObject;
     [SerializeField, ShowOnly] string _speakerTag = "";
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
-    public InteractionTypeKey InteractionType => InteractionTypeKey.DIALOGUE;
+    public override InteractionTypeKey InteractionType => InteractionTypeKey.DIALOGUE;
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
-    public override void OnInitialize(Grid2D grid)
+    public Grid2D_OverlapWeightSpawner Grid
     {
-        base.OnInitialize(grid);
-
+        get
+        {
+            if (_grid == null)
+            {
+                _grid = GetComponent<Grid2D_OverlapWeightSpawner>();
+            }
+            return _grid;
+        }
+    }
+    public void Awake()
+    {
         if (_dialogueBubbleLibrary == null)
         {
             _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
         }
-
-        // Register all the anchor points in the library
-        List<Cell2D> cells = BaseGrid.GetCells();
-        List<Spatial2D.AnchorPoint> anchorPoints = new List<Spatial2D.AnchorPoint>();
-        foreach (Cell2D cell in cells)
-        {
-            Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(cell);
-            if (!anchorPoints.Contains(anchor))
-            {
-                anchorPoints.Add(anchor);
-            }
-        }
     }
 
-    public override void OnUpdate()
+    public void Update()
     {
-        base.OnUpdate();
         UpdateTextBubble();
     }
 
@@ -62,7 +60,7 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
         _speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
         _speechBubbleObject.transform.SetParent(transform);
 
-        SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, GetBestCell());
+        Grid.SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, Grid.GetBestCell());
 
 
         TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
@@ -92,14 +90,14 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
             return null;
         }
 
-        Cell2D bestCell = this.GetBestCell();
+        Cell2D bestCell = Grid.GetBestCell();
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, bestCell);
+        Grid.SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, bestCell);
 
         // Determine which bubble sprite to use based on direction
-        Spatial2D.AnchorPoint anchor = this.GetAnchorPointFromCell(bestCell);
-        Spatial2D.AnchorPoint origin = this.GetOriginPointFromCell(bestCell);
+        Spatial2D.AnchorPoint anchor = Grid.GetAnchorPointFromCell(bestCell);
+        Spatial2D.AnchorPoint origin = Grid.GetOriginPointFromCell(bestCell);
 
         TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
         textBubble.OriginPoint = origin;
@@ -137,15 +135,15 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(DialogueInteractionHandler))]
+    [CustomEditor(typeof(DialogueInteractionReciever))]
     public class DialogueInteractionHandlerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        DialogueInteractionHandler _script;
+        DialogueInteractionReciever _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (DialogueInteractionHandler)target;
+            _script = (DialogueInteractionReciever)target;
             _script.Awake();
         }
 
@@ -156,16 +154,6 @@ public class DialogueInteractionHandler : Grid2D_OverlapWeightSpawner
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
-
-            if (_script._speechBubbleObject == null && GUILayout.Button("Create New Speech Bubble"))
-            {
-                _script.CreateNewSpeechBubble("Hello World");
-            }
-            else if (_script._speechBubbleObject != null && GUILayout.Button("Destroy Speech Bubble"))
-            {
-                _script.DestroySpeechBubble();
-            }
-
 
             if (EditorGUI.EndChangeCheck())
             {

@@ -15,7 +15,7 @@ using UnityEditor;
 public class PlayerInteractor : Interactor
 {
     const float INTERACTOR_X_OFFSET = 0.35f;
-    DialogueInteractionHandler _dialogueHandler;
+    DialogueInteractionReciever _dialogueHandler;
     ChoiceInteractionHandler _choiceHandler;
 
     [HorizontalLine(color: EColor.Gray)]
@@ -36,12 +36,12 @@ public class PlayerInteractor : Interactor
         }
     }
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public DialogueInteractionHandler DialogueHandler
+    public DialogueInteractionReciever DialogueReciever
     {
         get
         {
             if (_dialogueHandler == null)
-                _dialogueHandler = GetComponentInChildren<DialogueInteractionHandler>();
+                _dialogueHandler = GetComponentInChildren<DialogueInteractionReciever>();
             return _dialogueHandler;
         }
         set => _dialogueHandler = value;
@@ -60,9 +60,10 @@ public class PlayerInteractor : Interactor
     #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
-    public void Awake()
+    public override void Awake()
     {
-        //MTR_InteractionManager.RegisterPlayerInteractor(this);
+        base.Awake();
+        InteractionSystem.Registry.RegisterPlayerInteractor(this);
     }
 
     public override void Update()
