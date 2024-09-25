@@ -168,15 +168,18 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
+                Debug.Log($"{PREFIX} :: {interactable.Name} >> Entered Continue State");
 
                 storyIterator.ContinueStory();
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
 
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
-                Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStory,State.{storyState}");
+                Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
 
                 string text = storyIterator.CurrentStoryDialogue;
                 DialogueInteractionReciever playerDialogueReciever = InteractionSystem.Registry.PlayerInteractor.DialogueReciever;
+
+
 
                 switch (storyState)
                 {
@@ -205,6 +208,8 @@ public partial class Interactable
             public override void Enter()
             {
                 base.Enter();
+
+                Debug.Log($"{PREFIX} :: {interactable.Name} >> Entered Complete State");
                 MTR_AudioManager.Instance.PlayEndInteractionEvent();
             }
             public override void Execute() { }

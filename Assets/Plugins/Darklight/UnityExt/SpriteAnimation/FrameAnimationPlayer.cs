@@ -92,8 +92,6 @@ namespace Darklight.UnityExt.Animation
 
         public void SetFacing(SpriteDirection direction)
         {
-            if (_currentDirection == direction) return;
-
             _currentDirection = direction;
             if (_spriteSheet == null) return;
 

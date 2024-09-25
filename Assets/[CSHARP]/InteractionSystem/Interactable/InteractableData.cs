@@ -163,8 +163,6 @@ public partial class Interactable
         #region -- (( PRELOAD RECIEVERS )) ------------------- >>
         void PreloadRecievers()
         {
-            RemoveUnusedRecievers();
-
             _interactable._recievers.Reset();
 
             List<InteractionTypeKey> requestedKeys = interactionRequest.Keys.ToList();
@@ -209,6 +207,8 @@ public partial class Interactable
                 }
             }
 
+            RemoveUnusedRecievers();
+
             //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
         }
 
@@ -217,8 +217,9 @@ public partial class Interactable
             InteractionReciever[] allRecieversInChildren = _interactable.GetComponentsInChildren<InteractionReciever>();
             foreach (InteractionReciever childReciever in allRecieversInChildren)
             {
+                // If the reciever is not in the library, destroy it
                 if (!_interactable._recievers.ContainsKey(childReciever.InteractionType)
-                    || _interactable._recievers[childReciever.InteractionType] != null)
+                    || _interactable._recievers[childReciever.InteractionType] != childReciever)
                 {
                     ObjectUtility.DestroyAlways(childReciever.gameObject);
                 }
@@ -227,11 +228,11 @@ public partial class Interactable
 
         InteractionReciever GetRecieverInChildren(InteractionTypeKey key)
         {
-            InteractionReciever[] handlers = _interactable.GetComponentsInChildren<InteractionReciever>();
-            foreach (InteractionReciever handler in handlers)
+            InteractionReciever[] recievers = _interactable.GetComponentsInChildren<InteractionReciever>();
+            foreach (InteractionReciever reciever in recievers)
             {
-                if (handler.InteractionType == key)
-                    return handler;
+                if (reciever.InteractionType == key)
+                    return reciever;
             }
             return null;
         }

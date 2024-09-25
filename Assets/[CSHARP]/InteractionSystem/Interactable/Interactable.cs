@@ -125,7 +125,7 @@ public partial class Interactable : MonoBehaviour,
             // << SUBSCRIBE TO STATE CHANGES >> ------------------------------------
             _stateMachine.OnStateChanged += (IInteractable.State state) =>
             {
-                _currentState = state;
+                _currentState = _stateMachine.CurrentState;
             };
 
             // << GO TO READY STATE >> ------------------------------------
