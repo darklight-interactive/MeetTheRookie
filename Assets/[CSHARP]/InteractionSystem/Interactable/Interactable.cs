@@ -36,7 +36,7 @@ public partial class Interactable : MonoBehaviour,
     [SerializeField] InternalData _data;
 
     [Header("State Machine Data")]
-    [SerializeField] IInteractable.State _currentState;
+    [SerializeField, ShowOnly] IInteractable.State _currentState;
 
     [Header("Interaction Recievers")]
     [SerializeField]

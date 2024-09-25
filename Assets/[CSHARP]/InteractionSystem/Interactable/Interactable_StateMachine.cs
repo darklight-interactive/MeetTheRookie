@@ -44,22 +44,28 @@ public partial class Interactable
             switch (state)
             {
                 case IInteractable.State.READY:
-                    _interactable.OnReadyEvent.Invoke();
+                    if (_interactable.OnReadyEvent != null)
+                        _interactable.OnReadyEvent.Invoke();
                     break;
                 case IInteractable.State.TARGET:
-                    _interactable.OnTargetEvent.Invoke();
+                    if (_interactable.OnTargetEvent != null)
+                        _interactable.OnTargetEvent.Invoke();
                     break;
                 case IInteractable.State.START:
-                    _interactable.OnStartEvent.Invoke();
+                    if (_interactable.OnStartEvent != null)
+                        _interactable.OnStartEvent.Invoke();
                     break;
                 case IInteractable.State.CONTINUE:
-                    _interactable.OnContinueEvent.Invoke();
+                    if (_interactable.OnContinueEvent != null)
+                        _interactable.OnContinueEvent.Invoke();
                     break;
                 case IInteractable.State.COMPLETE:
-                    _interactable.OnCompleteEvent.Invoke();
+                    if (_interactable.OnCompleteEvent != null)
+                        _interactable.OnCompleteEvent.Invoke();
                     break;
                 case IInteractable.State.DISABLED:
-                    _interactable.OnDisabledEvent.Invoke();
+                    if (_interactable.OnDisabledEvent != null)
+                        _interactable.OnDisabledEvent.Invoke();
                     break;
                 default:
                     break;
@@ -148,6 +154,7 @@ public partial class Interactable
                 base.Enter();
                 storyIterator.GoToKnotOrStitch(interactable.Key);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
+                stateMachine.GoToState(IInteractable.State.CONTINUE);
             }
             public override void Execute() { }
             public override void Exit() { }
