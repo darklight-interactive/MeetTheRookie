@@ -64,6 +64,7 @@ public class DialogueInteractionReciever : InteractionReciever
 
 
         TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
+        textBubble.Library = _dialogueBubbleLibrary; // << Set the bubble library
         textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float fullTextHeight = evt.newRect.height;

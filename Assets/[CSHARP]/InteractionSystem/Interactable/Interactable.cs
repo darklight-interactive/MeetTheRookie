@@ -30,7 +30,7 @@ public partial class Interactable : MonoBehaviour,
             IInteractable.State.CONTINUE
         };
 
-    StateMachine _stateMachine;
+    InternalStateMachine _stateMachine;
 
     [Header("Internal Data")]
     [SerializeField] InternalData _data;
@@ -51,16 +51,16 @@ public partial class Interactable : MonoBehaviour,
     };
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    protected InternalData data { get => _data; set => _data = value; }
-    protected StateMachine stateMachine => _stateMachine ??= new StateMachine(this);
-    public string Name { get => data.Name; }
-    public string Key { get => data.Key; }
+    public InternalData Data { get => _data; set => _data = value; }
+    public InternalStateMachine StateMachine => _stateMachine ??= new InternalStateMachine(this);
+    public string Name { get => Data.Name; }
+    public string Key { get => Data.Key; }
     public string Layer
     {
-        get => data.Layer = gameObject.layer.ToString();
+        get => Data.Layer = gameObject.layer.ToString();
         set
         {
-            data.Layer = value;
+            Data.Layer = value;
             gameObject.layer = LayerMask.NameToLayer(value);
         }
     }
@@ -100,14 +100,14 @@ public partial class Interactable : MonoBehaviour,
     #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
     public virtual void Preload()
     {
-        if (data == null)
-            data = new InternalData(this);
-        data.Preload(this);
+        if (Data == null)
+            Data = new InternalData(this);
+        Data.Preload(this);
     }
 
     public virtual void Initialize()
     {
-        if (data.Initialize())
+        if (Data.Initialize())
         {
             // << SUBSCRIBE TO EVENTS >> ------------------------------------
             /*
@@ -120,7 +120,7 @@ public partial class Interactable : MonoBehaviour,
             */
 
             // << CREATE THE STATE MACHINE >> ------------------------------------
-            _stateMachine = new StateMachine(this);
+            _stateMachine = new InternalStateMachine(this);
 
             // << SUBSCRIBE TO STATE CHANGES >> ------------------------------------
             _stateMachine.OnStateChanged += (IInteractable.State state) =>
@@ -129,7 +129,12 @@ public partial class Interactable : MonoBehaviour,
             };
 
             // << GO TO READY STATE >> ------------------------------------
-            stateMachine.GoToState(IInteractable.State.READY);
+            StateMachine.GoToState(IInteractable.State.READY);
+        }
+        else
+        {
+            Invoke(nameof(Initialize), 0.25f);
+            Debug.LogError($"{PREFIX} {Name} :: Failed to initialize, trying again", this);
         }
     }
 
@@ -141,9 +146,9 @@ public partial class Interactable : MonoBehaviour,
 
     public virtual void Reset()
     {
-        if (stateMachine == null)
+        if (StateMachine == null)
             return;
-        stateMachine.GoToState(IInteractable.State.READY);
+        StateMachine.GoToState(IInteractable.State.READY);
     }
 
     public virtual bool AcceptTarget(IInteractor interactor, bool force = false)
@@ -158,7 +163,7 @@ public partial class Interactable : MonoBehaviour,
         }
 
         // << ACCEPT TARGET >> ------------------------------------
-        stateMachine.GoToState(IInteractable.State.TARGET);
+        StateMachine.GoToState(IInteractable.State.TARGET);
         return true;
     }
 
@@ -178,14 +183,14 @@ public partial class Interactable : MonoBehaviour,
         {
             case IInteractable.State.START:
             case IInteractable.State.CONTINUE:
-                stateMachine.GoToState(IInteractable.State.CONTINUE, true);
+                StateMachine.GoToState(IInteractable.State.CONTINUE, true);
                 break;
             case IInteractable.State.COMPLETE:
             case IInteractable.State.DISABLED:
                 Debug.LogError($"{PREFIX} {Name} :: Cannot interact in state: {CurrentState}");
                 break;
             default:
-                stateMachine.GoToState(IInteractable.State.START);
+                StateMachine.GoToState(IInteractable.State.START);
                 break;
         }
 
@@ -215,7 +220,7 @@ public partial class Interactable : MonoBehaviour,
         {
             _serializedObject = new SerializedObject(target);
             _script = (Interactable)target;
-            _script.Preload();
+            _script.Awake();
         }
 
         public override void OnInspectorGUI()
@@ -225,14 +230,14 @@ public partial class Interactable : MonoBehaviour,
             EditorGUI.BeginChangeCheck();
 
             // << BUTTONS >> ------------------------------------
-            if (!_script.data.IsPreloaded)
+            if (!_script.Data.IsPreloaded)
             {
                 if (GUILayout.Button("Preload"))
                 {
                     _script.Preload();
                 }
             }
-            else if (!_script.data.IsInitialized)
+            else if (!_script.Data.IsInitialized)
             {
                 if (GUILayout.Button("Initialize"))
                 {

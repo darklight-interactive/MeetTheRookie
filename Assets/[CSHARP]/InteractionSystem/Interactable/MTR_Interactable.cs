@@ -78,7 +78,10 @@ public class MTR_Interactable : Interactable
     #endregion
     public override void Preload()
     {
-        data = new InternalData(this, "defaultname", _interactionStitch);
+        if (_interactionStitch == null)
+            Data = new InternalData(this, "defaultname", DEFAULT_STITCH);
+        else
+            Data = new InternalData(this, "defaultname", _interactionStitch);
     }
 
 

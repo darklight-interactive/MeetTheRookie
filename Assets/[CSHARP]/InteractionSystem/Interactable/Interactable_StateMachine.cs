@@ -13,13 +13,13 @@ public partial class Interactable
     /// Interactable Internal State Machine <br/>
     /// This class hanndles the functions and events of the Interactable class
     /// </summary>
-    protected class StateMachine : FiniteStateMachine<IInteractable.State>
+    public class InternalStateMachine : FiniteStateMachine<IInteractable.State>
     {
         Interactable _interactable;
         InkyStoryIterator _storyIterator;
         IInteractable.State _currentState;
 
-        public StateMachine(Interactable interactable) : base()
+        public InternalStateMachine(Interactable interactable) : base()
         {
             _interactable = interactable;
             _storyIterator = InkyStoryManager.Iterator;
@@ -77,10 +77,10 @@ public partial class Interactable
         {
             // Protected reference to the Interactable for inherited states to use
             protected Interactable interactable;
-            protected StateMachine stateMachine;
+            protected InternalStateMachine stateMachine;
             protected IInteractable.State stateType;
             protected InkyStoryIterator storyIterator => InkyStoryManager.Iterator;
-            public BaseInteractState(StateMachine stateMachine, IInteractable.State stateType)
+            public BaseInteractState(InternalStateMachine stateMachine, IInteractable.State stateType)
                 : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
@@ -104,7 +104,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ NULL_STATE ]] ------------------------------------ >>>>
         public class NullState : BaseInteractState
         {
-            public NullState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.NULL) { }
+            public NullState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.NULL) { }
             public override void Enter() { }
             public override void Execute() { }
             public override void Exit() { }
@@ -114,7 +114,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ READY_STATE ]] ------------------------------------ >>>>
         public class ReadyState : BaseInteractState
         {
-            public ReadyState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.READY) { }
+            public ReadyState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.READY) { }
             public override void Enter()
             {
                 base.Enter();
@@ -125,7 +125,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ TARGET_STATE ]] ------------------------------------ >>>>
         public class TargetState : BaseInteractState
         {
-            public TargetState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.TARGET) { }
+            public TargetState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.TARGET) { }
             public override void Enter()
             {
                 base.Enter();
@@ -148,7 +148,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ START_STATE ]] ------------------------------------ >>>>
         public class StartState : BaseInteractState
         {
-            public StartState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.START) { }
+            public StartState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.START) { }
             public override void Enter()
             {
                 base.Enter();
@@ -164,7 +164,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ CONTINUE_STATE ]] ------------------------------------ >>>>
         public class ContinueState : BaseInteractState
         {
-            public ContinueState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.CONTINUE) { }
+            public ContinueState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.CONTINUE) { }
             public override void Enter()
             {
                 base.Enter();
@@ -204,7 +204,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ COMPLETE_STATE ]] ------------------------------------ >>>>
         public class CompleteState : BaseInteractState
         {
-            public CompleteState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.COMPLETE) { }
+            public CompleteState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.COMPLETE) { }
             public override void Enter()
             {
                 base.Enter();
@@ -220,7 +220,7 @@ public partial class Interactable
         #region ---- <STATE_CLASS> [[ DISABLED_STATE ]] ------------------------------------ >>>>
         public class DisabledState : BaseInteractState
         {
-            public DisabledState(StateMachine stateMachine) : base(stateMachine, IInteractable.State.DISABLED) { }
+            public DisabledState(InternalStateMachine stateMachine) : base(stateMachine, IInteractable.State.DISABLED) { }
             public override void Enter()
             {
                 base.Enter();

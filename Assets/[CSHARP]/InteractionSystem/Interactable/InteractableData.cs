@@ -9,7 +9,7 @@ using UnityEngine;
 public partial class Interactable
 {
     [Serializable]
-    protected class InternalData
+    public class InternalData
     {
         #region -- (( CONSTANTS )) ------------------- >>
         public const string DEFAULT_NAME = "DefaultName";
@@ -41,8 +41,24 @@ public partial class Interactable
         [SerializeField] Color _interactionTint = Color.yellow;
 
 
-        public string Name => _name;
-        public string Key => _key;
+        public string Name
+        {
+            get
+            {
+                if (_name == null || _name == string.Empty)
+                    _name = DEFAULT_NAME;
+                return _name;
+            }
+        }
+        public string Key
+        {
+            get
+            {
+                if (_key == null || _key == string.Empty)
+                    _key = DEFAULT_KEY;
+                return _key;
+            }
+        }
         public string Layer
         {
             get => _layer;
@@ -67,6 +83,7 @@ public partial class Interactable
             _interactable = interactable;
             _name = name;
             _key = key;
+            _interactable.gameObject.layer = LayerMask.NameToLayer(DEFAULT_LAYER);
 
             SetFlagsToDefault();
 
@@ -76,7 +93,7 @@ public partial class Interactable
             interactionRequest = InteractionSystem.Factory.CreateOrLoadRequestPreset();
             PreloadRecievers();
 
-            TryRegisterInteractable();
+            _isRegistered = InteractionSystem.Registry.TryRegisterInteractable(_interactable);
             _isPreloaded = ConfirmPreloadIsValid(true);
 
             if (_isPreloaded)
@@ -99,7 +116,7 @@ public partial class Interactable
                 }
             }
 
-            Debug.Log($"{PREFIX} Initialized Interactable {Name} :: {_interactable.GetInstanceID()}", _interactable);
+            Debug.Log($"{PREFIX} Initialized Interactable {Name} :: {Key}", _interactable);
             return _isInitialized = true;
         }
 
@@ -124,11 +141,6 @@ public partial class Interactable
             }
 
             return isValid;
-        }
-
-        bool TryRegisterInteractable()
-        {
-            return _isRegistered = InteractionSystem.Registry.TryRegisterInteractable(_interactable);
         }
 
         void PreloadSpriteRenderer()
@@ -239,24 +251,25 @@ public partial class Interactable
         #endregion
         #endregion
 
-        public void SetFlagsToDefault()
+        void SetFlagsToDefault()
         {
             _isRegistered = false;
             _isPreloaded = false;
             _isInitialized = false;
         }
 
-        public string BuildObjectName()
+        public string BuildNameKey()
         {
-            // Set name to sprite name if Default, Default if null
             if (Name == string.Empty) _name = DEFAULT_NAME;
             if (Name == DEFAULT_NAME && _sprite != null)
                 _name = _sprite.name;
-
-
             if (Key == string.Empty) _key = DEFAULT_KEY;
-            if (Layer == string.Empty) Layer = DEFAULT_LAYER;
-            return $"{PREFIX} {Key} : {Name}";
+            return $"{_name} : {_key}";
+        }
+
+        public string BuildObjectName()
+        {
+            return $"{PREFIX} {BuildNameKey()}";
         }
     }
 }

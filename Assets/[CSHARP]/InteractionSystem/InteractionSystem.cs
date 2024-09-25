@@ -125,8 +125,13 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         {
             Interactables.Clear();
             Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+            Debug.Log($"{Prefix} Refreshing Interactable Registry : Found {interactables.Length} interactables", Instance);
+
             foreach (Interactable interactable in interactables)
             {
+                if (interactable.Data.IsPreloaded)
+                    interactable.Preload();
+
                 TryRegisterInteractable(interactable);
             }
         }
@@ -142,26 +147,42 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         /// <returns></returns>
         public static bool TryRegisterInteractable(Interactable interactable, bool overwrite = false)
         {
-            // If the interactable is not in the library, add it
-            if (!Interactables.ContainsKey(interactable.Key))
+            if (Interactables.ContainsKey(interactable.Key))
+            {
+                // If the interactable is in the library and the same reference, return true
+                if (Interactables[interactable.Key] == interactable)
+                {
+                    Debug.Log($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
+                    return true;
+                }
+                else if (Interactables[interactable.Key] == null)
+                {
+                    Debug.Log($"{Prefix} Overwriting null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
+                    Interactables[interactable.Key] = interactable;
+                    return true;
+                }
+                else if (Interactables[interactable.Key] != null)
+                {
+                    if (overwrite)
+                    {
+                        Debug.Log($"{Prefix} Overwriting non-null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
+                        Interactables[interactable.Key] = interactable;
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogError($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
+                        return false;
+                    }
+                }
+            }
+            else
             {
                 Interactables.Add(interactable.Key, interactable);
-                Debug.Log($"{Prefix} Registered Interactable {interactable.Key}", interactable);
+                Debug.Log($"{Prefix} Adding {interactable.Data.BuildNameKey()} to the Registry", interactable);
                 return true;
             }
-            // If the interactable is in the library and the same reference, return true
-            else if (Interactables[interactable.Key] == interactable)
-            {
-                Debug.LogWarning($"{Prefix} Interactable {interactable.Key} already registered", interactable);
-                return true;
-            }
-            // If the interactable is in the library and not the same reference, overwrite if allowed
-            else if (overwrite)
-            {
-                Debug.LogWarning($"{Prefix} Overwriting Interactable {interactable.Key}", interactable);
-                Interactables[interactable.Key] = interactable;
-                return true;
-            }
+
             return false;
         }
 
@@ -303,6 +324,12 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 EditorGUI.BeginChangeCheck();
 
                 base.OnInspectorGUI();
+
+                if (GUILayout.Button("Refresh Registry"))
+                {
+                    Registry.ResetRegistry();
+                    Registry.RefreshInteractables();
+                }
 
                 if (EditorGUI.EndChangeCheck())
                 {
