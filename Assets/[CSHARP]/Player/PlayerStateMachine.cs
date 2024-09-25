@@ -22,7 +22,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
         base.Step();
     }
 
-    public override bool GoToState(PlayerState stateType)
+    public override bool GoToState(PlayerState stateType, bool force = false)
     {
         bool result = base.GoToState(stateType);
         if (result)

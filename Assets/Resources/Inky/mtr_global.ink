@@ -129,6 +129,9 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
 === scene_default ===
 = interaction_default
 ~ SetSpeaker(Speaker.Lupe)
-Hey, it's Lupe. Had to change my route; 
-tank was running low.
+Hey, it's Lupe here.
+It seems like you're hanging out in the default scene.
+Just so you're aware, this is for bug testing.
+Sky really likes little things like to help figure things out
+They tend to break stuff.
 -> DONE

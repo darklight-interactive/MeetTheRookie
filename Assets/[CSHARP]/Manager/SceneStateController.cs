@@ -76,7 +76,7 @@ public class SceneStateMachine : FiniteStateMachine<SceneState>
         base.Step();
     }
 
-    public override bool GoToState(SceneState newState)
+    public override bool GoToState(SceneState newState, bool force = false)
     {
         bool result = base.GoToState(newState);
         return result;

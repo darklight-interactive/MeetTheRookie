@@ -10,6 +10,8 @@ using Ink.Runtime;
 using NaughtyAttributes;
 
 using UnityEngine;
+using Unity.Android.Gradle.Manifest;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -74,22 +76,22 @@ public class MTR_Interactable : Interactable
     }
 
     #endregion
+    public override void Preload()
+    {
+        data = new InternalData(this, InternalData.DEFAULT_NAME, _interactionStitch);
+    }
+
 
     public override void Initialize()
     {
-        base.Initialize();
-
-        // -- Assign the interaction stitch
-        Key = _interactionStitch;
-
         // << DESTINATION POINTS >>
-        var tempLupe = FindFirstObjectByType<PlayerController>();
+        PlayerController tempLupe = FindFirstObjectByType<PlayerController>();
         if (tempLupe != null)
         {
             Lupe = tempLupe.gameObject;
         }
 
-        var tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
+        MTR_Misra_Controller tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
         if (tempMisra != null)
         {
             Misra = tempMisra.gameObject;

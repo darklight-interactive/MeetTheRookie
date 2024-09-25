@@ -4,6 +4,8 @@ using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
 using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Editor;
+
 
 
 #if UNITY_EDITOR
@@ -20,18 +22,21 @@ public enum InteractionTypeKey
 }
 
 [ExecuteAlways]
-public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>
+public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
     [SerializeField, Expandable] SystemSettings _settings;
     [SerializeField, Expandable] InteractionRequestPreset _interactable_interactionRequestPreset;
-
-
 
     [HorizontalLine(4, color: EColor.Gray)]
     [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
     public static SystemSettings Settings { get => Instance._settings; }
     public static InteractionRequestPreset InteractableInteractionRequestPreset { get => Instance._interactable_interactionRequestPreset; }
+
+    public void OnEditorReloaded()
+    {
+        Registry.ResetRegistry();
+    }
 
     public override void Initialize()
     {
@@ -122,7 +127,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
             foreach (Interactable interactable in interactables)
             {
-                TryRegister(interactable);
+                TryRegisterInteractable(interactable);
             }
         }
 
@@ -135,26 +140,34 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         /// <param name="interactable"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static bool TryRegister(Interactable interactable, bool overwrite = false)
+        public static bool TryRegisterInteractable(Interactable interactable, bool overwrite = false)
         {
             // If the interactable is not in the library, add it
             if (!Interactables.ContainsKey(interactable.Key))
             {
                 Interactables.Add(interactable.Key, interactable);
+                Debug.Log($"{Prefix} Registered Interactable {interactable.Key}", interactable);
                 return true;
             }
             // If the interactable is in the library and the same reference, return true
             else if (Interactables[interactable.Key] == interactable)
             {
+                Debug.LogWarning($"{Prefix} Interactable {interactable.Key} already registered", interactable);
                 return true;
             }
             // If the interactable is in the library and not the same reference, overwrite if allowed
             else if (overwrite)
             {
+                Debug.LogWarning($"{Prefix} Overwriting Interactable {interactable.Key}", interactable);
                 Interactables[interactable.Key] = interactable;
                 return true;
             }
             return false;
+        }
+
+        public static void ResetRegistry()
+        {
+            Interactables.Clear();
         }
 
         public static bool RegisterPlayerInteractor(PlayerInteractor player)

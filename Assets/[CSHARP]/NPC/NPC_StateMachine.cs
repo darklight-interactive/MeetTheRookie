@@ -31,7 +31,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
         base.Step();
     }
 
-    public override bool GoToState(NPCState newState)
+    public override bool GoToState(NPCState newState, bool force = false)
     {
         bool result = base.GoToState(newState);
         if (result)
