@@ -65,6 +65,7 @@ public partial class Interactable : MonoBehaviour,
         }
     }
     public IInteractable.State CurrentState { get => _currentState; }
+    public EnumObjectLibrary<InteractionTypeKey, InteractionReciever> Recievers { get => _recievers; }
     #endregion
 
     #region ======== [[ EVENTS ]] ================================== >>>>
