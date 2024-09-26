@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 296168923467016266}
   - component: {fileID: 4165984020649371347}
   - component: {fileID: 2698937323319930210}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[NPC] Calvin'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6521527979389369535, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+  m_Sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,18 +105,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
-  idleWalkLoop: 0
   stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: 2.33
-  rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  walkDestinationX: 0
+  stateAfterWalking: 1
 --- !u!114 &627303749554054177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,18 +206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: 4257475269257040620, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: -7569444317647869509, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: -6521527979389369535, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: 8609721151305637149, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: 5484843246563276747, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-    - {fileID: 8615295126695275498, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-  currentFrame: 3
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!61 &4165984020649371347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -265,7 +255,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &2698937323319930210
 MonoBehaviour:
@@ -279,19 +269,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  editMode: 0
-  _sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
-  onStart: 0
+  _data:
+    _name: defaultname
+    _key: scene4_3.calvin
+    _layer: Interactable
+    _isRegistered: 1
+    _isPreloaded: 1
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: -8903238982833652902, guid: 1b4984283f284664abae2c35fb0b3905, type: 3}
+    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _currentState: 0
+  _recievers:
+    _items:
+    - _id: 0
+      _key: 2
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
   _sceneKnot: scene4_3
   _interactionStitch: scene4_3.calvin
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  onStart: 0
+  isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  speakerTag: Speaker.Calvin
+  destinationPointsRelativeX: []
+  _speakerTag: Speaker.Unknown
+  _dialogueHandler: {fileID: 0}

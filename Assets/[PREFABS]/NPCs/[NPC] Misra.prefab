@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7923438984497505535}
   - component: {fileID: 5007469561755814138}
   - component: {fileID: 4369842979011664183}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: '[NPC] Misra'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,22 +49,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  editMode: 0
-  _sprite: {fileID: -692533693, guid: 26a8e1a9c36c746cd8c0323a0dc52815, type: 3}
-  onStart: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.talk_to_misra
+    _layer: Interactable
+    _isRegistered: 0
+    _isPreloaded: 0
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: -115184736, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
+    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
+    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _currentState: 0
+  _recievers:
+    _items:
+    - _id: 0
+      _key: 2
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.talk_to_misra
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  onStart: 0
+  isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  speakerTag: Speaker.Misra
+  destinationPointsRelativeX: []
+  _speakerTag: Speaker.Unknown
+  _dialogueHandler: {fileID: 0}
 --- !u!114 &4752545914602311088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,18 +91,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 4
-  idleWalkLoop: 0
   stateAfterAnimation: 4
   npcSpeed: 0.2
   followSpeed: 1
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: 0
-  rightBound: 0
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  walkDestinationX: 0
+  stateAfterWalking: 1
 --- !u!114 &2556373779886294289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,16 +240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: -115184736, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
-    - {fileID: -115184736, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
-    - {fileID: -826221020, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
-    - {fileID: -826221020, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
-    - {fileID: -826221020, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
-  currentFrame: 0
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: -115184736, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!61 &5007469561755814138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -285,7 +289,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.3948784, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!212 &4369842979011664183
 SpriteRenderer:
