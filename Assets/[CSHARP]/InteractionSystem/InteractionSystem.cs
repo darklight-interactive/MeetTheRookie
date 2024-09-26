@@ -21,13 +21,7 @@ public enum InteractionType
     CHOICE
 }
 
-public enum InteractableType
-{
-    BASE,
-    INTERACTOR,
-    NPC,
-    PLAYER
-}
+
 
 [ExecuteAlways]
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
@@ -40,7 +34,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     [SerializeField, Expandable] InteractionRequestDataObject _playerInteractionRequest;
 
     [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
+    [SerializeField] Library<string, BaseInteractable> _interactableRegistry = new Library<string, BaseInteractable>();
 
     public static InteractionSystemSettings Settings { get => Instance._settings; }
     public static InteractionRequestDataObject InteractableInteractionRequestPreset { get => Instance._baseInteractionRequest; }
@@ -57,13 +51,13 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             _settings = Factory.CreateSettings();
 
         if (_baseInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.BASE, out _baseInteractionRequest);
+            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.BASE, out _baseInteractionRequest);
         if (_interactorInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.INTERACTOR, out _interactorInteractionRequest);
+            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.INTERACTOR, out _interactorInteractionRequest);
         if (_npcInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.NPC, out _npcInteractionRequest);
+            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.NPC, out _npcInteractionRequest);
         if (_playerInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.PLAYER, out _playerInteractionRequest);
+            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.PLAYER, out _playerInteractionRequest);
     }
 
     void Update()
@@ -115,14 +109,14 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return settings;
         }
 
-        public static InteractionRequestDataObject CreateOrLoadInteractionRequestDataObject(InteractableType interactableType, out InteractionRequestDataObject request)
+        public static InteractionRequestDataObject CreateOrLoadInteractionRequestDataObject(BaseInteractableType interactableType, out InteractionRequestDataObject request)
         {
             string name = interactableType.ToString() + REQUEST_BASE_NAME;
             request = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(REQUEST_PATH, name);
             return request;
         }
 
-        public static void RemoveUnusedRecievers(Interactable interactable)
+        public static void RemoveUnusedRecievers(BaseInteractable interactable)
         {
             InteractionReciever[] allRecieversInChildren = interactable.GetComponentsInChildren<InteractionReciever>();
             foreach (InteractionReciever childReciever in allRecieversInChildren)
@@ -136,7 +130,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             }
         }
 
-        public static InteractionReciever GetRecieverInChildren(Interactable interactable, InteractionType key)
+        public static InteractionReciever GetRecieverInChildren(BaseInteractable interactable, InteractionType key)
         {
             InteractionReciever[] recievers = interactable.GetComponentsInChildren<InteractionReciever>();
             foreach (InteractionReciever reciever in recievers)
@@ -147,7 +141,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return null;
         }
 
-        public static void GenerateInteractableRecievers(Interactable interactable, List<InteractionType> requestedKeys = null)
+        public static void GenerateInteractableRecievers(BaseInteractable interactable, List<InteractionType> requestedKeys = null)
         {
             interactable.Recievers.Reset();
 
@@ -200,7 +194,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-        public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
+        public static Library<string, BaseInteractable> Interactables = new Library<string, BaseInteractable>()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = true
@@ -211,10 +205,10 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         static void RefreshInteractables()
         {
             Interactables.Clear();
-            Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+            BaseInteractable[] interactables = FindObjectsByType<BaseInteractable>(FindObjectsSortMode.None);
             Debug.Log($"{Prefix} Refreshing Interactable Registry : Found {interactables.Length} interactables", Instance);
 
-            foreach (Interactable interactable in interactables)
+            foreach (BaseInteractable interactable in interactables)
             {
                 if (interactable.Data.IsPreloaded)
                     interactable.Preload();
@@ -232,7 +226,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         /// <param name="interactable"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static bool TryRegisterInteractable(Interactable interactable, bool overwrite = false)
+        public static bool TryRegisterInteractable(BaseInteractable interactable, bool overwrite = false)
         {
             if (Interactables.ContainsKey(interactable.Key))
             {
@@ -280,7 +274,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             Interactables.Clear();
         }
 
-        public static Library<string, Interactable> GetLibrary()
+        public static Library<string, BaseInteractable> GetLibrary()
         {
             return Interactables;
         }

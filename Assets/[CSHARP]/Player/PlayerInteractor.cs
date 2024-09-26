@@ -43,7 +43,7 @@ public class PlayerInteractor : Interactor
     public override void Preload()
     {
         if (Data == null)
-            Data = new InternalData(this, "Lupe", "Player");
+            data = new BaseInteractableData(this, "Lupe", "Player");
         else
             Data.Preload(this, "Lupe", "Player");
 

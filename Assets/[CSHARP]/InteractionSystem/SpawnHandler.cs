@@ -90,7 +90,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
 
     public List<GameObject> GetAllInteractables()
     {
-        Interactable[] sceneInteractables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        BaseInteractable[] sceneInteractables = FindObjectsByType<BaseInteractable>(FindObjectsSortMode.None);
         List<GameObject> interactableObjects = new List<GameObject>();
 
         foreach (var interactable in sceneInteractables)
@@ -137,7 +137,7 @@ public class SceneInteractableInfo
 
         foreach (var interactable in interactables)
         {
-            Interactable script = interactable.GetComponent<Interactable>();
+            BaseInteractable script = interactable.GetComponent<BaseInteractable>();
 
             /*
             if (!script.isSpawn) { continue; }
