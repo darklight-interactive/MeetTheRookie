@@ -82,6 +82,11 @@ public class MTR_Interactable : Interactable
             _sceneKnot = DEFAULT_KNOT;
             _interactionStitch = DEFAULT_STITCH;
         }
+
+        if (Data == null)
+            Data = new InternalData(this, "defaultname", _interactionStitch);
+        else
+            Data.Preload(this, "defaultname", _interactionStitch);
     }
 
 
