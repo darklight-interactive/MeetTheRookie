@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5416394239746758926}
   - component: {fileID: 8403832537613495249}
+  - component: {fileID: 2236245743877035675}
   - component: {fileID: 8703908369491067701}
   - component: {fileID: 1048859347481113319}
   - component: {fileID: 5971972618659859766}
   - component: {fileID: 6562033029251709814}
-  - component: {fileID: 2236245743877035675}
   m_Layer: 0
   m_Name: '[NPC] Irene'
   m_TagString: Untagged
@@ -80,17 +80,54 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1642043989323102883, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
+  m_Sprite: {fileID: 6293982700646310010, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.4140625, y: 1.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2236245743877035675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152001243824678401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _isRegistered: 0
+    _isPreloaded: 0
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: 0}
+    _defaultTint: {r: 0, g: 0, b: 0, a: 0}
+    _interactionTint: {r: 0, g: 0, b: 0, a: 0}
+  _currentState: 0
+  _recievers:
+    _items: []
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
+  _sceneKnot: scene4_4
+  _interactionStitch: scene4_4.irene_text
+  onStart: 0
+  isSpawn: 0
+  _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX: []
+  _speakerTag: Speaker.Unknown
+  _dialogueHandler: {fileID: 0}
 --- !u!114 &8703908369491067701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,18 +142,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
-  idleWalkLoop: 0
   stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: 2.33
-  rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  walkDestinationX: 0
+  stateAfterWalking: 1
 --- !u!114 &1048859347481113319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,26 +239,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 6293982700646310010, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 4296632994142330535, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 1174059826492705558, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -2970808422957213160, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -2511810980642979539, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 7850940346004623336, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 5718635045488637834, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 1642043989323102883, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -8868038670798480343, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 4195292179223673433, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -1071355831492135790, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -8356855116902294440, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 1038774180233226294, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: -6408495311928778794, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-    - {fileID: 1159371459315198603, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
-  currentFrame: 7
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: 6293982700646310010, guid: c4d0f02d07e3c1547aad742f37fc1125, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!61 &6562033029251709814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -263,39 +282,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.421875, y: 1.125}
-    newSize: {x: 1, y: 2}
+    oldSize: {x: 0.4140625, y: 1.125}
+    newSize: {x: 0.4140625, y: 1.125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2236245743877035675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7152001243824678401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  editMode: 0
-  _sprite: {fileID: -1550777294, guid: 434c9d65b39aee143bb7a4c88c9ab042, type: 3}
-  onStart: 0
-  _sceneKnot: SetSpeaker
-  _interactionStitch: 
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _outlineMaterial: {fileID: 0}
-  speakerTag: Speaker.Irene

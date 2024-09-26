@@ -4,6 +4,7 @@ using System.Linq;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
 using UnityEngine;
 
 public partial class Interactable
@@ -32,7 +33,7 @@ public partial class Interactable
 
 
         [Header("Interaction System Data")]
-        public InteractionRequestPreset interactionRequest;
+        [SerializeField, Expandable] InteractionRequestPreset _interactionRequest;
 
 
         [Header("Sprite Data")]
@@ -72,10 +73,16 @@ public partial class Interactable
         public bool IsPreloaded => _isPreloaded;
         public bool IsInitialized => _isInitialized;
         public Sprite Sprite => _sprite;
+        public InteractionRequestPreset InteractionRequest => _interactionRequest;
 
         public InternalData(Interactable interactable, string name = DEFAULT_NAME, string key = DEFAULT_KEY)
         {
             Preload(interactable, name, key);
+        }
+
+        public void SetInteractionRequest(InteractionRequestPreset request)
+        {
+            _interactionRequest = request;
         }
 
         public bool Preload(Interactable interactable, string name = DEFAULT_NAME, string key = DEFAULT_KEY)
@@ -87,19 +94,24 @@ public partial class Interactable
 
             SetFlagsToDefault();
 
+            // << PRELOAD GAME COMPONENTS >> ------------------------------------
             PreloadSpriteRenderer();
             PreloadBoxCollider();
 
-            interactionRequest = InteractionSystem.Factory.CreateOrLoadRequestPreset();
-            PreloadRecievers();
+            // << PRELOAD RECIEVERS >> ------------------------------------
+            // If the interaction request is null, create a default request
+            if (_interactionRequest == null)
+                _interactionRequest = InteractionSystem.Factory.CreateOrLoadDefaultRequestPreset();
+            LoadRecievers();
 
+            // << VALIDATE PRELOAD >> ------------------------------------
             _isRegistered = InteractionSystem.Registry.TryRegisterInteractable(_interactable);
             _isPreloaded = ConfirmPreloadIsValid(true);
-
             if (_isPreloaded)
                 _interactable.name = BuildObjectName();
             return _isPreloaded;
         }
+
         public bool Initialize()
         {
             if (_interactable == null)
@@ -173,11 +185,11 @@ public partial class Interactable
         }
 
         #region -- (( PRELOAD RECIEVERS )) ------------------- >>
-        void PreloadRecievers()
+        void LoadRecievers()
         {
             _interactable._recievers.Reset();
 
-            List<InteractionTypeKey> requestedKeys = interactionRequest.Keys.ToList();
+            List<InteractionTypeKey> requestedKeys = _interactionRequest.Keys.ToList();
             foreach (InteractionTypeKey key in requestedKeys)
             {
                 _interactable._recievers.TryGetValue(key, out InteractionReciever currentHandlerValue);
@@ -190,7 +202,7 @@ public partial class Interactable
                         continue;
                     }
 
-                    GameObject recieverGameObject = interactionRequest.CreateRecieverGameObject(key);
+                    GameObject recieverGameObject = _interactionRequest.CreateRecieverGameObject(key);
                     if (recieverGameObject == null)
                     {
                         Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", _interactable);

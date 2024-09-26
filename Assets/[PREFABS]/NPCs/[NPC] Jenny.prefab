@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 638866193, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
+  m_Sprite: {fileID: 140297005, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,18 +105,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   startingState: 1
-  idleWalkLoop: 0
   stateAfterAnimation: 1
   npcSpeed: 0.2
   followSpeed: 0.5
   hideSpeed: 0.5
   chaseSpeed: 0.5
-  leftBound: 2.33
-  rightBound: 8.53
   followDistance: 1
   chaseSpeakDistance: 0.75
-  idleMaxDuration: 3
-  walkMaxDuration: 3
+  walkDestinationX: 0
+  stateAfterWalking: 1
 --- !u!114 &5124393161423606776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,29 +204,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 140297005, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 638866193, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 653786789, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 1746426209, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -108061883, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 1371116, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -1347530648, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -960482810, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 832449605, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 39101344, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 5048541, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -46944493, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 240902704, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -182443117, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -1475852465, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: 2054706780, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -1346844366, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-    - {fileID: -1986222715, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-  currentFrame: 1
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: 140297005, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!61 &7497998230883873984
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -288,19 +267,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  editMode: 0
-  _sprite: {fileID: 1746426209, guid: b413c904d37609f439c3ac3a18acfc13, type: 3}
-  onStart: 0
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _isRegistered: 0
+    _isPreloaded: 0
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: 0}
+    _defaultTint: {r: 0, g: 0, b: 0, a: 0}
+    _interactionTint: {r: 0, g: 0, b: 0, a: 0}
+  _currentState: 0
+  _recievers:
+    _items: []
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
   _sceneKnot: scene4_3
   _interactionStitch: scene4_3.jenny
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  onStart: 0
+  isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  speakerTag: Speaker.Jenny
+  destinationPointsRelativeX: []
+  _speakerTag: Speaker.Unknown
+  _dialogueHandler: {fileID: 0}

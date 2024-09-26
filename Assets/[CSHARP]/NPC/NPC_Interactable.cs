@@ -14,6 +14,8 @@ using UnityEditor;
 [RequireComponent(typeof(NPC_Controller))]
 public class NPC_Interactable : MTR_Interactable, IInteractable
 {
+    public new const string PREFIX = "<NPC>";
+
     NPCState _stateBeforeTalkedTo = NPCState.IDLE;
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
     [SerializeField] DialogueInteractionReciever _dialogueHandler;
@@ -47,9 +49,20 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
 
 
     // ======== [[ METHODS ]] ================================== >>>>
+    public override void Preload()
+    {
+        base.Preload();
+
+        InteractionSystem.Factory.CreateOrLoadRequestPreset(out InteractionRequestPreset interactionRequest, "NPC_InteractionRequestPreset");
+        Data.SetInteractionRequest(interactionRequest);
+
+    }
+
     public override void Initialize()
     {
         base.Initialize();
+        Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
+
 
         SpawnDestinationPoints();
 

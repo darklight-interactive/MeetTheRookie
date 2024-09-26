@@ -45,7 +45,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             _settings = Factory.CreateSettings();
 
         if (_interactable_interactionRequestPreset == null)
-            _interactable_interactionRequestPreset = Factory.CreateOrLoadRequestPreset();
+            _interactable_interactionRequestPreset = Factory.CreateOrLoadDefaultRequestPreset();
     }
 
     void Update()
@@ -86,24 +86,26 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InteractionSystem";
         const string SETTINGS_PATH = ASSET_PATH + "/Settings";
+        const string DEFAULT_SETTINGS_NAME = "Default_InteractionSystemSettings";
+
         const string REQUEST_PRESET_PATH = ASSET_PATH + "/RequestPreset";
+        const string DEFAULT_REQUEST_PRESET_NAME = "Default_InteractionRequestPreset";
 
         public static SystemSettings CreateSettings()
         {
-            string defaultName = "InteractionSystemSettings";
-            SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, defaultName);
+            SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, DEFAULT_SETTINGS_NAME);
             return settings;
         }
 
-        public static InteractionRequestPreset CreateOrLoadRequestPreset(string name = "InteractionRequestPreset")
+        public static InteractionRequestPreset CreateOrLoadDefaultRequestPreset(string name = DEFAULT_REQUEST_PRESET_NAME)
         {
             InteractionRequestPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestPreset>(REQUEST_PRESET_PATH, name);
             return preset;
         }
 
-        public static InteractionRequestPreset CreateOrLoadRequestPreset(out InteractionRequestPreset preset, string name = "InteractionRequestPreset")
+        public static InteractionRequestPreset CreateOrLoadRequestPreset(out InteractionRequestPreset preset, string name = DEFAULT_REQUEST_PRESET_NAME)
         {
-            preset = CreateOrLoadRequestPreset(name);
+            preset = CreateOrLoadDefaultRequestPreset(name);
             return preset;
         }
     }
