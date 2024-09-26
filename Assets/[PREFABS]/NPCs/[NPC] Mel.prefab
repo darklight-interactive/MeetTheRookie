@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8379782980816617672, guid: bad536425cbd56b47aca7332018d781e, type: 3}
+  m_Sprite: {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -187,21 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -5225543151695931204, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -1597186226610899330, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -8264825762497228616, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -8008942914907554811, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -2923967060345919608, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: 8379782980816617672, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: 6285674850972441328, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -6710486023538196893, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-    - {fileID: -5015707191919060186, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-  currentFrame: 6
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!61 &6562033029251709814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -260,21 +250,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
-  onStart: 0
-  isSpawn: 0
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _isRegistered: 0
+    _isPreloaded: 0
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: 0}
+    _defaultTint: {r: 0, g: 0, b: 0, a: 0}
+    _interactionTint: {r: 0, g: 0, b: 0, a: 0}
+  _currentState: 0
+  _recievers:
+    _items: []
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
   _sceneKnot: scene1_3
   _interactionStitch: scene1_3.mel
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  onStart: 0
+  isSpawn: 0
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX: []
-  iconGridSpawner: {fileID: 3078051565277534376}
-  _dialogueGridSpawner: {fileID: 9082691914558091236}
-  speakerTag: Speaker.Mel
+  _speakerTag: Speaker.Unknown
+  _dialogueHandler: {fileID: 0}
 --- !u!1001 &5753503416969585482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396,17 +396,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
---- !u!114 &3078051565277534376 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7309310622695701474, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
-  m_PrefabInstance: {fileID: 5753503416969585482}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8184315471590314116 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4488975370223629262, guid: efe784bedd69f6a488d2d6fe0a4a43d9, type: 3}
@@ -622,14 +611,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3887906809438628492, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
   m_PrefabInstance: {fileID: 7319036785754898896}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9082691914558091236 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1990103957342268980, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
-  m_PrefabInstance: {fileID: 7319036785754898896}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

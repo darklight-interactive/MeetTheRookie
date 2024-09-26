@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5360866141128978865}
   - component: {fileID: 5365568965282730410}
   - component: {fileID: 3932367194058205592}
-  - component: {fileID: 3278491017653917099}
   - component: {fileID: 1866593596376281087}
   - component: {fileID: 2433721290131396170}
   - component: {fileID: 210893148915583867}
@@ -51,10 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3656dd723ced74f9ec9614fbe8df73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
   _activeMoveInput: {x: 0, y: 0}
+  _facing: 0
   playerSpeed: 1
-  moveVector: {x: 1, y: 0}
 --- !u!114 &3932367194058205592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,37 +65,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 4e1f9763ea0aaf346a02cc1570dad694, type: 2}
-  layerMask:
+  _layerMask:
     serializedVersion: 2
-    m_Bits: 384
-  editMode: 0
-  _foundInteractables: []
-  targetInteractable: {fileID: 0}
-  activeInteractable: {fileID: 0}
-  previousTargetInteractable: {fileID: 0}
---- !u!114 &3278491017653917099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6171685949738713303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-    - {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-    - {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-    - {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-    - {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-  currentFrame: 0
+    m_Bits: 256
+  _dimensions: {x: 1, y: 1}
+  _offsetPosition: {x: 0, y: 0}
+  _interactionRequestPreset: {fileID: 11400000, guid: 7f60e5e898cdb4f46906fb5eebef37dd, type: 2}
+  _lastTarget: {fileID: 0}
+  _target: {fileID: 0}
+  _closestInteractable: {fileID: 0}
+  _nearbyInteractables:
+    _items: []
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+  _speakerTag: 
 --- !u!114 &1866593596376281087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +91,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentFrame: 0
+  _currentDirection: 2
+  _currentSprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
   animationStateOverride: 1
   spriteSheets:
   - state: 1
@@ -256,7 +242,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
