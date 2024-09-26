@@ -9,7 +9,7 @@ public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMAT
 public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
     public NPC_Controller controller;
-    public NPC_Animator animator;
+    public MTRCharacterAnimator animator;
 
     /// <summary>
     /// Constructor for the NPC State Machine
@@ -23,7 +23,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     public NPC_StateMachine(Dictionary<NPCState, FiniteState<NPCState>> possibleStates, NPCState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
         controller = (NPC_Controller)args[0];
-        animator = (NPC_Animator)args[1];
+        animator = (MTRCharacterAnimator)args[1];
     }
 
     public override void Step()
@@ -35,7 +35,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     {
         bool result = base.GoToState(newState);
         if (result)
-            animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(newState));
+            animator.LoadSpriteSheet(animator.GetSpriteSheetWithState(newState));
         return result;
     }
 }
@@ -201,7 +201,6 @@ public class FollowState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
-    private NPC_Animator _animator;
     private NPC_Controller _controller;
     private GameObject player;
 
@@ -278,13 +277,13 @@ public class FollowState : FiniteState<NPCState>
             if (!movingInFollowState && beyondFollowDistance)
             {
                 movingInFollowState = true;
-                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
+                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
             }
 
             // If NPC is moving and they're within distance, stop
             else if (movingInFollowState && !beyondFollowDistance)            {
                 movingInFollowState = false;
-                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
             }
         }
     }
@@ -388,13 +387,13 @@ public class HideState : FiniteState<NPCState>
                 if (beyondValidHideDistance && !movingInHideState)
                 {
                     movingInHideState = true;
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
                 }
                 // We just got in range, and need to stop moving
                 else if (!beyondValidHideDistance && movingInHideState)
                 {
                     movingInHideState = false;
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE));
                 }
             }
             else
@@ -403,7 +402,7 @@ public class HideState : FiniteState<NPCState>
             {
                 if (areThereHideableObjects || hideCheckCount == 0)
                 {
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
                     areThereHideableObjects = false;
                     movingInHideState = false;
                 }
@@ -484,7 +483,8 @@ public class PlayAnimationState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if ( _stateMachine.animator.FrameAnimationPlayer.AnimationIsOver() ) {
+        if (_stateMachine.animator.AnimationIsOver())
+        {
             _stateMachine.GoToState(_returnState);
         }
 
@@ -507,7 +507,7 @@ public class GrabbedState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.STRUGGLE);
         }
@@ -548,7 +548,7 @@ public class DraggedState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.IDLE);
         }

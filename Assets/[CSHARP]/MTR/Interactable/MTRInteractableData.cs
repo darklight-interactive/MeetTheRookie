@@ -32,13 +32,30 @@ public partial class MTRInteractable
         public override void LoadData(MTRInteractable interactable)
         {
             _name = DEFAULT_NAME;
-            if (interactable is MTRCharacterInteractable)
-                _key = (interactable as MTRCharacterInteractable).SpeakerTag;
-            else
-                _key = interactable._interactionStitch;
 
-            _layer = DEFAULT_LAYER;
+
+            if (interactable is MTRPlayerInteractor)
+            {
+                _key = (interactable as MTRPlayerInteractor).SpeakerTag;
+                _layer = InteractionSystem.Settings.PlayerLayer;
+            }
+            else if (interactable is MTRCharacterInteractable)
+            {
+                _key = (interactable as MTRCharacterInteractable).SpeakerTag;
+                _layer = InteractionSystem.Settings.NPCLayer;
+            }
+            else if (interactable is MTRInteractable)
+            {
+                _key = interactable._interactionStitch;
+                _layer = InteractionSystem.Settings.InteractableLayer;
+            }
+            else
+            {
+                _layer = DEFAULT_LAYER;
+
+            }
             _type = interactable.TypeKey;
+            interactable.gameObject.layer = LayerMask.NameToLayer(_layer);
 
             // << SET THE INITIAL SPRITE >> ------------------------------------
             // If the data contains a sprite, assign it to the sprite renderer

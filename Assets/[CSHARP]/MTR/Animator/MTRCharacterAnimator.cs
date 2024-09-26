@@ -9,7 +9,7 @@ using UnityEditor;
     typeof(SpriteRenderer)
     //typeof(FrameAnimationPlayer)
     )]
-public class NPC_Animator : MonoBehaviour
+public class MTRCharacterAnimator : FrameAnimationPlayer
 {
     private NPC_Controller _controller => GetComponent<NPC_Controller>();
     public NPC_StateMachine StateMachine
@@ -20,26 +20,41 @@ public class NPC_Animator : MonoBehaviour
     public NPCState animationStateOverride = NPCState.NONE;
     public List<SpriteSheet<NPCState>> spriteSheets = new List<SpriteSheet<NPCState>>();
 
-    #region [[ FRAME ANIMATION PLAYER ]] ======================================================== >>
-    public FrameAnimationPlayer FrameAnimationPlayer { get; private set; }
-    public void CreateFrameAnimationPlayer()
+    public override void Initialize()
     {
-        FrameAnimationPlayer = GetComponentInChildren<FrameAnimationPlayer>();
+        animationStateOverride = spriteSheets[0].state;
 
-        if (FrameAnimationPlayer == null)
+        if (animationStateOverride != NPCState.NONE)
         {
-            // Add the required components
-            FrameAnimationPlayer = this.gameObject.AddComponent<FrameAnimationPlayer>();
-            SpriteRenderer sr = this.gameObject.AddComponent<SpriteRenderer>();
+            SpriteSheet spriteSheet = GetSpriteSheetWithState(animationStateOverride);
+            if (spriteSheet != null)
+                LoadSpriteSheet(spriteSheet);
+            else
+                Debug.LogError("No sprite sheet found for state: " + animationStateOverride);
         }
+        else { Debug.LogError("No animation state set for player animator"); }
 
-        FrameAnimationPlayer.Clear();
+        UpdateFacing();
+    }
 
-        // Load the default sprite sheet
-        if (spriteSheets.Count > 0)
+    public override void Update()
+    {
+        base.Update();
+        UpdateFacing();
+    }
+
+    void UpdateFacing()
+    {
+
+    }
+
+    public void PlayStateAnimation(NPCState state)
+    {
+        // If there is a sprite sheet with the state, load it
+        if (spriteSheets.Find(x => x.state == state) != null)
         {
-            FrameAnimationPlayer.LoadSpriteSheet(spriteSheets[0].spriteSheet);
-            animationStateOverride = spriteSheets[0].state;
+            LoadSpriteSheet(spriteSheets.Find(x => x.state == state).spriteSheet);
+            animationStateOverride = state;
         }
     }
 
@@ -54,25 +69,19 @@ public class NPC_Animator : MonoBehaviour
         }
         return null;
     }
-    #endregion
-
-    public void Awake()
-    {
-        CreateFrameAnimationPlayer();
-    }
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(NPC_Animator)), CanEditMultipleObjects]
+[CustomEditor(typeof(MTRCharacterAnimator)), CanEditMultipleObjects]
 public class NPCAnimationEditor : Editor
 {
     SerializedObject _serializedObject;
-    NPC_Animator _script;
+    MTRCharacterAnimator _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (NPC_Animator)target;
-        _script.CreateFrameAnimationPlayer();
+        _script = (MTRCharacterAnimator)target;
+        _script.Awake();
     }
 
     public override void OnInspectorGUI()
@@ -87,7 +96,7 @@ public class NPCAnimationEditor : Editor
         {
             if (_script.animationStateOverride != NPCState.NONE)
             {
-                _script.FrameAnimationPlayer.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
+                _script.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
             }
 
             _serializedObject.ApplyModifiedProperties();
