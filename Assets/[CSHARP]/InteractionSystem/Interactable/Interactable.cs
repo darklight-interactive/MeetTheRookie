@@ -1,17 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Inky;
-using NaughtyAttributes;
 using UnityEngine;
-using Codice.CM.SEIDInfo;
-using Darklight.UnityExt.Utility;
-using System.Linq;
 using Darklight.UnityExt.Library;
 using System;
-using Unity.Android.Gradle.Manifest;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +13,7 @@ using UnityEditor;
 public partial class Interactable : MonoBehaviour,
     IInteractable, IUnityEditorListener
 {
-    public const string PREFIX = "<INTRCT>";
+    public const string PREFIX = "INTRCT";
 
     readonly List<IInteractable.State> VALID_INTERACTION_STATES = new List<IInteractable.State>
         {

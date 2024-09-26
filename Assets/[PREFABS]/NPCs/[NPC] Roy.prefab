@@ -51,16 +51,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  onStart: 0
-  isSpawn: 0
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _isRegistered: 0
+    _isPreloaded: 0
+    _isInitialized: 0
+    _interactionRequest: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+    _sprite: {fileID: 0}
+    _defaultTint: {r: 0, g: 0, b: 0, a: 0}
+    _interactionTint: {r: 0, g: 0, b: 0, a: 0}
+  _currentState: 0
+  _recievers:
+    _items: []
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
   _sceneKnot: scene4_2
   _interactionStitch: scene4_2.roy
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  onStart: 0
+  isSpawn: 0
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX: []
   _speakerTag: Speaker.Roy_Rodgerson
@@ -126,13 +137,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-    - {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  currentFrame: 1
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
 --- !u!212 &2958673987988220936
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -176,7 +185,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  m_Sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

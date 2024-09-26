@@ -10,7 +10,6 @@ using Ink.Runtime;
 using NaughtyAttributes;
 
 using UnityEngine;
-using Unity.Android.Gradle.Manifest;
 
 
 #if UNITY_EDITOR
@@ -22,17 +21,17 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class MTR_Interactable : Interactable
 {
-    const string DEFAULT_KNOT = "scene_default";
-    const string DEFAULT_STITCH = "interaction_default";
+    public const string DEFAULT_KNOT = "scene_default";
+    public const string DEFAULT_STITCH = "interaction_default";
 
     // -- (( DESTINATION POINTS )) -------- >>
     GameObject Lupe;
     GameObject Misra;
 
     [Dropdown("dropdown_sceneKnotList"), SerializeField]
-    string _sceneKnot = DEFAULT_KNOT;
+    string _sceneKnot = "scene_default";
     [Dropdown("dropdown_interactionStitchList"), SerializeField]
-    string _interactionStitch = DEFAULT_STITCH;
+    string _interactionStitch = "interaction_default";
 
     [Header("Interactable")]
     [SerializeField] bool onStart;
@@ -78,10 +77,16 @@ public class MTR_Interactable : Interactable
     #endregion
     public override void Preload()
     {
-        if (_interactionStitch == null)
-            Data = new InternalData(this, "defaultname", DEFAULT_STITCH);
-        else
+        if (_sceneKnot == null || _interactionStitch == null)
+        {
+            _sceneKnot = DEFAULT_KNOT;
+            _interactionStitch = DEFAULT_STITCH;
+        }
+
+        if (Data == null)
             Data = new InternalData(this, "defaultname", _interactionStitch);
+        else
+            Data.Preload(this, "defaultname", _interactionStitch);
     }
 
 
