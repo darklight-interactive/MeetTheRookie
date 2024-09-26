@@ -40,16 +40,18 @@ public class PlayerInteractor : Interactor
     #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
+    /*
     public override void Preload()
     {
         if (Data == null)
-            data = new BaseInteractableData(this, "Lupe", "Player");
+            data = new InteractableData(this, "Lupe", "Player");
         else
-            Data.Preload(this, "Lupe", "Player");
+            BaseInternalData.Preload(this, "Lupe", "Player");
 
         // Set the layer mask to the interactor
         LayerMask = InteractionSystem.Settings.GetCombinedNPCAndInteractableLayer();
     }
+    */
 
 
     public override void Update()

@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(NPC_Controller))]
-public class NPC_Interactable : MTR_Interactable
+public class NPC_Interactable : MTRInteractable
 {
     public new const string PREFIX = "<NPC>";
 
@@ -40,16 +40,16 @@ public class NPC_Interactable : MTR_Interactable
     public override void Preload()
     {
         base.Preload();
-        Data.Name = "defaultNPC";
+        //Data.Name = "defaultNPC";
 
-        InteractionSystem.Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.NPC, out InteractionRequestDataObject interactionRequest);
-        Data.SetInteractionRequest(interactionRequest);
+        //InteractionSystem.Factory.CreateOrLoadInteractionRequestDataObject(Type.NPC, out InteractionRequestDataObject interactionRequest);
+        //Data.SetInteractionRequest(interactionRequest);
     }
 
     public override void Initialize()
     {
         base.Initialize();
-        Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
+        //Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
 
 
         SpawnDestinationPoints();

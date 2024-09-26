@@ -13,26 +13,26 @@ using UnityEditor;
 public interface IInteractor
 {
     LayerMask LayerMask { get; }
-    public Library<BaseInteractable, string> NearbyInteractables { get; }
-    BaseInteractable TargetInteractable { get; }
+    public Library<Interactable, string> NearbyInteractables { get; }
+    Interactable TargetInteractable { get; }
 
-    void TryAddInteractable(BaseInteractable interactable);
-    void RemoveInteractable(BaseInteractable interactable);
+    void TryAddInteractable(Interactable interactable);
+    void RemoveInteractable(Interactable interactable);
 
-    List<BaseInteractable> FindInteractables();
-    BaseInteractable GetClosestReadyInteractable(Vector3 position);
+    List<Interactable> FindInteractables();
+    Interactable GetClosestReadyInteractable(Vector3 position);
 
-    bool TryAssignTarget(BaseInteractable interactable);
+    bool TryAssignTarget(Interactable interactable);
     void ClearTarget();
 
-    bool InteractWith(BaseInteractable interactable, bool force = false);
+    bool InteractWith(Interactable interactable, bool force = false);
     bool InteractWithTarget();
 
     void RefreshNearbyInteractables();
 }
 
 [ExecuteAlways]
-public class Interactor : BaseInteractable, IInteractor
+public class Interactor : MonoBehaviour, IInteractor
 {
 
     [Header("Interactor Settings")]
@@ -41,15 +41,15 @@ public class Interactor : BaseInteractable, IInteractor
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
 
     [Header("Interactables")]
-    [SerializeField, ShowOnly] BaseInteractable _lastTarget;
-    [SerializeField, ShowOnly] BaseInteractable _target;
+    [SerializeField, ShowOnly] Interactable _lastTarget;
+    [SerializeField, ShowOnly] Interactable _target;
 
     [Space(10)]
-    [SerializeField, ShowOnly] BaseInteractable _closestInteractable;
+    [SerializeField, ShowOnly] Interactable _closestInteractable;
 
     [SerializeField]
-    protected Library<BaseInteractable, string> _nearbyInteractables
-        = new Library<BaseInteractable, string>()
+    protected Library<Interactable, string> _nearbyInteractables
+        = new Library<Interactable, string>()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = true
@@ -57,8 +57,8 @@ public class Interactor : BaseInteractable, IInteractor
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
-    public Library<BaseInteractable, string> NearbyInteractables => _nearbyInteractables;
-    public BaseInteractable TargetInteractable => _target;
+    public Library<Interactable, string> NearbyInteractables => _nearbyInteractables;
+    public Interactable TargetInteractable => _target;
 
     public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
     protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
@@ -76,7 +76,7 @@ public class Interactor : BaseInteractable, IInteractor
     void OnDrawGizmos()
     {
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
-        foreach (BaseInteractable interactable in _nearbyInteractables.Keys)
+        foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
             if (interactable == null) continue;
             if (interactable == _target)
@@ -95,13 +95,13 @@ public class Interactor : BaseInteractable, IInteractor
     #endregion
 
     #region ======== <PUBLIC_METHODS> (( IInteractor )) ================================== >>>>
-    public List<BaseInteractable> FindInteractables()
+    public List<Interactable> FindInteractables()
     {
-        List<BaseInteractable> interactables = new List<BaseInteractable>();
+        List<Interactable> interactables = new List<Interactable>();
         Collider2D[] colliders = Physics2D.OverlapBoxAll(OverlapCenter, _dimensions, 0, _layerMask);
         foreach (Collider2D collider in colliders)
         {
-            BaseInteractable interactable = collider.GetComponent<BaseInteractable>();
+            Interactable interactable = collider.GetComponent<Interactable>();
             if (interactable != null)
             {
                 interactables.Add(interactable);
@@ -110,7 +110,7 @@ public class Interactor : BaseInteractable, IInteractor
         return interactables;
     }
 
-    public void TryAddInteractable(BaseInteractable interactable)
+    public void TryAddInteractable(Interactable interactable)
     {
         if (interactable == null) return;
         if (!_nearbyInteractables.ContainsKey(interactable))
@@ -119,21 +119,21 @@ public class Interactor : BaseInteractable, IInteractor
             _nearbyInteractables[interactable] = interactable.Name;
     }
 
-    public void RemoveInteractable(BaseInteractable interactable)
+    public void RemoveInteractable(Interactable interactable)
     {
         if (interactable == null) return;
         if (_nearbyInteractables.ContainsKey(interactable))
             _nearbyInteractables.Remove(interactable);
     }
 
-    public BaseInteractable GetClosestReadyInteractable(Vector3 position)
+    public Interactable GetClosestReadyInteractable(Vector3 position)
     {
         if (_nearbyInteractables.Count == 0) return null;
         if (_nearbyInteractables.Count == 1) return _nearbyInteractables.Keys.First();
 
-        BaseInteractable closestInteractable = _nearbyInteractables.Keys.First();
+        Interactable closestInteractable = _nearbyInteractables.Keys.First();
         float closestDistance = float.MaxValue;
-        foreach (BaseInteractable interactable in _nearbyInteractables.Keys)
+        foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
             if (interactable == null) continue;
 
@@ -148,7 +148,7 @@ public class Interactor : BaseInteractable, IInteractor
         return closestInteractable;
     }
 
-    public bool TryAssignTarget(BaseInteractable interactable)
+    public bool TryAssignTarget(Interactable interactable)
     {
         if (interactable == null) return false;
         if (_target == interactable) return false;
@@ -175,7 +175,7 @@ public class Interactor : BaseInteractable, IInteractor
         _lastTarget.Reset();
     }
 
-    public bool InteractWith(BaseInteractable interactable, bool force = false)
+    public bool InteractWith(Interactable interactable, bool force = false)
     {
         if (interactable == null) return false;
         return interactable.AcceptInteraction(this, force);
@@ -186,8 +186,8 @@ public class Interactor : BaseInteractable, IInteractor
     public void RefreshNearbyInteractables()
     {
         // Update the interactables dictionary with the overlap interactables.
-        List<BaseInteractable> overlapInteractables = FindInteractables();
-        foreach (BaseInteractable interactable in overlapInteractables)
+        List<Interactable> overlapInteractables = FindInteractables();
+        foreach (Interactable interactable in overlapInteractables)
         {
             TryAddInteractable(interactable);
         }
@@ -205,16 +205,16 @@ public class Interactor : BaseInteractable, IInteractor
         }
 
         // Remove interactables from the dict that are no longer in the overlap interactables.
-        List<BaseInteractable> dictInteractables = new List<BaseInteractable>(_nearbyInteractables.Keys);
-        List<BaseInteractable> interactablesToRemove = new List<BaseInteractable>();
-        foreach (BaseInteractable interactable in dictInteractables)
+        List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Keys);
+        List<Interactable> interactablesToRemove = new List<Interactable>();
+        foreach (Interactable interactable in dictInteractables)
         {
             if (!overlapInteractables.Contains(interactable))
             {
                 interactablesToRemove.Add(interactable);
             }
         }
-        foreach (BaseInteractable interactable in interactablesToRemove)
+        foreach (Interactable interactable in interactablesToRemove)
         {
             RemoveInteractable(interactable);
         }

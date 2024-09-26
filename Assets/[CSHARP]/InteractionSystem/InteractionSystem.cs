@@ -34,7 +34,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     [SerializeField, Expandable] InteractionRequestDataObject _playerInteractionRequest;
 
     [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] Library<string, BaseInteractable> _interactableRegistry = new Library<string, BaseInteractable>();
+    [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
     public static InteractionSystemSettings Settings { get => Instance._settings; }
     public static InteractionRequestDataObject InteractableInteractionRequestPreset { get => Instance._baseInteractionRequest; }
@@ -50,6 +50,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         if (_settings == null)
             _settings = Factory.CreateSettings();
 
+        /*
         if (_baseInteractionRequest == null)
             Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.BASE, out _baseInteractionRequest);
         if (_interactorInteractionRequest == null)
@@ -58,6 +59,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.NPC, out _npcInteractionRequest);
         if (_playerInteractionRequest == null)
             Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.PLAYER, out _playerInteractionRequest);
+        */
     }
 
     void Update()
@@ -109,40 +111,16 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return settings;
         }
 
-        public static InteractionRequestDataObject CreateOrLoadInteractionRequestDataObject(BaseInteractableType interactableType, out InteractionRequestDataObject request)
+        public static InteractionRequestDataObject CreateOrLoadInteractionRequest(string typeString, out InteractionRequestDataObject request)
         {
-            string name = interactableType.ToString() + REQUEST_BASE_NAME;
+            string name = typeString + REQUEST_BASE_NAME;
             request = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(REQUEST_PATH, name);
             return request;
         }
 
-        public static void RemoveUnusedRecievers(BaseInteractable interactable)
+        public static void GenerateInteractableRecievers(Interactable interactable)
         {
-            InteractionReciever[] allRecieversInChildren = interactable.GetComponentsInChildren<InteractionReciever>();
-            foreach (InteractionReciever childReciever in allRecieversInChildren)
-            {
-                // If the reciever is not in the library, destroy it
-                if (!interactable.Recievers.ContainsKey(childReciever.InteractionType)
-                    || interactable.Recievers[childReciever.InteractionType] != childReciever)
-                {
-                    ObjectUtility.DestroyAlways(childReciever.gameObject);
-                }
-            }
-        }
-
-        public static InteractionReciever GetRecieverInChildren(BaseInteractable interactable, InteractionType key)
-        {
-            InteractionReciever[] recievers = interactable.GetComponentsInChildren<InteractionReciever>();
-            foreach (InteractionReciever reciever in recievers)
-            {
-                if (reciever.InteractionType == key)
-                    return reciever;
-            }
-            return null;
-        }
-
-        public static void GenerateInteractableRecievers(BaseInteractable interactable, List<InteractionType> requestedKeys = null)
-        {
+            List<InteractionType> requestedKeys = interactable.Request.GetKeys();
             interactable.Recievers.Reset();
 
             foreach (InteractionType key in requestedKeys)
@@ -157,7 +135,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                         continue;
                     }
 
-                    GameObject recieverGameObject = interactable.Data.InteractionRequest.CreateRecieverGameObject(key);
+                    GameObject recieverGameObject = interactable.Request.CreateRecieverGameObject(key);
                     if (recieverGameObject == null)
                     {
                         Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", interactable);
@@ -188,32 +166,56 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
             //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
         }
+
+
+        public static void RemoveUnusedRecievers(Interactable interactable)
+        {
+            InteractionReciever[] allRecieversInChildren = interactable.GetComponentsInChildren<InteractionReciever>();
+            foreach (InteractionReciever childReciever in allRecieversInChildren)
+            {
+                // If the reciever is not in the library, destroy it
+                if (!interactable.Recievers.ContainsKey(childReciever.InteractionType)
+                    || interactable.Recievers[childReciever.InteractionType] != childReciever)
+                {
+                    ObjectUtility.DestroyAlways(childReciever.gameObject);
+                }
+            }
+        }
+
+        public static InteractionReciever GetRecieverInChildren(Interactable interactable, InteractionType key)
+        {
+            InteractionReciever[] recievers = interactable.GetComponentsInChildren<InteractionReciever>();
+            foreach (InteractionReciever reciever in recievers)
+            {
+                if (reciever.InteractionType == key)
+                    return reciever;
+            }
+            return null;
+        }
     }
     #endregion
 
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-        public static Library<string, BaseInteractable> Interactables = new Library<string, BaseInteractable>()
+        public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = true
         };
 
-
-
-        static void RefreshInteractables()
+        static void ReloadInteractables()
         {
             Interactables.Clear();
-            BaseInteractable[] interactables = FindObjectsByType<BaseInteractable>(FindObjectsSortMode.None);
+            Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
             Debug.Log($"{Prefix} Refreshing Interactable Registry : Found {interactables.Length} interactables", Instance);
 
-            foreach (BaseInteractable interactable in interactables)
+            foreach (Interactable interactable in interactables)
             {
-                if (interactable.Data.IsPreloaded)
+                if (interactable.IsPreloaded)
                     interactable.Preload();
 
-                TryRegisterInteractable(interactable);
+                TryRegisterInteractable(interactable, out bool result);
             }
         }
 
@@ -226,55 +228,57 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         /// <param name="interactable"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static bool TryRegisterInteractable(BaseInteractable interactable, bool overwrite = false)
+        public static void TryRegisterInteractable(Interactable interactable, out bool result, bool overwrite = false)
         {
+            result = false;
             if (Interactables.ContainsKey(interactable.Key))
             {
                 // If the interactable is in the library and the same reference, return true
                 if (Interactables[interactable.Key] == interactable)
                 {
                     //Debug.Log($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
-                    return true;
+                    result = true;
                 }
                 else if (Interactables[interactable.Key] == null)
                 {
-                    Debug.LogWarning($"{Prefix} Overwriting null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
+                    Debug.LogWarning($"{Prefix} Overwriting null value of Interactable {interactable.Print()}", interactable);
                     Interactables[interactable.Key] = interactable;
-                    return true;
+                    result = true;
                 }
                 else if (Interactables[interactable.Key] != null)
                 {
                     if (overwrite)
                     {
-                        Debug.Log($"{Prefix} Overwriting non-null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
+                        Debug.Log($"{Prefix} Overwriting non-null value of Interactable {interactable.Print()}", interactable);
                         Interactables[interactable.Key] = interactable;
-                        return true;
+                        result = true;
                     }
                     else
                     {
-                        Debug.LogError($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
-                        return false;
+                        Debug.LogError($"{Prefix} Interactable {interactable.Print()} already registered", interactable);
+                        result = false;
                     }
                 }
             }
             else
             {
                 Interactables.Add(interactable.Key, interactable);
-                Debug.Log($"{Prefix} Adding {interactable.Data.BuildNameKey()} to the Registry", interactable);
-                return true;
+                Debug.Log($"{Prefix} Adding {interactable.Print()} to the Registry", interactable);
+                result = true;
             }
-
-            return false;
         }
 
-
+        public static bool IsRegistered(Interactable interactable)
+        {
+            return Interactables.ContainsKey(interactable.Key);
+        }
 
         public static void ResetRegistry()
         {
             Interactables.Clear();
         }
 
-        public static Library<string, BaseInteractable> GetLibrary()
+        public static Library<string, Interactable> GetLibrary()
         {
             return Interactables;
         }
@@ -399,7 +403,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 if (GUILayout.Button("Refresh Registry"))
                 {
                     Registry.ResetRegistry();
-                    Registry.RefreshInteractables();
+                    Registry.ReloadInteractables();
                 }
 
                 if (EditorGUI.EndChangeCheck())

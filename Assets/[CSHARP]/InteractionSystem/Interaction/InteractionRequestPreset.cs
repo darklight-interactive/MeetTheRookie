@@ -14,6 +14,11 @@ public class InteractionRequestDataObject : EnumGameObjectScriptableLibrary<Inte
         };
     }
 
+    public List<InteractionType> GetKeys()
+    {
+        return new List<InteractionType>(Keys);
+    }
+
     public GameObject CreateRecieverGameObject(InteractionType key)
     {
         TryGetValue(key, out GameObject go);
