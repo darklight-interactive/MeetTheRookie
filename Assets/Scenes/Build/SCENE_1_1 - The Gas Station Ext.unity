@@ -2360,18 +2360,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene1_1.enter_store
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -526578920533849773, guid: abf3648a41e1601429a136f10b1800fa, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 1
+  _isRegistered: 1
+  _isInitialized: 1
+  _request: {fileID: 11400000, guid: d9e0b2350d0d61f49a73408858b81406, type: 2}
   _recievers:
     _items:
     - _id: 0
@@ -2380,6 +2372,12 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _data:
+    _name: DefaultName
+    _key: scene1_1.enter_store
+    _layer: Default
+    _type: 0
+    _sprite: {fileID: -526578920533849773, guid: abf3648a41e1601429a136f10b1800fa, type: 3}
   _sceneKnot: scene1_1
   _interactionStitch: scene1_1.enter_store
   onStart: 0
@@ -3261,7 +3259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1140891096
+  _guid: -1641443969
   _typeKey: 0
 --- !u!114 &715690772
 MonoBehaviour:
@@ -3275,7 +3273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1682436417
+  _guid: -1731269702
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 15fa5bcb5527c3e439c3c601c6418471, type: 2}
@@ -3291,7 +3289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1805637498
+  _guid: -874916109
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -3309,7 +3307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 982164750
+  _guid: -1812963409
   _typeKey: 2
   _showGizmos: 0
   _serializedWeightData:
@@ -3364,7 +3362,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1478503714
+      _guid: -595125522
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: 0.6387501, y: 0.65, z: 4.125}
@@ -3378,7 +3376,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -2133372114
+      _guid: 295292957
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: 0.6387501, y: 0.9, z: 4.125}
@@ -3392,7 +3390,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -735882765
+      _guid: 1075941754
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: 0.7950001, y: 0.525, z: 4.125}
@@ -3406,7 +3404,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 805598216
+      _guid: -1907208648
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: 0.7950001, y: 0.775, z: 4.125}
@@ -3420,7 +3418,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1660384896
+      _guid: -1939133065
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: 0.9512501, y: 0.65, z: 4.125}
@@ -3434,7 +3432,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -928023049
+      _guid: 1990479367
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: 0.9512501, y: 0.9, z: 4.125}
@@ -3623,18 +3621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene1_1.gas_pump
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 4816572674808989152, guid: 8c8656af83038694a92f90fd4e59bac4, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -3643,6 +3633,12 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _type: 0
+    _sprite: {fileID: 0}
   _sceneKnot: scene1_1
   _interactionStitch: scene1_1.gas_pump
   onStart: 0
@@ -6790,6 +6786,10 @@ PrefabInstance:
       propertyPath: _cellsInMap.Array.data[5].componentTypeKeys.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+      propertyPath: _speakerTag
+      value: Speaker.Unknown
+      objectReference: {fileID: 0}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_FlipX
       value: 1
@@ -6797,7 +6797,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.634
@@ -7579,7 +7579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1835267985
+  _guid: 267270355
   _typeKey: 0
 --- !u!114 &925247309
 MonoBehaviour:
@@ -7593,7 +7593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1450420522
+  _guid: -1143007803
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 15fa5bcb5527c3e439c3c601c6418471, type: 2}
@@ -7609,7 +7609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -81478154
+  _guid: 1307908246
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -7627,7 +7627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1438642600
+  _guid: -2007880064
   _typeKey: 2
   _showGizmos: 0
   _serializedWeightData:
@@ -7682,7 +7682,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -36592317
+      _guid: 47648438
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: 3.84375, y: 0.7169994, z: 3.8286085}
@@ -7696,7 +7696,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1087635132
+      _guid: 2061332540
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: 3.84375, y: 0.9669994, z: 3.8286085}
@@ -7710,7 +7710,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 764791126
+      _guid: 276710994
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: 4, y: 0.5919994, z: 3.8286085}
@@ -7724,7 +7724,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1903867710
+      _guid: -543591970
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: 4, y: 0.8419994, z: 3.8286085}
@@ -7738,7 +7738,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 431110242
+      _guid: -506809355
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: 4.15625, y: 0.7169994, z: 3.8286085}
@@ -7752,7 +7752,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1027658920
+      _guid: 613726100
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: 4.15625, y: 0.9669994, z: 3.8286085}
@@ -10821,23 +10821,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: 
-    _key: 
-    _layer: 
-    _isRegistered: 0
-    _isPreloaded: 0
-    _isInitialized: 0
-    interactionRequest: {fileID: 0}
-    _sprite: {fileID: 0}
-    _defaultTint: {r: 0, g: 0, b: 0, a: 0}
-    _interactionTint: {r: 0, g: 0, b: 0, a: 0}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _data:
+    _name: 
+    _key: 
+    _layer: 
+    _type: 0
+    _sprite: {fileID: 0}
   _sceneKnot: scene1_0
   _interactionStitch: scene1_0.intro
   onStart: 1

@@ -55,8 +55,8 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
     public void PlaySpecialAnimation(string speakerName)
     {
         // Set the Camera Target to a NPC
-        NPC_Interactable[] interactables = FindObjectsByType<NPC_Interactable>(FindObjectsSortMode.None);
-        foreach (NPC_Interactable interactable in interactables)
+        MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
+        foreach (MTRCharacterInteractable interactable in interactables)
         {
             if (interactable.SpeakerTag.Contains(speakerName))
             {

@@ -111,10 +111,12 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return settings;
         }
 
-        public static InteractionRequestDataObject CreateOrLoadInteractionRequest(string typeString, out InteractionRequestDataObject request)
+        public static InteractionRequestDataObject CreateOrLoadInteractionRequest(string typeString, out InteractionRequestDataObject request, List<InteractionType> keys = null)
         {
-            string name = typeString + REQUEST_BASE_NAME;
+            string name = $"{typeString} {REQUEST_BASE_NAME}";
             request = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(REQUEST_PATH, name);
+            request.RequiredKeys = keys;
+            request.Refresh();
             return request;
         }
 

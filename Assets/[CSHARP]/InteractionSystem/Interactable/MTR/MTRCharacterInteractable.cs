@@ -11,13 +11,9 @@ using Darklight.UnityExt.Utility;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(NPC_Controller))]
-public class NPC_Interactable : MTRInteractable
+public class MTRCharacterInteractable : MTRInteractable
 {
-    public new const string PREFIX = "<NPC>";
-
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
-    [SerializeField] DialogueInteractionReciever _dialogueHandler;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
@@ -33,10 +29,30 @@ public class NPC_Interactable : MTRInteractable
             return speakers;
         }
     }
+    public override Type TypeKey => Type.CHARACTER_INTERACTABLE;
     public string SpeakerTag => _speakerTag;
 
 
     // ======== [[ METHODS ]] ================================== >>>>
+    protected override void PreloadBoxCollider()
+    {
+        collider = GetComponent<BoxCollider2D>();
+        if (collider == null)
+        {
+            collider = gameObject.AddComponent<BoxCollider2D>();
+        }
+        collider.size = new Vector2(0.5f, 1);
+    }
+
+    protected override void GenerateRecievers()
+    {
+        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
+            out InteractionRequestDataObject interactionRequest,
+            new List<InteractionType> { InteractionType.TARGET, InteractionType.DIALOGUE });
+        Request = interactionRequest;
+        InteractionSystem.Factory.GenerateInteractableRecievers(this);
+    }
+
     public override void Preload()
     {
         base.Preload();
@@ -46,6 +62,17 @@ public class NPC_Interactable : MTRInteractable
         //Data.SetInteractionRequest(interactionRequest);
     }
 
+    public override void Register()
+    {
+        // << REGISTER INTERACTABLE >> ------------------------------------
+        InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
+        GenerateRecievers();
+
+        // << VALIDATE REGISTRATION >> ------------------------------------
+        if (ValidateRegistration())
+            Initialize();
+    }
+
     public override void Initialize()
     {
         base.Initialize();
@@ -53,9 +80,6 @@ public class NPC_Interactable : MTRInteractable
 
 
         SpawnDestinationPoints();
-
-        Reset();
-
         /*
             // >> ON FIRST INTERACTION -------------------------------
             this.OnStartInteraction += () =>

@@ -27,8 +27,9 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     public enum Type
     {
-        INTERACTABLE,
-        INTERACTOR
+        BASE_INTERACTABLE,
+        CHARACTER_INTERACTABLE,
+        PLAYER_INTERACTOR,
     }
 
     public enum State
@@ -49,6 +50,10 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         State.CONTINUE
     };
 
+    // -- (( DESTINATION POINTS )) -------- >>
+    GameObject Lupe;
+    GameObject Misra;
+
     [SerializeField, ShowOnly] bool _isPreloaded;
     [SerializeField, ShowOnly] bool _isRegistered;
     [SerializeField, ShowOnly] bool _isInitialized;
@@ -58,21 +63,12 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [SerializeField] InteractionRecieverLibrary _recievers;
 
     [HorizontalLine(color: EColor.Gray)]
-    [SerializeField] protected InternalData data;
-    protected InternalStateMachine stateMachine;
-    protected SpriteRenderer spriteRenderer;
-    protected new BoxCollider2D collider;
+    [SerializeField] InternalData _data;
 
 
-
-    // -- (( DESTINATION POINTS )) -------- >>
-    GameObject Lupe;
-    GameObject Misra;
-
-    [Dropdown("dropdown_sceneKnotList"), SerializeField]
-    string _sceneKnot = "scene_default";
-    [Dropdown("dropdown_interactionStitchList"), SerializeField]
-    string _interactionStitch = "interaction_default";
+    [HorizontalLine(color: EColor.Gray)]
+    [Dropdown("dropdown_sceneKnotList"), SerializeField] string _sceneKnot = "scene_default";
+    [Dropdown("dropdown_interactionStitchList"), SerializeField] string _interactionStitch = "interaction_default";
 
     [Header("Interactable")]
     [SerializeField] bool onStart;
@@ -87,7 +83,9 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [SerializeField] List<float> destinationPointsRelativeX;
     private List<GameObject> _destinationPoints = new List<GameObject>();
 
-
+    protected InternalStateMachine stateMachine;
+    protected SpriteRenderer spriteRenderer;
+    protected new BoxCollider2D collider;
     #region ======== [[ PROPERTIES ]] ================================== >>>>
     protected List<string> dropdown_sceneKnotList
     {
@@ -115,24 +113,24 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         get
         {
-            if (data == null) return DEFAULT_NAME;
-            return data.Name;
+            if (_data == null) return DEFAULT_NAME;
+            return _data.Name;
         }
     }
     public override string Key
     {
         get
         {
-            if (data == null) return DEFAULT_KEY;
-            return data.Key;
+            if (_data == null) return DEFAULT_KEY;
+            return _data.Key;
         }
     }
     public override string Layer
     {
         get
         {
-            if (data == null) return DEFAULT_LAYER;
-            return data.Layer;
+            if (_data == null) return DEFAULT_LAYER;
+            return _data.Layer;
         }
     }
     public override InteractionRequestDataObject Request
@@ -177,7 +175,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     }
 
 
-    public override InternalData Data => data;
+    public override InternalData Data => _data;
     public override InternalStateMachine StateMachine => stateMachine;
     public override State CurrentState
     {
@@ -187,7 +185,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             return StateMachine.CurrentState;
         }
     }
-    public override Type TypeKey => Type.INTERACTABLE;
+    public override Type TypeKey => Type.BASE_INTERACTABLE;
 
     #endregion
 
@@ -198,7 +196,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
-
 
         // << SET THE DEFAULT TINT >> ------------------------------------
         spriteRenderer.color = Color.white;
@@ -216,10 +213,10 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     protected virtual void PreloadData()
     {
-        if (data == null)
-            data = new InternalData(this);
+        if (_data == null)
+            _data = new InternalData(this);
         else
-            data.LoadData(this);
+            _data.LoadData(this);
     }
 
     protected virtual void PreloadStateMachine()
@@ -232,7 +229,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         bool spriteRendererValid = spriteRenderer != null;
         bool colliderValid = collider != null;
-        bool dataValid = data != null;
+        bool dataValid = _data != null;
         bool stateMachineValid = stateMachine != null;
         bool isValid = spriteRendererValid && colliderValid && dataValid && stateMachineValid;
 
@@ -251,6 +248,15 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
 
         return IsPreloaded = isValid;
+    }
+
+
+    protected virtual void GenerateRecievers()
+    {
+        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
+            out InteractionRequestDataObject newRequest, new List<InteractionType> { InteractionType.TARGET });
+        Request = newRequest;
+        InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
 
     protected virtual bool ValidateRegistration()
@@ -309,9 +315,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         // << REGISTER INTERACTABLE >> ------------------------------------
         InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
-        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(), out InteractionRequestDataObject newRequest);
-        Request = newRequest;
-        InteractionSystem.Factory.GenerateInteractableRecievers(this);
+        GenerateRecievers();
 
         // << VALIDATE REGISTRATION >> ------------------------------------
         if (ValidateRegistration())
@@ -352,7 +356,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     public override void Refresh()
     {
-        StateMachine.Step();
+        if (StateMachine != null)
+            StateMachine.Step();
     }
 
     public override void Reset()
@@ -416,7 +421,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         if (onStart)
         {
-            PlayerInteractor playerInteractor = FindFirstObjectByType<PlayerInteractor>();
+            MTRPlayerInteractor playerInteractor = FindFirstObjectByType<MTRPlayerInteractor>();
             playerInteractor.InteractWith(this, true);
         }
     }
@@ -524,6 +529,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         {
             _serializedObject = new SerializedObject(target);
             _script = (MTRInteractable)target;
+
             _script.Preload();
         }
 
@@ -558,8 +564,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                     _script.Initialize();
                 }
             }
-
-
 
             if (EditorGUI.EndChangeCheck())
             {

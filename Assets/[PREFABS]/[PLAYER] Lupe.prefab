@@ -1,5 +1,95 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3523755236959038371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 102881471270245312}
+  - component: {fileID: 3048032645071466451}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &102881471270245312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3523755236959038371}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360866141128978865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3048032645071466451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3523755236959038371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
+--- !u!1 &5536821038273229167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8062547352008802241}
+  - component: {fileID: 901988224291323252}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8062547352008802241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536821038273229167}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360866141128978865}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &901988224291323252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536821038273229167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!1 &6171685949738713303
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,7 +125,9 @@ Transform:
   m_LocalPosition: {x: 0.25, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 102881471270245312}
+  - {fileID: 8062547352008802241}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5365568965282730410
@@ -65,20 +157,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d9566783564d4c8061a762086a4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPreloaded: 1
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 11400000, guid: 6c6beac1a35ef3942995708da5877fdf, type: 2}
+  _recievers:
+    _items:
+    - _id: 0
+      _key: 2
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
+  _data:
+    _name: Lupe
+    _key: Player
+    _layer: Default
+    _type: 2
+    _sprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+  _sceneKnot: scene_default
+  _interactionStitch: scene_default.interaction_default
+  onStart: 0
+  isSpawn: 0
+  _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX:
+  - -1
+  - 1
+  _speakerTag: Speaker.Lupe
   _layerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   _dimensions: {x: 1, y: 1}
-  _offsetPosition: {x: 0, y: 0}
-  _interactionRequestPreset: {fileID: 11400000, guid: e6296d92d00d4324a8de535635a5ed71, type: 2}
+  _offsetPosition: {x: 0.35, y: 0}
   _lastTarget: {fileID: 0}
   _target: {fileID: 0}
   _closestInteractable: {fileID: 0}
   _nearbyInteractables:
-    _items: []
+    _items:
+    - _id: 0
+      _key: {fileID: 0}
+      _value: DefaultName
     _readOnlyKey: 1
     _readOnlyValue: 1
-  _speakerTag: 
 --- !u!114 &1866593596376281087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +288,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 2}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &210893148915583867
 Rigidbody2D:

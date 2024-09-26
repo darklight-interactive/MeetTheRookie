@@ -1,4 +1,4 @@
-
+using UnityEngine;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Inky;
 
@@ -30,6 +30,23 @@ public partial class MTRInteractable
 
             // Set the initial state
             GoToState(State.NULL);
+        }
+
+        protected void TryGetDialogueReciever(string speakerName, out DialogueInteractionReciever reciever)
+        {
+            reciever = null;
+
+            string fullTag = $"Speaker.{speakerName}";
+            InteractionSystem.Registry.Interactables.TryGetValue(fullTag, out MTRCharacterInteractable character);
+            if (character == null)
+                Debug.LogError($"{PREFIX} :: Could not find character with speaker tag: {fullTag}");
+
+            if (character != null)
+                character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
+
+            if (reciever == null)
+                Debug.LogError($"{PREFIX} :: Could not find dialogue reciever for character: {fullTag}");
+            return;
         }
 
         #region ---- <ABSTRACT_STATE_CLASS> [[ BaseInteractState ]] ------------------------------------ >>>>
@@ -108,7 +125,7 @@ public partial class MTRInteractable
             public override void Enter()
             {
                 base.Enter();
-                storyIterator.GoToKnotOrStitch(interactable.Key);
+                storyIterator.GoToKnotOrStitch(interactable._interactionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
                 stateMachine.GoToState(State.CONTINUE);
             }
@@ -120,6 +137,8 @@ public partial class MTRInteractable
         #region ---- <STATE_CLASS> [[ CONTINUE_STATE ]] ------------------------------------ >>>>
         public class ContinueState : BaseInteractState
         {
+            DialogueInteractionReciever dialogueReciever;
+
             public ContinueState(InternalStateMachine stateMachine)
                 : base(stateMachine, State.CONTINUE) { }
             public override void Enter()
@@ -133,20 +152,22 @@ public partial class MTRInteractable
                 string text = storyIterator.CurrentStoryDialogue;
 
                 // Get the player interactor and dialogue reciever
-                InteractionSystem.Registry.Interactables.TryGetValue("Player", out MTRInteractable playerInteractor);
-                playerInteractor.Recievers.TryGetValue(InteractionType.DIALOGUE, out DialogueInteractionReciever playerDialogueReciever);
+                string currentSpeaker = InkyStoryManager.CurrentSpeaker;
+                stateMachine.TryGetDialogueReciever(currentSpeaker,
+                    out DialogueInteractionReciever speakerDialogueReciever);
+                this.dialogueReciever = speakerDialogueReciever;
 
 
 
                 switch (storyState)
                 {
                     case InkyStoryIterator.State.DIALOGUE:
-                        InteractionSystem.Invoke(new DialogueInteractionCommand(playerDialogueReciever, text));
+                        InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, text));
                         break;
                     case InkyStoryIterator.State.CHOICE:
                         break;
                     case InkyStoryIterator.State.END:
-                        InteractionSystem.Invoke(new DialogueInteractionCommand(playerDialogueReciever, true));
+                        InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));
                         stateMachine.GoToState(State.COMPLETE);
                         break;
                     default:
@@ -154,7 +175,11 @@ public partial class MTRInteractable
                 }
             }
             public override void Execute() { }
-            public override void Exit() { }
+            public override void Exit()
+            {
+                // Destroy the bubble on exit
+                InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));
+            }
         }
         #endregion
 
