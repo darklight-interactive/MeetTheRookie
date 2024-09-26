@@ -44,7 +44,6 @@ public interface IInteractable
     bool AcceptInteraction(IInteractor interactor, bool force = false);
 
 
-
     // ===================== [[ NESTED TYPES ]] =====================
     public enum State
     {
@@ -239,6 +238,8 @@ public partial class Interactable : MonoBehaviour,
         return true;
     }
     #endregion
+
+
 
     /*
     private IEnumerator ColorChangeRoutine(Color newColor, float duration)

@@ -22,6 +22,19 @@ public class PlayerInteractor : Interactor
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
+    List<string> _speakerOptions
+    {
+        // This is just a getter a list of all the speakers in the story
+        get
+        {
+            List<string> speakers = new List<string>();
+            if (InkyStoryManager.Instance != null)
+            {
+                speakers = InkyStoryManager.SpeakerList;
+            }
+            return speakers;
+        }
+    }
     public PlayerController PlayerController => GetComponent<PlayerController>();
     public string SpeakerTag => _speakerTag;
     #endregion

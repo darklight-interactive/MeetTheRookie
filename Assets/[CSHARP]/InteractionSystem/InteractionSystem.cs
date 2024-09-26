@@ -200,7 +200,6 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-        public static PlayerInteractor PlayerInteractor { get; private set; }
         public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
         {
             ReadOnlyKey = true,
@@ -281,22 +280,10 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             Interactables.Clear();
         }
 
-        public static bool RegisterPlayerInteractor(PlayerInteractor player)
-        {
-            if (PlayerInteractor != null)
-            {
-                Debug.LogWarning($"{Prefix} Player Interactor already registered", player);
-                return false;
-            }
-            PlayerInteractor = player;
-            return true;
-        }
-
         public static Library<string, Interactable> GetLibrary()
         {
             return Interactables;
         }
-
         #endregion
 
 

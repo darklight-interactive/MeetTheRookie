@@ -177,7 +177,10 @@ public partial class Interactable
                 Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
 
                 string text = storyIterator.CurrentStoryDialogue;
-                //DialogueInteractionReciever playerDialogueReciever = InteractionSystem.Registry.PlayerInteractor.DialogueReciever;
+
+                // Get the player interactor and dialogue reciever
+                InteractionSystem.Registry.Interactables.TryGetValue("Player", out Interactable playerInteractor);
+                playerInteractor.Recievers.TryGetValue(InteractionType.DIALOGUE, out DialogueInteractionReciever playerDialogueReciever);
 
 
 
