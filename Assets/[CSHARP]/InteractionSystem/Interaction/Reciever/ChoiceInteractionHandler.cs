@@ -22,7 +22,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
     [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
-    public InteractionTypeKey InteractionType => InteractionTypeKey.CHOICE;
+    public InteractionType InteractionType => InteractionType.CHOICE;
     Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 

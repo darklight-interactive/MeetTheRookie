@@ -23,7 +23,7 @@ public class DialogueInteractionReciever : InteractionReciever
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
-    public override InteractionTypeKey InteractionType => InteractionTypeKey.DIALOGUE;
+    public override InteractionType InteractionType => InteractionType.DIALOGUE;
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
     public Grid2D_OverlapWeightSpawner Grid
     {

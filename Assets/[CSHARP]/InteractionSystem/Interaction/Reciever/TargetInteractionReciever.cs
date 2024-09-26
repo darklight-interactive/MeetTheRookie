@@ -23,7 +23,7 @@ public class TargetInteractionReciever : InteractionReciever
     Material material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 
-    public override InteractionTypeKey InteractionType => InteractionTypeKey.TARGET;
+    public override InteractionType InteractionType => InteractionType.TARGET;
 
     public void ShowInteractIcon()
     {

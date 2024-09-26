@@ -16,7 +16,6 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
 {
     public new const string PREFIX = "<NPC>";
 
-    NPCState _stateBeforeTalkedTo = NPCState.IDLE;
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
     [SerializeField] DialogueInteractionReciever _dialogueHandler;
 
@@ -34,17 +33,6 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
             return speakers;
         }
     }
-    NPC_StateMachine _stateMachine => GetComponent<NPC_Controller>().stateMachine;
-    public DialogueInteractionReciever DialogueHandler
-    {
-        get
-        {
-            if (_dialogueHandler == null)
-                _dialogueHandler = GetComponentInChildren<DialogueInteractionReciever>();
-            return _dialogueHandler;
-        }
-        set => _dialogueHandler = value;
-    }
     public string SpeakerTag => _speakerTag;
 
 
@@ -52,10 +40,10 @@ public class NPC_Interactable : MTR_Interactable, IInteractable
     public override void Preload()
     {
         base.Preload();
+        Data.Name = "defaultNPC";
 
-        InteractionSystem.Factory.CreateOrLoadRequestPreset(out InteractionRequestPreset interactionRequest, "NPC_InteractionRequestPreset");
+        InteractionSystem.Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.NPC, out InteractionRequestDataObject interactionRequest);
         Data.SetInteractionRequest(interactionRequest);
-
     }
 
     public override void Initialize()

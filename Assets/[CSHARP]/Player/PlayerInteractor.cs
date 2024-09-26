@@ -22,49 +22,22 @@ public class PlayerInteractor : Interactor
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions
-    {
-        // This is just a getter a list of all the speakers in the story
-        get
-        {
-            List<string> speakers = new List<string>();
-            if (InkyStoryManager.Instance != null)
-            {
-                speakers = InkyStoryManager.SpeakerList;
-            }
-            return speakers;
-        }
-    }
     public PlayerController PlayerController => GetComponent<PlayerController>();
-    public DialogueInteractionReciever DialogueReciever
-    {
-        get
-        {
-            if (_dialogueHandler == null)
-                _dialogueHandler = GetComponentInChildren<DialogueInteractionReciever>();
-            return _dialogueHandler;
-        }
-        set => _dialogueHandler = value;
-    }
-    public ChoiceInteractionHandler ChoiceHandler
-    {
-        get
-        {
-            if (_choiceHandler == null)
-                _choiceHandler = GetComponentInChildren<ChoiceInteractionHandler>();
-            return _choiceHandler;
-        }
-        set => _choiceHandler = value;
-    }
     public string SpeakerTag => _speakerTag;
     #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
-    public override void Awake()
+    public override void Preload()
     {
-        base.Awake();
-        InteractionSystem.Registry.RegisterPlayerInteractor(this);
+        if (Data == null)
+            Data = new InternalData(this, "Lupe", "Player");
+        else
+            Data.Preload(this, "Lupe", "Player");
+
+        // Set the layer mask to the interactor
+        LayerMask = InteractionSystem.Settings.GetCombinedNPCAndInteractableLayer();
     }
+
 
     public override void Update()
     {
@@ -201,34 +174,5 @@ public class PlayerInteractor : Interactor
         // Force set the speaker to Lupe
         InkyStoryManager.Instance.SetSpeaker("Lupe");
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(PlayerInteractor))]
-    public class PlayerInteractorCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        PlayerInteractor _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (PlayerInteractor)target;
-            _script.Awake();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
 
 }

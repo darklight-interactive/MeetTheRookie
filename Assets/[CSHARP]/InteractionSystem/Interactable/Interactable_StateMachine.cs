@@ -130,7 +130,7 @@ public partial class Interactable
             {
                 base.Enter();
 
-                interactable._recievers.TryGetValue(InteractionTypeKey.TARGET, out TargetInteractionReciever reciever);
+                interactable._recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
             }
@@ -138,7 +138,7 @@ public partial class Interactable
             public override void Execute() { }
             public override void Exit()
             {
-                interactable._recievers.TryGetValue(InteractionTypeKey.TARGET, out TargetInteractionReciever reciever);
+                interactable._recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
             }
@@ -177,7 +177,7 @@ public partial class Interactable
                 Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
 
                 string text = storyIterator.CurrentStoryDialogue;
-                DialogueInteractionReciever playerDialogueReciever = InteractionSystem.Registry.PlayerInteractor.DialogueReciever;
+                //DialogueInteractionReciever playerDialogueReciever = InteractionSystem.Registry.PlayerInteractor.DialogueReciever;
 
 
 

@@ -3,18 +3,18 @@ using Darklight.UnityExt.Library;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Darklight/Interaction/Interactable/RequestPreset")]
-public class InteractionRequestPreset : EnumGameObjectScriptableLibrary<InteractionTypeKey>
+public class InteractionRequestDataObject : EnumGameObjectScriptableLibrary<InteractionType>
 {
-    protected override EnumGameObjectLibrary<InteractionTypeKey> CreateNewLibrary()
+    protected override EnumGameObjectLibrary<InteractionType> CreateNewLibrary()
     {
-        return new EnumGameObjectLibrary<InteractionTypeKey>()
+        return new EnumGameObjectLibrary<InteractionType>()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = false,
         };
     }
 
-    public GameObject CreateRecieverGameObject(InteractionTypeKey key)
+    public GameObject CreateRecieverGameObject(InteractionType key)
     {
         TryGetValue(key, out GameObject go);
         if (go != null)

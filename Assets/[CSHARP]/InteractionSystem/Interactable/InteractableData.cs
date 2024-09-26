@@ -15,16 +15,16 @@ public partial class Interactable
         #region -- (( CONSTANTS )) ------------------- >>
         public const string DEFAULT_NAME = "DefaultName";
         public const string DEFAULT_KEY = "DefaultKey";
-        public const string DEFAULT_LAYER = "Interactable";
         #endregion
 
         Interactable _interactable;
         SpriteRenderer _spriteRenderer;
         BoxCollider2D _collider;
 
+        [SerializeField, ShowOnly] InteractableType _type = InteractableType.BASE;
         [SerializeField] string _name = DEFAULT_NAME;
         [SerializeField, ShowOnly] string _key = DEFAULT_KEY;
-        [SerializeField, ShowOnly] string _layer = DEFAULT_LAYER;
+        [SerializeField, ShowOnly] string _layer;
 
         [Header("Flags")]
         [SerializeField, ShowOnly] bool _isRegistered;
@@ -33,7 +33,7 @@ public partial class Interactable
 
 
         [Header("Interaction System Data")]
-        [SerializeField, Expandable] InteractionRequestPreset _interactionRequest;
+        [SerializeField, Expandable] InteractionRequestDataObject _interactionRequest;
 
 
         [Header("Sprite Data")]
@@ -41,7 +41,7 @@ public partial class Interactable
         [SerializeField] Color _defaultTint = Color.white;
         [SerializeField] Color _interactionTint = Color.yellow;
 
-
+        public InteractableType Type => _type;
         public string Name
         {
             get
@@ -49,6 +49,11 @@ public partial class Interactable
                 if (_name == null || _name == string.Empty)
                     _name = DEFAULT_NAME;
                 return _name;
+            }
+            set
+            {
+                _name = value;
+                _interactable.name = BuildObjectName();
             }
         }
         public string Key
@@ -73,41 +78,64 @@ public partial class Interactable
         public bool IsPreloaded => _isPreloaded;
         public bool IsInitialized => _isInitialized;
         public Sprite Sprite => _sprite;
-        public InteractionRequestPreset InteractionRequest => _interactionRequest;
+        public InteractionRequestDataObject InteractionRequest => _interactionRequest;
 
         public InternalData(Interactable interactable, string name = DEFAULT_NAME, string key = DEFAULT_KEY)
         {
             Preload(interactable, name, key);
         }
 
-        public void SetInteractionRequest(InteractionRequestPreset request)
+        public void SetInteractionRequest(InteractionRequestDataObject request)
         {
             _interactionRequest = request;
         }
 
         public bool Preload(Interactable interactable, string name = DEFAULT_NAME, string key = DEFAULT_KEY)
         {
+            SetFlagsToDefault();
+
             _interactable = interactable;
             _name = name;
             _key = key;
-            _interactable.gameObject.layer = LayerMask.NameToLayer(DEFAULT_LAYER);
 
-            SetFlagsToDefault();
+            // << SET THE INTERACTABLE TYPE >> ------------------------------------
+            if (interactable is PlayerInteractor)
+                _type = InteractableType.PLAYER;
+            else if (interactable is NPC_Interactable)
+                _type = InteractableType.NPC;
+            else
+                _type = InteractableType.BASE;
+
+            // << SET THE INTERACTABLE LAYER >> ------------------------------------
+            switch (_type)
+            {
+                case InteractableType.PLAYER:
+                    _layer = InteractionSystem.Settings.PlayerLayer;
+                    break;
+                case InteractableType.NPC:
+                    _layer = InteractionSystem.Settings.NPCLayer;
+                    break;
+                default:
+                    _layer = InteractionSystem.Settings.InteractableLayer;
+                    break;
+            }
+            _interactable.gameObject.layer = LayerMask.NameToLayer(_layer);
+
 
             // << PRELOAD GAME COMPONENTS >> ------------------------------------
             PreloadSpriteRenderer();
             PreloadBoxCollider();
+            _defaultTint = Color.white;
 
             // << PRELOAD RECIEVERS >> ------------------------------------
-            // If the interaction request is null, create a default request
-            if (_interactionRequest == null)
-                _interactionRequest = InteractionSystem.Factory.CreateOrLoadDefaultRequestPreset();
-            LoadRecievers();
+            // Load the interaction request data object by interactable type
+            InteractionSystem.Factory.CreateOrLoadInteractionRequestDataObject(_type, out _interactionRequest);
+            InteractionSystem.Factory.GenerateInteractableRecievers(_interactable, _interactionRequest.Keys.ToList());
 
             // << VALIDATE PRELOAD >> ------------------------------------
             _isRegistered = InteractionSystem.Registry.TryRegisterInteractable(_interactable);
             _isPreloaded = ConfirmPreloadIsValid(true);
-            if (_isPreloaded)
+            if (_isPreloaded && _type == InteractableType.BASE)
                 _interactable.name = BuildObjectName();
             return _isPreloaded;
         }
@@ -183,84 +211,6 @@ public partial class Interactable
             // Set the collider size to half the size of the transform scale
             _collider.size = Vector2.one * _interactable.transform.localScale.x * 0.5f;
         }
-
-        #region -- (( PRELOAD RECIEVERS )) ------------------- >>
-        void LoadRecievers()
-        {
-            _interactable._recievers.Reset();
-
-            List<InteractionTypeKey> requestedKeys = _interactionRequest.Keys.ToList();
-            foreach (InteractionTypeKey key in requestedKeys)
-            {
-                _interactable._recievers.TryGetValue(key, out InteractionReciever currentHandlerValue);
-                if (currentHandlerValue == null)
-                {
-                    InteractionReciever recieverInChild = GetRecieverInChildren(key);
-                    if (recieverInChild != null)
-                    {
-                        _interactable._recievers[key] = recieverInChild;
-                        continue;
-                    }
-
-                    GameObject recieverGameObject = _interactionRequest.CreateRecieverGameObject(key);
-                    if (recieverGameObject == null)
-                    {
-                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", _interactable);
-                        continue;
-                    }
-                    else
-                    {
-                        recieverGameObject.transform.SetParent(_interactable.transform);
-                        recieverGameObject.transform.localPosition = Vector3.zero;
-                        recieverGameObject.transform.localRotation = Quaternion.identity;
-                        recieverGameObject.transform.localScale = Vector3.one;
-                        recieverGameObject.name = $"{key} Interaction Handler";
-                    }
-
-                    InteractionReciever handler = recieverGameObject.GetComponent<InteractionReciever>();
-                    if (handler == null)
-                    {
-                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", _interactable);
-                        ObjectUtility.DestroyAlways(recieverGameObject);
-                        continue;
-                    }
-
-
-
-                    _interactable._recievers[key] = handler;
-                }
-            }
-
-            RemoveUnusedRecievers();
-
-            //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
-        }
-
-        void RemoveUnusedRecievers()
-        {
-            InteractionReciever[] allRecieversInChildren = _interactable.GetComponentsInChildren<InteractionReciever>();
-            foreach (InteractionReciever childReciever in allRecieversInChildren)
-            {
-                // If the reciever is not in the library, destroy it
-                if (!_interactable._recievers.ContainsKey(childReciever.InteractionType)
-                    || _interactable._recievers[childReciever.InteractionType] != childReciever)
-                {
-                    ObjectUtility.DestroyAlways(childReciever.gameObject);
-                }
-            }
-        }
-
-        InteractionReciever GetRecieverInChildren(InteractionTypeKey key)
-        {
-            InteractionReciever[] recievers = _interactable.GetComponentsInChildren<InteractionReciever>();
-            foreach (InteractionReciever reciever in recievers)
-            {
-                if (reciever.InteractionType == key)
-                    return reciever;
-            }
-            return null;
-        }
-        #endregion
         #endregion
 
         void SetFlagsToDefault()
@@ -273,15 +223,13 @@ public partial class Interactable
         public string BuildNameKey()
         {
             if (Name == string.Empty) _name = DEFAULT_NAME;
-            if (Name == DEFAULT_NAME && _sprite != null)
-                _name = _sprite.name;
             if (Key == string.Empty) _key = DEFAULT_KEY;
             return $"{_name} : {_key}";
         }
 
         public string BuildObjectName()
         {
-            return $"{PREFIX} {BuildNameKey()}";
+            return $"{_type} {BuildNameKey()}";
         }
     }
 }

@@ -32,17 +32,13 @@ public interface IInteractor
 }
 
 [ExecuteAlways]
-public class Interactor : MonoBehaviour, IInteractor
+public class Interactor : Interactable, IInteractor
 {
-    protected const string PREFIX = "Interactor:";
-    protected const string INTERACTION_REQUEST_PRESET = "Interactor_InteractionRequestPreset";
-
 
     [Header("Interactor Settings")]
     [SerializeField] LayerMask _layerMask;
     [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
-    [SerializeField, Expandable] InteractionRequestPreset _interactionRequestPreset;
 
     [Header("Interactables")]
     [SerializeField, ShowOnly] Interactable _lastTarget;
@@ -68,12 +64,6 @@ public class Interactor : MonoBehaviour, IInteractor
     protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
 
     #region ======== <METHODS> (( UNITY RUNTIME )) ================================== >>>>
-    public virtual void Awake()
-    {
-        if (_interactionRequestPreset == null)
-            InteractionSystem.Factory.CreateOrLoadRequestPreset(out _interactionRequestPreset, INTERACTION_REQUEST_PRESET);
-    }
-
     public virtual void Update()
     {
         RefreshNearbyInteractables();
@@ -232,33 +222,3 @@ public class Interactor : MonoBehaviour, IInteractor
 
     #endregion
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Interactor), true)]
-public class InteractorCustomEditor : UnityEditor.Editor
-{
-    SerializedObject _serializedObject;
-    Interactor _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (Interactor)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

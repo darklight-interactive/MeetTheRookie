@@ -15,10 +15,10 @@ using UnityEditor;
 
 interface IInteractionReciever
 {
-    public InteractionTypeKey InteractionType { get; }
+    public InteractionType InteractionType { get; }
 }
 
 public abstract class InteractionReciever : MonoBehaviour, IInteractionReciever
 {
-    public abstract InteractionTypeKey InteractionType { get; }
+    public abstract InteractionType InteractionType { get; }
 }

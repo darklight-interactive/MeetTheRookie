@@ -16,11 +16,10 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-
-
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class MTR_Interactable : Interactable
 {
+    const string DEFAULT_NAME = "defaultname";
     public const string DEFAULT_KNOT = "scene_default";
     public const string DEFAULT_STITCH = "interaction_default";
 
@@ -83,6 +82,7 @@ public class MTR_Interactable : Interactable
             _interactionStitch = DEFAULT_STITCH;
         }
 
+        // Generate new data from the stitce
         if (Data == null)
             Data = new InternalData(this, "defaultname", _interactionStitch);
         else

@@ -9,6 +9,55 @@ using System;
 using UnityEditor;
 #endif
 
+public interface IInteractable
+{
+    string Name { get; }
+    string Key { get; }
+    string Layer { get; set; }
+
+    // ===================== [[ EVENTS ]] =====================
+    delegate void InteractionEvent();
+    delegate void InteractionDialogueEvent(string text);
+
+    event InteractionEvent OnReadyEvent;
+    event InteractionEvent OnTargetEvent;
+    event InteractionEvent OnStartEvent;
+    event InteractionEvent OnContinueEvent;
+    event InteractionEvent OnCompleteEvent;
+    event InteractionEvent OnDisabledEvent;
+
+    // ===================== [[ METHODS ]] =====================
+    /// <summary>
+    /// Preload the interactable with core data & subscriptions
+    /// </summary>
+    void Preload();
+
+    /// <summary>
+    /// Initialize the interactable within the scene by 
+    /// storing scene specific references and data.
+    /// </summary>
+    void Initialize();
+    void Refresh();
+    void Reset();
+
+    bool AcceptTarget(IInteractor interactor, bool force = false);
+    bool AcceptInteraction(IInteractor interactor, bool force = false);
+
+
+
+    // ===================== [[ NESTED TYPES ]] =====================
+    public enum State
+    {
+        NULL,
+        READY,
+        TARGET,
+        START,
+        CONTINUE,
+        COMPLETE,
+        DISABLED
+    }
+}
+
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(BoxCollider2D))]
 public partial class Interactable : MonoBehaviour,
     IInteractable, IUnityEditorListener
@@ -32,13 +81,13 @@ public partial class Interactable : MonoBehaviour,
 
     [Header("Interaction Recievers")]
     [SerializeField]
-    EnumComponentLibrary<InteractionTypeKey, InteractionReciever> _recievers = new EnumComponentLibrary<InteractionTypeKey, InteractionReciever>()
+    EnumComponentLibrary<InteractionType, InteractionReciever> _recievers = new EnumComponentLibrary<InteractionType, InteractionReciever>()
     {
         ReadOnlyKey = true,
         ReadOnlyValue = true,
-        RequiredKeys = new InteractionTypeKey[]
+        RequiredKeys = new InteractionType[]
         {
-            InteractionTypeKey.TARGET
+            InteractionType.TARGET
         },
     };
 
@@ -57,7 +106,7 @@ public partial class Interactable : MonoBehaviour,
         }
     }
     public IInteractable.State CurrentState { get => _currentState; }
-    public EnumObjectLibrary<InteractionTypeKey, InteractionReciever> Recievers { get => _recievers; }
+    public EnumObjectLibrary<InteractionType, InteractionReciever> Recievers { get => _recievers; }
     #endregion
 
     #region ======== [[ EVENTS ]] ================================== >>>>

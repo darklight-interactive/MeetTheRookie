@@ -12,7 +12,7 @@ using Darklight.UnityExt.Editor;
 using UnityEditor;
 #endif
 
-public enum InteractionTypeKey
+public enum InteractionType
 {
     SIMPLE,
     TOGGLE,
@@ -21,17 +21,29 @@ public enum InteractionTypeKey
     CHOICE
 }
 
+public enum InteractableType
+{
+    BASE,
+    INTERACTOR,
+    NPC,
+    PLAYER
+}
+
 [ExecuteAlways]
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
-    [SerializeField, Expandable] SystemSettings _settings;
-    [SerializeField, Expandable] InteractionRequestPreset _interactable_interactionRequestPreset;
+    [SerializeField, Expandable] InteractionSystemSettings _settings;
+    [SerializeField, Expandable] InteractionRequestDataObject _baseInteractionRequest;
+    [SerializeField, Expandable] InteractionRequestDataObject _interactorInteractionRequest;
+
+    [SerializeField, Expandable] InteractionRequestDataObject _npcInteractionRequest;
+    [SerializeField, Expandable] InteractionRequestDataObject _playerInteractionRequest;
 
     [HorizontalLine(4, color: EColor.Gray)]
     [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
-    public static SystemSettings Settings { get => Instance._settings; }
-    public static InteractionRequestPreset InteractableInteractionRequestPreset { get => Instance._interactable_interactionRequestPreset; }
+    public static InteractionSystemSettings Settings { get => Instance._settings; }
+    public static InteractionRequestDataObject InteractableInteractionRequestPreset { get => Instance._baseInteractionRequest; }
 
     public void OnEditorReloaded()
     {
@@ -44,8 +56,14 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         if (_settings == null)
             _settings = Factory.CreateSettings();
 
-        if (_interactable_interactionRequestPreset == null)
-            _interactable_interactionRequestPreset = Factory.CreateOrLoadDefaultRequestPreset();
+        if (_baseInteractionRequest == null)
+            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.BASE, out _baseInteractionRequest);
+        if (_interactorInteractionRequest == null)
+            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.INTERACTOR, out _interactorInteractionRequest);
+        if (_npcInteractionRequest == null)
+            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.NPC, out _npcInteractionRequest);
+        if (_playerInteractionRequest == null)
+            Factory.CreateOrLoadInteractionRequestDataObject(InteractableType.PLAYER, out _playerInteractionRequest);
     }
 
     void Update()
@@ -86,27 +104,95 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InteractionSystem";
         const string SETTINGS_PATH = ASSET_PATH + "/Settings";
-        const string DEFAULT_SETTINGS_NAME = "Default_InteractionSystemSettings";
+        const string SETTINGS_NAME = "InteractionSystemSettings";
 
-        const string REQUEST_PRESET_PATH = ASSET_PATH + "/RequestPreset";
-        const string DEFAULT_REQUEST_PRESET_NAME = "Default_InteractionRequestPreset";
+        const string REQUEST_PATH = ASSET_PATH + "/InteractionRequest";
+        const string REQUEST_BASE_NAME = "InteractionRequest";
 
-        public static SystemSettings CreateSettings()
+        public static InteractionSystemSettings CreateSettings()
         {
-            SystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<SystemSettings>(ASSET_PATH, DEFAULT_SETTINGS_NAME);
+            InteractionSystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionSystemSettings>(ASSET_PATH, SETTINGS_NAME);
             return settings;
         }
 
-        public static InteractionRequestPreset CreateOrLoadDefaultRequestPreset(string name = DEFAULT_REQUEST_PRESET_NAME)
+        public static InteractionRequestDataObject CreateOrLoadInteractionRequestDataObject(InteractableType interactableType, out InteractionRequestDataObject request)
         {
-            InteractionRequestPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestPreset>(REQUEST_PRESET_PATH, name);
-            return preset;
+            string name = interactableType.ToString() + REQUEST_BASE_NAME;
+            request = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(REQUEST_PATH, name);
+            return request;
         }
 
-        public static InteractionRequestPreset CreateOrLoadRequestPreset(out InteractionRequestPreset preset, string name = DEFAULT_REQUEST_PRESET_NAME)
+        public static void RemoveUnusedRecievers(Interactable interactable)
         {
-            preset = CreateOrLoadDefaultRequestPreset(name);
-            return preset;
+            InteractionReciever[] allRecieversInChildren = interactable.GetComponentsInChildren<InteractionReciever>();
+            foreach (InteractionReciever childReciever in allRecieversInChildren)
+            {
+                // If the reciever is not in the library, destroy it
+                if (!interactable.Recievers.ContainsKey(childReciever.InteractionType)
+                    || interactable.Recievers[childReciever.InteractionType] != childReciever)
+                {
+                    ObjectUtility.DestroyAlways(childReciever.gameObject);
+                }
+            }
+        }
+
+        public static InteractionReciever GetRecieverInChildren(Interactable interactable, InteractionType key)
+        {
+            InteractionReciever[] recievers = interactable.GetComponentsInChildren<InteractionReciever>();
+            foreach (InteractionReciever reciever in recievers)
+            {
+                if (reciever.InteractionType == key)
+                    return reciever;
+            }
+            return null;
+        }
+
+        public static void GenerateInteractableRecievers(Interactable interactable, List<InteractionType> requestedKeys = null)
+        {
+            interactable.Recievers.Reset();
+
+            foreach (InteractionType key in requestedKeys)
+            {
+                interactable.Recievers.TryGetValue(key, out InteractionReciever currentHandlerValue);
+                if (currentHandlerValue == null)
+                {
+                    InteractionReciever recieverInChild = GetRecieverInChildren(interactable, key);
+                    if (recieverInChild != null)
+                    {
+                        interactable.Recievers[key] = recieverInChild;
+                        continue;
+                    }
+
+                    GameObject recieverGameObject = interactable.Data.InteractionRequest.CreateRecieverGameObject(key);
+                    if (recieverGameObject == null)
+                    {
+                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", interactable);
+                        continue;
+                    }
+                    else
+                    {
+                        recieverGameObject.transform.SetParent(interactable.transform);
+                        recieverGameObject.transform.localPosition = Vector3.zero;
+                        recieverGameObject.transform.localRotation = Quaternion.identity;
+                        recieverGameObject.transform.localScale = Vector3.one;
+                        recieverGameObject.name = $"{key} Interaction Handler";
+                    }
+
+                    InteractionReciever handler = recieverGameObject.GetComponent<InteractionReciever>();
+                    if (handler == null)
+                    {
+                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", interactable);
+                        ObjectUtility.DestroyAlways(recieverGameObject);
+                        continue;
+                    }
+
+                    interactable.Recievers[key] = handler;
+                }
+            }
+
+            RemoveUnusedRecievers(interactable);
+
+            //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
         }
     }
     #endregion
@@ -154,12 +240,12 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 // If the interactable is in the library and the same reference, return true
                 if (Interactables[interactable.Key] == interactable)
                 {
-                    Debug.Log($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
+                    //Debug.Log($"{Prefix} Interactable {interactable.Data.BuildNameKey()} already registered", interactable);
                     return true;
                 }
                 else if (Interactables[interactable.Key] == null)
                 {
-                    Debug.Log($"{Prefix} Overwriting null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
+                    Debug.LogWarning($"{Prefix} Overwriting null value of Interactable {interactable.Data.BuildNameKey()}", interactable);
                     Interactables[interactable.Key] = interactable;
                     return true;
                 }
@@ -187,6 +273,8 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
             return false;
         }
+
+
 
         public static void ResetRegistry()
         {
