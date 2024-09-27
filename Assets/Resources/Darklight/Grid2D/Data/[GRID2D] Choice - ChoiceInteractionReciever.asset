@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b400570541a71854780608a42533ef35, type: 3}
   m_Name: '[GRID2D] Choice - ChoiceInteractionReciever'
   m_EditorClassIdentifier: 
-  _inheritCellWidth: 0
-  _inheritCellHeight: 1
+  _inheritCellWidth: 1
+  _inheritCellHeight: 0
   _inheritCellNormal: 1
   _default_OriginAnchorPoint: 4
   _default_TargetAnchorPoint: 4
@@ -28,6 +28,9 @@ MonoBehaviour:
   - _cellKey: {x: 0, y: 2}
     _originAnchor: 4
     _targetAnchor: 4
+  - _cellKey: {x: 0, y: 3}
+    _originAnchor: 4
+    _targetAnchor: 4
   - _cellKey: {x: 1, y: 0}
     _originAnchor: 4
     _targetAnchor: 4
@@ -35,6 +38,9 @@ MonoBehaviour:
     _originAnchor: 4
     _targetAnchor: 4
   - _cellKey: {x: 1, y: 2}
+    _originAnchor: 4
+    _targetAnchor: 4
+  - _cellKey: {x: 1, y: 3}
     _originAnchor: 4
     _targetAnchor: 4
   - _cellKey: {x: 2, y: 0}
@@ -46,21 +52,6 @@ MonoBehaviour:
   - _cellKey: {x: 2, y: 2}
     _originAnchor: 4
     _targetAnchor: 4
-  - _cellKey: {x: 3, y: 0}
-    _originAnchor: 4
-    _targetAnchor: 4
-  - _cellKey: {x: 3, y: 1}
-    _originAnchor: 4
-    _targetAnchor: 4
-  - _cellKey: {x: 3, y: 2}
-    _originAnchor: 4
-    _targetAnchor: 4
-  - _cellKey: {x: 4, y: 0}
-    _originAnchor: 4
-    _targetAnchor: 4
-  - _cellKey: {x: 4, y: 1}
-    _originAnchor: 4
-    _targetAnchor: 4
-  - _cellKey: {x: 4, y: 2}
+  - _cellKey: {x: 2, y: 3}
     _originAnchor: 4
     _targetAnchor: 4

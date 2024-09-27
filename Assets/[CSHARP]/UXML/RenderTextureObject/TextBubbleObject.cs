@@ -23,7 +23,7 @@ public class TextBubbleObject : UXML_RenderTextureObject
 
     protected override void OnInitialized()
     {
-        Debug.Log($"TextBubbleObject.OnInitialized()", this);
+
         base.OnInitialized();
 
 
