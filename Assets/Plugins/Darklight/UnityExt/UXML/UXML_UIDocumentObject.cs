@@ -43,6 +43,8 @@ namespace Darklight.UnityExt.UXML
             CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
             document.panelSettings = clonedPanelSettings;
 
+            //document.panelSettings = preset.panelSettings;
+
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
@@ -91,27 +93,35 @@ namespace Darklight.UnityExt.UXML
             isVisible = visible;
             root.visible = isVisible;
         }
-
         private void CopyPanelSettings(PanelSettings source, PanelSettings destination)
         {
-            // Copy relevant properties from source to destination
+            // Scale and Resolution Settings
             destination.scaleMode = source.scaleMode;
             destination.referenceResolution = source.referenceResolution;
             destination.screenMatchMode = source.screenMatchMode;
             destination.match = source.match;
-            destination.sortingOrder = source.sortingOrder;
-            destination.targetTexture = source.targetTexture;
-            destination.clearColor = source.clearColor;
-            destination.clearDepthStencil = source.clearDepthStencil;
-            destination.sortingOrder = source.sortingOrder;
-            destination.targetDisplay = source.targetDisplay;
-            destination.targetDisplay = source.targetDisplay;
-            destination.targetTexture = source.targetTexture;
-            destination.clearColor = source.clearColor;
-            destination.clearDepthStencil = source.clearDepthStencil;
 
-            // Copy other necessary properties depending on your use case
+            // Display and Sorting Settings
+            destination.sortingOrder = source.sortingOrder;
+            destination.targetDisplay = source.targetDisplay;
+            destination.sortingOrder = source.sortingOrder;
+
+            // Render Target and Clear Settings
+            destination.targetTexture = source.targetTexture;
+            destination.clearColor = source.clearColor;
+            destination.clearDepthStencil = source.clearDepthStencil;
+            destination.targetDisplay = source.targetDisplay;
+
+            // Scale Factor Settings
+            destination.referenceDpi = source.referenceDpi;
+            destination.fallbackDpi = source.fallbackDpi;
+
+            // DPI Scale Settings
+            destination.referenceSpritePixelsPerUnit = source.referenceSpritePixelsPerUnit;
+            destination.referenceDpi = source.referenceDpi;
+            destination.referenceResolution = source.referenceResolution;
         }
+
     }
 
 #if UNITY_EDITOR

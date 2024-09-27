@@ -101,6 +101,10 @@ public class ChoiceInteractionReciever : InteractionReciever
             spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform, false, true);
             choiceBubbleObject.transform.SetParent(this.transform);
 
+            TextBubble choiceBubble = choiceBubbleObject.ElementQuery<TextBubble>();
+            choiceBubble.OriginPoint = Grid.GetOriginPointFromCell(cell);
+            choiceBubble.DirectionPoint = Grid.GetAnchorPointFromCell(cell);
+
             choiceBubbleObject.SetText(fullText);
             return choiceBubbleObject;
         }

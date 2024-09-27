@@ -111,7 +111,7 @@ public partial class MTRInteractable
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
 
-                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
+                //Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
             }
 
             public override void Execute() { }
@@ -119,7 +119,7 @@ public partial class MTRInteractable
             {
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
-                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Exited Target State >> Reciever: {reciever}");
+                //Debug.Log($"{PREFIX} :: {interactable.Print()} >> Exited Target State >> Reciever: {reciever}");
             }
         }
         #endregion
@@ -144,33 +144,43 @@ public partial class MTRInteractable
         #region ---- <STATE_CLASS> [[ CONTINUE_STATE ]] ------------------------------------ >>>>
         public class ContinueState : BaseInteractState
         {
-            DialogueInteractionReciever dialogueReciever;
 
             public ContinueState(InternalStateMachine stateMachine)
                 : base(stateMachine, State.CONTINUE) { }
             public override void Enter()
             {
+                // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
+                stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                    out DialogueInteractionReciever speakerDialogueReciever);
+
+                if (speakerDialogueReciever.IsInDialogue)
+                {
+                    speakerDialogueReciever.ForceComplete();
+                    Debug.Log($"{PREFIX} :: {interactable.Name} >> Speaker is in dialogue, forcing complete.");
+                    return;
+                }
+
+                // << CONTINUE THE STORY >>
                 storyIterator.ContinueStory();
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
+
 
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
                 //Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
 
                 string text = storyIterator.CurrentStoryDialogue;
-
-                // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
-                string currentSpeaker = InkyStoryManager.CurrentSpeaker;
-                stateMachine.TryGetDialogueReciever(currentSpeaker,
-                    out DialogueInteractionReciever speakerDialogueReciever);
-                this.dialogueReciever = speakerDialogueReciever;
-
-
-
                 switch (storyState)
                 {
                     case InkyStoryIterator.State.DIALOGUE:
+                        // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
+                        stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                            out DialogueInteractionReciever dialogueReciever);
+
+
+                        // << INVOKE BUBBLE CREATION EVENT >> -----------
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, text));
                         break;
+
                     case InkyStoryIterator.State.CHOICE:
                         // << GET THE CHOICE RECIEVER >> -----------
                         InteractionSystem.Registry.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
@@ -187,18 +197,39 @@ public partial class MTRInteractable
                         }
                         break;
                     case InkyStoryIterator.State.END:
-                        InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));
+                        // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
+                        stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                            out DialogueInteractionReciever endDialogueReciever);
+
+                        InteractionSystem.Invoke(new DialogueInteractionCommand(endDialogueReciever, true));
                         stateMachine.GoToState(State.COMPLETE);
                         break;
                     default:
                         break;
                 }
+
+
             }
             public override void Execute() { }
             public override void Exit()
             {
-                // Destroy the bubble on exit
-                InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));
+                // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
+                stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                    out DialogueInteractionReciever endDialogueReciever);
+
+                if (endDialogueReciever.IsInDialogue)
+                {
+                    //endDialogueReciever.ForceComplete();
+                    Debug.Log($"{PREFIX} :: {interactable.Name} >> Speaker is in dialogue, forcing complete.");
+                    return;
+                }
+                else
+                {
+
+                    // Destroy the bubble on exit
+                    InteractionSystem.Invoke(new DialogueInteractionCommand(endDialogueReciever, true));
+                }
+
             }
         }
         #endregion

@@ -25,26 +25,19 @@ public class TargetInteractionReciever : InteractionReciever
 
     public override InteractionType InteractionType => InteractionType.TARGET;
 
-    public void Update()
-    {
-
-    }
-
     public void ShowInteractIcon()
     {
-        // Skip if in editor mode
-        if (Application.isPlaying == false) return;
         //Debug.Log($"{gameObject.name}: ShowInteractIcon called.", this);
 
         // << Get the best cell available >>
-        Cell2D cell = gridSpawner.GetBestCell();
-        cell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
+        Cell2D bestCell = gridSpawner.GetBestCell();
+        bestCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-        if (cell != null)
+        if (bestCell != null)
         {
-            if (cell.Position == Vector3.zero && cell.Dimensions == Vector2.one)
+            if (bestCell.Position == Vector3.zero && bestCell.Dimensions == Vector2.one)
             {
-                Debug.LogError($"Cell {cell.Name} has default values, calling ShowInteractIcon() again.");
+                Debug.LogError($"Cell {bestCell.Name} has default values, calling ShowInteractIcon() again.");
                 Invoke(nameof(ShowInteractIcon), 0.5f);
                 return;
             }
@@ -55,15 +48,17 @@ public class TargetInteractionReciever : InteractionReciever
         {
             // Create the UXML RenderTextureObject Icon
             _interactIconObject = UXML_Utility.CreateUXMLRenderTextureObject(_interactIconPreset, material, renderTexture);
+            _interactIconObject.document.panelSettings = _interactIconPreset.panelSettings;
+
+            Cell2D.SpawnerComponent spawnerComponent = bestCell.GetComponent<Cell2D.SpawnerComponent>();
+            spawnerComponent.AttachTransformToCell(_interactIconObject.transform);
 
             // Set the Icon as a child of the InteractIconSpawner
             _interactIconObject.transform.SetParent(transform);
         }
 
-        _interactIconObject.transform.position = position + (normal * 0.1f);
         _interactIconObject.SetLocalScale(dimensions.y);
-        _interactIconObject.SetVisibility(true);
-        _interactIconObject.TextureUpdate();
+        _visible = true;
     }
 
     public void HideInteractIcon()
@@ -86,20 +81,51 @@ public class TargetInteractionReciever : InteractionReciever
             return;
         }
 
-        // Log the destruction of the GameObject
-        //Debug.Log($"{gameObject.name}: Destroying Interact Icon GameObject: {_interactIconObject.gameObject.name}", this);
         ObjectUtility.DestroyAlways(_interactIconObject.gameObject);
-
-        // Resetting _interactIconObject to null and log it
         _interactIconObject = null;
-        //Debug.Log($"{gameObject.name}: _interactIconObject has been set to null.", this);
-
-        // Set visibility flag to false and log it
         _visible = false;
-        //Debug.Log($"{gameObject.name}: _visible flag set to false.", this);
-
-        // Log the end of the method
-        //Debug.Log($"{gameObject.name}: HideInteractIcon completed successfully.", this);
     }
+#if UNITY_EDITOR
+    [CustomEditor(typeof(TargetInteractionReciever))]
+    public class TargetInteractionRecieverCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        TargetInteractionReciever _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (TargetInteractionReciever)target;
+        }
 
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (_script._visible)
+            {
+                if (GUILayout.Button("Hide Interact Icon"))
+                {
+                    _script.HideInteractIcon();
+                }
+            }
+
+            if (!_script._visible)
+            {
+                if (GUILayout.Button("Show Interact Icon"))
+                {
+                    _script.ShowInteractIcon();
+                }
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }

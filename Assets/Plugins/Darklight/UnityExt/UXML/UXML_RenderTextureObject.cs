@@ -76,7 +76,17 @@ namespace Darklight.UnityExt.UXML
 
         protected virtual void OnInitialized() { }
 
-        public void TextureUpdate()
+        public void Update()
+        {
+
+            // Only call TextureUpdate if necessary
+            if (root.resolvedStyle.width > 0 && root.resolvedStyle.height > 0)
+            {
+                TextureUpdate();
+            }
+        }
+
+        void TextureUpdate()
         {
             StartCoroutine(TextureUpdateRoutine());
         }

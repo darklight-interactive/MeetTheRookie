@@ -80,7 +80,6 @@ namespace Darklight.UnityExt.UXML
                 material,
                 renderTexture
             );
-            renderTextureObject.TextureUpdate();
             return renderTextureObject;
         }
 
@@ -100,7 +99,6 @@ namespace Darklight.UnityExt.UXML
                 material,
                 renderTexture
             );
-            renderTextureObject.TextureUpdate();
             return renderTextureObject;
         }
     }

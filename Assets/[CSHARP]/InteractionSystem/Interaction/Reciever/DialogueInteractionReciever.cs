@@ -16,10 +16,13 @@ public class DialogueInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
     TextBubbleObject _dialogueBubbleObject;
+    bool _isInDialogue = false;
+
     [SerializeField, ShowOnly] string _speakerTag = "";
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
+    public bool IsInDialogue => _isInDialogue;
     public override InteractionType InteractionType => InteractionType.DIALOGUE;
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
     public Grid2D_OverlapWeightSpawner Grid
@@ -74,7 +77,6 @@ public class DialogueInteractionReciever : InteractionReciever
         textBubble.OriginPoint = origin;
         textBubble.DirectionPoint = anchor;
 
-        /*
         textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float fullTextHeight = evt.newRect.height;
@@ -91,7 +93,6 @@ public class DialogueInteractionReciever : InteractionReciever
         {
             //Debug.Log($"DialogueTextBubble.OnInitialized() - ChangeEvent<string>", this);
         });
-        */
 
         textBubble.SetFullText(text);
         textBubble.InstantCompleteText(); // Temporarily display full text
@@ -129,20 +130,37 @@ public class DialogueInteractionReciever : InteractionReciever
     {
         TextBubble speechBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
         speechBubble.SetFullText(fullText);
+        _isInDialogue = true;
 
-        while (true)
+        while (_isInDialogue)
         {
             for (int i = 0; i < speechBubble.FullText.Length; i++)
             {
                 speechBubble.RollingTextStep();
                 yield return new WaitForSeconds(interval);
             }
+            _isInDialogue = false;
             yield return null;
         }
     }
 
+    public void ForceComplete()
+    {
+        Debug.Log("Force Complete");
+        StopCoroutine(SpeechBubbleRollingTextRoutine("", 0.025f));
+        _isInDialogue = false;
+
+        if (_dialogueBubbleObject == null)
+        {
+            return;
+        }
+        TextBubble textBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
+        textBubble.InstantCompleteText();
+    }
+
     public void DestroySpeechBubble()
     {
+        Debug.Log("Destroying Speech Bubble");
         if (_dialogueBubbleObject != null)
         {
             if (Application.isPlaying)

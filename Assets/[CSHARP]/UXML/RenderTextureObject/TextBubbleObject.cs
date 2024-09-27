@@ -39,7 +39,6 @@ public class TextBubbleObject : UXML_RenderTextureObject
             if (_currText != evt.newValue)
             {
                 _currText = evt.newValue;
-                UpdateRenderTexture();
             }
         });
 
@@ -60,11 +59,6 @@ public class TextBubbleObject : UXML_RenderTextureObject
         });
     }
 
-    public void Update()
-    {
-        UpdateRenderTexture();
-    }
-
     public void SetText(string text)
     {
         if (_currText != text)
@@ -72,21 +66,10 @@ public class TextBubbleObject : UXML_RenderTextureObject
             _currText = text;
             _textBubble.SetFullText(text);
             _textBubble.InstantCompleteText();
-
-            // Update render texture only once after setting the text
-            UpdateRenderTexture();
         }
     }
 
-    private void UpdateRenderTexture()
-    {
-        // Only call TextureUpdate if necessary
-        if (_textBubble.resolvedStyle.width > 0 && _textBubble.resolvedStyle.height > 0)
-        {
-            TextureUpdate();
-            //Debug.Log("Render texture updated.");
-        }
-    }
+
 
     public void Select()
     {
