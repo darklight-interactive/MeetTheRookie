@@ -43,8 +43,9 @@ namespace Darklight.UnityExt.UXML
 
             // Copy properties from the original PanelSettings to the new one
             CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
-
             document.panelSettings = clonedPanelSettings;
+
+            // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
             //Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");

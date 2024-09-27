@@ -21,7 +21,7 @@ public class ChoiceInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
     public Library<Vector2Int, UXML_RenderTextureObject> _attachedBubbles;
-    [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
+    [SerializeField, Expandable] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
     public override InteractionType InteractionType => InteractionType.CHOICE;
@@ -96,7 +96,8 @@ public class ChoiceInteractionReciever : InteractionReciever
         List<UXML_RenderTextureObject> bubbles = new List<UXML_RenderTextureObject>(_attachedBubbles.Values);
         for (int i = 0; i < bubbles.Count; i++)
         {
-            ObjectUtility.DestroyAlways(bubbles[i].gameObject);
+            if (bubbles[i] != null && bubbles[i].gameObject != null)
+                ObjectUtility.DestroyAlways(bubbles[i].gameObject);
         }
         _attachedBubbles.Reset();
     }

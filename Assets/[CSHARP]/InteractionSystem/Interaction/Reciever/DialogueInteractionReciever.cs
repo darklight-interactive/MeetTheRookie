@@ -74,6 +74,11 @@ public class DialogueInteractionReciever : InteractionReciever
             StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
         });
 
+        textBubble.RegisterCallback<ChangeEvent<string>>(evt =>
+        {
+            Debug.Log($"DialogueTextBubble.OnInitialized() - ChangeEvent<string>", this);
+        });
+
         textBubble.SetFullText(text);
         textBubble.InstantCompleteText(); // Temporarily display full text
 
