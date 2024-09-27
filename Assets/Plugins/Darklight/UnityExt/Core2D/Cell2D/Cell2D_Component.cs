@@ -44,7 +44,7 @@ namespace Darklight.UnityExt.Core2D
             }
 
             // ---- (( GETTER METHODS )) ---- >>
-            public virtual ComponentTypeKey GetTypeKey() => ComponentRegistry.GetTypeKey(this);
+            public virtual ComponentTypeKey GetTypeKey() => InternalComponentRegistry.GetTypeKey(this);
         }
 
         public class BaseComponent : Component

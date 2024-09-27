@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Darklight.UnityExt.Library.Editor
 {
@@ -14,6 +15,7 @@ namespace Darklight.UnityExt.Library.Editor
         public const int COLUMN_COUNT = 3;
         public readonly float[] COLUMN_PERCENTAGES = new float[] { 0.025f };
 
+        private FieldInfo _fieldInfo;  // Store the FieldInfo
         private SerializedProperty _itemsProperty;
         private SerializedProperty _readOnlyKeyProperty;
         private SerializedProperty _readOnlyValueProperty;
@@ -34,9 +36,10 @@ namespace Darklight.UnityExt.Library.Editor
         private int _columnCount = 3;
         private float[] _columnPercentages;
 
-        public LibraryReorderableList(SerializedObject serializedObject, SerializedProperty itemsProperty, SerializedProperty readOnlyKeyProperty, SerializedProperty readOnlyValueProperty)
+        public LibraryReorderableList(SerializedObject serializedObject, SerializedProperty itemsProperty, SerializedProperty readOnlyKeyProperty, SerializedProperty readOnlyValueProperty, FieldInfo fieldInfo)
             : base(serializedObject, itemsProperty, DRAGGABLE, true, true, true)
         {
+            _fieldInfo = fieldInfo;  // Store the FieldInfo
             _itemsProperty = itemsProperty;
             _readOnlyKeyProperty = readOnlyKeyProperty;
             _readOnlyValueProperty = readOnlyValueProperty;
@@ -89,7 +92,7 @@ namespace Darklight.UnityExt.Library.Editor
 
             EditorGUI.LabelField(idRect, idProp.intValue.ToString(), CENTERED_LABEL_STYLE);
             DrawElementProperty(keyRect, keyProp, _readOnlyKeyProperty.boolValue);
-            DrawElementProperty(valueRect, valueProp, _readOnlyValueProperty.boolValue);
+            DrawValueField(valueRect, valueProp);
         }
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
@@ -125,6 +128,36 @@ namespace Darklight.UnityExt.Library.Editor
                 EditorGUI.PropertyField(rect, property, GUIContent.none);
             }
         }
+
+        private void DrawValueField(Rect rect, SerializedProperty valueProperty)
+        {
+
+            if (valueProperty.propertyType == SerializedPropertyType.Integer)
+            {
+                valueProperty.intValue = EditorGUI.IntSlider(rect, valueProperty.intValue, (int)0, (int)100);
+            }
+            else if (valueProperty.propertyType == SerializedPropertyType.Float)
+            {
+                valueProperty.floatValue = EditorGUI.Slider(rect, valueProperty.floatValue, 0f, 100f);
+            }
+            else if (valueProperty.propertyType == SerializedPropertyType.Vector2)
+            {
+                valueProperty.vector2Value = EditorGUI.Vector2Field(rect, GUIContent.none, valueProperty.vector2Value);
+            }
+            else if (valueProperty.propertyType == SerializedPropertyType.Vector3)
+            {
+                valueProperty.vector3Value = EditorGUI.Vector3Field(rect, GUIContent.none, valueProperty.vector3Value);
+            }
+            else if (valueProperty.propertyType == SerializedPropertyType.Vector4)
+            {
+                valueProperty.vector4Value = EditorGUI.Vector4Field(rect, GUIContent.none, valueProperty.vector4Value);
+            }
+            else
+            {
+                EditorGUI.PropertyField(rect, valueProperty, GUIContent.none);
+            }
+        }
+
 
         // Method to calculate the rect for a specific property based on its row and column
         private Rect CalculatePropertyRect(Rect baseElementRect, int column, float[] columnWidths)

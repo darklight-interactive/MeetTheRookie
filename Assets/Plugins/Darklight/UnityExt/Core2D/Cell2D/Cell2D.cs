@@ -12,8 +12,8 @@ namespace Darklight.UnityExt.Core2D
     public partial class Cell2D : IVisitable<Cell2D>, ISpatial2D
     {
         // ======== [[ FIELDS ]] ======================================================= >>>>
-        ComponentRegistry _componentReg;
         List<string> _componentDebugLabels = new List<string>();
+        InternalComponentRegistry _componentRegistry;
 
         bool _enabled;
         bool _initialized;
@@ -21,14 +21,14 @@ namespace Darklight.UnityExt.Core2D
         [SerializeField, ShowOnly] string _name = "Cell2D";
         [SerializeField] SettingsConfig _config;
         [SerializeField] SerializedData _data;
-        [ShowOnly, NonReorderable] public ComponentTypeKey[] componentTypeKeys;
+
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
         public string Name { get => _name; }
         public Vector2Int Key { get => _data.Key; }
         public SettingsConfig Config { get => _config; }
         public SerializedData Data { get => _data; }
-        public ComponentRegistry ComponentReg { get => _componentReg; }
+        public InternalComponentRegistry ComponentReg { get => _componentRegistry; }
         public Vector3 Position { get => Data.Position; }
         public Vector2 Dimensions { get => Data.Dimensions; }
         public Vector3 Normal { get => Data.Normal; }
@@ -50,14 +50,13 @@ namespace Darklight.UnityExt.Core2D
             _data = new SerializedData(key);
 
             // Create the composite
-            _componentReg = new ComponentRegistry(this);
-            componentTypeKeys = _componentReg.GetComponentTypeKeys();
+            _componentRegistry = new InternalComponentRegistry(this);
 
             // Set the name
             _name = $"Cell2D ({key.x},{key.y})";
 
             // << SET INITIALIZED >>
-            if (_config == null || _data == null || _componentReg == null)
+            if (_config == null || _data == null || _componentRegistry == null)
             {
                 _initialized = false;
                 return;
@@ -68,7 +67,6 @@ namespace Darklight.UnityExt.Core2D
         public void Update()
         {
             if (!_initialized) return;
-            componentTypeKeys = _componentReg.GetComponentTypeKeys();
         }
         #endregion
 
@@ -98,7 +96,7 @@ namespace Darklight.UnityExt.Core2D
             Cell2D clone = new Cell2D(Data.Key);
             SerializedData newData = new SerializedData(Data);
             SettingsConfig newConfig = new SettingsConfig(Config);
-            ComponentRegistry newComposite = new ComponentRegistry(ComponentReg);
+            InternalComponentRegistry newComposite = new InternalComponentRegistry(ComponentReg);
             clone.SetData(newData);
             clone.SetConfig(newConfig);
             clone.SetComposite(newComposite);
@@ -123,14 +121,14 @@ namespace Darklight.UnityExt.Core2D
 
         public TComponent GetComponent<TComponent>() where TComponent : Component
         {
-            return _componentReg.GetComponent<TComponent>();
+            return _componentRegistry.GetComponent<TComponent>();
         }
-        public Component GetComponentByTypeKey(ComponentTypeKey typeKey) => _componentReg.GetComponent(typeKey);
+        public Component GetComponentByTypeKey(ComponentTypeKey typeKey) => _componentRegistry.GetComponent(typeKey);
 
         // (( SETTERS )) -------- ))
         protected void SetData(SerializedData data) => _data = data;
         protected void SetConfig(SettingsConfig config) => _config = config;
-        protected void SetComposite(ComponentRegistry composite) => _componentReg = composite;
+        protected void SetComposite(InternalComponentRegistry composite) => _componentRegistry = composite;
         protected void SetEnabled(bool enabled) => _enabled = enabled;
     }
 }

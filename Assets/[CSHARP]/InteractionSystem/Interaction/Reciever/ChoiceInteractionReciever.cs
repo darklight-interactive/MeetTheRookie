@@ -63,9 +63,10 @@ public class ChoiceInteractionReciever : InteractionReciever
         if (spawnerComponent != null)
         {
             UXML_RenderTextureObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, _material, _renderTexture);
+
             _attachedBubbles.Add(cell.Key, choiceBubbleObject);
 
-            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform);
+            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform, true, false);
             choiceBubbleObject.transform.SetParent(this.transform);
 
             TextBubble textBubble = choiceBubbleObject.ElementQuery<TextBubble>();
@@ -147,11 +148,12 @@ public class ChoiceInteractionReciever : InteractionReciever
             base.OnInspectorGUI();
 
 
-            if (_script._attachedBubbles.Count == 0 && GUILayout.Button("Create Default Sprite At All"))
+            if (GUILayout.Button("Create Bubble At Next Available Cell"))
             {
-                //_script.CreateBubbleAtAllCells(_script._choiceBubbleLibrary.DefaultValue);
+                _script.CreateBubbleAtNextAvailableCell("Default Text");
             }
-            else if (_script._attachedBubbles.Count > 0 && GUILayout.Button("Destroy All Sprites"))
+
+            if (GUILayout.Button("Destroy All Sprites"))
             {
                 _script.DestroyAllBubbles();
             }

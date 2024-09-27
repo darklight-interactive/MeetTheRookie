@@ -46,10 +46,23 @@ namespace Darklight.UnityExt.Core2D
 
         public Cell2D GetNextAvailableCell()
         {
+            // << GET CELLS WITH NO OVERLAP >>
             List<Cell2D> availableCells = OverlapComponent.GetCellsWithColliderCount(0);
-            if (availableCells.Count > 0)
+
+            // << CELLS WITH NO ATTTACHED TRANSFORMS >>
+            List<Cell2D> cellsWithNoAttachedObjects = new List<Cell2D>();
+            foreach (Cell2D cell in availableCells)
             {
-                return WeightComponent.GetCellWithHighestWeight(availableCells);
+                if (SpawnerComponent.GetAttachedTransformsAtCell(cell).Count == 0)
+                {
+                    cellsWithNoAttachedObjects.Add(cell);
+                }
+            }
+
+            // << GET CELL WITH HIGHEST WEIGHT >>
+            if (cellsWithNoAttachedObjects.Count > 0)
+            {
+                return WeightComponent.GetCellWithHighestWeight(cellsWithNoAttachedObjects);
             }
 
             return null;

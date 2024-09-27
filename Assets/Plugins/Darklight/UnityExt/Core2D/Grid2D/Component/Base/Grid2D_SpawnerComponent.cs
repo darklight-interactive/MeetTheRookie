@@ -172,6 +172,16 @@ namespace Darklight.UnityExt.Core2D
             cellSpawner.AttachTransformToCell(transform, _dataObject.InheritCellWidth, _dataObject.InheritCellHeight, _dataObject.InheritCellNormal);
         }
 
+        public List<Transform> GetAttachedTransformsAtCell(Cell2D cell)
+        {
+            if (_dataMap.ContainsKey(cell.Key))
+            {
+                Cell2D.SpawnerComponent.SpawnData data = _dataMap[cell.Key];
+                return data.AttachedTransforms;
+            }
+            return new List<Transform>();
+        }
+
         public Spatial2D.AnchorPoint GetOriginAnchor(Cell2D cell)
         {
             if (_dataMap.ContainsKey(cell.Key))

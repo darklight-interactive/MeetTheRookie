@@ -50,7 +50,7 @@ namespace Darklight.UnityExt.Core2D
             // ======== [[ METHODS ]] ======================================================= >>>>
             public void Visit(Cell2D cell)
             {
-                ComponentRegistry componentRegistry = cell.ComponentReg;
+                InternalComponentRegistry componentRegistry = cell.ComponentReg;
 
                 // Check if the stored component type exists in the cell
                 if (componentRegistry.HasComponent(_type))

@@ -13,55 +13,14 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
 public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
-    protected override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> CreateNewLibrary()
+    [SerializeField]
+    EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> _dataLibrary = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>
     {
-        return library = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
-        {
-            ReadOnlyKey = true,
-            ReadOnlyValue = false,
-            RequiredKeys = new List<Spatial2D.AnchorPoint>()
-            {
-                Spatial2D.AnchorPoint.CENTER,
-                Spatial2D.AnchorPoint.TOP_LEFT,
-                Spatial2D.AnchorPoint.TOP_RIGHT,
-                Spatial2D.AnchorPoint.BOTTOM_LEFT,
-                Spatial2D.AnchorPoint.BOTTOM_RIGHT,
-            }
-        };
-    }
+        ReadOnlyKey = false,
+        ReadOnlyValue = false,
+        RequiredKeys = new Spatial2D.AnchorPoint[0],
+    };
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(TextBubbleLibrary))]
-    public class TextBubbleLibraryCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        TextBubbleLibrary _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (TextBubbleLibrary)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("CreateNewLibrary"))
-            {
-                _script.CreateNewLibrary();
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
-
+    public override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> DataLibrary => _dataLibrary;
 }
 

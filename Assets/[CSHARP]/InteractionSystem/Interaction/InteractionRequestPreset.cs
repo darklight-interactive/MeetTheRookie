@@ -5,17 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Darklight/Interaction/Interactable/RequestPreset")]
 public class InteractionRequestDataObject : EnumGameObjectScriptableLibrary<InteractionType>
 {
-
-
-
-    protected override EnumGameObjectLibrary<InteractionType> CreateNewLibrary()
+    [SerializeField]
+    EnumGameObjectLibrary<InteractionType> _dataLibrary = new EnumGameObjectLibrary<InteractionType>
     {
-        return new EnumGameObjectLibrary<InteractionType>()
-        {
-            ReadOnlyKey = true,
-            ReadOnlyValue = false,
-        };
-    }
+        ReadOnlyKey = false,
+        ReadOnlyValue = false
+    };
+
+    public override EnumGameObjectLibrary<InteractionType> DataLibrary => _dataLibrary;
 
     public List<InteractionType> GetKeys()
     {
