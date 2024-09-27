@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using Darklight.UnityExt.Core2D;
-using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.Library;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;

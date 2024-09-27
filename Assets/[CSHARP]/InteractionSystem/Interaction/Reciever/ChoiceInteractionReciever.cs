@@ -16,17 +16,31 @@ using System;
 using UnityEditor;
 #endif
 
-public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
+[RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
+public class ChoiceInteractionReciever : InteractionReciever
 {
+    Grid2D_OverlapWeightSpawner _grid;
     Dictionary<Vector2Int, UXML_RenderTextureObject> _attachedBubbles = new Dictionary<Vector2Int, UXML_RenderTextureObject>();
     [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
-    public InteractionType InteractionType => InteractionType.CHOICE;
+    public override InteractionType InteractionType => InteractionType.CHOICE;
+    public Grid2D_OverlapWeightSpawner Grid
+    {
+        get
+        {
+            if (_grid == null)
+            {
+                _grid = GetComponent<Grid2D_OverlapWeightSpawner>();
+            }
+            return _grid;
+        }
+    }
+
     Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
 
-    public override void OnInitialize(Grid2D grid)
+    public void Awake()
     {
         if (_choiceBubbleLibrary == null)
         {
@@ -36,7 +50,7 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
 
     public void CreateBubbleAtNextAvailableCell(string fullText)
     {
-        Cell2D cell = GetNextAvailableCell();
+        Cell2D cell = Grid.GetNextAvailableCell();
         if (cell != null)
         {
             CreateBubbleAt(cell, fullText);
@@ -111,15 +125,15 @@ public class ChoiceInteractionHandler : Grid2D_OverlapWeightSpawner
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(ChoiceInteractionHandler))]
+    [CustomEditor(typeof(ChoiceInteractionReciever))]
     public class ChoiceInteractionHandlerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        ChoiceInteractionHandler _script;
+        ChoiceInteractionReciever _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (ChoiceInteractionHandler)target;
+            _script = (ChoiceInteractionReciever)target;
             _script.Awake();
         }
 

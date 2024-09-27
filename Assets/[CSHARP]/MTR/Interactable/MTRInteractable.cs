@@ -395,7 +395,12 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         if (StateMachine != null)
             StateMachine.Step();
 
-
+        /*
+        foreach (InteractionReciever reciever in Recievers.Values)
+        {
+            reciever.ResetTransform();
+        }
+        */
     }
 
     public override void Reset()

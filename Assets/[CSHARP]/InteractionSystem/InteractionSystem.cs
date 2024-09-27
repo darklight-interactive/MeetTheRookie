@@ -29,6 +29,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     [SerializeField, Expandable] InteractionSystemSettings _settings;
     [SerializeField] protected GameObject _iconInteractionHandlerPrefab;
     [SerializeField] protected GameObject _dialogueInteractionHandlerPrefab;
+    [SerializeField] protected GameObject _choiceInteractionHandlerPrefab;
 
     [HorizontalLine(4, color: EColor.Gray)]
     [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
@@ -127,8 +128,10 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                     prefab = Instance._iconInteractionHandlerPrefab;
                     break;
                 case InteractionType.DIALOGUE:
-                case InteractionType.CHOICE:
                     prefab = Instance._dialogueInteractionHandlerPrefab;
+                    break;
+                case InteractionType.CHOICE:
+                    prefab = Instance._choiceInteractionHandlerPrefab;
                     break;
             }
 
@@ -163,7 +166,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             Debug.Log($"Generating recievers for {interactable.gameObject.name}");
 
             List<InteractionType> requestedKeys = interactable.Request.GetKeys();
-            // interactable.Recievers.Reset();
+            interactable.Recievers.Reset();
 
             foreach (InteractionType key in requestedKeys)
             {
