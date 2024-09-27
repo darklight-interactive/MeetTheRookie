@@ -14,13 +14,37 @@ using UnityEditor;
 public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
     [SerializeField]
-    EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> _dataLibrary = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>
-    {
-        ReadOnlyKey = false,
-        ReadOnlyValue = false,
-        RequiredKeys = new Spatial2D.AnchorPoint[0],
-    };
+    EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> _dataLibrary;
 
-    public override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> DataLibrary => _dataLibrary;
+    public override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> DataLibrary
+    {
+        get
+        {
+            if (_dataLibrary == null)
+            {
+                _dataLibrary = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
+                {
+                    ReadOnlyKey = true,
+                    ReadOnlyValue = false
+                };
+            }
+            else
+            {
+                _dataLibrary.ReadOnlyKey = true;
+                _dataLibrary.ReadOnlyValue = false;
+            }
+            _dataLibrary.SetRequiredKeys(new List<Spatial2D.AnchorPoint>
+                {
+                    Spatial2D.AnchorPoint.TOP_LEFT,
+                    Spatial2D.AnchorPoint.TOP_CENTER,
+                    Spatial2D.AnchorPoint.TOP_RIGHT,
+
+                    Spatial2D.AnchorPoint.BOTTOM_LEFT,
+                    Spatial2D.AnchorPoint.BOTTOM_CENTER,
+                    Spatial2D.AnchorPoint.BOTTOM_RIGHT
+                });
+            return _dataLibrary;
+        }
+    }
 }
 

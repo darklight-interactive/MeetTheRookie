@@ -34,9 +34,7 @@ namespace Darklight.UnityExt.UXML
                 return;
             }
 
-            TemplateContainer assetClone = preset.visualTreeAsset.CloneTree();
-            document.rootVisualElement.Clear();
-            document.rootVisualElement.Add(assetClone);
+            document.visualTreeAsset = preset.visualTreeAsset;
 
             // Create a new PanelSettings instance
             PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();

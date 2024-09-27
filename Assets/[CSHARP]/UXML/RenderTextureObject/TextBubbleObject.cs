@@ -3,6 +3,10 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections;
+using Darklight.UnityExt.Core2D;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,45 +19,83 @@ public class TextBubbleObject : UXML_RenderTextureObject
 
     [SerializeField, ShowOnly] string _currText;
 
+    private bool _isTransitioning = false;
+
     protected override void OnInitialized()
     {
         Debug.Log($"TextBubbleObject.OnInitialized()", this);
         base.OnInitialized();
 
+
+        root.style.flexGrow = 1;
+        root.style.flexDirection = FlexDirection.Column;
+        root.style.alignSelf = Align.Stretch;
+
         _textBubble = ElementQuery<TextBubble>();
+
+        // Register for text change event
         _textBubble.RegisterCallback<ChangeEvent<string>>(evt =>
         {
-            //float fullTextHeight = evt.newRect.height;
-            //float fullTextWidth = evt.newRect.width;
-
-            //_textBubble.style.height = fullTextHeight;
-            //_textBubble.style.width = fullTextWidth;
-
-            //_textBubble.SetFullText(currentText);
-            //StartCoroutine(SpeechBubbleRollingTextRoutine(text, 0.025f));
-
-            TextureUpdate();
-            Debug.Log($"TextBubbleObject.OnInitialized() - ChangeEvent<string>", this);
+            if (_currText != evt.newValue)
+            {
+                _currText = evt.newValue;
+                UpdateRenderTexture();
+            }
         });
+
+        // Register for geometry changes (size/layout)
+        _textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
+        {
+        });
+
+        // Register for animation events
+        _textBubble.RegisterCallback<TransitionRunEvent>(evt =>
+        {
+            _isTransitioning = true;
+        });
+
+        _textBubble.RegisterCallback<TransitionEndEvent>(evt =>
+        {
+            _isTransitioning = false;
+        });
+    }
+
+    public void Update()
+    {
+        UpdateRenderTexture();
     }
 
     public void SetText(string text)
     {
-        _textBubble.SetFullText(text);
-        _textBubble.InstantCompleteText();
-        _currText = text;
+        if (_currText != text)
+        {
+            _currText = text;
+            _textBubble.SetFullText(text);
+            _textBubble.InstantCompleteText();
 
-        TextureUpdate();
+            // Update render texture only once after setting the text
+            UpdateRenderTexture();
+        }
+    }
+
+    private void UpdateRenderTexture()
+    {
+        // Only call TextureUpdate if necessary
+        if (_textBubble.resolvedStyle.width > 0 && _textBubble.resolvedStyle.height > 0)
+        {
+            TextureUpdate();
+            //Debug.Log("Render texture updated.");
+        }
     }
 
     public void Select()
     {
-        _textBubble.AddToClassList("selected");
+        _textBubble.Select();
     }
 
     public void Deselect()
     {
-        _textBubble.RemoveFromClassList("selected");
+        _textBubble.Deselect();
     }
 
 #if UNITY_EDITOR
@@ -76,6 +118,16 @@ public class TextBubbleObject : UXML_RenderTextureObject
             if (GUILayout.Button("Deselect"))
             {
                 (target as TextBubbleObject).Deselect();
+            }
+
+            if (GUILayout.Button("SetOriginToBottom"))
+            {
+                (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.BOTTOM_CENTER;
+            }
+
+            if (GUILayout.Button("SetOriginToTop"))
+            {
+                (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.TOP_CENTER;
             }
 
             if (EditorGUI.EndChangeCheck())

@@ -7,10 +7,7 @@ using NaughtyAttributes;
 using Darklight.UnityExt.UXML;
 using Ink.Runtime;
 using System;
-
-
-
-
+using Darklight.UnityExt.Inky;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,7 +17,12 @@ using UnityEditor;
 public class ChoiceInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
-    public Library<Vector2Int, UXML_RenderTextureObject> _attachedBubbles;
+
+    TextBubbleObject _selectedBubble;
+    Queue<TextBubbleObject> _choiceSelectionQueue = new Queue<TextBubbleObject>();
+    Dictionary<TextBubbleObject, Choice> _bubbleChoiceMap = new Dictionary<TextBubbleObject, Choice>();
+
+    public Library<Vector2Int, TextBubbleObject> _attachedBubbles;
     [SerializeField, Expandable] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
@@ -36,6 +38,7 @@ public class ChoiceInteractionReciever : InteractionReciever
             return _grid;
         }
     }
+    public bool ChoiceSelected => _selectedBubble != null;
 
     Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
     RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
@@ -49,7 +52,7 @@ public class ChoiceInteractionReciever : InteractionReciever
 
         if (_attachedBubbles == null)
         {
-            _attachedBubbles = new Library<Vector2Int, UXML_RenderTextureObject>
+            _attachedBubbles = new Library<Vector2Int, TextBubbleObject>
             {
                 ReadOnlyKey = true,
                 ReadOnlyValue = true
@@ -60,7 +63,18 @@ public class ChoiceInteractionReciever : InteractionReciever
 
     }
 
-    public void CreateBubbleAtNextAvailableCell(string fullText)
+    public void Update()
+    {
+        if (_choiceSelectionQueue.Count > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                RotateSelection();
+            }
+        }
+    }
+
+    public TextBubbleObject CreateBubbleAtNextAvailableCell(string fullText)
     {
         foreach (Cell2D cell in Grid.BaseGrid.GetCells())
         {
@@ -69,13 +83,13 @@ public class ChoiceInteractionReciever : InteractionReciever
 
             if (_attachedBubbles[cell.Key] == null)
             {
-                CreateBubbleAt(cell, fullText);
-                return;
+                return CreateBubbleAt(cell, fullText);
             }
         }
+        return null;
     }
 
-    void CreateBubbleAt(Cell2D cell, string fullText)
+    TextBubbleObject CreateBubbleAt(Cell2D cell, string fullText)
     {
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
@@ -88,7 +102,9 @@ public class ChoiceInteractionReciever : InteractionReciever
             choiceBubbleObject.transform.SetParent(this.transform);
 
             choiceBubbleObject.SetText(fullText);
+            return choiceBubbleObject;
         }
+        return null;
     }
 
     void DestroyAllBubbles()
@@ -105,17 +121,48 @@ public class ChoiceInteractionReciever : InteractionReciever
 
     public void LoadChoices(List<Choice> choices)
     {
-        foreach (Choice choice in choices)
+        for (int i = 0; i < choices.Count; i++)
         {
-            Debug.Log($"Choice: {choice.text}");
-            CreateBubbleAtNextAvailableCell(choice.text);
+            TextBubbleObject textBubble = CreateBubbleAtNextAvailableCell(choices[i].text);
+            _choiceSelectionQueue.Enqueue(textBubble);
+
+            // Map the text bubble to the choice
+            _bubbleChoiceMap[textBubble] = choices[i];
+        }
+
+        if (_choiceSelectionQueue.Count > 0)
+        {
+            TextBubbleObject firstChoice = _choiceSelectionQueue.Dequeue();
+            firstChoice.Select();
+            _selectedBubble = firstChoice;
         }
     }
 
-    public void ConfirmChoice(Choice choice)
+    public void RotateSelection()
     {
-        //InkyStoryManager.Iterator.ChooseChoice(choice);
+        if (_selectedBubble != null)
+        {
+            // Deselect the old bubble and enqueue it
+            _selectedBubble.Deselect();
+            _choiceSelectionQueue.Enqueue(_selectedBubble);
+        }
+
+
+        // Select the next bubble in the queue
+        _selectedBubble = _choiceSelectionQueue.Dequeue();
+        _selectedBubble.Select();
+    }
+
+    public void ConfirmChoice()
+    {
+        Choice choice = _bubbleChoiceMap[_selectedBubble];
+        InkyStoryManager.Iterator.ChooseChoice(choice);
         MTR_AudioManager.Instance.PlayMenuSelectEvent();
+
+        _bubbleChoiceMap.Clear();
+        _selectedBubble = null;
+        _choiceSelectionQueue.Clear();
+        DestroyAllBubbles();
     }
 
     void Select(SelectableButton newSelection)
@@ -187,6 +234,10 @@ public class ChoiceInteractionReciever : InteractionReciever
                 _script.DestroyAllBubbles();
             }
 
+            if (GUILayout.Button("Rotate Selection"))
+            {
+                _script.RotateSelection();
+            }
 
             if (EditorGUI.EndChangeCheck())
             {

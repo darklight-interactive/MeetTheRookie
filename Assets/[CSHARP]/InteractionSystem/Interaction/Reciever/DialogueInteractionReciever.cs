@@ -15,7 +15,7 @@ using UnityEditor;
 public class DialogueInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
-    UXML_RenderTextureObject _speechBubbleObject;
+    TextBubbleObject _dialogueBubbleObject;
     [SerializeField, ShowOnly] string _speakerTag = "";
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
@@ -48,20 +48,33 @@ public class DialogueInteractionReciever : InteractionReciever
 
     public void CreateNewSpeechBubble(string text)
     {
-        if (_speechBubbleObject != null)
+        if (_dialogueBubbleObject != null)
         {
             DestroySpeechBubble();
         }
 
         // Create a new Bubble
-        _speechBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
-        _speechBubbleObject.transform.SetParent(transform);
-
-        Grid.SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, Grid.GetBestCell());
+        _dialogueBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
+        _dialogueBubbleObject.transform.SetParent(transform);
 
 
-        TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
+        Cell2D bestCell = Grid.GetBestCell();
+        Grid.SpawnerComponent.AssignTransformToCell(_dialogueBubbleObject.transform, bestCell);
+
+
+        TextBubble textBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
+
+
         textBubble.Library = _dialogueBubbleLibrary; // << Set the bubble library
+
+        // Determine which bubble sprite to use based on direction
+        Spatial2D.AnchorPoint anchor = Grid.GetAnchorPointFromCell(bestCell);
+        Spatial2D.AnchorPoint origin = Grid.GetOriginPointFromCell(bestCell);
+
+        textBubble.OriginPoint = origin;
+        textBubble.DirectionPoint = anchor;
+
+        /*
         textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
         {
             float fullTextHeight = evt.newRect.height;
@@ -76,8 +89,9 @@ public class DialogueInteractionReciever : InteractionReciever
 
         textBubble.RegisterCallback<ChangeEvent<string>>(evt =>
         {
-            Debug.Log($"DialogueTextBubble.OnInitialized() - ChangeEvent<string>", this);
+            //Debug.Log($"DialogueTextBubble.OnInitialized() - ChangeEvent<string>", this);
         });
+        */
 
         textBubble.SetFullText(text);
         textBubble.InstantCompleteText(); // Temporarily display full text
@@ -88,7 +102,7 @@ public class DialogueInteractionReciever : InteractionReciever
     // Helper method to update the UI of the speech bubble
     TextBubble UpdateTextBubble()
     {
-        if (_speechBubbleObject == null)
+        if (_dialogueBubbleObject == null)
         {
             return null;
         }
@@ -96,22 +110,24 @@ public class DialogueInteractionReciever : InteractionReciever
         Cell2D bestCell = Grid.GetBestCell();
 
         // << ADJUST SPEECH BUBBLE TRANSFORM >>
-        Grid.SpawnerComponent.AssignTransformToCell(_speechBubbleObject.transform, bestCell);
+        Grid.SpawnerComponent.AssignTransformToCell(_dialogueBubbleObject.transform, bestCell);
 
-        // Determine which bubble sprite to use based on direction
-        Spatial2D.AnchorPoint anchor = Grid.GetAnchorPointFromCell(bestCell);
-        Spatial2D.AnchorPoint origin = Grid.GetOriginPointFromCell(bestCell);
+        /*
+                // Determine which bubble sprite to use based on direction
+                Spatial2D.AnchorPoint anchor = Grid.GetAnchorPointFromCell(bestCell);
+                Spatial2D.AnchorPoint origin = Grid.GetOriginPointFromCell(bestCell);
+        */
+        TextBubble textBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
 
-        TextBubble textBubble = _speechBubbleObject.ElementQuery<TextBubble>();
-        textBubble.OriginPoint = origin;
-        textBubble.DirectionPoint = anchor;
+        //textBubble.OriginPoint = origin;
+        //textBubble.DirectionPoint = anchor;
 
         return textBubble;
     }
 
     IEnumerator SpeechBubbleRollingTextRoutine(string fullText, float interval)
     {
-        TextBubble speechBubble = _speechBubbleObject.ElementQuery<TextBubble>();
+        TextBubble speechBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
         speechBubble.SetFullText(fullText);
 
         while (true)
@@ -127,14 +143,14 @@ public class DialogueInteractionReciever : InteractionReciever
 
     public void DestroySpeechBubble()
     {
-        if (_speechBubbleObject != null)
+        if (_dialogueBubbleObject != null)
         {
             if (Application.isPlaying)
-                Destroy(_speechBubbleObject.gameObject);
+                Destroy(_dialogueBubbleObject.gameObject);
             else
-                DestroyImmediate(_speechBubbleObject.gameObject);
+                DestroyImmediate(_dialogueBubbleObject.gameObject);
         }
-        _speechBubbleObject = null;
+        _dialogueBubbleObject = null;
     }
 
 #if UNITY_EDITOR
@@ -157,6 +173,11 @@ public class DialogueInteractionReciever : InteractionReciever
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
+
+            if (GUILayout.Button("Create New Speech Bubble"))
+            {
+                _script.CreateNewSpeechBubble("Hello, World!");
+            }
 
             if (EditorGUI.EndChangeCheck())
             {

@@ -178,3 +178,8 @@ VisualElement.panel.visible {
     transition-timing-function: ease-in;
     scale: 1.1 1.1;
 }
+
+TextBubble.selected {
+    transition-timing-function: ease-in-out-elastic;
+    transition-duration: 1s;
+}

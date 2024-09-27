@@ -163,7 +163,7 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
         public static void GenerateInteractableRecievers(Interactable interactable)
         {
-            Debug.Log($"Generating recievers for {interactable.gameObject.name}");
+            //Debug.Log($"Generating recievers for {interactable.gameObject.name}");
 
             List<InteractionType> requestedKeys = interactable.Request.GetKeys();
             interactable.Recievers.Reset();

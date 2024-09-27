@@ -172,13 +172,19 @@ public partial class MTRInteractable
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, text));
                         break;
                     case InkyStoryIterator.State.CHOICE:
-
                         // << GET THE CHOICE RECIEVER >> -----------
                         InteractionSystem.Registry.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
 
-                        // << INVOKE THE CHOICE EVENT >> -----------
-                        InteractionSystem.Invoke(new ChoiceInteractionCommand(choiceReciever, storyIterator.CurrentStoryChoices));
-
+                        if (choiceReciever.ChoiceSelected)
+                        {
+                            choiceReciever.ConfirmChoice();
+                            stateMachine.GoToState(State.CONTINUE, true);
+                        }
+                        else
+                        {
+                            // << INVOKE THE CHOICE EVENT >> -----------
+                            InteractionSystem.Invoke(new ChoiceInteractionCommand(choiceReciever, storyIterator.CurrentStoryChoices));
+                        }
                         break;
                     case InkyStoryIterator.State.END:
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));
