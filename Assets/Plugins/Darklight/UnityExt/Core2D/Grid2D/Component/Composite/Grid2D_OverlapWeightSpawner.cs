@@ -17,7 +17,11 @@ namespace Darklight.UnityExt.Core2D
         public Grid2D_SpawnerComponent SpawnerComponent { get => _componentC; }
 
         // ======== [[ METHODS ]] ================================== >>>>
-        // -- (( INTERFACE METHODS )) -------- ))
+        public List<Vector2Int> GetCellKeys()
+        {
+            return BaseGrid.CellKeys.ToList();
+        }
+
         public Cell2D GetBestCell()
         {
             // From all available cells, get the cells with the lowest collider count

@@ -34,7 +34,7 @@ public class TargetInteractionReciever : InteractionReciever
     {
         // Skip if in editor mode
         if (Application.isPlaying == false) return;
-        Debug.Log($"{gameObject.name}: ShowInteractIcon called.", this);
+        //Debug.Log($"{gameObject.name}: ShowInteractIcon called.", this);
 
         // << Get the best cell available >>
         Cell2D cell = gridSpawner.GetBestCell();
@@ -69,7 +69,7 @@ public class TargetInteractionReciever : InteractionReciever
     public void HideInteractIcon()
     {
         // Log the start of the method with the GameObject name as a prefix
-        Debug.Log($"{gameObject.name}: HideInteractIcon called.", this);
+        //Debug.Log($"{gameObject.name}: HideInteractIcon called.", this);
 
         // Check if _interactIconObject is null and no children with UXML_RenderTextureObject exist
         if (_interactIconObject == null && GetComponentInChildren<UXML_RenderTextureObject>() == null)
@@ -87,19 +87,19 @@ public class TargetInteractionReciever : InteractionReciever
         }
 
         // Log the destruction of the GameObject
-        Debug.Log($"{gameObject.name}: Destroying Interact Icon GameObject: {_interactIconObject.gameObject.name}", this);
+        //Debug.Log($"{gameObject.name}: Destroying Interact Icon GameObject: {_interactIconObject.gameObject.name}", this);
         ObjectUtility.DestroyAlways(_interactIconObject.gameObject);
 
         // Resetting _interactIconObject to null and log it
         _interactIconObject = null;
-        Debug.Log($"{gameObject.name}: _interactIconObject has been set to null.", this);
+        //Debug.Log($"{gameObject.name}: _interactIconObject has been set to null.", this);
 
         // Set visibility flag to false and log it
         _visible = false;
-        Debug.Log($"{gameObject.name}: _visible flag set to false.", this);
+        //Debug.Log($"{gameObject.name}: _visible flag set to false.", this);
 
         // Log the end of the method
-        Debug.Log($"{gameObject.name}: HideInteractIcon completed successfully.", this);
+        //Debug.Log($"{gameObject.name}: HideInteractIcon completed successfully.", this);
     }
 
 }

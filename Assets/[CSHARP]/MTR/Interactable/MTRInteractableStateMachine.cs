@@ -1,6 +1,7 @@
 using UnityEngine;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Inky;
+using Ink.Runtime;
 
 public partial class MTRInteractable
 {
@@ -157,7 +158,7 @@ public partial class MTRInteractable
 
                 string text = storyIterator.CurrentStoryDialogue;
 
-                // Get the player interactor and dialogue reciever
+                // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
                 string currentSpeaker = InkyStoryManager.CurrentSpeaker;
                 stateMachine.TryGetDialogueReciever(currentSpeaker,
                     out DialogueInteractionReciever speakerDialogueReciever);
@@ -171,6 +172,13 @@ public partial class MTRInteractable
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, text));
                         break;
                     case InkyStoryIterator.State.CHOICE:
+
+                        // << GET THE CHOICE RECIEVER >> -----------
+                        InteractionSystem.Registry.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
+
+                        // << INVOKE THE CHOICE EVENT >> -----------
+                        InteractionSystem.Invoke(new ChoiceInteractionCommand(choiceReciever, storyIterator.CurrentStoryChoices));
+
                         break;
                     case InkyStoryIterator.State.END:
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, true));

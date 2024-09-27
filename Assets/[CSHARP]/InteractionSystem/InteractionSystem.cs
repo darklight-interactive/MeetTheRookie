@@ -226,6 +226,8 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
+        public static MTRPlayerInteractor PlayerInteractor;
+
         public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
         {
             ReadOnlyKey = true,
@@ -293,6 +295,14 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                 Interactables.Add(interactable.Key, interactable);
                 Debug.Log($"{Prefix} Adding {interactable.Print()} to the Registry", interactable);
                 result = true;
+            }
+
+            if (result)
+            {
+                if (interactable is MTRPlayerInteractor playerInteractor)
+                {
+                    PlayerInteractor = playerInteractor;
+                }
             }
         }
 

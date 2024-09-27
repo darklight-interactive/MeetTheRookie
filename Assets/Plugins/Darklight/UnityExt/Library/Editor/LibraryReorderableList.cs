@@ -92,7 +92,7 @@ namespace Darklight.UnityExt.Library.Editor
 
             EditorGUI.LabelField(idRect, idProp.intValue.ToString(), CENTERED_LABEL_STYLE);
             DrawElementProperty(keyRect, keyProp, _readOnlyKeyProperty.boolValue);
-            DrawValueField(valueRect, valueProp);
+            DrawElementProperty(valueRect, valueProp, _readOnlyValueProperty.boolValue);
         }
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
@@ -125,7 +125,7 @@ namespace Darklight.UnityExt.Library.Editor
             }
             else
             {
-                EditorGUI.PropertyField(rect, property, GUIContent.none);
+                DrawValueField(rect, property);
             }
         }
 

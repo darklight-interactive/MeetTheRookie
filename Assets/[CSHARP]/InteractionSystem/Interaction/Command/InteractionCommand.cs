@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Ink.Runtime;
 using UnityEngine;
 
 public interface IInteractionCommand
@@ -55,5 +57,19 @@ public class DialogueInteractionCommand : InteractionCommand<DialogueInteraction
             _reciever.DestroySpeechBubble();
         else
             _reciever.CreateNewSpeechBubble(_text);
+    }
+}
+
+public class ChoiceInteractionCommand : InteractionCommand<ChoiceInteractionReciever>
+{
+    List<Choice> _choices;
+    public ChoiceInteractionCommand(ChoiceInteractionReciever reciever, List<Choice> choices) : base(reciever)
+    {
+        _choices = choices;
+    }
+
+    public override void Execute()
+    {
+        _reciever.LoadChoices(_choices);
     }
 }

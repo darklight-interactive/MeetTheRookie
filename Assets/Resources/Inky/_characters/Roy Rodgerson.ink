@@ -30,11 +30,11 @@
 }
 
 = interogate
-    ~ SetSpeaker(Speaker.Lupe)
-    * [Tell me about yourself.] -> personal_info
-    * [Tell me about this Town.] -> town_history
-    * [Tell me about the Winery.] -> winery_closing
-    * {IsClueFound(merch_pamphlet)} -> pamphlet
+~ SetSpeaker(Speaker.Lupe)
+* [Tell me about yourself.] -> personal_info
+* [Tell me about this Town.] -> town_history
+* [Tell me about the Winery.] -> winery_closing
+* {IsClueFound(merch_pamphlet)} -> pamphlet
     
 {IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
         Thank you for your cooperation. 

@@ -19,11 +19,14 @@ namespace Darklight.UnityExt.UXML
     /// <summary>
     /// This class is used to create a GameObject with a RenderTexture that can be used to render a UXML Element.
     /// </summary>
-    [ExecuteAlways]
     public class UXML_RenderTextureObject : UXML_UIDocumentObject, IUnityEditorListener
     {
         Material _materialInstance;
         RenderTexture _renderTextureInstance;
+
+
+        Material _lastMaterial;
+        RenderTexture _lastRenderTexture;
 
         [SerializeField, ShowOnly] GameObject _quad;
         [SerializeField, ShowOnly] MeshRenderer _meshRenderer;
@@ -31,9 +34,6 @@ namespace Darklight.UnityExt.UXML
         [SerializeField] RenderTexture _renderTexture;
 
         // -- Element Changed Event --
-        public delegate void OnChange();
-        protected OnChange OnElementChanged;
-
         public void OnEditorReloaded()
         {
 #if UNITY_EDITOR
@@ -79,9 +79,14 @@ namespace Darklight.UnityExt.UXML
             // Assign the material to the mesh renderer
             _meshRenderer.sharedMaterial = _materialInstance;
 
+            _lastMaterial = _materialInstance;
+            _lastRenderTexture = _renderTextureInstance;
 
-            OnElementChanged?.Invoke();
+            OnInitialized();
         }
+
+        protected virtual void OnInitialized() { }
+
 
         public void TextureUpdate()
         {
@@ -91,14 +96,16 @@ namespace Darklight.UnityExt.UXML
                 return;
             }
 
+            RenderTexture cloneTexture = new RenderTexture(_lastRenderTexture);
+            document.panelSettings.targetTexture = cloneTexture;
+            _lastRenderTexture = cloneTexture;
+
+            _meshRenderer.sharedMaterial = new Material(_lastMaterial);
+            _meshRenderer.sharedMaterial.mainTexture = cloneTexture;
+            _lastMaterial = _meshRenderer.sharedMaterial;
+
             // Force the UI document to repaint
             document.rootVisualElement.MarkDirtyRepaint();
-
-            RenderTexture cloneTexture = new RenderTexture(_renderTextureInstance);
-            document.panelSettings.targetTexture = cloneTexture;
-            _materialInstance.mainTexture = cloneTexture;
-            _meshRenderer.sharedMaterial = _materialInstance;
-
         }
 
         public void SetLocalScale(float scale)
@@ -124,8 +131,8 @@ namespace Darklight.UnityExt.UXML
         }
 
 #if UNITY_EDITOR
-        [CustomEditor(typeof(UXML_RenderTextureObject))]
-        public class UXML_RenderTextureObjectCustomEditor : UnityEditor.Editor
+        [CustomEditor(typeof(UXML_RenderTextureObject), true)]
+        public class UXML_RenderTextureObjectCustomEditor : UXML_UIDocumentObjectCustomEditor
         {
             SerializedObject _serializedObject;
             UXML_RenderTextureObject _script;

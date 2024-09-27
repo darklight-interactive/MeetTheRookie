@@ -20,7 +20,7 @@ using UnityEditor;
 public class ChoiceInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
-    Dictionary<Vector2Int, UXML_RenderTextureObject> _attachedBubbles = new Dictionary<Vector2Int, UXML_RenderTextureObject>();
+    public Library<Vector2Int, UXML_RenderTextureObject> _attachedBubbles;
     [SerializeField] UXML_UIDocumentPreset _choiceBubblePreset;
     [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
 
@@ -46,14 +46,32 @@ public class ChoiceInteractionReciever : InteractionReciever
         {
             _choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
         }
+
+        if (_attachedBubbles == null)
+        {
+            _attachedBubbles = new Library<Vector2Int, UXML_RenderTextureObject>
+            {
+                ReadOnlyKey = true,
+                ReadOnlyValue = true
+            };
+
+            _attachedBubbles.SetRequiredKeys(Grid.GetCellKeys().ToArray());
+        }
+
     }
 
     public void CreateBubbleAtNextAvailableCell(string fullText)
     {
-        Cell2D cell = Grid.GetNextAvailableCell();
-        if (cell != null)
+        foreach (Cell2D cell in Grid.BaseGrid.GetCells())
         {
-            CreateBubbleAt(cell, fullText);
+            if (!_attachedBubbles.ContainsKey(cell.Key))
+                _attachedBubbles.Add(cell.Key, null);
+
+            if (_attachedBubbles[cell.Key] == null)
+            {
+                CreateBubbleAt(cell, fullText);
+                return;
+            }
         }
     }
 
@@ -62,16 +80,14 @@ public class ChoiceInteractionReciever : InteractionReciever
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
         {
-            UXML_RenderTextureObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject(_choiceBubblePreset, _material, _renderTexture);
+            TextBubbleObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_choiceBubblePreset, _material, _renderTexture);
 
-            _attachedBubbles.Add(cell.Key, choiceBubbleObject);
+            _attachedBubbles[cell.Key] = choiceBubbleObject;
 
-            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform, true, false);
+            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform, false, true);
             choiceBubbleObject.transform.SetParent(this.transform);
 
-            TextBubble textBubble = choiceBubbleObject.ElementQuery<TextBubble>();
-            textBubble.SetFullText(fullText);
-            textBubble.InstantCompleteText();
+            choiceBubbleObject.SetText(fullText);
         }
     }
 
@@ -82,6 +98,7 @@ public class ChoiceInteractionReciever : InteractionReciever
         {
             ObjectUtility.DestroyAlways(bubbles[i].gameObject);
         }
+        _attachedBubbles.Reset();
     }
 
 
@@ -89,6 +106,7 @@ public class ChoiceInteractionReciever : InteractionReciever
     {
         foreach (Choice choice in choices)
         {
+            Debug.Log($"Choice: {choice.text}");
             CreateBubbleAtNextAvailableCell(choice.text);
         }
     }
@@ -150,7 +168,17 @@ public class ChoiceInteractionReciever : InteractionReciever
 
             if (GUILayout.Button("Create Bubble At Next Available Cell"))
             {
-                _script.CreateBubbleAtNextAvailableCell("Default Text");
+                List<string> testChoices = new List<string>
+                {
+                    "This is a long test choice that should wrap around the bubble.",
+                    "This is a short test choice.",
+                    "This is a medium length test choice that should wrap around the bubble.",
+                    "This is a suuuuuper long test choice. Like unnecessarily long - like your momma long.",
+                };
+
+
+                string randChoice = testChoices[UnityEngine.Random.Range(0, testChoices.Count)];
+                _script.CreateBubbleAtNextAvailableCell(randChoice);
             }
 
             if (GUILayout.Button("Destroy All Sprites"))

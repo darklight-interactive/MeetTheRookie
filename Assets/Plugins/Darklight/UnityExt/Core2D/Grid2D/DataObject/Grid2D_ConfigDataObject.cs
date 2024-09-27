@@ -51,8 +51,8 @@ namespace Darklight.UnityExt.Core2D
         [SerializeField, Range(0.1f, 10)] float _cellHeight = 1;
 
         [Space(10)]
-        [SerializeField, Range(0f, 10)] float _cellSpacingX = 1;
-        [SerializeField, Range(0f, 10)] float _cellSpacingY = 1;
+        [SerializeField, Range(-1f, 10)] float _cellSpacingX = 1;
+        [SerializeField, Range(-1f, 10)] float _cellSpacingY = 1;
 
         [Space(10)]
         [SerializeField, Range(-10, 10)] float _cellBondingX = 0;

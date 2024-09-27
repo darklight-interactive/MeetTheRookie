@@ -34,8 +34,17 @@ namespace Darklight.UnityExt.UXML
                 return;
             }
 
-            document.visualTreeAsset = preset.visualTreeAsset;
-            document.panelSettings = preset.panelSettings;
+            TemplateContainer assetClone = preset.visualTreeAsset.CloneTree();
+            document.rootVisualElement.Clear();
+            document.rootVisualElement.Add(assetClone);
+
+            // Create a new PanelSettings instance
+            PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+
+            // Copy properties from the original PanelSettings to the new one
+            CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
+
+            document.panelSettings = clonedPanelSettings;
             gameObject.layer = LayerMask.NameToLayer("UI");
 
             //Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
@@ -83,6 +92,27 @@ namespace Darklight.UnityExt.UXML
             isVisible = visible;
             root.visible = isVisible;
         }
+
+        private void CopyPanelSettings(PanelSettings source, PanelSettings destination)
+        {
+            // Copy relevant properties from source to destination
+            destination.scaleMode = source.scaleMode;
+            destination.referenceResolution = source.referenceResolution;
+            destination.screenMatchMode = source.screenMatchMode;
+            destination.match = source.match;
+            destination.sortingOrder = source.sortingOrder;
+            destination.targetTexture = source.targetTexture;
+            destination.clearColor = source.clearColor;
+            destination.clearDepthStencil = source.clearDepthStencil;
+            destination.sortingOrder = source.sortingOrder;
+            destination.targetDisplay = source.targetDisplay;
+            destination.targetDisplay = source.targetDisplay;
+            destination.targetTexture = source.targetTexture;
+            destination.clearColor = source.clearColor;
+            destination.clearDepthStencil = source.clearDepthStencil;
+
+            // Copy other necessary properties depending on your use case
+        }
     }
 
 #if UNITY_EDITOR
@@ -99,7 +129,7 @@ namespace Darklight.UnityExt.UXML
 
         public override void OnInspectorGUI()
         {
-            _serializedObject.Update();
+            serializedObject.Update();
 
             if (GUILayout.Button("Initialize"))
             {
@@ -108,7 +138,7 @@ namespace Darklight.UnityExt.UXML
 
             base.OnInspectorGUI();
 
-            _serializedObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 #endif
