@@ -15,13 +15,13 @@ namespace Darklight.UnityExt.Core2D
 {
     public class Grid2D_WeightComponent : Grid2D.BaseComponent
     {
-        const string DATA_OBJECT_PATH = "Assets/Resources/Darklight/Grid2D/WeightComponent";
+        const string DATA_OBJECT_PATH = "Assets/Resources/Darklight/Grid2D/WeightData";
         const int DEFAULT_WEIGHT = 5;
         const int MIN_WEIGHT = 0;
 
         // ======== [[ FIELDS ]] ================================== >>>>
         [SerializeField] bool _showGizmos;
-        [SerializeField] Grid2D_WeightDataObject _weightDataObject;
+        [SerializeField, Expandable] Grid2D_WeightDataObject _weightDataObject;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         #region -- (( BASE VISITORS )) -------- ))
@@ -104,12 +104,20 @@ namespace Darklight.UnityExt.Core2D
         #endregion
 
         // ======== [[ METHODS ]] ================================== >>>>
+        private void OnValidate()
+        {
+            if (_weightDataObject != null)
+            {
+                Debug.Log("Validating Weight Data Object");
+            }
+        }
+
         // -- (( INTERFACE )) : IComponent -------- ))
         public override void OnInitialize(Grid2D baseObj)
         {
             if (_weightDataObject == null)
             {
-                _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH);
+                _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH, this.gameObject.name);
             }
 
 

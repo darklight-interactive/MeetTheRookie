@@ -3,6 +3,8 @@ using Darklight.UnityExt.Utility;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+
 
 
 #if UNITY_EDITOR
@@ -20,7 +22,7 @@ namespace Darklight.UnityExt.UXML
     public class UXML_UIDocumentObject : MonoBehaviour
     {
         // << PUBLIC ACCESSORS >> //
-        [SerializeField] public UXML_UIDocumentPreset preset;
+        [SerializeField, Expandable] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
@@ -35,15 +37,16 @@ namespace Darklight.UnityExt.UXML
             }
 
             document.visualTreeAsset = preset.visualTreeAsset;
+            document.panelSettings = preset.panelSettings;
 
+            /*
             // Create a new PanelSettings instance
             PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
 
             // Copy properties from the original PanelSettings to the new one
             CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
             document.panelSettings = clonedPanelSettings;
-
-            //document.panelSettings = preset.panelSettings;
+            */
 
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");

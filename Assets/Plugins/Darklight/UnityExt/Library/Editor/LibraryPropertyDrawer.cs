@@ -61,6 +61,14 @@ namespace Darklight.UnityExt.Library.Editor
             if (_list == null)
             {
                 _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty, fieldInfo);
+
+                _list.onChangedCallback += (list) =>
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(property.serializedObject.targetObject);
+                    Debug.Log($"Library<,> items changed.", property.serializedObject.targetObject);
+                };
+
                 _list.onAddDropdownCallback = (rect, list) =>
                 {
                     GenericMenu menu = new GenericMenu();

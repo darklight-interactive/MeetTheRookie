@@ -86,17 +86,18 @@ namespace Darklight.UnityExt.Core2D
             public override void DrawGizmos()
             {
                 base.DrawGizmos();
+                Gizmos.color = Color.grey;
+                Gizmos.DrawCube(OriginAnchorPosition, 0.025f * Vector3.one);
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawCube(TargetAnchorPosition, 0.025f * Vector3.one);
             }
 
             public override void DrawSelectedGizmos()
             {
                 base.DrawSelectedGizmos();
 
-                Gizmos.color = Color.grey;
-                Gizmos.DrawCube(OriginAnchorPosition, 0.025f * Vector3.one);
 
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawCube(TargetAnchorPosition, 0.025f * Vector3.one);
             }
 
             // ---- (( PUBLIC METHODS )) ---- >>

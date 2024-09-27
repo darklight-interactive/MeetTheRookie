@@ -90,9 +90,20 @@ namespace Darklight.UnityExt.Library.Editor
             Rect keyRect = CalculatePropertyRect(rect, 1, columnWidths);
             Rect valueRect = CalculatePropertyRect(rect, 2, columnWidths);
 
+            // Begin change check for this element
+            EditorGUI.BeginChangeCheck();
+
             EditorGUI.LabelField(idRect, idProp.intValue.ToString(), CENTERED_LABEL_STYLE);
             DrawElementProperty(keyRect, keyProp, _readOnlyKeyProperty.boolValue);
             DrawElementProperty(valueRect, valueProp, _readOnlyValueProperty.boolValue);
+
+            // End change check and apply changes
+            if (EditorGUI.EndChangeCheck())
+            {
+                _itemsProperty.serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(_itemsProperty.serializedObject.targetObject);
+                Debug.Log("LibraryReorderableList: Element modified");
+            }
         }
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
