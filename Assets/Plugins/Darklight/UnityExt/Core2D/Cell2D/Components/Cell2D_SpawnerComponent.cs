@@ -87,10 +87,10 @@ namespace Darklight.UnityExt.Core2D
             {
                 base.DrawGizmos();
                 Gizmos.color = Color.grey;
-                Gizmos.DrawCube(OriginAnchorPosition, 0.025f * Vector3.one);
+                Gizmos.DrawCube(OriginAnchorPosition, 0.0125f * Vector3.one);
 
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawCube(TargetAnchorPosition, 0.025f * Vector3.one);
+                Gizmos.DrawCube(TargetAnchorPosition, 0.0125f * Vector3.one);
             }
 
             public override void DrawSelectedGizmos()

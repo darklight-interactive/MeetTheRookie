@@ -112,31 +112,24 @@ namespace Darklight.UnityExt.Library.Editor
 
             // ( Foldout Title )---------------------------------------------
             Rect titleRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            _foldout = EditorGUI.Foldout(titleRect, _foldout, $"{label} : {typeName} : Count: {itemCount}", true, new GUIStyle(EditorStyles.foldout)
-            {
-                fontStyle = FontStyle.Bold
-            });
+            EditorGUI.LabelField(titleRect, $"{label} : {typeName} : Count: {itemCount}", new GUIStyle(EditorStyles.boldLabel));
             currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING / 2;
 
-            if (_foldout)
-            {
-                // ( Properties )-------------------------------------------------
-                EditorGUI.BeginDisabledGroup(true);
-                Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-                EditorGUI.PropertyField(propRect, _readOnlyKeyProperty, true);
-                currentYPos += SINGLE_LINE_HEIGHT;
-                propRect.y = currentYPos;
+            // ( Properties )-------------------------------------------------
+            EditorGUI.BeginDisabledGroup(true);
+            Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
+            EditorGUI.PropertyField(propRect, _readOnlyKeyProperty, true);
+            currentYPos += SINGLE_LINE_HEIGHT;
+            propRect.y = currentYPos;
 
-                EditorGUI.PropertyField(propRect, _readOnlyValueProperty, true);
-                currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING;
-                EditorGUI.EndDisabledGroup();
+            EditorGUI.PropertyField(propRect, _readOnlyValueProperty, true);
+            currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING;
+            EditorGUI.EndDisabledGroup();
 
-                // ( ReorderableList )--------------------------------------------
-                Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-                _list.DrawList(listRect);
-                currentYPos += _list.GetHeight() + VERTICAL_SPACING;
-            }
-
+            // ( ReorderableList )--------------------------------------------
+            Rect listRect = new Rect(EditorGUI.IndentedRect(rect).x, currentYPos, EditorGUI.IndentedRect(rect).width, SINGLE_LINE_HEIGHT);
+            _list.DrawList(listRect);
+            currentYPos += _list.GetHeight() + VERTICAL_SPACING;
 
             // (Calculate Property Height)-------------------------------------
             _fullPropertyHeight = currentYPos - rect.y;
