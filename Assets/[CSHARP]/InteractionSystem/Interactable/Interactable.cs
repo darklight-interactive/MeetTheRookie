@@ -1,5 +1,6 @@
 using System;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
 using UnityEngine;
 
 public interface IInteractable
@@ -100,6 +101,17 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> 
     protected void Awake() => Preload();
     protected void Start() => Initialize();
     protected void Update() => Refresh();
+    protected void OnDrawGizmos()
+    {
+        Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.25f);
+        CustomGizmos.DrawLabel(CurrentState.ToString(), labelPos, new GUIStyle()
+        {
+            fontSize = 12,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+            normal = new GUIStyleState() { textColor = Color.white }
+        });
+    }
     #endregion
 
 

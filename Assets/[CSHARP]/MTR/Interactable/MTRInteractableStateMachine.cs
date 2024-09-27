@@ -98,21 +98,27 @@ public partial class MTRInteractable
         #region ---- <STATE_CLASS> [[ TARGET_STATE ]] ------------------------------------ >>>>
         public class TargetState : BaseInteractState
         {
+            TargetInteractionReciever reciever;
+
             public TargetState(InternalStateMachine stateMachine)
                 : base(stateMachine, State.TARGET) { }
             public override void Enter()
             {
-                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
+                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever targetReciever);
+                this.reciever = targetReciever;
+
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
+
+                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
             }
 
             public override void Execute() { }
             public override void Exit()
             {
-                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
+                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Exited Target State >> Reciever: {reciever}");
             }
         }
         #endregion

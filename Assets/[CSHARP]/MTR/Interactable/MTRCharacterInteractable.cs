@@ -53,26 +53,6 @@ public class MTRCharacterInteractable : MTRInteractable
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
 
-    public override void Preload()
-    {
-        base.Preload();
-        //Data.Name = "defaultNPC";
-
-        //InteractionSystem.Factory.CreateOrLoadInteractionRequestDataObject(Type.NPC, out InteractionRequestDataObject interactionRequest);
-        //Data.SetInteractionRequest(interactionRequest);
-    }
-
-    public override void Register()
-    {
-        // << REGISTER INTERACTABLE >> ------------------------------------
-        InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
-        GenerateRecievers();
-
-        // << VALIDATE REGISTRATION >> ------------------------------------
-        if (ValidateRegistration())
-            Initialize();
-    }
-
     public override void Initialize()
     {
         base.Initialize();

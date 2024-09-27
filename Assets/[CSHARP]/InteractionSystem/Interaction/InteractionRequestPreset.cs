@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Darklight/Interaction/Interactable/RequestPreset")]
 public class InteractionRequestDataObject : EnumGameObjectScriptableLibrary<InteractionType>
 {
+
+
+
     protected override EnumGameObjectLibrary<InteractionType> CreateNewLibrary()
     {
         return new EnumGameObjectLibrary<InteractionType>()
@@ -17,15 +20,5 @@ public class InteractionRequestDataObject : EnumGameObjectScriptableLibrary<Inte
     public List<InteractionType> GetKeys()
     {
         return new List<InteractionType>(Keys);
-    }
-
-    public GameObject CreateRecieverGameObject(InteractionType key)
-    {
-        TryGetValue(key, out GameObject go);
-        if (go != null)
-        {
-            return Instantiate(go);
-        }
-        return null;
     }
 }

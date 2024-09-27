@@ -1,5 +1,8 @@
 
+using System.Collections.Generic;
 using Darklight.UnityExt.Library;
+using Darklight.UnityExt.Utility;
+using UnityEngine;
 
 [System.Serializable]
 public class InteractionRecieverLibrary : EnumComponentLibrary<InteractionType, InteractionReciever>
@@ -8,10 +11,13 @@ public class InteractionRecieverLibrary : EnumComponentLibrary<InteractionType, 
     {
         ReadOnlyKey = true;
         ReadOnlyValue = true;
-        RequiredKeys = new InteractionType[]
-        {
-            InteractionType.TARGET
-        };
+        RequiredKeys = new InteractionType[] { };
         this.Refresh();
+    }
+
+    protected override void InternalClear()
+    {
+        //Debug.Log("InteractionRecieverLibrary: InternalClear called.");
+        base.InternalClear();
     }
 }

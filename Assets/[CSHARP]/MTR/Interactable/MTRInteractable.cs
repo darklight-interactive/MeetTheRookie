@@ -210,7 +210,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         // Set the collider size to half the size of the transform scale
         collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
-
     protected virtual void PreloadData()
     {
         if (_data == null)
@@ -218,13 +217,11 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         else
             _data.LoadData(this);
     }
-
     protected virtual void PreloadStateMachine()
     {
         // << CREATE THE STATE MACHINE >> ------------------------------------
         stateMachine = new InternalStateMachine(this);
     }
-
     protected virtual bool ValidatePreload()
     {
         bool spriteRendererValid = spriteRenderer != null;
@@ -253,6 +250,9 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     protected virtual void GenerateRecievers()
     {
+        Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
+
+
         InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
             out InteractionRequestDataObject newRequest, new List<InteractionType> { InteractionType.TARGET });
         Request = newRequest;
@@ -284,6 +284,12 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         return IsRegistered = isValid;
     }
 
+    protected virtual void InitializeStateMachine()
+    {
+        stateMachine = new InternalStateMachine(this);
+        stateMachine.GoToState(State.READY);
+    }
+
     protected virtual bool ValidateInitialization()
     {
         return IsInitialized = (CurrentState == State.READY);
@@ -297,6 +303,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
     public override void Preload()
     {
+        //Debug.Log($"{PREFIX} {Name} :: Preload", this);
+
         // << RESET >> ------------------------------------
         Reset();
 
@@ -308,24 +316,52 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         // << VALIDATE PRELOAD >> ------------------------------------
         if (ValidatePreload())
+        {
             Register();
+        }
+        else
+        {
+            Debug.LogError($"{PREFIX} {Name} :: Preload Failed.", this);
+        }
     }
 
     public override void Register()
     {
+        //Debug.Log($"{PREFIX} {Name} :: Register", this);
+
         // << REGISTER INTERACTABLE >> ------------------------------------
         InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
         GenerateRecievers();
 
         // << VALIDATE REGISTRATION >> ------------------------------------
         if (ValidateRegistration())
+        {
             Initialize();
+        }
+        else
+        {
+            Debug.LogError($"{PREFIX} {Name} :: Register Failed.", this);
+        }
     }
 
     public override void Initialize()
     {
+        if (!IsPreloaded || !IsRegistered)
+        {
+            Debug.Log($"{PREFIX} {Name} :: Preload from Initialize", this);
+            Preload();
+            if (!IsPreloaded || !IsRegistered)
+            {
+                Debug.LogError($"{PREFIX} {Name} :: Initialize Failed.", this);
+                return;
+            }
+        }
+
+        Debug.Log($"{PREFIX} {Name} :: Initialize", this);
+
+        InitializeStateMachine();
+
         // << SET TO READY STATE >> ------------------------------------
-        stateMachine.GoToState(State.READY);
         ValidateInitialization();
 
         // << DESTINATION POINTS >> ------------------------------------
@@ -358,6 +394,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         if (StateMachine != null)
             StateMachine.Step();
+
+
     }
 
     public override void Reset()
@@ -539,8 +577,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
             EditorGUI.BeginChangeCheck();
 
-            // << DRAW DEFAULT INSPECTOR >> ------------------------------------
-            base.OnInspectorGUI();
+
 
             // << BUTTONS >> ------------------------------------
             if (!_script.IsPreloaded)
@@ -564,6 +601,16 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                     _script.Initialize();
                 }
             }
+            else
+            {
+                if (GUILayout.Button("Reset"))
+                {
+                    _script.Reset();
+                }
+            }
+
+            // << DRAW DEFAULT INSPECTOR >> ------------------------------------
+            base.OnInspectorGUI();
 
             if (EditorGUI.EndChangeCheck())
             {

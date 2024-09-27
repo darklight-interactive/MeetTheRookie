@@ -27,17 +27,13 @@ public enum InteractionType
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
     [SerializeField, Expandable] InteractionSystemSettings _settings;
-    [SerializeField, Expandable] InteractionRequestDataObject _baseInteractionRequest;
-    [SerializeField, Expandable] InteractionRequestDataObject _interactorInteractionRequest;
-
-    [SerializeField, Expandable] InteractionRequestDataObject _npcInteractionRequest;
-    [SerializeField, Expandable] InteractionRequestDataObject _playerInteractionRequest;
+    [SerializeField] protected GameObject _iconInteractionHandlerPrefab;
+    [SerializeField] protected GameObject _dialogueInteractionHandlerPrefab;
 
     [HorizontalLine(4, color: EColor.Gray)]
     [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
     public static InteractionSystemSettings Settings { get => Instance._settings; }
-    public static InteractionRequestDataObject InteractableInteractionRequestPreset { get => Instance._baseInteractionRequest; }
 
     public void OnEditorReloaded()
     {
@@ -120,15 +116,59 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return request;
         }
 
+        public static void InstantiateInteractionReciever(Interactable interactable, InteractionType key, out GameObject gameObject)
+        {
+            GameObject prefab = null;
+            switch (key)
+            {
+                case InteractionType.SIMPLE:
+                case InteractionType.TOGGLE:
+                case InteractionType.TARGET:
+                    prefab = Instance._iconInteractionHandlerPrefab;
+                    break;
+                case InteractionType.DIALOGUE:
+                case InteractionType.CHOICE:
+                    prefab = Instance._dialogueInteractionHandlerPrefab;
+                    break;
+            }
+
+
+            GameObject recieverGameObject = Instantiate(prefab, interactable.transform);
+            if (recieverGameObject == null)
+            {
+                Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", interactable);
+                gameObject = null;
+            }
+            else
+            {
+                recieverGameObject.transform.localPosition = Vector3.zero;
+                recieverGameObject.transform.localRotation = Quaternion.identity;
+                recieverGameObject.transform.localScale = Vector3.one;
+            }
+
+            InteractionReciever reciever = recieverGameObject.GetComponent<InteractionReciever>();
+            if (reciever == null)
+            {
+                Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", interactable);
+                ObjectUtility.DestroyAlways(recieverGameObject);
+                gameObject = null;
+            }
+
+            interactable.Recievers[key] = reciever;
+            gameObject = recieverGameObject;
+        }
+
         public static void GenerateInteractableRecievers(Interactable interactable)
         {
+            Debug.Log($"Generating recievers for {interactable.gameObject.name}");
+
             List<InteractionType> requestedKeys = interactable.Request.GetKeys();
-            interactable.Recievers.Reset();
+            // interactable.Recievers.Reset();
 
             foreach (InteractionType key in requestedKeys)
             {
-                interactable.Recievers.TryGetValue(key, out InteractionReciever currentHandlerValue);
-                if (currentHandlerValue == null)
+                interactable.Recievers.TryGetValue(key, out InteractionReciever currRequestedReciever);
+                if (currRequestedReciever == null)
                 {
                     InteractionReciever recieverInChild = GetRecieverInChildren(interactable, key);
                     if (recieverInChild != null)
@@ -137,30 +177,14 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
                         continue;
                     }
 
-                    GameObject recieverGameObject = interactable.Request.CreateRecieverGameObject(key);
-                    if (recieverGameObject == null)
-                    {
-                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", interactable);
-                        continue;
-                    }
-                    else
-                    {
-                        recieverGameObject.transform.SetParent(interactable.transform);
-                        recieverGameObject.transform.localPosition = Vector3.zero;
-                        recieverGameObject.transform.localRotation = Quaternion.identity;
-                        recieverGameObject.transform.localScale = Vector3.one;
-                        recieverGameObject.name = $"{key} Interaction Handler";
-                    }
+                    InstantiateInteractionReciever(interactable, key, out GameObject recieverGameObject);
 
-                    InteractionReciever handler = recieverGameObject.GetComponent<InteractionReciever>();
-                    if (handler == null)
-                    {
-                        Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", interactable);
-                        ObjectUtility.DestroyAlways(recieverGameObject);
-                        continue;
-                    }
+                }
+                else
+                {
+                    Debug.Log($"Reciever for {key} already exists", interactable);
+                    //currRequestedReciever.transform.localPosition = Vector3.zero;
 
-                    interactable.Recievers[key] = handler;
                 }
             }
 
@@ -168,7 +192,6 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
 
             //Debug.Log($"Preloaded Interaction Handlers for {Name}. Count {_handlerLibrary.Count}", this);
         }
-
 
         public static void RemoveUnusedRecievers(Interactable interactable)
         {
