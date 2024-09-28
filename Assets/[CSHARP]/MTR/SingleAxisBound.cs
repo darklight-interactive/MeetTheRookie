@@ -38,7 +38,7 @@ public class SingleAxisBounds
             _max = Mathf.Clamp(value, valueRange.x, valueRange.y);
         }
     }
-    public float Distance => Max - Min;
+    public float Distance => Mathf.Abs(Max - Min);
     public SingleAxisBounds(Axis axis, Vector2 range)
     {
         _axis = axis;

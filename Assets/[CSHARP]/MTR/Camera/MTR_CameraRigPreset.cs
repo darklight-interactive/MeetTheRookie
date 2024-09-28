@@ -9,7 +9,7 @@ using UnityEditor;
 public class MTR_CameraRigPreset : ScriptableObject
 {
     const int DEFAULT_RANGE_VALUE = 25;
-    static Vector2 DepthRange = new Vector2(-DEFAULT_RANGE_VALUE * 2, 0);
+    static Vector2 DistRange = new Vector2(-DEFAULT_RANGE_VALUE * 2, 0);
     static Vector2 HorzRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
     static Vector2 VertRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
     static Vector2 SpeedRange = new Vector2(0, 5);
@@ -23,7 +23,7 @@ public class MTR_CameraRigPreset : ScriptableObject
 
     [Header("Depth")]
     [Tooltip("The depth of the camera from the origin target. This is the Z axis.")]
-    [DynamicRange("DepthRange")] public float depth = 50f;
+    [DynamicRange("DistRange")] public float distanceOffset = -10f;
     [Header("Position Offsets")]
     [Tooltip("The horizontal offset of the camera from the origin target. This is the X axis.")]
     [DynamicRange("HorzRange")] public float horizontalOffset = 0f;
@@ -37,7 +37,7 @@ public class MTR_CameraRigPreset : ScriptableObject
     public bool useBounds = true;
     public SingleAxisBounds xAxisBounds = new SingleAxisBounds(Axis.X, HorzRange);
     public SingleAxisBounds yAxisBounds = new SingleAxisBounds(Axis.Y, VertRange);
-    public SingleAxisBounds zAxisBounds = new SingleAxisBounds(Axis.Z, DepthRange);
+    public SingleAxisBounds zAxisBounds = new SingleAxisBounds(Axis.Z, DistRange);
 
     void OnValidate()
     {

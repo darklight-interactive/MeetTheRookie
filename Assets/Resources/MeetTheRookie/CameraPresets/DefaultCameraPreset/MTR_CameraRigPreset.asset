@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0855d01303d62ab408b4abd511e7e9c5, type: 3}
   m_Name: MTR_CameraRigPreset
   m_EditorClassIdentifier: 
-  lookAtOriginX: 0
-  positionLerpSpeed: 4
+  lookAtOriginX: 1
+  positionLerpSpeed: 5
   rotationLerpSpeed: 5
   fovLerpSpeed: 5
-  depth: -45
-  horizontalOffset: 0
-  verticalOffset: 0.25
-  fov: 1.5
+  distanceOffset: -12.9
+  horizontalOffset: 13.5
+  verticalOffset: 1.4
+  fov: 9.5
   useBounds: 1
   xAxisBounds:
     _axis: 0
@@ -29,10 +29,10 @@ MonoBehaviour:
   yAxisBounds:
     _axis: 1
     _showGizmos: 1
-    _min: -0.5
-    _max: 2
+    _min: -5.6
+    _max: 5.1
   zAxisBounds:
     _axis: 2
-    _showGizmos: 0
-    _min: -25
-    _max: -1
+    _showGizmos: 1
+    _min: -50
+    _max: 0
