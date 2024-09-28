@@ -57,7 +57,7 @@ namespace Darklight.UnityExt.Editor
                 Vector2 range = GetVector2Value(rangeAttribute.Vector2FieldName, parentObject);
 
                 float nameLabelWidth = EditorGUIUtility.labelWidth;
-                float rangeValueWidth = 35f; // Adjust width for range values
+                float rangeValueWidth = 45f; // Adjust width for range values
                 float sliderPadding = 2f; // Padding between the slider and range labels
                 float sliderWidth = position.width - nameLabelWidth - (rangeValueWidth * 2) - (sliderPadding * 2);
 

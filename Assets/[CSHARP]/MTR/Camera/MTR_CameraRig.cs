@@ -5,6 +5,7 @@ using Darklight.UnityExt.Editor;
 using NaughtyAttributes;
 using Darklight.UnityExt.Utility;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,37 +19,56 @@ public class MTR_CameraRig : MonoBehaviour
 {
     const string PRESET_PATH = "Assets/Resources/MeetTheRookie/CameraPresets/";
 
+    Vector3 _cameraTargetPosition;
+    Vector3 _targetRotation;
+    float _targetFOV;
+
+    [SerializeField] bool _showGizmos;
+    [SerializeField] bool _lerpInEditor;
     [SerializeField] Camera _mainCamera;
     [SerializeField, Expandable] MTR_CameraRigPreset _preset;
 
-    protected Vector3 originPosition => this.transform.position;
-    protected Vector3 cameraPosition
+    public Vector3 OriginPosition
     {
         get
         {
-            Vector3 origin = originPosition;
-            Vector3 offset = new Vector3(
-                _preset.horizontalOffset,
-                _preset.verticalOffset,
-                _preset.depth
-            );
-            return origin + offset;
+            return transform.position;
         }
     }
 
-    protected float cameraFOV => _preset.fov;
-    protected Bounds cameraBound
+    public float CameraFOV => _preset.fov;
+    public float HalfWidth
     {
         get
         {
-            /*
-            float width = _preset.xAxisBounds.y - _preset.xAxisBounds.x;
-            float height = _preset.yAxisBounds.y - _preset.yAxisBounds.x;
-            return new Bounds(originPosition, new Vector3(width, height, 0));
-            */
-            return new Bounds(originPosition, Vector3.one);
+            float halfWidth = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * _preset.depth * _mainCamera.aspect;
+            return Mathf.Abs(halfWidth); // Return the absolute value
         }
     }
+
+    private void OnEnable()
+    {
+#if UNITY_EDITOR
+        EditorApplication.update += EditorUpdate;
+#endif
+    }
+
+    private void OnDisable()
+    {
+#if UNITY_EDITOR
+        EditorApplication.update -= EditorUpdate;
+#endif
+    }
+
+    void EditorUpdate()
+    {
+        // This ensures smooth updates in the editor
+        if (!Application.isPlaying)
+        {
+            UpdateCameraRig(_lerpInEditor);
+        }
+    }
+
 
     private void Awake()
     {
@@ -59,60 +79,85 @@ public class MTR_CameraRig : MonoBehaviour
 
         if (_mainCamera == null)
         {
-            _mainCamera = new GameObject("Main Camera").AddComponent<Camera>();
+            _mainCamera = GetComponentInChildren<Camera>();
+            if (_mainCamera == null)
+                _mainCamera = new GameObject("MTR Main Camera").AddComponent<Camera>();
         }
         _mainCamera.transform.SetParent(transform);
-
-        /*
-        CameraBounds[] bounds = FindObjectsByType<CameraBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        if (bounds.Length > 0)
-        {
-            cameraBounds = bounds[0];
-        }
-        else
-        {
-            cameraBounds = null;
-        }
-        */
-
     }
 
-    public virtual void Update()
+    public void Update()
     {
-        _mainCamera.transform.position = cameraPosition;
-        _mainCamera.fieldOfView = cameraFOV;
+        if (Application.isPlaying)
+            UpdateCameraRig(true);
+    }
 
-        /*
-        // set the offsets
-        _offsetPosition = new Vector3(_distanceX, _distanceY, _distanceZ);
-        _focusTargetPositionOffset = new Vector3(0, _focusOffsetY, 0);
+    void UpdateCameraRig(bool useLerp)
+    {
+        _targetFOV = _preset.fov;
 
-        // set the position
-        Vector3 newPosition = _focusTargetPosition + _offsetPosition;
-        Vector3 offsetDirection = (newPosition - transform.position).normalized;
-        float halfWidth = Mathf.Tan(0.5f * Mathf.Deg2Rad * GetCurrentFOV()) * _distanceZ * _camerasInChildren[0].aspect;
 
-        transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
-        */
-
-        /*
-        if (cameraBounds)
+        // << UPDATE CAMERA POSITION >> -----------------------------------
+        _cameraTargetPosition = CalculateCameraTargetPosition();
+        if (_preset.useBounds)
         {
-            if ((transform.position.x - halfWidth > cameraBounds.leftBound && offsetDirection.x < 0) || (transform.position.x + halfWidth < cameraBounds.rightBound && offsetDirection.x > 0))
+            SingleAxisBounds xAxisBounds = _preset.xAxisBounds;
+
+            // ( Contain the Camera within the xAxisBounds ) -----------------
+            float camLeftFOVBound = _cameraTargetPosition.x - HalfWidth;
+            float camRightFOVBound = _cameraTargetPosition.x + HalfWidth;
+
+            xAxisBounds.GetBoundWorldPositions(OriginPosition, out Vector3 minBoundPos, out Vector3 maxBoundPos);
+            if (camLeftFOVBound < minBoundPos.x)
             {
-                transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
+                _cameraTargetPosition.x = minBoundPos.x + HalfWidth;
+                //Debug.Log($"Camera Left FOV Bound: {camLeftFOVBound} < {minBoundPos.x}");
             }
+            else if (camRightFOVBound > maxBoundPos.x)
+            {
+                _cameraTargetPosition.x = maxBoundPos.x - HalfWidth;
+                //Debug.Log($"Camera Right FOV Bound: {camRightFOVBound} > {maxBoundPos.x}");
+            }
+        }
+
+        // << UPDATE CAMERA ROTATION >> -----------------------------------
+        Quaternion newRotation = Quaternion.identity;
+        if (_preset.lookAtOriginX)
+        {
+            Vector3 excludeYValue = new Vector3(OriginPosition.x, _cameraTargetPosition.y, OriginPosition.z);
+            newRotation = GetLookRotation(excludeYValue, _cameraTargetPosition);
+        }
+
+        if (useLerp)
+        {
+            // ( Lerp Camera Position ) ---------------------------------------
+            _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, _cameraTargetPosition, _preset.positionLerpSpeed * Time.deltaTime);
+
+
+            // ( Slerp Camera Rotation ) ---------------------------------------
+            _mainCamera.transform.rotation = Quaternion.Slerp(_mainCamera.transform.rotation, newRotation, _preset.rotationLerpSpeed * Time.deltaTime);
+
+
+            // ( Lerp Camera Field of View ) ---------------------------------
+            _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _targetFOV, _preset.fovLerpSpeed * Time.deltaTime);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, newPosition, _positionLerpSpeed * Time.deltaTime);
+            // ( Set Camera Position ) ---------------------------------------
+            _mainCamera.transform.position = _cameraTargetPosition;
+
+            // ( Set Camera Rotation ) ---------------------------------------
+            _mainCamera.transform.rotation = newRotation;
+
+            // ( Set Camera Field of View ) ---------------------------------
+            _mainCamera.fieldOfView = _targetFOV;
         }
-        */
+
+
 
         /*
         // set the rotation
-        Quaternion newRotation = GetLookRotation(newPosition, _focusTargetPosition + _focusTargetPositionOffset);
-        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, _rotationLerpSpeed * Time.deltaTime);
+
 
         // << UPDATE ALL CAMERAS >>
         foreach (UnityEngine.Camera camera in _camerasInChildren)
@@ -129,60 +174,81 @@ public class MTR_CameraRig : MonoBehaviour
         */
     }
 
+    Vector3 CalculateCameraTargetPosition()
+    {
+        Vector3 origin = OriginPosition;
+        Vector3 offset = new Vector3(
+            _preset.horizontalOffset,
+            _preset.verticalOffset,
+            _preset.depth
+        );
+        return origin + offset;
+    }
+
     void OnDrawGizmos()
     {
+        if (!_showGizmos) return;
+
         SingleAxisBounds xAxisBounds = _preset.xAxisBounds;
         SingleAxisBounds yAxisBounds = _preset.yAxisBounds;
         SingleAxisBounds zAxisBounds = _preset.zAxisBounds;
         // Draw X Axis Bounds
         Gizmos.color = Color.red;
-        xAxisBounds.DrawGizmos(originPosition, yAxisBounds.Max);
+        xAxisBounds.DrawGizmos(OriginPosition, yAxisBounds.Max);
 
         // Draw Y Axis Bounds
         Gizmos.color = Color.green;
-        yAxisBounds.DrawGizmos(originPosition + new Vector3(xAxisBounds.Min, 0, 0), xAxisBounds.Distance);
+        yAxisBounds.DrawGizmos(OriginPosition + new Vector3(xAxisBounds.Min, 0, 0), xAxisBounds.Distance);
 
         // Draw Z Axis Bounds
         Gizmos.color = Color.blue;
-        zAxisBounds.DrawGizmos(originPosition, yAxisBounds.Max);
+        zAxisBounds.DrawGizmos(OriginPosition, yAxisBounds.Max);
     }
 
     void OnDrawGizmosSelected()
     {
+        if (!_showGizmos) return;
+
         Gizmos.color = Color.black;
-        Gizmos.DrawSphere(originPosition, 0.1f);
-        Gizmos.DrawSphere(cameraPosition, 0.1f);
-        Gizmos.DrawLine(originPosition, cameraPosition);
+        Gizmos.DrawSphere(OriginPosition, 0.025f);
+        Gizmos.DrawSphere(CalculateCameraTargetPosition(), 0.025f);
+        Gizmos.DrawLine(OriginPosition, CalculateCameraTargetPosition());
 
         // << ORIGIN -> OFFSET_Z >> ---------------------------------------
         Handles.color = Color.blue;
-        Vector3 offsetZ = originPosition + new Vector3(0, 0, _preset.depth);
-        Handles.DrawLine(originPosition, offsetZ);
+        Vector3 offsetZ = OriginPosition + new Vector3(0, 0, _preset.depth);
+        Handles.DrawLine(OriginPosition, offsetZ);
 
         // << OFFSET_Z -> OFFSET_Y >> -------------------------------------
         Handles.color = Color.green;
-        Vector3 offsetYZ = originPosition + offsetZ + new Vector3(0, _preset.verticalOffset, 0);
+        Vector3 offsetYZ = OriginPosition + new Vector3(0, _preset.verticalOffset, _preset.depth);
         Handles.DrawLine(offsetZ, offsetYZ);
 
         // << OFFSET_Y -> OFFSET_X >> -------------------------------------
         Handles.color = Color.red;
-        Vector3 offsetXYZ = originPosition + offsetYZ + new Vector3(_preset.horizontalOffset, 0, 0);
+        Vector3 offsetXYZ = OriginPosition + new Vector3(_preset.horizontalOffset, _preset.verticalOffset, _preset.depth);
         Handles.DrawLine(offsetYZ, offsetXYZ);
+
+        // << FOV BOUNDS >> ------------------------------------------------
+        float camLeftFOVBound = _cameraTargetPosition.x - HalfWidth;
+        float camRightFOVBound = _cameraTargetPosition.x + HalfWidth;
+
+        Gizmos.color = Color.yellow;
+        _preset.xAxisBounds.GetBoundWorldPositions(OriginPosition, out Vector3 minBound, out Vector3 maxBound);
+        Gizmos.DrawRay(minBound, Vector3.back * 20);
+        Gizmos.DrawRay(maxBound, Vector3.back * 20);
+
+        Vector3 leftBoundPoint = new Vector3(camLeftFOVBound, OriginPosition.y, OriginPosition.z);
+        Vector3 rightBoundPoint = new Vector3(camRightFOVBound, OriginPosition.y, OriginPosition.z);
+        Gizmos.DrawLine(leftBoundPoint, rightBoundPoint);
     }
 
-
-    public void SetOffsetRotation(Transform mainTarget, Transform secondTarget)
+    Quaternion GetLookRotation(Vector3 originPosition, Vector3 cameraPosition)
     {
-        float mainX = mainTarget.position.x;
-        float secondX = secondTarget.position.x;
-        float middleX = (secondX - mainX) / 2;
-    }
-
-    Quaternion GetLookRotation(Vector3 originPosition, Vector3 targetPosition)
-    {
-        Vector3 direction = (targetPosition - originPosition).normalized;
-        if (direction == Vector3.zero) return Quaternion.identity;
+        Vector3 direction = (originPosition - cameraPosition);
         Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+
         return lookRotation;
     }
 
@@ -210,6 +276,11 @@ public class MTR_CameraRig : MonoBehaviour
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
+
+                // Update the camera rig when properties change
+                _script.Update();
+                EditorUtility.SetDirty(target);
+                SceneView.RepaintAll(); // Ensure the Scene view is refreshed
             }
         }
 

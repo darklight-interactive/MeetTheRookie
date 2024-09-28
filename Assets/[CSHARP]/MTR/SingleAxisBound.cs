@@ -47,6 +47,14 @@ public class SingleAxisBounds
         Max = range.y;
     }
 
+    public void GetBoundWorldPositions(Vector3 origin, out Vector3 min, out Vector3 max)
+    {
+        GetAxisValues(out Vector3 direction, out Color color);
+
+        min = origin + direction * Min;
+        max = origin + direction * Max;
+    }
+
     public void DrawGizmos(Vector3 origin, float length)
     {
         if (!_showGizmos) return;

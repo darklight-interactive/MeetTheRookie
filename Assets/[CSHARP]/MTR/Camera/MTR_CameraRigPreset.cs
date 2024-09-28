@@ -8,30 +8,36 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/MTRCameraPreset")]
 public class MTR_CameraRigPreset : ScriptableObject
 {
-    const int DEFAULT_RANGE = 25;
-    static Vector2 HorzRange = new Vector2(-DEFAULT_RANGE, DEFAULT_RANGE);
-    static Vector2 VertRange = new Vector2(0, DEFAULT_RANGE);
-    static Vector2 DepthRange = new Vector2(-DEFAULT_RANGE, 0);
+    const int DEFAULT_RANGE_VALUE = 25;
+    static Vector2 DepthRange = new Vector2(-DEFAULT_RANGE_VALUE * 2, 0);
+    static Vector2 HorzRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
+    static Vector2 VertRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
+    static Vector2 SpeedRange = new Vector2(0, 5);
+
+    public bool lookAtOriginX = true;
+
+    [Header("Speed")]
+    [DynamicRange("SpeedRange")] public float positionLerpSpeed = 10f;
+    [DynamicRange("SpeedRange")] public float rotationLerpSpeed = 10f;
+    [DynamicRange("SpeedRange")] public float fovLerpSpeed = 10f;
+
+    [Header("Depth")]
+    [Tooltip("The depth of the camera from the origin target. This is the Z axis.")]
+    [DynamicRange("DepthRange")] public float depth = 50f;
+    [Header("Position Offsets")]
+    [Tooltip("The horizontal offset of the camera from the origin target. This is the X axis.")]
+    [DynamicRange("HorzRange")] public float horizontalOffset = 0f;
+    [Tooltip("The vertical offset of the camera from the origin target. This is the Y axis.")]
+    [DynamicRange("VertRange")] public float verticalOffset = 0f;
+
+    [Header("Field of View")]
+    [SerializeField, Range(0.1f, 190)] public float fov = 5f;
 
     [Header("Bounds")]
     public bool useBounds = true;
     public SingleAxisBounds xAxisBounds = new SingleAxisBounds(Axis.X, HorzRange);
     public SingleAxisBounds yAxisBounds = new SingleAxisBounds(Axis.Y, VertRange);
     public SingleAxisBounds zAxisBounds = new SingleAxisBounds(Axis.Z, DepthRange);
-
-    [Header("Speed")]
-    [Range(0, 10)] public float lerpSpeed = 10f;
-
-    [Header("Depth")]
-    [Tooltip("The depth be")]
-    [DynamicRange("DepthRange")] public float depth = 50f;
-
-    [Header("Position Offsets")]
-    [DynamicRange("HorzRange")] public float horizontalOffset = 0f;
-    [DynamicRange("VertRange")] public float verticalOffset = 0f;
-
-    [Header("Field of View")]
-    [SerializeField, Range(0.1f, 190)] public float fov = 5f;
 
     void OnValidate()
     {
