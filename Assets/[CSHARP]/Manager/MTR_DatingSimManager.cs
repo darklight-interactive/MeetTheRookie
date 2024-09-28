@@ -165,6 +165,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
+        MTR_AudioManager.Instance.PlayMenuSelectEvent();
         choicesActive = false;
         ContinueStory();
     }
@@ -187,7 +188,6 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         if (isRolling)
         {
             StopAllCoroutines();
-            //MTR_AudioManager.Instance.StopRepeatingEvent();
             dialogueText.InstantCompleteText();
             if(choicesActive){
                 choiceParent.style.display = DisplayStyle.Flex;
@@ -212,6 +212,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     void Move(Vector2 move)
     {
         move.y = -move.y;
+        var previousSelection = choiceMap.CurrentSelection;
         if (choiceMap.CurrentSelection != null)
         {
             choiceMap.CurrentSelection.Deselect();
@@ -222,6 +223,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         {
             selected.SetSelected();
             selected.style.fontSize = SetFontSize(true, selected.text);
+            if (previousSelection != selected) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
         }
     }
 
@@ -292,7 +294,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         dialogueText.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
-        // Start text SFX
+        // Start rolling text SFX
         //if (speakerName == "lupe") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
         //else if (speakerName == "misra") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
         //else { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }

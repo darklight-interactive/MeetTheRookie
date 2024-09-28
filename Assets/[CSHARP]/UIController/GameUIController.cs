@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Input;
-//using Darklight.UnityExt.Audio;
 using System.Linq;
 using System.Collections.Generic;
 using Ink.Runtime;
@@ -87,27 +86,39 @@ public class GameUIController : UXML_UIDocumentObject
         SelectableButton resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
         resumeButton.OnClick += () =>
         {
-            SetVisibility(false);
-            _pauseMenuContainer.visible = false;
-            _menuFolder.visible = false;
-            _settingsFolder.visible = false;
-            _scenesFolder.visible = false;
+            if (_pauseMenuContainer.visible)
+            {
+                SetVisibility(false);
+                _pauseMenuContainer.visible = false;
+                _menuFolder.visible = false;
+                _settingsFolder.visible = false;
+                _scenesFolder.visible = false;
+                MTR_AudioManager.Instance.PlayMenuSelectEvent();
+            }
         };
 
         SelectableButton settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
         settingsButton.OnClick += () =>
         {
-            _menuFolder.visible = false;
-            _settingsFolder.visible = true;
-            _scenesFolder.visible = true;
+            if (_pauseMenuContainer.visible)
+            {
+                _menuFolder.visible = false;
+                _settingsFolder.visible = true;
+                _scenesFolder.visible = true;
+                MTR_AudioManager.Instance.PlayMenuSelectEvent();
+            }
         };
 
         SelectableButton scenesButton = ElementQuery<SelectableButton>(SCENES_BTN);
         scenesButton.OnClick += () =>
         {
-            _menuFolder.visible = false;
-            _settingsFolder.visible = false;
-            _scenesFolder.visible = true;
+            if (_pauseMenuContainer.visible)
+            {
+                _menuFolder.visible = false;
+                _settingsFolder.visible = false;
+                _scenesFolder.visible = true;
+                MTR_AudioManager.Instance.PlayMenuSelectEvent();
+            }
         };
 
 
@@ -117,13 +128,19 @@ public class GameUIController : UXML_UIDocumentObject
 
     void OnMoveInputStartAction(Vector2 dir)
     {
-        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        RotateChoiceSelection((int)directionInScreenSpace.y);
+        if (_pauseMenuContainer.visible) // || _choicePanel.visible)
+        {
+            Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
+            RotateChoiceSelection((int)directionInScreenSpace.y);
 
-        // Select the next button in the direction
-        selectableVectorField.CurrentSelection.Deselect();
-        SelectableButton newButton = selectableVectorField.GetElementInDirection(directionInScreenSpace);
-        newButton?.SetSelected();
+            // Select the next button in the direction
+            SelectableButton oldButton = selectableVectorField.CurrentSelection;
+            selectableVectorField.CurrentSelection.Deselect();
+            SelectableButton newButton = selectableVectorField.GetElementInDirection(directionInScreenSpace);
+            newButton?.SetSelected();
+
+            if (oldButton != newButton) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
+        }
     }
 
     void RotateChoiceSelection(int direction)
@@ -155,11 +172,16 @@ public class GameUIController : UXML_UIDocumentObject
         {
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
+            _menuFolder.visible = false;
+            _settingsFolder.visible = false;
+            _scenesFolder.visible = false;
+
         }
         else
         {
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
+            _menuFolder.visible = true;
         }
     }
 
@@ -194,7 +216,7 @@ public class GameUIController : UXML_UIDocumentObject
     public void ConfirmChoice(Choice choice)
     {
         InkyStoryManager.Iterator.ChooseChoice(choice);
-        MTR_AudioManager.Instance.PlayMenuSelectEvent();
+        //MTR_AudioManager.Instance.PlayMenuSelectEvent();
 
         _choiceBox.Clear();
         _choicePanel.style.visibility = Visibility.Hidden;
@@ -215,7 +237,7 @@ public class GameUIController : UXML_UIDocumentObject
         newSelection.SetSelected();
 
         lockSelection = true;
-        MTR_AudioManager.Instance.PlayMenuHoverEvent();
+        //MTR_AudioManager.Instance.PlayMenuHoverEvent();
         Invoke(nameof(UnlockSelection), 0.1f);
 
     }
