@@ -71,7 +71,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     // ======== [[ METHODS ]] ================================== >>>>
 
     #region ======== <METHODS> (( UNITY RUNTIME )) ================================== >>>>
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
         foreach (Interactable interactable in _nearbyInteractables.Keys)

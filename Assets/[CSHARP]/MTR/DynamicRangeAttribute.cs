@@ -38,13 +38,11 @@ namespace Darklight.UnityExt.Editor
     {
 
         const float HORZ_PADDING = 5f;
-        readonly GUIStyle minRangeValueStyle = new GUIStyle(EditorStyles.miniLabel)
+        readonly GUIStyle rangeValueStyle = new GUIStyle(EditorStyles.miniLabel)
         {
-            alignment = TextAnchor.MiddleCenter
-        };
-        readonly GUIStyle maxRangeValueStyle = new GUIStyle(EditorStyles.miniLabel)
-        {
-            alignment = TextAnchor.MiddleCenter
+            alignment = TextAnchor.UpperCenter,
+            padding = new RectOffset(0, 0, 0, 0),
+            margin = new RectOffset(0, 0, 0, 0)
         };
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -58,22 +56,22 @@ namespace Darklight.UnityExt.Editor
                 // Get Vector2 field value from parent object
                 Vector2 range = GetVector2Value(rangeAttribute.Vector2FieldName, parentObject);
 
-                float nameLabelWidth = position.width * 0.3f; // Adjust width for property label
-                float rangeValueWidth = 60f; // Adjust width for range values
-                float sliderPadding = 5f; // Padding between the slider and range labels
+                float nameLabelWidth = EditorGUIUtility.labelWidth;
+                float rangeValueWidth = 35f; // Adjust width for range values
+                float sliderPadding = 2f; // Padding between the slider and range labels
                 float sliderWidth = position.width - nameLabelWidth - (rangeValueWidth * 2) - (sliderPadding * 2);
 
                 Rect nameLabelRect = new Rect(position.x, position.y, nameLabelWidth, position.height);
                 Rect minRangeRect = new Rect(nameLabelRect.x + nameLabelWidth, position.y, rangeValueWidth, position.height);
-                Rect sliderRect = new Rect(minRangeRect.x + rangeValueWidth - (rangeValueWidth / 2) + sliderPadding, position.y, sliderWidth, position.height);
-                Rect maxRangeRect = new Rect(sliderRect.x + sliderWidth - (rangeValueWidth / 2) + sliderPadding, position.y, rangeValueWidth, position.height);
+                Rect sliderRect = new Rect(minRangeRect.x + rangeValueWidth + sliderPadding, position.y, sliderWidth, position.height);
+                Rect maxRangeRect = new Rect(sliderRect.x + sliderWidth + sliderPadding, position.y, rangeValueWidth, position.height);
 
                 // Draw the property label
                 EditorGUI.LabelField(nameLabelRect, label.text);
 
                 // Draw min and max range values at the ends of the slider
-                EditorGUI.LabelField(minRangeRect, $"{range.x}", minRangeValueStyle);
-                EditorGUI.LabelField(maxRangeRect, $"{range.y}", maxRangeValueStyle);
+                EditorGUI.LabelField(minRangeRect, $"{range.x}", rangeValueStyle);
+                EditorGUI.LabelField(maxRangeRect, $"{range.y}", rangeValueStyle);
 
                 // Draw the slider
                 DrawSlider(sliderRect, property, range);
