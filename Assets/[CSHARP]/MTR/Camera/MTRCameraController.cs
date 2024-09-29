@@ -2,31 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
+using NaughtyAttributes;
 using UnityEngine;
 
 [RequireComponent(typeof(MTRCameraRig))]
 public class MTRCameraController : MonoBehaviour
 {
     InkyStoryManager StoryManager => InkyStoryManager.Instance;
+    List<string> _speakerList => InkyStoryManager.SpeakerList;
     public MTRCameraRig Rig => GetComponent<MTRCameraRig>();
 
-    [ShowOnly, SerializeField] private string _currentSpeaker;
-
-    public bool targetBasedOnSpeaker = false;
+    [Dropdown("_speakerList"), SerializeField, ShowOnly] public string currentSpeaker;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Observer the current speaker variable in the story
-        if (!targetBasedOnSpeaker) { StoryManager.OnSpeakerSet += SetSpeakerTarget; }
+        // Observe the current speaker variable in the story
+        StoryManager.OnSpeakerSet += SetSpeakerTarget;
+    }
+
+    [Button]
+    void SetSpeakerAsFollowTarget()
+    {
+        SetSpeakerTarget(currentSpeaker);
     }
 
     void SetSpeakerTarget(string speaker)
     {
-        _currentSpeaker = speaker;
+        currentSpeaker = speaker;
 
         // Set the Camera Target to the Player
-        if (_currentSpeaker == "Lupe")
+        if (currentSpeaker == "Lupe")
         {
             MTRPlayerInteractor player = FindObjectsByType<MTRPlayerInteractor>(FindObjectsSortMode.None)[0];
             Rig.SetFollowTarget(player.transform);
@@ -37,7 +43,7 @@ public class MTRCameraController : MonoBehaviour
         MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
         foreach (MTRCharacterInteractable interactable in interactables)
         {
-            if (interactable.SpeakerTag.Contains(_currentSpeaker))
+            if (interactable.SpeakerTag.Contains(currentSpeaker))
             {
                 Rig.SetFollowTarget(interactable.transform);
             }

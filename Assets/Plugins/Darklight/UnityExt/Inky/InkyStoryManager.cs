@@ -16,26 +16,6 @@ namespace Darklight.UnityExt.Inky
     /// </summary>
     public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
-        public delegate void StoryInitialized(Story story);
-        public event StoryInitialized OnStoryInitialized;
-
-        [SerializeField]
-        InkyStoryObject _globalStoryObject;
-
-        [SerializeField, ShowOnly]
-        List<string> _speakerList;
-
-        [SerializeField, ShowOnly]
-        List<string> _globalKnotList;
-
-        [SerializeField, ShowOnly]
-        string _currentSpeaker;
-
-
-
-        // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
-
-
         public static InkyStoryIterator Iterator { get; private set; }
 
         public static InkyStoryObject GlobalStoryObject
@@ -48,7 +28,12 @@ namespace Darklight.UnityExt.Inky
         /// </summary>
         public static List<string> SpeakerList
         {
-            get { return Instance._speakerList; }
+            get
+            {
+                if (Instance._speakerList == null)
+                    Instance._speakerList = new List<string>();
+                return Instance._speakerList;
+            }
         }
 
         /// <summary>
@@ -63,6 +48,17 @@ namespace Darklight.UnityExt.Inky
         {
             get { return Instance._currentSpeaker; }
         }
+
+        public delegate void StoryInitialized(Story story);
+        public event StoryInitialized OnStoryInitialized;
+
+        [SerializeField] InkyStoryObject _globalStoryObject;
+        [SerializeField, ShowOnly] List<string> _speakerList;
+        [SerializeField, ShowOnly] List<string> _globalKnotList;
+        [SerializeField, ShowOnly] string _currentSpeaker;
+
+        // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
+
 
         // ----------- [[ STORY ITERATOR ]] ------------ >>
         #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
