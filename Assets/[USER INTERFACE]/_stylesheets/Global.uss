@@ -1,6 +1,7 @@
 .selected {
-    transition-duration: 0.1s;
-    transition-timing-function: ease-in;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+    scale: 1.1 1.1;
 }
 
 .clicked {
@@ -170,4 +171,15 @@ VisualElement.panel.visible {
     border-right-color: rgb(162, 62, 140);
     border-top-color: rgb(162, 62, 140);
     border-bottom-color: rgb(162, 62, 140);
+}
+
+.selected {
+    transition-duration: 1s;
+    transition-timing-function: ease-in;
+    scale: 1.1 1.1;
+}
+
+TextBubble.selected {
+    transition-timing-function: ease-in-out-elastic;
+    transition-duration: 1s;
 }

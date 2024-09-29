@@ -15,10 +15,17 @@ using UnityEditor;
 
 interface IInteractionReciever
 {
-    public InteractionTypeKey InteractionType { get; }
+    public InteractionType InteractionType { get; }
 }
 
 public abstract class InteractionReciever : MonoBehaviour, IInteractionReciever
 {
-    public abstract InteractionTypeKey InteractionType { get; }
+    public abstract InteractionType InteractionType { get; }
+
+    public virtual void ResetTransform()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+    }
 }

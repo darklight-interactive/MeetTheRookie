@@ -38,7 +38,7 @@ namespace Darklight.UnityExt.Core2D
                     return _typeKey;
                 }
             }
-            protected Grid2D BaseGrid
+            public Grid2D BaseGrid
             {
                 get
                 {

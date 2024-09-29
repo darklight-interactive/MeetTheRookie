@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+using Darklight.UnityExt.Utility;
+
+
 
 
 #if UNITY_EDITOR
@@ -11,16 +15,13 @@ namespace Darklight.UnityExt.Core2D
 {
     public class Grid2D_WeightComponent : Grid2D.BaseComponent
     {
+        const string DATA_OBJECT_PATH = "Assets/Resources/Darklight/Grid2D/WeightComponent";
         const int DEFAULT_WEIGHT = 5;
         const int MIN_WEIGHT = 0;
 
         // ======== [[ FIELDS ]] ================================== >>>>
-        Dictionary<Vector2Int, int> _weightData = new Dictionary<Vector2Int, int>();
-
         [SerializeField] bool _showGizmos;
-
-        [Header("Serialized Data")]
-        [SerializeField] List<Weighted_SerializedCellData> _serializedWeightData;
+        [SerializeField] Grid2D_WeightDataObject _weightDataObject;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
         #region -- (( BASE VISITORS )) -------- ))
@@ -30,11 +31,18 @@ namespace Darklight.UnityExt.Core2D
             {
                 Cell2D.WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D.WeightComponent>();
 
+                if (_weightDataObject == null)
+                    return false;
+
                 // << SET WEIGHT FROM MAP >>
-                if (!_weightData.ContainsKey(cell.Key))
+                if (!_weightDataObject.ContainsKey(cell.Key))
+                {
                     weightComponent.SetWeight(DEFAULT_WEIGHT);
+                    _weightDataObject.Add(cell.Key, DEFAULT_WEIGHT);
+
+                }
                 else
-                    weightComponent.SetWeight(_weightData[cell.Key]);
+                    weightComponent.SetWeight(_weightDataObject[cell.Key]);
 
                 weightComponent.OnInitialize(cell);
                 return true;
@@ -46,11 +54,16 @@ namespace Darklight.UnityExt.Core2D
             {
                 Cell2D.WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D.WeightComponent>();
 
-                // << UPDATE WEIGHT FROM MAP >>
-                if (_weightData.ContainsKey(cell.Key))
-                    weightComponent.SetWeight(_weightData[cell.Key]);
-                SaveWeight(weightComponent);
+                if (_weightDataObject == null)
+                    return false;
 
+                // << UPDATE WEIGHT FROM MAP >>
+                if (_weightDataObject.ContainsKey(cell.Key)
+                    && _weightDataObject[cell.Key] != weightComponent.GetWeight())
+                {
+                    weightComponent.SetWeight(_weightDataObject[cell.Key]);
+                    //Debug.Log($"Updating Weight: {cell.Key} to {_weightDataObject[cell.Key]}");
+                }
                 weightComponent.OnUpdate();
                 return true;
             });
@@ -63,8 +76,6 @@ namespace Darklight.UnityExt.Core2D
 
                 // << SET RANDOM WEIGHT >>
                 weightComponent.SetRandomWeight();
-                SaveWeight(weightComponent);
-
                 return true;
             });
         private Cell2D.ComponentVisitor _resetVisitor => Cell2D.VisitorFactory.CreateComponentVisitor
@@ -74,8 +85,6 @@ namespace Darklight.UnityExt.Core2D
 
                 // << SET WEIGHT TO DEFAULT >>
                 weightComponent.SetWeight(DEFAULT_WEIGHT);
-                SaveWeight(weightComponent);
-
                 return true;
             });
 
@@ -84,9 +93,12 @@ namespace Darklight.UnityExt.Core2D
             {
                 Cell2D.WeightComponent weightComponent = cell.ComponentReg.GetComponent<Cell2D.WeightComponent>();
 
+                if (_weightDataObject == null)
+                    return false;
+
                 // Set the cell's weight component to the internal weight data
-                if (_weightData.ContainsKey(cell.Key))
-                    weightComponent.SetWeight(_weightData[cell.Key]);
+                if (_weightDataObject.ContainsKey(cell.Key))
+                    weightComponent.SetWeight(_weightDataObject[cell.Key]);
                 return true;
             });
         #endregion
@@ -95,16 +107,18 @@ namespace Darklight.UnityExt.Core2D
         // -- (( INTERFACE )) : IComponent -------- ))
         public override void OnInitialize(Grid2D baseObj)
         {
+            if (_weightDataObject == null)
+            {
+                _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH);
+            }
+
+
             base.OnInitialize(baseObj);
-            LoadWeightDataToCells();
         }
 
         public override void OnUpdate()
         {
-            _weightData.Clear();
-
             base.OnUpdate();
-            UpdateSerializedCellData();
         }
 
         public override void DrawGizmos()
@@ -171,7 +185,7 @@ namespace Darklight.UnityExt.Core2D
         public Dictionary<int, List<Cell2D>> GetAllCellsByWeight()
         {
             Dictionary<int, List<Cell2D>> weightMap = new Dictionary<int, List<Cell2D>>();
-            foreach (KeyValuePair<Vector2Int, int> pair in _weightData)
+            foreach (KeyValuePair<Vector2Int, int> pair in _weightDataObject)
             {
                 if (!weightMap.ContainsKey(pair.Value))
                     weightMap[pair.Value] = new List<Cell2D>();
@@ -183,7 +197,7 @@ namespace Darklight.UnityExt.Core2D
         public List<Cell2D> GetCellsWithWeight(int weight)
         {
             List<Cell2D> cells = new List<Cell2D>();
-            foreach (KeyValuePair<Vector2Int, int> pair in _weightData)
+            foreach (KeyValuePair<Vector2Int, int> pair in _weightDataObject)
             {
                 if (pair.Value == weight)
                     cells.Add(BaseGrid.GetCell(pair.Key));
@@ -258,52 +272,8 @@ namespace Darklight.UnityExt.Core2D
         }
 
         // ======== [[ PRIVATE METHODS ]] ================================== >>>>
-        void UpdateSerializedCellData()
-        {
-            if (_weightData == null)
-                _weightData = new Dictionary<Vector2Int, int>();
-            if (_serializedWeightData == null)
-                _serializedWeightData = new List<Weighted_SerializedCellData>();
-
-            // Iterate through the weight data
-            foreach (Vector2Int key in _weightData.Keys)
-            {
-                // If the serialized weight data does not contain the key, add the serialized data
-                if (!_serializedWeightData.Exists(x => x.key == key))
-                    _serializedWeightData.Add(new Weighted_SerializedCellData(key, _weightData[key]));
-            }
-
-            // Iterate through the serialized weight data
-            for (int i = 0; i < _serializedWeightData.Count; i++)
-            {
-                // If the weight data does not contain the key, remove the serialized data
-                if (!_weightData.ContainsKey(_serializedWeightData[i].key))
-                    _serializedWeightData.RemoveAt(i);
-            }
-        }
-
-        void SaveWeight(Cell2D.WeightComponent weightComponent)
-        {
-            Vector2Int cellKey = weightComponent.BaseCell.Key;
-            _weightData[cellKey] = weightComponent.GetWeight();
-        }
-
         void LoadWeightDataToCells()
         {
-            if (_weightData == null)
-                _weightData = new Dictionary<Vector2Int, int>();
-            if (_serializedWeightData == null)
-            {
-                _serializedWeightData = new List<Weighted_SerializedCellData>();
-                return;
-            }
-
-            // Set the weight data to match the serialized weight data
-            foreach (Weighted_SerializedCellData data in _serializedWeightData)
-            {
-                _weightData[data.key] = data.weight;
-            }
-            BaseGrid.SendVisitorToAllCells(_loadDataVisitor);
         }
 
         // ======== [[ NESTED TYPES ]] ================================== >>>>
@@ -350,8 +320,6 @@ namespace Darklight.UnityExt.Core2D
                 {
                     _serializedObject.ApplyModifiedProperties();
                 }
-
-                _script.Update();
             }
 
             private void OnSceneGUI()

@@ -8,7 +8,7 @@ namespace Darklight.UnityExt.Core2D
 {
     partial class Cell2D
     {
-        public class ComponentRegistry
+        public class InternalComponentRegistry
         {
             static Dictionary<ComponentTypeKey, Type> _componentTypeMap = new()
             {
@@ -21,17 +21,18 @@ namespace Darklight.UnityExt.Core2D
             // ======== [[ FIELDS ]] ======================================================= >>>>
             Cell2D _cell;
             Dictionary<ComponentTypeKey, Component> _componentMap = new();
-            List<Component> _components = new();
+            [SerializeField] List<Component> _components = new();
+
 
             // ======== [[ CONSTRUCTORS ]] ======================================================= >>>>
-            public ComponentRegistry(Cell2D cell)
+            public InternalComponentRegistry(Cell2D cell)
             {
                 _cell = cell;
                 _componentMap = new Dictionary<ComponentTypeKey, Component>();
                 _components = new List<Component>();
             }
 
-            public ComponentRegistry(ComponentRegistry originComposite)
+            public InternalComponentRegistry(InternalComponentRegistry originComposite)
             {
                 _cell = originComposite._cell;
                 LoadComponents(originComposite._components);

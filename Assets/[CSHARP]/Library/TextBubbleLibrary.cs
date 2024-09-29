@@ -13,55 +13,38 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/DialogueBubbleLibrary")]
 public class TextBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
-    protected override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> CreateNewLibrary()
+    [SerializeField]
+    EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> _dataLibrary;
+
+    public override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> DataLibrary
     {
-        return library = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
+        get
         {
-            ReadOnlyKey = true,
-            ReadOnlyValue = false,
-            RequiredKeys = new List<Spatial2D.AnchorPoint>()
+            if (_dataLibrary == null)
             {
-                Spatial2D.AnchorPoint.CENTER,
-                Spatial2D.AnchorPoint.TOP_LEFT,
-                Spatial2D.AnchorPoint.TOP_RIGHT,
-                Spatial2D.AnchorPoint.BOTTOM_LEFT,
-                Spatial2D.AnchorPoint.BOTTOM_RIGHT,
+                _dataLibrary = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
+                {
+                    ReadOnlyKey = true,
+                    ReadOnlyValue = false
+                };
             }
-        };
-    }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(TextBubbleLibrary))]
-    public class TextBubbleLibraryCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        TextBubbleLibrary _script;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (TextBubbleLibrary)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("CreateNewLibrary"))
+            else
             {
-                _script.CreateNewLibrary();
+                _dataLibrary.ReadOnlyKey = true;
+                _dataLibrary.ReadOnlyValue = false;
             }
+            _dataLibrary.SetRequiredKeys(new List<Spatial2D.AnchorPoint>
+                {
+                    Spatial2D.AnchorPoint.TOP_LEFT,
+                    Spatial2D.AnchorPoint.TOP_CENTER,
+                    Spatial2D.AnchorPoint.TOP_RIGHT,
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
+                    Spatial2D.AnchorPoint.BOTTOM_LEFT,
+                    Spatial2D.AnchorPoint.BOTTOM_CENTER,
+                    Spatial2D.AnchorPoint.BOTTOM_RIGHT
+                });
+            return _dataLibrary;
         }
     }
-#endif
-
 }
 

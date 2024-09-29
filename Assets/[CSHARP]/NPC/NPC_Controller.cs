@@ -6,11 +6,11 @@ using System;
 using Darklight.UnityExt.Utility;
 using static WalkState;
 
-[RequireComponent(typeof(NPC_Animator))]
+[RequireComponent(typeof(MTRCharacterAnimator))]
 public class NPC_Controller : MonoBehaviour
 {
     public NPC_StateMachine stateMachine;
-    public NPC_Animator animator => GetComponent<NPC_Animator>();
+    public MTRCharacterAnimator animator => GetComponent<MTRCharacterAnimator>();
     [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //

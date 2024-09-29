@@ -22,8 +22,6 @@ namespace Darklight.UnityExt.Library.Editor
         readonly float SINGLE_LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
         readonly float VERTICAL_SPACING = EditorGUIUtility.singleLineHeight * 0.5f;
 
-
-
         readonly GUIStyle LABEL_STYLE = new GUIStyle(EditorStyles.label)
         {
             alignment = TextAnchor.MiddleCenter
@@ -37,6 +35,7 @@ namespace Darklight.UnityExt.Library.Editor
         SerializedProperty _readOnlyValueProperty;
         LibraryReorderableList _list;
 
+        bool _foldout;
         float _fullPropertyHeight;
 
 
@@ -61,7 +60,7 @@ namespace Darklight.UnityExt.Library.Editor
             // Initialize the ReorderableList
             if (_list == null)
             {
-                _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty);
+                _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty, fieldInfo);
                 _list.onAddDropdownCallback = (rect, list) =>
                 {
                     GenericMenu menu = new GenericMenu();
@@ -101,20 +100,35 @@ namespace Darklight.UnityExt.Library.Editor
             Type libraryFieldType = fieldInfo.FieldType;
             string typeName = GetGenericTypeName(libraryFieldType);
 
-            // ( Title )---------------------------------------------
+            int itemCount = _itemsProperty.arraySize;
+
+            // ( Foldout Title )---------------------------------------------
             Rect titleRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            EditorGUI.LabelField(titleRect, $"{label} : {typeName}", new GUIStyle(EditorStyles.boldLabel));
+            _foldout = EditorGUI.Foldout(titleRect, _foldout, $"{label} : {typeName} : Count: {itemCount}", true, new GUIStyle(EditorStyles.foldout)
+            {
+                fontStyle = FontStyle.Bold
+            });
             currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING / 2;
 
-            // ( Properties )-------------------------------------------------
-            //Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            //DrawLibraryProperties(propRect, ref currentYPos);
-            //currentYPos += VERTICAL_SPACING / 2;
+            if (_foldout)
+            {
+                // ( Properties )-------------------------------------------------
+                EditorGUI.BeginDisabledGroup(true);
+                Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
+                EditorGUI.PropertyField(propRect, _readOnlyKeyProperty, true);
+                currentYPos += SINGLE_LINE_HEIGHT;
+                propRect.y = currentYPos;
 
-            // ( ReorderableList )--------------------------------------------
-            Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            _list.DrawList(listRect);
-            currentYPos += _list.GetHeight() + VERTICAL_SPACING;
+                EditorGUI.PropertyField(propRect, _readOnlyValueProperty, true);
+                currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING;
+                EditorGUI.EndDisabledGroup();
+
+                // ( ReorderableList )--------------------------------------------
+                Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
+                _list.DrawList(listRect);
+                currentYPos += _list.GetHeight() + VERTICAL_SPACING;
+            }
+
 
             // (Calculate Property Height)-------------------------------------
             _fullPropertyHeight = currentYPos - rect.y;
@@ -126,6 +140,29 @@ namespace Darklight.UnityExt.Library.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return _fullPropertyHeight;
+        }
+
+        private void DrawPropertyField(Rect rect, SerializedProperty valueProperty)
+        {
+            if (valueProperty.propertyType == SerializedPropertyType.Integer)
+            {
+                // Example range for int
+                int minValue = 0;
+                int maxValue = 100;
+                valueProperty.intValue = EditorGUI.IntSlider(rect, valueProperty.intValue, minValue, maxValue);
+            }
+            else if (valueProperty.propertyType == SerializedPropertyType.Float)
+            {
+                // Example range for float
+                float minValue = 0f;
+                float maxValue = 1f;
+                valueProperty.floatValue = EditorGUI.Slider(rect, valueProperty.floatValue, minValue, maxValue);
+            }
+            else
+            {
+                // Fallback to default property field for other types
+                EditorGUI.PropertyField(rect, valueProperty, GUIContent.none);
+            }
         }
 
 

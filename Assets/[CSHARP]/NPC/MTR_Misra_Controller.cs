@@ -4,7 +4,7 @@ using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using System;
 
-[RequireComponent(typeof(NPC_Animator), typeof(NPC_Interactable))]
+[RequireComponent(typeof(MTRCharacterAnimator), typeof(MTRCharacterInteractable))]
 
 public class MTR_Misra_Controller : NPC_Controller {
     public override void Start()

@@ -6,34 +6,27 @@ using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
 using UnityEngine.UI;
 
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace Darklight.UnityExt.UXML
 {
-
     /// <summary>
     /// This class is used to create a GameObject with a RenderTexture that can be used to render a UXML Element.
     /// </summary>
-    [ExecuteAlways]
     public class UXML_RenderTextureObject : UXML_UIDocumentObject, IUnityEditorListener
     {
-        Material _materialInstance;
-        RenderTexture _renderTextureInstance;
+        private RenderTexture _backBuffer;
+        private RenderTexture _frontBuffer;
+        private Material _materialInstance;
 
-        [SerializeField, ShowOnly] GameObject _quad;
-        [SerializeField, ShowOnly] MeshRenderer _meshRenderer;
-        [SerializeField] Material _material;
-        [SerializeField] RenderTexture _renderTexture;
+        [SerializeField, ShowOnly] private GameObject _quad;
+        [SerializeField, ShowOnly] private MeshRenderer _meshRenderer;
+        [SerializeField] private Material _material;
+        [SerializeField] private RenderTexture _renderTexture;
 
         // -- Element Changed Event --
-        public delegate void OnChange();
-        protected OnChange OnElementChanged;
-
         public void OnEditorReloaded()
         {
 #if UNITY_EDITOR
@@ -64,41 +57,89 @@ namespace Darklight.UnityExt.UXML
                 _quad.layer = LayerMask.NameToLayer("UI");
             }
 
+            // Initialize front and back buffers
+            _backBuffer = new RenderTexture(_renderTexture);
+            _frontBuffer = new RenderTexture(_renderTexture);
+
             // Create a new material instance
-            if (_materialInstance == null)
-                _materialInstance = new Material(_material);
+            _materialInstance = new Material(_material);
 
-            // Create a new render texture instance
-            if (_renderTextureInstance == null)
-                _renderTextureInstance = new RenderTexture(_renderTexture);
-
-            // Assign the render texture to the panel settings and material
-            document.panelSettings.targetTexture = _renderTextureInstance;
-            _materialInstance.mainTexture = _renderTextureInstance;
+            // Assign the front buffer to the panel settings and material initially
+            document.panelSettings.targetTexture = _frontBuffer;
+            _materialInstance.mainTexture = _frontBuffer;
 
             // Assign the material to the mesh renderer
             _meshRenderer.sharedMaterial = _materialInstance;
 
-
-            OnElementChanged?.Invoke();
+            OnInitialized();
         }
 
-        public void TextureUpdate()
+        protected virtual void OnInitialized() { }
+
+        public void Update()
         {
-            if (_renderTextureInstance == null || _materialInstance == null)
+
+            // Only call TextureUpdate if necessary
+            if (root.resolvedStyle.width > 0 && root.resolvedStyle.height > 0)
             {
-                Debug.LogWarning("Material or RenderTexture instance is not initialized.");
-                return;
+                TextureUpdate();
             }
+        }
+
+        void TextureUpdate()
+        {
+            StartCoroutine(TextureUpdateRoutine());
+        }
+
+        IEnumerator TextureUpdateRoutine()
+        {
+            // Render to the back buffer
+            RenderToBackBuffer();
+
+            yield return new WaitForEndOfFrame();
+
+            // Swap buffers
+            SwapBuffers();
+
+            // Update the material to use the new front buffer
+            _meshRenderer.sharedMaterial.mainTexture = _frontBuffer;
+
+            // Update the panel settings with the new front buffer
+            document.panelSettings.targetTexture = _frontBuffer;
 
             // Force the UI document to repaint
             document.rootVisualElement.MarkDirtyRepaint();
+        }
 
-            RenderTexture cloneTexture = new RenderTexture(_renderTextureInstance);
-            document.panelSettings.targetTexture = cloneTexture;
-            _materialInstance.mainTexture = cloneTexture;
-            _meshRenderer.sharedMaterial = _materialInstance;
+        private void RenderToBackBuffer()
+        {
+            if (_backBuffer == null)
+            {
+                Debug.LogWarning("Back buffer is not initialized.");
+                return;
+            }
 
+            // Set the back buffer as the target for rendering
+            document.panelSettings.targetTexture = _backBuffer;
+
+            // Clear the back buffer
+            RenderTexture.active = _backBuffer;
+            GL.Clear(true, true, Color.clear);
+            RenderTexture.active = null;
+
+            // Force the UI document to repaint and render onto the back buffer
+            document.rootVisualElement.MarkDirtyRepaint();
+
+            // Ensure the UI rendering occurs
+            //UIElementsUtility.UpdatePanels();
+        }
+
+        private void SwapBuffers()
+        {
+            // Swap the front and back buffers
+            var temp = _frontBuffer;
+            _frontBuffer = _backBuffer;
+            _backBuffer = temp;
         }
 
         public void SetLocalScale(float scale)
@@ -124,11 +165,12 @@ namespace Darklight.UnityExt.UXML
         }
 
 #if UNITY_EDITOR
-        [CustomEditor(typeof(UXML_RenderTextureObject))]
-        public class UXML_RenderTextureObjectCustomEditor : UnityEditor.Editor
+        [CustomEditor(typeof(UXML_RenderTextureObject), true)]
+        public class UXML_RenderTextureObjectCustomEditor : UXML_UIDocumentObjectCustomEditor
         {
             SerializedObject _serializedObject;
             UXML_RenderTextureObject _script;
+
             private void OnEnable()
             {
                 _serializedObject = new SerializedObject(target);

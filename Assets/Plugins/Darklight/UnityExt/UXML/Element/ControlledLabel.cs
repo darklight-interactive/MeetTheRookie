@@ -93,6 +93,13 @@ namespace Darklight.UnityExt.UXML
                 _labelContainer.style.backgroundImage = new StyleBackground(_backgroundImage);
             }
         }
+
+        [UxmlAttribute]
+        public Color BackgroundColor
+        {
+            get { return _labelContainer.style.unityBackgroundImageTintColor.value; }
+            set { _labelContainer.style.unityBackgroundImageTintColor = value; }
+        }
         #endregion
 
         // ======== [[ CONSTRUCTORS ]] =============================== >>>>
@@ -108,7 +115,10 @@ namespace Darklight.UnityExt.UXML
                     paddingTop = Length.Percent(5),
                     paddingBottom = Length.Percent(5),
                     paddingLeft = Length.Percent(5),
-                    paddingRight = Length.Percent(5)
+                    paddingRight = Length.Percent(5),
+
+
+                    unityBackgroundImageTintColor = Color.white
                 }
             };
 

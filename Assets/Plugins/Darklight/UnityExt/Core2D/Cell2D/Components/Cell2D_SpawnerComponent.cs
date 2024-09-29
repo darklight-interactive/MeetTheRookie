@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Utility;
 using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -12,7 +13,6 @@ namespace Darklight.UnityExt.Core2D
     {
         public class SpawnerComponent : BaseComponent, IUnityEditorListener
         {
-            List<Transform> _attachedTransforms = new List<Transform>();
 
             // ======== [[ FIELDS ]] ================================== >>>>
             SpawnData _data;
@@ -112,17 +112,18 @@ namespace Darklight.UnityExt.Core2D
 
             public void DestroyAllAttachedTransforms()
             {
-                for (int i = 0; i < _attachedTransforms.Count; i++)
+                for (int i = 0; i < _data.AttachedTransforms.Count; i++)
                 {
-                    ObjectUtility.DestroyAlways(_attachedTransforms[i].gameObject);
+                    ObjectUtility.DestroyAlways(_data.AttachedTransforms[i].gameObject);
                 }
-                _attachedTransforms.Clear();
+                _data.AttachedTransforms.Clear();
             }
 
             public void AttachTransformToCell(Transform transform, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
             {
-                if (!_attachedTransforms.Contains(transform))
-                    _attachedTransforms.Add(transform);
+                if (!_data.AttachedTransforms.Contains(transform))
+                    _data.AttachedTransforms.Add(transform);
+
                 // << GET DEFAULT VALUES >>
                 Vector3 newPosition = transform.position;
                 Vector2 newDimensions = transform.localScale;
@@ -174,6 +175,9 @@ namespace Darklight.UnityExt.Core2D
             {
                 [SerializeField, ShowOnly] Vector2Int _cellKey = Vector2Int.zero;
 
+                List<Transform> _attachedTransforms = new List<Transform>();
+
+
                 [Space(10)]
                 [Tooltip("This determines the origin point of the object to be spawned and the cell anchor point that the object will be placed on")]
                 [SerializeField] Spatial2D.AnchorPoint _originAnchor = Spatial2D.AnchorPoint.CENTER;
@@ -181,6 +185,7 @@ namespace Darklight.UnityExt.Core2D
                 [SerializeField] Spatial2D.AnchorPoint _targetAnchor = Spatial2D.AnchorPoint.CENTER;
 
                 public Vector2Int CellKey { get => _cellKey; set => _cellKey = value; }
+                public List<Transform> AttachedTransforms { get => _attachedTransforms; set => _attachedTransforms = value; }
                 public Spatial2D.AnchorPoint OriginAnchor { get => _originAnchor; set => _originAnchor = value; }
                 public Spatial2D.AnchorPoint TargetAnchor { get => _targetAnchor; set => _targetAnchor = value; }
 

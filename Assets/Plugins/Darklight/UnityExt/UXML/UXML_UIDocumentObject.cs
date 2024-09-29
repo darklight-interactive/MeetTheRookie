@@ -35,7 +35,17 @@ namespace Darklight.UnityExt.UXML
             }
 
             document.visualTreeAsset = preset.visualTreeAsset;
-            document.panelSettings = preset.panelSettings;
+
+            // Create a new PanelSettings instance
+            PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+
+            // Copy properties from the original PanelSettings to the new one
+            CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
+            document.panelSettings = clonedPanelSettings;
+
+            //document.panelSettings = preset.panelSettings;
+
+            // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
             //Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
@@ -83,6 +93,35 @@ namespace Darklight.UnityExt.UXML
             isVisible = visible;
             root.visible = isVisible;
         }
+        private void CopyPanelSettings(PanelSettings source, PanelSettings destination)
+        {
+            // Scale and Resolution Settings
+            destination.scaleMode = source.scaleMode;
+            destination.referenceResolution = source.referenceResolution;
+            destination.screenMatchMode = source.screenMatchMode;
+            destination.match = source.match;
+
+            // Display and Sorting Settings
+            destination.sortingOrder = source.sortingOrder;
+            destination.targetDisplay = source.targetDisplay;
+            destination.sortingOrder = source.sortingOrder;
+
+            // Render Target and Clear Settings
+            destination.targetTexture = source.targetTexture;
+            destination.clearColor = source.clearColor;
+            destination.clearDepthStencil = source.clearDepthStencil;
+            destination.targetDisplay = source.targetDisplay;
+
+            // Scale Factor Settings
+            destination.referenceDpi = source.referenceDpi;
+            destination.fallbackDpi = source.fallbackDpi;
+
+            // DPI Scale Settings
+            destination.referenceSpritePixelsPerUnit = source.referenceSpritePixelsPerUnit;
+            destination.referenceDpi = source.referenceDpi;
+            destination.referenceResolution = source.referenceResolution;
+        }
+
     }
 
 #if UNITY_EDITOR
@@ -99,7 +138,7 @@ namespace Darklight.UnityExt.UXML
 
         public override void OnInspectorGUI()
         {
-            _serializedObject.Update();
+            serializedObject.Update();
 
             if (GUILayout.Button("Initialize"))
             {
@@ -108,7 +147,7 @@ namespace Darklight.UnityExt.UXML
 
             base.OnInspectorGUI();
 
-            _serializedObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 #endif

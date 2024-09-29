@@ -99,7 +99,6 @@ public partial class TextBubble : ControlledLabel
                 break;
 
         }
-
     }
 
     void AlignToDirectionPoint(Spatial2D.AnchorPoint directionPoint)
@@ -137,6 +136,18 @@ public partial class TextBubble : ControlledLabel
                 BackgroundImage = sprite;
             }
         }
+    }
+
+    public void Select()
+    {
+        AddToClassList("selected");
+        BackgroundColor = Color.yellow;
+    }
+
+    public void Deselect()
+    {
+        RemoveFromClassList("selected");
+        BackgroundColor = Color.white;
     }
 
     public new class UxmlFactory : UxmlFactory<TextBubble> { }

@@ -17,7 +17,7 @@ public enum PlayerFacing { RIGHT, LEFT }
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
 /// </summary>
-[RequireComponent(typeof(PlayerController), typeof(PlayerInteractor), typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerController), typeof(MTRPlayerInteractor), typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     SceneBounds _sceneBounds;
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [Header("Settings")]
     [Range(0.1f, 5f)] public float playerSpeed = 1f;
 
-    public PlayerInteractor Interactor { get; private set; }
+    public MTRPlayerInteractor Interactor { get; private set; }
     public PlayerAnimator Animator { get; private set; }
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerState CurrentState => StateMachine.CurrentState;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
     public void Awake()
     {
-        Interactor = GetComponent<PlayerInteractor>();
+        Interactor = GetComponent<MTRPlayerInteractor>();
         Animator = GetComponent<PlayerAnimator>();
         Animator.SetFacing(SpriteDirection.RIGHT);
 

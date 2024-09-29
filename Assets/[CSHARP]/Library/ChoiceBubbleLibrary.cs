@@ -5,12 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MeetTheRookie/Library/ChoiceBubbleLibrary")]
 public class ChoiceBubbleLibrary : EnumObjectScriptableLibrary<Spatial2D.AnchorPoint, Sprite>
 {
-    protected override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> CreateNewLibrary()
+    [SerializeField]
+    EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> _dataLibrary = new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>
     {
-        return new EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite>()
-        {
-            ReadOnlyKey = true,
-            ReadOnlyValue = false,
-        };
-    }
+        ReadOnlyKey = false,
+        ReadOnlyValue = false,
+        RequiredKeys = new Spatial2D.AnchorPoint[0],
+    };
+
+    public override EnumObjectLibrary<Spatial2D.AnchorPoint, Sprite> DataLibrary => _dataLibrary;
 }
