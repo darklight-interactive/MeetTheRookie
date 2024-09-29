@@ -5,7 +5,6 @@ using Darklight.UnityExt.Editor;
 using NaughtyAttributes;
 using Darklight.UnityExt.Utility;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,7 +14,7 @@ using UnityEditor;
 /// It should be set as the parent object for all cameras in the scene.
 /// </summary>
 [ExecuteAlways]
-public class MTR_CameraRig : MonoBehaviour
+public class MTRCameraRig : MonoBehaviour
 {
     const string DATA_PATH = "Assets/Resources/MeetTheRookie/Camera/";
     const string SETTINGS_PATH = DATA_PATH + "Settings/";
@@ -28,27 +27,22 @@ public class MTR_CameraRig : MonoBehaviour
     [SerializeField] bool _showGizmos;
     [SerializeField] bool _lerpInEditor;
     [SerializeField] Camera _mainCamera;
-    [SerializeField, Expandable] MTR_CameraRigSettings _settings;
-    [SerializeField, Expandable] MTR_CameraRigBounds _bounds;
+    [SerializeField, Expandable] MTRCameraRigSettings _settings;
+    [SerializeField, Expandable] MTRCameraRigBounds _bounds;
 
-    public Vector3 OriginPosition
-    {
-        get
-        {
-            return transform.position;
-        }
-    }
-    public float CameraDistance => Mathf.Abs(_settings.distanceOffset);
+    public float CameraZPos => Mathf.Abs(_settings.zPosOffset);
     public float CameraFOV => _settings.fov;
     public float CameraAspect => _mainCamera.aspect;
+
+    public Vector3 BoundsCenter => _bounds.center;
+
+
     public float HalfWidth
     {
         get
         {
-            float depth = Mathf.Abs(_settings.distanceOffset);
-
             // Calculate the half width of the camera frustum at the target depth
-            float halfWidth = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * depth * _mainCamera.aspect;
+            float halfWidth = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * CameraZPos * CameraAspect;
             return Mathf.Abs(halfWidth); // Return the absolute value
         }
     }
@@ -56,10 +50,8 @@ public class MTR_CameraRig : MonoBehaviour
     {
         get
         {
-            float depth = Mathf.Abs(_settings.distanceOffset);
-
             // Calculate the half-height of the frustum at the given distance offset
-            float HalfHeight = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * depth;
+            float HalfHeight = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * CameraZPos;
             return Mathf.Abs(HalfHeight); // Return the absolute value
         }
     }
@@ -95,12 +87,12 @@ public class MTR_CameraRig : MonoBehaviour
     {
         if (_settings == null)
         {
-            _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_CameraRigSettings>(SETTINGS_PATH, "DefaultCameraSettings");
+            _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigSettings>(SETTINGS_PATH, "DefaultCameraSettings");
         }
 
         if (_bounds == null)
         {
-            _bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_CameraRigBounds>(BOUNDS_PATH, "DefaultCameraBounds");
+            _bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigBounds>(BOUNDS_PATH, "DefaultCameraBounds");
         }
 
         if (_mainCamera == null)
@@ -110,6 +102,8 @@ public class MTR_CameraRig : MonoBehaviour
                 _mainCamera = new GameObject("MTR Main Camera").AddComponent<Camera>();
         }
         _mainCamera.transform.SetParent(transform);
+
+
     }
 
     public void Update()
@@ -119,17 +113,18 @@ public class MTR_CameraRig : MonoBehaviour
     }
     #endregion
 
+    #region ( CALCULATIONS ) <PRIVATE_METHODS> ================================================
     /// <summary>
     /// Calculate the target position of the camera based on the preset values.
     /// </summary>
     /// <returns></returns>
     Vector3 CalculateTargetPosition()
     {
-        Vector3 origin = OriginPosition;
+        Vector3 origin = BoundsCenter;
         Vector3 offset = new Vector3(
-            _settings.horizontalOffset,
-            _settings.verticalOffset,
-            _settings.distanceOffset
+            _settings.xPosOffset,
+            _settings.yPosOffset,
+            _settings.zPosOffset
         );
 
         Vector3 newPosition = origin + offset;
@@ -138,6 +133,52 @@ public class MTR_CameraRig : MonoBehaviour
             newPosition = EnforceBounds(newPosition);
         }
         return newPosition;
+    }
+
+    Vector3 EnforceBounds(Vector3 position)
+    {
+
+        _bounds.xAxisBounds.GetWorldValues(_bounds.center, out float minXBound, out float maxXBound);
+        _bounds.yAxisBounds.GetWorldValues(_bounds.center, out float minYBound, out float maxYBound);
+
+        // << CALCULATE POSITION >> ------------------------------
+        Vector3 adjustedPosition = position;
+
+        // ( Check the adjusted position against the X bounds )
+        if (adjustedPosition.x < minXBound)
+            adjustedPosition.x = minXBound + HalfWidth; // Add half width to align left edge
+        else if (adjustedPosition.x > maxXBound)
+            adjustedPosition.x = maxXBound - HalfWidth; // Subtract half width to align right edge
+
+        // ( Check the adjusted position against the Y bounds )
+        if (adjustedPosition.y < minYBound)
+            adjustedPosition.y = minYBound + HalfHeight;
+        else if (adjustedPosition.y > maxYBound)
+            adjustedPosition.y = maxYBound - HalfHeight;
+
+        // << CALCULATE FRUSTRUM OFFSET >> ------------------------------
+        Vector3 frustrumOffset = Vector3.zero;
+        Vector3[] frustumCorners = CalculateFrustumCorners(adjustedPosition, _mainCamera.transform.rotation);
+        for (int i = 0; i < frustumCorners.Length; i++)
+        {
+            Vector3 corner = frustumCorners[i];
+
+            // ( X Axis Bounds ) ------------------------------------------------------
+            // If the corner is outside the bounds, adjust the offset
+            // If the offset is larger than the difference between the corner and the bound, 
+            //   keep the larger offset value
+            if (corner.x < minXBound)
+                frustrumOffset.x = Mathf.Max(frustrumOffset.x, minXBound - corner.x);
+            else if (corner.x > maxXBound)
+                frustrumOffset.x = Mathf.Min(frustrumOffset.x, maxXBound - corner.x);
+
+            // ( Y Axis Bounds ) ------------------------------------------------------
+            if (corner.y < minYBound)
+                frustrumOffset.y = Mathf.Max(frustrumOffset.y, minYBound - corner.y);
+            else if (corner.y > maxYBound)
+                frustrumOffset.y = Mathf.Min(frustrumOffset.y, maxYBound - corner.y);
+        }
+        return adjustedPosition + frustrumOffset;
     }
 
     Quaternion CalculateLookRotation(Vector3 originPosition, Vector3 cameraPosition)
@@ -157,10 +198,10 @@ public class MTR_CameraRig : MonoBehaviour
         Vector3[] frustumCorners = new Vector3[4];
 
         // Define the corners in local space (relative to the camera's orientation)
-        Vector3 topLeft = new Vector3(-HalfWidth, HalfHeight, CameraDistance);
-        Vector3 topRight = new Vector3(HalfWidth, HalfHeight, CameraDistance);
-        Vector3 bottomLeft = new Vector3(-HalfWidth, -HalfHeight, CameraDistance);
-        Vector3 bottomRight = new Vector3(HalfWidth, -HalfHeight, CameraDistance);
+        Vector3 topLeft = new Vector3(-HalfWidth, HalfHeight, CameraZPos);
+        Vector3 topRight = new Vector3(HalfWidth, HalfHeight, CameraZPos);
+        Vector3 bottomLeft = new Vector3(-HalfWidth, -HalfHeight, CameraZPos);
+        Vector3 bottomRight = new Vector3(HalfWidth, -HalfHeight, CameraZPos);
 
         // Transform the corners to world space
         frustumCorners[0] = position + rotation * topLeft;
@@ -170,36 +211,9 @@ public class MTR_CameraRig : MonoBehaviour
 
         return frustumCorners;
     }
+    #endregion
 
-    Vector3 EnforceBounds(Vector3 position)
-    {
-        Vector3 adjustedPosition = position;
-        Vector3[] frustumCorners = CalculateFrustumCorners(adjustedPosition, _mainCamera.transform.rotation);
 
-        SingleAxisBounds xAxisBounds = _bounds.xAxisBounds;
-        SingleAxisBounds yAxisBounds = _bounds.yAxisBounds;
-
-        xAxisBounds.GetBoundWorldPositions(OriginPosition, out Vector3 minXBound, out Vector3 maxXBound);
-        yAxisBounds.GetBoundWorldPositions(OriginPosition, out Vector3 minYBound, out Vector3 maxYBound);
-
-        for (int i = 0; i < frustumCorners.Length; i++)
-        {
-            Vector3 corner = frustumCorners[i];
-
-            // ( Check X bounds ) -------------------------------------------
-            if (corner.x < minXBound.x)
-                adjustedPosition.x = minXBound.x + HalfWidth;
-            else if (corner.x > maxXBound.x)
-                adjustedPosition.x = maxXBound.x - HalfWidth;
-
-            // ( Check Y bounds ) -------------------------------------------
-            if (corner.y < minYBound.y)
-                adjustedPosition.y = minYBound.y + HalfHeight;
-            else if (corner.y > maxYBound.y)
-                adjustedPosition.y = maxYBound.y - HalfHeight;
-        }
-        return adjustedPosition;
-    }
 
     void UpdateCameraRig(bool useLerp)
     {
@@ -244,21 +258,28 @@ public class MTR_CameraRig : MonoBehaviour
 
         // Draw the bounds
         if (_bounds != null)
-            _bounds.DrawBounds(OriginPosition);
+            _bounds.DrawInScene();
+
+
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (!_showGizmos) return;
 
         // Draw the camera frustum
         Gizmos.color = Color.yellow;
-        DrawCameraFrustum(_mainCamera, CameraDistance);
+        DrawCameraFrustum(_mainCamera);
 
         // Draw the camera view
         Gizmos.color = Color.cyan;
         DrawCameraView();
     }
 
-    void DrawCameraFrustum(Camera cam, float depth)
+    void DrawCameraFrustum(Camera cam)
     {
         Vector3[] frustumCorners = new Vector3[4];
-        cam.CalculateFrustumCorners(new Rect(0, 0, 1, 1), depth, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        cam.CalculateFrustumCorners(new Rect(0, 0, 1, 1), CameraZPos, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
 
         // Transform the corners to world space considering the entire transform hierarchy
         for (int i = 0; i < 4; i++)
@@ -284,7 +305,7 @@ public class MTR_CameraRig : MonoBehaviour
     void DrawCameraView()
     {
         Vector3[] frustumCorners = new Vector3[4];
-        _mainCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), CameraDistance, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        _mainCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), CameraZPos, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
         for (int i = 0; i < 4; i++)
         {
             frustumCorners[i] = _mainCamera.transform.TransformPoint(frustumCorners[i]);
@@ -303,15 +324,15 @@ public class MTR_CameraRig : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(MTR_CameraRig), true)]
+    [CustomEditor(typeof(MTRCameraRig), true)]
     public class CameraRigCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        MTR_CameraRig _script;
+        MTRCameraRig _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (MTR_CameraRig)target;
+            _script = (MTRCameraRig)target;
             _script.Awake();
         }
 

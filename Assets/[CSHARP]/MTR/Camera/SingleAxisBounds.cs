@@ -46,18 +46,66 @@ public class SingleAxisBounds
         Max = range.y;
     }
 
-    public void GetBoundWorldPositions(Vector3 origin, out Vector3 min, out Vector3 max)
+    void GetAxisVector(out Vector3 direction)
     {
-        GetAxisValues(out Vector3 direction, out Color color);
+        direction = Vector3.zero;
+        switch (_axis)
+        {
+            case Axis.X:
+                direction = Vector3.right;
+                break;
+            case Axis.Y:
+                direction = Vector3.up;
+                break;
+            case Axis.Z:
+                direction = Vector3.forward;
+                break;
+        }
+    }
 
-        min = origin + direction * Min;
-        max = origin + direction * Max;
+    void GetAxisColor(out Color color)
+    {
+        color = Color.white;
+        switch (_axis)
+        {
+            case Axis.X:
+                color = Color.red;
+                break;
+            case Axis.Y:
+                color = Color.green;
+                break;
+            case Axis.Z:
+                color = Color.blue;
+                break;
+        }
+    }
+
+    public void GetWorldValues(Vector3 center, out float min, out float max)
+    {
+        min = center.x;
+        max = center.x;
+
+        switch (_axis)
+        {
+            case Axis.X:
+                min = center.x + Min;
+                max = center.x + Max;
+                break;
+            case Axis.Y:
+                min = center.y + Min;
+                max = center.y + Max;
+                break;
+            case Axis.Z:
+                min = center.z + Min;
+                max = center.z + Max;
+                break;
+        }
     }
 
     public void DrawGizmos(Vector3 origin, float length)
     {
-        GetAxisValues(out Vector3 direction, out Color color);
-        Gizmos.color = color;
+        GetAxisVector(out Vector3 direction);
+        GetAxisColor(out Color color);
 
         // Calculate min and max points along the current axis
         Vector3 minPoint = origin + direction * Min;
@@ -77,29 +125,4 @@ public class SingleAxisBounds
         Gizmos.DrawRay(minPoint, perpendicular);
         Gizmos.DrawRay(maxPoint, perpendicular);
     }
-
-    void GetAxisValues(out Vector3 axisVector, out Color axisColor)
-    {
-        // ( Vector ) ---------------------
-        switch (this.Axis)
-        {
-            case Axis.X:
-                axisVector = Vector3.right;
-                axisColor = Color.red;
-                break;
-            case Axis.Y:
-                axisVector = Vector3.up;
-                axisColor = Color.green;
-                break;
-            case Axis.Z:
-                axisVector = Vector3.forward;
-                axisColor = Color.blue;
-                break;
-            default:
-                axisVector = Vector3.zero;
-                axisColor = Color.white;
-                break;
-        }
-    }
-
 }
