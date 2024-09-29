@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca9453ae77525645a17a5604a78d1bd, type: 3}
   m_Name: DefaultCameraBounds
   m_EditorClassIdentifier: 
-  center: {x: -2, y: 0, z: 0}
   xAxisBounds:
     _axis: 0
-    _min: -2
+    _min: -2.5
     _max: 2
   yAxisBounds:
     _axis: 1
-    _min: 0
+    _min: -0.5
     _max: 2
+  center: {x: -2, y: 0, z: 0}
+  showCenterGizmo: 1

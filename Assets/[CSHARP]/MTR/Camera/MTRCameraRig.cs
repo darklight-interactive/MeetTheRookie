@@ -20,23 +20,23 @@ public class MTRCameraRig : MonoBehaviour
     const string SETTINGS_PATH = DATA_PATH + "Settings/";
     const string BOUNDS_PATH = DATA_PATH + "Bounds/";
 
-    Vector3 _targetPosition;
-    Quaternion _targetRotation;
-    float _targetFOV;
+    [SerializeField, ShowOnly] Vector3 _targetPosition;
+    [SerializeField, ShowOnly] Quaternion _targetRotation;
+    [SerializeField, ShowOnly] float _targetFOV;
 
     [SerializeField] bool _showGizmos;
     [SerializeField] bool _lerpInEditor;
+    [SerializeField] Transform _followTarget;
     [SerializeField] Camera _mainCamera;
     [SerializeField, Expandable] MTRCameraRigSettings _settings;
     [SerializeField, Expandable] MTRCameraRigBounds _bounds;
 
+    // << PROPERTIES >> -------------------------------------------------
     public float CameraZPos => Mathf.Abs(_settings.zPosOffset);
     public float CameraFOV => _settings.fov;
     public float CameraAspect => _mainCamera.aspect;
 
     public Vector3 BoundsCenter => _bounds.center;
-
-
     public float HalfWidth
     {
         get
@@ -121,6 +121,10 @@ public class MTRCameraRig : MonoBehaviour
     Vector3 CalculateTargetPosition()
     {
         Vector3 origin = BoundsCenter;
+        if (_followTarget != null)
+            origin = _followTarget.position;
+
+
         Vector3 offset = new Vector3(
             _settings.xPosOffset,
             _settings.yPosOffset,
@@ -133,6 +137,19 @@ public class MTRCameraRig : MonoBehaviour
             newPosition = EnforceBounds(newPosition);
         }
         return newPosition;
+    }
+
+    Quaternion CalculateTargetRotation()
+    {
+        Vector3 origin = Vector3.zero;
+        Vector3 offset = new Vector3(
+            0,
+            _settings.yRotOffset,
+            0
+        );
+
+        Quaternion newRotation = Quaternion.Euler(origin + offset);
+        return newRotation;
     }
 
     Vector3 EnforceBounds(Vector3 position)
@@ -181,14 +198,7 @@ public class MTRCameraRig : MonoBehaviour
         return adjustedPosition + frustrumOffset;
     }
 
-    Quaternion CalculateLookRotation(Vector3 originPosition, Vector3 cameraPosition)
-    {
-        Vector3 direction = (originPosition - cameraPosition);
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
 
-
-        return lookRotation;
-    }
 
     /// <summary>
     /// Calculate the frustum corners of the camera based on the given parameters.
@@ -213,14 +223,13 @@ public class MTRCameraRig : MonoBehaviour
     }
     #endregion
 
-
-
+    #region ( UPDATE ) <PUBLIC_METHODS> ================================================
     void UpdateCameraRig(bool useLerp)
     {
 
         // << CALCULATE TARGET VALUES >> -------------------------------------
         _targetPosition = CalculateTargetPosition();
-        _targetRotation = Quaternion.identity;
+        _targetRotation = CalculateTargetRotation();
         _targetFOV = _settings.fov;
 
         // << UPDATE CAMERA VALUES >> -------------------------------------
@@ -247,9 +256,14 @@ public class MTRCameraRig : MonoBehaviour
             _mainCamera.fieldOfView = _targetFOV;
         }
     }
+    #endregion
 
-
-
+    #region ( HANDLERS ) <PUBLIC_METHODS> ================================================
+    public void SetFollowTarget(Transform target)
+    {
+        _followTarget = target;
+    }
+    #endregion
 
     #region ( GIZMOS ) <PRIVATE_METHODS> ================================================
     void OnDrawGizmos()

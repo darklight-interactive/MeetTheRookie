@@ -27,7 +27,7 @@ public class MTRCameraRigSettings : ScriptableObject
     [DynamicRange("DistRange")] public float zPosOffset = -10f;
 
     [Header("Rotation")]
-    [DynamicRange("rotationRange")] public float xRotOffset = 0f;
+    [DynamicRange("rotationRange")] public float yRotOffset = 0f;
 
 
     [Header("Field of View")]

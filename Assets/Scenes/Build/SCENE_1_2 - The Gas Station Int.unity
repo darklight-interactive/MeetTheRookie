@@ -454,6 +454,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5416394239746758926, guid: 4b1868b2577ce7e47a1a3f3440559158, type: 3}
   m_PrefabInstance: {fileID: 1625129641}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &92981823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92981824}
+  - component: {fileID: 92981825}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &92981824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92981823}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 244841500}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &92981825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92981823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!114 &183465036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1299496985
+  _guid: -847296653
   _typeKey: 0
 --- !u!114 &312238272
 MonoBehaviour:
@@ -925,7 +970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -209063259
+  _guid: 1401217277
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 1bf47b95e33c3c24daeecc42e3a65539, type: 2}
@@ -941,7 +986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -292560737
+  _guid: 1033518992
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -959,7 +1004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 547183284
+  _guid: 1745308250
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 94aec9e74591a194fad5e4910906c57b, type: 2}
@@ -996,7 +1041,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -989967244
+      _guid: 969664626
       _key: {x: 0, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -4.47, y: 0.61899996, z: 2.261}
@@ -1009,7 +1054,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 933525439
+      _guid: 1352719656
       _key: {x: 0, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -4.47, y: 0.76899993, z: 2.261}
@@ -1022,7 +1067,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1316479618
+      _guid: 1623021283
       _key: {x: 0, y: 2}
       _coordinate: {x: 0, y: 2}
       _position: {x: -4.47, y: 0.9189999, z: 2.261}
@@ -1035,7 +1080,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1399543313
+      _guid: 1105543033
       _key: {x: 0, y: 3}
       _coordinate: {x: 0, y: 3}
       _position: {x: -4.47, y: 1.069, z: 2.261}
@@ -1048,7 +1093,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -513641516
+      _guid: 309893407
       _key: {x: 1, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -3.5324998, y: 0.61899996, z: 2.261}
@@ -1061,7 +1106,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -536767819
+      _guid: -1559538340
       _key: {x: 1, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -3.5324998, y: 0.76899993, z: 2.261}
@@ -1074,7 +1119,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 153563862
+      _guid: 110256526
       _key: {x: 1, y: 2}
       _coordinate: {x: 1, y: 2}
       _position: {x: -3.5324998, y: 0.9189999, z: 2.261}
@@ -1087,7 +1132,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 108675195
+      _guid: 1799229122
       _key: {x: 1, y: 3}
       _coordinate: {x: 1, y: 3}
       _position: {x: -3.5324998, y: 1.069, z: 2.261}
@@ -1367,7 +1412,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 8.7
+  field of view: 2
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1394,7 +1439,7 @@ Transform:
   m_GameObject: {fileID: 397333355}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.1165406e-20, y: 0.9999984, z: -10}
+  m_LocalPosition: {x: -3.1042662, y: 0.74399996, z: -42.739}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3012,7 +3057,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -3365,10 +3410,10 @@ PrefabInstance:
       addedObject: {fileID: 831110915}
     - targetCorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 777657588}
+      addedObject: {fileID: 1017611993}
     - targetCorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1753052368}
+      addedObject: {fileID: 92981824}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
 --- !u!1 &422315103
@@ -3465,7 +3510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 869854831
+  _guid: 857321179
   _typeKey: 0
 --- !u!114 &431118346
 MonoBehaviour:
@@ -3479,7 +3524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -894638512
+  _guid: -480992149
   _typeKey: 3
   _showGizmos: 1
   _dataObject: {fileID: 11400000, guid: 1bf47b95e33c3c24daeecc42e3a65539, type: 2}
@@ -3495,7 +3540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -231055831
+  _guid: 635828989
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -3513,7 +3558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1715611295
+  _guid: 1315622088
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 94aec9e74591a194fad5e4910906c57b, type: 2}
@@ -3550,7 +3595,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -217102754
+      _guid: -1567543654
       _key: {x: 0, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -3.97, y: 0.66242415, z: 3.2632961}
@@ -3563,7 +3608,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -760188343
+      _guid: 421522662
       _key: {x: 0, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -3.97, y: 0.8124241, z: 3.2632961}
@@ -3576,7 +3621,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1522245622
+      _guid: 1154452474
       _key: {x: 0, y: 2}
       _coordinate: {x: 0, y: 2}
       _position: {x: -3.97, y: 0.96242416, z: 3.2632961}
@@ -3589,7 +3634,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1544769964
+      _guid: 1315611080
       _key: {x: 0, y: 3}
       _coordinate: {x: 0, y: 3}
       _position: {x: -3.97, y: 1.1124241, z: 3.2632961}
@@ -3602,7 +3647,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1440790886
+      _guid: -1665065792
       _key: {x: 1, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -3.0325, y: 0.66242415, z: 3.2632961}
@@ -3615,7 +3660,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -637015153
+      _guid: 680132348
       _key: {x: 1, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -3.0325, y: 0.8124241, z: 3.2632961}
@@ -3628,7 +3673,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1000442327
+      _guid: 431793049
       _key: {x: 1, y: 2}
       _coordinate: {x: 1, y: 2}
       _position: {x: -3.0325, y: 0.96242416, z: 3.2632961}
@@ -3641,7 +3686,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 975183490
+      _guid: -2121882239
       _key: {x: 1, y: 3}
       _coordinate: {x: 1, y: 3}
       _position: {x: -3.0325, y: 1.1124241, z: 3.2632961}
@@ -4219,51 +4264,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &777657587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 777657588}
-  - component: {fileID: 777657589}
-  m_Layer: 0
-  m_Name: Destination Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &777657588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777657587}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 244841500}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &777657589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777657587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &831110908
 GameObject:
   m_ObjectHideFlags: 0
@@ -4316,7 +4316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1694682006
+  _guid: -952947906
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 65da3afc90614ab408400f0c852b46a0, type: 2}
@@ -4332,7 +4332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -62953826
+  _guid: -1966513837
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -4350,7 +4350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 740596668
+  _guid: -1865667258
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 69bfd80d0196bda48ae592a8ce740eaa, type: 2}
@@ -4366,7 +4366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -48338708
+  _guid: -902215047
   _typeKey: 0
 --- !u!114 &831110914
 MonoBehaviour:
@@ -4401,7 +4401,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1330677920
+      _guid: 1241595084
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -4.375, y: 0.24399999, z: 2.261}
@@ -4414,7 +4414,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -637410940
+      _guid: -1253370893
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: -4.375, y: 0.55649996, z: 2.261}
@@ -4427,7 +4427,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1736707921
+      _guid: -1509187794
       _key: {x: 0, y: 2}
       _coordinate: {x: -1, y: 2}
       _position: {x: -4.375, y: 0.86899996, z: 2.261}
@@ -4440,7 +4440,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1742781671
+      _guid: -379215741
       _key: {x: 0, y: 3}
       _coordinate: {x: -1, y: 3}
       _position: {x: -4.375, y: 1.1815, z: 2.261}
@@ -4453,7 +4453,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -2133968424
+      _guid: 1523885053
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -4, y: 0.494, z: 2.261}
@@ -4466,7 +4466,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1530348209
+      _guid: -1903076403
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -4, y: 0.80649996, z: 2.261}
@@ -4479,7 +4479,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1343525864
+      _guid: 109595990
       _key: {x: 1, y: 2}
       _coordinate: {x: 0, y: 2}
       _position: {x: -4, y: 1.119, z: 2.261}
@@ -4492,7 +4492,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 4423890
+      _guid: -990428920
       _key: {x: 1, y: 3}
       _coordinate: {x: 0, y: 3}
       _position: {x: -4, y: 1.4315, z: 2.261}
@@ -4505,7 +4505,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1404877471
+      _guid: 382059304
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -3.625, y: 0.24399999, z: 2.261}
@@ -4518,7 +4518,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1157908510
+      _guid: 677006574
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -3.625, y: 0.55649996, z: 2.261}
@@ -4531,7 +4531,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1123476434
+      _guid: -1844170033
       _key: {x: 2, y: 2}
       _coordinate: {x: 1, y: 2}
       _position: {x: -3.625, y: 0.86899996, z: 2.261}
@@ -4544,7 +4544,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1744368249
+      _guid: 773562258
       _key: {x: 2, y: 3}
       _coordinate: {x: 1, y: 3}
       _position: {x: -3.625, y: 1.1815, z: 2.261}
@@ -4615,7 +4615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1671624400
+  _guid: -366853674
   _typeKey: 0
 --- !u!114 &843606587
 MonoBehaviour:
@@ -4629,7 +4629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -98259339
+  _guid: -930282829
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -4645,7 +4645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 299720393
+  _guid: -1143491251
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -4663,7 +4663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -10990578
+  _guid: 340107830
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -4700,7 +4700,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 827287628
+      _guid: -715951621
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -0.45625007, y: 0.85, z: 5.575}
@@ -4713,7 +4713,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1874482270
+      _guid: -1943616746
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: -0.45625007, y: 1.1, z: 5.575}
@@ -4726,7 +4726,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -750007364
+      _guid: -1504824156
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -0.30000007, y: 0.725, z: 5.575}
@@ -4739,7 +4739,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1253159607
+      _guid: 1034116875
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -0.30000007, y: 0.975, z: 5.575}
@@ -4752,7 +4752,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 83611542
+      _guid: -795460245
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -0.14375007, y: 0.85, z: 5.575}
@@ -4765,7 +4765,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1455629494
+      _guid: -60054110
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -0.14375007, y: 1.1, z: 5.575}
@@ -4997,6 +4997,51 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1017611992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1017611993}
+  - component: {fileID: 1017611994}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1017611993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017611992}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 244841500}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1017611994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017611992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!114 &1090897439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5206,6 +5251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1174740272}
   - component: {fileID: 1174740273}
+  - component: {fileID: 1174740274}
   m_Layer: 0
   m_Name: '[ CAMERA ] Base MTR_CameraController'
   m_TagString: Untagged
@@ -5241,8 +5287,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054c97aa31b61cc41ada867d5d90b7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1174740274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174740270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfd2e9653ea29d34ebea7dc119a3e4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetPosition: {x: -3.1042662, y: 0.74399996, z: -42.739}
+  _targetRotation: {x: 0, y: 0, z: 0, w: 1}
+  _targetFOV: 2
   _showGizmos: 1
   _lerpInEditor: 1
+  _followTarget: {fileID: 244841500}
   _mainCamera: {fileID: 397333356}
   _settings: {fileID: 11400000, guid: e243d8381f1de0043b3c59a16649a9ef, type: 2}
   _bounds: {fileID: 11400000, guid: f41d077041ea708428355b10f05fae54, type: 2}
@@ -6097,7 +6159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -490746258
+  _guid: -2026280204
   _typeKey: 0
 --- !u!114 &1381958348
 MonoBehaviour:
@@ -6111,7 +6173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 939905528
+  _guid: 903652101
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: c78b4d5c31a015a4092af69c24eae624, type: 2}
@@ -6127,7 +6189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -2091268840
+  _guid: 1303658740
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -6145,7 +6207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 2014758688
+  _guid: -737757597
   _typeKey: 2
   _showGizmos: 1
   _weightDataObject: {fileID: 11400000, guid: fbbc02dfbdb2f314b8ff91c1e9807141, type: 2}
@@ -6182,7 +6244,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -809899748
+      _guid: 50810032
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -2.375283, y: 0.125, z: 4.6509857}
@@ -6195,7 +6257,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -2025170247
+      _guid: -444638396
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: -2.375283, y: 0.375, z: 4.6509857}
@@ -6208,7 +6270,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1249970213
+      _guid: -388284701
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -2.219033, y: 0, z: 4.6509857}
@@ -6221,7 +6283,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -516856634
+      _guid: -1688864877
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -2.219033, y: 0.25, z: 4.6509857}
@@ -6234,7 +6296,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -998875745
+      _guid: -95960045
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -2.062783, y: 0.125, z: 4.6509857}
@@ -6247,7 +6309,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1699006818
+      _guid: -1557350089
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -2.062783, y: 0.375, z: 4.6509857}
@@ -6579,7 +6641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 980976885
+  _guid: 456653267
   _typeKey: 0
 --- !u!114 &1493276704
 MonoBehaviour:
@@ -6593,7 +6655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 2093855082
+  _guid: -365815890
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: c78b4d5c31a015a4092af69c24eae624, type: 2}
@@ -6609,7 +6671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -162057463
+  _guid: 1549912039
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -6627,7 +6689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1616750591
+  _guid: 1968053572
   _typeKey: 2
   _showGizmos: 1
   _weightDataObject: {fileID: 11400000, guid: fbbc02dfbdb2f314b8ff91c1e9807141, type: 2}
@@ -6664,7 +6726,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1615484282
+      _guid: -1402345014
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -3.65625, y: 0.66242415, z: 3.2632961}
@@ -6677,7 +6739,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -879719458
+      _guid: 1947213964
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: -3.65625, y: 0.91242415, z: 3.2632961}
@@ -6690,7 +6752,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1354464686
+      _guid: 53768163
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -3.5, y: 0.53742415, z: 3.2632961}
@@ -6703,7 +6765,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1926082283
+      _guid: 631469568
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -3.5, y: 0.78742415, z: 3.2632961}
@@ -6716,7 +6778,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1992060000
+      _guid: -1869092801
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -3.34375, y: 0.66242415, z: 3.2632961}
@@ -6729,7 +6791,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1729581199
+      _guid: 308263223
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -3.34375, y: 0.91242415, z: 3.2632961}
@@ -9249,51 +9311,6 @@ MonoBehaviour:
   _outlineMaterial: {fileID: 0}
   destinationPointsRelativeX:
   - 0.3
---- !u!1 &1753052367
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1753052368}
-  - component: {fileID: 1753052369}
-  m_Layer: 0
-  m_Name: Destination Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1753052368
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753052367}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 244841500}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1753052369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753052367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1791120686
 GameObject:
   m_ObjectHideFlags: 0
@@ -9665,7 +9682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1966596691
+  _guid: 969041464
   _typeKey: 0
 --- !u!114 &1852829216
 MonoBehaviour:
@@ -9679,7 +9696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 167685056
+  _guid: -900180417
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -9695,7 +9712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -296115336
+  _guid: 50146578
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -9713,7 +9730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 599415042
+  _guid: 1753026803
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -9750,7 +9767,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1506083937
+      _guid: -1525663248
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -4.569283, y: 0.6743287, z: 2.252985}
@@ -9763,7 +9780,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -963645629
+      _guid: 1544379889
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
       _position: {x: -4.569283, y: 0.9243287, z: 2.252985}
@@ -9776,7 +9793,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1586917960
+      _guid: 1997424105
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -4.413033, y: 0.5493287, z: 2.252985}
@@ -9789,7 +9806,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 12425395
+      _guid: -1926508245
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
       _position: {x: -4.413033, y: 0.7993287, z: 2.252985}
@@ -9802,7 +9819,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -256350252
+      _guid: 407840667
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -4.256783, y: 0.6743287, z: 2.252985}
@@ -9815,7 +9832,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1532709421
+      _guid: 1374557656
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
       _position: {x: -4.256783, y: 0.9243287, z: 2.252985}
