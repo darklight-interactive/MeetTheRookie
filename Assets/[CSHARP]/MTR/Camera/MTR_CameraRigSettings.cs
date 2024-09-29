@@ -6,7 +6,7 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(menuName = "MeetTheRookie/MTRCameraPreset")]
-public class MTR_CameraRigPreset : ScriptableObject
+public class MTR_CameraRigSettings : ScriptableObject
 {
     const int DEFAULT_RANGE_VALUE = 25;
     static Vector2 DistRange = new Vector2(-DEFAULT_RANGE_VALUE * 2, 0);
@@ -14,7 +14,6 @@ public class MTR_CameraRigPreset : ScriptableObject
     static Vector2 VertRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
     static Vector2 SpeedRange = new Vector2(0, 5);
 
-    public bool lookAtOriginX = true;
 
     [Header("Speed")]
     [DynamicRange("SpeedRange")] public float positionLerpSpeed = 10f;
@@ -32,17 +31,4 @@ public class MTR_CameraRigPreset : ScriptableObject
 
     [Header("Field of View")]
     [SerializeField, Range(0.1f, 190)] public float fov = 5f;
-
-    [Header("Bounds")]
-    public bool useBounds = true;
-    public SingleAxisBounds xAxisBounds = new SingleAxisBounds(Axis.X, HorzRange);
-    public SingleAxisBounds yAxisBounds = new SingleAxisBounds(Axis.Y, VertRange);
-    public SingleAxisBounds zAxisBounds = new SingleAxisBounds(Axis.Z, DistRange);
-
-    void OnValidate()
-    {
-        xAxisBounds.Axis = Axis.X;
-        yAxisBounds.Axis = Axis.Y;
-        zAxisBounds.Axis = Axis.Z;
-    }
 }

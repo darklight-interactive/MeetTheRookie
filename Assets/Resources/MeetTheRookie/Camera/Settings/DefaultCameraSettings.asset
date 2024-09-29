@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0855d01303d62ab408b4abd511e7e9c5, type: 3}
-  m_Name: MTRCameraPreset
+  m_Name: DefaultCameraSettings
   m_EditorClassIdentifier: 
-  lerpSpeed: 1
-  depth: -1
-  horizontalOffset: -0.8
-  verticalOffset: 1
-  fov: 15
+  positionLerpSpeed: 10
+  rotationLerpSpeed: 10
+  fovLerpSpeed: 10
+  distanceOffset: -10
+  horizontalOffset: 0
+  verticalOffset: 0
+  fov: 5

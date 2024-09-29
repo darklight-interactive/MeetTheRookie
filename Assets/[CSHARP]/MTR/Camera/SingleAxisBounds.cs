@@ -11,7 +11,6 @@ public class SingleAxisBounds
     readonly Vector2 valueRange;
 
     [SerializeField, ShowOnly] Axis _axis;
-    [SerializeField] bool _showGizmos;
     [SerializeField, DynamicRange("valueRange")] float _min;
     [SerializeField, DynamicRange("valueRange")] float _max;
 
@@ -57,8 +56,6 @@ public class SingleAxisBounds
 
     public void DrawGizmos(Vector3 origin, float length)
     {
-        if (!_showGizmos) return;
-
         GetAxisValues(out Vector3 direction, out Color color);
         Gizmos.color = color;
 
