@@ -10,7 +10,7 @@ public partial class MTRInteractable
         [SerializeField, ShowOnly] string _name;
         [SerializeField, ShowOnly] string _key;
         [SerializeField, ShowOnly] string _layer;
-        [SerializeField] Type _type = Type.BASE_INTERACTABLE;
+        [SerializeField, ShowOnly] Type _type = Type.BASE_INTERACTABLE;
         [SerializeField] Sprite _sprite;
 
         public override string Name => _name;

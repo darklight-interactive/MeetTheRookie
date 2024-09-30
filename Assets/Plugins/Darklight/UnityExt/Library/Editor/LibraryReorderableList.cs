@@ -145,11 +145,11 @@ namespace Darklight.UnityExt.Library.Editor
 
             if (valueProperty.propertyType == SerializedPropertyType.Integer)
             {
-                valueProperty.intValue = EditorGUI.IntSlider(rect, valueProperty.intValue, (int)0, (int)100);
+                valueProperty.intValue = EditorGUI.IntField(rect, valueProperty.intValue);
             }
             else if (valueProperty.propertyType == SerializedPropertyType.Float)
             {
-                valueProperty.floatValue = EditorGUI.Slider(rect, valueProperty.floatValue, 0f, 100f);
+                valueProperty.floatValue = EditorGUI.FloatField(rect, valueProperty.floatValue);
             }
             else if (valueProperty.propertyType == SerializedPropertyType.Vector2)
             {

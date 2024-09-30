@@ -21,7 +21,6 @@ public enum PlayerFacing { RIGHT, LEFT }
 public class PlayerController : MonoBehaviour
 {
     SceneBounds _sceneBounds;
-    CurrentDestinationPoint _destinationPoint = new CurrentDestinationPoint();
 
     [Header("Debug")]
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
@@ -34,7 +33,6 @@ public class PlayerController : MonoBehaviour
     public PlayerAnimator Animator { get; private set; }
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerState CurrentState => StateMachine.CurrentState;
-    public CurrentDestinationPoint DestinationPoint => _destinationPoint;
     public PlayerFacing Facing => _facing;
 
     public void Awake()
@@ -43,7 +41,7 @@ public class PlayerController : MonoBehaviour
         Animator = GetComponent<PlayerAnimator>();
         Animator.SetFacing(SpriteDirection.RIGHT);
 
-        WalkOverride walkOverride = new WalkOverride(StateMachine, PlayerState.WALKOVERRIDE, _destinationPoint);
+        WalkOverride walkOverride = new WalkOverride(StateMachine, PlayerState.WALKOVERRIDE);
 
         StateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
             {PlayerState.NULL, new FinitePlayerState(StateMachine, PlayerState.NULL)},
@@ -205,12 +203,12 @@ public class PlayerController : MonoBehaviour
     {
         public PlayerStateMachine _stateMachine;
         private float _walkDestinationX;
-        private CurrentDestinationPoint _currentDestinationPoint;
+        //private CurrentDestinationPoint _currentDestinationPoint;
 
-        public WalkOverride(PlayerStateMachine stateMachine, PlayerState stateType, CurrentDestinationPoint destination) : base(stateMachine, stateType)
+        public WalkOverride(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType)
         {
             _stateMachine = stateMachine;
-            _currentDestinationPoint = destination;
+            //_currentDestinationPoint = destination;
         }
 
         public override void Enter()
@@ -228,7 +226,7 @@ public class PlayerController : MonoBehaviour
             float _walkDirection = 0;
             float _walkSpeed = 1;
             Transform transform = _stateMachine._controller.transform;
-            _walkDestinationX = _currentDestinationPoint.destinationPoint.x;
+            //_walkDestinationX = _currentDestinationPoint.destinationPoint.x;
 
             if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
             {
@@ -257,19 +255,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    #endregion
-
-    #region [[ DESTINATION POINT ]] ======================================================== >>
-
-    public class CurrentDestinationPoint
-    {
-        public DestinationPoint destinationPoint;
-
-        public CurrentDestinationPoint()
-        {
-            destinationPoint = null;
-        }
-    }
     #endregion
 
 

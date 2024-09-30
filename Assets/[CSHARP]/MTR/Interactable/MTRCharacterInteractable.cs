@@ -47,7 +47,6 @@ public class MTRCharacterInteractable : MTRInteractable
         //Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
 
 
-        SpawnDestinationPoints();
         /*
             // >> ON FIRST INTERACTION -------------------------------
             this.OnStartInteraction += () =>

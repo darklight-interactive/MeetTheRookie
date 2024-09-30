@@ -269,7 +269,6 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             RemoveInteractable(interactable);
         }
     }
-
     #endregion
 
     /*

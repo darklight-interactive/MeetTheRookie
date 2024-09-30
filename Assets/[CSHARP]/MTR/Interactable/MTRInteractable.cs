@@ -50,10 +50,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         State.CONTINUE
     };
 
-    // -- (( DESTINATION POINTS )) -------- >>
-    GameObject Lupe;
-    GameObject Misra;
-
     [SerializeField, ShowOnly] bool _isPreloaded;
     [SerializeField, ShowOnly] bool _isRegistered;
     [SerializeField, ShowOnly] bool _isInitialized;
@@ -61,6 +57,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InteractionRequestDataObject _request;
     [SerializeField] InteractionRecieverLibrary _recievers;
+    [SerializeField] MTRInteractableDestinationLibrary _destinations;
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InternalData _data;
@@ -78,10 +75,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     [Header("Outline")]
     [SerializeField] Material _outlineMaterial;
-
-    [Header("Destination Points")]
-    [SerializeField] List<float> destinationPointsRelativeX;
-    private List<GameObject> _destinationPoints = new List<GameObject>();
 
     protected InternalStateMachine stateMachine;
     protected SpriteRenderer spriteRenderer;
@@ -148,6 +141,14 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             return _recievers;
         }
         protected set => _recievers = value;
+    }
+    public MTRInteractableDestinationLibrary Destinations
+    {
+        get
+        {
+            return _destinations;
+        }
+        protected set => _destinations = value;
     }
     public override bool IsPreloaded
     {
@@ -246,8 +247,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         return IsPreloaded = isValid;
     }
-
-
     protected virtual void GenerateRecievers()
     {
         Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
@@ -258,7 +257,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         Request = newRequest;
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
-
     protected virtual bool ValidateRegistration()
     {
         bool inRegistry = InteractionSystem.Registry.IsRegistered(this);
@@ -304,6 +302,9 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     public override void Preload()
     {
         //Debug.Log($"{PREFIX} {Name} :: Preload", this);
+
+        if (_destinations == null)
+            _destinations = new MTRInteractableDestinationLibrary();
 
         // << RESET >> ------------------------------------
         Reset();
@@ -365,6 +366,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         ValidateInitialization();
 
         // << DESTINATION POINTS >> ------------------------------------
+        /*
         PlayerController tempLupe = FindFirstObjectByType<PlayerController>();
         if (tempLupe != null)
         {
@@ -388,6 +390,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         {
             destinationPointsRelativeX = new List<float> { -1, 1 };
         }
+        */
     }
 
     public override void Refresh()
@@ -490,76 +493,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     private void OnDrawGizmosSelected()
     {
-        if (destinationPointsRelativeX == null) { return; }
+        _destinations.DrawInEditor(this.transform);
 
-        foreach (var destinationPoint in destinationPointsRelativeX)
-        {
-            Gizmos.DrawLine(new Vector3(transform.position.x + destinationPoint, -5, transform.position.z), new Vector3(transform.position.x + destinationPoint, 5, transform.position.z));
-        }
-    }
-
-    public void SpawnDestinationPoints()
-    {
-
-        var tempLupe = FindFirstObjectByType<PlayerController>();
-        if (tempLupe != null)
-        {
-            Lupe = tempLupe.gameObject;
-        }
-
-        float lupeY = gameObject.transform.position.y;
-        if (Lupe != null)
-        {
-            lupeY = Lupe.transform.position.y;
-        }
-
-        foreach (var point in _destinationPoints)
-        {
-            DestroyImmediate(point);
-        }
-        _destinationPoints.Clear();
-
-        // Create new destination points
-        for (int i = 0; i < destinationPointsRelativeX.Count; i++)
-        {
-            GameObject destinationPoint = new GameObject("Destination Point");
-            destinationPoint.AddComponent<DestinationPoint>();
-            destinationPoint.transform.position = new Vector3(gameObject.transform.position.x + destinationPointsRelativeX[i], lupeY, gameObject.transform.position.z);
-            destinationPoint.transform.SetParent(this.transform);
-            _destinationPoints.Add(destinationPoint);
-        }
-    }
-
-    public void FindDestinationPoints()
-    {
-        _destinationPoints.Clear();
-
-
-        DestinationPoint[] childrenDestinationPoints = GetComponentsInChildren<DestinationPoint>();
-        foreach (var destinationPoint in childrenDestinationPoints)
-        {
-            _destinationPoints.Add(destinationPoint.gameObject);
-        }
-    }
-
-    public List<GameObject> GetDestinationPoints()
-    {
-        return _destinationPoints;
-    }
-
-    private void ChangeSpawnPoints()
-    {
-        SpawnHandler spawnHandler = SpawnHandler.Instance;
-        List<GameObject> interactables = spawnHandler.GetAllInteractables();
-
-        foreach (var currentInteractable in interactables)
-        {
-            //currentInteractable.GetComponent<Interactable>().isSpawn = false;
-        }
-
-        isSpawn = true;
-
-        spawnHandler.SetSpawnPoints(interactables);
     }
 
 #if UNITY_EDITOR
