@@ -7,11 +7,11 @@ using NaughtyAttributes;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(MTRPlayerInputController))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlayerAnimator : FrameAnimationPlayer
 {
-    PlayerController _playerController;
+    MTRPlayerInputController _playerController;
 
     [HorizontalLine(color: EColor.Gray)]
     [Header("Player Animator")]
@@ -32,7 +32,7 @@ public class PlayerAnimator : FrameAnimationPlayer
         }
         else { Debug.LogError("No animation state set for player animator"); }
 
-        _playerController = GetComponent<PlayerController>();
+        _playerController = GetComponent<MTRPlayerInputController>();
         UpdateFacing();
     }
 

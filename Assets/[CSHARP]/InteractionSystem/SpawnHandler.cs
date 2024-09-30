@@ -50,7 +50,7 @@ public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
         // Change locations of Lupe and Misra to Spawn Points
         SceneInteractableInfo sceneInfo = scenes[currentScene.name];
 
-        var tempLupe = FindFirstObjectByType<PlayerController>();
+        var tempLupe = FindFirstObjectByType<MTRPlayerInputController>();
         if (tempLupe != null)
         {
             Lupe = tempLupe.gameObject;

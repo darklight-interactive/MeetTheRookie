@@ -65,7 +65,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             return speakers;
         }
     }
-    public PlayerController PlayerController => GetComponent<PlayerController>();
+    public MTRPlayerInputController PlayerController => GetComponent<MTRPlayerInputController>();
     #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
@@ -286,7 +286,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     private IEnumerator MoveToPosition()
     {
-        PlayerController controller = gameObject.GetComponent<PlayerController>();
+        MTRPlayerInputController controller = gameObject.GetComponent<MTRPlayerInputController>();
         yield return new WaitForSeconds(0.1f);
 
         /*

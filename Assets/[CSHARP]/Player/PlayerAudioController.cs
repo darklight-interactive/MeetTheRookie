@@ -1,15 +1,15 @@
 using FMODUnity;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(MTRPlayerInputController))]
 public class PlayerAudioController : MonoBehaviour
 {
-    private PlayerController playerController;
+    private MTRPlayerInputController playerController;
 
 
     public void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        playerController = GetComponent<MTRPlayerInputController>();
         playerController.StateMachine.OnStateChanged += OnStateChanged;
     }
 

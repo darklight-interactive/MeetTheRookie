@@ -9,7 +9,7 @@ using UnityEditor;
 public class PlayerCameraController : CameraController
 {
 
-    PlayerController _playerController;
+    MTRPlayerInputController _playerController;
 
     [Header(">> Player Camera State Adjustments")]
     [SerializeField, Range(-1, 1)] private float defaultStateFOVOffset = 0f;
@@ -18,7 +18,7 @@ public class PlayerCameraController : CameraController
 
     public void Awake()
     {
-        _playerController = FindFirstObjectByType<PlayerController>();
+        _playerController = FindFirstObjectByType<MTRPlayerInputController>();
         SetFocusTarget(_playerController.transform);
 
         // Create States

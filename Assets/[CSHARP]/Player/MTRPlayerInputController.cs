@@ -6,9 +6,12 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Behaviour;
 using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
+using EasyButtons;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
+using EasyButtons.Editor;
 #endif
 
 public enum PlayerState { NULL, IDLE, WALK, INTERACTION, HIDE, WALKOVERRIDE }
@@ -17,16 +20,20 @@ public enum PlayerFacing { RIGHT, LEFT }
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
 /// </summary>
-[RequireComponent(typeof(PlayerController), typeof(MTRPlayerInteractor), typeof(PlayerAnimator))]
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(MTRPlayerInputController), typeof(MTRPlayerInteractor), typeof(PlayerAnimator))]
+public class MTRPlayerInputController : MonoBehaviour
 {
     SceneBounds _sceneBounds;
     float _speed = 1f;
 
+    [Header("Settings")]
+    [SerializeField] PlayerFacing _facing;
+
     [Header("Debug")]
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
-    [SerializeField] PlayerFacing _facing;
     [SerializeField, ShowOnly] bool _inputEnabled;
+
+    // =================================== [[ PROPERTIES ]] =================================== >>
     public MTRPlayerInteractor Interactor { get; private set; }
     public PlayerAnimator Animator { get; private set; }
     public PlayerStateMachine StateMachine { get; private set; }
@@ -71,33 +78,52 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         StateMachine.Step();
-        HandleMovement();
+        UpdateMovement();
     }
 
     public void OnDestroy()
     {
-        EnableInput(false);
+        SetInputEnabled(false);
     }
 
-    public void EnableInput(bool enable)
+    [Button]
+    public void SetInputEnabled(bool enable)
     {
         if (enable)
         {
-            UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
-            UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
-            UniversalInputManager.OnPrimaryInteract += () => Interactor.InteractWithTarget();
+            _inputEnabled = true;
+            UniversalInputManager.OnMoveInput += HandleOnMoveInput;
+            UniversalInputManager.OnMoveInputCanceled += HandleOnMoveInputCanceled;
+            UniversalInputManager.OnPrimaryInteract += HandlePrimaryInteract;
             UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
         }
         else
         {
-            UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
-            UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
-            UniversalInputManager.OnPrimaryInteract -= () => Interactor.InteractWithTarget();
+            _inputEnabled = false;
+            UniversalInputManager.OnMoveInput -= HandleOnMoveInput;
+            UniversalInputManager.OnMoveInputCanceled -= HandleOnMoveInputCanceled;
+            UniversalInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
             UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
         }
     }
 
-    void HandleMovement()
+    void HandleOnMoveInput(Vector2 input)
+    {
+        _activeMoveInput = input;
+    }
+
+    void HandleOnMoveInputCanceled()
+    {
+        _activeMoveInput = Vector2.zero;
+    }
+
+    void HandlePrimaryInteract()
+    {
+        Interactor.InteractWithTarget();
+    }
+
+    // =================================== [[ MOVEMENT ]] =================================== >>
+    void UpdateMovement()
     {
         // If the player is in an interaction state, do not allow movement
         if (CurrentState == PlayerState.INTERACTION) return;
@@ -139,6 +165,9 @@ public class PlayerController : MonoBehaviour
         else
             StateMachine.GoToState(PlayerState.IDLE);
     }
+
+
+    // =================================== [[ TRIGGER ]] =================================== >>
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -278,15 +307,19 @@ public class PlayerController : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(PlayerController))]
+    [CustomEditor(typeof(MTRPlayerInputController))]
     public class PlayerControllerCustomEditor : Editor
     {
         SerializedObject _serializedObject;
-        PlayerController _script;
+        MTRPlayerInputController _script;
+        private ButtonsDrawer _buttonsDrawer;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (PlayerController)target;
+            _script = (MTRPlayerInputController)target;
+            _buttonsDrawer = new ButtonsDrawer(target);
+
             _script.Awake();
         }
 
@@ -297,6 +330,7 @@ public class PlayerController : MonoBehaviour
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
+            _buttonsDrawer.DrawButtons(targets);
 
             if (EditorGUI.EndChangeCheck())
             {

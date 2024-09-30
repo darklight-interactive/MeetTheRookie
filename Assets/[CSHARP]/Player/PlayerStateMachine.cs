@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 {
-    public PlayerController _controller;
+    public MTRPlayerInputController _controller;
     public PlayerAnimator _animator => _controller.Animator;
 
     /// <param name="args">
@@ -14,7 +14,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
     /// </param>
     public PlayerStateMachine(Dictionary<PlayerState, FiniteState<PlayerState>> possibleStates, PlayerState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
-        _controller = (PlayerController)args[0];
+        _controller = (MTRPlayerInputController)args[0];
     }
 
     public override void Step()
