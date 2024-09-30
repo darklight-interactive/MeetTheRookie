@@ -4,27 +4,27 @@ using Darklight.UnityExt.Behaviour;
 using FMODUnity;
 using UnityEngine;
 
-public class PlayerStateMachine : FiniteStateMachine<PlayerState>
+public class PlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
-    public MTRPlayerInputController _controller;
+    public MTRPlayerController _controller;
     public PlayerAnimator _animator => _controller.Animator;
 
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )
     /// </param>
-    public PlayerStateMachine(MTRPlayerInputController controller)
+    public PlayerStateMachine(MTRPlayerController controller)
     {
         _controller = controller;
-        possibleStates = new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NULL, new FinitePlayerState(this, PlayerState.NULL)},
-            {PlayerState.IDLE, new FinitePlayerState(this, PlayerState.IDLE)},
-            {PlayerState.WALK, new FinitePlayerState(this, PlayerState.WALK)},
-            {PlayerState.INTERACTION, new FinitePlayerState(this, PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new FinitePlayerState(this, PlayerState.HIDE)},
-            {PlayerState.WALKOVERRIDE, new WalkOverride(this, PlayerState.WALKOVERRIDE)}};
+        possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>> {
+            {MTRPlayerState.NULL, new FinitePlayerState(this, MTRPlayerState.NULL)},
+            {MTRPlayerState.IDLE, new FinitePlayerState(this, MTRPlayerState.IDLE)},
+            {MTRPlayerState.WALK, new FinitePlayerState(this, MTRPlayerState.WALK)},
+            {MTRPlayerState.INTERACTION, new FinitePlayerState(this, MTRPlayerState.INTERACTION)},
+            {MTRPlayerState.HIDE, new FinitePlayerState(this, MTRPlayerState.HIDE)},
+            {MTRPlayerState.WALKOVERRIDE, new WalkOverride(this, MTRPlayerState.WALKOVERRIDE)}};
     }
 
-    public override bool GoToState(PlayerState stateType, bool force = false)
+    public override bool GoToState(MTRPlayerState stateType, bool force = false)
     {
         bool result = base.GoToState(stateType);
         if (result)
@@ -38,11 +38,11 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 
     #region  [[ STATE MACHINE ]] ======================================================== >>
 
-    public class FinitePlayerState : FiniteState<PlayerState>
+    public class FinitePlayerState : FiniteState<MTRPlayerState>
     {
         /// <param name="args">
         ///   args[0] = PlayerController ( playerController )
-        public FinitePlayerState(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType) { }
+        public FinitePlayerState(PlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType) { }
 
         public override void Enter()
         {
@@ -66,7 +66,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
         private float _walkDestinationX;
         //private CurrentDestinationPoint _currentDestinationPoint;
 
-        public WalkOverride(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType)
+        public WalkOverride(PlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
         {
             _stateMachine = stateMachine;
             //_currentDestinationPoint = destination;
@@ -91,7 +91,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 
             if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
             {
-                _stateMachine.GoToState(PlayerState.IDLE);
+                _stateMachine.GoToState(MTRPlayerState.IDLE);
                 return;
             }
 
@@ -120,7 +120,7 @@ public class PlayerStateMachine : FiniteStateMachine<PlayerState>
 }
 
 [System.Serializable]
-public class PlayerStateObject : FiniteState<PlayerState>
+public class PlayerStateObject : FiniteState<MTRPlayerState>
 {
     [Header("Sound Events")]
     public EventReference soundOnEnter;
@@ -128,7 +128,7 @@ public class PlayerStateObject : FiniteState<PlayerState>
     public EventReference repeatingSound;
     [SerializeField, Range(0.1f, 1f)] private float repeatingSoundInterval = 1f;
 
-    public PlayerStateObject(PlayerStateMachine stateMachine, PlayerState stateType, params object[] args) : base(stateMachine, stateType) { }
+    public PlayerStateObject(PlayerStateMachine stateMachine, MTRPlayerState stateType, params object[] args) : base(stateMachine, stateType) { }
 
     public override void Enter()
     {

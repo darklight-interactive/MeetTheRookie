@@ -364,46 +364,12 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         // << SET TO READY STATE >> ------------------------------------
         ValidateInitialization();
-
-        // << DESTINATION POINTS >> ------------------------------------
-        /*
-        PlayerController tempLupe = FindFirstObjectByType<PlayerController>();
-        if (tempLupe != null)
-        {
-            Lupe = tempLupe.gameObject;
-        }
-
-        MTR_Misra_Controller tempMisra = FindFirstObjectByType<MTR_Misra_Controller>();
-        if (tempMisra != null)
-        {
-            Misra = tempMisra.gameObject;
-        }
-
-        _destinationPoints.Clear();
-        DestinationPoint[] childrenDestinationPoints = GetComponentsInChildren<DestinationPoint>();
-        foreach (var destinationPoint in childrenDestinationPoints)
-        {
-            _destinationPoints.Add(destinationPoint.gameObject);
-        }
-
-        if (destinationPointsRelativeX == null || destinationPointsRelativeX.Count == 0)
-        {
-            destinationPointsRelativeX = new List<float> { -1, 1 };
-        }
-        */
     }
 
     public override void Refresh()
     {
         if (StateMachine != null)
             StateMachine.Step();
-
-        /*
-        foreach (InteractionReciever reciever in Recievers.Values)
-        {
-            reciever.ResetTransform();
-        }
-        */
     }
 
     public override void Reset()

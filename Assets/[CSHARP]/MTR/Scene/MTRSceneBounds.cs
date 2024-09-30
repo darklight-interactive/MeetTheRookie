@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SceneBounds : MonoBehaviour
+public class MTRSceneBounds : MonoBehaviour
 {
     public float leftBound = -10f;
     public float rightBound = 10f;

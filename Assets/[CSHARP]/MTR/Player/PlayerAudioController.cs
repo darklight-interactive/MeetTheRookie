@@ -1,29 +1,29 @@
 using FMODUnity;
 using UnityEngine;
 
-[RequireComponent(typeof(MTRPlayerInputController))]
+[RequireComponent(typeof(MTRPlayerInput))]
 public class PlayerAudioController : MonoBehaviour
 {
-    private MTRPlayerInputController playerController;
+    private MTRPlayerController playerController;
 
 
     public void Start()
     {
-        playerController = GetComponent<MTRPlayerInputController>();
+        playerController = GetComponent<MTRPlayerController>();
         playerController.StateMachine.OnStateChanged += OnStateChanged;
     }
 
-    private PlayerState lastState = PlayerState.NULL;
-    public void OnStateChanged(PlayerState newState)
+    private MTRPlayerState lastState = MTRPlayerState.NULL;
+    public void OnStateChanged(MTRPlayerState newState)
     {
         switch (newState)
         {
-            case PlayerState.WALK:
+            case MTRPlayerState.WALK:
                 MTR_AudioManager.Instance.StartFootstepEvent();
                 break;
         }
 
-        if (lastState == PlayerState.WALK && newState != PlayerState.WALK)
+        if (lastState == MTRPlayerState.WALK && newState != MTRPlayerState.WALK)
         {
             MTR_AudioManager.Instance.StopRepeatingEvent();
         }

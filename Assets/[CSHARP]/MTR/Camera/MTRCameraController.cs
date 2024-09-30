@@ -49,4 +49,10 @@ public class MTRCameraController : MonoBehaviour
             }
         }
     }
+
+    public void SetPlayerAsFollowTarget()
+    {
+        MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
+        Rig.SetFollowTarget(player.transform);
+    }
 }

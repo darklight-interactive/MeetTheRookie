@@ -7,22 +7,22 @@ using NaughtyAttributes;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(MTRPlayerInputController))]
+[RequireComponent(typeof(MTRPlayerController))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlayerAnimator : FrameAnimationPlayer
 {
-    MTRPlayerInputController _playerController;
+    MTRPlayerController _playerController;
 
     [HorizontalLine(color: EColor.Gray)]
     [Header("Player Animator")]
-    public PlayerState animationStateOverride = PlayerState.NULL;
-    public List<SpriteSheet<PlayerState>> spriteSheets = new List<SpriteSheet<PlayerState>>();
+    public MTRPlayerState animationStateOverride = MTRPlayerState.NULL;
+    public List<SpriteSheet<MTRPlayerState>> spriteSheets = new List<SpriteSheet<MTRPlayerState>>();
 
     public override void Initialize()
     {
         animationStateOverride = spriteSheets[0].state;
 
-        if (animationStateOverride != PlayerState.NULL)
+        if (animationStateOverride != MTRPlayerState.NULL)
         {
             SpriteSheet spriteSheet = GetSpriteSheetWithState(animationStateOverride);
             if (spriteSheet != null)
@@ -32,7 +32,7 @@ public class PlayerAnimator : FrameAnimationPlayer
         }
         else { Debug.LogError("No animation state set for player animator"); }
 
-        _playerController = GetComponent<MTRPlayerInputController>();
+        _playerController = GetComponent<MTRPlayerController>();
         UpdateFacing();
     }
 
@@ -46,13 +46,13 @@ public class PlayerAnimator : FrameAnimationPlayer
     {
         // Update facing direction from the player controller
         if (_playerController == null) return;
-        if (_playerController.Facing == PlayerFacing.LEFT)
+        if (_playerController.Facing == MTRPlayerDirection.LEFT)
             SetFacing(SpriteDirection.LEFT);
-        else if (_playerController.Facing == PlayerFacing.RIGHT)
+        else if (_playerController.Facing == MTRPlayerDirection.RIGHT)
             SetFacing(SpriteDirection.RIGHT);
     }
 
-    public void PlayStateAnimation(PlayerState state)
+    public void PlayStateAnimation(MTRPlayerState state)
     {
         // If there is a sprite sheet with the state, load it
         if (spriteSheets.Find(x => x.state == state) != null)
@@ -62,9 +62,9 @@ public class PlayerAnimator : FrameAnimationPlayer
         }
     }
 
-    public SpriteSheet GetSpriteSheetWithState(PlayerState state)
+    public SpriteSheet GetSpriteSheetWithState(MTRPlayerState state)
     {
-        foreach (SpriteSheet<PlayerState> sheet in spriteSheets)
+        foreach (SpriteSheet<MTRPlayerState> sheet in spriteSheets)
         {
             if (sheet.state == state)
             {

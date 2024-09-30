@@ -183,7 +183,7 @@ public partial class MTRInteractable
 
                     case InkyStoryIterator.State.CHOICE:
                         // << GET THE CHOICE RECIEVER >> -----------
-                        InteractionSystem.Registry.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
+                        MTRInteractionSystem.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
 
                         if (choiceReciever.ChoiceSelected)
                         {

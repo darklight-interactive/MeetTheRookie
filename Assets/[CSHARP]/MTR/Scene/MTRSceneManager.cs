@@ -25,13 +25,47 @@ using UnityEditor;
 [RequireComponent(typeof(MTRSceneController))]
 public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 {
-    public static MTRSceneController Controller => Instance.GetComponent<MTRSceneController>();
-    public static MTRSceneController.InternalStateMachine StateMachine => Controller.StateMachine;
-    public static MTRSceneState CurrentState => Controller.CurrentState;
+    public new static string Prefix = "[ MTRSceneManager ]";
+    public new static MTRSceneManager Instance => BuildSceneDataManager<MTRSceneData>.Instance as MTRSceneManager;
+    public static MTRSceneBounds SceneBounds
+    {
+        get
+        {
+            MTRSceneBounds[] bounds = FindObjectsByType<MTRSceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            return bounds.Length > 0 ? bounds[0] : null;
+        }
+
+    }
 
     [SerializeField, Expandable] MTRSceneDataObject _sceneData;
 
+    public MTRSceneController Controller => GetComponent<MTRSceneController>();
 
+    void OnStoryInitialized(Story story)
+    {
+        Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
+        story.BindExternalFunction(
+            "ChangeGameScene",
+            (string knotName) => ChangeGameScene(knotName)
+        );
+    }
+
+    /// <summary>
+    /// This is the main external function that is called from the Ink story to change the game scene.
+    /// </summary>
+    /// <param name="args">0 : The name of the sceneKnot</param>
+    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
+    bool ChangeGameScene(string knotName)
+    {
+        MTRSceneData data = _sceneData.GetSceneDataByKnot(knotName);
+
+        if (data == null)
+            return false;
+
+        // << LOAD SCENE >>
+        LoadScene(data.Name);
+        return true;
+    }
 
     public override void Initialize()
     {
@@ -57,7 +91,13 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
         _sceneData.Initialize(buildScenePaths);
 
         //SaveBuildSceneData(buildScenePaths);
-        InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
+        Debug.Log($"{Prefix} Initialized.");
+
+        Story story = InkyStoryManager.GlobalStory;
+        if (story != null)
+            OnStoryInitialized(story);
+        else
+            Debug.LogError($"{Prefix} Story is null.");
     }
 
     /// <summary>
@@ -91,31 +131,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 #endif
     }
 
-    public void OnStoryInitialized(Story story)
-    {
-        Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
-        story.BindExternalFunction(
-            "ChangeGameScene",
-            (string knotName) => ChangeGameScene(knotName)
-        );
-    }
 
-    /// <summary>
-    /// This is the main external function that is called from the Ink story to change the game scene.
-    /// </summary>
-    /// <param name="args">0 : The name of the sceneKnot</param>
-    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    bool ChangeGameScene(string knotName)
-    {
-        MTRSceneData data = _sceneData.GetSceneDataByKnot(knotName);
-
-        if (data == null)
-            return false;
-
-        // << LOAD SCENE >>
-        LoadScene(data.Name);
-        return true;
-    }
 
     public MTRSceneData GetSceneData(string name)
     {
@@ -151,7 +167,9 @@ public class MTR_SceneManagerCustomEditor : Editor
     {
         _serializedObject = new SerializedObject(target);
         _script = (MTRSceneManager)target;
-        _script.Awake();
+
+        if (!Application.isPlaying)
+            _script.Awake();
     }
 
     public override void OnInspectorGUI()

@@ -47,7 +47,7 @@ public class ChoiceInteractionReciever : InteractionReciever
     {
         if (_choiceBubbleLibrary == null)
         {
-            _choiceBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
+            _choiceBubbleLibrary = MTRAssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
         }
 
         if (_attachedBubbles == null)

@@ -65,7 +65,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             return speakers;
         }
     }
-    public MTRPlayerInputController PlayerController => GetComponent<MTRPlayerInputController>();
+    public MTRPlayerController PlayerController => GetComponent<MTRPlayerController>();
     #endregion
 
     // ======== [[ METHODS ]] ================================== >>>>
@@ -122,7 +122,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         TryAssignTarget(_closestInteractable);
 
         // << UPDATE FACING >> --------
-        if (PlayerController.Facing == PlayerFacing.LEFT)
+        if (PlayerController.Facing == MTRPlayerDirection.LEFT)
         {
             OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
 
@@ -131,7 +131,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
                 TargetInteractable.transform.position.x > transform.position.x)
                 ClearTarget();
         }
-        else if (PlayerController.Facing == PlayerFacing.RIGHT)
+        else if (PlayerController.Facing == MTRPlayerDirection.RIGHT)
         {
             OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
 
@@ -286,7 +286,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     private IEnumerator MoveToPosition()
     {
-        MTRPlayerInputController controller = gameObject.GetComponent<MTRPlayerInputController>();
+        MTRPlayerInput controller = gameObject.GetComponent<MTRPlayerInput>();
         yield return new WaitForSeconds(0.1f);
 
         /*

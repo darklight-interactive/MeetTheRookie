@@ -40,7 +40,7 @@ public class DialogueInteractionReciever : InteractionReciever
     {
         if (_dialogueBubbleLibrary == null)
         {
-            _dialogueBubbleLibrary = MTR_AssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
+            _dialogueBubbleLibrary = MTRAssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
         }
     }
 

@@ -9,7 +9,7 @@ using UnityEditor;
 public class PlayerCameraController : CameraController
 {
 
-    MTRPlayerInputController _playerController;
+    MTRPlayerController _playerController;
 
     [Header(">> Player Camera State Adjustments")]
     [SerializeField, Range(-1, 1)] private float defaultStateFOVOffset = 0f;
@@ -18,7 +18,7 @@ public class PlayerCameraController : CameraController
 
     public void Awake()
     {
-        _playerController = FindFirstObjectByType<MTRPlayerInputController>();
+        _playerController = FindFirstObjectByType<MTRPlayerController>();
         SetFocusTarget(_playerController.transform);
 
         // Create States
@@ -39,21 +39,21 @@ public class PlayerCameraController : CameraController
     public void Start()
     {
         if (_playerController != null && _playerController.StateMachine != null)
-            _playerController.StateMachine.OnStateChanged += (PlayerState state) => OnPlayerStateChange(state);
+            _playerController.StateMachine.OnStateChanged += (MTRPlayerState state) => OnPlayerStateChange(state);
     }
 
-    public void OnPlayerStateChange(PlayerState state)
+    public void OnPlayerStateChange(MTRPlayerState state)
     {
         switch (state)
         {
-            case PlayerState.NULL:
-            case PlayerState.IDLE:
+            case MTRPlayerState.NULL:
+            case MTRPlayerState.IDLE:
                 stateMachine.GoToState(CameraStateKey.DEFAULT);
                 break;
-            case PlayerState.INTERACTION:
+            case MTRPlayerState.INTERACTION:
                 stateMachine.GoToState(CameraStateKey.CLOSE_UP);
                 break;
-            case PlayerState.WALK:
+            case MTRPlayerState.WALK:
                 stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
                 break;
         }
@@ -62,7 +62,7 @@ public class PlayerCameraController : CameraController
     public void OnDestroy()
     {
         if (_playerController != null && _playerController.StateMachine != null)
-            _playerController.StateMachine.OnStateChanged -= (PlayerState state) => OnPlayerStateChange(state);
+            _playerController.StateMachine.OnStateChanged -= (MTRPlayerState state) => OnPlayerStateChange(state);
     }
 }
 

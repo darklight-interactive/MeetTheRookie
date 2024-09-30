@@ -2,7 +2,7 @@
 using Darklight.UnityExt.Utility;
 using UnityEngine;
 
-public static class MTR_AssetManager
+public static class MTRAssetManager
 {
     public const string RESOURCE_PATH = "Assets/Resources/MeetTheRookie";
 
