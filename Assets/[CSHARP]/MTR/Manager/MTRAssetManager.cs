@@ -5,6 +5,7 @@ using UnityEngine;
 public static class MTRAssetManager
 {
     public const string RESOURCE_PATH = "Assets/Resources/MeetTheRookie";
+    const string SCENE_BOUNDS_PATH = RESOURCE_PATH + "/SceneBounds";
 
     /// <summary>
     /// Create or load a ScriptableObject of type T from the Resources folder
@@ -29,5 +30,12 @@ public static class MTRAssetManager
     {
         T scriptableObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<T>(RESOURCE_PATH, name);
         return scriptableObject;
+    }
+
+
+    public static MTRCameraRigBounds CreateOrLoadCameraBounds(string sceneName)
+    {
+        MTRCameraRigBounds bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigBounds>(SCENE_BOUNDS_PATH, sceneName);
+        return bounds;
     }
 }

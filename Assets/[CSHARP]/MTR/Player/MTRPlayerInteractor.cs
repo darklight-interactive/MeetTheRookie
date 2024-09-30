@@ -21,9 +21,9 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 {
     const float INTERACTOR_X_OFFSET = 0.35f;
 
-    [SerializeField, ShowOnly] bool _enabled = false;
 
     [Header("Interactor Settings")]
+    [SerializeField] bool _enabled = false;
     [SerializeField] LayerMask _layerMask;
     [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);

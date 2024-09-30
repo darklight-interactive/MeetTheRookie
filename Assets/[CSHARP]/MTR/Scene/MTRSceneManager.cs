@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 using NaughtyAttributes;
 using System.Linq;
 using Darklight.UnityExt.Utility;
+using Darklight.UnityExt.Library;
+
 
 
 
@@ -23,7 +25,7 @@ using UnityEditor;
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 [RequireComponent(typeof(MTRSceneController))]
-public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
+public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditorListener
 {
     public new static string Prefix = "[ MTRSceneManager ]";
     public new static MTRSceneManager Instance => BuildSceneDataManager<MTRSceneData>.Instance as MTRSceneManager;
@@ -34,20 +36,49 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
             MTRSceneBounds[] bounds = FindObjectsByType<MTRSceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             return bounds.Length > 0 ? bounds[0] : null;
         }
-
     }
 
-    [SerializeField, Expandable] MTRSceneDataObject _sceneData;
+    [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
+    [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
     public MTRSceneController Controller => GetComponent<MTRSceneController>();
+    public MTRSceneDataObject SceneDataObject => _sceneDataObject;
+    public List<string> SceneNames => _sceneDataObject.SceneNames;
 
-    public void Start()
+    public void OnEditorReloaded()
+    {
+        Awake();
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        if (_cameraBoundsLibrary == null
+            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNames.Count)
+            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(SceneNames);
+
+        MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
+        if (activeCameraBounds != null)
+        {
+            Controller.CameraController.Rig.SetBounds(activeCameraBounds);
+        }
+    }
+
+    public void OnEnable()
     {
         OnSceneChanged += Controller.OnActiveSceneChanged;
     }
 
+    public void OnDisable()
+    {
+        OnSceneChanged -= Controller.OnActiveSceneChanged;
+    }
+
     void OnStoryInitialized(Story story)
     {
+        if (!Application.isPlaying)
+            return;
         Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
         story.BindExternalFunction(
             "ChangeGameScene",
@@ -62,7 +93,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     bool ChangeGameScene(string knotName)
     {
-        MTRSceneData data = _sceneData.GetSceneDataByKnot(knotName);
+        MTRSceneData data = _sceneDataObject.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -75,25 +106,25 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
     public override void Initialize()
     {
 #if UNITY_EDITOR
-        _sceneData = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRSceneDataObject>(
+        _sceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRSceneDataObject>(
             DATA_PATH,
                 DATA_FILENAME
             );
 
-        if (_sceneData == null)
+        if (_sceneDataObject == null)
         {
             Debug.LogError($"{this.name} Failed to create or load build scene data object.");
             return;
         }
         else
         {
-            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {_sceneData}");
+            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {_sceneDataObject}");
         }
 
         base.LoadBuildScenes();
 #endif
 
-        _sceneData.Initialize(buildScenePaths);
+        _sceneDataObject.Initialize(buildScenePaths);
 
         //SaveBuildSceneData(buildScenePaths);
         Debug.Log($"{Prefix} Initialized.");
@@ -113,7 +144,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
     {
 #if UNITY_EDITOR
         this.buildScenePaths = buildScenePaths;
-        List<MTRSceneData> buildSceneData = _sceneData.GetBuildSceneData();
+        List<MTRSceneData> buildSceneData = _sceneDataObject.GetBuildSceneData();
 
         for (int i = 0; i < buildScenePaths.Length; i++)
         {
@@ -140,19 +171,24 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 
     public MTRSceneData GetSceneData(string name)
     {
-        return _sceneData.GetSceneData(name);
+        return _sceneDataObject.GetSceneData(name);
     }
 
     public MTRSceneData GetSceneDataByKnot(string knot)
     {
-        return this._sceneData.GetSceneDataByKnot(knot);
+        return this._sceneDataObject.GetSceneDataByKnot(knot);
     }
 
     public MTRSceneData GetActiveSceneData()
     {
-        if (_sceneData == null)
+        if (_sceneDataObject == null)
             return new MTRSceneData();
-        return _sceneData.GetActiveSceneData();
+        return _sceneDataObject.GetActiveSceneData();
+    }
+
+    public MTRCameraRigBounds GetActiveCameraBounds()
+    {
+        return _cameraBoundsLibrary[GetActiveSceneData().Name];
     }
 }
 

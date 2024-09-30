@@ -119,79 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &56503910
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.625
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -16.929
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9999805
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.0062496345
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 348082412807241120, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895742502396242152, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: m_Name
-      value: '[EXTERIOR CAM CONTROLLER]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167559734855225826, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: _focusTarget
-      value: 
-      objectReference: {fileID: 2144778276}
-    - target: {fileID: 7167559734855225826, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: _focusTargetPosition.x
-      value: 3.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167559734855225826, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: _focusTargetPosition.y
-      value: 0.625
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167559734855225826, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
-      propertyPath: _focusTargetPosition.z
-      value: 3.071
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7a14c809c51496a4ab0e30025e1ff5b6, type: 3}
 --- !u!43 &71856184
 Mesh:
   m_ObjectHideFlags: 0
@@ -1266,18 +1193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene1_1.gas_pump
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 4816572674808989152, guid: 8c8656af83038694a92f90fd4e59bac4, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -1286,13 +1205,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene1_1.gas_pump
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 4816572674808989152, guid: 8c8656af83038694a92f90fd4e59bac4, type: 3}
   _sceneKnot: scene1_1
   _interactionStitch: scene1_1.gas_pump
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - 0.35
 --- !u!61 &488405742
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1668,7 +1595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 446971077
+  _guid: -992822494
   _typeKey: 0
 --- !u!114 &591140523
 MonoBehaviour:
@@ -1682,10 +1609,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -971597339
+  _guid: 980839781
   _typeKey: 3
   _showGizmos: 0
-  _dataObject: {fileID: 11400000, guid: 15fa5bcb5527c3e439c3c601c6418471, type: 2}
+  _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
 --- !u!114 &591140524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1698,7 +1625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -621541327
+  _guid: 207744625
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -1716,28 +1643,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 629643638
+  _guid: 1810159354
   _typeKey: 2
   _showGizmos: 0
-  _serializedWeightData:
-  - name: Cell (0,0)
-    key: {x: 0, y: 0}
-    weight: 5
-  - name: Cell (1,0)
-    key: {x: 1, y: 0}
-    weight: 10
-  - name: Cell (2,0)
-    key: {x: 2, y: 0}
-    weight: 5
-  - name: Cell (1,1)
-    key: {x: 1, y: 1}
-    weight: 10
-  - name: Cell (0,1)
-    key: {x: 0, y: 1}
-    weight: 0
-  - name: Cell (2,1)
-    key: {x: 2, y: 1}
-    weight: 0
+  _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
 --- !u!114 &591140526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1756,7 +1665,7 @@ MonoBehaviour:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
     _gridAlignment: 7
-    _gridLocalPosition: {x: 0, y: -0.1, z: 0}
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
     _gridDimensions: {x: 3, y: 2}
     _cellConfig:
@@ -1771,84 +1680,78 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 340121189
+      _guid: -303351118
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: 0.6387501, y: 0.65, z: 4.125}
+      _position: {x: 0.6387501, y: 0.75, z: 4.125}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (1,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 276290679
-      _key: {x: 1, y: 0}
-      _coordinate: {x: 0, y: 0}
-      _position: {x: 0.7950001, y: 0.525, z: 4.125}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (2,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 961495647
-      _key: {x: 2, y: 0}
-      _coordinate: {x: 1, y: 0}
-      _position: {x: 0.9512501, y: 0.65, z: 4.125}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
   - _name: Cell2D (0,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1422980285
+      _guid: 1526951063
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
-      _position: {x: 0.6387501, y: 0.9, z: 4.125}
+      _position: {x: 0.6387501, y: 1, z: 4.125}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (1,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -159742544
+      _key: {x: 1, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _position: {x: 0.7950001, y: 0.625, z: 4.125}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (1,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1528681622
+      _guid: 124359447
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
-      _position: {x: 0.7950001, y: 0.775, z: 4.125}
+      _position: {x: 0.7950001, y: 0.875, z: 4.125}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (2,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1748168627
+      _key: {x: 2, y: 0}
+      _coordinate: {x: 1, y: 0}
+      _position: {x: 0.9512501, y: 0.75, z: 4.125}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (2,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -261591111
+      _guid: -498735176
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
-      _position: {x: 0.9512501, y: 0.9, z: 4.125}
+      _position: {x: 0.9512501, y: 1, z: 4.125}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
 --- !u!114 &591140527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1926,6 +1829,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: sceneDataObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 61a7c3c5271cb4553b3aafe08a2631e1, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _sceneDataObject
       value: 
       objectReference: {fileID: 11400000, guid: 61a7c3c5271cb4553b3aafe08a2631e1, type: 2}
     - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
@@ -2024,6 +1931,338 @@ PrefabInstance:
       propertyPath: 'buildScenePaths.Array.data[28]'
       value: Assets/Scenes/Build/SYNTHESIS_DEMO.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._readOnlyKey
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._readOnlyValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.size
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[1]._id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[2]._id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[3]._id
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[4]._id
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[5]._id
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[6]._id
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[7]._id
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[8]._id
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[9]._id
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[0]._key
+      value: MAIN_MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[10]._id
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[11]._id
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[12]._id
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[13]._id
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[14]._id
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[15]._id
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[16]._id
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[17]._id
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[18]._id
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[19]._id
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[1]._key
+      value: SCENE_1_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[20]._id
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[21]._id
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[22]._id
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[23]._id
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[24]._id
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[25]._id
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[26]._id
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[2]._key
+      value: SCENE_1_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[3]._key
+      value: SCENE_1_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[4]._key
+      value: SCENE_1_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[5]._key
+      value: SCENE_1_4 - The Gas Station Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[6]._key
+      value: SCENE_2_0 - The Precinct - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[7]._key
+      value: SCENE_3_1 - The Winery Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[8]._key
+      value: SCENE_3_2 - The Winery Int.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[9]._key
+      value: SCENE_4_1 - Main Street_AFTERNOON
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[10]._key
+      value: SCENE_4_1 - Main Street_DUSK
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[11]._key
+      value: SCENE_4_1 - Main Street_GOLDENHOUR
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[12]._key
+      value: SCENE_4_2 - The General Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[13]._key
+      value: SCENE_4_3 - The Arcade
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[14]._key
+      value: SCENE_4_4 - The Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[15]._key
+      value: SCENE_4_5 - The Bar - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[16]._key
+      value: SCENE_5_1 - Stakeout - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[17]._key
+      value: SCENE_5_2 - The Winery Ext_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[18]._key
+      value: SCENE_5_3 - The Winery Int_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[19]._key
+      value: SCENE_5_4 - The Winery Office Interior_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[20]._key
+      value: SCENE_6_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[21]._key
+      value: SCENE_6_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[22]._key
+      value: SCENE_6_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[23]._key
+      value: SCENE_6_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[24]._key
+      value: SCENE_6_4 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[25]._key
+      value: SCENE_6_5 - The Gas Station Ext.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[26]._key
+      value: SCENE_7_0 - The Precinct - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[0]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: dd7d21532ba5e9341acb5a6c381ae527, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[1]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bd4d59e74dd31346a8a25c61e71fe6e, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[2]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ae43c7b5a0a0b44f9d3a84f32a6a526, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[3]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: fed6cfe0f9774ec41a7626f470caaf86, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[4]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: b6f76a17a3fdda3478f8004f4aef6b3b, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[5]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 0770191c9fd783f42b684d192c83b329, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[6]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: ef2dbc2fcaded894db5d247728b7f256, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[7]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: e31ce71d3b41aac428231a73de509057, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[8]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 62a790f1079398a46998cca634a19d47, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[9]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 326b4b2f6b9c24f43a875f435beecc33, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[10]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: fc0f66de2e971d640b87ab4f4e4b0d68, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[11]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: bd3d95d816e22144c98491fe645a1ffd, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[12]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: ce5376744d58dbd4e81be1ca9ae3b8c5, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[13]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 090c2c7c00d7a2b45b96a885c7993401, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[14]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: e94e0187fdee6fb47aafa4b9572d78c4, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[15]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: e39c8d60fff40b14eabd9ea17552f7ab, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[16]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: ed1ab7480263caf4b827734f1ae86dcd, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[17]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 3bab23ce13ba1344eb6371a1b1633e3a, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[18]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 34ef117cfdf969e489df7c1bb6dfe687, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[19]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: f3c6edd27ab488846b41b4bf1e8068ba, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[20]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: e2611aa42b7df89409b122e50752fa7e, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[21]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 953eb8f38c4c4b044841208d82a86d74, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[22]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 11f68efe839a99145a8d95f99731232c, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[23]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 86ce051cc2891ad418085b56bb96f56b, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[24]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 86938acd3ea239b4a9ae3c5020569a72, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[25]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: c5c2458460f4e0e488058bc5621f2845, type: 2}
+    - target: {fileID: 5155693147541508910, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _cameraBoundsLibrary._items.Array.data[26]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: ba55b9d2064d79d4ca0002a384eb51d4, type: 2}
     - target: {fileID: 5953019589017212419, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: '_storyObjects.Array.data[0]'
       value: 
@@ -3949,18 +4188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene1_1.enter_store
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 3223386051870524753, guid: 3ca41105c26b7064d990012a850ac2eb, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -3969,13 +4200,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene1_1.enter_store
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 3223386051870524753, guid: 3ca41105c26b7064d990012a850ac2eb, type: 3}
   _sceneKnot: scene1_1
   _interactionStitch: scene1_1.enter_store
   onStart: 0
   isSpawn: 1
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.01
 --- !u!61 &1055946521
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4781,18 +5020,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene1_4.fallen_tree
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 5708137881974659742, guid: 68227262425ffaa49821b7afdaa5f7c3, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -4801,13 +5032,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene1_4.fallen_tree
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 5708137881974659742, guid: 68227262425ffaa49821b7afdaa5f7c3, type: 3}
   _sceneKnot: scene1_4
   _interactionStitch: scene1_4.fallen_tree
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - 0.39
 --- !u!61 &1334586583
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5489,6 +5728,111 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &1619413587
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752063185994480251, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752063185994480251, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752063185994480251, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_Name
+      value: '[ MTR CAMERA ]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768953934943051033, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768953934943051033, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768953934943051033, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409168742065500744, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409168742065500744, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409168742065500744, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
 --- !u!43 &1699651315
 Mesh:
   m_ObjectHideFlags: 0
@@ -6858,7 +7202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 851309877
+  _guid: -43612349
   _typeKey: 0
 --- !u!114 &2023775807
 MonoBehaviour:
@@ -6872,10 +7216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1061446629
+  _guid: 1655434543
   _typeKey: 3
   _showGizmos: 0
-  _dataObject: {fileID: 11400000, guid: 15fa5bcb5527c3e439c3c601c6418471, type: 2}
+  _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
 --- !u!114 &2023775808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6888,7 +7232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1818362520
+  _guid: 1269297246
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -6906,28 +7250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -201507459
+  _guid: 1581929779
   _typeKey: 2
   _showGizmos: 0
-  _serializedWeightData:
-  - name: Cell (0,0)
-    key: {x: 0, y: 0}
-    weight: 5
-  - name: Cell (1,0)
-    key: {x: 1, y: 0}
-    weight: 10
-  - name: Cell (2,0)
-    key: {x: 2, y: 0}
-    weight: 5
-  - name: Cell (1,1)
-    key: {x: 1, y: 1}
-    weight: 10
-  - name: Cell (0,1)
-    key: {x: 0, y: 1}
-    weight: 0
-  - name: Cell (2,1)
-    key: {x: 2, y: 1}
-    weight: 0
+  _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
 --- !u!114 &2023775810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6946,7 +7272,7 @@ MonoBehaviour:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
     _gridAlignment: 7
-    _gridLocalPosition: {x: 0, y: -0.1, z: 0}
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
     _gridDimensions: {x: 3, y: 2}
     _cellConfig:
@@ -6961,84 +7287,78 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1915664521
+      _guid: 1874563991
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: 3.84375, y: 0.7169994, z: 3.8286085}
+      _position: {x: 3.84375, y: 0.81699944, z: 3.8286085}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (1,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -1043100075
-      _key: {x: 1, y: 0}
-      _coordinate: {x: 0, y: 0}
-      _position: {x: 4, y: 0.5919994, z: 3.8286085}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (2,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 631414058
-      _key: {x: 2, y: 0}
-      _coordinate: {x: 1, y: 0}
-      _position: {x: 4.15625, y: 0.7169994, z: 3.8286085}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
   - _name: Cell2D (0,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1743736597
+      _guid: -767097799
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
-      _position: {x: 3.84375, y: 0.9669994, z: 3.8286085}
+      _position: {x: 3.84375, y: 1.0669994, z: 3.8286085}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (1,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1665603870
+      _key: {x: 1, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _position: {x: 4, y: 0.69199944, z: 3.8286085}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (1,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1913572523
+      _guid: -720240026
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
-      _position: {x: 4, y: 0.8419994, z: 3.8286085}
+      _position: {x: 4, y: 0.94199944, z: 3.8286085}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (2,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1314247138
+      _key: {x: 2, y: 0}
+      _coordinate: {x: 1, y: 0}
+      _position: {x: 4.15625, y: 0.81699944, z: 3.8286085}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (2,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1938017177
+      _guid: 1659037569
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
-      _position: {x: 4.15625, y: 0.9669994, z: 3.8286085}
+      _position: {x: 4.15625, y: 1.0669994, z: 3.8286085}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
 --- !u!114 &2023775811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7358,7 +7678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1142660508
+  _guid: 982167134
   _typeKey: 0
 --- !u!114 &2117148751
 MonoBehaviour:
@@ -7372,10 +7692,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1717725367
+  _guid: 1544910567
   _typeKey: 3
   _showGizmos: 0
-  _dataObject: {fileID: 11400000, guid: 15fa5bcb5527c3e439c3c601c6418471, type: 2}
+  _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
 --- !u!114 &2117148752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7388,7 +7708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1496579712
+  _guid: 370083092
   _typeKey: 1
   _layerMask:
     serializedVersion: 2
@@ -7406,28 +7726,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1480836665
+  _guid: -1398358611
   _typeKey: 2
   _showGizmos: 0
-  _serializedWeightData:
-  - name: Cell (0,0)
-    key: {x: 0, y: 0}
-    weight: 5
-  - name: Cell (1,0)
-    key: {x: 1, y: 0}
-    weight: 10
-  - name: Cell (2,0)
-    key: {x: 2, y: 0}
-    weight: 5
-  - name: Cell (1,1)
-    key: {x: 1, y: 1}
-    weight: 10
-  - name: Cell (0,1)
-    key: {x: 0, y: 1}
-    weight: 0
-  - name: Cell (2,1)
-    key: {x: 2, y: 1}
-    weight: 0
+  _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
 --- !u!114 &2117148754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7446,7 +7748,7 @@ MonoBehaviour:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
     _gridAlignment: 7
-    _gridLocalPosition: {x: 0, y: -0.1, z: 0}
+    _gridLocalPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
     _gridDimensions: {x: 3, y: 2}
     _cellConfig:
@@ -7461,84 +7763,78 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1452517498
+      _guid: 1073823812
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: -2.4633007, y: 0.28749982, z: -4.4803905}
+      _position: {x: -2.4633007, y: 0.3874998, z: -4.4803905}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (1,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -92819408
-      _key: {x: 1, y: 0}
-      _coordinate: {x: 0, y: 0}
-      _position: {x: -2.3070507, y: 0.16249982, z: -4.4803905}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
-  - _name: Cell2D (2,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -726519420
-      _key: {x: 2, y: 0}
-      _coordinate: {x: 1, y: 0}
-      _position: {x: -2.1508007, y: 0.28749982, z: -4.4803905}
-      _normal: {x: 0, y: 0, z: 1}
-      _dimensions: {x: 0.125, y: 0.25}
-      _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
   - _name: Cell2D (0,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1930698836
+      _guid: 74517542
       _key: {x: 0, y: 1}
       _coordinate: {x: -1, y: 1}
-      _position: {x: -2.4633007, y: 0.5374998, z: -4.4803905}
+      _position: {x: -2.4633007, y: 0.6374998, z: -4.4803905}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (1,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -1242813156
+      _key: {x: 1, y: 0}
+      _coordinate: {x: 0, y: 0}
+      _position: {x: -2.3070507, y: 0.2624998, z: -4.4803905}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (1,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1825353097
+      _guid: 548700360
       _key: {x: 1, y: 1}
       _coordinate: {x: 0, y: 1}
-      _position: {x: -2.3070507, y: 0.41249982, z: -4.4803905}
+      _position: {x: -2.3070507, y: 0.5124998, z: -4.4803905}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
+  - _name: Cell2D (2,0)
+    _config:
+      _cellDimensions: {x: 1, y: 1}
+      _cellSpacing: {x: 1, y: 1}
+      _cellBonding: {x: 0, y: 0}
+    _data:
+      _guid: -18265485
+      _key: {x: 2, y: 0}
+      _coordinate: {x: 1, y: 0}
+      _position: {x: -2.1508007, y: 0.3874998, z: -4.4803905}
+      _normal: {x: 0, y: 0, z: 1}
+      _dimensions: {x: 0.125, y: 0.25}
+      _isDisabled: 0
   - _name: Cell2D (2,1)
     _config:
       _cellDimensions: {x: 1, y: 1}
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -388467549
+      _guid: -548764465
       _key: {x: 2, y: 1}
       _coordinate: {x: 1, y: 1}
-      _position: {x: -2.1508007, y: 0.5374998, z: -4.4803905}
+      _position: {x: -2.1508007, y: 0.6374998, z: -4.4803905}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.25}
       _isDisabled: 0
-    componentTypeKeys: 02000000010000000300000000000000
 --- !u!114 &2117148755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7573,7 +7869,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.55
@@ -7788,19 +8084,14 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &2144778276 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
-  m_PrefabInstance: {fileID: 2134957029}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 602198744}
   - {fileID: 829919967}
-  - {fileID: 56503910}
   - {fileID: 2134957029}
   - {fileID: 436676880}
   - {fileID: 686554115}
   - {fileID: 510728358}
+  - {fileID: 1619413587}

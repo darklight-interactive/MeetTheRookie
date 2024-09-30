@@ -282,6 +282,12 @@ public class MTRCameraRig : MonoBehaviour
     {
         _followTarget = target;
     }
+
+    public void SetBounds(MTRCameraRigBounds bounds)
+    {
+        _bounds = bounds;
+    }
+
     #endregion
 
     #region ( GIZMOS ) <PRIVATE_METHODS> ================================================

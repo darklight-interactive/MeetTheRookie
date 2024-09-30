@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
 using Darklight.UnityExt.SceneManagement;
+using Darklight.UnityExt.Library;
+using EasyButtons;
+using Darklight.UnityExt.Editor;
+
+
+
 
 
 #if UNITY_EDITOR
@@ -15,9 +21,20 @@ using UnityEditor;
 /// </summary>
 public class MTRSceneDataObject : BuildSceneDataObject<MTRSceneData>
 {
+    [SerializeField, ShowOnly, NonReorderable] List<string> buildSceneNames = new List<string>();
+
+    public List<MTRSceneData> SceneData => buildSceneData.ToList();
+    public List<string> SceneNames
+    {
+        get => buildSceneNames = SceneData.Select(x => x.Name).ToList();
+    }
+
+    [Button]
     public void Initialize(string[] buildScenePaths)
     {
         this.buildScenePaths = buildScenePaths;
+        this.buildSceneNames = SceneData.Select(x => x.Name).ToList();
+
         Initialize();
     }
 
@@ -52,8 +69,14 @@ public class MTRSceneDataObjectCustomEditor : Editor
 
         base.OnInspectorGUI();
 
+        if (GUILayout.Button("Initialize"))
+        {
+            _script.Initialize();
+        }
+
         if (EditorGUI.EndChangeCheck())
         {
+
             _serializedObject.ApplyModifiedProperties();
         }
     }
