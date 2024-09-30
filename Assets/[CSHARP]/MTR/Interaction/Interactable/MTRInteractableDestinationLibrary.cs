@@ -17,7 +17,6 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
         Reset();
 
         Add("DestinationA", 0.5f);
-        Add("DestinationB", -0.5f);
     }
 
     void RefreshOccupantDestinations()
@@ -47,9 +46,10 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
 
     }
 
-    public bool TryAddOccupant(MTRCharacterInteractable character)
+    public bool TryAddOccupant(MTRCharacterInteractable character, out float destinationX)
     {
         RefreshOccupantDestinations();
+        destinationX = character.transform.position.x;
 
         // Find the first available destination
         foreach (KeyValuePair<string, float> dest in this)
@@ -57,7 +57,14 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
             if (_occupants[dest.Key] == null)
             {
                 _occupants[dest.Key] = character;
-                return true;
+                bool result = TryGetValue(dest.Key, out destinationX);
+                if (result)
+                {
+                    CalculateDestinationX(character, dest.Key, out destinationX);
+                    Debug.Log($"Character {character.name} added to destination {dest.Key} at {destinationX}");
+                }
+
+                return result;
             }
         }
         return false;
@@ -78,6 +85,16 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
         return false;
     }
 
+    void CalculateDestinationX(MTRInteractable origin, string destinationKey, out float destinationX)
+    {
+        TryGetValue(destinationKey, out float xValue);
+        destinationX = origin.transform.position.x + xValue;
+    }
+
+    public override void AddDefaultItem()
+    {
+        InternalAdd("Destination" + Count, 0.5f);
+    }
 
     public void DrawInEditor(Transform origin)
     {

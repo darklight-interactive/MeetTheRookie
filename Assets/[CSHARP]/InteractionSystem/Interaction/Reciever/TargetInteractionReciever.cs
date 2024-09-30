@@ -25,9 +25,11 @@ public class TargetInteractionReciever : InteractionReciever
 
     public override InteractionType InteractionType => InteractionType.TARGET;
 
-    public void ShowInteractIcon()
+    public void ShowInteractIcon(bool forceInEditor = false)
     {
         //Debug.Log($"{gameObject.name}: ShowInteractIcon called.", this);
+        if (!forceInEditor && !Application.isPlaying)
+            return;
 
         // << Get the best cell available >>
         Cell2D bestCell = gridSpawner.GetBestCell();

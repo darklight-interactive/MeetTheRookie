@@ -100,11 +100,26 @@ namespace Darklight.UnityExt.Library.Editor
             // End change check and apply changes
             if (EditorGUI.EndChangeCheck())
             {
-                _itemsProperty.serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_itemsProperty.serializedObject.targetObject);
+                ApplyChanges();
                 Debug.Log("LibraryReorderableList: Element modified");
             }
         }
+
+        public void ApplyChanges()
+        {
+            // Ensure the modified properties are serialized
+            _itemsProperty.serializedObject.ApplyModifiedProperties();
+
+            // Mark the target object dirty to ensure the changes are saved
+            EditorUtility.SetDirty(_itemsProperty.serializedObject.targetObject);
+
+            // Force the editor to repaint both the inspector and the scene
+            _itemsProperty.serializedObject.UpdateIfRequiredOrScript();
+            _itemsProperty.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            EditorApplication.QueuePlayerLoopUpdate(); // Updates Scene view if necessary
+            EditorWindow.focusedWindow?.Repaint();
+        }
+
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
         {

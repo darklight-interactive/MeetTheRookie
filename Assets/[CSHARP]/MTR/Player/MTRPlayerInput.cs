@@ -29,7 +29,7 @@ public class MTRPlayerInput : MonoBehaviour
 
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
-    public bool InputEnabled => _inputEnabled;
+    public bool IsInputEnabled => _inputEnabled;
 
 
     // =================================== [[ PROPERTIES ]] =================================== >>

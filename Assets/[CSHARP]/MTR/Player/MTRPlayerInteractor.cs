@@ -16,6 +16,7 @@ using UnityEditor;
 #endif
 
 [ExecuteAlways]
+[RequireComponent(typeof(MTRPlayerController))]
 public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 {
     const float INTERACTOR_X_OFFSET = 0.35f;
@@ -41,6 +42,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         };
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
+    public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public override Type TypeKey => Type.PLAYER_INTERACTOR;
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
     public Library<Interactable, string> NearbyInteractables => _nearbyInteractables;

@@ -187,6 +187,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
     }
     public override Type TypeKey => Type.BASE_INTERACTABLE;
+    public float CurrentXPosition => transform.position.x;
 
     #endregion
 
@@ -409,6 +410,29 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             if (!VALID_INTERACTION_STATES.Contains(CurrentState)) return false;
         }
 
+        if (interactor is MTRPlayerInteractor playerInteractor)
+            StartCoroutine(AcceptInteractionRoutine(interactor as MTRPlayerInteractor, force));
+
+
+
+        return true;
+    }
+    #endregion
+
+    IEnumerator AcceptInteractionRoutine(MTRPlayerInteractor interactor, bool force = false)
+    {
+
+        bool result = _destinations.TryAddOccupant(interactor, out float destinationX);
+        if (!result)
+        {
+            Debug.Log($"{PREFIX} {Name} :: No Available Destinations", this);
+            yield break;
+        }
+
+        Debug.Log($"{PREFIX} {Name} :: Force Player to walk to destination", this);
+        interactor.Controller.StartWalkOverride(destinationX);
+        yield return new WaitUntil(() => interactor.Controller.CurrentState == MTRPlayerState.INTERACTION);
+
         // << ACCEPT INTERACTION >> ------------------------------------
         Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {interactor}", this);
         switch (CurrentState)
@@ -424,10 +448,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                 StateMachine.GoToState(State.START);
                 break;
         }
-
-        return true;
     }
-    #endregion
 
     void OnStart()
     {

@@ -4,24 +4,25 @@ using Darklight.UnityExt.Behaviour;
 using FMODUnity;
 using UnityEngine;
 
-public class PlayerStateMachine : FiniteStateMachine<MTRPlayerState>
+public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
-    public MTRPlayerController _controller;
-    public PlayerAnimator _animator => _controller.Animator;
+    protected MTRPlayerController controller;
+    protected MTRPlayerInput _input => controller.Input;
+    protected PlayerAnimator _animator => controller.Animator;
 
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )
     /// </param>
-    public PlayerStateMachine(MTRPlayerController controller)
+    public MTRPlayerStateMachine(MTRPlayerController controller)
     {
-        _controller = controller;
+        this.controller = controller;
         possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>> {
-            {MTRPlayerState.NULL, new FinitePlayerState(this, MTRPlayerState.NULL)},
-            {MTRPlayerState.IDLE, new FinitePlayerState(this, MTRPlayerState.IDLE)},
-            {MTRPlayerState.WALK, new FinitePlayerState(this, MTRPlayerState.WALK)},
-            {MTRPlayerState.INTERACTION, new FinitePlayerState(this, MTRPlayerState.INTERACTION)},
-            {MTRPlayerState.HIDE, new FinitePlayerState(this, MTRPlayerState.HIDE)},
-            {MTRPlayerState.WALKOVERRIDE, new WalkOverride(this, MTRPlayerState.WALKOVERRIDE)}};
+            {MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL)},
+            {MTRPlayerState.IDLE, new BasePlayerState(this, MTRPlayerState.IDLE)},
+            {MTRPlayerState.WALK, new BasePlayerState(this, MTRPlayerState.WALK)},
+            {MTRPlayerState.INTERACTION, new BasePlayerState(this, MTRPlayerState.INTERACTION)},
+            {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)},
+            {MTRPlayerState.WALK_OVERRIDE, new WalkOverrideState(this)}};
     }
 
     public override bool GoToState(MTRPlayerState stateType, bool force = false)
@@ -36,84 +37,45 @@ public class PlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     }
 
 
-    #region  [[ STATE MACHINE ]] ======================================================== >>
+    #region  [[ STATES ]] ======================================================== >>
 
-    public class FinitePlayerState : FiniteState<MTRPlayerState>
+    public class BasePlayerState : FiniteState<MTRPlayerState>
     {
-        /// <param name="args">
-        ///   args[0] = PlayerController ( playerController )
-        public FinitePlayerState(PlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType) { }
-
-        public override void Enter()
+        protected MTRPlayerStateMachine stateMachine;
+        protected MTRPlayerController controller;
+        protected MTRPlayerInput input => controller.Input;
+        protected PlayerAnimator animator => controller.Animator;
+        public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
         {
-            // Debug.Log($"Entering State: {stateType}");
+            this.stateMachine = stateMachine;
+            this.controller = stateMachine.controller;
         }
+        public override void Enter() { }
+        public override void Execute() { }
+        public override void Exit() { }
 
-        public override void Exit()
-        {
-            // Debug.Log($"Exiting State: {stateType}");
-        }
-
-        public override void Execute()
-        {
-            // Debug.Log($"Executing State: {stateType}");
-        }
     }
 
-    public class WalkOverride : FinitePlayerState
-    {
-        public PlayerStateMachine _stateMachine;
-        private float _walkDestinationX;
-        //private CurrentDestinationPoint _currentDestinationPoint;
-
-        public WalkOverride(PlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
-        {
-            _stateMachine = stateMachine;
-            //_currentDestinationPoint = destination;
-        }
+    public class WalkOverrideState : BasePlayerState
+    {        //private CurrentDestinationPoint _currentDestinationPoint;
+        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.WALK_OVERRIDE) { }
 
         public override void Enter()
         {
-            // Debug.Log($"Entering State: WALK");
-        }
-
-        public override void Exit()
-        {
-            // Debug.Log($"Exiting State: {stateType}");
+            if (input.IsInputEnabled == true)
+            {
+                input.SetInputEnabled(false);
+            }
         }
 
         public override void Execute()
         {
-            float _walkDirection = 0;
-            float _walkSpeed = 1;
-            Transform transform = _stateMachine._controller.transform;
-            //_walkDestinationX = _currentDestinationPoint.destinationPoint.x;
-
-            if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
+            if (controller.IsAtMoveTarget())
             {
-                _stateMachine.GoToState(MTRPlayerState.IDLE);
-                return;
+                controller.OverrideResetMoveDirection();
+                stateMachine.GoToState(MTRPlayerState.INTERACTION);
             }
-
-            if (transform.position.x > _walkDestinationX)
-            {
-                _walkDirection = -1;
-            }
-            else
-            {
-                _walkDirection = 1;
-            }
-
-            float movement = _walkDirection * _walkSpeed;
-            float targetX = transform.position.x + movement;
-
-            // move the character
-            transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
-
-            // Update the Animation
-            //_stateMachine._animator.FrameAnimationPlayer.FlipSprite(new Vector2(_walkDirection, 0));
         }
-
     }
 
     #endregion
@@ -128,7 +90,7 @@ public class PlayerStateObject : FiniteState<MTRPlayerState>
     public EventReference repeatingSound;
     [SerializeField, Range(0.1f, 1f)] private float repeatingSoundInterval = 1f;
 
-    public PlayerStateObject(PlayerStateMachine stateMachine, MTRPlayerState stateType, params object[] args) : base(stateMachine, stateType) { }
+    public PlayerStateObject(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType, params object[] args) : base(stateMachine, stateType) { }
 
     public override void Enter()
     {
