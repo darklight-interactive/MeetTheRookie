@@ -81,8 +81,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348082412807241120}
-  - component: {fileID: 2456542461274326303}
-  - component: {fileID: 7167559734855225826}
+  - component: {fileID: 7335559274320760579}
+  - component: {fileID: 52010867723927389}
   m_Layer: 0
   m_Name: '[CAMERA CONTROLLER]'
   m_TagString: Untagged
@@ -106,7 +106,7 @@ Transform:
   - {fileID: 5314045156112960354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2456542461274326303
+--- !u!114 &7335559274320760579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,42 +115,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 2895742502396242152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08998afcf6cc38647a4cfe7993bd4742, type: 3}
+  m_Script: {fileID: 11500000, guid: dfd2e9653ea29d34ebea7dc119a3e4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentSpeaker: 
-  targetBasedOnSpeaker: 0
---- !u!114 &7167559734855225826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2895742502396242152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9d395077e7e6746871cea667483868, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _camerasInChildren:
+  _targetPosition: {x: -3.1039357, y: 0.74399996, z: -42.739}
+  _targetRotation: {x: 0, y: 0, z: 0, w: 1}
+  _targetFOV: 2
+  _showGizmos: 1
+  _lerpInEditor: 1
+  _followTarget: {fileID: 0}
+  _mainCamera: {fileID: 294617130321755958}
+  _overlayCameras:
   - {fileID: 294617130321755958}
   - {fileID: 5663657954300164996}
   - {fileID: 1148548231494987092}
   - {fileID: 6029335792472997658}
-  _focusTarget: {fileID: 0}
-  _focusTargetPosition: {x: 0, y: 0, z: 0}
-  _focusTargetPositionOffset: {x: 0, y: 0.25, z: 0}
-  _focusOffsetY: 0.25
-  _offsetPosition: {x: 0, y: 0, z: -20}
-  _positionLerpSpeed: 10
-  _rotationLerpSpeed: 10
-  _fovLerpSpeed: 10
-  _distanceX: 0
-  _distanceY: 0
-  _distanceZ: -20
-  _baseFOV: 5
-  _offsetFOV: 0
-  _currentFOV: 5
+  _settings: {fileID: 11400000, guid: e243d8381f1de0043b3c59a16649a9ef, type: 2}
+  _bounds: {fileID: 11400000, guid: f41d077041ea708428355b10f05fae54, type: 2}
+--- !u!114 &52010867723927389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2895742502396242152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054c97aa31b61cc41ada867d5d90b7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSpeaker: Speaker.Lupe
 --- !u!1 &3605313824413459967
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +286,7 @@ GameObject:
   - component: {fileID: 2783552744951349588}
   - component: {fileID: 1624106581333338020}
   m_Layer: 0
-  m_Name: default - BaseCamera1
+  m_Name: default - BaseCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,8 +300,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5947460541986450070}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0062496345, y: -0, z: -0, w: 0.9999805}
+  m_LocalPosition: {x: -3.1039321, y: -1.2829102, z: 10.145726}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -349,7 +343,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 5
+  field of view: 2
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
