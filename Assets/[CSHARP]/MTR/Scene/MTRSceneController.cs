@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
 public enum MTRSceneState { INITIALIZE, ENTER, PLAY_MODE, CINEMA_MODE, PAUSE_MODE, SYNTHESIS_MODE, EXIT, LOADING, CHOICEMODE }
 
@@ -41,6 +42,13 @@ public class MTRSceneController : MonoBehaviour
     {
         Debug.Log($"Scene State Changed: {state}");
         _currentState = state;
+    }
+
+    public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
+    {
+        Debug.Log($"Active Scene Changed: {oldScene.name} -> {newScene.name}");
+
+        StateMachine.GoToState(MTRSceneState.INITIALIZE);
     }
 
     #region ( InternalStateMachine ) ================================================================

@@ -41,6 +41,11 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 
     public MTRSceneController Controller => GetComponent<MTRSceneController>();
 
+    public void Start()
+    {
+        OnSceneChanged += Controller.OnActiveSceneChanged;
+    }
+
     void OnStoryInitialized(Story story)
     {
         Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
@@ -64,8 +69,6 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 
         // << LOAD SCENE >>
         LoadScene(data.Name);
-
-        Controller.StateMachine.GoToState(MTRSceneState.INITIALIZE);
         return true;
     }
 
