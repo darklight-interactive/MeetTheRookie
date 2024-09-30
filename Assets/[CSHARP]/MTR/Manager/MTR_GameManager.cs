@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 [RequireComponent(typeof(UniversalInputManager))]
-[RequireComponent(typeof(MTR_SceneManager))]
+[RequireComponent(typeof(MTRSceneManager))]
 [RequireComponent(typeof(InkyStoryManager))]
 [RequireComponent(typeof(MTR_UIManager))]
 [RequireComponent(typeof(MTR_AudioManager))]
 public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
 {
     public static UniversalInputManager InputManager => UniversalInputManager.Instance;
-    public static MTR_SceneManager SceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
+    public static MTRSceneManager SceneManager => MTRSceneManager.Instance as MTRSceneManager;
     public static InkyStoryManager StoryManager => InkyStoryManager.Instance;
     public static MTR_UIManager UIManager => MTR_UIManager.Instance;
     public static MTR_AudioManager AudioManager => MTR_AudioManager.Instance;
@@ -47,7 +47,7 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         //InputManager.Reset();
         InputManager.Awake();
 
-        MTR_SceneData newSceneData = SceneManager.GetSceneData(newScene.name);
+        MTRSceneData newSceneData = SceneManager.GetSceneData(newScene.name);
         InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
         MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }

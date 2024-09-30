@@ -22,32 +22,32 @@ using UnityEditor;
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
-public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
+public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 {
-    public MTR_SceneDataObject sceneDataObject;
+    [SerializeField, Expandable] MTRSceneDataObject _sceneData;
 
     public override void Initialize()
     {
 #if UNITY_EDITOR
-        sceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTR_SceneDataObject>(
+        _sceneData = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRSceneDataObject>(
             DATA_PATH,
                 DATA_FILENAME
             );
 
-        if (sceneDataObject == null)
+        if (_sceneData == null)
         {
             Debug.LogError($"{this.name} Failed to create or load build scene data object.");
             return;
         }
         else
         {
-            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {sceneDataObject}");
+            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {_sceneData}");
         }
 
         base.LoadBuildScenes();
 #endif
 
-        sceneDataObject.Initialize(buildScenePaths);
+        _sceneData.Initialize(buildScenePaths);
 
         //SaveBuildSceneData(buildScenePaths);
         InkyStoryManager.Instance.OnStoryInitialized += OnStoryInitialized;
@@ -61,7 +61,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     {
 #if UNITY_EDITOR
         this.buildScenePaths = buildScenePaths;
-        List<MTR_SceneData> buildSceneData = sceneDataObject.GetBuildSceneData();
+        List<MTRSceneData> buildSceneData = _sceneData.GetBuildSceneData();
 
         for (int i = 0; i < buildScenePaths.Length; i++)
         {
@@ -70,7 +70,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
             // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
             if (buildSceneData.Count <= i || buildSceneData[i].Path != scenePath)
             {
-                buildSceneData.Add(new MTR_SceneData());
+                buildSceneData.Add(new MTRSceneData());
                 Debug.Log($"{this.name} -> Added new MTR_SceneData object.");
             }
 
@@ -100,7 +100,7 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     object ChangeGameScene(string knotName)
     {
-        MTR_SceneData data = sceneDataObject.GetSceneDataByKnot(knotName);
+        MTRSceneData data = _sceneData.GetSceneDataByKnot(knotName);
 
         if (data == null)
             return false;
@@ -110,40 +110,40 @@ public class MTR_SceneManager : BuildSceneDataManager<MTR_SceneData>
         return true;
     }
 
-    public MTR_SceneData GetSceneData(string name)
+    public MTRSceneData GetSceneData(string name)
     {
-        return sceneDataObject.GetSceneData(name);
+        return _sceneData.GetSceneData(name);
     }
 
-    public MTR_SceneData GetSceneDataByKnot(string knot)
+    public MTRSceneData GetSceneDataByKnot(string knot)
     {
-        return this.sceneDataObject.GetSceneDataByKnot(knot);
+        return this._sceneData.GetSceneDataByKnot(knot);
     }
 
-    public MTR_SceneData GetActiveSceneData()
+    public MTRSceneData GetActiveSceneData()
     {
-        if (sceneDataObject == null)
-            return new MTR_SceneData();
-        return sceneDataObject.GetActiveSceneData();
+        if (_sceneData == null)
+            return new MTRSceneData();
+        return _sceneData.GetActiveSceneData();
     }
 
     public void LoadSceneByKnot(string knot)
     {
-        MTR_SceneData data = GetSceneDataByKnot(knot);
+        MTRSceneData data = GetSceneDataByKnot(knot);
         LoadScene(data.Name);
     }
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(MTR_SceneManager))]
+[CustomEditor(typeof(MTRSceneManager))]
 public class MTR_SceneManagerCustomEditor : Editor
 {
     SerializedObject _serializedObject;
-    MTR_SceneManager _script;
+    MTRSceneManager _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (MTR_SceneManager)target;
+        _script = (MTRSceneManager)target;
         _script.Awake();
     }
 

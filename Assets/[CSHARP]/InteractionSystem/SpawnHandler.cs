@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SpawnHandler : MonoBehaviourSingleton<SpawnHandler>
 {
-    public static MTR_SceneManager GameSceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
+    public static MTRSceneManager GameSceneManager => MTRSceneManager.Instance as MTRSceneManager;
 
     Scene currentScene;
     Dictionary<string, SceneInteractableInfo> scenes = new Dictionary<string, SceneInteractableInfo>();

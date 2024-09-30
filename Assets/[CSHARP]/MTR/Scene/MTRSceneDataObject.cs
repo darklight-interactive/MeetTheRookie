@@ -13,7 +13,7 @@ using UnityEditor;
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
 /// </summary>
-public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
+public class MTRSceneDataObject : BuildSceneDataObject<MTRSceneData>
 {
     public void Initialize(string[] buildScenePaths)
     {
@@ -21,27 +21,27 @@ public class MTR_SceneDataObject : BuildSceneDataObject<MTR_SceneData>
         Initialize();
     }
 
-    public List<MTR_SceneData> GetBuildSceneData()
+    public List<MTRSceneData> GetBuildSceneData()
     {
         return buildSceneData.ToList();
     }
 
-    public MTR_SceneData GetSceneDataByKnot(string knot)
+    public MTRSceneData GetSceneDataByKnot(string knot)
     {
         return GetBuildSceneData().Find(x => x.knot == knot);
     }
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(MTR_SceneDataObject))]
-public class MTR_SceneDataObjectCustomEditor : Editor
+[CustomEditor(typeof(MTRSceneDataObject))]
+public class MTRSceneDataObjectCustomEditor : Editor
 {
     SerializedObject _serializedObject;
-    MTR_SceneDataObject _script;
+    MTRSceneDataObject _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (MTR_SceneDataObject)target;
+        _script = (MTRSceneDataObject)target;
     }
 
     public override void OnInspectorGUI()

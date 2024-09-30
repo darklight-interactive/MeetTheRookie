@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MTR_SceneDataObjectEditorWindow : EditorWindow
 {
-    private MTR_SceneDataObject sceneDataObject;
+    private MTRSceneDataObject sceneDataObject;
     private Vector2 scrollPos;
 
     [MenuItem("Window/MTR Scene Data Editor")]
@@ -16,7 +16,7 @@ public class MTR_SceneDataObjectEditorWindow : EditorWindow
     {
         GUILayout.Label("MTR Scene Data Editor", EditorStyles.boldLabel);
 
-        sceneDataObject = (MTR_SceneDataObject)EditorGUILayout.ObjectField("Scene Data Object", sceneDataObject, typeof(MTR_SceneDataObject), false);
+        sceneDataObject = (MTRSceneDataObject)EditorGUILayout.ObjectField("Scene Data Object", sceneDataObject, typeof(MTRSceneDataObject), false);
 
         if (sceneDataObject != null)
         {

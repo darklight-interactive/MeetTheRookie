@@ -7,7 +7,7 @@ using NaughtyAttributes;
 using UnityEngine;
 
 [System.Serializable]
-public class MTR_SceneData : BuildSceneData
+public class MTRSceneData : BuildSceneData
 {
     // private access to knots for dropdown
     private List<string> _knotNames
