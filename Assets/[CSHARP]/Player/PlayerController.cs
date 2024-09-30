@@ -21,14 +21,12 @@ public enum PlayerFacing { RIGHT, LEFT }
 public class PlayerController : MonoBehaviour
 {
     SceneBounds _sceneBounds;
+    float _speed = 1f;
 
     [Header("Debug")]
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
     [SerializeField] PlayerFacing _facing;
-
-    [Header("Settings")]
-    [Range(0.1f, 5f)] public float playerSpeed = 1f;
-
+    [SerializeField, ShowOnly] bool _inputEnabled;
     public MTRPlayerInteractor Interactor { get; private set; }
     public PlayerAnimator Animator { get; private set; }
     public PlayerStateMachine StateMachine { get; private set; }
@@ -57,11 +55,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
-        UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract += () => Interactor.InteractWithTarget();
-        UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
-
         // << Find SceneBounds >>
         SceneBounds[] bounds = FindObjectsByType<SceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         if (bounds.Length > 0)
@@ -83,10 +76,25 @@ public class PlayerController : MonoBehaviour
 
     public void OnDestroy()
     {
-        UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
-        UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
-        UniversalInputManager.OnPrimaryInteract -= () => Interactor.InteractWithTarget();
-        UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
+        EnableInput(false);
+    }
+
+    public void EnableInput(bool enable)
+    {
+        if (enable)
+        {
+            UniversalInputManager.OnMoveInput += (Vector2 input) => _activeMoveInput = input;
+            UniversalInputManager.OnMoveInputCanceled += () => _activeMoveInput = Vector2.zero;
+            UniversalInputManager.OnPrimaryInteract += () => Interactor.InteractWithTarget();
+            UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
+        }
+        else
+        {
+            UniversalInputManager.OnMoveInput -= (Vector2 input) => _activeMoveInput = input;
+            UniversalInputManager.OnMoveInputCanceled -= () => _activeMoveInput = Vector2.zero;
+            UniversalInputManager.OnPrimaryInteract -= () => Interactor.InteractWithTarget();
+            UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
+        }
     }
 
     void HandleMovement()
@@ -97,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
         // << HANDLE INPUT >>
         Vector2 moveDirection = new Vector2(_activeMoveInput.x, 0); // Get the horizontal input
-        moveDirection *= playerSpeed; // Scalar
+        moveDirection *= _speed; // Scalar
 
         // << SET FACING >>
         if (moveDirection.x > 0) _facing = PlayerFacing.RIGHT;
@@ -267,36 +275,38 @@ public class PlayerController : MonoBehaviour
         StateMachine.GoToState(synthesisEnabled ? PlayerState.INTERACTION : PlayerState.IDLE);
     }
     #endregion
-}
+
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(PlayerController))]
-public class PlayerControllerCustomEditor : UnityEditor.Editor
-{
-    SerializedObject _serializedObject;
-    PlayerController _script;
-    private void OnEnable()
+    [CustomEditor(typeof(PlayerController))]
+    public class PlayerControllerCustomEditor : Editor
     {
-        _serializedObject = new SerializedObject(target);
-        _script = (PlayerController)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
+        SerializedObject _serializedObject;
+        PlayerController _script;
+        private void OnEnable()
         {
-            _serializedObject.ApplyModifiedProperties();
+            _serializedObject = new SerializedObject(target);
+            _script = (PlayerController)target;
+            _script.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
         }
     }
-}
 #endif
+}
+
 
 
 
