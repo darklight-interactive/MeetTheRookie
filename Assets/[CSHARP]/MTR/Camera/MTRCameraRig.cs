@@ -35,6 +35,8 @@ public class MTRCameraRig : MonoBehaviour
     [SerializeField, Expandable] MTRCameraRigBounds _bounds;
 
     // << PROPERTIES >> -------------------------------------------------
+    public Transform FollowTarget => _followTarget;
+
     public float CameraZPos => Mathf.Abs(_settings.zPosOffset);
     public float CameraFOV => _settings.fov;
     public float CameraAspect => _mainCamera.aspect;

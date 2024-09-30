@@ -89,14 +89,10 @@ public class MTRPlayerController : MonoBehaviour
         }
 
         // Update the Animator
-        if (Facing == MTRPlayerDirection.RIGHT)
-            Animator.SetFacing(SpriteDirection.RIGHT);
-        else if (Facing == MTRPlayerDirection.LEFT)
-            Animator.SetFacing(SpriteDirection.LEFT);
-
+        SetAnimationDirection(_direction);
 
         // << UPDATE STATE MACHINE >> ======================================================== >>
-        if (Input.IsInputEnabled)
+        if (Input.IsAllInputEnabled)
         {
             if (moveDirection.magnitude > 0.1f)
                 StateMachine.GoToState(MTRPlayerState.WALK);
@@ -122,6 +118,21 @@ public class MTRPlayerController : MonoBehaviour
         }
     }
 
+    void SetAnimationDirection(MTRPlayerDirection direction)
+    {
+        switch (direction)
+        {
+            case MTRPlayerDirection.RIGHT:
+                Animator.SetFacing(SpriteDirection.RIGHT);
+                break;
+            case MTRPlayerDirection.LEFT:
+                Animator.SetFacing(SpriteDirection.LEFT);
+                break;
+            case MTRPlayerDirection.NONE:
+                break;
+        }
+    }
+
     void GetDirectionEnum(Vector2 direction, out MTRPlayerDirection playerDirection)
     {
         if (direction.x > 0)
@@ -135,7 +146,7 @@ public class MTRPlayerController : MonoBehaviour
     void GetDirectionToPos(float targetX, out Vector2 direction)
     {
         float distance = Mathf.Abs(targetX - transform.position.x);
-        if (distance < 0.1f)
+        if (distance < 0.01f)
         {
             direction = Vector2.zero;
             return;
@@ -197,7 +208,7 @@ public class MTRPlayerController : MonoBehaviour
 
     public bool IsAtMoveTarget()
     {
-        if (Mathf.Abs(transform.position.x - _moveTargetX) < 0.1f)
+        if (Mathf.Abs(transform.position.x - _moveTargetX) < 0.05f)
         {
             return true;
         }
@@ -210,7 +221,23 @@ public class MTRPlayerController : MonoBehaviour
         {
             return true;
         }
-
         return false;
+    }
+
+    public bool IsFacingPosition(Vector3 position)
+    {
+        if (Facing == MTRPlayerDirection.RIGHT && transform.position.x < position.x)
+            return true;
+        else if (Facing == MTRPlayerDirection.LEFT && transform.position.x > position.x)
+            return true;
+        return false;
+    }
+
+    public void FacePosition(Vector3 position)
+    {
+        if (transform.position.x < position.x)
+            SetAnimationDirection(MTRPlayerDirection.RIGHT);
+        else if (transform.position.x > position.x)
+            SetAnimationDirection(MTRPlayerDirection.LEFT);
     }
 }

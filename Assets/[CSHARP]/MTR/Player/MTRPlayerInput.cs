@@ -24,18 +24,21 @@ using EasyButtons.Editor;
 public class MTRPlayerInput : MonoBehaviour
 {
     bool _sceneListenerInitialized = false;
-    [SerializeField, ShowOnly] bool _inputEnabled;
+    [SerializeField, ShowOnly] bool _allInputEnabled;
+    [SerializeField, ShowOnly] bool _movementInputEnabled;
+    [SerializeField, ShowOnly] bool _interactInputEnabled;
+
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
 
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
-    public bool IsInputEnabled => _inputEnabled;
+    public bool IsAllInputEnabled => _allInputEnabled;
 
 
     // =================================== [[ PROPERTIES ]] =================================== >>
     void Awake()
     {
-        SetInputEnabled(false);
+        SetAllInputsEnabled(false);
     }
 
 
@@ -57,10 +60,11 @@ public class MTRPlayerInput : MonoBehaviour
         switch (state)
         {
             case MTRSceneState.PLAY_MODE:
-                SetInputEnabled(true);
+                SetAllInputsEnabled(true);
+                Interactor.SetEnabled(true);
                 break;
             default:
-                SetInputEnabled(false);
+                SetAllInputsEnabled(false);
                 break;
         }
     }
@@ -71,28 +75,53 @@ public class MTRPlayerInput : MonoBehaviour
 
     public void OnDestroy()
     {
-        SetInputEnabled(false);
+        MTRSceneManager.Instance.Controller.StateMachine.OnStateChanged -= OnSceneStateChanged;
+        SetAllInputsEnabled(false);
     }
 
     [Button]
-    public void SetInputEnabled(bool enable)
+    public void SetAllInputsEnabled(bool enable)
     {
         if (enable)
         {
-            _inputEnabled = true;
-            UniversalInputManager.OnMoveInput += Controller.HandleMoveInput;
-            UniversalInputManager.OnMoveInputCanceled += Controller.HandleOnMoveInputCanceled;
-            UniversalInputManager.OnPrimaryInteract += HandlePrimaryInteract;
-            //UniversalInputManager.OnSecondaryInteract += ToggleSynthesis;
+            _allInputEnabled = true;
+            if (!_movementInputEnabled)
+                SetMovementInputEnabled(true);
+            if (!_interactInputEnabled)
+                SetInteractInputEnabled(true);
         }
         else
         {
-            _inputEnabled = false;
+            _allInputEnabled = false;
+            if (_movementInputEnabled)
+                SetMovementInputEnabled(false);
+            if (_interactInputEnabled)
+                SetInteractInputEnabled(false);
+        }
+    }
+
+    public void SetMovementInputEnabled(bool enable)
+    {
+        if (enable && !_movementInputEnabled)
+        {
+            UniversalInputManager.OnMoveInput += Controller.HandleMoveInput;
+            UniversalInputManager.OnMoveInputCanceled += Controller.HandleOnMoveInputCanceled;
+        }
+        else if (!enable && _movementInputEnabled)
+        {
             UniversalInputManager.OnMoveInput -= Controller.HandleMoveInput;
             UniversalInputManager.OnMoveInputCanceled -= Controller.HandleOnMoveInputCanceled;
-            UniversalInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
-            //UniversalInputManager.OnSecondaryInteract -= ToggleSynthesis;
         }
+        _movementInputEnabled = enable;
+    }
+
+    public void SetInteractInputEnabled(bool enable)
+    {
+        if (enable && !_interactInputEnabled)
+            UniversalInputManager.OnPrimaryInteract += HandlePrimaryInteract;
+        else if (!enable && _interactInputEnabled)
+            UniversalInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
+        _interactInputEnabled = enable;
     }
 
     void HandlePrimaryInteract()

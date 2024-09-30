@@ -304,8 +304,10 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         //Debug.Log($"{PREFIX} {Name} :: Preload", this);
 
-        if (_destinations == null)
-            _destinations = new MTRInteractableDestinationLibrary();
+        if (_destinations == null || _destinations.Parent == null)
+            _destinations = new MTRInteractableDestinationLibrary(this);
+        if (_destinations.Count == 0)
+            _destinations.AddDefaultItem();
 
         // << RESET >> ------------------------------------
         Reset();
@@ -419,22 +421,26 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     }
     #endregion
 
-    IEnumerator AcceptInteractionRoutine(MTRPlayerInteractor interactor, bool force = false)
+    IEnumerator AcceptInteractionRoutine(MTRPlayerInteractor player, bool force = false)
     {
-
-        bool result = _destinations.TryAddOccupant(interactor, out float destinationX);
-        if (!result)
+        // << CONFIRM PLAYER OCCUPIES DESTINATION >> ------------------------------------
+        bool playerIsOccupant = _destinations.IsOccupant(player);
+        if (!playerIsOccupant)
         {
-            Debug.Log($"{PREFIX} {Name} :: No Available Destinations", this);
-            yield break;
-        }
+            bool result = _destinations.TryAddOccupant(player, out float destinationX);
+            if (!result)
+            {
+                Debug.Log($"{PREFIX} {Name} :: No Available Destinations", this);
+                yield break;
+            }
 
-        Debug.Log($"{PREFIX} {Name} :: Force Player to walk to destination", this);
-        interactor.Controller.StartWalkOverride(destinationX);
-        yield return new WaitUntil(() => interactor.Controller.CurrentState == MTRPlayerState.INTERACTION);
+            Debug.Log($"{PREFIX} {Name} :: Force Player to walk to destination", this);
+            player.Controller.StartWalkOverride(destinationX);
+        }
+        yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
 
         // << ACCEPT INTERACTION >> ------------------------------------
-        Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {interactor}", this);
+        Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {player}", this);
         switch (CurrentState)
         {
             case State.START:
@@ -443,6 +449,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                 break;
             case State.COMPLETE:
             case State.DISABLED:
+                _destinations.TryRemoveOccupant(player);
                 break;
             default:
                 StateMachine.GoToState(State.START);
@@ -480,7 +487,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     private void OnDrawGizmosSelected()
     {
-        _destinations.DrawInEditor(this.transform);
+        _destinations.DrawInEditor();
 
     }
 

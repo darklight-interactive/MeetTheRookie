@@ -87,8 +87,10 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
-                Debug.Log($"Initialize State Enter");
                 stateMachine.GoToState(MTRSceneState.ENTER);
+
+                if (cameraController.Rig.FollowTarget == null)
+                    cameraController.SetPlayerAsFollowTarget();
             }
             public override void Execute()
             {
@@ -114,7 +116,7 @@ public class MTRSceneController : MonoBehaviour
             {
                 cameraController.SetPlayerAsFollowTarget();
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }

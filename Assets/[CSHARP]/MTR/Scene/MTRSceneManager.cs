@@ -64,6 +64,8 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 
         // << LOAD SCENE >>
         LoadScene(data.Name);
+
+        Controller.StateMachine.GoToState(MTRSceneState.INITIALIZE);
         return true;
     }
 
@@ -148,12 +150,6 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
         if (_sceneData == null)
             return new MTRSceneData();
         return _sceneData.GetActiveSceneData();
-    }
-
-    public void LoadSceneByKnot(string knot)
-    {
-        MTRSceneData data = GetSceneDataByKnot(knot);
-        LoadScene(data.Name);
     }
 }
 

@@ -9,14 +9,17 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
 {
     // The characters currently occupying the destination
     Dictionary<string, MTRCharacterInteractable> _occupants = new Dictionary<string, MTRCharacterInteractable>();
+    MTRInteractable _interactableParent;
 
-    public MTRInteractableDestinationLibrary()
+    public MTRInteractable Parent => _interactableParent;
+
+    public MTRInteractableDestinationLibrary(MTRInteractable interactableParent)
     {
+        _interactableParent = interactableParent;
+
         ReadOnlyKey = false;
         ReadOnlyValue = false;
         Reset();
-
-        Add("DestinationA", 0.5f);
     }
 
     void RefreshOccupantDestinations()
@@ -49,7 +52,7 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
     public bool TryAddOccupant(MTRCharacterInteractable character, out float destinationX)
     {
         RefreshOccupantDestinations();
-        destinationX = character.transform.position.x;
+        destinationX = _interactableParent.transform.position.x;
 
         // Find the first available destination
         foreach (KeyValuePair<string, float> dest in this)
@@ -60,11 +63,19 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
                 bool result = TryGetValue(dest.Key, out destinationX);
                 if (result)
                 {
-                    CalculateDestinationX(character, dest.Key, out destinationX);
+                    CalculateDestinationX(dest.Key, out destinationX);
                     Debug.Log($"Character {character.name} added to destination {dest.Key} at {destinationX}");
+                }
+                else
+                {
+                    Debug.Log($"Failed to get destination {dest.Key}");
                 }
 
                 return result;
+            }
+            else
+            {
+                Debug.Log($"Destination {dest.Key} is occupied by {_occupants[dest.Key].name}");
             }
         }
         return false;
@@ -85,10 +96,22 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
         return false;
     }
 
-    void CalculateDestinationX(MTRInteractable origin, string destinationKey, out float destinationX)
+    public bool IsOccupant(MTRCharacterInteractable character)
+    {
+        return _occupants.ContainsValue(character);
+    }
+
+    void CalculateDestinationX(string destinationKey, out float destinationX)
     {
         TryGetValue(destinationKey, out float xValue);
-        destinationX = origin.transform.position.x + xValue;
+        destinationX = _interactableParent.transform.position.x + xValue;
+    }
+
+    void CalculateDestinationPoint(string destinationKey, out Vector3 destinationPoint)
+    {
+        CalculateDestinationX(destinationKey, out float destinationX);
+        destinationPoint = _interactableParent.transform.position;
+        destinationPoint.x = destinationX;
     }
 
     public override void AddDefaultItem()
@@ -96,17 +119,17 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
         InternalAdd("Destination" + Count, 0.5f);
     }
 
-    public void DrawInEditor(Transform origin)
+    public void DrawInEditor()
     {
         int i = 0;
         Color[] colors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow };
         foreach (KeyValuePair<string, float> point in this)
         {
             Gizmos.color = colors[i % colors.Length];
-            Vector3 pointPos = new Vector3(origin.position.x + point.Value, origin.position.y, origin.position.z);
+            CalculateDestinationPoint(point.Key, out Vector3 pointPos);
             Gizmos.DrawSphere(pointPos, 0.025f);
             Gizmos.DrawLine(pointPos + (Vector3.down * 5), pointPos + (Vector3.up * 5));
-            CustomGizmos.DrawLabel(point.Key, pointPos + (Vector3.up * 0.1f), new GUIStyle()
+            CustomGizmos.DrawLabel(point.Key + "\n" + pointPos.x, pointPos + (Vector3.up * 0.1f), new GUIStyle()
             {
                 alignment = TextAnchor.MiddleCenter,
                 fontSize = 12,

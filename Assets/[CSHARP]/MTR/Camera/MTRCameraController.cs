@@ -12,6 +12,7 @@ public class MTRCameraController : MonoBehaviour
     List<string> _speakerList => InkyStoryManager.SpeakerList;
     public MTRCameraRig Rig => GetComponent<MTRCameraRig>();
 
+
     [Dropdown("_speakerList"), SerializeField, ShowOnly] public string currentSpeaker;
 
     // Start is called before the first frame update

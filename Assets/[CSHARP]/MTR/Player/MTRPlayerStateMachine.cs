@@ -3,6 +3,7 @@ using Darklight.UnityExt.FMODExt;
 using Darklight.UnityExt.Behaviour;
 using FMODUnity;
 using UnityEngine;
+using System.Collections;
 
 public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
@@ -20,7 +21,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             {MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL)},
             {MTRPlayerState.IDLE, new BasePlayerState(this, MTRPlayerState.IDLE)},
             {MTRPlayerState.WALK, new BasePlayerState(this, MTRPlayerState.WALK)},
-            {MTRPlayerState.INTERACTION, new BasePlayerState(this, MTRPlayerState.INTERACTION)},
+            {MTRPlayerState.INTERACTION, new InteractionState(this)},
             {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)},
             {MTRPlayerState.WALK_OVERRIDE, new WalkOverrideState(this)}};
     }
@@ -30,6 +31,8 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         bool result = base.GoToState(stateType);
         if (result)
         {
+            if (stateType == MTRPlayerState.WALK_OVERRIDE)
+                stateType = MTRPlayerState.WALK;
             _animator.PlayStateAnimation(stateType);
         }
 
@@ -45,6 +48,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         protected MTRPlayerController controller;
         protected MTRPlayerInput input => controller.Input;
         protected PlayerAnimator animator => controller.Animator;
+        protected MTRPlayerInteractor interactor => controller.Interactor;
         public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
         {
             this.stateMachine = stateMachine;
@@ -56,25 +60,78 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
     }
 
+    public class InteractionState : BasePlayerState
+    {
+        MTRInteractable targetInteractable => interactor.TargetInteractable as MTRInteractable;
+        public InteractionState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.INTERACTION) { }
+
+        public override void Enter()
+        {
+            input.SetMovementInputEnabled(false);
+            input.SetInteractInputEnabled(true);
+            interactor.SetEnabled(false);
+        }
+
+        public override void Execute()
+        {
+            if (targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
+            {
+                input.SetAllInputsEnabled(true);
+                stateMachine.GoToState(MTRPlayerState.IDLE);
+            }
+        }
+
+        public override void Exit()
+        {
+            interactor.SetEnabled(true);
+        }
+    }
+
     public class WalkOverrideState : BasePlayerState
-    {        //private CurrentDestinationPoint _currentDestinationPoint;
+    {
+        bool _isAtMoveTarget = false;
         public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.WALK_OVERRIDE) { }
 
         public override void Enter()
         {
-            if (input.IsInputEnabled == true)
+            _isAtMoveTarget = false;
+            if (input.IsAllInputEnabled == true)
             {
-                input.SetInputEnabled(false);
+                input.SetAllInputsEnabled(false);
+                interactor.SetEnabled(false);
             }
         }
 
         public override void Execute()
         {
-            if (controller.IsAtMoveTarget())
+            if (controller.IsAtMoveTarget() && !_isAtMoveTarget)
             {
+                _isAtMoveTarget = true;
                 controller.OverrideResetMoveDirection();
-                stateMachine.GoToState(MTRPlayerState.INTERACTION);
+                controller.StartCoroutine(WaitAndGoToInteractionState());
             }
+        }
+
+        public override void Exit()
+        {
+
+        }
+
+        IEnumerator WaitAndGoToInteractionState()
+        {
+            Vector3 targetPos = interactor.TargetInteractable.transform.position;
+            stateMachine.GoToState(MTRPlayerState.IDLE); // Go to idle state for animation
+
+            // Wait for the player to face the target position
+            if (!controller.IsFacingPosition(targetPos))
+            {
+                yield return new WaitForSeconds(0.15f);
+                controller.FacePosition(targetPos);
+            }
+
+            // Delay before going to interaction state
+            yield return new WaitForSeconds(0.5f);
+            stateMachine.GoToState(MTRPlayerState.INTERACTION);
         }
     }
 

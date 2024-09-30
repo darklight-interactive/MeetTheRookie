@@ -135,6 +135,8 @@ namespace Darklight.UnityExt.Library
 
         void EnsureRequiredKeys()
         {
+            if (_requiredKeys == null || _requiredKeys.Count == 0)
+                return;
             foreach (TKey key in _requiredKeys)
             {
                 if (!ContainsKey(key))

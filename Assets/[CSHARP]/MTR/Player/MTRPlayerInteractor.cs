@@ -21,6 +21,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 {
     const float INTERACTOR_X_OFFSET = 0.35f;
 
+    [SerializeField, ShowOnly] bool _enabled = false;
+
     [Header("Interactor Settings")]
     [SerializeField] LayerMask _layerMask;
     [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
@@ -75,6 +77,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     #region ======== <METHODS> (( UNITY RUNTIME )) ================================== >>>>
     void OnDrawGizmosSelected()
     {
+        if (!_enabled) return;
+
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
         foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
@@ -115,8 +119,9 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public override void Refresh()
     {
-        base.Refresh();
+        if (!_enabled) return;
 
+        base.Refresh();
         RefreshNearbyInteractables();
 
         // << UPDATE TARGET >> --------
@@ -273,18 +278,23 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     }
     #endregion
 
-    /*
-    public override void Preload()
+    void OnSceneStateChanged(MTRSceneState sceneState)
     {
-        if (Data == null)
-            data = new InteractableData(this, "Lupe", "Player");
-        else
-            BaseInternalData.Preload(this, "Lupe", "Player");
-
-        // Set the layer mask to the interactor
-        LayerMask = InteractionSystem.Settings.GetCombinedNPCAndInteractableLayer();
+        switch (sceneState)
+        {
+            case MTRSceneState.PLAY_MODE:
+                SetEnabled(true);
+                break;
+            default:
+                SetEnabled(false);
+                break;
+        }
     }
-    */
+
+    public void SetEnabled(bool enabled)
+    {
+        _enabled = enabled;
+    }
 
     private IEnumerator MoveToPosition()
     {
