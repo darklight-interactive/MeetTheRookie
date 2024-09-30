@@ -24,6 +24,7 @@ public enum PlayerFacing { RIGHT, LEFT }
 public class MTRPlayerInputController : MonoBehaviour
 {
     SceneBounds _sceneBounds;
+    PlayerStateMachine _stateMachine;
     float _speed = 1f;
 
     [Header("Settings")]
@@ -36,28 +37,52 @@ public class MTRPlayerInputController : MonoBehaviour
     // =================================== [[ PROPERTIES ]] =================================== >>
     public MTRPlayerInteractor Interactor { get; private set; }
     public PlayerAnimator Animator { get; private set; }
-    public PlayerStateMachine StateMachine { get; private set; }
-    public PlayerState CurrentState => StateMachine.CurrentState;
+    public PlayerStateMachine StateMachine
+    {
+        get
+        {
+            if (_stateMachine == null)
+                _stateMachine = new PlayerStateMachine(this);
+            return _stateMachine;
+        }
+    }
+    public PlayerState CurrentState
+    {
+        get
+        {
+            try
+            {
+                return StateMachine.CurrentState;
+            }
+            catch (Exception e)
+            {
+                return PlayerState.NULL;
+            }
+        }
+    }
     public PlayerFacing Facing => _facing;
 
     public void Awake()
     {
+        MTRSceneManager.Controller.StateMachine.OnStateChanged += OnSceneStateChanged;
+
+
         Interactor = GetComponent<MTRPlayerInteractor>();
         Animator = GetComponent<PlayerAnimator>();
         Animator.SetFacing(SpriteDirection.RIGHT);
+    }
 
-        WalkOverride walkOverride = new WalkOverride(StateMachine, PlayerState.WALKOVERRIDE);
-
-        StateMachine = new PlayerStateMachine(new Dictionary<PlayerState, FiniteState<PlayerState>> {
-            {PlayerState.NULL, new FinitePlayerState(StateMachine, PlayerState.NULL)},
-            {PlayerState.IDLE, new FinitePlayerState(StateMachine, PlayerState.IDLE)},
-            {PlayerState.WALK, new FinitePlayerState(StateMachine, PlayerState.WALK)},
-            {PlayerState.INTERACTION, new FinitePlayerState(StateMachine, PlayerState.INTERACTION)},
-            {PlayerState.HIDE, new FinitePlayerState(StateMachine, PlayerState.HIDE)},
-            {PlayerState.WALKOVERRIDE, walkOverride}
-        }, PlayerState.IDLE, this);
-
-        walkOverride._stateMachine = StateMachine;
+    void OnSceneStateChanged(MTRSceneState state)
+    {
+        switch (state)
+        {
+            case MTRSceneState.PLAY_MODE:
+                SetInputEnabled(true);
+                break;
+            default:
+                SetInputEnabled(false);
+                break;
+        }
     }
 
     void Start()
@@ -171,7 +196,10 @@ public class MTRPlayerInputController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        /*
+        if (StateMachine == null) return;
         if (StateMachine.CurrentState == PlayerState.INTERACTION) return;
+        */
 
         // Get Hidden Object Component
         Hideable_Object hiddenObject = other.GetComponent<Hideable_Object>();
@@ -212,87 +240,6 @@ public class MTRPlayerInputController : MonoBehaviour
     }
 
 
-    #region  [[ STATE MACHINE ]] ======================================================== >>
-
-    public class FinitePlayerState : FiniteState<PlayerState>
-    {
-        /// <param name="args">
-        ///   args[0] = PlayerController ( playerController )
-        public FinitePlayerState(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType) { }
-
-        public override void Enter()
-        {
-            // Debug.Log($"Entering State: {stateType}");
-        }
-
-        public override void Exit()
-        {
-            // Debug.Log($"Exiting State: {stateType}");
-        }
-
-        public override void Execute()
-        {
-            // Debug.Log($"Executing State: {stateType}");
-        }
-    }
-
-    public class WalkOverride : FinitePlayerState
-    {
-        public PlayerStateMachine _stateMachine;
-        private float _walkDestinationX;
-        //private CurrentDestinationPoint _currentDestinationPoint;
-
-        public WalkOverride(PlayerStateMachine stateMachine, PlayerState stateType) : base(stateMachine, stateType)
-        {
-            _stateMachine = stateMachine;
-            //_currentDestinationPoint = destination;
-        }
-
-        public override void Enter()
-        {
-            // Debug.Log($"Entering State: WALK");
-        }
-
-        public override void Exit()
-        {
-            // Debug.Log($"Exiting State: {stateType}");
-        }
-
-        public override void Execute()
-        {
-            float _walkDirection = 0;
-            float _walkSpeed = 1;
-            Transform transform = _stateMachine._controller.transform;
-            //_walkDestinationX = _currentDestinationPoint.destinationPoint.x;
-
-            if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
-            {
-                _stateMachine.GoToState(PlayerState.IDLE);
-                return;
-            }
-
-            if (transform.position.x > _walkDestinationX)
-            {
-                _walkDirection = -1;
-            }
-            else
-            {
-                _walkDirection = 1;
-            }
-
-            float movement = _walkDirection * _walkSpeed;
-            float targetX = transform.position.x + movement;
-
-            // move the character
-            transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
-
-            // Update the Animation
-            //_stateMachine._animator.FrameAnimationPlayer.FlipSprite(new Vector2(_walkDirection, 0));
-        }
-
-    }
-
-    #endregion
 
 
     #region Synthesis Management

@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 5054830795790530424}
   - component: {fileID: 2927568867421027592}
   - component: {fileID: 5155693147541508910}
+  - component: {fileID: 6916120111172882240}
   - component: {fileID: 5342227784319069846}
   - component: {fileID: 7427744868763189831}
   - component: {fileID: 2433518505442435673}
@@ -271,36 +272,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildScenePaths:
-  - Assets/Scenes/Build/MAIN_MENU.unity
-  - Assets/Scenes/Build/SCENE_1_0 - Intro.unity
-  - Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
-  - Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
-  - Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
-  - Assets/Scenes/Build/SCENE_1_4 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_3_1 - The Winery Ext..unity
-  - Assets/Scenes/Build/SCENE_3_2 - The Winery Int..unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street_AFTERNOON.unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street_DUSK.unity
-  - Assets/Scenes/Build/SCENE_4_1 - Main Street_GOLDENHOUR.unity
-  - Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
-  - Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
-  - Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
-  - Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-  - Assets/Scenes/Build/SCENE_5_2 - The Winery Ext_EVENING.unity
-  - Assets/Scenes/Build/SCENE_5_3 - The Winery Int_EVENING.unity
-  - Assets/Scenes/Build/SCENE_5_4 - The Winery Office Interior_EVENING.unity
-  - Assets/Scenes/Build/SCENE_6_0 - Intro.unity
-  - Assets/Scenes/Build/SCENE_6_1 - The Gas Station Ext.unity
-  - Assets/Scenes/Build/SCENE_6_2 - The Gas Station Int.unity
-  - Assets/Scenes/Build/SCENE_6_3 - The Gas Station Int Bathroom.unity
-  - Assets/Scenes/Build/SCENE_6_4 - The Gas Station Int.unity
-  - Assets/Scenes/Build/SCENE_6_5 - The Gas Station Ext..unity
-  - Assets/Scenes/Build/SCENE_7_0 - The Precinct - Dating Sim.unity
-  - Assets/Scenes/Build/SYNTHESIS_DEMO.unity
   _sceneData: {fileID: 11400000, guid: 61a7c3c5271cb4553b3aafe08a2631e1, type: 2}
+--- !u!114 &6916120111172882240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61b33c77ad81984f83d794bc57b829e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentState: 0
 --- !u!114 &5342227784319069846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,8 +414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 1522, y: 856}
-  _screenAspectRatio: 1.7780374
+  _screenSize: {x: 1394, y: 784}
+  _screenAspectRatio: 1.7780613
   _characterColors: {fileID: 0}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
@@ -527,9 +512,6 @@ MonoBehaviour:
   _dialogueInteractionHandlerPrefab: {fileID: 6598154582557312995, guid: dd9317cca53f3be4b974fb84310a29a8, type: 3}
   _choiceInteractionHandlerPrefab: {fileID: 6234556491379339264, guid: 817399ed41e2f334ea42f9cabe598f39, type: 3}
   _interactableRegistry:
-    _items:
-    - _id: 0
-      _key: Speaker.Lupe
-      _value: {fileID: 0}
+    _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1

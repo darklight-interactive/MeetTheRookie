@@ -22,9 +22,16 @@ using UnityEditor;
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
+[RequireComponent(typeof(MTRSceneController))]
 public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
 {
+    public static MTRSceneController Controller => Instance.GetComponent<MTRSceneController>();
+    public static MTRSceneController.InternalStateMachine StateMachine => Controller.StateMachine;
+    public static MTRSceneState CurrentState => Controller.CurrentState;
+
     [SerializeField, Expandable] MTRSceneDataObject _sceneData;
+
+
 
     public override void Initialize()
     {
@@ -98,7 +105,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>
     /// </summary>
     /// <param name="args">0 : The name of the sceneKnot</param>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    object ChangeGameScene(string knotName)
+    bool ChangeGameScene(string knotName)
     {
         MTRSceneData data = _sceneData.GetSceneDataByKnot(knotName);
 

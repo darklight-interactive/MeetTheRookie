@@ -1,4 +1,6 @@
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
+using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,124 +9,117 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
+public enum MTRSceneState { INITIALIZE, ENTER, PLAY_MODE, CINEMA_MODE, PAUSE_MODE, SYNTHESIS_MODE, EXIT, LOADING, CHOICEMODE }
+
+[RequireComponent(typeof(MTRSceneManager))]
 public class MTRSceneController : MonoBehaviour
 {
-    public enum SceneState { INITIALIZE, ENTER, PLAYMODE, CINEMAMODE, PAUSEMODE, SYNTHESISMODE, EXIT, LOADING, CHOICEMODE }
+    InternalStateMachine _stateMachine = new InternalStateMachine();
+    public InternalStateMachine StateMachine => _stateMachine;
 
-    [NonSerialized] public SceneStateMachine stateMachine;
-    public SceneState startingState = SceneState.INITIALIZE;
-    public SceneState currentState;
+    [SerializeField, ShowOnly] MTRSceneState _currentState;
+
+    public MTRSceneState CurrentState => _currentState;
 
     void Start()
     {
-        stateMachine = new SceneStateMachine();
-        stateMachine.GoToState(startingState);
+        _stateMachine.OnStateChanged += OnSceneStateChanged;
+        _stateMachine.GoToState(MTRSceneState.PLAY_MODE);
     }
 
     void Update()
     {
-        stateMachine.Step();
-        currentState = stateMachine.CurrentState;
+        _stateMachine.Step();
+    }
+
+    void OnSceneStateChanged(MTRSceneState state)
+    {
+        Debug.Log($"Scene State Changed: {state}");
+        _currentState = state;
     }
 
     #region ( Scene State Machine ) ================================================================
-    public class SceneStateMachine : FiniteStateMachine<SceneState>
+    public class InternalStateMachine : FiniteStateMachine<MTRSceneState>
     {
         MTRSceneController _controller;
 
-        public SceneStateMachine()
+        public InternalStateMachine()
         {
-            possibleStates = new Dictionary<SceneState, FiniteState<SceneState>>()
+            possibleStates = new Dictionary<MTRSceneState, FiniteState<MTRSceneState>>()
             {
-                { SceneState.INITIALIZE, new InitializeState(this, SceneState.INITIALIZE) },
-                { SceneState.ENTER, new EnterState(this, SceneState.ENTER) },
-                { SceneState.PLAYMODE, new PlayModeState(this, SceneState.PLAYMODE) },
-                { SceneState.CINEMAMODE, new CinemaModeState(this, SceneState.CINEMAMODE) },
-                { SceneState.PAUSEMODE, new PauseModeState(this, SceneState.PAUSEMODE) },
-                { SceneState.SYNTHESISMODE, new SynthesisModeState(this, SceneState.SYNTHESISMODE) },
-                { SceneState.EXIT, new ExitState(this, SceneState.EXIT) },
-                { SceneState.LOADING, new LoadingState(this, SceneState.LOADING) },
-                { SceneState.CHOICEMODE, new ChoiceModeState(this, SceneState.CHOICEMODE) },
+                { MTRSceneState.INITIALIZE, new InitializeState(this, MTRSceneState.INITIALIZE) },
+                { MTRSceneState.ENTER, new EnterState(this, MTRSceneState.ENTER) },
+                { MTRSceneState.PLAY_MODE, new PlayModeState(this, MTRSceneState.PLAY_MODE) },
+                { MTRSceneState.CINEMA_MODE, new CinemaModeState(this, MTRSceneState.CINEMA_MODE) },
+                { MTRSceneState.PAUSE_MODE, new PauseModeState(this, MTRSceneState.PAUSE_MODE) },
+                { MTRSceneState.SYNTHESIS_MODE, new SynthesisModeState(this, MTRSceneState.SYNTHESIS_MODE) },
+                { MTRSceneState.EXIT, new ExitState(this, MTRSceneState.EXIT) },
+                { MTRSceneState.LOADING, new LoadingState(this, MTRSceneState.LOADING) },
+                { MTRSceneState.CHOICEMODE, new ChoiceModeState(this, MTRSceneState.CHOICEMODE) },
             };
+            initialState = MTRSceneState.INITIALIZE;
         }
 
         #region ================== [ BASE STATE ] ==================
-        public abstract class BaseState : FiniteState<SceneState>
+        public abstract class BaseState : FiniteState<MTRSceneState>
         {
-            public BaseState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            protected InternalStateMachine stateMachine;
+            public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
+            {
+                this.stateMachine = stateMachine;
+            }
         }
         #endregion
 
         #region ================== [ INITIALIZE STATE ] ==================
         public class InitializeState : BaseState
         {
-            public InitializeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public InitializeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
-                Debug.Log("Initialize State Enter");
+                Debug.Log($"Initialize State Enter");
+                stateMachine.GoToState(MTRSceneState.ENTER);
             }
-
-            public override void Exit()
-            {
-                Debug.Log("Initialize State Exit");
-            }
-
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.ENTER);
+                stateMachine.GoToState(MTRSceneState.ENTER);
             }
+            public override void Exit() { }
         }
         #endregion
 
         #region ================== [ ENTER STATE ] ==================
         public class EnterState : BaseState
         {
-            public EnterState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public EnterState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
-                Debug.Log("Enter State Enter");
+                stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
-
-            public override void Exit()
-            {
-                Debug.Log("Enter State Exit");
-            }
-
-            public override void Execute()
-            {
-                StateMachine.GoToState(SceneState.PLAYMODE);
-            }
+            public override void Execute() { }
+            public override void Exit() { }
         }
         #endregion
 
         #region ================== [ PLAY MODE STATE ] ==================
         public class PlayModeState : BaseState
         {
-            public PlayModeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
-
+            public PlayModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
             public override void Enter()
             {
-                Debug.Log("Play Mode State Enter");
-            }
 
-            public override void Exit()
-            {
-                Debug.Log("Play Mode State Exit");
             }
-
-            public override void Execute()
-            {
-                StateMachine.GoToState(SceneState.CINEMAMODE);
-            }
+            public override void Execute() { }
+            public override void Exit() { }
         }
         #endregion
 
         #region ================== [ CINEMA MODE STATE ] ==================
         public class CinemaModeState : BaseState
         {
-            public CinemaModeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public CinemaModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -138,7 +133,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.PAUSEMODE);
+                StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
             }
         }
         #endregion
@@ -146,7 +141,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ PAUSE MODE STATE ] ==================
         public class PauseModeState : BaseState
         {
-            public PauseModeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public PauseModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -160,7 +155,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.SYNTHESISMODE);
+                StateMachine.GoToState(MTRSceneState.SYNTHESIS_MODE);
             }
         }
         #endregion
@@ -168,7 +163,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ SYNTHESIS MODE STATE ] ==================
         public class SynthesisModeState : BaseState
         {
-            public SynthesisModeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public SynthesisModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -182,7 +177,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.EXIT);
+                StateMachine.GoToState(MTRSceneState.EXIT);
             }
         }
         #endregion
@@ -190,7 +185,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ EXIT STATE ] ==================
         public class ExitState : BaseState
         {
-            public ExitState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public ExitState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -204,7 +199,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.LOADING);
+                StateMachine.GoToState(MTRSceneState.LOADING);
             }
         }
         #endregion
@@ -212,7 +207,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ LOADING STATE ] ==================
         public class LoadingState : BaseState
         {
-            public LoadingState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -226,7 +221,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.CHOICEMODE);
+                StateMachine.GoToState(MTRSceneState.CHOICEMODE);
             }
         }
         #endregion
@@ -234,7 +229,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ CHOICE MODE STATE ] ==================
         public class ChoiceModeState : BaseState
         {
-            public ChoiceModeState(SceneStateMachine stateMachine, SceneState stateType) : base(stateMachine, stateType) { }
+            public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -248,7 +243,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Execute()
             {
-                StateMachine.GoToState(SceneState.INITIALIZE);
+                StateMachine.GoToState(MTRSceneState.INITIALIZE);
             }
         }
         #endregion
