@@ -25,9 +25,11 @@ public class TargetInteractionReciever : InteractionReciever
 
     public override InteractionType InteractionType => InteractionType.TARGET;
 
-    public void ShowInteractIcon()
+    public void ShowInteractIcon(bool forceInEditor = false)
     {
         //Debug.Log($"{gameObject.name}: ShowInteractIcon called.", this);
+        if (!forceInEditor && !Application.isPlaying)
+            return;
 
         // << Get the best cell available >>
         Cell2D bestCell = gridSpawner.GetBestCell();
@@ -48,7 +50,7 @@ public class TargetInteractionReciever : InteractionReciever
         {
             // Create the UXML RenderTextureObject Icon
             _interactIconObject = UXML_Utility.CreateUXMLRenderTextureObject(_interactIconPreset, material, renderTexture);
-            _interactIconObject.document.panelSettings = _interactIconPreset.panelSettings;
+            //_interactIconObject.document.panelSettings = _interactIconPreset.panelSettings;
 
             Cell2D.SpawnerComponent spawnerComponent = bestCell.GetComponent<Cell2D.SpawnerComponent>();
             spawnerComponent.AttachTransformToCell(_interactIconObject.transform);

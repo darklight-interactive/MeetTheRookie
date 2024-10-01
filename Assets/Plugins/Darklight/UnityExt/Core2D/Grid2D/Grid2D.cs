@@ -52,7 +52,6 @@ namespace Darklight.UnityExt.Core2D
             }
             protected set { _config = value; }
         }
-
         public Dictionary<Vector2Int, Cell2D> CellMap
         {
             get
@@ -396,7 +395,6 @@ namespace Darklight.UnityExt.Core2D
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.Space();
 
-
                 // < DEFAULT INSPECTOR > ------------------ >>
                 CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
 
@@ -423,9 +421,7 @@ namespace Darklight.UnityExt.Core2D
                     EditorUtility.SetDirty(target);
                     //Repaint();
                     _script.Refresh();
-
                 }
-
             }
 
             void OnSceneGUI()

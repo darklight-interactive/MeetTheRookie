@@ -15,7 +15,7 @@ namespace Darklight.UnityExt.Core2D
         public class WeightComponent : BaseComponent, IWeightedData
         {
             const int MIN_WEIGHT = 0;
-            const int MAX_WEIGHT = 10;
+            const int MAX_WEIGHT = 100;
 
             [SerializeField, ShowOnly] int _weight;
             public int Weight => _weight;
@@ -40,17 +40,6 @@ namespace Darklight.UnityExt.Core2D
                 // << DRAW RECT >>
                 Vector2 smallerDimensions = dimensions * 0.75f;
                 CustomGizmos.DrawSolidRect(position, smallerDimensions, normal, color);
-
-                // << DRAW LABEL >>
-                GUIStyle style = new GUIStyle()
-                {
-                    fontSize = 12,
-                    normal = new GUIStyleState() { textColor = GetInverseColor() },
-                    alignment = TextAnchor.MiddleLeft
-                };
-                CustomGizmos.DrawLabel($"Weight: {_weight}", position, style);
-
-
             }
             public override void DrawSelectedGizmos() { }
 

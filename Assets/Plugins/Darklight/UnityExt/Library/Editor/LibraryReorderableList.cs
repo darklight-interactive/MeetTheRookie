@@ -90,10 +90,36 @@ namespace Darklight.UnityExt.Library.Editor
             Rect keyRect = CalculatePropertyRect(rect, 1, columnWidths);
             Rect valueRect = CalculatePropertyRect(rect, 2, columnWidths);
 
+            // Begin change check for this element
+            EditorGUI.BeginChangeCheck();
+
             EditorGUI.LabelField(idRect, idProp.intValue.ToString(), CENTERED_LABEL_STYLE);
             DrawElementProperty(keyRect, keyProp, _readOnlyKeyProperty.boolValue);
             DrawElementProperty(valueRect, valueProp, _readOnlyValueProperty.boolValue);
+
+            // End change check and apply changes
+            if (EditorGUI.EndChangeCheck())
+            {
+                ApplyChanges();
+                Debug.Log("LibraryReorderableList: Element modified");
+            }
         }
+
+        public void ApplyChanges()
+        {
+            // Ensure the modified properties are serialized
+            _itemsProperty.serializedObject.ApplyModifiedProperties();
+
+            // Mark the target object dirty to ensure the changes are saved
+            EditorUtility.SetDirty(_itemsProperty.serializedObject.targetObject);
+
+            // Force the editor to repaint both the inspector and the scene
+            _itemsProperty.serializedObject.UpdateIfRequiredOrScript();
+            _itemsProperty.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            EditorApplication.QueuePlayerLoopUpdate(); // Updates Scene view if necessary
+            EditorWindow.focusedWindow?.Repaint();
+        }
+
 
         private void DrawElementBackground(Rect rect, int index, bool isActive, bool isFocused)
         {
@@ -134,11 +160,11 @@ namespace Darklight.UnityExt.Library.Editor
 
             if (valueProperty.propertyType == SerializedPropertyType.Integer)
             {
-                valueProperty.intValue = EditorGUI.IntSlider(rect, valueProperty.intValue, (int)0, (int)100);
+                valueProperty.intValue = EditorGUI.IntField(rect, valueProperty.intValue);
             }
             else if (valueProperty.propertyType == SerializedPropertyType.Float)
             {
-                valueProperty.floatValue = EditorGUI.Slider(rect, valueProperty.floatValue, 0f, 100f);
+                valueProperty.floatValue = EditorGUI.FloatField(rect, valueProperty.floatValue);
             }
             else if (valueProperty.propertyType == SerializedPropertyType.Vector2)
             {

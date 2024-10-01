@@ -1,5 +1,6 @@
 using Darklight.UnityExt.Behaviour.Interface;
 using Darklight.UnityExt.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Darklight.UnityExt.Core2D
@@ -67,6 +68,12 @@ namespace Darklight.UnityExt.Core2D
 
                 Color faintWhite = new Color(1, 1, 1, 0.5f);
                 CustomGizmos.DrawWireRect(position, dimensions, normal, faintWhite);
+
+                Vector3 labelPos = Spatial2D.GetAnchorPointPosition(position, dimensions, Spatial2D.AnchorPoint.CENTER);
+                CustomGizmos.DrawLabel($"{_baseCell.Key}", labelPos, new GUIStyle(EditorStyles.label)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                });
             }
             public override void DrawEditorGizmos() { }
             public override ComponentTypeKey GetTypeKey() => ComponentTypeKey.BASE;

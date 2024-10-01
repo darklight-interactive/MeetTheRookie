@@ -14,7 +14,7 @@ public class NPC_Controller : MonoBehaviour
     [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
-    public GameObject player => FindFirstObjectByType<PlayerController>().gameObject;
+    public GameObject player => FindFirstObjectByType<MTRPlayerInput>().gameObject;
     public NPCState startingState = NPCState.IDLE;
 
     [Tooltip("State to return to after animation")]

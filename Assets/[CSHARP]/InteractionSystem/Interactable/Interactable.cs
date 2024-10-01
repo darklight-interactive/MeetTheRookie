@@ -101,7 +101,7 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> 
     protected void Awake() => Preload();
     protected void Start() => Initialize();
     protected void Update() => Refresh();
-    protected void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.25f);
         CustomGizmos.DrawLabel(CurrentState.ToString(), labelPos, new GUIStyle()

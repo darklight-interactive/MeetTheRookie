@@ -43,15 +43,15 @@ EXTERNAL PlaySpecialAnimation(speaker)
 
 EXTERNAL PlaySFX(sfx)
 
-== function ChangeGameScene(knotName)
+===function ChangeGameScene(knotName)
     ~ return
 
-== function AddSynthesisClue(clue)
+=== function AddSynthesisClue(clue)
     ~ return
-== function openDoor()
+=== function openDoor()
     ~PlaySFX("Doors/doorOpen")
     ~ return
-== function closeDoor()
+=== function closeDoor()
     ~PlaySFX("Doors/doorClose")
     ~ return
 

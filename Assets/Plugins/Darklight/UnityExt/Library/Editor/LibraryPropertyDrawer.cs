@@ -61,6 +61,14 @@ namespace Darklight.UnityExt.Library.Editor
             if (_list == null)
             {
                 _list = new LibraryReorderableList(_serializedObject, _itemsProperty, _readOnlyKeyProperty, _readOnlyValueProperty, fieldInfo);
+
+                _list.onChangedCallback += (list) =>
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(property.serializedObject.targetObject);
+                    Debug.Log($"Library<,> items changed.", property.serializedObject.targetObject);
+                };
+
                 _list.onAddDropdownCallback = (rect, list) =>
                 {
                     GenericMenu menu = new GenericMenu();
@@ -104,31 +112,24 @@ namespace Darklight.UnityExt.Library.Editor
 
             // ( Foldout Title )---------------------------------------------
             Rect titleRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-            _foldout = EditorGUI.Foldout(titleRect, _foldout, $"{label} : {typeName} : Count: {itemCount}", true, new GUIStyle(EditorStyles.foldout)
-            {
-                fontStyle = FontStyle.Bold
-            });
+            EditorGUI.LabelField(titleRect, $"{label} : {typeName} : Count: {itemCount}", new GUIStyle(EditorStyles.boldLabel));
             currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING / 2;
 
-            if (_foldout)
-            {
-                // ( Properties )-------------------------------------------------
-                EditorGUI.BeginDisabledGroup(true);
-                Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-                EditorGUI.PropertyField(propRect, _readOnlyKeyProperty, true);
-                currentYPos += SINGLE_LINE_HEIGHT;
-                propRect.y = currentYPos;
+            // ( Properties )-------------------------------------------------
+            EditorGUI.BeginDisabledGroup(true);
+            Rect propRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
+            EditorGUI.PropertyField(propRect, _readOnlyKeyProperty, true);
+            currentYPos += SINGLE_LINE_HEIGHT;
+            propRect.y = currentYPos;
 
-                EditorGUI.PropertyField(propRect, _readOnlyValueProperty, true);
-                currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING;
-                EditorGUI.EndDisabledGroup();
+            EditorGUI.PropertyField(propRect, _readOnlyValueProperty, true);
+            currentYPos += SINGLE_LINE_HEIGHT + VERTICAL_SPACING;
+            EditorGUI.EndDisabledGroup();
 
-                // ( ReorderableList )--------------------------------------------
-                Rect listRect = new Rect(rect.x, currentYPos, rect.width, SINGLE_LINE_HEIGHT);
-                _list.DrawList(listRect);
-                currentYPos += _list.GetHeight() + VERTICAL_SPACING;
-            }
-
+            // ( ReorderableList )--------------------------------------------
+            Rect listRect = new Rect(EditorGUI.IndentedRect(rect).x, currentYPos, EditorGUI.IndentedRect(rect).width, SINGLE_LINE_HEIGHT);
+            _list.DrawList(listRect);
+            currentYPos += _list.GetHeight() + VERTICAL_SPACING;
 
             // (Calculate Property Height)-------------------------------------
             _fullPropertyHeight = currentYPos - rect.y;
@@ -259,54 +260,66 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
 
-
         void InvokeLibraryMethod(string methodName, out object returnValue, object[] parameters = null)
         {
             returnValue = null;
 
             SerializedProperty property = _libraryProperty;
 
-
             // Get the target object (the script holding the Library<,> field)
             UnityEngine.Object targetObject = property.serializedObject.targetObject;
 
-            // Get the type of the target object (MonoBehaviour)
+            // Get the type of the target object (MonoBehaviour or its subclass)
             Type targetType = targetObject.GetType();
 
-            // Find the specific field that matches the SerializedProperty
-            FieldInfo libraryField = targetType.GetField(property.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            // Traverse the class hierarchy to find the field if it's inherited
+            FieldInfo libraryField = null;
+            Type currentType = targetType;
+
+            // Traverse class hierarchy to look for the field that matches the SerializedProperty
+            while (currentType != null && libraryField == null)
+            {
+                libraryField = currentType.GetField(property.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                currentType = currentType.BaseType;
+            }
 
             if (libraryField != null)
             {
-                // Get the instance of Library<,> (or its derived type) from the field
+                // Get the instance of LibraryBase (or its derived type) from the field
                 object libraryInstance = libraryField.GetValue(targetObject);
 
-                // Ensure that the instance is a subclass of LibraryBase
-                if (libraryInstance != null && libraryInstance.GetType().IsSubclassOf(typeof(LibraryBase)))
+                if (libraryInstance != null && typeof(LibraryBase).IsAssignableFrom(libraryInstance.GetType()))
                 {
-                    // Get the method information from the Library<,> instance
+                    // Get the method information from the Library<,> or its subclass instance
                     MethodInfo methodInfo = libraryInstance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                     if (methodInfo != null)
                     {
-                        // Invoke the method on the specific Library<,> type instance
-                        returnValue = methodInfo.Invoke(libraryInstance, parameters);
+                        try
+                        {
+                            // Invoke the method on the specific LibraryBase or its subclass instance
+                            returnValue = methodInfo.Invoke(libraryInstance, parameters);
 
-                        // Apply modified properties to ensure they are serialized
-                        property.serializedObject.ApplyModifiedProperties();
+                            // Apply modified properties to ensure they are serialized
+                            property.serializedObject.ApplyModifiedProperties();
 
-                        // Mark the target object as dirty to ensure the changes are saved and visible
-                        EditorUtility.SetDirty(targetObject);
+                            // Mark the target object as dirty to ensure the changes are saved and visible
+                            EditorUtility.SetDirty(targetObject);
 
-                        // Force the editor to repaint the Inspector
-                        property.serializedObject.UpdateIfRequiredOrScript();
-                        property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
-                        EditorApplication.QueuePlayerLoopUpdate(); // Repaints Scene view if necessary
-                        Debug.Log($"Method '{methodName}' called on {targetObject.name}" +
-                            $" with Library<,> instance '{libraryInstance.GetType().Name}'.", targetObject);
+                            // Force the editor to repaint the Inspector
+                            property.serializedObject.UpdateIfRequiredOrScript();
+                            property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                            EditorApplication.QueuePlayerLoopUpdate(); // Repaints Scene view if necessary
+                            Debug.Log($"Method '{methodName}' called on {targetObject.name}" +
+                                $" with LibraryBase instance '{libraryInstance.GetType().Name}'.", targetObject);
 
-                        // Force a repaint of the inspector window
-                        EditorWindow.focusedWindow?.Repaint();
+                            // Force a repaint of the inspector window
+                            EditorWindow.focusedWindow?.Repaint();
+                        }
+                        catch (TargetInvocationException e)
+                        {
+                            Debug.LogError($"Error invoking method '{methodName}': {e.InnerException?.Message}", targetObject);
+                        }
                     }
                     else
                     {
@@ -315,14 +328,15 @@ namespace Darklight.UnityExt.Library.Editor
                 }
                 else
                 {
-                    Debug.LogWarning($"The field '{property.name}' is not a Library<,> instance or its subclass.");
+                    Debug.LogWarning($"The field '{property.name}' is not a LibraryBase instance or its subclass.");
                 }
             }
             else
             {
-                Debug.LogWarning($"Field '{property.name}' not found on type '{targetType}'.");
+                Debug.LogWarning($"Field '{property.name}' not found on type '{targetType}' or its base classes.");
             }
         }
+
 
 
 
