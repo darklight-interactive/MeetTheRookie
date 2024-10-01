@@ -3,29 +3,30 @@
 //        this also appears to be a sort of cutscene so there isnt much logic to do! :)
 
 // VARIABLES HERE:
- VAR reported_incident = false
- VAR case_file_received = false
- VAR love_points = 0
- VAR tease_level = 0
- VAR sincerity_level = 0
- VAR spooked = false
- VAR snooped = false
+VAR reported_incident = false
+VAR case_file_received = false
+VAR love_points = 0
+VAR tease_level = 0
+VAR sincerity_level = 0
+VAR spooked = false
+VAR snooped = false
+VAR phoneCall = 0
 
 * [Scene 2 - The Precinct] -> scene2_DS
 
 === scene2_DS ===
-# name: description
+# hide : Lupe
 # hide : Misra
 # emote : Lupe \| Serious_2
 <i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
 
-+ [Ding the bell.] -> ding
++ [Ding the bell] -> ding
 
-+ [Call out.] -> hello
++ [Call out] -> hello
 
 = ding
 
-<i>You ding the bell, but no one responds.</i>
+<i>You ding the bell and no one responds.</i>
 
 -> soul
 
@@ -40,6 +41,8 @@
 = soul
 <i>Is there a single person in this town that's helpful?</i>
 
+<i> First the gas station pump, now no sheriff? This place is a mess. </i> 
+
 #name:Lupe
 # emote : Lupe \| Annoyed_1
 "Hmph... well can't say I didn't try. I'm wasting my time here anywa-"
@@ -48,7 +51,7 @@
 # emote : Misra \| Neutral_1
 "Hey!"
 
-#name: Lupe
+#name:Lupe
 # emote : Lupe \| Fright_1
 "AYE! DIOS MIO!"
 
@@ -59,6 +62,7 @@
 # name : Misra
 "...You ok?"
 
+// Also: [Chastise them for scaring you], [Play it off.] 
 + ["You almost gave me a heart attack!"] -> chastise //scared
 + ["Yeah, I'm fine."] -> scared //sarcastic expression
 
@@ -68,10 +72,12 @@
 # emote : Misra \| Neutral_1
 "Oh! I'm truly sorry!"
 
-<i>Their words stutter a bit from holding back a laugh.</i>
+<i>Their words stutter from holding back a laugh.</i>
 
 #name: Misra
 "I didn't mean to scare you." //laughing
+
+<i> You roll your eyes in slight frustration. </i>
 
 #name:Lupe
 # emote : Lupe \| Serious_2
@@ -89,6 +95,8 @@
 
 # name : Misra
 "I don't understand spanish, but last I checked 'AYE! DIOS MIO!' means scared." 
+
+<i> You can't help but roll your eyes at their sarcastic, and inaccurate, impression of you. </i> 
 
 #name:Lupe
 # emote : Lupe \| Serious_2
@@ -130,7 +138,7 @@
 
 =niceToMeet
 ~ sincerity_level ++
- <i>You grab their hand, and they give a vigorous shake that you can feel up to your shoulder.</i> 
+ <i>You grab their hand, and they give a vigorous shake that jolts up to your shoulder.</i> 
  
  <i>Despite how much it bothers you, you attempt to ignore that they've already decided to drop your title as "Detective".</i>
 
@@ -146,16 +154,16 @@
 ~ tease_level++
 #name:Misra
 # emote : Misra \| Nervous_1
-"Not here, plus I'm not opposed to some company." //flirty
+"Not here, and I'm not opposed to some company." //flirty
 
-
-<i>Your train of thought scatters for a brief moment with the slight raise of your heart rate.</i>
+//flustured Lupe
+<i>Your train of thought scatters for a brief moment with a slight flutter of your heart rate.</i>
 
 <i>How...strange. </i>
 
 <i>Why would you say that?!</i>
 
-<i>Pull it together! What happened to professionalism?!</i>
+<i>That wasn't very professional.</i>
 
 <i>You clear your throat.</i>
 
@@ -165,17 +173,33 @@
 
 # name : Lupe
 "There's a tree blocking the road out of town by the gas station. I need it cleared as soon as possible." 
-
 #name:Misra
 # emote : Misra \| Curious_1
 { tease_level > sincerity_level:  "Leaving already?! | "Ah, I see. } Well, I'll call the tree people and get that cleared out." 
 
-#name:Misra
-"May take a while though! As you may have noticed, we don't have many people who can help around here. "
+#name: Lupe 
+"Tree...people?" 
 
+#name: Misra 
+"Yeah, the people who take care of the trees!" 
+
+#name: Lupe 
+"Do you mean road maintenance?" 
+
+#name: Misra 
+"Oh yeah, I guess so!" 
+
+<i> Tree people...great. Just need to hope they can somehow call the right maintenance. </i> 
+
+"May take a while though! As you may have noticed, we don't have many people who can help around here. "
+//they gesture to an empty room
 #name:Misra
 # emote : Misra \| Nervous_1
-{ sincerity_level >= tease_level: "Sorry about that!" } { tease_level >= sincerity_level:  "Looks like we might get to know each other after all." } 
+{ sincerity_level >= tease_level: "Sorry about that! } { tease_level >= sincerity_level:  Looks like we might get to know each other after all." } 
+
+{ tease_level >= sincerity_level: "But first...!" } 
+
+"Let me see what I can do for you!" 
 
 # hide : Misra
 # emote : Lupe \| Neutral_2
@@ -192,7 +216,9 @@
 = snoop
 # emote : Lupe \| Inquistive_1
 ~ tease_level++
-<i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. They probably entered a different room to make the call. </i>
+<i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. </i> 
+
+<i>They probably entered a different room to make the call. </i>
 
 <i>What you do see, however, is a manilla folder with a label...</i> 
 
@@ -227,19 +253,19 @@ And a black and white picture of the winery stained with age.
 
 #name:Lupe
 # emote : Lupe \| Fright_1
-"AYE!!"
+"AYE!!" 
 
-#name:Lupe
+<i> Where did they come from?! You could've sworn that you were keeping an eye over your shoulder. </i> 
+
 # emote : Lupe \| Fright_1
 "You CAN'T keep scaring me like that."
-
-{- spooked: 
-    # name : Misra
-    # emote : Misra \| Nervous_1
-    "Sorry, sorry!" 
-  - else: 
-    # name : Misra
-    # emote : Misra \| Surprised_2
+# name : Misra
+{ 
+- spooked: 
+# emote : Misra \| Nervous_1
+"Sorry, sorry!" 
+- else:
+# emote : Misra \| Surprised_2
     "So, you admit you were scared! "
 }
 
@@ -247,7 +273,7 @@ And a black and white picture of the winery stained with age.
 
 #name:Misra
 # emote : Misra \| Inquisiting_1
-"I'd also like to point out you probably just broke some kind of law by peeking at that. You know, confidentiality and such."
+"I'd also like to point out you probably just broke some kind of law."
 
 #name:Lupe
 # emote : Lupe \| Neutral_2 
@@ -268,7 +294,7 @@ And a black and white picture of the winery stained with age.
 ~ sincerity_level++
 <i>You may be bored out of your mind, but not crazy enough to go snooping around a precinct.</i> 
 
-<i>Even if it's incredibly barren here, it would look bad on your record if you're caught looking into other case files. Expecially outside of your jurisdiction. </i> 
+<i>Even if it's incredibly boring here, it would be bad if you're caught looking into other case files. Expecially outside of your jurisdiction. </i> 
 
 <i>You continue waiting, and after what feels like an eternity, the Sheriff returns.</i>
 
@@ -301,7 +327,7 @@ And a black and white picture of the winery stained with age.
 "Yep!" 
 
 # name : Lupe
-"...Wow."
+<i>...Wow.</i>
 -> transition_to_case
 
 = transition_to_case
@@ -328,9 +354,9 @@ Date: August 29th, 1995
 
 And a black and white picture of the winery stained with age.
 */
-
 #name:Misra
 # emote : Misra \| Inquisiting_1
+
 "Well, what are your thoughts?"
 -> police_report
 
@@ -347,19 +373,21 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Nervous_1
 "Yeah. Things happen a lot...slower here in Kettle Rock. But don't worry! I'll make sure they know it's urgent."
 
+<i> You're going to die of boredom here if you need to spend hours...no...DAYS doing nothing in the middle of nowhere. </i> 
+
 -> transition_to_case
 ->police_report
 
 = police_report
 #name:Lupe
 # emote : Lupe \| Inquistive_1
-"Is this the whole file?" 
+"Is this...the whole file?" 
 
 #name:Misra
 # emote : Misra \| Neutral_1
 "Yeah!" 
 
-+["There's nothing here."] -> nothingHere
++["There's nothing here"] -> nothingHere
 +["Where's the rest?"] -> theRest
 
 =theRest
@@ -395,7 +423,7 @@ And a black and white picture of the winery stained with age.
 "Or anything else pertaining to the case." 
 
 #name: Lupe 
-"I mean, there's some stuff there, sure, but it's flimsy."
+"I mean, there's some stuff here, sure, but it's flimsy."
 
 #name:Misra
 # emote : Misra \| Inquisiting_1 
@@ -414,7 +442,7 @@ And a black and white picture of the winery stained with age.
 "How long have you been a Sheriff?" 
 
 #name: Misra
-"Uhhhhhhhh..."
+"Uhhhhhhhh"
 
 #name: Misra
 "A week." 
@@ -427,13 +455,19 @@ And a black and white picture of the winery stained with age.
 <i>Misra looks around the station.</i>
 
 #name: Misra 
-"Nope. Just me, myself, and I!" 
+"Yep. Just me, myself, and I!" 
 
 #name: Lupe 
 "..."
 
+<i> Somehow this poor sheriff is going to go nowhere with this supposed "cold case" </i> 
+
+<i> It's not really that complex of a case, truly. Just find who made the phone call and learn why. </i>
+
+<i> You've solved much more nearly-impossible cases. The fact that they're tied up on this is...baffling. </i>
+
 #name: Lupe 
-"Well you're going to get nowhere with this." 
+"This isn't enough." 
 
 #name: Misra 
 "Well then what do I need?" 
@@ -452,7 +486,7 @@ And a black and white picture of the winery stained with age.
 
 #name:Lupe
 # emote : Lupe \| Inquistive_1
-"I'm sorry, 'we'?" 
+"I'm sorry, we?" 
 -> We 
 
 =Witnesses
@@ -462,7 +496,7 @@ And a black and white picture of the winery stained with age.
 
 #name:Misra
 # emote : Misra \| Neutral_1
-"So, go into town and question people!"
+"So go into town and ask people!"
 
 
 #name: Lupe 
@@ -473,13 +507,13 @@ And a black and white picture of the winery stained with age.
 
 #name:Lupe
 # emote : Lupe \| Inquistive_1
-"I'm sorry, 'we'?" 
+"I'm sorry, we?" 
 -> We 
 
 = Help 
 #name:Lupe
 # emote : Lupe \| Serious_2
-"What you need is someone to help you on this case. You're too fresh to handle a cold case." 
+"What you need is someone to help you on this case. You're too fresh to handle a case on your own." 
 
 #name:Misra
 # emote : Misra \| Nervous_1
@@ -493,7 +527,7 @@ And a black and white picture of the winery stained with age.
 =We
 #name:Misra
 # emote : Misra \| Neutral_1
-"Yeah! I mean, what else are you going to do in the meantime?"
+"Yeah! I mean what else are you going to do in the meantime? "
 
 #name:Lupe
 # emote : Lupe \| Fluster_1
@@ -501,15 +535,20 @@ And a black and white picture of the winery stained with age.
 
 #name:Misra
 # emote : Misra \| Neutral_1
-"Come on! What if reality hangs in the balance, and we must solve this in order to save the world!! Woaaaahhhh!!! It's your destinyyyyyyyy!"
+"Come on! What if reality hangs in the balance, and we must figure this out to save the world!! Woaaaahhhh!!! It's your destinyyyyyyyy!"
 
 #name:Lupe
 # emote : Lupe \| Neutral_2
-{ tease_level > sincerity_level:  <i>Slight laughter escapes your nose.</i>  | "... "}
+{ tease_level > sincerity_level:  "A slight laughter escapes your nose" | "... "}
 
 #name:Misra
 # emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "AH HA! Gotcha laughing!" | "Anyways."}
+
+<i> They do have a point. What are you going to do in the meanwhile? </i> 
+<i> Sit at the bar and stare at the walls? </i> 
+
+<i> It shouldn't be too hard, and may keep you occupied while the "tree people" arrive. </i> 
 
 #name: Lupe 
 "Fine." 
@@ -530,16 +569,15 @@ And a black and white picture of the winery stained with age.
 ~ case_file_received = true
 // TO PROGRAMMERS: ADD EVIDENCE TO SYNTHESIS GAME! 
 
-#name: Lupe 
-* "[It's a simple case."] Shouldn't take me more than a day to figure this out." 
+
 -> phone_call
-+ [Call your boss.]
-    -> phone_call
+
     
 = phone_call 
 # hide : Misra
-<i>You {phone_call < 0: grab your phone and begin to} dial chief Thelton. </i>
-
+~phoneCall++
+<i>You {phoneCall > 0: grab your phone and begin to} dial chief Thelton. </i>
+{phoneCall}
 <i>The phone rings...</i>
 
 <i>And rings...</i>
@@ -548,19 +586,44 @@ And a black and white picture of the winery stained with age.
 
 "You've reached Chief Detective Inspector Thelton, Boise Precinct. I'm not available right now. You know what to do." 
 
-<i>Weird...</i>
+{phoneCall < 3: <i>Weird...</i>} 
+{phoneCall >= 3 && phoneCall <= 6: <i>Seriously...</i>} 
+{phoneCall >= 6 && phoneCall <=10: <i>Weren't you just talking to her?!</i>} 
+{phoneCall >= 10: <i>This is ridiculous.</i>} 
 
-<i>She always picks up.</i> 
+{phoneCall < 3: <i>She always picks up.</i>}
 
-+[Call again.] -> phone_call
-+[Leave a voicemail.] -> voicemail
++[Call again] -> phone_call
++[Leave a voicemail] -> voicemail
 
 = voicemail
 #name:Lupe
 # emote : Lupe \| Inquistive_1
-"Thelton, Lupe here. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated." 
+
+{phoneCall < 2: "Thelton, Lupe here. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated."} 
+
+{phoneCall >= 2 && phoneCall < 5: "Thelton, Lupe here, pick up. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated."} 
+
+{phoneCall >= 5 && phoneCall < 8: "Thelton, Lupe here. Would really appreciate it if you don't ignore my calls. Currently stuck in Kettle Rock. I'll keep you updated."} 
+
+{phoneCall >= 8: "Thelton, seriously?! {phoneCall} !! I called you {phoneCall} times!! Currently stuck in Kettle Rock. I'll keep you updated."} 
 
 <i>You hang up.</i> 
+
+#name: Misra
+# emote : Misra \| Neutral_1
+{phoneCall >= 8: "...Is your Cheif mad at you?"} 
+
+#name: Lupe
+# emote : Lupe \| Annoyed_1
+{phoneCall >= 8: "The better question is when is she not."} 
+
+# emote : Lupe \| Inquistive_1
+{phoneCall >= 8: "...How'd you know I called my Chief?"} 
+
+#name: Misra
+# emote : Misra \| Nervous_1
+{phoneCall >= 8: "Lucky guess!"} 
 
 #name:Misra
 # emote : Misra \| Neutral_1
@@ -577,14 +640,15 @@ And a black and white picture of the winery stained with age.
 # name : Misra
 "Eh-shall we?"
 
-*["We shall."] ->JokeBack
-*[Walk through door.] -> door 
+*"We shall." ->JokeBack
+*[Walk through door] -> door 
 
 = JokeBack
+#name:Lupe
 # emote : Lupe \| Fluster_1
 <i>That slight joke may have drained your social battery for the week.</i> 
 
-<i>Misra giggles as they walk out the door.</i>
+<i>Misra giggles as they walk out the door</i>
 
 #name:Misra
 # emote : Misra \| Neutral_1
