@@ -17,6 +17,9 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     [Header("Interaction Audio")]
     public EventReference itemInteract;
     public EventReference paperInteract;
+    public EventReference pinpadNumber;
+    public EventReference pinpadFail;
+    public EventReference pinpadSuccess;
 
     [Header("Door Audio")]
     public EventReference doorOpen;

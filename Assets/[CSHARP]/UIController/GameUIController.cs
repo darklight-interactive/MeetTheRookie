@@ -216,7 +216,7 @@ public class GameUIController : UXML_UIDocumentObject
     public void ConfirmChoice(Choice choice)
     {
         InkyStoryManager.Iterator.ChooseChoice(choice);
-        //MTR_AudioManager.Instance.PlayMenuSelectEvent();
+        MTR_AudioManager.Instance.PlayMenuSelectEvent();
 
         _choiceBox.Clear();
         _choicePanel.style.visibility = Visibility.Hidden;
@@ -236,8 +236,9 @@ public class GameUIController : UXML_UIDocumentObject
         previousButton?.Deselect();
         newSelection.SetSelected();
 
+        if (previousButton != selectedButton) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
+
         lockSelection = true;
-        //MTR_AudioManager.Instance.PlayMenuHoverEvent();
         Invoke(nameof(UnlockSelection), 0.1f);
 
     }
