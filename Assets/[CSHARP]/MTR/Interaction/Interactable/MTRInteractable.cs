@@ -61,6 +61,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InternalData _data;
+    [SerializeField, ShowOnly] State _currentState;
 
 
     [HorizontalLine(color: EColor.Gray)]
@@ -223,6 +224,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         // << CREATE THE STATE MACHINE >> ------------------------------------
         stateMachine = new InternalStateMachine(this);
+        stateMachine.OnStateChanged += (state) => _currentState = state;
     }
     protected virtual bool ValidatePreload()
     {
@@ -455,6 +457,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                 StateMachine.GoToState(State.START);
                 break;
         }
+
+        _currentState = CurrentState;
     }
 
     void OnStart()

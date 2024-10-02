@@ -166,7 +166,7 @@ public partial class MTRInteractable
 
 
                 InkyStoryIterator.State storyState = storyIterator.CurrentState;
-                //Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
+                Debug.Log($"{PREFIX} :: {interactable.Name} >> Continue >> InkyStoryState.{storyState}");
 
                 string text = storyIterator.CurrentStoryDialogue;
                 switch (storyState)

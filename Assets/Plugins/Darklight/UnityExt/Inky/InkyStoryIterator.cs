@@ -21,6 +21,7 @@ namespace Darklight.UnityExt.Inky
         InkyStoryObject _storyObject;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
+        [SerializeField, ShowOnly] State _currentState;
         [SerializeField, ShowOnly] string _currentStoryKnot;
         [SerializeField, ShowOnly] string _currentStoryDialogue;
         List<Choice> _currentChoices;
@@ -49,6 +50,11 @@ namespace Darklight.UnityExt.Inky
         {
             _storyObject = inkyStoryObject;
             GoToState(initialState);
+        }
+
+        public override void OnStateChanged(State previousState, State newState)
+        {
+            _currentState = newState;
         }
 
         // ======== <PRIVATE_METHODS> ================================ >>
@@ -107,7 +113,7 @@ namespace Darklight.UnityExt.Inky
                 string[] splitTag = tag.Split(':');
                 if (splitTag.Length != 2)
                 {
-                    Debug.LogError($"{PREFIX} Error: Tag is not formatted correctly: {tag}");
+                    Debug.LogWarning($"{PREFIX} Error: Tag is not formatted correctly: {tag}");
                 }
                 else
                 {

@@ -80,6 +80,7 @@ namespace Darklight.UnityExt.UXML
                 material,
                 renderTexture
             );
+            renderTextureObject.SetLocalScale(1);
             return renderTextureObject;
         }
 

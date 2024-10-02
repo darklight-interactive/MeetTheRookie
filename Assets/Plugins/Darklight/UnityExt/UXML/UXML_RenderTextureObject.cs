@@ -58,6 +58,7 @@ namespace Darklight.UnityExt.UXML
             }
 
             // Initialize front and back buffers
+            if (_renderTexture == null) return;
             _backBuffer = new RenderTexture(_renderTexture);
             _frontBuffer = new RenderTexture(_renderTexture);
 

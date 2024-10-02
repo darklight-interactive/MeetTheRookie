@@ -26,8 +26,6 @@ namespace Darklight.UnityExt.UXML
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
-
-        public void Awake() => Initialize(preset);
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
             this.preset = preset;

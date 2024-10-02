@@ -117,24 +117,9 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
             return request;
         }
 
-        public static void InstantiateInteractionReciever(Interactable interactable, InteractionType key, out GameObject gameObject)
+        static void InstantiateInteractionReciever(Interactable interactable, InteractionType key, out GameObject gameObject)
         {
-            GameObject prefab = null;
-            switch (key)
-            {
-                case InteractionType.SIMPLE:
-                case InteractionType.TOGGLE:
-                case InteractionType.TARGET:
-                    prefab = Instance._iconInteractionHandlerPrefab;
-                    break;
-                case InteractionType.DIALOGUE:
-                    prefab = Instance._dialogueInteractionHandlerPrefab;
-                    break;
-                case InteractionType.CHOICE:
-                    prefab = Instance._choiceInteractionHandlerPrefab;
-                    break;
-            }
-
+            GameObject prefab = interactable.Request.TryGetValue(key, out GameObject recieverPrefab) ? recieverPrefab : null;
 
             GameObject recieverGameObject = Instantiate(prefab, interactable.transform);
             if (recieverGameObject == null)
