@@ -65,13 +65,11 @@ Idk to each their own , just take it away now. -> DONE
 
 
 = 4_1
-~ SetSpeaker(Speaker.Lupe)
 * Any updates regarding the blocked road? -> updates
 * Jeez, where is everyone? -> where_is_everyone
 * {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)} The teens mentioned someone named Jenkins? -> someone_named_jenk
 
 = someone_named_jenk
-.
 ~ SetSpeaker(Speaker.Lupe)
 Oh, yeah, Jenkins.
 He's a local, too.
@@ -86,7 +84,6 @@ Could be worth asking about.
 
 = updates
 ~ SetSpeaker(Speaker.Misra)
-.
 None yet! 
 But I assure you, it's my second most urgent thing to take care of.
 ~ SetSpeaker(Speaker.Lupe)
@@ -126,7 +123,6 @@ Thank you, Misra.
 
 = where_is_everyone
 ~SetSpeaker(Speaker.Lupe)
-.
 This place is practically a ghost town.
 
 ~ SetSpeaker(Speaker.Misra)
