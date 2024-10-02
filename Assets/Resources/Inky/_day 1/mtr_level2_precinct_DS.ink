@@ -18,7 +18,7 @@ VAR phoneCall = 0
 # hide : Lupe
 # hide : Misra
 # emote : Lupe \| Serious_2
-<i> Silly goofy wah wah dialogue to test change You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
+<i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
 
 + [Ding the bell] -> ding
 
