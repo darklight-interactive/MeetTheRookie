@@ -40,6 +40,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         }
     }
 
+    [SerializeField, ShowOnly] string _sceneToLoad;
     [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
@@ -100,9 +101,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         if (data == null)
             return false;
 
-        // << LOAD SCENE >>
-        IEnumerator asyncLoad = LoadSceneAsyncRoutine(data.Name);
-        StartCoroutine(asyncLoad);
+        _sceneToLoad = data.Name;
         return true;
     }
 
@@ -170,11 +169,10 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
 #endif
     }
 
-    IEnumerator LoadSceneAsyncRoutine(string sceneToLoad)
+    IEnumerator LoadSceneAsyncRoutine()
     {
         // Begin loading the scene asynchronously
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneToLoad);
-        SceneController.StateMachine.GoToState(MTRSceneState.LOADING);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(_sceneToLoad);
 
         // Prevent the scene from being activated immediately
         asyncOperation.allowSceneActivation = false;
