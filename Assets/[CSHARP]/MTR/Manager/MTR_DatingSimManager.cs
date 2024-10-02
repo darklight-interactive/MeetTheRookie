@@ -42,9 +42,9 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
-    public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
-        base.Initialize(preset, tags);
+        base.Initialize(preset, clonePanelSettings);
     }
 
     void Awake()

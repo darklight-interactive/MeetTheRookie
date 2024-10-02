@@ -94,7 +94,7 @@ public class ChoiceInteractionReciever : InteractionReciever
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
         {
-            TextBubbleObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_choiceBubblePreset, _material, _renderTexture);
+            TextBubbleObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_choiceBubblePreset, _material, _renderTexture, true);
 
             _attachedBubbles[cell.Key] = choiceBubbleObject;
 
@@ -108,6 +108,9 @@ public class ChoiceInteractionReciever : InteractionReciever
             choiceBubble.FontSize = 240;
 
             choiceBubbleObject.SetText(fullText);
+
+            Debug.Log($"Created Bubble at {cell.Key} with text: {fullText}");
+
             return choiceBubbleObject;
         }
         return null;

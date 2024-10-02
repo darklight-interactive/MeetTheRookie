@@ -30,6 +30,7 @@ public class MTRSceneController : MonoBehaviour
     [SerializeField, ShowOnly] MTRSceneState _currentState;
 
     public MTR_UIManager UIManager => MTR_UIManager.Instance;
+    public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
     public InternalStateMachine StateMachine => _stateMachine;
@@ -55,15 +56,6 @@ public class MTRSceneController : MonoBehaviour
     {
         Debug.Log($"Scene State Changed: {state}");
         _currentState = state;
-
-        if (state == MTRSceneState.ENTER)
-        {
-            UIManager.SceneTransitionController.StartFadeOut();
-        }
-        else if (state == MTRSceneState.EXIT)
-        {
-            UIManager.SceneTransitionController.StartFadeIn();
-        }
     }
 
     public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
@@ -103,6 +95,16 @@ public class MTRSceneController : MonoBehaviour
             protected InternalStateMachine stateMachine;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
+            protected MTRSceneTransitionController transitionController
+            {
+                get
+                {
+                    MTRSceneTransitionController controller = sceneController.UIManager.SceneTransitionController;
+                    if (controller == null)
+                        controller = FindFirstObjectByType<MTRSceneTransitionController>();
+                    return controller;
+                }
+            }
             public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
@@ -155,8 +157,10 @@ public class MTRSceneController : MonoBehaviour
             IEnumerator EnterStateCoroutine()
             {
                 cameraController.SetPlayerAsFollowTarget();
-
                 playerController.Input.SetAllInputsEnabled(true);
+                yield return new WaitForSeconds(0.5f);
+
+                //transitionController.StartFadeOut();
 
                 yield return new WaitForSeconds(0.5f);
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -261,6 +265,7 @@ public class MTRSceneController : MonoBehaviour
             {
                 StateMachine.GoToState(MTRSceneState.LOADING);
             }
+
         }
         #endregion
 

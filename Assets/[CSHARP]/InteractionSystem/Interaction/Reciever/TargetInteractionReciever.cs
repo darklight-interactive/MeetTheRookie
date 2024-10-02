@@ -49,8 +49,7 @@ public class TargetInteractionReciever : InteractionReciever
         if (_interactIconObject == null)
         {
             // Create the UXML RenderTextureObject Icon
-            _interactIconObject = UXML_Utility.CreateUXMLRenderTextureObject(_interactIconPreset, material, renderTexture);
-            //_interactIconObject.document.panelSettings = _interactIconPreset.panelSettings;
+            _interactIconObject = UXML_Utility.CreateUXMLRenderTextureObject<UXML_RenderTextureObject>(_interactIconPreset, material, renderTexture);
 
             Cell2D.SpawnerComponent spawnerComponent = bestCell.GetComponent<Cell2D.SpawnerComponent>();
             spawnerComponent.AttachTransformToCell(_interactIconObject.transform);

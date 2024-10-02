@@ -17,10 +17,9 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
     bool _fadeIn;
     bool _fadeOut;
 
-    public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
-        base.Initialize(preset, tags);
-
+        base.Initialize(preset, clonePanelSettings);
         _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
     }
 
@@ -55,6 +54,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
         _fadeIn = true;
         _fadeOut = false;
 
+        _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
         _fullscreenBlackElement.RemoveFromClassList(FADE_OUT_CLASS);
         _fullscreenBlackElement.AddToClassList(FADE_IN_CLASS);
 
@@ -67,6 +67,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
         _fadeIn = false;
         _fadeOut = true;
 
+        _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
         _fullscreenBlackElement.RemoveFromClassList(FADE_IN_CLASS);
         _fullscreenBlackElement.AddToClassList(FADE_OUT_CLASS);
 

@@ -65,25 +65,7 @@ namespace Darklight.UnityExt.UXML
         /// </param>
         /// <returns></returns>
         ///
-        public static UXML_RenderTextureObject CreateUXMLRenderTextureObject(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture)
-        {
-            string name = $"UXMLRenderTexture : unknown";
-            if (preset != null)
-                name = $"UXMLRenderTexture : {preset.name}";
-            GameObject go = new GameObject(name);
-
-            //go.hideFlags = HideFlags.NotEditable;
-            UXML_RenderTextureObject renderTextureObject = go.AddComponent<UXML_RenderTextureObject>();
-            renderTextureObject.Initialize(
-                preset,
-                null,
-                material,
-                renderTexture
-            );
-            return renderTextureObject;
-        }
-
-        public static T CreateUXMLRenderTextureObject<T>(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture)
+        public static T CreateUXMLRenderTextureObject<T>(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture, bool clonePanelSettings = false)
             where T : UXML_RenderTextureObject
         {
             string name = $"UXMLRenderTexture : unknown";
@@ -95,9 +77,9 @@ namespace Darklight.UnityExt.UXML
             T renderTextureObject = go.AddComponent<T>();
             renderTextureObject.Initialize(
                 preset,
-                null,
-                material,
-                renderTexture
+                new Material(material),
+                new RenderTexture(renderTexture),
+                clonePanelSettings
             );
             return renderTextureObject;
         }
