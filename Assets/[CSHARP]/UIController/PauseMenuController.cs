@@ -20,7 +20,7 @@ using UnityEditor;
 /// <summary>
 /// This handles all of the Game UI elements like interactions and speech bubbles.
 /// </summary>
-public class GameUIController : UXML_UIDocumentObject
+public class PauseMenuController : UXML_UIDocumentObject
 {
     const string PAUSEMENU_CTN = "PauseMenuContainer";
     VisualElement _pauseMenuContainer;

@@ -29,6 +29,7 @@ public class MTRSceneController : MonoBehaviour
     InternalStateMachine _stateMachine;
     [SerializeField, ShowOnly] MTRSceneState _currentState;
 
+    public MTR_UIManager UIManager => MTR_UIManager.Instance;
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
     public InternalStateMachine StateMachine => _stateMachine;
@@ -54,6 +55,15 @@ public class MTRSceneController : MonoBehaviour
     {
         Debug.Log($"Scene State Changed: {state}");
         _currentState = state;
+
+        if (state == MTRSceneState.ENTER)
+        {
+            UIManager.SceneTransitionController.StartFadeOut();
+        }
+        else if (state == MTRSceneState.EXIT)
+        {
+            UIManager.SceneTransitionController.StartFadeIn();
+        }
     }
 
     public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
