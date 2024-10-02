@@ -10,7 +10,18 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.SceneManagement;
 
-public enum MTRSceneState { INITIALIZE, ENTER, PLAY_MODE, CINEMA_MODE, PAUSE_MODE, SYNTHESIS_MODE, EXIT, LOADING, CHOICEMODE }
+public enum MTRSceneState
+{
+    LOADING,
+    INITIALIZE,
+    ENTER,
+    PLAY_MODE,
+    CINEMA_MODE,
+    PAUSE_MODE,
+    SYNTHESIS_MODE,
+    EXIT,
+    CHOICEMODE
+}
 
 [RequireComponent(typeof(MTRSceneManager))]
 public class MTRSceneController : MonoBehaviour
@@ -18,6 +29,7 @@ public class MTRSceneController : MonoBehaviour
     InternalStateMachine _stateMachine;
     [SerializeField, ShowOnly] MTRSceneState _currentState;
 
+    public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
     public InternalStateMachine StateMachine => _stateMachine;
     public MTRSceneState CurrentState => _currentState;
@@ -77,14 +89,26 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ BASE STATE ] ==================
         public abstract class BaseState : FiniteState<MTRSceneState>
         {
-            protected MTRSceneController controller;
+            protected MTRSceneController sceneController;
             protected InternalStateMachine stateMachine;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
+            protected MTRPlayerController playerController => MTRGameManager.PlayerController;
             public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
-                this.controller = stateMachine._controller;
+                this.sceneController = stateMachine._controller;
             }
+        }
+        #endregion
+
+        #region ================== [ LOADING STATE ] ==================
+        public class LoadingState : BaseState
+        {
+            public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+
+            public override void Enter() { }
+            public override void Execute() { }
+            public override void Exit() { }
         }
         #endregion
 
@@ -95,8 +119,6 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
-                stateMachine.GoToState(MTRSceneState.ENTER);
-
                 if (cameraController.Rig.FollowTarget == null)
                     cameraController.SetPlayerAsFollowTarget();
             }
@@ -115,7 +137,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
-                controller.StartCoroutine(EnterStateCoroutine());
+                sceneController.StartCoroutine(EnterStateCoroutine());
             }
             public override void Execute() { }
             public override void Exit() { }
@@ -123,6 +145,8 @@ public class MTRSceneController : MonoBehaviour
             IEnumerator EnterStateCoroutine()
             {
                 cameraController.SetPlayerAsFollowTarget();
+
+                playerController.Input.SetAllInputsEnabled(true);
 
                 yield return new WaitForSeconds(0.5f);
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -230,27 +254,7 @@ public class MTRSceneController : MonoBehaviour
         }
         #endregion
 
-        #region ================== [ LOADING STATE ] ==================
-        public class LoadingState : BaseState
-        {
-            public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
-            public override void Enter()
-            {
-                Debug.Log("Loading State Enter");
-            }
-
-            public override void Exit()
-            {
-                Debug.Log("Loading State Exit");
-            }
-
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.CHOICEMODE);
-            }
-        }
-        #endregion
 
         #region ================== [ CHOICE MODE STATE ] ==================
         public class ChoiceModeState : BaseState

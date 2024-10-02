@@ -46,7 +46,7 @@ public class MTRPlayerInput : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            MTRSceneManager.Instance.Controller.StateMachine.OnStateChanged += OnSceneStateChanged;
+            MTRSceneManager.Instance.SceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
         }
     }
 
@@ -75,7 +75,7 @@ public class MTRPlayerInput : MonoBehaviour
 
     public void OnDestroy()
     {
-        MTRSceneManager.Instance.Controller.StateMachine.OnStateChanged -= OnSceneStateChanged;
+        MTRSceneManager.Instance.SceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
         SetAllInputsEnabled(false);
     }
 

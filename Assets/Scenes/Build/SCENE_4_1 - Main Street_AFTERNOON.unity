@@ -163,7 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &16406462
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &169041891
 Mesh:
   m_ObjectHideFlags: 0
@@ -1103,18 +1101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.misra_cutscene_afternoon
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 0}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -1123,12 +1113,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.misra_cutscene_afternoon
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 0}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.misra_cutscene_afternoon
   onStart: 1
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX: []
 --- !u!212 &189929983
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1289,7 +1288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1001 &266664739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3523,7 +3521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &394558200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3568,7 +3565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &411744000
 Mesh:
   m_ObjectHideFlags: 0
@@ -3783,18 +3779,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.laundromat_closed_sign
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -2047507908, guid: 9519f6411d5d1074abb99a9ad71d3886, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -3803,14 +3791,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.laundromat_closed_sign
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -2047507908, guid: 9519f6411d5d1074abb99a9ad71d3886, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.laundromat_closed_sign
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.4
-  - 0.55
 --- !u!61 &422330612
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4125,18 +4120,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.apartments_for_lease_sign
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -1312443014, guid: 6b9de0320aeb4034ea75ac1ffbc1e128, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -4145,14 +4132,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.apartments_for_lease_sign
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -1312443014, guid: 6b9de0320aeb4034ea75ac1ffbc1e128, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.apartments_for_lease_sign
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.64
-  - 0.73
 --- !u!61 &514381678
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4462,7 +4456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &559192165
 Mesh:
   m_ObjectHideFlags: 0
@@ -4672,7 +4665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!4 &602280144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
@@ -5198,18 +5190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.door_powerup_arcade
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -8708412444254385339, guid: d61dfe5d30384f848a92130347079233, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -5218,14 +5202,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.door_powerup_arcade
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -8708412444254385339, guid: d61dfe5d30384f848a92130347079233, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.door_powerup_arcade
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.62
-  - 0.68
 --- !u!61 &708611314
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5755,7 +5746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!114 &791591206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6026,7 +6016,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &816212638
 Mesh:
   m_ObjectHideFlags: 0
@@ -6798,15 +6787,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2983785582193056432, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149539302904431606, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: _sceneKnot
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149539302904431606, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
+      propertyPath: _interactionStitch
+      value: scene4_1.talk_to_misra
       objectReference: {fileID: 0}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: -826221020, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5007469561755814138, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Size.x
@@ -6814,7 +6811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5007469561755814138, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Size.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5274619019409229800, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7215,7 +7212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &935040590
 GameObject:
   m_ObjectHideFlags: 0
@@ -7265,18 +7261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.clothing_store_closed_sign
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -640611940, guid: 3393f71b39c2a7d4a8807d86880704f3, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -7285,14 +7273,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.clothing_store_closed_sign
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -640611940, guid: 3393f71b39c2a7d4a8807d86880704f3, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.clothing_store_closed_sign
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.42
-  - 0.4
 --- !u!61 &935040593
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7602,7 +7597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &991337403
 Mesh:
   m_ObjectHideFlags: 0
@@ -9778,18 +9772,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.strange_symbol_on_fountain
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 1027975137, guid: e6c395bbee03cd54f874711ab703f7d2, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -9798,14 +9784,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.strange_symbol_on_fountain
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 1027975137, guid: e6c395bbee03cd54f874711ab703f7d2, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.strange_symbol_on_fountain
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.55
-  - 0.55
 --- !u!212 &1081996700
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9950,7 +9943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1103740550
 GameObject:
   m_ObjectHideFlags: 0
@@ -9995,7 +9987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1001 &1116847433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10297,7 +10288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1176836471
 Mesh:
   m_ObjectHideFlags: 0
@@ -11717,7 +11707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1257366179
 Mesh:
   m_ObjectHideFlags: 0
@@ -11927,7 +11916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1272332271
 Mesh:
   m_ObjectHideFlags: 0
@@ -12137,7 +12125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1313807599
 GameObject:
   m_ObjectHideFlags: 0
@@ -12182,7 +12169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1315151198
 Mesh:
   m_ObjectHideFlags: 0
@@ -12887,7 +12873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1335945151
 GameObject:
   m_ObjectHideFlags: 0
@@ -13625,7 +13610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1366059665
 GameObject:
   m_ObjectHideFlags: 0
@@ -13675,18 +13659,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.door_idahome_and_goods
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -5254192346949721912, guid: c8eb5725745dc0e45b4495ea0b3a3803, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -13695,14 +13671,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.door_idahome_and_goods
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -5254192346949721912, guid: c8eb5725745dc0e45b4495ea0b3a3803, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.door_idahome_and_goods
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.5
-  - 0.51
 --- !u!61 &1366059668
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14105,7 +14088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1401059612
 GameObject:
   m_ObjectHideFlags: 0
@@ -14150,7 +14132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1420837489
 Mesh:
   m_ObjectHideFlags: 0
@@ -14360,7 +14341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1443084405
 Mesh:
   m_ObjectHideFlags: 0
@@ -15531,7 +15511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1561219775
 Mesh:
   m_ObjectHideFlags: 0
@@ -15906,7 +15885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1648347555
 Mesh:
   m_ObjectHideFlags: 0
@@ -16116,7 +16094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1659003515
 Mesh:
   m_ObjectHideFlags: 0
@@ -16282,17 +16259,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1665938062 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2945277407265336810, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
-  m_PrefabInstance: {fileID: 926756005}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1688026395
 GameObject:
   m_ObjectHideFlags: 0
@@ -16323,8 +16289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d43cdf4c38083104db3af3d1b5be2d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftBound: -14.4
-  rightBound: 26.6
 --- !u!4 &1688026397
 Transform:
   m_ObjectHideFlags: 0
@@ -16704,7 +16668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &1765656520
 GameObject:
   m_ObjectHideFlags: 0
@@ -16754,18 +16717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.goop_on_fountain
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 2080839062, guid: e9e1efae4d9d1cb4eb21d3a98964d91e, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -16774,14 +16729,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.goop_on_fountain
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 2080839062, guid: e9e1efae4d9d1cb4eb21d3a98964d91e, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.goop_on_fountain
   onStart: 0
   isSpawn: 1
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - 0.99
-  - -0.63
 --- !u!212 &1765656523
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16926,7 +16888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &1807269456
 Mesh:
   m_ObjectHideFlags: 0
@@ -17360,18 +17321,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.lupe_car
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -596871123, guid: 90929c3bffcc0d24a96dd3c604646c0b, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -17380,14 +17333,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.lupe_car
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -596871123, guid: 90929c3bffcc0d24a96dd3c604646c0b, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.lupe_car
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.76
-  - 0.34
 --- !u!61 &1841517922
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17813,18 +17773,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.einab_closed_sign
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -357906369, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -17833,14 +17785,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.einab_closed_sign
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -357906369, guid: 7cae227e4d6907d499b4fc7c955fb197, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.einab_closed_sign
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.52
-  - 0.49
 --- !u!61 &1917758591
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18068,18 +18027,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.door_the_rockin_kettle
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: 8841562180652977627, guid: f1a1596efcd647844bb8fd7525cb5629, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -18088,14 +18039,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.door_the_rockin_kettle
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: 8841562180652977627, guid: f1a1596efcd647844bb8fd7525cb5629, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.door_the_rockin_kettle
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.4
-  - 1
 --- !u!61 &1928793688
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18605,18 +18563,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf3c185c8f84b4193c8c850771d62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data:
-    _name: defaultname
-    _key: scene4_1.diner_closed_sign
-    _layer: Interactable
-    _isRegistered: 1
-    _isPreloaded: 1
-    _isInitialized: 0
-    interactionRequest: {fileID: 11400000, guid: 108394cd657b72e4d9780fb714d8061c, type: 2}
-    _sprite: {fileID: -2047507908, guid: 9519f6411d5d1074abb99a9ad71d3886, type: 3}
-    _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-    _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _currentState: 0
+  _isPreloaded: 0
+  _isRegistered: 0
+  _isInitialized: 0
+  _request: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -18625,14 +18575,21 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
+  _destinations:
+    _items: []
+    _readOnlyKey: 0
+    _readOnlyValue: 0
+  _data:
+    _name: defaultname
+    _key: scene4_1.diner_closed_sign
+    _layer: Interactable
+    _type: 0
+    _sprite: {fileID: -2047507908, guid: 9519f6411d5d1074abb99a9ad71d3886, type: 3}
   _sceneKnot: scene4_1
   _interactionStitch: scene4_1.diner_closed_sign
   onStart: 0
   isSpawn: 0
   _outlineMaterial: {fileID: 0}
-  destinationPointsRelativeX:
-  - -0.39
-  - 0.52
 --- !u!61 &1999746376
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18723,7 +18680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!1 &2006478651 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6171685949738713303, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
@@ -19055,7 +19011,7 @@ PrefabInstance:
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[1]._value
       value: 
-      objectReference: {fileID: 1665938062}
+      objectReference: {fileID: 0}
     - target: {fileID: 3932367194058205592, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: _nearbyInteractables._items.Array.data[2]._value
       value: 
@@ -19067,7 +19023,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -19342,7 +19298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedEntity: {fileID: 0}
 --- !u!43 &2141776519
 Mesh:
   m_ObjectHideFlags: 0

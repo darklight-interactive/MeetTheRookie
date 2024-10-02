@@ -37,9 +37,17 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             return Instance._cameraController;
         }
     }
+    public static MTRPlayerController PlayerController
+    {
+        get
+        {
+            return Instance._playerController = FindFirstObjectByType<MTRPlayerController>();
+        }
+    }
 
     [SerializeField, Expandable] MTRPrefabLibrary _prefabLibrary;
     [SerializeField, ShowOnly] MTRCameraController _cameraController;
+    [SerializeField, ShowOnly] MTRPlayerController _playerController;
 
     public override void Initialize()
     {

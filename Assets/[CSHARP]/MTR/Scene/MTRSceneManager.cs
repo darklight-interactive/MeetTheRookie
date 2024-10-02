@@ -11,6 +11,8 @@ using NaughtyAttributes;
 using System.Linq;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Library;
+using System.Collections;
+
 
 
 
@@ -41,7 +43,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
-    public MTRSceneController Controller => GetComponent<MTRSceneController>();
+    public MTRSceneController SceneController => GetComponent<MTRSceneController>();
     public MTRSceneDataObject SceneDataObject => _sceneDataObject;
     public List<string> SceneNames => _sceneDataObject.SceneNames;
 
@@ -61,18 +63,18 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
         if (activeCameraBounds != null)
         {
-            Controller.CameraController.Rig.SetBounds(activeCameraBounds);
+            SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
         }
     }
 
     public void OnEnable()
     {
-        OnSceneChanged += Controller.OnActiveSceneChanged;
+        OnSceneChanged += SceneController.OnActiveSceneChanged;
     }
 
     public void OnDisable()
     {
-        OnSceneChanged -= Controller.OnActiveSceneChanged;
+        OnSceneChanged -= SceneController.OnActiveSceneChanged;
     }
 
     void OnStoryInitialized(Story story)
@@ -99,7 +101,8 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             return false;
 
         // << LOAD SCENE >>
-        LoadScene(data.Name);
+        IEnumerator asyncLoad = LoadSceneAsyncRoutine(data.Name);
+        StartCoroutine(asyncLoad);
         return true;
     }
 
@@ -167,7 +170,34 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
 #endif
     }
 
+    IEnumerator LoadSceneAsyncRoutine(string sceneToLoad)
+    {
+        // Begin loading the scene asynchronously
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneToLoad);
+        SceneController.StateMachine.GoToState(MTRSceneState.LOADING);
 
+        // Prevent the scene from being activated immediately
+        asyncOperation.allowSceneActivation = false;
+
+        // While the scene is still loading
+        while (!asyncOperation.isDone)
+        {
+            // Output the current progress (0 to 0.9)
+            float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+            Debug.Log("Loading progress: " + (progress * 100) + "%");
+
+            // If the loading is almost done (progress >= 90%), allow activation
+            if (asyncOperation.progress >= 0.9f)
+            {
+                asyncOperation.allowSceneActivation = true;
+
+                yield return new WaitForSeconds(0.5f);
+                SceneController.StateMachine.GoToState(MTRSceneState.INITIALIZE);
+            }
+
+            yield return null;
+        }
+    }
 
     public MTRSceneData GetSceneData(string name)
     {
