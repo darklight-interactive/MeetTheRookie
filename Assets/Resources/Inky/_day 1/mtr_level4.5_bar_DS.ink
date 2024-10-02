@@ -711,7 +711,7 @@ They'll have...
 "I'm joking! I'm joking! Relax!" 
 }
 
-{-  intro.IncorrectColor: 
+{-  scene4_5_DS.IncorrectColor: 
 #name: Misra
 # emote : Misra \| Inquisiting_1
 "So your mind reading powers only apply to lies and not favorite colors? 
