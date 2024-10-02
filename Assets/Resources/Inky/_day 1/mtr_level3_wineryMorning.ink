@@ -166,18 +166,20 @@ TODO SFX door close
     ~ CompleteQuest(visit_barrels)
     ~ SetSpeaker(Speaker.Misra)
     Back in the day, this place really did make good wine.
-    ~ SetSpeaker(Speaker.Lupe)
-    Is any of that wine left in there?
+     ~ SetSpeaker(Speaker.Lupe)
+    It looks like they left a lot of things behind when they closed...
+    Including wine, it seems.
     ~ SetSpeaker(Speaker.Misra)
-    Are you asking if I want to get a drink?
+    Detective!
+    Are you suggesting we taste test a bit?
     ~ SetSpeaker(Speaker.Lupe)
-    ...It would just be a motive, if anyone was looking to take some.
+    Erm, no.
+    I don't drink on the job.
+    I just find it odd that they left so much product behind.
     ~ SetSpeaker(Speaker.Misra)
-    Oh, no. They drained all of it when the Winery closed.
-    ~ SetSpeaker(Speaker.Lupe)
-    I don't drink when I'm on a case.
-    ~ SetSpeaker(Speaker.Misra)
-    I know, I know. Professional, as always.
+    Right, right.
+    Of course.
+    Gotta be professional.
     -> DONE
 
 = door_office

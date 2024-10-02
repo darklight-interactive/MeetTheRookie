@@ -35,6 +35,7 @@
 * [Tell me about this Town.] -> town_history
 * [Tell me about the Winery.] -> winery_closing
 * {IsClueFound(merch_pamphlet)} -> pamphlet
+* {IsQuestComplete(jenny_suspicion) or IsQuestComplete(josh_suspicion) or IsQuestComplete(calvin_suspicion) and IsQuestComplete(roys_suspicion)} [We looked into your tip about those kids over at Power Up.] -> follow_up_with_roy
     
 {IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
         Thank you for your cooperation. 
@@ -43,6 +44,50 @@
         Feel free to look around, if it helps any.
         -> DONE
         }
+
+= follow_up_with_roy
+~SetSpeaker(Speaker.Roy_Rodgerson)
+.
+Ah, you did.
+
+~ SetSpeaker(Speaker.Lupe)
+They weren't incredibly helpful.
+
+~SetSpeaker(Speaker.Roy_Rodgerson)
+That sounds about right.
+
+~SetSpeaker(Speaker.Lupe)
+They didn't admit to anything, but they did give us another potential suspect.
+I wanted to ask if you knew anything about this individual?
+
+~SetSpeaker(Speaker.Roy_Rodgerson)
+I know just about everyone in this town.
+
+~SetSpeaker(Speaker.Lupe)
+Jenkins Tomm?
+
+~SetSpeaker(Speaker.Roy_Rodgerson)
+...
+Ah.
+I see.
+
+~SetSpeaker(Speaker.Lupe)
+Well?
+
+~SetSpeaker(Speaker.Roy_Rodgerson)
+I'm afraid I can't give you very much unbiased information on that man. 
+We had a personal falling out some time ago.
+
+~SetSpeaker(Speaker.Lupe)
+...and?
+
+~SetSpeaker(Speaker.Roy_Rodgerson)
+I won't bring that into your case, Detective.
+It's hardly relevant, and I'd rather not get into that mess.
+-> DONE
+
+
+
 
 = personal_info
 ~ SetSpeaker(Speaker.Roy_Rodgerson)

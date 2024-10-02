@@ -30,7 +30,8 @@ Idk to each their own , just take it away now. -> DONE
     ~ SetSpeaker(Speaker.Misra)
     Thoughts?
     ~ SetSpeaker(Speaker.Lupe)
-    It's obscure. Someone was definitely here, but I can't speak to motive. Who would want to break into an abandoned Winery?
+    It's...obscure. 
+    Someone was definitely here, but I can't speak to motive. Who would want to break into an abandoned Winery?
     ~ SetSpeaker(Speaker.Misra)
     That sounds like it's time for some profiling! We need a suspect list.
     ~ SetSpeaker(Speaker.Lupe)
@@ -64,7 +65,77 @@ Idk to each their own , just take it away now. -> DONE
 
 
 = 4_1
+~ SetSpeaker(Speaker.Lupe)
+* Any updates regarding the blocked road? -> updates
+* Jeez, where is everyone? -> where_is_everyone
+* {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)} The teens mentioned someone named Jenkins? -> someone_named_jenk
+
+= someone_named_jenk
+.
+~ SetSpeaker(Speaker.Lupe)
+Oh, yeah, Jenkins.
+He's a local, too.
+I really don't know him that well.
+Roy used to tell me to steer clear.
+Said he was "trouble with legs".
+
+~SetSpeaker(Speaker.Lupe)
+Interesting...
+Could be worth asking about.
+-> DONE
+
+= updates
 ~ SetSpeaker(Speaker.Misra)
-Where to next, Detective?
-    -> DONE
+.
+None yet! 
+But I assure you, it's my second most urgent thing to take care of.
+~ SetSpeaker(Speaker.Lupe)
+...
+The first most being this case?
+
+~ SetSpeaker(Speaker.Misra)
+Yup! 
+
+~ SetSpeaker(Speaker.Lupe)
+Sheriff Misra...
+Trust me, I of all people can understand putting your work first.
+But I also need to get back on the road, and back to <i>my case</i> and my life.
+Is there any way you can bump the priority on that?
+
+~SetSpeaker(Speaker.Misra)
+...
+Right.
+I know you want to get back to your own life.
+I'm sorry you're stuck here, really.
+...
+I'll make sure they're focused on clearing the tree.
+
+~SetSpeaker(Speaker.Lupe)
+Thank you, Sheriff.
+
+~SetSpeaker(Speaker.Misra)
+You're welcome. 
+It's uh, the least I can try to do.
+And really,
+call me Misra.
+
+~SetSpeaker(Speaker.Lupe)
+Thank you, Misra.
+-> DONE
+
+
+= where_is_everyone
+~SetSpeaker(Speaker.Lupe)
+.
+This place is practically a ghost town.
+
+~ SetSpeaker(Speaker.Misra)
+Yeah, it's a bit of a slow day!
+
+~SetSpeaker(Speaker.Lupe)
+Right...
+-> DONE
+
+
+//Where to next, Detective?
 

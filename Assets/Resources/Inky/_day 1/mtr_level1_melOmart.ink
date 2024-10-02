@@ -166,11 +166,15 @@ TODO SFX Door close
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $76.45.
         ~ SetSpeaker(Speaker.Lupe)
-        Finally
+        Finally.
         ~ CompleteQuest(pay_for_gas)
         // TODO CRASHING TREE NOISE 
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
         What was that? 
+        ~ SetSpeaker(Speaker.Beth)
+        Idk. The wind?
+        ~ SetSpeaker(Speaker.Lupe)
+        Did..you just abbreviate <i>I don't know?</i>?
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Beth)
@@ -238,7 +242,7 @@ TODO SFX door close
 
 = mel
 {IsClueFound(cashreg_fix) == false:
-    ~ SetSpeaker(Speaker.Lupe)
+* Hey. Are you the manager?
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
     Mel's the name. What are you doing in here?
