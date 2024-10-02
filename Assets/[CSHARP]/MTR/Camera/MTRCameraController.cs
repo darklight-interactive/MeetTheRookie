@@ -8,17 +8,35 @@ using UnityEngine;
 [RequireComponent(typeof(MTRCameraRig))]
 public class MTRCameraController : MonoBehaviour
 {
+    MTRCameraRig _rig;
+
     InkyStoryManager StoryManager => InkyStoryManager.Instance;
     List<string> _speakerList => InkyStoryManager.SpeakerList;
-    public MTRCameraRig Rig => GetComponent<MTRCameraRig>();
+    public MTRCameraRig Rig
+    {
+        get
+        {
+            if (_rig == null)
+            {
+                _rig = GetComponent<MTRCameraRig>();
+            }
+            return _rig;
+        }
+    }
+
 
     [Dropdown("_speakerList"), SerializeField, ShowOnly] public string currentSpeaker;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         // Observe the current speaker variable in the story
         StoryManager.OnSpeakerSet += SetSpeakerTarget;
+    }
+
+    void OnDestroy()
+    {
+        StoryManager.OnSpeakerSet -= SetSpeakerTarget;
     }
 
     [Button]
@@ -48,5 +66,11 @@ public class MTRCameraController : MonoBehaviour
                 Rig.SetFollowTarget(interactable.transform);
             }
         }
+    }
+
+    public void SetPlayerAsFollowTarget()
+    {
+        MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
+        Rig.SetFollowTarget(player.transform);
     }
 }

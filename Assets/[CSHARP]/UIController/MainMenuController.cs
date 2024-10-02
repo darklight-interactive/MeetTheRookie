@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 public class MainMenuController : UXML_UIDocumentObject
 {
-    MTR_SceneManager sceneManager;
+    MTRSceneManager sceneManager;
     SelectableButton playButton;
     SelectableButton optionsButton;
     SelectableButton quitButton;
@@ -18,7 +18,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
     public void Awake()
     {
-        sceneManager = MTR_SceneManager.Instance as MTR_SceneManager;
+        sceneManager = MTRSceneManager.Instance as MTRSceneManager;
         Initialize(preset);
     }
 
@@ -73,7 +73,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
     void PlayButtonAction()
     {
-        MTR_SceneData scene = sceneManager.GetSceneDataByKnot("scene1_0");
+        MTRSceneData scene = sceneManager.GetSceneDataByKnot("scene1_0");
         sceneManager.LoadScene(scene.Name);
     }
 

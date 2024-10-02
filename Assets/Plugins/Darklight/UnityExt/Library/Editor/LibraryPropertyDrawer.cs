@@ -260,54 +260,66 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
 
-
         void InvokeLibraryMethod(string methodName, out object returnValue, object[] parameters = null)
         {
             returnValue = null;
 
             SerializedProperty property = _libraryProperty;
 
-
             // Get the target object (the script holding the Library<,> field)
             UnityEngine.Object targetObject = property.serializedObject.targetObject;
 
-            // Get the type of the target object (MonoBehaviour)
+            // Get the type of the target object (MonoBehaviour or its subclass)
             Type targetType = targetObject.GetType();
 
-            // Find the specific field that matches the SerializedProperty
-            FieldInfo libraryField = targetType.GetField(property.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            // Traverse the class hierarchy to find the field if it's inherited
+            FieldInfo libraryField = null;
+            Type currentType = targetType;
+
+            // Traverse class hierarchy to look for the field that matches the SerializedProperty
+            while (currentType != null && libraryField == null)
+            {
+                libraryField = currentType.GetField(property.name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                currentType = currentType.BaseType;
+            }
 
             if (libraryField != null)
             {
-                // Get the instance of Library<,> (or its derived type) from the field
+                // Get the instance of LibraryBase (or its derived type) from the field
                 object libraryInstance = libraryField.GetValue(targetObject);
 
-                // Ensure that the instance is a subclass of LibraryBase
-                if (libraryInstance != null && libraryInstance.GetType().IsSubclassOf(typeof(LibraryBase)))
+                if (libraryInstance != null && typeof(LibraryBase).IsAssignableFrom(libraryInstance.GetType()))
                 {
-                    // Get the method information from the Library<,> instance
+                    // Get the method information from the Library<,> or its subclass instance
                     MethodInfo methodInfo = libraryInstance.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
                     if (methodInfo != null)
                     {
-                        // Invoke the method on the specific Library<,> type instance
-                        returnValue = methodInfo.Invoke(libraryInstance, parameters);
+                        try
+                        {
+                            // Invoke the method on the specific LibraryBase or its subclass instance
+                            returnValue = methodInfo.Invoke(libraryInstance, parameters);
 
-                        // Apply modified properties to ensure they are serialized
-                        property.serializedObject.ApplyModifiedProperties();
+                            // Apply modified properties to ensure they are serialized
+                            property.serializedObject.ApplyModifiedProperties();
 
-                        // Mark the target object as dirty to ensure the changes are saved and visible
-                        EditorUtility.SetDirty(targetObject);
+                            // Mark the target object as dirty to ensure the changes are saved and visible
+                            EditorUtility.SetDirty(targetObject);
 
-                        // Force the editor to repaint the Inspector
-                        property.serializedObject.UpdateIfRequiredOrScript();
-                        property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
-                        EditorApplication.QueuePlayerLoopUpdate(); // Repaints Scene view if necessary
-                        Debug.Log($"Method '{methodName}' called on {targetObject.name}" +
-                            $" with Library<,> instance '{libraryInstance.GetType().Name}'.", targetObject);
+                            // Force the editor to repaint the Inspector
+                            property.serializedObject.UpdateIfRequiredOrScript();
+                            property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                            EditorApplication.QueuePlayerLoopUpdate(); // Repaints Scene view if necessary
+                            Debug.Log($"Method '{methodName}' called on {targetObject.name}" +
+                                $" with LibraryBase instance '{libraryInstance.GetType().Name}'.", targetObject);
 
-                        // Force a repaint of the inspector window
-                        EditorWindow.focusedWindow?.Repaint();
+                            // Force a repaint of the inspector window
+                            EditorWindow.focusedWindow?.Repaint();
+                        }
+                        catch (TargetInvocationException e)
+                        {
+                            Debug.LogError($"Error invoking method '{methodName}': {e.InnerException?.Message}", targetObject);
+                        }
                     }
                     else
                     {
@@ -316,14 +328,15 @@ namespace Darklight.UnityExt.Library.Editor
                 }
                 else
                 {
-                    Debug.LogWarning($"The field '{property.name}' is not a Library<,> instance or its subclass.");
+                    Debug.LogWarning($"The field '{property.name}' is not a LibraryBase instance or its subclass.");
                 }
             }
             else
             {
-                Debug.LogWarning($"Field '{property.name}' not found on type '{targetType}'.");
+                Debug.LogWarning($"Field '{property.name}' not found on type '{targetType}' or its base classes.");
             }
         }
+
 
 
 

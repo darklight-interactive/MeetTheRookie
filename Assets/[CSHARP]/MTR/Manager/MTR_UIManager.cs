@@ -45,7 +45,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
 
-    private GameUIController _gameUI;
+    private PauseMenuController _gameUI;
     [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
 
 
@@ -57,19 +57,19 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    public GameUIController gameUIController
+    public PauseMenuController gameUIController
     {
         get
         {
             // Find the GameUIController if it exists
             if (_gameUI != null)
                 return _gameUI;
-            _gameUI = FindAnyObjectByType<GameUIController>();
+            _gameUI = FindAnyObjectByType<PauseMenuController>();
             if (_gameUI != null)
                 return _gameUI;
 
             // Create a new GameUIController if it doesn't
-            _gameUI = UXML_Utility.CreateUIDocumentObject<GameUIController>(_gameUIPreset);
+            _gameUI = UXML_Utility.CreateUIDocumentObject<PauseMenuController>(_gameUIPreset);
             _gameUI.transform.SetParent(transform);
             return _gameUI;
         }
@@ -92,6 +92,13 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
+    public MTRSceneTransitionController SceneTransitionController
+    {
+        get
+        {
+            return FindAnyObjectByType<MTRSceneTransitionController>();
+        }
+    }
 
 
     #region ------ [[ DIALOGUE BUBBLE ]] ------------------------ >>

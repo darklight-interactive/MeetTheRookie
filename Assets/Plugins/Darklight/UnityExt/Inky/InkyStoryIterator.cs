@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditorInternal;
 using System.Linq;
 using UnityEngine.XR;
+using System;
 
 namespace Darklight.UnityExt.Inky
 {
@@ -13,14 +14,15 @@ namespace Darklight.UnityExt.Inky
     /// This class is responsible for iterating through the Ink story and handling the different states of the story.
     /// It implements a simple state machine to track the current state of the story.
     /// </summary>
+    [Serializable]
     public class InkyStoryIterator : SimpleStateMachine<InkyStoryIterator.State>
     {
         const string PREFIX = "[InkyStoryIterator]";
         InkyStoryObject _storyObject;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
-        string _currentStoryKnot;
-        string _currentStoryDialogue;
+        [SerializeField, ShowOnly] string _currentStoryKnot;
+        [SerializeField, ShowOnly] string _currentStoryDialogue;
         List<Choice> _currentChoices;
 
 

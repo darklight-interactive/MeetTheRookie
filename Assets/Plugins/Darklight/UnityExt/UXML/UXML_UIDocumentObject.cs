@@ -27,6 +27,7 @@ namespace Darklight.UnityExt.UXML
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
 
+        public void Awake() => Initialize(preset);
         public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
         {
             this.preset = preset;
@@ -51,7 +52,7 @@ namespace Darklight.UnityExt.UXML
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
-            //Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
+            Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
         }
 
         /// <summary>
@@ -133,22 +134,24 @@ namespace Darklight.UnityExt.UXML
     {
         SerializedObject _serializedObject;
         UXML_UIDocumentObject _script;
-        private void OnEnable()
+        public virtual void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
             _script = (UXML_UIDocumentObject)target;
+            _script.Initialize(_script.preset);
         }
 
         public override void OnInspectorGUI()
         {
+            _script = (UXML_UIDocumentObject)target;
             serializedObject.Update();
+
+            base.OnInspectorGUI();
 
             if (GUILayout.Button("Initialize"))
             {
                 _script.Initialize(_script.preset);
             }
-
-            base.OnInspectorGUI();
 
             serializedObject.ApplyModifiedProperties();
         }

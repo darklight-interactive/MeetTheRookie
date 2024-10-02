@@ -11,7 +11,7 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     // Overwrite the generalSFX property to return the instance of the MTR_GeneralSFX class
     private MTR_GeneralSFX sfx => GeneralSFX as MTR_GeneralSFX;
-    private MTR_SceneManager sceneManager => MTR_SceneManager.Instance as MTR_SceneManager;
+    private MTRSceneManager sceneManager => MTRSceneManager.Instance as MTRSceneManager;
 
     public void StartFootstepEvent()
     {

@@ -4,6 +4,8 @@ using UnityEngine;
 using Darklight.UnityExt.Editor;
 using NaughtyAttributes;
 using Darklight.UnityExt.Utility;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -28,10 +30,13 @@ public class MTRCameraRig : MonoBehaviour
     [SerializeField] bool _lerpInEditor;
     [SerializeField] Transform _followTarget;
     [SerializeField] Camera _mainCamera;
+    [SerializeField, ShowOnly] List<Camera> _overlayCameras = new List<Camera>();
     [SerializeField, Expandable] MTRCameraRigSettings _settings;
     [SerializeField, Expandable] MTRCameraRigBounds _bounds;
 
     // << PROPERTIES >> -------------------------------------------------
+    public Transform FollowTarget => _followTarget;
+
     public float CameraZPos => Mathf.Abs(_settings.zPosOffset);
     public float CameraFOV => _settings.fov;
     public float CameraAspect => _mainCamera.aspect;
@@ -226,7 +231,20 @@ public class MTRCameraRig : MonoBehaviour
     #region ( UPDATE ) <PUBLIC_METHODS> ================================================
     void UpdateCameraRig(bool useLerp)
     {
+        // Update the main camera
+        UpdateCamera(_mainCamera, useLerp);
 
+        // Find all overlay cameras in the main camera's hierarchy
+        _overlayCameras = _mainCamera.GetComponentsInChildren<Camera>().ToList();
+        foreach (Camera overlayCamera in _overlayCameras)
+        {
+            if (overlayCamera == _mainCamera) continue;
+            UpdateCamera(overlayCamera, useLerp);
+        }
+    }
+
+    void UpdateCamera(Camera cam, bool useLerp)
+    {
         // << CALCULATE TARGET VALUES >> -------------------------------------
         _targetPosition = CalculateTargetPosition();
         _targetRotation = CalculateTargetRotation();
@@ -236,26 +254,27 @@ public class MTRCameraRig : MonoBehaviour
         if (useLerp)
         {
             // ( Lerp Camera Position ) ---------------------------------------
-            _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, _targetPosition, _settings.positionLerpSpeed * Time.deltaTime);
+            cam.transform.position = Vector3.Lerp(_mainCamera.transform.position, _targetPosition, _settings.positionLerpSpeed * Time.deltaTime);
 
             // ( Slerp Camera Rotation ) ---------------------------------------
-            _mainCamera.transform.rotation = Quaternion.Slerp(_mainCamera.transform.rotation, _targetRotation, _settings.rotationLerpSpeed * Time.deltaTime);
+            cam.transform.rotation = Quaternion.Slerp(_mainCamera.transform.rotation, _targetRotation, _settings.rotationLerpSpeed * Time.deltaTime);
 
             // ( Lerp Camera Field of View ) ---------------------------------
-            _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _targetFOV, _settings.fovLerpSpeed * Time.deltaTime);
+            cam.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _targetFOV, _settings.fovLerpSpeed * Time.deltaTime);
         }
         else
         {
             // ( Set Camera Position ) ---------------------------------------
-            _mainCamera.transform.position = _targetPosition;
+            cam.transform.position = _targetPosition;
 
             // ( Set Camera Rotation ) ---------------------------------------
-            _mainCamera.transform.rotation = _targetRotation;
+            cam.transform.rotation = _targetRotation;
 
             // ( Set Camera Field of View ) ---------------------------------
-            _mainCamera.fieldOfView = _targetFOV;
+            cam.fieldOfView = _targetFOV;
         }
     }
+
     #endregion
 
     #region ( HANDLERS ) <PUBLIC_METHODS> ================================================
@@ -263,6 +282,12 @@ public class MTRCameraRig : MonoBehaviour
     {
         _followTarget = target;
     }
+
+    public void SetBounds(MTRCameraRigBounds bounds)
+    {
+        _bounds = bounds;
+    }
+
     #endregion
 
     #region ( GIZMOS ) <PRIVATE_METHODS> ================================================

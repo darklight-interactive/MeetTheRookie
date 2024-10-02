@@ -5,6 +5,7 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Behaviour;
 using Ink.Runtime;
 using UnityEngine;
+using NaughtyAttributes;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,16 +17,9 @@ namespace Darklight.UnityExt.Inky
     /// </summary>
     public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
-        public static InkyStoryIterator Iterator { get; private set; }
-
-        public static InkyStoryObject GlobalStoryObject
-        {
-            get { return Instance._globalStoryObject; }
-        }
-
-        /// <summary>
-        /// List of all the speakers in the Inky Story.
-        /// </summary>
+        public static Ink.Runtime.Story GlobalStory => Instance._globalStoryObject.StoryValue;
+        public static InkyStoryObject GlobalStoryObject => Instance._globalStoryObject;
+        public static InkyStoryIterator Iterator => Instance._iterator;
         public static List<string> SpeakerList
         {
             get
@@ -35,26 +29,14 @@ namespace Darklight.UnityExt.Inky
                 return Instance._speakerList;
             }
         }
-
-        /// <summary>
-        /// List of all of the knot names in the Inky Story.
-        /// </summary>
-        public static List<string> GlobalKnotList
-        {
-            get { return Instance._globalKnotList; }
-        }
-
-        public static string CurrentSpeaker
-        {
-            get { return Instance._currentSpeaker; }
-        }
+        public static string CurrentSpeaker => Instance._currentSpeaker;
 
         public delegate void StoryInitialized(Story story);
         public event StoryInitialized OnStoryInitialized;
 
-        [SerializeField] InkyStoryObject _globalStoryObject;
+        [SerializeField, Expandable] InkyStoryObject _globalStoryObject;
+        [SerializeField] InkyStoryIterator _iterator;
         [SerializeField, ShowOnly] List<string> _speakerList;
-        [SerializeField, ShowOnly] List<string> _globalKnotList;
         [SerializeField, ShowOnly] string _currentSpeaker;
 
         // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
@@ -103,11 +85,10 @@ namespace Darklight.UnityExt.Inky
             _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
             //Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
-            _globalKnotList = _globalStoryObject.KnotNameList;
-            //Debug.Log($"{Prefix} >> Global Knots Count : {GlobalKnots.Count}");
+            Story story = _globalStoryObject.StoryValue; // << GET STORY OBJECT >>
 
             // << OBSERVE VARIABLES >>
-            _globalStoryObject.StoryValue.ObserveVariable(
+            story.ObserveVariable(
                 "CURRENT_SPEAKER",
                 (string varName, object newValue) =>
                 {
@@ -117,7 +98,7 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
-            _globalStoryObject.StoryValue.ObserveVariable(
+            story.ObserveVariable(
                 "MAIN_QUEST",
                 (string varName, object newValue) =>
                 {
@@ -126,7 +107,7 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
-            _globalStoryObject.StoryValue.ObserveVariable(
+            story.ObserveVariable(
                 "ACTIVE_QUEST_CHAIN",
                 (string varName, object newValue) =>
                 {
@@ -135,7 +116,7 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
-            _globalStoryObject.StoryValue.ObserveVariable(
+            story.ObserveVariable(
                 "COMPLETED_QUESTS",
                 (string varName, object newValue) =>
                 {
@@ -144,7 +125,7 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
-            _globalStoryObject.StoryValue.ObserveVariable(
+            story.ObserveVariable(
                 "GLOBAL_KNOWLEDGE",
                 (string varName, object newValue) =>
                 {
@@ -153,13 +134,11 @@ namespace Darklight.UnityExt.Inky
                 }
             );
 
+            // << CREATE ITERATOR >> ------------------------------------ >>
+            _iterator = new InkyStoryIterator(_globalStoryObject);
 
-
-            // << INITIALIZE STORY ITERATOR >>
-            Iterator = new InkyStoryIterator(_globalStoryObject);
-
-            Debug.Log($"{Prefix} >> Initialized Inky Story Manager.");
-            OnStoryInitialized?.Invoke(_globalStoryObject.StoryValue);
+            Debug.Log($"{Prefix} >> Initialized Inky Story Manager with Story: {_globalStoryObject.name} {story}");
+            OnStoryInitialized?.Invoke(story);
         }
 
         object QuestStarted(object[] args)
