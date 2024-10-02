@@ -11,10 +11,10 @@ public class SceneTransition : UXML_UIDocumentObject
     public bool isComplete;
 
     // Start is called before the first frame update
-    public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
         // Initialize the base class
-        base.Initialize(preset, tags);
+        base.Initialize(preset, clonePanelSettings);
 
         textlabel = ElementQuery<Label>();
 

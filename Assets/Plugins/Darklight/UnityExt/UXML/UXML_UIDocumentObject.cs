@@ -26,7 +26,7 @@ namespace Darklight.UnityExt.UXML
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
-        public virtual void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
+        public virtual void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
         {
             this.preset = preset;
             if (preset == null)
@@ -36,22 +36,29 @@ namespace Darklight.UnityExt.UXML
             }
 
             document.visualTreeAsset = preset.visualTreeAsset;
-            document.panelSettings = preset.panelSettings;
 
-            /*
-            // Create a new PanelSettings instance
-            PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+            if (clonePanelSettings)
+            {
 
-            // Copy properties from the original PanelSettings to the new one
-            CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
-            document.panelSettings = clonedPanelSettings;
-            */
+                // Create a new PanelSettings instance
+                PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+
+                // Copy properties from the original PanelSettings to the new one
+                CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
+                document.panelSettings = clonedPanelSettings;
+            }
+            else
+            {
+                document.panelSettings = preset.panelSettings;
+            }
+
 
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
             Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
         }
+
 
         /// <summary>
         /// Query the root element for a VisualElement of the given type with an optional tag or class.

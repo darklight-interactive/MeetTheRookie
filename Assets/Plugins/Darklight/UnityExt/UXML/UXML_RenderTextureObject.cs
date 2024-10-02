@@ -34,16 +34,11 @@ namespace Darklight.UnityExt.UXML
 #endif
         }
 
-        public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
-        {
-            this.Initialize(preset, tags, _material, _renderTexture);
-        }
-
-        public void Initialize(UXML_UIDocumentPreset preset, string[] tags, Material material, RenderTexture renderTexture)
+        public void Initialize(UXML_UIDocumentPreset preset, Material material, RenderTexture renderTexture, bool clonePanelSettings = false)
         {
             _material = material;
             _renderTexture = renderTexture;
-            base.Initialize(preset, tags);
+            base.Initialize(preset, clonePanelSettings);
 
             // Create a quad mesh child
             if (_quad == null || _meshRenderer == null)

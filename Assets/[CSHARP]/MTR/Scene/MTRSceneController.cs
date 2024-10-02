@@ -95,7 +95,16 @@ public class MTRSceneController : MonoBehaviour
             protected InternalStateMachine stateMachine;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
-            protected MTRSceneTransitionController transitionController => MTR_UIManager.Instance.SceneTransitionController;
+            protected MTRSceneTransitionController transitionController
+            {
+                get
+                {
+                    MTRSceneTransitionController controller = sceneController.UIManager.SceneTransitionController;
+                    if (controller == null)
+                        controller = FindFirstObjectByType<MTRSceneTransitionController>();
+                    return controller;
+                }
+            }
             public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
@@ -151,7 +160,7 @@ public class MTRSceneController : MonoBehaviour
                 playerController.Input.SetAllInputsEnabled(true);
                 yield return new WaitForSeconds(0.5f);
 
-                transitionController.StartFadeOut();
+                //transitionController.StartFadeOut();
 
                 yield return new WaitForSeconds(0.5f);
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -257,7 +266,6 @@ public class MTRSceneController : MonoBehaviour
                 StateMachine.GoToState(MTRSceneState.LOADING);
             }
 
-            IEnumerator
         }
         #endregion
 
