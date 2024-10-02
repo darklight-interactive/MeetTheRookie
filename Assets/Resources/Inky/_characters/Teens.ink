@@ -20,13 +20,10 @@
 
 = jenny 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
-    {
-    
-    {IsQuestComplete(jenny_suspicion): //after jenny has voiced suspicion, this is her FINAL closing statement in the arcade 
+    - IsQuestComplete(jenny_suspicion): //after jenny has voiced suspicion, this is her FINAL closing statement in the arcade 
         ~ SetSpeaker(Speaker.Jenny)
         {Ugh! I just lost the level. I've got to focus, leave me alone.| I'm clearly busy. | See ya. } //END OF ARCADE INTERACTIONS
          -> DONE
-    }
         
     //- askedJennysQuestions():
         -> jenny_suspects
@@ -86,7 +83,6 @@
         -> DONE 
     }
 }
-    }
 = jenny_questions
     * [Tell me about Kettle Rock.] -> KR_Jenny
     * [The Old Winery on the hill...] -> winery_jenny
