@@ -16,15 +16,15 @@
 # name: description
 <i>You sit on the hard bar stool and lean against the wooden table, trying to avoid a splinter from the old wood. </i>
 
-<i>Irene looks at you expectantly, waiting for you to order a drink. </i>
+<i>Irene looks at you, awaiting for you to order a drink. </i>
 
 # name: Lupe
 # emote : Lupe \| Neutral_2
 
 "Can I get..." 
-+[A whiskey, neat.] -> MisraOrder
-+[A whiskey on the rocks.] -> MisraOrder 
-+[An Old Fashioned.] -> MisraConfused 
++["A whiskey, neat"] -> MisraOrder
++["A whiskey on the rocks"] -> MisraOrder 
++["An Old Fashioned"] -> MisraConfused 
 
 = MisraConfused
 # name: Misra 
@@ -59,7 +59,7 @@
 
 <i>Misra lightly giggles to themselves.</i>
 
-{ tease_level > sincerity_level: <i> You let out a light puff of air from your nose. </i> | -> MisraOrder }
+{ tease_level > sincerity_level: <i> And let out a light puff of air from your nose </i> | -> MisraOrder }
 
 -> MisraOrder
 
@@ -67,7 +67,7 @@
 
 #name: Misra
 # emote : Misra \| Inquisiting_1
-"Hmmmmm." 
+"Hmmmmm" 
 
 #name: Lupe
 # emote : Lupe \| Neutral_2
@@ -77,7 +77,7 @@
 "I don't know about that, you seem predictable." 
 
 #name: Lupe 
-"No, I'm not."
+"No I'm not."
 
 #name: Misra 
 # emote : Misra \| Neutral_1
@@ -107,11 +107,10 @@
 
 <i>They hit the table with a drum roll.</i>
 
-#name: Misra 
 "Purple!!" 
 
 #name: Lupe
-"..."
+...
 
 #name: Misra 
 # emote : Misra \| Nervous_1
@@ -119,11 +118,13 @@
 
 #name: Lupe
 # emote : Lupe \| Neutral_2
-"Yes." 
+"Yeah." 
 
 #name: Misra 
 # emote : Misra \| Neutral_1
 "Ha ha!! Gotcha!!" 
+
+<i> How did they know? </i> 
 
 #name: Lupe
 { tease_level > sincerity_level:  "Lucky guess." | "Alright." }
@@ -141,8 +142,10 @@
 { tease_level > sincerity_level:  "Oh ok! C'mon, you're not going to get it right." | "Sure!" }
 
 +["Green."] -> CorrectColor 
-+ ["Blue."] -> IncorrectColor 
-+["Orange."] -> IncorrectColor
++ "Blue." 
+-> IncorrectColor 
++"Orange." 
+-> IncorrectColor
 
 =CorrectColor
 ~ tease_level++
@@ -209,8 +212,8 @@
 =MisraOrder
 ~ tease_level++
 <i>You see Misra prepare to order.</i>
-+[Offer to pay.] -> offerToPay
-+[Don't offer.] -> MisraOrdersForThemselves
++[Offer to pay] -> offerToPay
++[Don't offer] -> MisraOrdersForThemselves
 
 = offerToPay 
 #name: Lupe 
@@ -224,17 +227,15 @@
 #name: Lupe
 " I insist..." 
 
-{- color:
-#name: Lupe
+{- color: 
 "A bet is a bet. You guessed my favorite color, and now I need to pay my end of the bargin."
 - else: 
-#name: Lupe
-"It's the least I can do." 
+"You've been too kind, it's the least I can do." 
 } 
 
-<i>Irene meets eyes with you.</i>
-+[Wait for Misra to order.] -> MisraOrdersForThemselves
-+[Attempt to guess their drink.] -> GuessMisrasOrder 
+<i> Irene meets eyes with you. </i>
++[Wait for Misra to order] -> MisraOrdersForThemselves
++[Attempt to guess their drink] -> GuessMisrasOrder 
 
 =MisraOrdersForThemselves
 <i>You look over at Misra. </i>
@@ -255,9 +256,9 @@
 
 =GuessMisrasOrder
 They'll have...
-+[An Old Fashioned.] -> guessDrinkRight 
-+[A Cosmopolitan.] -> guessDrinkWrong 
-+[A Lemon Drop.] -> guessDrinkWrong
++[An Old Fashioned] -> guessDrinkRight 
++[A Cosmopolitan] -> guessDrinkWrong 
++[Lemon Drop] -> guessDrinkWrong
 
 =guessDrinkRight
 # emote : Lupe \| Neutral_2
@@ -325,7 +326,7 @@ They'll have...
 ==questions==
 *["Roy seems nice."] -> Roy
 *["Who are the 'goats'?] -> Bachitan
-*[Look at phone.] -> Thelton
+*[Look at phone] -> Thelton
 *["Those teens..."] -> Teens
 *-> WhatNow
 
@@ -339,7 +340,12 @@ They'll have...
 "You said he's your uncle?" 
 
 #name: Misra
-"Yep! Well, technically no. He's my godfather." 
+
+"Yep!"
+
+"Well..."
+
+"Technically no. He's my godfather." 
 
 #name: Lupe 
 "Ah, I see." 
@@ -362,7 +368,6 @@ They'll have...
 # emote : Misra \| Nervous_1
 "No worries! They're not dead or anything like that." 
 
-#name: Misra 
 "They just moved over to Montana, that's all!"
 
 #name: Lupe 
@@ -378,31 +383,31 @@ They'll have...
 # emote : Misra \| Neutral_1
 "Mostly thanks to Roy, though." 
 
-#name: Misra 
 "I don't know where I'd be without him!" 
 -> RoyQuestions
 
 =old 
 #name: Misra 
-# emote : Misra \| Neutral_1
-"27" 
+# emote : Misra \| Nervous_1
+"Oh! Oh they didn't abandoned me as a child or anything like that!"
+"I was 27 at the time."
+"Don't worry, my backstory isn't THAT tragic!" 
 
 #name: Lupe 
-"Wow." 
 +["Why didn't you leave with them?"] -> leaveWithThem 
 +["Seems like you're doing well on your own."] -> yourOwn 
 
 = leaveWithThem
 #name: Misra 
+# emote : Misra \| Curious_1
 "..." 
 
 #name: Misra 
+# emote : Misra \| Nervous_1
 "Because I still have hope for this town." 
 
-# emote : Misra \| Nervous_1
 "I know, I know...sounds crazy!" 
 
-#name: Misra 
 "People keep leaving, thinking that this is some sort of crazy downfall." 
 
 #name: Lupe
@@ -413,22 +418,18 @@ They'll have...
 # emote : Misra \| Surprised_2
 "No way! There has to be some way to get back on our feet. Kettle Rock has done it multiple times in the past, and we can do it again!"
 
-#name: Misra
 # emote : Misra \| Nervous_1
-"If I have to be the only person who truly believes that, then so be it." 
+"Even if I have to be the only person working towards that, then so be it." 
 
-#name: Misra
 # emote : Misra \| Fright_2
 "I just..." 
 
-#name: Misra
 "I just wish more people cared about our home, you know?" 
 
 #name: Misra 
 # emote : Misra \| Fright_2
 "Augh, I'm being a debby downer."
 
-#name: Misra
 "You know what, we'll recover! I just know it!!" 
 
 ->RoyQuestions
@@ -436,12 +437,14 @@ They'll have...
 =buisness 
 #name: Misra  
 # emote : Misra \| Nervous_1
-"Oh yeah...but that's pretty normal around these parts." 
+"Oh yeah...yeah." 
 
-#name: Misra  
+"Things have been rather rough around here, even for him. But...I don't know." 
+
 "We're not really the most wealthy town, at least not anymore." 
 
-+["But he's offering to buy out businesses?"] -> buyOut 
+#name: Lupe 
++["But he's offering to buy out buisnesses?"] -> buyOut 
 +["Sorry to hear that."] -> itsAlright 
 
 = itsAlright
@@ -450,9 +453,42 @@ They'll have...
 -> RoyQuestions
 
 = buyOut 
+
+# emote : Misra \| Fright_2
+"Yeah...he's been...planning for a while." 
+
+#name: Lupe 
+# emote : Lupe \| Inquistive_1 
+"Planning?" 
+
 #name: Misra 
-# emote : Misra \| Neutral_1
-"Yeah...he's been saving up money for quite some time." 
+"Yeah..." 
+
+#name: Lupe 
+"So...he believes in the 'goats'?" 
+
+#name: Misra 
+# emote : Misra \| Surprised_2
+"Oh no! No, no, no!" 
+
+#name: Lupe 
+"Then...why?" 
+
+#name: Misra 
+# emote : Misra \| Nervous_1
+"Maybe..."
+
+"..."
+
+# emote : Misra \| Fright_2
+"...losing hope?" 
+
+"Or maybe...maybe he's just trying to help us." 
+
+<i> They break eye contact for a brief moment, attemping to blink away the tears at the edge of their eyes. </i> 
+
+# emote : Misra \| Nervous_1
+"Or!"
 "Maybe he's the richest man in town and we don't know it!!" 
 "That would be nice, wouldn't it?" 
 
@@ -466,11 +502,9 @@ They'll have...
 # emote : Misra \| Neutral_1
 "Oh yeah!! He's been here a long time." 
 
-#name: Misra
 "Actually, he's been here his whole life!" 
 
-#name: Misra
-"I'm pretty sure him and his sister never traveled outside of Kettle Rock." 
+"I'm pretty sure him and his sister never traveled outside of Kettle Rock" 
 
 +["Did you know his sister?"] -> RoySister 
 +["Interesting."] -> RoyQuestions
@@ -496,9 +530,11 @@ They'll have...
 
 = maybe 
 #name: Misra 
+# emote : Misra \| Nervous_1
 "..." 
-#name: Misra 
 "...maybe." 
+<i> There's a slight crack in their voice, and rapidly clear it before taking another sip of their drink. </i>
+"Yeah...maybe."
 ->RoyQuestions
 
 =doingWell
@@ -539,7 +575,7 @@ They'll have...
 =club 
 #name: Misra 
 # emote : Misra \| Nervous_1
-"Kind of?? I mean in a way I suppose cults are just more dangerous clubs." 
+"Kind of? I mean in a way I suppose cults are just more dangerous clubs." 
 -> legendExplination
 
 =prank 
@@ -551,20 +587,18 @@ They'll have...
 =legendExplination
 #name: Misra 
 # emote : Misra \| Neutral_1
-"They say there was once a cult that called themselves 'The Council of Bachitan', though I don't know much about it myself." 
+"They say there was once some sort of 'council' in this town, though I don't know much about it myself." 
 
 #name: Lupe 
 # emote : Lupe \| Inquistive_1
-"Why not?" 
+"Why not? Shouldn't you know more about this supposed 'council' to help the people?" 
 
 #name: Misra 
 # emote : Misra \| Curious_1
-"People believe they're connected to the tragedy. I don't know, it feels bad to poke around into that mess and all of those mistakes." 
+"Well, people believe they're the cause of the disappearances. I'd rather leave those people be than poke into their buisness." 
 
-#name: Misra 
 "Let them rest..." 
 
-#name: Misra 
 "Wherever they are." 
 
 -> questions
@@ -601,19 +635,16 @@ They'll have...
 #name: Misra 
 "Ah! Gotcha!" 
 
-#name: Misra 
 "And where would that be?" 
 
-#name: Lupe
-{ tease_level > sincerity_level:  "Boise Central Precinct." ->hometown2 | "Sorry?" -> hometown1 }
+#name: Lupe 
+"What?" 
 
-= hometown1
 #name: Misra 
-# emote : Lupe \| Serious_2
 # emote : Misra \| Curious_1
 "Just wondering where you're from!"
 +["A couple hours away."] -> dontGiveLocation
-+[Give name of precinct.] -> GiveLocation 
++[Give name of precinct] -> GiveLocation 
 
 =dontGiveLocation
 ~ sincerity_level ++
@@ -625,7 +656,7 @@ They'll have...
 =GiveLocation
 #name: Lupe 
 # emote : Lupe \| Neutral_2
-"Boise Central Precinct." 
+"Boise Central precinct" 
 -> hometown2
 
 =hometown2
@@ -634,7 +665,6 @@ They'll have...
 # emote : Lupe \| Neutral_2
 "So you're not too far from home!" 
 
-#name: Misra 
 "That's, what, four...five hours away?" 
 
 #name: Lupe 
@@ -660,10 +690,31 @@ They'll have...
 
 = LieDetector
 ~ tease_level++
-{-  scene4_5_DS.IncorrectColor: 
+{ tease_level > sincerity_level: 
+#name: Misra 
+# emote : Misra \| Neutral_1
+"Oh boy! I'm not in any trouble, am I?" 
+
+#name: Lupe 
+# emote : Lupe \| Neutral_2 
+"Well now I'm going to keep my ears peeled to ensure you're not lying to me about anything." 
+
+#name: Misra 
+"Oh ok good! You haven't caught me yet!" 
+
+#name: Lupe 
+# emote : Lupe \| Serious_2 
+"..." 
+
+#name: Misra 
+# emote : Misra \| Nervous_1 
+"I'm joking! I'm joking! Relax!" 
+}
+
+{-  intro.IncorrectColor: 
 #name: Misra
 # emote : Misra \| Inquisiting_1
-"Oh ok, so your mind reading powers only apply to lies and not favorite colors?"
+"So your mind reading powers only apply to lies and not favorite colors? 
 
 #name: Lupe 
 # emote : Lupe \| Annoyed_1
@@ -672,7 +723,7 @@ They'll have...
 - else:
 #name: Misra
 # emote : Misra \| Curious_1
-"That must be very useful for a detective!" 
+"That skill must be very useful for a detective, though!" 
 
 #name: Lupe 
 # emote : Lupe \| Neutral_2
@@ -692,6 +743,285 @@ They'll have...
  -> questions
  
  ==WhatNow== 
+  #name: Misra 
+ # emote : Misra \| Curious_1
+ "Alright, you've asked enough questions. My turn!" 
+ 
+ #name: Lupe
+ # emote : Lupe \| Neutral_2
+ "Hmph?" 
+ 
+ #name: Misra 
+ "Why are you so invested?" 
+ 
+ #name: Lupe 
+ "What do you mean?" 
+ 
+ #name: Misra 
+ "I mean, you followed me all around town for a case you unltimately really don't have anything to gain from." 
+ 
+ -> LupeQuestioning 
+ 
+ =LupeQuestioning
+ {LupeQuestioning > 2: -> whatNowContinue} 
+ "{LupeQuestioning > 1: In that case, }What gives?" 
+ 
+ +["Boredom."] -> boredom 
+ +["A bet."] -> theBet 
+ +["Company.] -> company 
+ +{LupeQuestioning > 1} ["We should focus on the case."] ->whatNowContinue
+ = boredom 
+ #name: Misra 
+ "Really?" 
+ 
+ #name: Lupe 
+ "Yeah...I mean there's not much else to do." 
+ 
+ #name: Misra 
+ # emote : Misra \| Surprised_2
+ "There's plenty to do here!" 
+ 
+ #name: Lupe 
+ "Oh? And what's that?" 
+ 
+ #name: Misra 
+ # emote : Misra \| Neutral_1
+ "There's the arcade..." 
+ 
+ #name: Lupe 
+ "Mhm..." 
+ 
+ #name: Misra 
+ "And...the bar..." 
+ 
+#name: Lupe 
+"Mhm..." 
+
+#name: Misra 
+"And the uhh..." 
+
+#name: Misra 
+# emote : Misra \| Nervous_1
+"Uhhhh....." 
+
++ ["You're really selling this, huh?"] -> sellingThis 
++ ["And nothing."] -> nothing
+ 
+#name: Misra 
+=sellingThis
+~tease_level++
+#name: Misra 
+{ tease_level > sincerity_level: "Oh shush!" | "...Yeah." } 
+
+{ tease_level > sincerity_level: <i> They lightly hit you on the shoulder, causing a light laughter to escape. </i> } 
+
+{ tease_level > sincerity_level: <i> They too begin to laugh, and something resonates within you.</i>} 
+
+{ tease_level > sincerity_level: <i> You can't explain it but this feels...right. </i>} 
+-> LupeQuestioning
+
+=nothing 
+#name: Misra
+"Yeah...yeah I suppose there really isn't much here." 
+->LupeQuestioning
+
+ = theBet 
+#name: Misra 
+# emote : Misra \| Surprised_2
+"A bet?!" 
+
+# emote : Misra \| Curious_1 
+"With who?" 
+
+#name: Lupe 
+"My cheif." 
+
+#name: Misra 
+"What kind of bet?" 
+
+#name: Lupe 
+# emote : Lupe \| Annoyed_1
+"It's...nothing." 
+
+#name: Misra 
+# emote : Misra \| Neutral_1
+"Oh come on! You can't leave me hanging like this!" 
+
++ ["It was about solving cases..."] -> cocky
++ ["Nevermind."] -> Nevermind
+
+= cocky 
+#name: Lupe 
+# emote : Lupe \| Neutral_2 
+"I made a remark that I could solve any case tossed at me..." 
+
+{ tease_level > sincerity_level: "Which is true!"} 
+
+"And she wanted to place a bet that I could hold up that statement." 
+
+#name: Misra 
+# emote : Misra \| Neutral_1
+"Really?" 
+
+#name: Lupe 
+"Yeah, and I guess this counts." 
+
+{ tease_level > sincerity_level: 
+#name: Misra 
+"Alright Sherlock, if you're so good at your job then what's the craziest case you've solved?" 
+-> craziestCase 
+} 
+
+-> lose 
+
+=craziestCase
++[The case of the shoe] -> shoe
++[The case of the toothbrush] -> toothbrush
++[The case of the dog collar] -> dogCollar 
+
+=shoe 
+#name: Lupe 
+"I once found a killer with the only evidence being a single shoe print" 
+
+#name: Misra 
+# emote : Misra \| Inquisiting_1
+"Easy peasy!" 
+
+#name: Lupe
+# emote : Lupe \| Serious_2
+"Really? I'd like to see you try." 
+
+{ tease_level > sincerity_level: "Mx. half-empty police report"} 
+
+#name: Misra 
+"Touche...touche."
+
+-> lose 
+
+= toothbrush 
+#name: Lupe
+"I once found a missing person because she had shared a toothbrush with her kidnapper." 
+
+#name: Misra 
+# emote : Misra \| Surprised_2
+"Ewwwwwww!!!" 
+
+#name: Lupe 
+# emote : Lupe \| Neutral_2
+"Yeah...sometimes this line of work can get gross." 
+
+#name: Misra
+# emote : Misra \| Nervous_1
+"Oh I've learned!"
+
+-> lose
+
+= dogCollar 
+#name: Lupe 
+# emote : Lupe \| Neutral_2
+"I once found a missing person based off a dog collar in the woods." 
+
+#name: Misra 
+# emote : Misra \| Curious_1
+"Oh! Was it because of their dog...?" 
+
+#name: Lupe 
+# emote : Lupe \| Annoyed_1
+"No...it was...their collar." 
+
+#name: Misra 
+"What?" 
+
+#name: Lupe 
+"Yeah, they're alive but it was an...odd relationship between the kidnappee and abductor." 
+
+#name: Misra 
+"..." 
+
+#name: Misra 
+# emote : Misra \| Surprised_2 
+"OH!!!" 
+
+#name: Lupe 
+"Yeah." 
+
+#name: Misra 
+# emote : Misra \| Nervous_1 
+"I'm curious to know more, but I don't think I want to know." 
+
+<i> You give a thousand-yard stare into your glass. </i> 
+
+#name: Lupe 
+# emote : Lupe \| Neutral_2
+"Yeah, you really don't" 
+
+"Curiosity is good, but sometimes can put us in bad situations." 
+
+#name: Misra 
+"Oh yeah, I know a thing or two about that!" 
+-> lose 
+
+
+=lose 
+#name: Misra 
+# emote : Misra \| Curious_1 
+"So, what would happen if you lose?" 
+
+#name: Lupe 
+# emote : Lupe \| Neutral_2 
+"First off, I'd become a laughing stock in my department." 
+"Secondly, I'd have to buy coffee for her for a whole year." 
+
+#name: Misra 
+# emote : Misra \| Surprised_2
+"A whole year!?" 
+
+#name: Lupe 
+# emote : Lupe \| Annoyed_1 
+"A whole...year." 
+
+#name: Misra
+# emote : Misra \| Neutral_1 
+"Then we better solve this!" 
+
+#name: Lupe 
+"Yeah." 
+
+->whatNowContinue
+
+= Nevermind 
+#name: Misra 
+# emote : Misra \| Neutral_1
+"...Alright." 
+-> LupeQuestioning
+
+ =company 
+~tease_level ++ 
+<i> The words fall out of your mouth almost naturally.</i> 
+<i> Even though you had just met them, it's as though a weight is lifted off your chest letting those words out. </i>
+<i> It feels...good to say. </i> 
+
+#name: Misra 
+# emote : Misra \| Curious_1
+"Company?" 
+
+#name: Lupe 
+# emote : Lupe \| Fluster_1 
+"Yeah..." 
+
+"If I'm going to be stuck here...I don't know." 
+
+"Feels...right being stuck with you." 
+
+#name: Misra
+# emote : Misra \| Nervous_1
+"Oh..." 
+"Yeah...I suppose it does feel right." 
+
+-> whatNowContinue
+
+
+ =whatNowContinue
  #name: Misra 
  # emote : Misra \| Curious_1
  "Well, what now?" 
@@ -743,7 +1073,6 @@ They'll have...
 # emote : Misra \| Surprised_2
 "Like those old cop movies?!" 
 
-#name: Misra 
 "I've always wanted to do that!!" 
 
 #name: Lupe 
@@ -768,10 +1097,9 @@ They'll have...
 #name: Misra
 "..." 
 
-#name: Lupe. 
+#name: Lupe 
 "Fine."
 
-#name: Lupe. 
 "We can use mine." 
 
 -> LupeCar 
