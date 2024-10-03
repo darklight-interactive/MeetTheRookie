@@ -20,6 +20,7 @@ namespace Darklight.UnityExt.Core2D
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
+            public int ColliderCount => GetColliderCount();
 
             // ======== [[ EVENTS ]] ================================== >>>>
             public delegate void OverlapEvent(Cell2D cell, Collider2D collider);

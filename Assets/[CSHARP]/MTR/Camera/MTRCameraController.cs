@@ -6,7 +6,7 @@ using NaughtyAttributes;
 using UnityEngine;
 
 [RequireComponent(typeof(MTRCameraRig))]
-public class MTRCameraController : MonoBehaviour
+public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 {
     MTRCameraRig _rig;
 
@@ -26,6 +26,11 @@ public class MTRCameraController : MonoBehaviour
 
 
     [Dropdown("_speakerList"), SerializeField, ShowOnly] public string currentSpeaker;
+
+    public void OnEditorReloaded()
+    {
+
+    }
 
     // Start is called before the first frame update
     void OnEnable()
@@ -73,4 +78,5 @@ public class MTRCameraController : MonoBehaviour
         MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
         Rig.SetFollowTarget(player.transform);
     }
+
 }

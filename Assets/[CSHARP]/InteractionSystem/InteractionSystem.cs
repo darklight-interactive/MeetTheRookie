@@ -27,9 +27,6 @@ public enum InteractionType
 public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
     [SerializeField, Expandable] InteractionSystemSettings _settings;
-    [SerializeField] protected GameObject _iconInteractionHandlerPrefab;
-    [SerializeField] protected GameObject _dialogueInteractionHandlerPrefab;
-    [SerializeField] protected GameObject _choiceInteractionHandlerPrefab;
 
     [HorizontalLine(4, color: EColor.Gray)]
     [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();

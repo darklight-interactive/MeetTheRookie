@@ -2,10 +2,13 @@ using Darklight.UnityExt.UXML;
 using EasyButtons;
 using UnityEngine;
 using UnityEngine.UIElements;
+using EasyButtons.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 
 public class MTRSceneTransitionController : UXML_UIDocumentObject
 {
@@ -13,66 +16,63 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
     const string FADE_IN_CLASS = "fade-in";
     const string FADE_OUT_CLASS = "fade-out";
 
-    VisualElement _fullscreenBlackElement;
+    ScreenTransition _screenTransitionElement;
     bool _fadeIn;
     bool _fadeOut;
+    bool _wipeOpen;
+    bool _wipeClose;
+
+    public void Awake()
+    {
+        Initialize(preset);
+    }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
         base.Initialize(preset, clonePanelSettings);
-        _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
     }
 
-    #region ( EDITOR UPDATE ) <PRIVATE_METHODS> ================================================
-    private void OnEnable()
-    {
-#if UNITY_EDITOR
-        EditorApplication.update += EditorUpdate;
-#endif
-    }
-
-    private void OnDisable()
-    {
-#if UNITY_EDITOR
-        EditorApplication.update -= EditorUpdate;
-#endif
-    }
-
-    void EditorUpdate()
-    {
-        // This ensures smooth updates in the editor
-        if (!Application.isPlaying)
-        {
-            _fullscreenBlackElement.MarkDirtyRepaint();
-        }
-    }
-    #endregion
-
-    [Button]
     public void StartFadeIn()
     {
         _fadeIn = true;
         _fadeOut = false;
 
-        _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
-        _fullscreenBlackElement.RemoveFromClassList(FADE_OUT_CLASS);
-        _fullscreenBlackElement.AddToClassList(FADE_IN_CLASS);
-
-        Debug.Log("Start Fade In" + $"{_fullscreenBlackElement}");
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
+        _screenTransitionElement.FadeIn();
     }
 
-    [Button]
     public void StartFadeOut()
     {
         _fadeIn = false;
         _fadeOut = true;
 
-        _fullscreenBlackElement = ElementQuery<VisualElement>(FULLSCREEN_BLACK_TAG);
-        _fullscreenBlackElement.RemoveFromClassList(FADE_IN_CLASS);
-        _fullscreenBlackElement.AddToClassList(FADE_OUT_CLASS);
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
+        _screenTransitionElement.FadeOut();
+    }
 
-        Debug.Log("Start Fade In" + $"{_fullscreenBlackElement}");
+    public void StartWipeOpen()
+    {
+        _wipeOpen = true;
+        _wipeClose = false;
 
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
+        _screenTransitionElement.WipeOpen();
+    }
+
+    public void StartWipeClose()
+    {
+        _wipeOpen = false;
+        _wipeClose = true;
+
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
+        _screenTransitionElement.WipeClose();
+    }
+
+    public void SetAlignment(ScreenTransition.Alignment alignment)
+    {
+        _screenTransitionElement = ElementQuery<ScreenTransition>();
+        _screenTransitionElement.screenAlignment = alignment;
     }
 
 #if UNITY_EDITOR
@@ -108,6 +108,36 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
                 if (GUILayout.Button("Start Fade In"))
                 {
                     _sceneTransitionScript.StartFadeIn();
+                }
+            }
+
+            if (_sceneTransitionScript._wipeOpen)
+            {
+                if (GUILayout.Button("Start Wipe Close"))
+                {
+                    _sceneTransitionScript.StartWipeClose();
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Start Wipe Open"))
+                {
+                    _sceneTransitionScript.StartWipeOpen();
+                }
+            }
+
+            if (_sceneTransitionScript._screenTransitionElement.screenAlignment == ScreenTransition.Alignment.Left)
+            {
+                if (GUILayout.Button("Set Alignment Right"))
+                {
+                    _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Right);
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Set Alignment Left"))
+                {
+                    _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Left);
                 }
             }
 

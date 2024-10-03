@@ -78,9 +78,21 @@ public class ChoiceInteractionReciever : InteractionReciever
     {
         foreach (Cell2D cell in Grid.BaseGrid.GetCells())
         {
+            // Skip cells that have colliders
+            Cell2D.OverlapComponent overlapComponent = cell.GetComponent<Cell2D.OverlapComponent>();
+            if (overlapComponent != null)
+            {
+                if (overlapComponent.ColliderCount > 0)
+                {
+                    continue;
+                }
+            }
+
+            // If the cell doesn't have a key in the dictionary, create one
             if (!_attachedBubbles.ContainsKey(cell.Key))
                 _attachedBubbles.Add(cell.Key, null);
 
+            // If the value is null, it is available for a bubble
             if (_attachedBubbles[cell.Key] == null)
             {
                 return CreateBubbleAt(cell, fullText);

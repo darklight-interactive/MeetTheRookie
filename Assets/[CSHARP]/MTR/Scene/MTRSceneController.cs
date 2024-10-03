@@ -158,9 +158,10 @@ public class MTRSceneController : MonoBehaviour
             {
                 cameraController.SetPlayerAsFollowTarget();
                 playerController.Input.SetAllInputsEnabled(true);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(2f);
 
-                //transitionController.StartFadeOut();
+                //transitionController.StartFadeIn();
+                transitionController.StartWipeOpen();
 
                 yield return new WaitForSeconds(0.5f);
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -253,7 +254,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
-                Debug.Log("Exit State Enter");
+                transitionController.StartWipeClose();
             }
 
             public override void Exit()
