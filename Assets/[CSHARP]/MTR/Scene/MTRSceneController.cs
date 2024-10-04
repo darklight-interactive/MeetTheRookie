@@ -26,6 +26,8 @@ public enum MTRSceneState
 [RequireComponent(typeof(MTRSceneManager))]
 public class MTRSceneController : MonoBehaviour
 {
+    const string PREFIX = "[MTRSceneController]";
+
     InternalStateMachine _stateMachine;
     [SerializeField, ShowOnly] MTRSceneState _currentState;
 
@@ -62,7 +64,21 @@ public class MTRSceneController : MonoBehaviour
     {
         Debug.Log($"Active Scene Changed: {oldScene.name} -> {newScene.name}");
 
-        StateMachine.GoToState(MTRSceneState.INITIALIZE);
+        //StateMachine.GoToState(MTRSceneState.INITIALIZE);
+    }
+
+    public void TryLoadScene(string sceneName)
+    {
+        if (sceneName == null || sceneName == "")
+            return;
+
+        if (sceneName == SceneManager.GetActiveScene().name)
+        {
+            Debug.Log("Scene is already loaded.");
+            return;
+        }
+
+        StateMachine.GoToState(MTRSceneState.EXIT);
     }
 
     #region ( InternalStateMachine ) ================================================================
@@ -91,6 +107,7 @@ public class MTRSceneController : MonoBehaviour
         #region ================== [ BASE STATE ] ==================
         public abstract class BaseState : FiniteState<MTRSceneState>
         {
+            protected MTRSceneManager sceneManager => MTRSceneManager.Instance;
             protected MTRSceneController sceneController;
             protected InternalStateMachine stateMachine;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
@@ -118,9 +135,41 @@ public class MTRSceneController : MonoBehaviour
         {
             public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
 
-            public override void Enter() { }
+            public override void Enter()
+            {
+                sceneController.StartCoroutine(LoadSceneAsyncRoutine());
+            }
             public override void Execute() { }
             public override void Exit() { }
+
+            IEnumerator LoadSceneAsyncRoutine()
+            {
+                // Begin loading the scene asynchronously
+                UnityEngine.AsyncOperation asyncOperation =
+                    SceneManager.LoadSceneAsync(MTRSceneManager.SceneToLoad);
+
+                // Prevent the scene from being activated immediately
+                asyncOperation.allowSceneActivation = false;
+
+                // While the scene is still loading
+                while (!asyncOperation.isDone)
+                {
+                    // Output the current progress (0 to 0.9)
+                    float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+                    Debug.Log("Loading progress: " + (progress * 100) + "%");
+
+                    // If the loading is almost done (progress >= 90%), allow activation
+                    if (asyncOperation.progress >= 0.9f)
+                    {
+                        asyncOperation.allowSceneActivation = true;
+
+                        yield return new WaitForSeconds(0.5f);
+                        stateMachine.GoToState(MTRSceneState.INITIALIZE);
+                    }
+
+                    yield return null;
+                }
+            }
         }
         #endregion
 
@@ -254,17 +303,17 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
+                sceneController.StartCoroutine(ExitStateCoroutine());
+            }
+            public override void Execute() { }
+            public override void Exit() { }
+
+            IEnumerator ExitStateCoroutine()
+            {
                 transitionController.StartWipeClose();
-            }
 
-            public override void Exit()
-            {
-                Debug.Log("Exit State Exit");
-            }
-
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.LOADING);
+                yield return new WaitForSeconds(2f);
+                stateMachine.GoToState(MTRSceneState.LOADING);
             }
 
         }
@@ -276,21 +325,9 @@ public class MTRSceneController : MonoBehaviour
         public class ChoiceModeState : BaseState
         {
             public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
-
-            public override void Enter()
-            {
-                Debug.Log("Choice Mode State Enter");
-            }
-
-            public override void Exit()
-            {
-                Debug.Log("Choice Mode State Exit");
-            }
-
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.INITIALIZE);
-            }
+            public override void Enter() { }
+            public override void Execute() { }
+            public override void Exit() { }
         }
         #endregion
 

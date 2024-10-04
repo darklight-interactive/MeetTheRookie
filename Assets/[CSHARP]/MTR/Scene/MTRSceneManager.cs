@@ -39,7 +39,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             return bounds.Length > 0 ? bounds[0] : null;
         }
     }
-
+    public static string SceneToLoad => Instance._sceneToLoad;
     [SerializeField, ShowOnly] string _sceneToLoad;
     [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
@@ -103,6 +103,8 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
 
         _sceneToLoad = data.Name;
         Debug.Log($"{Prefix} >> Inky ChangeGameScene" + _sceneToLoad);
+        SceneController.TryLoadScene(_sceneToLoad);
+
         return true;
     }
 
@@ -170,33 +172,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
 #endif
     }
 
-    IEnumerator LoadSceneAsyncRoutine()
-    {
-        // Begin loading the scene asynchronously
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(_sceneToLoad);
 
-        // Prevent the scene from being activated immediately
-        asyncOperation.allowSceneActivation = false;
-
-        // While the scene is still loading
-        while (!asyncOperation.isDone)
-        {
-            // Output the current progress (0 to 0.9)
-            float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
-            Debug.Log("Loading progress: " + (progress * 100) + "%");
-
-            // If the loading is almost done (progress >= 90%), allow activation
-            if (asyncOperation.progress >= 0.9f)
-            {
-                asyncOperation.allowSceneActivation = true;
-
-                yield return new WaitForSeconds(0.5f);
-                SceneController.StateMachine.GoToState(MTRSceneState.INITIALIZE);
-            }
-
-            yield return null;
-        }
-    }
 
     public MTRSceneData GetSceneData(string name)
     {
