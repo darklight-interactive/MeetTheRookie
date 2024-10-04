@@ -150,7 +150,9 @@ TODO SFX door close
 
 = floor_splatters
     ~ SetSpeaker(Speaker.Misra)
-    I know what you're thinking! Don't worry, it's not blood. I'm sure you've already deduced this, but it's dried up wine from when this place was used.
+    I know what you're thinking! 
+    Don't worry, it's not blood. 
+    I'm sure you've already deduced this, but it's dried up wine from when this place was used.
     ~ CompleteQuest(visit_floor)
     -> DONE
 
@@ -167,17 +169,31 @@ TODO SFX door close
     ~ SetSpeaker(Speaker.Misra)
     Back in the day, this place really did make good wine.
     ~ SetSpeaker(Speaker.Lupe)
-    Is any of that wine left in there?
+    It looks like they ledts a lot of things here when this place closed...
+    Including wine.
     ~ SetSpeaker(Speaker.Misra)
-    Are you asking if I want to get a drink?
+    Detective!
+    Are you suggesting we taste test a bit?
     ~ SetSpeaker(Speaker.Lupe)
-    ...It would just be a motive, if anyone was looking to take some.
+    Erm, no.
+    I don't drink on the job.
+    I just find it interesting they left so much product behind.
     ~ SetSpeaker(Speaker.Misra)
     Oh, no. They drained all of it when the Winery closed.
-    ~ SetSpeaker(Speaker.Lupe)
-    I don't drink when I'm on a case.
     ~ SetSpeaker(Speaker.Misra)
-    I know, I know. Professional, as always.
+    Right, right.
+    Well--I'm not sure they could really get rid of it.
+    ~SetSpeaker(Speaker.Lupe)
+    What do you mean?
+    ~SetSpeaker(Speaker.Misra)
+    No one would take it. 
+    Or buy it out.
+    No one wanted this stuff.
+    ~SetSpeaker(Speaker.Lupe)
+    I thought you said it used to be popular?
+    <i>"Kettle Rock's pride and joy"<i> and all that?
+    ~SetSpeaker(Speaker.Misra)
+    Well, yes...
     -> DONE
 
 = door_office

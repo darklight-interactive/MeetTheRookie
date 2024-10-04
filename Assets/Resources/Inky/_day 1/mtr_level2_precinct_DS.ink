@@ -25,7 +25,7 @@
 
 = ding
 
-<i>You ding the bell, but no one responds.</i>
+<i> You ding the bell, and no one responds.</i>
 
 -> soul
 

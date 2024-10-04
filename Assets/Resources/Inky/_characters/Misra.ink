@@ -19,9 +19,10 @@ Idk to each their own , just take it away now. -> DONE
     The plot thickens!! Shall we check inside? 
     ~ CompleteQuest(discover_outside_clues)
     -> DONE
+
+- else:
 ~ SetSpeaker(Speaker.Misra)
 {Find anything, Detective? | What are you looking at me for? I thought you were the expert. | ... | yes? | Okaayyy... | ...}
-- else:
     -> DONE
 }
 
@@ -65,6 +66,60 @@ Idk to each their own , just take it away now. -> DONE
 
 = 4_1
 ~ SetSpeaker(Speaker.Misra)
-Where to next, Detective?
+* Any updates on that fallen tree? -> updates
+* Jeez, this place is like a ghost town. -> ghosttown
+* {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion)}The teens mentioned someone named Jenkins? -> teens_jenkins
+
+= teens_jenkins
+~SetSpeaker(Speaker.Misra)
+Oh, yeah, Jenkins.
+He's a local, too.
+I really don't know him that well.
+Roy used to tell me to steer clear--
+said Jenkin was "troubled".
+~SetSpeaker(Speaker.Lupe)
+Interesting...
+Maybe it's worth asking about.
+-> DONE 
+
+= updates
+~SetSpeaker(Speaker.Misra)
+Not yet!
+I assue you though, it's the second most urgent thing to take care of on my list!
+~SetSpeaker(Speaker.Lupe)
+...
+The first most being this case?
+~SetSpeaker(Speaker.Misra)
+Yup!
+~SetSpeaker(Speaker.Lupe)
+Sheriff Misra...
+Trust me, I of all people can understand putting your work first.
+But I also really need to get back on the road, and get back to <i>my</i> work, and my life.
+Is there any way you could bump the priorty on that?
+~SetSpeaker(Speaker.Misra)
+...
+Right.
+I know you want to get back to your own life.
+I'm sorry you're stuck here with me, really.
+...
+I'll make sure they're focused on clearing the tree.
+~SetSpeaker(Speaker.Lupe)
+Thank you, Sheriff.
+~SetSpeaker(Speaker.Misra)
+You're welcome.
+And really, call me Misra.
+We've known each other long enough to drop the title.
+~SetSpeaker(Speaker.Lupe)
+Well, three hours isn't <i>that</i> long, but...
+Thank you, Misra.
+-> DONE
+
+= ghosttown
+~SetSpeaker(Speaker.Lupe)
+I have to admit, it's going to be hard to do questioning with so few people around.
+This place is practically a ghost town.
+~SetSpeaker(Speaker.Misra)
+It's just a bit of a slow day! 
+There should be a few people around.
     -> DONE
 

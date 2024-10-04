@@ -35,6 +35,7 @@
 * [Tell me about this Town.] -> town_history
 * [Tell me about the Winery.] -> winery_closing
 * {IsClueFound(merch_pamphlet)} -> pamphlet
+* {IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) and IsQuestComplete(roys_suspicion)}[We looked into your tip about those kids over at Power Up.] -> follow_up_w_roy
     
 {IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
         Thank you for your cooperation. 
@@ -43,6 +44,39 @@
         Feel free to look around, if it helps any.
         -> DONE
         }
+
+= follow_up_w_roy
+~SetSpeaker(Roy_Rodgerson)
+Ah, you did.
+~SetSpeaker(Speaker.Lupe)
+They weren't incredibly helpful.
+~SetSpeaker(Speaker.Misra)
+They were less than helpful.
+Not to mention rude.
+~SetSpeaker(Speaker.Roy_Rodgerson)
+Jenny still giving you a hard time, eh?
+~SetSpeaker(Speaker.Lupe)
+They didn't admit to anything, but they did give us another potential suspect.
+I wanted to ask if you knew anything on this individual?
+~SetSpeaker(Roy_Rodgerson) 
+I know just about everyone in this town.
+Who is it?
+~SetSpeaker(Speaker.Lupe)
+Jenkins Tomm?
+~SetSpeaker(Speaker.Roy_Rodgerson)
+Ah.
+I see.
+Well, I won't be much use to you, then.
+I'm afraid I can't give you any unbiased information.
+Mr. Tomm and I have a complicated past.
+~SetSpeaker(Speaker.Lupe)
+...and?
+~SetSpeaker(Speaker.Roy_Rodgerson)
+I'm sorry, Detective.
+I won't bring that into your case.
+It's hardly relevant.
+-> DONE
+
 
 = personal_info
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -120,7 +154,7 @@ Someone's got to try and turn things around.
 = window
   {IsQuestComplete(visit_roy_window): 
     ~SetSpeaker(Speaker.Lupe)
-    Other than the abandoned Winery, the environment is kinda pretty...
+    Other than the abandoned Winery, the view is kinda pretty...
     -> DONE
   
    - else: 
@@ -277,7 +311,7 @@ Someone's got to try and turn things around.
     -> DONE
 }
 
-= teenagers
+//= teenagers
 ~ SetSpeaker(Speaker.Lupe)
 We spoke to the teens at Power Up.
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -299,7 +333,7 @@ They did point us towards a "Jenkins Tomm".
 ~ SetSpeaker(Speaker.Misra)
 We've got to get to the bottom of this!
 ~ SetSpeaker(Speaker.Lupe)
--> DONE
+//-> DONE
 
  
 

@@ -147,10 +147,25 @@ TODO SFX gen store bell
     
 = door_idahome_and_goods
 TODO SFX DOOR OPEN
-    ~ ChangeGameScene("scene4_2")
+    {IsQuestComplete(visited_roy):
+        ~SetSpeaker(Speaker.Misra)
+        Roy'll be happy to see us again.
+        ~ ChangeGameScene("scene4_2")
+        -> DONE
+    - else:
+        ~ ChangeGameScene("scene4_2")
     -> DONE
+    }
+    
 = door_powerup_arcade
 TODO SFX DOOR OPEN
+    {IsQuestComplete(entered_arcade):
+        ~SetSpeaker(Speaker.Misra)
+        Ugh. You really wanna go talk to these guys again?
+        ~ ChangeGameScene("scene4_3")
+
+    - else:
+    
     {canIntroArcade:
         ~ SetSpeaker("Speaker.Misra")
         Okay...
@@ -171,7 +186,7 @@ TODO SFX DOOR OPEN
     }
     ~ ChangeGameScene("scene4_3")
     -> DONE
-
+}
 = strange_symbol_on_fountain
     {IsQuestComplete(visited_symbol):
     ~ SetSpeaker(Speaker.Misra)
@@ -268,12 +283,18 @@ TODO SFX DOOR OPEN
 = apartments_for_lease_sign
     ~ closed_signs ++ 
         Hm...
+        Not a lot of people living here?
+    ~SetSpeaker(Speaker.Misra)
+    Not right now, no.
+    
         -> DONE
     
 
 = diner_closed_sign
     ~ closed_signs ++ 
-    Jeez, what <i>is</i> open?
+    ~ SetSpeaker(Speaker.Misra)
+    Shame this place has been closed for a bit!
+    Their lunch menu is delish.
     -> DONE
 
 = clothing_store_closed_sign

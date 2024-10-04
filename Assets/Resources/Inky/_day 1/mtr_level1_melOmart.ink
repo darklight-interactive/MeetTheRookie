@@ -76,7 +76,7 @@ TODO SFX door closing
         ~ SetSpeaker(Speaker.Lupe)
         {
         	- gas_pumps == 1:
-        		"Out of order. Pay inside." Of course. Just my luck. -> DONE
+        		" Pump out of order. Pay inside." Of course. Just my luck. -> DONE
             - gas_pumps == 2: 
                 Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
             - gas_pumps == 3: 
@@ -118,7 +118,7 @@ TODO SFX door closing
         Got a chainsaw on ya? 
         Heheheheh. 
         Ah, don't look so grumpy. 
-        If you put in a complaint with the local Police 
+        If you put in a complaint with the local Police. 
         I'm sure you'll be out of here in no time.
         ~ CompleteQuest(look_at_tree)
         -> DONE
@@ -166,11 +166,17 @@ TODO SFX Door close
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $76.45.
         ~ SetSpeaker(Speaker.Lupe)
-        Finally
+        Finally.
         ~ CompleteQuest(pay_for_gas)
         // TODO CRASHING TREE NOISE 
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
+        ~SetSpeaker(Speaker.Lupe)
         What was that? 
+        ~SetSpeaker(Speaker.Beth)
+        Idk. The wind?
+        ~SetSpeaker(Speaker.Lupe)
+        Did...you just abbreviate <i>I don't know</i>?
+        
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Beth)
@@ -197,10 +203,12 @@ TODO SFX Door close
     ~ SetSpeaker(Speaker.Lupe)
     Should I wait or...?
     ~ SetSpeaker(Speaker.Beth)
-    Oh he's not using it just cleaning some weird thing.
+    Oh he's not using it, just cleaning some weird thing.
     ~ SetSpeaker(Speaker.Lupe)
     Okay...
     ~DiscoverClue(broken_cash_reg)
+    ~ SetSpeaker(Speaker.Beth)
+    It's whatever floats your boat, man.
     -> DONE
 }
 
@@ -241,9 +249,12 @@ TODO SFX door close
     ~ SetSpeaker(Speaker.Lupe)
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
-    Mel's the name. What are you doing in here?
+    Mel's the name. 
+   The bathroom's closed for a few minutes.
+   I'll be done in a moment.
     ~ SetSpeaker(Speaker.Lupe)
-    I need to pay for gas. The cash register is broken.
+    Oh, I just need to pay for gas. 
+    The cash register is broken.
     ~ SetSpeaker(Speaker.Mel)
      That old piece of junk. 
     The drawer is just jammed, it just needs to be whacked in the side a bit.
