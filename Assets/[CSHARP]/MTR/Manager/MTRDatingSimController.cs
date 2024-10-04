@@ -17,8 +17,16 @@ using UnityEngine.UIElements;
 
 public class MTRDatingSimController : UXML_UIDocumentObject
 {
+    const string DIALOGUE_TAG = "dialogue";
+    const string CHARACTER_TAG = "character";
+    const string CHOICE_TAG = "choice";
+    const string CONTAINER_TAG = "container";
+    const string IMAGE_TAG = "image";
+    const string MISRA_TAG = "misra";
+    const string LUPE_TAG = "lupe";
+
+
     [SerializeField] bool inCar = false;
-    [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
     [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
 
@@ -35,7 +43,6 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     VisualElement misraImage;
     VisualElement lupeImage;
     VisualElement continueTriangle;
-    VisualElement dialogueBox;
     VisualElement nameTag;
     ControlledLabel dialogueText;
     VisualElement choiceParent;
@@ -43,6 +50,16 @@ public class MTRDatingSimController : UXML_UIDocumentObject
 
     InkyStoryObject _storyObject => InkyStoryManager.GlobalStoryObject;
     InkyStoryIterator _storyIterator => InkyStoryManager.Iterator;
+
+    void CreateTag(List<string> tag_parts, out string outString)
+    {
+        outString = "";
+        foreach (string part in tag_parts)
+        {
+            if (outString != "") outString += "-";
+            outString += part;
+        }
+    }
 
     void Awake()
     {
@@ -67,15 +84,21 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         choiceButtons = temp.OrderBy(x => x.name).ToList();
         choiceMap.Load(temp);
 
-        // Get all the UXML elements
-        misraImage = root.Q<VisualElement>("MisraImage");
-        lupeImage = root.Q<VisualElement>("LupeImage");
+        // << QUERY UXML ELEMENTS >>
+        CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, MISRA_TAG }, out string misraImageTag);
+        CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, LUPE_TAG }, out string lupeImageTag);
+        misraImage = ElementQuery<VisualElement>(misraImageTag);
+        lupeImage = ElementQuery<VisualElement>(lupeImageTag);
 
-        continueTriangle = root.Q<VisualElement>("DialogueTriangle");
-        dialogueBox = root.Q<VisualElement>("DialogueBox");
-        nameTag = root.Q<VisualElement>("NameTag");
-        dialogueText = ElementQuery<ControlledLabel>("DialogueText");
-        choiceParent = root.Q<VisualElement>("ChoiceParent");
+        CreateTag(new List<string> { DIALOGUE_TAG, "triangle" }, out string triangleTag);
+        CreateTag(new List<string> { DIALOGUE_TAG, "nametag" }, out string nametagTag);
+        CreateTag(new List<string> { DIALOGUE_TAG, "text" }, out string dialogueTextTag);
+        continueTriangle = ElementQuery<VisualElement>(triangleTag);
+        nameTag = ElementQuery<VisualElement>(nametagTag);
+        dialogueText = ElementQuery<ControlledLabel>(dialogueTextTag);
+
+        CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
+        choiceParent = root.Q<VisualElement>(choiceParentTag);
 
         if (inCar) { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
         else { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
