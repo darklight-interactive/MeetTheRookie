@@ -15,7 +15,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class MTR_DatingSimManager : UXML_UIDocumentObject
+public class MTRDatingSimController : UXML_UIDocumentObject
 {
     [SerializeField] bool inCar = false;
     [Tooltip("Dialogue Text Size Min/Max")] public Vector2 textSize = new Vector2(20, 48);
@@ -24,8 +24,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
     // Inky Variables
     static bool boundEmote = false;
-    InkyStoryObject storyObject;
-    InkyStoryIterator storyIterator;
+
 
     // Choice Variables
     bool choicesActive;
@@ -42,16 +41,18 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
-    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
-    {
-        base.Initialize(preset, clonePanelSettings);
-    }
+    InkyStoryObject _storyObject => InkyStoryManager.GlobalStoryObject;
+    InkyStoryIterator _storyIterator => InkyStoryManager.Iterator;
 
     void Awake()
     {
         base.Initialize(preset);
 
-        if (UniversalInputManager.Instance == null) { Debug.LogWarning("UniversalInputManager is not initialized"); return; }
+        if (UniversalInputManager.Instance == null)
+        {
+            Debug.LogError("No Universal Input Manager found in scene. Please add one to the scene.");
+            return;
+        }
         UniversalInputManager.OnMoveInputStarted += Move;
         UniversalInputManager.OnPrimaryInteract += Select;
 
@@ -81,14 +82,10 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
 
         choiceParent.style.display = DisplayStyle.None;
 
-        // Get the story object
-        storyObject = InkyStoryManager.GlobalStoryObject;
-        storyIterator = InkyStoryManager.Iterator;
-
         if (!boundEmote)
         {
             // In Inky file function should be: EXTERNAL SetEmote(name, emote)
-            storyObject.BindExternalFunction("SetEmote", (object[] args) =>
+            _storyObject.BindExternalFunction("SetEmote", (object[] args) =>
             {
                 return SetEmote((string)args[0], (string)args[1]);
             });
@@ -111,7 +108,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
-        Story currentStory = storyObject.StoryValue;
+        Story currentStory = _storyObject.StoryValue;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
@@ -131,7 +128,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void PopulateChoices()
     {
-        Story currentStory = storyObject.StoryValue;
+        Story currentStory = _storyObject.StoryValue;
         continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
         foreach (Choice choice in currentStory.currentChoices)
@@ -161,7 +158,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// </summary>
     void SelectChoice()
     {
-        Story currentStory = storyObject.StoryValue;
+        Story currentStory = _storyObject.StoryValue;
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
@@ -188,7 +185,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         {
             StopAllCoroutines();
             dialogueText.InstantCompleteText();
-            if(choicesActive){
+            if (choicesActive)
+            {
                 choiceParent.style.display = DisplayStyle.Flex;
             }
             isRolling = false;
@@ -230,7 +228,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void UpdateDialogue(string dialogue)
     {
-        Story currentStory = storyObject.StoryValue;
+        Story currentStory = _storyObject.StoryValue;
         List<string> tags = currentStory.currentTags;
         nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
@@ -296,7 +294,8 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         }
 
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
-        if(choicesActive){
+        if (choicesActive)
+        {
             choiceParent.style.display = DisplayStyle.Flex;
         }
         isRolling = false;

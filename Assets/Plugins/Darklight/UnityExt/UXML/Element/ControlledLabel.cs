@@ -81,10 +81,6 @@ namespace Darklight.UnityExt.UXML
         {
             get
             {
-                if (_backgroundImage == null)
-                {
-                    _backgroundImage = AssetDatabase.LoadAssetAtPath<Sprite>(PATH_TO_DEFAULTBKG);
-                }
                 return _backgroundImage;
             }
             set
