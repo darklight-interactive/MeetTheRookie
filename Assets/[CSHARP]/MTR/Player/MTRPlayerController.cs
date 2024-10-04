@@ -52,7 +52,7 @@ public class MTRPlayerController : MonoBehaviour
         _stateMachine.OnStateChanged += (state) => _currentState = state;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         StateMachine.Step();
         UpdateMovement();

@@ -136,7 +136,7 @@ public class MTRCameraRig : MonoBehaviour
 
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         if (Application.isPlaying)
             UpdateCameraRig(true);
@@ -419,11 +419,6 @@ public class MTRCameraRig : MonoBehaviour
                 EditorUtility.SetDirty(target);
                 SceneView.RepaintAll(); // Ensure the Scene view is refreshed
             }
-        }
-
-        void OnSceneGUI()
-        {
-            _script.Update();
         }
     }
 #endif
