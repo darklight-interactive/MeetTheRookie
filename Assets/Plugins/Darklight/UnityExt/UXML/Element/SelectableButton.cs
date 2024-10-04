@@ -17,14 +17,17 @@ namespace Darklight.UnityExt.UXML
 
         }
 
-        public void SetSelected()
+        public void Select()
         {
             AddToClassList("selected");
             OnSelect?.Invoke();
         }
         public void Deselect() => RemoveFromClassList("selected");
+        public void SetVisible(bool visible)
+        {
+            style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
         public void InvokeClickAction() => OnClick?.Invoke();
-
         public class SelectableButtonFactory : UxmlFactory<SelectableButton> { }
 
     }

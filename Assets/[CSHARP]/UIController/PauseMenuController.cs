@@ -72,7 +72,7 @@ public class PauseMenuController : UXML_UIDocumentObject
 
         // Load the selectable buttons
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().SetSelected();
+        selectableVectorField.Selectables.First().Select();
 
         // Store the pause menu container
         _pauseMenuContainer = ElementQuery<VisualElement>(PAUSEMENU_CTN);
@@ -122,8 +122,8 @@ public class PauseMenuController : UXML_UIDocumentObject
 
         // Select the next button in the direction
         selectableVectorField.CurrentSelection.Deselect();
-        SelectableButton newButton = selectableVectorField.GetElementInDirection(directionInScreenSpace);
-        newButton?.SetSelected();
+        SelectableButton newButton = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
+        newButton?.Select();
     }
 
     void RotateChoiceSelection(int direction)

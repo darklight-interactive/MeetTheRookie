@@ -11,7 +11,7 @@ namespace Darklight.UnityExt.UXML
     public interface ISelectable
     {
         public event Action OnSelect;
-        void SetSelected();
+        void Select();
         void Deselect();
     }
 
@@ -33,7 +33,7 @@ namespace Darklight.UnityExt.UXML
             this.focusable = true;
         }
 
-        public virtual void SetSelected()
+        public virtual void Select()
         {
             this.AddToClassList("selected");
             this.Focus();

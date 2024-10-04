@@ -15,7 +15,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class MTRDatingSimController : UXML_UIDocumentObject
+public partial class MTRDatingSimController : UXML_UIDocumentObject
 {
     const string PREFIX = "<MTRDatingSimController>";
     const string DIALOGUE_TAG = "dialogue";
@@ -30,6 +30,7 @@ public class MTRDatingSimController : UXML_UIDocumentObject
 
     bool _choicesActive;
     bool _isRolling = false;
+    [SerializeField, ShowOnly] bool _inputEnabled = false;
     VisualElement _misraImage;
     VisualElement _lupeImage;
     VisualElement _continueTriangle;
@@ -37,25 +38,39 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     ControlledLabel _dialogueText;
     VisualElement _choiceParent;
     List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
-    [SerializeField]
-    SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
+    [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
 
     public bool inCar = false;
     [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
 
     // ================ [[ PROPERTIES ]] ================================ >>>>
-    InkyStoryObject _storyObject => InkyStoryManager.GlobalStoryObject;
     InkyStoryIterator _storyIterator => InkyStoryManager.Iterator;
 
     // ================ [[ UNITY METHODS ]] ============================ >>>>
-    void Awake() => Preload();
-    void Start() => Initialize();
-    void OnDestroy() => SetInputEnabled(false); // Unbind input events
-
-    // ================ [[ INTERNAL METHODS ]] ========================== >>>>
-    void Preload()
+    void OnEnable()
     {
+        MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
+    }
+    void OnDestroy()
+    {
+        SetInputEnabled(false); // Unbind input events
+        MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
+    }
+    // ================ [[ INTERNAL METHODS ]] ========================== >>>>
+    void OnSceneStateChanged(MTRSceneState newState)
+    {
+        switch (newState)
+        {
+            case MTRSceneState.ENTER:
+                Initialize();
+                break;
+        }
+    }
+
+    void Initialize()
+    {
+        Debug.Log($"{PREFIX} >> Initialize");
         base.Initialize(preset);
 
         // << DISABLE INPUTS >>
@@ -64,7 +79,12 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
         _choiceButtons = temp.OrderBy(x => x.name).ToList();
-        _choiceMap.Load(temp);
+        for (int i = 0; i < _choiceButtons.Count; i++)
+        {
+            _choiceButtons[i].name = $"choice-button-{i}";
+            _choiceButtons[i].Deselect();
+            _choiceButtons[i].SetVisible(false);
+        }
         Debug.Log($"{PREFIX} >> Choice Buttons: {_choiceButtons.Count}");
 
         // << QUERY UXML ELEMENTS >>
@@ -82,22 +102,24 @@ public class MTRDatingSimController : UXML_UIDocumentObject
 
         CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
         _choiceParent = root.Q<VisualElement>(choiceParentTag);
-    }
 
-    void Initialize()
-    {
         if (inCar) { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
         else { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
 
         if (!boundEmote)
         {
             // In Inky file function should be: EXTERNAL SetEmote(name, emote)
-            _storyObject.BindExternalFunction("SetEmote", (object[] args) =>
+            InkyStoryManager.GlobalStoryObject.BindExternalFunction("SetEmote", (object[] args) =>
             {
                 return SetEmote((string)args[0], (string)args[1]);
             });
             boundEmote = true;
         }
+
+        _dialogueText.FullText = "";
+
+        _storyIterator.OnDialogue += UpdateDialogue;
+        _storyIterator.OnChoice += PopulateChoices;
 
         // Start story
         ContinueStory();
@@ -122,12 +144,14 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         switch (enabled)
         {
             case true:
-                UniversalInputManager.OnMoveInputStarted += Move;
+                UniversalInputManager.OnMoveInputStarted += HandleSelectionInput;
                 UniversalInputManager.OnPrimaryInteract += Select;
+                _inputEnabled = true;
                 break;
             case false:
-                UniversalInputManager.OnMoveInputStarted -= Move;
+                UniversalInputManager.OnMoveInputStarted -= HandleSelectionInput;
                 UniversalInputManager.OnPrimaryInteract -= Select;
+                _inputEnabled = false;
                 break;
         }
     }
@@ -137,10 +161,23 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void ContinueStory()
     {
+        Debug.Log($"{PREFIX} >> Continue Story");
+
+        StartCoroutine(ContinueStoryRoutine());
+    }
+
+    IEnumerator ContinueStoryRoutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _storyIterator.ContinueStory();
+
+        /*
         Story currentStory = _storyObject.StoryValue;
         if (currentStory.canContinue)
         {
             UpdateDialogue(currentStory.Continue());
+
+            yield return new WaitForSeconds(0.5f); // << Wait for a bit before showing choices
             if (currentStory.currentChoices.Count > 0)
             {
                 PopulateChoices();
@@ -150,116 +187,18 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         {
             EndStory();
         }
+        */
     }
 
-    /// <summary>
-    /// Enables the choice buttons
-    /// </summary>
-    void PopulateChoices()
-    {
-        Story currentStory = _storyObject.StoryValue;
-        _continueTriangle.style.visibility = Visibility.Hidden;
-        int index = 0;
-        foreach (Choice choice in currentStory.currentChoices)
-        {
-            _choiceButtons[index].text = choice.text;
-            _choiceButtons[index].Deselect();
-            index++;
-        }
-
-        for (int i = index; i < _choiceButtons.Count; i++)
-        {
-            _choiceButtons[i].Deselect();
-        }
-
-        _choicesActive = true;
-
-        //choiceMap.SelectElement(choiceButtons[0]);
-        _choiceMap.CurrentSelection.SetSelected();
-    }
-
-    /// <summary>
-    /// Selects the choice at the given index
-    /// </summary>
-    void SelectChoice()
-    {
-        if (_choiceMap.CurrentSelection == null)
-        {
-            Debug.LogError($"{PREFIX} No choice selected.");
-            return;
-        }
-
-        Story currentStory = _storyObject.StoryValue;
-        currentStory.ChooseChoiceIndex(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
-        _choiceParent.style.display = DisplayStyle.None;
-        _continueTriangle.style.visibility = Visibility.Visible;
-        _choicesActive = false;
-        ContinueStory();
-    }
-
-    /// <summary>
-    /// Ends the story. Transition to next scene from here.
-    /// </summary>
-    void EndStory()
-    {
-        UpdateDialogue("END OF STORY");
-        Debug.Log("END OF STORY");
-        SceneManager.LoadScene(nextScene);
-    }
-
-    /// <summary>
-    /// The function to select choice via input
-    /// </summary>
-    void Select()
-    {
-        if (_isRolling)
-        {
-            StopAllCoroutines();
-            _dialogueText.InstantCompleteText();
-            _isRolling = false;
-            _continueTriangle.visible = true;
-        }
-        else if (_choicesActive)
-        {
-            SelectChoice();
-        }
-        else
-        {
-            ContinueStory();
-        }
-    }
-
-    /// <summary>
-    /// The function to change choice via input
-    /// </summary>
-    /// <param name="move">The movement vector</param>
-    void Move(Vector2 move)
-    {
-        move.y = -move.y;
-        if (_choiceMap.CurrentSelection != null)
-        {
-            _choiceMap.CurrentSelection.Deselect();
-        }
-        SelectableButton selected = _choiceMap.GetElementInDirection(move);
-        if (selected != null)
-        {
-            selected.SetSelected();
-            //Debug.Log($"{PREFIX} >> Move: {move} - Selected: {selected.text}");
-        }
-        else
-        {
-            //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
-        }
-    }
-
+    #region ======== [[ STORY DIALOGUE ]] <PRIVATE_METHODS> ========================== >>>>
     /// <summary>
     /// Update the dialogue 
     /// </summary>
     /// <param name="dialogue">The new dialogue</param>
-    void UpdateDialogue(string dialogue)
+    void UpdateDialogue(string dialogue, string speaker = "")
     {
-        Story currentStory = _storyObject.StoryValue;
-        List<string> tags = currentStory.currentTags;
+        _storyIterator.TryGetTags(out IEnumerable<string> tags);
+
         _nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
         {
@@ -331,6 +270,120 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         _isRolling = false;
         _continueTriangle.visible = true;
     }
+    #endregion
+
+    #region ======== [[ STORY CHOICE ]] <PRIVATE_METHODS> ========================== >>>>
+    /// <summary>
+    /// Enables the choice buttons
+    /// </summary>
+    void PopulateChoices(List<Choice> choices)
+    {
+        _continueTriangle.style.visibility = Visibility.Hidden;
+
+        DeselectAllButtons(false);
+
+        int index = 0;
+        foreach (Choice choice in choices)
+        {
+            _choiceButtons[index].text = choice.text;
+            _choiceButtons[index].SetVisible(true);
+            _choiceMap.Add(_choiceButtons[index]);
+            index++;
+        }
+
+        _choicesActive = true;
+
+        //choiceMap.SelectElement(choiceButtons[0]);
+        _choiceMap.CurrentSelection.Select();
+    }
+
+    /// <summary>
+    /// The function to change choice via input
+    /// </summary>
+    /// <param name="direction">The movement vector</param>
+    void HandleSelectionInput(Vector2 direction)
+    {
+        direction.y = -direction.y;
+        SelectableButton selected = _choiceMap.SelectElementInDirection(direction);
+        if (selected != null)
+        {
+            _choiceMap.PreviousSelection.Deselect();
+            selected.Select();
+            //Debug.Log($"{PREFIX} >> Move: {move} - Selected: {selected.text}");
+        }
+        else
+        {
+            //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
+        }
+    }
+
+    /// <summary>
+    /// The function to select choice via input
+    /// </summary>
+    void Select()
+    {
+        if (_isRolling)
+        {
+            StopAllCoroutines();
+            _dialogueText.InstantCompleteText();
+            _isRolling = false;
+            _continueTriangle.visible = true;
+        }
+        else if (_choicesActive)
+        {
+            SelectChoice();
+        }
+        else
+        {
+            ContinueStory();
+        }
+    }
+
+    /// <summary>
+    /// Selects the choice at the given index
+    /// </summary>
+    void SelectChoice()
+    {
+        if (_choiceMap.CurrentSelection == null)
+        {
+            Debug.LogError($"{PREFIX} No choice selected.");
+            return;
+        }
+
+        _continueTriangle.style.visibility = Visibility.Visible;
+
+        _storyIterator.ChooseChoice(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
+        _choicesActive = false;
+
+        DeselectAllButtons(false);
+        ContinueStory();
+    }
+    #endregion
+
+    void DeselectAllButtons(bool visibility = true)
+    {
+        foreach (SelectableButton button in _choiceButtons)
+        {
+            button.Deselect();
+            button.SetVisible(visibility);
+        }
+    }
+
+    /// <summary>
+    /// Ends the story. Transition to next scene from here.
+    /// </summary>
+    void EndStory()
+    {
+        UpdateDialogue("END OF STORY");
+        Debug.Log("END OF STORY");
+        SceneManager.LoadScene(nextScene);
+    }
+
+
+
+
+
+
 
     /// <summary>
     /// Moves the cool dialogue triangle up and down

@@ -81,7 +81,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
             {
                 itemsSelection.CurrentSelection.RemoveFromClassList("highlight");
             }
-            var selected = itemsSelection.GetElementInDirection(move);
+            var selected = itemsSelection.SelectElementInDirection(move);
             if (selected != null) {
                 selected.AddToClassList("highlight");
             }

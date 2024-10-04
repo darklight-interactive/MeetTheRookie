@@ -21,14 +21,16 @@ namespace Darklight.UnityExt.Inky
         InkyStoryObject _storyObject;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
-        [SerializeField, ShowOnly] public State _currentIteratorState;
+        [SerializeField, ShowOnly] public State _currentStoryState;
         [SerializeField, ShowOnly] string _currentStoryKnot;
         [SerializeField, ShowOnly] string _currentStoryDialogue;
         List<Choice> _currentChoices;
 
 
         // ======== [[ PROPERTIES ]] ================================ >>
-        public string CurrentStoryKnot { get => _currentStoryKnot; set => _currentStoryKnot = value; }
+        protected Story story => _storyObject.StoryValue;
+        public State CurrentStoryState => _currentStoryState;
+        public string CurrentStoryKnot => _currentStoryKnot;
         public string CurrentStoryDialogue
         {
             get => _currentStoryDialogue = _storyObject.StoryValue.currentText.Trim();
@@ -54,11 +56,11 @@ namespace Darklight.UnityExt.Inky
 
         public override void OnStateChanged(State previousState, State newState)
         {
-            _currentIteratorState = newState;
+            _currentStoryState = newState;
         }
 
-        // ======== <PRIVATE_METHODS> ================================ >>
-        void HandleStoryDialogue(Story story)
+        #region ======== <PRIVATE_METHODS> ================================ >>
+        void HandleStoryDialogue()
         {
             GoToState(State.DIALOGUE);
             story.Continue();
@@ -75,7 +77,7 @@ namespace Darklight.UnityExt.Inky
             Debug.Log($"{PREFIX} Dialogue: {CurrentStoryDialogue}");
         }
 
-        void HandleStoryChoices(Story story)
+        void HandleStoryChoices()
         {
             // Return if already in choice state
             if (CurrentState == State.CHOICE) return;
@@ -130,7 +132,7 @@ namespace Darklight.UnityExt.Inky
                 }
             }
         }
-
+        #endregion
 
         // ======== <PUBLIC_METHODS> ================================ >>
         public void GoToKnotOrStitch(string knotName)
@@ -138,7 +140,7 @@ namespace Darklight.UnityExt.Inky
             try
             {
                 _storyObject.StoryValue.ChoosePathString(knotName);
-                CurrentStoryKnot = knotName;
+                _currentStoryKnot = knotName;
             }
             catch (System.Exception e)
             {
@@ -172,10 +174,10 @@ namespace Darklight.UnityExt.Inky
 
             // << HANDLE STORY STATE >> ------------------------------------ >>
             // -- ( DIALOGUE STATE ) ----
-            if (story.canContinue) HandleStoryDialogue(story);
+            if (story.canContinue) HandleStoryDialogue();
 
             // -- ( CHOICE STATE ) ----
-            else if (story.currentChoices.Count > 0) HandleStoryChoices(story);
+            else if (story.currentChoices.Count > 0) HandleStoryChoices();
 
             // -- ( END STATE ) ----
             else HandleStoryEnd();
@@ -184,15 +186,26 @@ namespace Darklight.UnityExt.Inky
             HandleTags();
         }
 
-        public void ChooseChoice(Choice choice)
+        public void ChooseChoice(Choice choice) => ChooseChoice(choice.index);
+        public void ChooseChoice(int index)
         {
-            Debug.Log($"{PREFIX} Choice Selected: {choice.text}");
-            _storyObject.StoryValue.ChooseChoiceIndex(choice.index);
+            TryGetChoices(out List<Choice> choices);
+            Debug.Log($"{PREFIX} Choice Selected: {choices[index].text}");
+
+            _storyObject.StoryValue.ChooseChoiceIndex(index);
             _choiceMap.Clear();
             ContinueStory();
         }
 
+        public void TryGetChoices(out List<Choice> choices)
+        {
+            choices = _storyObject.StoryValue.currentChoices;
+        }
 
+        public void TryGetTags(out IEnumerable<string> tags)
+        {
+            tags = _storyObject.StoryValue.currentTags;
+        }
 
         public enum State
         {

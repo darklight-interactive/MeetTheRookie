@@ -19,13 +19,18 @@ namespace Darklight.UnityExt.UXML
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class UXML_UIDocumentObject : MonoBehaviour
+    public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
     {
         // << PUBLIC ACCESSORS >> //
         [SerializeField, Expandable] public UXML_UIDocumentPreset preset;
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
+
+        public void OnEditorReloaded()
+        {
+            Initialize(preset);
+        }
         public virtual void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
         {
             this.preset = preset;
@@ -143,7 +148,6 @@ namespace Darklight.UnityExt.UXML
         {
             _serializedObject = new SerializedObject(target);
             _script = (UXML_UIDocumentObject)target;
-            _script.Initialize(_script.preset);
         }
 
         public override void OnInspectorGUI()

@@ -24,9 +24,11 @@ public enum MTRSceneState
 }
 
 [RequireComponent(typeof(MTRSceneManager))]
-public class MTRSceneController : MonoBehaviour
+public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 {
     const string PREFIX = "[MTRSceneController]";
+    public static InternalStateMachine StateMachine => Instance._stateMachine;
+
 
     InternalStateMachine _stateMachine;
     [SerializeField, ShowOnly] MTRSceneState _currentSceneState;
@@ -35,17 +37,11 @@ public class MTRSceneController : MonoBehaviour
     public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
-    public InternalStateMachine StateMachine => _stateMachine;
-    public MTRSceneState CurrentState => _currentSceneState;
 
-    void Awake()
+    public override void Initialize()
     {
         _stateMachine = new InternalStateMachine(this);
         _stateMachine.OnStateChanged += OnSceneStateChanged;
-    }
-
-    void Start()
-    {
         _stateMachine.GoToState(MTRSceneState.INITIALIZE);
     }
 
@@ -58,13 +54,6 @@ public class MTRSceneController : MonoBehaviour
     {
         Debug.Log($"Scene State Changed: {state}");
         _currentSceneState = state;
-    }
-
-    public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
-    {
-        Debug.Log($"Active Scene Changed: {oldScene.name} -> {newScene.name}");
-
-        //StateMachine.GoToState(MTRSceneState.INITIALIZE);
     }
 
     public void TryLoadScene(string sceneName)
@@ -108,8 +97,6 @@ public class MTRSceneController : MonoBehaviour
         public abstract class BaseState : FiniteState<MTRSceneState>
         {
             protected MTRSceneManager sceneManager => MTRSceneManager.Instance;
-            protected MTRSceneController sceneController;
-            protected InternalStateMachine stateMachine;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
             protected MTRSceneTransitionController transitionController
@@ -122,6 +109,10 @@ public class MTRSceneController : MonoBehaviour
                     return controller;
                 }
             }
+
+            protected InternalStateMachine stateMachine;
+            protected MTRSceneController sceneController;
+
             public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
@@ -205,16 +196,13 @@ public class MTRSceneController : MonoBehaviour
 
             IEnumerator EnterStateCoroutine()
             {
-                if (cameraController != null)
-                    cameraController.SetPlayerAsFollowTarget();
-
-                playerController.Input.SetAllInputsEnabled(true);
+                cameraController?.SetPlayerAsFollowTarget();
                 yield return new WaitForSeconds(2f);
 
                 //transitionController.StartFadeIn();
-                transitionController.StartWipeOpen();
-
+                transitionController?.StartWipeOpen();
                 yield return new WaitForSeconds(0.5f);
+
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }

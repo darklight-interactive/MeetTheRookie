@@ -70,16 +70,6 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         }
     }
 
-    public void OnEnable()
-    {
-        OnSceneChanged += SceneController.OnActiveSceneChanged;
-    }
-
-    public void OnDisable()
-    {
-        OnSceneChanged -= SceneController.OnActiveSceneChanged;
-    }
-
     void OnStoryInitialized(Story story)
     {
         if (!Application.isPlaying)

@@ -36,7 +36,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().SetSelected();
+        selectableVectorField.Selectables.First().Select();
 
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
@@ -46,7 +46,7 @@ public class MainMenuController : UXML_UIDocumentObject
     void OnMoveInputStartAction(Vector2 dir)
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        SelectableButton button = selectableVectorField.GetElementInDirection(directionInScreenSpace);
+        SelectableButton button = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
         Select(button);
         Debug.Log($"MainMenuController: OnMoveInputStartAction({dir}) -> {button.name}");
     }
@@ -59,7 +59,7 @@ public class MainMenuController : UXML_UIDocumentObject
         if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
-            selectedButton.SetSelected();
+            selectedButton.Select();
             lockSelection = true;
             MTR_AudioManager.Instance.PlayMenuHoverEvent();
             Invoke(nameof(UnlockSelection), 0.1f);

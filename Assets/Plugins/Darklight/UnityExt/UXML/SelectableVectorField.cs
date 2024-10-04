@@ -85,7 +85,7 @@ namespace Darklight.UnityExt.UXML
         /// </summary>
         /// <param name="dir">The direction from which to select.</param>
         /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
-        public TElement GetElementInDirection(Vector2 dir)
+        public TElement SelectElementInDirection(Vector2 dir)
         {
             if (_selectables == null || _selectables.Count == 0)
                 return null;
@@ -100,13 +100,17 @@ namespace Darklight.UnityExt.UXML
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
-                    //Debug.Log($"SelectableVectorField :: GetElementInDirection :: {PreviousSelection.name} -> {CurrentSelection.name}");
+                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {PreviousSelection.name} -> {CurrentSelection.name}");
+                }
+                else
+                {
+                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: No new selection.");
                 }
                 return pick;
             }
             else
             {
-                //Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
+                Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
             }
             return CurrentSelection;
         }
