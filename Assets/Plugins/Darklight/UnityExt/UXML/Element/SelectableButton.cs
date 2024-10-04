@@ -6,6 +6,8 @@ namespace Darklight.UnityExt.UXML
     [UxmlElement]
     public partial class SelectableButton : Button, ISelectable
     {
+        const string SELECTED_CLASS = "selected";
+        const string DISABLED_CLASS = "disabled";
 
         public event Action OnSelect;
         public event Action OnClick;
@@ -19,14 +21,14 @@ namespace Darklight.UnityExt.UXML
 
         public void Select()
         {
-            AddToClassList("selected");
+            AddToClassList(SELECTED_CLASS);
             OnSelect?.Invoke();
         }
-        public void Deselect() => RemoveFromClassList("selected");
-        public void SetVisible(bool visible)
-        {
-            style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-        }
+        public void Deselect() => RemoveFromClassList(SELECTED_CLASS);
+
+        public void Enable() => RemoveFromClassList(DISABLED_CLASS);
+        public void Disable() => AddToClassList(DISABLED_CLASS);
+
         public void InvokeClickAction() => OnClick?.Invoke();
         public class SelectableButtonFactory : UxmlFactory<SelectableButton> { }
 

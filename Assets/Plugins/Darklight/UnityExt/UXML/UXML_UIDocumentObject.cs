@@ -22,7 +22,9 @@ namespace Darklight.UnityExt.UXML
     public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
     {
         // << PUBLIC ACCESSORS >> //
+        [Header("UXML_UIDocumentObject")]
         [SerializeField, Expandable] public UXML_UIDocumentPreset preset;
+
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
@@ -157,7 +159,7 @@ namespace Darklight.UnityExt.UXML
 
             base.OnInspectorGUI();
 
-            if (GUILayout.Button("Initialize"))
+            if (GUILayout.Button("Initialize UIDocumentObject"))
             {
                 _script.Initialize(_script.preset);
             }

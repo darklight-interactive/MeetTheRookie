@@ -1,14 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/VisualNovel.uss?fileID=7433441132597879392&amp;guid=f355bbbc73f8b6f4e81577431e243ca6&amp;type=3#VisualNovel" />
     <ui:VisualElement name="container" style="align-self: stretch; justify-content: space-between; position: absolute; width: 100%; height: 100%;">
-        <ui:GroupBox name="choice-container-parent" style="flex-direction: column;">
-            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-1" name="choice-button-1" class="choice-button" />
-            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-2" name="choice-button-2" class="choice-button" />
+        <ui:GroupBox name="choice-container-parent">
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-1" name="choice-button-1" class="choice-button selected" />
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-2 I have a lot more to say and Im gonna say it !!!" name="choice-button-2" class="choice-button" />
             <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-3" name="choice-button-3" class="choice-button" />
-            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-4" name="choice-button-4" class="choice-button" />
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-4 " name="choice-button-4" class="choice-button" />
         </ui:GroupBox>
         <ui:VisualElement name="Dashboard" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Backgrounds/datingsim_stakeout_fg.png?fileID=2800000&amp;guid=3ab68fe5e91a142e68a112fc9f4c91b3&amp;type=3#datingsim_stakeout_fg&quot;); display: none; visibility: hidden;" />
-        <ui:VisualElement name="character-container-parent" style="background-image: url(&quot;project://database/Assets/Plugins/Darklight/_textures/UXML_WorldSpaceTexture.renderTexture?fileID=8400000&amp;guid=e7ee34e8fb65d8548a8b02bafb328c7f&amp;type=2#UXML_WorldSpaceTexture&quot;); visibility: visible; align-items: stretch; justify-content: space-between; flex-grow: 1; align-self: auto; position: absolute; flex-direction: row; width: 100%; height: 100%;">
+        <ui:VisualElement name="character-container-parent" style="background-image: url(&quot;project://database/Assets/Plugins/Darklight/_textures/UXML_WorldSpaceTexture.renderTexture?fileID=8400000&amp;guid=e7ee34e8fb65d8548a8b02bafb328c7f&amp;type=2#UXML_WorldSpaceTexture&quot;); visibility: visible; align-items: stretch; justify-content: space-between; flex-grow: 1; align-self: auto; position: absolute; flex-direction: row; width: 100%; height: 100%; display: flex;">
             <ui:VisualElement name="character-container-misra" class="character-container">
                 <ui:VisualElement name="character-image-misra" class="character-image">
                     <Bindings>

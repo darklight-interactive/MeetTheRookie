@@ -14,6 +14,11 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using NaughtyAttributes;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public partial class MTRDatingSimController : UXML_UIDocumentObject
 {
@@ -30,7 +35,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     bool _choicesActive;
     bool _isRolling = false;
-    [SerializeField, ShowOnly] bool _inputEnabled = false;
     VisualElement _misraImage;
     VisualElement _lupeImage;
     VisualElement _continueTriangle;
@@ -38,8 +42,10 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     ControlledLabel _dialogueText;
     VisualElement _choiceParent;
     List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
-    [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
 
+    [HorizontalLine(color: EColor.Gray, order = 1)]
+    [SerializeField, ShowOnly] bool _inputEnabled = false;
+    [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
     public bool inCar = false;
     [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
@@ -79,12 +85,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
         _choiceButtons = temp.OrderBy(x => x.name).ToList();
-        for (int i = 0; i < _choiceButtons.Count; i++)
-        {
-            _choiceButtons[i].name = $"choice-button-{i}";
-            _choiceButtons[i].Deselect();
-            _choiceButtons[i].SetVisible(false);
-        }
+        ResetChoiceButtons();
         Debug.Log($"{PREFIX} >> Choice Buttons: {_choiceButtons.Count}");
 
         // << QUERY UXML ELEMENTS >>
@@ -118,11 +119,12 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         _dialogueText.FullText = "";
 
-        _storyIterator.OnDialogue += UpdateDialogue;
-        _storyIterator.OnChoice += PopulateChoices;
+        _storyIterator.OnDialogue += HandleStoryDialogue;
+        _storyIterator.OnChoice += HandleStoryChoices;
 
         // Start story
-        ContinueStory();
+        _storyIterator.ContinueStory();
+
         MoveTriangle(); // Cool dialogue triangle movement
 
         // << ENABLE INPUTS >>
@@ -156,46 +158,12 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
     }
 
-    /// <summary>
-    /// Continues the Story
-    /// </summary>
-    void ContinueStory()
-    {
-        Debug.Log($"{PREFIX} >> Continue Story");
-
-        StartCoroutine(ContinueStoryRoutine());
-    }
-
-    IEnumerator ContinueStoryRoutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        _storyIterator.ContinueStory();
-
-        /*
-        Story currentStory = _storyObject.StoryValue;
-        if (currentStory.canContinue)
-        {
-            UpdateDialogue(currentStory.Continue());
-
-            yield return new WaitForSeconds(0.5f); // << Wait for a bit before showing choices
-            if (currentStory.currentChoices.Count > 0)
-            {
-                PopulateChoices();
-            }
-        }
-        else if (currentStory.currentChoices.Count <= 0)
-        {
-            EndStory();
-        }
-        */
-    }
-
     #region ======== [[ STORY DIALOGUE ]] <PRIVATE_METHODS> ========================== >>>>
     /// <summary>
     /// Update the dialogue 
     /// </summary>
     /// <param name="dialogue">The new dialogue</param>
-    void UpdateDialogue(string dialogue, string speaker = "")
+    void HandleStoryDialogue(string dialogue, string speaker = "")
     {
         _storyIterator.TryGetTags(out IEnumerable<string> tags);
 
@@ -276,25 +244,31 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// <summary>
     /// Enables the choice buttons
     /// </summary>
-    void PopulateChoices(List<Choice> choices)
+    void HandleStoryChoices(List<Choice> choices)
     {
         _continueTriangle.style.visibility = Visibility.Hidden;
 
-        DeselectAllButtons(false);
+        ResetChoiceButtons();
+
+        StartCoroutine(HandleStoryChoicesRoutine(choices));
+    }
+
+    IEnumerator HandleStoryChoicesRoutine(List<Choice> choices)
+    {
+        yield return new WaitForSeconds(0.5f);
 
         int index = 0;
         foreach (Choice choice in choices)
         {
             _choiceButtons[index].text = choice.text;
-            _choiceButtons[index].SetVisible(true);
+            _choiceButtons[index].Enable();
             _choiceMap.Add(_choiceButtons[index]);
             index++;
+            yield return new WaitForSeconds(0.25f);
         }
-
         _choicesActive = true;
-
-        //choiceMap.SelectElement(choiceButtons[0]);
         _choiceMap.CurrentSelection.Select();
+        yield return null;
     }
 
     /// <summary>
@@ -335,7 +309,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
         else
         {
-            ContinueStory();
+            _storyIterator.ContinueStory();
         }
     }
 
@@ -355,17 +329,17 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         _storyIterator.ChooseChoice(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
         _choicesActive = false;
 
-        DeselectAllButtons(false);
-        ContinueStory();
+        ResetChoiceButtons();
+        _storyIterator.ContinueStory();
     }
     #endregion
 
-    void DeselectAllButtons(bool visibility = true)
+    void ResetChoiceButtons()
     {
         foreach (SelectableButton button in _choiceButtons)
         {
             button.Deselect();
-            button.SetVisible(visibility);
+            button.Disable();
         }
     }
 
@@ -374,7 +348,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void EndStory()
     {
-        UpdateDialogue("END OF STORY");
+        HandleStoryDialogue("END OF STORY");
         Debug.Log("END OF STORY");
         SceneManager.LoadScene(nextScene);
     }
@@ -418,4 +392,30 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         return success;
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(MTRDatingSimController))]
+    public class MTRDatingSimControllerCustomEditor : UXML_UIDocumentObjectCustomEditor
+    {
+        SerializedObject _serializedObject;
+        MTRDatingSimController _script;
+        public override void OnInspectorGUI()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (MTRDatingSimController)target;
+
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
+
 }

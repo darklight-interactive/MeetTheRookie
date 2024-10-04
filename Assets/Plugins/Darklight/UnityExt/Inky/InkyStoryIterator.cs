@@ -41,10 +41,13 @@ namespace Darklight.UnityExt.Inky
         }
 
         // ======== [[ EVENTS ]] ================================ >>
+        public delegate void StorySimpleEvent();
         public delegate void StoryDialogueEvent(string text, string speaker = "");
         public delegate void StoryChoiceEvent(List<Choice> choices);
+        public event StorySimpleEvent OnStart;
         public event StoryDialogueEvent OnDialogue;
         public event StoryChoiceEvent OnChoice;
+        public event StorySimpleEvent OnEnd;
 
         // ------------------- [[ CONSTRUCTORS ]] -------------------
         public InkyStoryIterator(InkyStoryObject inkyStoryObject, State initialState = State.NULL)
@@ -101,6 +104,7 @@ namespace Darklight.UnityExt.Inky
         {
             GoToState(State.END);
 
+            OnEnd?.Invoke();
             Debug.Log($"{PREFIX} End of Knot");
         }
 
