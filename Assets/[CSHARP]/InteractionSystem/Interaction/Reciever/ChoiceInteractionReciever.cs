@@ -117,7 +117,7 @@ public class ChoiceInteractionReciever : InteractionReciever
             choiceBubble.OriginPoint = Grid.GetOriginPointFromCell(cell);
             choiceBubble.DirectionPoint = Grid.GetAnchorPointFromCell(cell);
 
-            choiceBubble.FontSize = 240;
+            choiceBubble.FontSizePercentage = 240;
 
             choiceBubbleObject.SetText(fullText);
 

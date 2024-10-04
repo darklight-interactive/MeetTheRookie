@@ -16,7 +16,7 @@ namespace Darklight.UnityExt.UXML
     [UxmlElement]
     public partial class ControlledLabel : VisualElement
     {
-        const string TAG = "ControlledLabel";
+        const string TAG = "controlledLabel";
         const string PATH_TO_DEFAULTBKG = "Assets/Plugins/Darklight/_textures/DRKL_TextBubble_Default_0.png";
 
         VisualElement _labelContainer;
@@ -25,7 +25,7 @@ namespace Darklight.UnityExt.UXML
 
         float _rollingTextPercentValue = 1;
         int _currentIndex;
-        int _fontSize = 100;
+        int _fontSizePercent = 100;
 
         protected VisualElement labelContainer { get { return _labelContainer; } set { _labelContainer = value; } }
         protected Label label { get { return _label; } set { _label = value; } }
@@ -57,14 +57,14 @@ namespace Darklight.UnityExt.UXML
         }
 
         [Header("(( Text Style )) ---- >>")]
-        [UxmlAttribute, Range(12, 240)]
-        public int FontSize
+        [UxmlAttribute, Range(5, 100)]
+        public int FontSizePercentage
         {
-            get { return _fontSize; }
+            get { return _fontSizePercent; }
             set
             {
-                _fontSize = value;
-                label.style.fontSize = value;
+                _fontSizePercent = value;
+                label.style.fontSize = Length.Percent(_fontSizePercent);
             }
         }
 
@@ -107,12 +107,9 @@ namespace Darklight.UnityExt.UXML
                 style =
                 {
                     overflow = Overflow.Hidden,
-
-                    paddingTop = Length.Percent(5),
-                    paddingBottom = Length.Percent(5),
-                    paddingLeft = Length.Percent(5),
-                    paddingRight = Length.Percent(5),
-
+                    alignSelf = Align.Stretch,
+                    flexGrow = 1,
+                    flexWrap = Wrap.Wrap,
 
                     unityBackgroundImageTintColor = Color.white
                 }
@@ -126,7 +123,11 @@ namespace Darklight.UnityExt.UXML
                 {
                     whiteSpace = WhiteSpace.Normal,
                     overflow = Overflow.Hidden,
-                    alignSelf = Align.Stretch
+                    alignSelf = Align.Stretch,
+                    flexGrow = 1,
+                    flexShrink = 1,
+
+                    fontSize = Length.Percent(100),
                 }
             };
 
@@ -135,7 +136,7 @@ namespace Darklight.UnityExt.UXML
             this.Add(_labelContainer);
 
 
-            label.style.fontSize = _fontSize;
+            label.style.fontSize = _fontSizePercent;
         }
 
         public void SetFullText(string fullText)
