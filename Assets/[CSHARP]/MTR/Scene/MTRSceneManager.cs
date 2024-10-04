@@ -83,7 +83,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     {
         if (!Application.isPlaying)
             return;
-        Debug.Log($"{Prefix} >> STORY INITIALIZED EVENT: {story}");
+        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
         story.BindExternalFunction(
             "ChangeGameScene",
             (string knotName) => ChangeGameScene(knotName)
