@@ -1,62 +1,50 @@
-.Highlight {
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-}
-
-.Inactive {
-    -unity-background-image-tint-color: rgb(178, 178, 178);
-}
-
 .unity-text-element {
     white-space: normal;
     -unity-font-definition: resource('Fonts/cour');
 }
 
-.character-image {
-    flex-grow: 1;
-    flex-shrink: 1;
-    align-self: stretch;
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Misra-LinedInquisiting-2(neutral).png?fileID=2800000&guid=8453062170d4ea1469e123b4825de57d&type=3#Misra-LinedInquisiting-2(neutral)");
-    -unity-background-scale-mode: scale-and-crop;
-    justify-content: center;
+.active {
+}
+
+.inactive {
+    -unity-background-image-tint-color: rgb(178, 178, 178);
 }
 
 .character-container {
     flex-grow: 1;
-    align-self: flex-end;
-    height: 100%;
-    max-height: 1600px;
-    justify-content: flex-end;
+    max-width: 750px;
+    flex-direction: row;
+    transition-duration: 0.25s, 1s;
+    transition-property: all, scale;
+    transition-timing-function: ease, ease-in-out-cubic;
+}
+
+#character-control-misra.character-container.active {
+    width: 1024px;
+    translate: 25% 0;
+}
+
+#character-control-lupe.character-container.active {
+    width: 1024px;
+    translate: -25% 0;
 }
 
 .character-image {
-    flex-grow: 1;
-    flex-shrink: 1;
-    align-self: center;
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Misra-LinedInquisiting-2(neutral).png?fileID=2800000&guid=8453062170d4ea1469e123b4825de57d&type=3#Misra-LinedInquisiting-2(neutral)");
     -unity-background-scale-mode: scale-to-fit;
-    justify-content: center;
-    width: 75%;
-    max-height: 1400px;
+    transition-duration: 0.25s, 0.5s;
+    transition-timing-function: ease-in-out-cubic, ease-in-out-bounce;
+    transition-property: all, scale;
+    flex-grow: 1;
+    align-self: auto;
 }
 
-#choice-container-parent {
-    align-items: center;
-    justify-content: space-evenly;
-    align-self: center;
-    flex-direction: column;
-    opacity: 1;
-    display: flex;
-    position: absolute;
-    margin-top: 32px;
-    width: 512px;
-    height: 66%;
+.character-image.active {
+    transform-origin: bottom;
+    scale: 1.25 1.25;
+    align-self: auto;
+}
+
+.character-image.inactive {
 }
 
 .choice-button {
@@ -103,5 +91,25 @@
 .choice-button.disabled {
     scale: 0.25 0.25;
     opacity: 0;
-    display: none;
+    display: flex;
+}
+
+.nametag {
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/ds_nametag_Lupe.png?fileID=2800000&guid=12a5a6409b96292448a07792472dd32f&type=3#ds_nametag_Lupe");
+    height: 100px;
+    width: 300px;
+    align-self: flex-start;
+    -unity-background-scale-mode: scale-and-crop;
+    flex-grow: 0;
+}
+
+.cinema-bar {
+    flex-grow: 0;
+    background-color: rgb(0, 0, 0);
+    align-self: stretch;
+    position: relative;
+    flex-direction: row;
+    width: 100%;
+    height: 100px;
+    justify-content: flex-start;
 }

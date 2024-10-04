@@ -31,15 +31,22 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     const string MISRA_TAG = "misra";
     const string LUPE_TAG = "lupe";
 
+    const string ACTIVE_CLASS = "active";
+    const string INACTIVE_CLASS = "inactive";
+
     static bool boundEmote = false;
 
     bool _choicesActive;
     bool _isRolling = false;
-    VisualElement _misraImage;
-    VisualElement _lupeImage;
-    VisualElement _continueTriangle;
-    VisualElement _nameTag;
     ControlledLabel _dialogueText;
+    VisualElement _continueTriangle;
+    VisualElement _lupe_nameTag;
+    VisualElement _misra_nameTag;
+
+    MTRCharacterControlElement _lupe_characterControl;
+    MTRCharacterControlElement _misra_characterControl;
+
+
     VisualElement _choiceParent;
     List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
 
@@ -89,17 +96,25 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         Debug.Log($"{PREFIX} >> Choice Buttons: {_choiceButtons.Count}");
 
         // << QUERY UXML ELEMENTS >>
-        CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, MISRA_TAG }, out string misraImageTag);
-        CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, LUPE_TAG }, out string lupeImageTag);
-        _misraImage = ElementQuery<VisualElement>(misraImageTag);
-        _lupeImage = ElementQuery<VisualElement>(lupeImageTag);
-
-        CreateTag(new List<string> { DIALOGUE_TAG, "triangle" }, out string triangleTag);
-        CreateTag(new List<string> { DIALOGUE_TAG, "nametag" }, out string nametagTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "text" }, out string dialogueTextTag);
-        _continueTriangle = ElementQuery<VisualElement>(triangleTag);
-        _nameTag = ElementQuery<VisualElement>(nametagTag);
+        CreateTag(new List<string> { DIALOGUE_TAG, "triangle" }, out string triangleTag);
         _dialogueText = ElementQuery<ControlledLabel>(dialogueTextTag);
+        _continueTriangle = ElementQuery<VisualElement>(triangleTag);
+
+        CreateTag(new List<string> { CHARACTER_TAG, "control", LUPE_TAG }, out string lupeCtrlTag);
+        CreateTag(new List<string> { DIALOGUE_TAG, "nametag", LUPE_TAG }, out string lupeNameTag);
+        _lupe_characterControl = ElementQuery<MTRCharacterControlElement>(lupeCtrlTag);
+        _lupe_nameTag = ElementQuery<VisualElement>(lupeNameTag);
+
+
+        CreateTag(new List<string> { CHARACTER_TAG, "control", MISRA_TAG }, out string misraCtrlTag);
+        CreateTag(new List<string> { DIALOGUE_TAG, "nametag", MISRA_TAG }, out string misraNameTag);
+        _misra_characterControl = ElementQuery<MTRCharacterControlElement>(misraCtrlTag);
+        _misra_nameTag = ElementQuery<VisualElement>(misraNameTag);
+
+
+
+
 
         CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
         _choiceParent = root.Q<VisualElement>(choiceParentTag);
@@ -165,35 +180,16 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void HandleStoryDialogue(string dialogue, string speaker = "")
     {
+        Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {speaker}");
+        HandleSpeaker(speaker);
+
         _storyIterator.TryGetTags(out IEnumerable<string> tags);
 
-        _nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
         {
-            Debug.Log(tag);
+            Debug.Log($"{PREFIX} >> Tag: {tag}");
             string[] splitTag = tag.ToLower().Split(":");
-            if (splitTag[0].Trim() == "name")
-            {
-                if (splitTag[1].Trim() == "lupe")
-                {
-                    _nameTag.style.visibility = Visibility.Visible;
-                    _lupeImage.style.visibility = Visibility.Visible;
-                    _nameTag.AddToClassList("NameTagLupe");
-                    _nameTag.RemoveFromClassList("NameTagMisra");
-                    _lupeImage.RemoveFromClassList("Inactive");
-                    _misraImage.AddToClassList("Inactive");
-                }
-                else if (splitTag[1].Trim() == "misra")
-                {
-                    _nameTag.style.visibility = Visibility.Visible;
-                    _misraImage.style.visibility = Visibility.Visible;
-                    _nameTag.AddToClassList("NameTagMisra");
-                    _nameTag.RemoveFromClassList("NameTagLupe");
-                    _misraImage.RemoveFromClassList("Inactive");
-                    _lupeImage.AddToClassList("Inactive");
-                }
-            }
-            else if (splitTag[0].Trim() == "emote")
+            if (splitTag[0].Trim() == "emote")
             {
                 string[] content = splitTag[1].Split("|");
                 SetEmote(content[0].Trim(), content[1].Trim());
@@ -202,19 +198,48 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
             {
                 if (splitTag[1].Trim() == "lupe")
                 {
-                    _lupeImage.style.visibility = Visibility.Hidden;
-                    _lupeImage.AddToClassList("Inactive");
+                    _lupe_characterControl.style.visibility = Visibility.Hidden;
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
-                    _misraImage.style.visibility = Visibility.Hidden;
-                    _misraImage.AddToClassList("Inactive");
+                    _misra_characterControl.style.visibility = Visibility.Hidden;
                 }
             }
         }
 
         StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
     }
+
+    void HandleSpeaker(string speaker)
+    {
+        Debug.Log($"{PREFIX} >> Handle Speaker: {speaker}");
+        switch (speaker)
+        {
+            case "Lupe":
+                _lupe_nameTag.style.visibility = Visibility.Visible;
+                _misra_nameTag.style.visibility = Visibility.Hidden;
+
+                _lupe_characterControl.Active = true;
+                _misra_characterControl.Active = false;
+                break;
+            case "Misra":
+                _lupe_nameTag.style.visibility = Visibility.Hidden;
+                _misra_nameTag.style.visibility = Visibility.Visible;
+
+                _lupe_characterControl.Active = false;
+                _misra_characterControl.Active = true;
+                break;
+            default:
+                _lupe_nameTag.style.visibility = Visibility.Hidden;
+                _misra_nameTag.style.visibility = Visibility.Hidden;
+
+                _lupe_characterControl.Active = false;
+                _misra_characterControl.Active = false;
+                break;
+        }
+    }
+
+
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
     {
@@ -268,6 +293,10 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
         _choicesActive = true;
         _choiceMap.CurrentSelection.Select();
+
+        yield return new WaitForSeconds(0.25f);
+        ResetCharacterControls();
+
         yield return null;
     }
 
@@ -343,6 +372,12 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
     }
 
+    void ResetCharacterControls()
+    {
+        _lupe_characterControl.Active = false;
+        _misra_characterControl.Active = false;
+    }
+
     /// <summary>
     /// Ends the story. Transition to next scene from here.
     /// </summary>
@@ -383,10 +418,16 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         success = emotes.SetEmote(name, emote);
         if (name == "lupe")
         {
+            _lupe_characterControl.style.visibility = Visibility.Visible;
+            _lupe_characterControl.CharacterImage = emotes.currLupeEmote;
+
             FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceLupeEvent, (emotes.fmodLupeParameterName, emote));
         }
         else if (name == "misra")
         {
+            _misra_characterControl.style.visibility = Visibility.Visible;
+            _misra_characterControl.CharacterImage = emotes.currMisraEmote;
+
             FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceMisraEvent, (emotes.fmodMisraParameterName, emote));
         }
 

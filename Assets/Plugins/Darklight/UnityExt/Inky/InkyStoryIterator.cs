@@ -29,6 +29,7 @@ namespace Darklight.UnityExt.Inky
 
         // ======== [[ PROPERTIES ]] ================================ >>
         protected Story story => _storyObject.StoryValue;
+        public string CurrentSpeaker => InkyStoryManager.CurrentSpeaker;
         public State CurrentStoryState => _currentStoryState;
         public string CurrentStoryKnot => _currentStoryKnot;
         public string CurrentStoryDialogue
@@ -76,7 +77,7 @@ namespace Darklight.UnityExt.Inky
             }
 
             // Invoke the Dialogue Event
-            OnDialogue?.Invoke(CurrentStoryDialogue);
+            OnDialogue?.Invoke(CurrentStoryDialogue, CurrentSpeaker);
             Debug.Log($"{PREFIX} Dialogue: {CurrentStoryDialogue}");
         }
 
