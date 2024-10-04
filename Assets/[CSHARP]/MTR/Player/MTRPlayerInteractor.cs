@@ -394,17 +394,4 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
         //_activeInteractable.AcceptInteraction(); // << MAIN INTERACTION
     }
-
-    public void ExitInteraction()
-    {
-        Debug.Log("Player Interactor :: Exit Interaction");
-
-        // Clean up
-        //MTR_UIManager.Instance.DestroySpeechBubble();
-        PlayerController.ExitInteraction();
-
-        // Force set the speaker to Lupe
-        InkyStoryManager.Instance.SetSpeaker("Lupe");
-    }
-
 }

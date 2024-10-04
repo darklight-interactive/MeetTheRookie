@@ -15,10 +15,10 @@ using UnityEditor;
 public class DialogueInteractionReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
-    TextBubbleObject _dialogueBubbleObject;
     bool _isInDialogue = false;
 
     [SerializeField, ShowOnly] string _speakerTag = "";
+    [SerializeField, ShowOnly] TextBubbleObject _dialogueBubbleObject;
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 

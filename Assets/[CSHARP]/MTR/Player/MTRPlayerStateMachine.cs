@@ -31,14 +31,42 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         bool result = base.GoToState(stateType);
         if (result)
         {
-            if (stateType == MTRPlayerState.WALK_OVERRIDE)
-                stateType = MTRPlayerState.WALK;
-            _animator.PlayStateAnimation(stateType);
+            SetAnimation(stateType);
+            SetInputs(stateType);
         }
 
         return result;
     }
 
+    void SetAnimation(MTRPlayerState stateType)
+    {
+        if (stateType == MTRPlayerState.WALK_OVERRIDE)
+            stateType = MTRPlayerState.WALK;
+        _animator.PlayStateAnimation(stateType);
+    }
+
+    void SetInputs(MTRPlayerState stateType)
+    {
+        switch (stateType)
+        {
+            case MTRPlayerState.IDLE:
+                _input.SetAllInputsEnabled(true);
+                break;
+            case MTRPlayerState.WALK:
+                _input.SetAllInputsEnabled(true);
+                break;
+            case MTRPlayerState.INTERACTION:
+                _input.SetMovementInputEnabled(false);
+                _input.SetInteractInputEnabled(true);
+                break;
+            case MTRPlayerState.HIDE:
+                _input.SetAllInputsEnabled(false);
+                break;
+            case MTRPlayerState.WALK_OVERRIDE:
+                _input.SetAllInputsEnabled(false);
+                break;
+        }
+    }
 
     #region  [[ STATES ]] ======================================================== >>
 
@@ -67,8 +95,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         public override void Enter()
         {
-            input.SetMovementInputEnabled(false);
-            input.SetInteractInputEnabled(true);
             interactor.SetEnabled(false);
         }
 
@@ -76,7 +102,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         {
             if (targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
             {
-                input.SetAllInputsEnabled(true);
                 stateMachine.GoToState(MTRPlayerState.IDLE);
             }
         }
@@ -97,7 +122,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             _isAtMoveTarget = false;
             if (input.IsAllInputEnabled == true)
             {
-                input.SetAllInputsEnabled(false);
                 interactor.SetEnabled(false);
             }
         }

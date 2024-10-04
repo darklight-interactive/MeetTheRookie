@@ -180,7 +180,6 @@ public class MTRPlayerController : MonoBehaviour
     /// </summary>
     public void EnterInteraction()
     {
-        if (StateMachine == null) return;
         StateMachine.GoToState(MTRPlayerState.INTERACTION);
         //Debug.Log("Player Controller :: Enter Interaction");
     }

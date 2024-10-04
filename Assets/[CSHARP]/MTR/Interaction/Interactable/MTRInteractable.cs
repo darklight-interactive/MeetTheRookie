@@ -425,6 +425,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     IEnumerator AcceptInteractionRoutine(MTRPlayerInteractor player, bool force = false)
     {
+        Debug.Log($"{PREFIX} {Name} :: AcceptInteractionRoutine from {player}", this);
+
         // << CONFIRM PLAYER OCCUPIES DESTINATION >> ------------------------------------
         bool playerIsOccupant = _destinations.IsOccupant(player);
         if (!playerIsOccupant)
@@ -438,6 +440,11 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
             Debug.Log($"{PREFIX} {Name} :: Force Player to walk to destination", this);
             player.Controller.StartWalkOverride(destinationX);
+        }
+        else
+        {
+            Debug.Log($"{PREFIX} {Name} :: Player is already at destination", this);
+            player.Controller.EnterInteraction();
         }
         yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
 

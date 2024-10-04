@@ -98,11 +98,11 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     bool ChangeGameScene(string knotName)
     {
         MTRSceneData data = _sceneDataObject.GetSceneDataByKnot(knotName);
-
         if (data == null)
             return false;
 
         _sceneToLoad = data.Name;
+        Debug.Log($"{Prefix} >> Inky ChangeGameScene" + _sceneToLoad);
         return true;
     }
 
