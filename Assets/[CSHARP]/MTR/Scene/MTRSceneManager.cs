@@ -65,7 +65,8 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
         if (activeCameraBounds != null)
         {
-            SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
+            if (SceneController.CameraController != null)
+                SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
         }
     }
 

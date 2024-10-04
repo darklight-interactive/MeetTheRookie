@@ -129,6 +129,7 @@ namespace Darklight.UnityExt.UXML
 
                     fontSize = Length.Percent(100),
                 }
+
             };
 
             // Add the label to the container

@@ -1,16 +1,11 @@
 using System;
-using Darklight.UnityExt.Editor;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Darklight.UnityExt.UXML
 {
-    #region ---- [[ SELECTABLE BUTTON ]] ----
-    // Specific implementation for a Button element.
     [UxmlElement]
     public partial class SelectableButton : Button, ISelectable
     {
-        public class SelectableButtonFactory : UxmlFactory<SelectableButton> { }
 
         public event Action OnSelect;
         public event Action OnClick;
@@ -18,6 +13,8 @@ namespace Darklight.UnityExt.UXML
         {
             text = "selectable-button";
             this.clickable.clicked += () => InvokeClickAction();
+
+
         }
 
         public void SetSelected()
@@ -27,6 +24,8 @@ namespace Darklight.UnityExt.UXML
         }
         public void Deselect() => RemoveFromClassList("selected");
         public void InvokeClickAction() => OnClick?.Invoke();
+
+        public class SelectableButtonFactory : UxmlFactory<SelectableButton> { }
+
     }
-    #endregion
 }

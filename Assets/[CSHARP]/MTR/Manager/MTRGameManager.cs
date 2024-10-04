@@ -29,10 +29,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             if (Instance._cameraController == null)
             {
                 Instance._cameraController = FindFirstObjectByType<MTRCameraController>();
-                if (Instance._cameraController == null)
-                {
-                    Instance._cameraController = Instantiate(PrefabLibrary.cameraPrefab).GetComponent<MTRCameraController>();
-                }
             }
             return Instance._cameraController;
         }

@@ -29,14 +29,14 @@ public class MTRSceneController : MonoBehaviour
     const string PREFIX = "[MTRSceneController]";
 
     InternalStateMachine _stateMachine;
-    [SerializeField, ShowOnly] MTRSceneState _currentState;
+    [SerializeField, ShowOnly] MTRSceneState _currentSceneState;
 
     public MTR_UIManager UIManager => MTR_UIManager.Instance;
     public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
     public InternalStateMachine StateMachine => _stateMachine;
-    public MTRSceneState CurrentState => _currentState;
+    public MTRSceneState CurrentState => _currentSceneState;
 
     void Awake()
     {
@@ -57,7 +57,7 @@ public class MTRSceneController : MonoBehaviour
     void OnSceneStateChanged(MTRSceneState state)
     {
         Debug.Log($"Scene State Changed: {state}");
-        _currentState = state;
+        _currentSceneState = state;
     }
 
     public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
@@ -180,7 +180,7 @@ public class MTRSceneController : MonoBehaviour
 
             public override void Enter()
             {
-                if (cameraController.Rig.FollowTarget == null)
+                if (cameraController != null && cameraController.Rig.FollowTarget == null)
                     cameraController.SetPlayerAsFollowTarget();
             }
             public override void Execute()
@@ -205,7 +205,9 @@ public class MTRSceneController : MonoBehaviour
 
             IEnumerator EnterStateCoroutine()
             {
-                cameraController.SetPlayerAsFollowTarget();
+                if (cameraController != null)
+                    cameraController.SetPlayerAsFollowTarget();
+
                 playerController.Input.SetAllInputsEnabled(true);
                 yield return new WaitForSeconds(2f);
 

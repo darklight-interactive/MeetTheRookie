@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Darklight.UnityExt.Editor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,16 +12,40 @@ namespace Darklight.UnityExt.UXML
     /// Basically, given a 2D grid of positions, a present position, and a given direction, where will you go based on the direction?
     /// </summary>
     /// <typeparam name="TElement">The selectables we'll be looking over.</typeparam>
+    [Serializable]
     public class SelectableVectorField<TElement> where TElement : VisualElement, new()
     {
         HashSet<TElement> _selectables = new HashSet<TElement>();
+        TElement _previousSelection;
+        TElement _currentSelection;
+
+        [SerializeField, ShowOnly] string _previousSelectionName;
+        [SerializeField, ShowOnly] string _currentSelectionName;
+
+
         public HashSet<TElement> Selectables
         {
             get { return _selectables; }
             set { _selectables = value; }
         }
-        public TElement PreviousSelection { get; private set; }
-        public TElement CurrentSelection { get; private set; }
+        public TElement PreviousSelection
+        {
+            get => _previousSelection;
+            private set
+            {
+                _previousSelection = value;
+                _previousSelectionName = value.name;
+            }
+        }
+        public TElement CurrentSelection
+        {
+            get => _currentSelection;
+            private set
+            {
+                _currentSelection = value;
+                _currentSelectionName = value.name;
+            }
+        }
         public void Add(TElement selectable)
         {
             _selectables.Add(selectable);
@@ -55,28 +80,33 @@ namespace Darklight.UnityExt.UXML
 
 
         /// <summary>
+
         /// Select an element given our currently selected element.
         /// </summary>
         /// <param name="dir">The direction from which to select.</param>
         /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
         public TElement GetElementInDirection(Vector2 dir)
         {
-            if (_selectables.Count == 0) return null;
-            if (this.CurrentSelection == null)
-            {
-                return this.CurrentSelection;
-            }
+            if (_selectables == null || _selectables.Count == 0)
+                return null;
 
             // If we have a direction, we can try to find the next element.
             if (dir != Vector2.zero)
             {
+                //Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir}");
                 // Potentially select a new element.
-                TElement pick = raycastEstimate(CurrentSelection.worldBound.center, dir);
+                TElement pick = RaycastEstimate(CurrentSelection.worldBound.center, dir);
                 if (pick != null && pick.name != CurrentSelection.name)
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
+                    //Debug.Log($"SelectableVectorField :: GetElementInDirection :: {PreviousSelection.name} -> {CurrentSelection.name}");
                 }
+                return pick;
+            }
+            else
+            {
+                //Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
             }
             return CurrentSelection;
         }
@@ -94,7 +124,7 @@ namespace Darklight.UnityExt.UXML
         /// <param name="direction">Any direction relative to the position.</param>
         /// <param name="threshhold">The maximum distance a given Selectable from `from` can have to be selected.</param>
         /// <returns>Index of closest selectable from raycast.</returns>
-        TElement raycastEstimate(Vector2 from, Vector2 direction, int threshhold = 9999)
+        TElement RaycastEstimate(Vector2 from, Vector2 direction, int threshhold = 9999)
         {
             float closestDir = -1;
             TElement selected = null;

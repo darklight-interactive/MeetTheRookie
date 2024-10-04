@@ -21,7 +21,7 @@ namespace Darklight.UnityExt.Inky
         InkyStoryObject _storyObject;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
-        [SerializeField, ShowOnly] State _currentState;
+        [SerializeField, ShowOnly] public State _currentIteratorState;
         [SerializeField, ShowOnly] string _currentStoryKnot;
         [SerializeField, ShowOnly] string _currentStoryDialogue;
         List<Choice> _currentChoices;
@@ -54,7 +54,7 @@ namespace Darklight.UnityExt.Inky
 
         public override void OnStateChanged(State previousState, State newState)
         {
-            _currentState = newState;
+            _currentIteratorState = newState;
         }
 
         // ======== <PRIVATE_METHODS> ================================ >>

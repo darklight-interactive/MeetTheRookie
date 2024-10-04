@@ -17,6 +17,7 @@ using UnityEngine.UIElements;
 
 public class MTRDatingSimController : UXML_UIDocumentObject
 {
+    const string PREFIX = "<MTRDatingSimController>";
     const string DIALOGUE_TAG = "dialogue";
     const string CHARACTER_TAG = "character";
     const string CHOICE_TAG = "choice";
@@ -25,85 +26,68 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     const string MISRA_TAG = "misra";
     const string LUPE_TAG = "lupe";
 
+    static bool boundEmote = false;
 
-    [SerializeField] bool inCar = false;
+    bool _choicesActive;
+    bool _isRolling = false;
+    VisualElement _misraImage;
+    VisualElement _lupeImage;
+    VisualElement _continueTriangle;
+    VisualElement _nameTag;
+    ControlledLabel _dialogueText;
+    VisualElement _choiceParent;
+    List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
+    [SerializeField]
+    SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
+
+    public bool inCar = false;
     [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
 
-    // Inky Variables
-    static bool boundEmote = false;
-
-
-    // Choice Variables
-    bool choicesActive;
-    SelectableVectorField<SelectableButton> choiceMap = new SelectableVectorField<SelectableButton>();
-    bool isRolling = false;
-
-    // UXML Variables
-    VisualElement misraImage;
-    VisualElement lupeImage;
-    VisualElement continueTriangle;
-    VisualElement nameTag;
-    ControlledLabel dialogueText;
-    VisualElement choiceParent;
-    List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
-
+    // ================ [[ PROPERTIES ]] ================================ >>>>
     InkyStoryObject _storyObject => InkyStoryManager.GlobalStoryObject;
     InkyStoryIterator _storyIterator => InkyStoryManager.Iterator;
 
-    void CreateTag(List<string> tag_parts, out string outString)
-    {
-        outString = "";
-        foreach (string part in tag_parts)
-        {
-            if (outString != "") outString += "-";
-            outString += part;
-        }
-    }
+    // ================ [[ UNITY METHODS ]] ============================ >>>>
+    void Awake() => Preload();
+    void Start() => Initialize();
+    void OnDestroy() => SetInputEnabled(false); // Unbind input events
 
-    void Awake()
+    // ================ [[ INTERNAL METHODS ]] ========================== >>>>
+    void Preload()
     {
         base.Initialize(preset);
 
-        if (UniversalInputManager.Instance == null)
-        {
-            Debug.LogError("No Universal Input Manager found in scene. Please add one to the scene.");
-            return;
-        }
-        UniversalInputManager.OnMoveInputStarted += Move;
-        UniversalInputManager.OnPrimaryInteract += Select;
+        // << DISABLE INPUTS >>
+        SetInputEnabled(false);
 
-        // Get the emotes
-        //emotes = Resources.Load<DatingSimEmotes>("ScriptableObjects/DatingSimEmotes");
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
-        choiceButtons = temp.OrderBy(x => x.name).ToList();
-        choiceMap.Load(temp);
+        _choiceButtons = temp.OrderBy(x => x.name).ToList();
+        _choiceMap.Load(temp);
+        Debug.Log($"{PREFIX} >> Choice Buttons: {_choiceButtons.Count}");
 
         // << QUERY UXML ELEMENTS >>
         CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, MISRA_TAG }, out string misraImageTag);
         CreateTag(new List<string> { CHARACTER_TAG, IMAGE_TAG, LUPE_TAG }, out string lupeImageTag);
-        misraImage = ElementQuery<VisualElement>(misraImageTag);
-        lupeImage = ElementQuery<VisualElement>(lupeImageTag);
+        _misraImage = ElementQuery<VisualElement>(misraImageTag);
+        _lupeImage = ElementQuery<VisualElement>(lupeImageTag);
 
         CreateTag(new List<string> { DIALOGUE_TAG, "triangle" }, out string triangleTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "nametag" }, out string nametagTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "text" }, out string dialogueTextTag);
-        continueTriangle = ElementQuery<VisualElement>(triangleTag);
-        nameTag = ElementQuery<VisualElement>(nametagTag);
-        dialogueText = ElementQuery<ControlledLabel>(dialogueTextTag);
+        _continueTriangle = ElementQuery<VisualElement>(triangleTag);
+        _nameTag = ElementQuery<VisualElement>(nametagTag);
+        _dialogueText = ElementQuery<ControlledLabel>(dialogueTextTag);
 
         CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
-        choiceParent = root.Q<VisualElement>(choiceParentTag);
+        _choiceParent = root.Q<VisualElement>(choiceParentTag);
+    }
 
+    void Initialize()
+    {
         if (inCar) { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
         else { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
-
-        choiceParent.style.display = DisplayStyle.None;
 
         if (!boundEmote)
         {
@@ -118,12 +102,34 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         // Start story
         ContinueStory();
         MoveTriangle(); // Cool dialogue triangle movement
+
+        // << ENABLE INPUTS >>
+        SetInputEnabled(true);
     }
 
-    private void OnDestroy()
+    void CreateTag(List<string> tag_parts, out string outString)
     {
-        UniversalInputManager.OnMoveInputStarted -= Move;
-        UniversalInputManager.OnPrimaryInteract -= Select;
+        outString = "";
+        foreach (string part in tag_parts)
+        {
+            if (outString != "") outString += "-";
+            outString += part;
+        }
+    }
+
+    void SetInputEnabled(bool enabled)
+    {
+        switch (enabled)
+        {
+            case true:
+                UniversalInputManager.OnMoveInputStarted += Move;
+                UniversalInputManager.OnPrimaryInteract += Select;
+                break;
+            case false:
+                UniversalInputManager.OnMoveInputStarted -= Move;
+                UniversalInputManager.OnPrimaryInteract -= Select;
+                break;
+        }
     }
 
     /// <summary>
@@ -152,28 +158,24 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     void PopulateChoices()
     {
         Story currentStory = _storyObject.StoryValue;
-        continueTriangle.style.visibility = Visibility.Hidden;
+        _continueTriangle.style.visibility = Visibility.Hidden;
         int index = 0;
         foreach (Choice choice in currentStory.currentChoices)
         {
-            choiceButtons[index].style.display = DisplayStyle.Flex;
-            choiceButtons[index].text = choice.text;
-            choiceButtons[index].style.fontSize = SetFontSize(false, choice.text);
-            choiceButtons[index].Deselect();
+            _choiceButtons[index].text = choice.text;
+            _choiceButtons[index].Deselect();
             index++;
         }
 
-        for (int i = index; i < choiceButtons.Count; i++)
+        for (int i = index; i < _choiceButtons.Count; i++)
         {
-            choiceButtons[i].style.display = DisplayStyle.None;
-            choiceButtons[i].Deselect();
+            _choiceButtons[i].Deselect();
         }
 
-        choicesActive = true;
+        _choicesActive = true;
 
         //choiceMap.SelectElement(choiceButtons[0]);
-        choiceMap.CurrentSelection.SetSelected();
-        choiceMap.CurrentSelection.style.fontSize = SetFontSize(true, choiceMap.CurrentSelection.text);
+        _choiceMap.CurrentSelection.SetSelected();
     }
 
     /// <summary>
@@ -181,11 +183,17 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void SelectChoice()
     {
+        if (_choiceMap.CurrentSelection == null)
+        {
+            Debug.LogError($"{PREFIX} No choice selected.");
+            return;
+        }
+
         Story currentStory = _storyObject.StoryValue;
-        currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
-        choiceParent.style.display = DisplayStyle.None;
-        continueTriangle.style.visibility = Visibility.Visible;
-        choicesActive = false;
+        currentStory.ChooseChoiceIndex(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
+        _choiceParent.style.display = DisplayStyle.None;
+        _continueTriangle.style.visibility = Visibility.Visible;
+        _choicesActive = false;
         ContinueStory();
     }
 
@@ -204,18 +212,14 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void Select()
     {
-        if (isRolling)
+        if (_isRolling)
         {
             StopAllCoroutines();
-            dialogueText.InstantCompleteText();
-            if (choicesActive)
-            {
-                choiceParent.style.display = DisplayStyle.Flex;
-            }
-            isRolling = false;
-            continueTriangle.visible = true;
+            _dialogueText.InstantCompleteText();
+            _isRolling = false;
+            _continueTriangle.visible = true;
         }
-        else if (choicesActive)
+        else if (_choicesActive)
         {
             SelectChoice();
         }
@@ -232,16 +236,19 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     void Move(Vector2 move)
     {
         move.y = -move.y;
-        if (choiceMap.CurrentSelection != null)
+        if (_choiceMap.CurrentSelection != null)
         {
-            choiceMap.CurrentSelection.Deselect();
-            choiceMap.CurrentSelection.style.fontSize = SetFontSize(false, choiceMap.CurrentSelection.text);
+            _choiceMap.CurrentSelection.Deselect();
         }
-        var selected = choiceMap.GetElementInDirection(move);
+        SelectableButton selected = _choiceMap.GetElementInDirection(move);
         if (selected != null)
         {
             selected.SetSelected();
-            selected.style.fontSize = SetFontSize(true, selected.text);
+            //Debug.Log($"{PREFIX} >> Move: {move} - Selected: {selected.text}");
+        }
+        else
+        {
+            //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
         }
     }
 
@@ -253,7 +260,7 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     {
         Story currentStory = _storyObject.StoryValue;
         List<string> tags = currentStory.currentTags;
-        nameTag.style.visibility = Visibility.Hidden;
+        _nameTag.style.visibility = Visibility.Hidden;
         foreach (string tag in tags)
         {
             Debug.Log(tag);
@@ -262,21 +269,21 @@ public class MTRDatingSimController : UXML_UIDocumentObject
             {
                 if (splitTag[1].Trim() == "lupe")
                 {
-                    nameTag.style.visibility = Visibility.Visible;
-                    lupeImage.style.visibility = Visibility.Visible;
-                    nameTag.AddToClassList("NameTagLupe");
-                    nameTag.RemoveFromClassList("NameTagMisra");
-                    lupeImage.RemoveFromClassList("Inactive");
-                    misraImage.AddToClassList("Inactive");
+                    _nameTag.style.visibility = Visibility.Visible;
+                    _lupeImage.style.visibility = Visibility.Visible;
+                    _nameTag.AddToClassList("NameTagLupe");
+                    _nameTag.RemoveFromClassList("NameTagMisra");
+                    _lupeImage.RemoveFromClassList("Inactive");
+                    _misraImage.AddToClassList("Inactive");
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
-                    nameTag.style.visibility = Visibility.Visible;
-                    misraImage.style.visibility = Visibility.Visible;
-                    nameTag.AddToClassList("NameTagMisra");
-                    nameTag.RemoveFromClassList("NameTagLupe");
-                    misraImage.RemoveFromClassList("Inactive");
-                    lupeImage.AddToClassList("Inactive");
+                    _nameTag.style.visibility = Visibility.Visible;
+                    _misraImage.style.visibility = Visibility.Visible;
+                    _nameTag.AddToClassList("NameTagMisra");
+                    _nameTag.RemoveFromClassList("NameTagLupe");
+                    _misraImage.RemoveFromClassList("Inactive");
+                    _lupeImage.AddToClassList("Inactive");
                 }
             }
             else if (splitTag[0].Trim() == "emote")
@@ -288,13 +295,13 @@ public class MTRDatingSimController : UXML_UIDocumentObject
             {
                 if (splitTag[1].Trim() == "lupe")
                 {
-                    lupeImage.style.visibility = Visibility.Hidden;
-                    lupeImage.AddToClassList("Inactive");
+                    _lupeImage.style.visibility = Visibility.Hidden;
+                    _lupeImage.AddToClassList("Inactive");
                 }
                 else if (splitTag[1].Trim() == "misra")
                 {
-                    misraImage.style.visibility = Visibility.Hidden;
-                    misraImage.AddToClassList("Inactive");
+                    _misraImage.style.visibility = Visibility.Hidden;
+                    _misraImage.AddToClassList("Inactive");
                 }
             }
         }
@@ -304,25 +311,25 @@ public class MTRDatingSimController : UXML_UIDocumentObject
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
     {
-        isRolling = true;
-        continueTriangle.visible = false;
-        dialogueText.SetFullText(fullText); // << Set rolling text
+        _isRolling = true;
+        _continueTriangle.visible = false;
+        _dialogueText.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
-        for (int i = 0; i < dialogueText.FullText.Length; i++)
+        for (int i = 0; i < _dialogueText.FullText.Length; i++)
         {
-            dialogueText.RollingTextStep();
+            _dialogueText.RollingTextStep();
             buffer -= interval;
             yield return new WaitForSeconds(interval);
         }
 
         yield return new WaitForSeconds(Mathf.Max(0, buffer) + 0.25f);
-        if (choicesActive)
+        if (_choicesActive)
         {
-            choiceParent.style.display = DisplayStyle.Flex;
+            _choiceParent.style.display = DisplayStyle.Flex;
         }
-        isRolling = false;
-        continueTriangle.visible = true;
+        _isRolling = false;
+        _continueTriangle.visible = true;
     }
 
     /// <summary>
@@ -330,9 +337,9 @@ public class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void MoveTriangle()
     {
-        continueTriangle.ToggleInClassList("TriangleDown");
-        continueTriangle.RegisterCallback<TransitionEndEvent>(evt => continueTriangle.ToggleInClassList("TriangleDown"));
-        root.schedule.Execute(() => continueTriangle.ToggleInClassList("TriangleDown")).StartingIn(100);
+        _continueTriangle.ToggleInClassList("TriangleDown");
+        _continueTriangle.RegisterCallback<TransitionEndEvent>(evt => _continueTriangle.ToggleInClassList("TriangleDown"));
+        root.schedule.Execute(() => _continueTriangle.ToggleInClassList("TriangleDown")).StartingIn(100);
     }
 
     /// <summary>
@@ -357,22 +364,5 @@ public class MTRDatingSimController : UXML_UIDocumentObject
         }
 
         return success;
-    }
-
-    /// <summary>
-    /// HARDCODED: Sets the font size of the choice boxes. Expects max string size of 57.
-    /// </summary>
-    /// <param name="selected"> If the box is selected or not </param>
-    /// <param name="text"> The text to measure to set the font size </param>
-    float SetFontSize(bool selected, string text)
-    {
-        if (selected)
-        {
-            return Mathf.Pow(5f, Mathf.Clamp((57f - text.Length) / 32f, 0f, 1f) + 1.29f) + 20f;
-        }
-        else
-        {
-            return Mathf.Pow(5f, Mathf.Clamp((57f - text.Length) / 32f, 0f, 1f) + 1.115f) + 20f;
-        }
     }
 }
