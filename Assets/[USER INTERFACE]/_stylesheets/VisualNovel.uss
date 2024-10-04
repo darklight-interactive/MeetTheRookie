@@ -11,24 +11,6 @@
     display: flex;
 }
 
-.NameTagMisra {
-    background-color: rgba(0, 0, 0, 0);
-    width: 30%;
-    align-self: auto;
-    height: 30%;
-    align-items: center;
-    background-image: url("project://database/Assets/[SPRITES]/_datingSim/ds_nametag_Misra.png?fileID=2800000&guid=9e3b6ad581042a046b5072e32e184152&type=3#ds_nametag_Misra");
-    -unity-background-scale-mode: scale-to-fit;
-    bottom: -45px;
-}
-
-.CharacterSide {
-    -unity-background-scale-mode: scale-to-fit;
-    width: 50%;
-    height: 100%;
-    flex-direction: column-reverse;
-}
-
 .Choice {
     background-image: url("project://database/Assets/[SPRITES]/_datingSim/ds_lined_paper.png?fileID=2800000&guid=9e21c114a355a4a28b094479f53efc33&type=3#ds_lined_paper");
     -unity-background-scale-mode: stretch-to-fill;
@@ -65,10 +47,6 @@
     -unity-background-image-tint-color: rgb(178, 178, 178);
 }
 
-.CharacterSprite {
-    scale: 1.25 1.25;
-}
-
 .selected {
     height: 23%;
     width: 65%;
@@ -90,4 +68,32 @@
 .unity-text-element {
     white-space: normal;
     -unity-font-definition: resource('Fonts/cour');
+}
+
+.character-image {
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-self: stretch;
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Misra-LinedInquisiting-2(neutral).png?fileID=2800000&guid=8453062170d4ea1469e123b4825de57d&type=3#Misra-LinedInquisiting-2(neutral)");
+    -unity-background-scale-mode: scale-and-crop;
+    justify-content: center;
+}
+
+.character-container {
+    flex-grow: 1;
+    align-self: flex-end;
+    height: 100%;
+    max-height: 1600px;
+    justify-content: flex-end;
+}
+
+.character-image {
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-self: center;
+    background-image: url("project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Misra-LinedInquisiting-2(neutral).png?fileID=2800000&guid=8453062170d4ea1469e123b4825de57d&type=3#Misra-LinedInquisiting-2(neutral)");
+    -unity-background-scale-mode: scale-to-fit;
+    justify-content: center;
+    width: 75%;
+    max-height: 1400px;
 }
