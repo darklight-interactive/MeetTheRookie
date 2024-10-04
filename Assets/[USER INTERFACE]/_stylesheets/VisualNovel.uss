@@ -14,26 +14,28 @@
     flex-grow: 1;
     max-width: 750px;
     flex-direction: row;
-    transition-duration: 0.25s, 1s;
-    transition-property: all, scale;
-    transition-timing-function: ease, ease-in-out-cubic;
+    transition-property: translate, rotate;
+    transition-timing-function: ease-in-out-sine, ease-in-out-circ;
+    transition-duration: 1s, 0.25s;
 }
 
 #character-control-misra.character-container.active {
     width: 1024px;
-    translate: 25% 0;
+    translate: 10% 0;
+    rotate: 5deg;
 }
 
 #character-control-lupe.character-container.active {
     width: 1024px;
-    translate: -25% 0;
+    translate: -10% 0;
+    rotate: -5deg;
 }
 
 .character-image {
     -unity-background-scale-mode: scale-to-fit;
-    transition-duration: 0.25s, 0.5s;
-    transition-timing-function: ease-in-out-cubic, ease-in-out-bounce;
-    transition-property: all, scale;
+    transition-duration: 0.5s, 1s, 1s;
+    transition-timing-function: ease-in-out-sine, ease-in-out-sine, ease-in-out-sine;
+    transition-property: scale, translate, rotate;
     flex-grow: 1;
     align-self: auto;
 }
