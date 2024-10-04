@@ -1,6 +1,8 @@
 using Darklight.UnityExt.FMODExt;
 using FMODUnity;
+using FMOD.Studio;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MTR_AudioManager : FMODExt_EventManager
@@ -13,8 +15,11 @@ public class MTR_AudioManager : FMODExt_EventManager
     // Overwrite the backgroundMusic property to return the instance of the MTR_MusicObject class
     public MTR_MusicObject backgroundMusic => base.BackgroundMusic as MTR_MusicObject;
 
-    private bool footstepsPlaying;
+    // Keeps track of looping events
+    private Dictionary<string, EventInstance> activeEventInstances = new Dictionary<string, EventInstance>();
 
+
+    #region ///--Accessing FMODExt_EventManager Static Events--/// 
 
     public new void PlaySceneBackgroundMusic(string sceneName)
     {
@@ -27,9 +32,24 @@ public class MTR_AudioManager : FMODExt_EventManager
     {
         PlayOneShot(eventReference);
     }
-    
+
+    public void StartRepeatSFX(EventReference eventReference, float interval)
+    {
+        StartRepeatingEvent(eventReference, interval);
+    }
+
+    public void StopRepeatSFX()
+    {
+        StopRepeatingEvent();
+    }
+    #endregion
+
+    #region ///--MTR_Specific Functions--///
+
     GameObject player;
     Coroutine repeatFootstepCoroutine;
+    private bool footstepsPlaying; // Boolean to prevent null reference when stopping a non-existent footstep coroutine
+
     public void StartFootstepEvent()
     {
         if (player == null) { player = GameObject.Find("[PLAYER] Lupe"); }
@@ -55,6 +75,38 @@ public class MTR_AudioManager : FMODExt_EventManager
         footstepsPlaying = false;
     }
 
+    // Inky SFX
+    public void PlayOneShotByName(string eventName)
+    {
+        string eventPath = "event:/SFX/" + eventName;
+        FMODUnity.RuntimeManager.PlayOneShot(eventPath);
+        Debug.Log($"Started PlaySFX from Inky with SFX: {eventPath}");
+    }
+
+    public void StartRepeatSFXByPath(string eventName)//, float interval)
+    {
+        Debug.Log("Started PlayLoopingSFX from Inky");
+        string eventPath = "event:/SFX/" + eventName;
+        EventInstance eventInstance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
+        activeEventInstances[eventPath] = eventInstance;
+        eventInstance.start();
+    }
+
+    public void StopRepeatSFXByPath(string eventName)
+    {
+        Debug.Log("Started StopLoopingSFX");
+        string eventPath = "event:/SFX/" + eventName;
+        if (activeEventInstances.ContainsKey(eventPath))
+        {
+            activeEventInstances[eventPath].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            activeEventInstances[eventPath].release();
+            activeEventInstances.Remove(eventPath);
+            return;
+        }
+        Debug.LogWarning($"Could not stop SFX because it wasn't instantiated: {eventPath}");
+    }
+    #endregion
+
     #region ///--UNUSED--///
     //public void SetReverb(float reverbValue)
     //{
@@ -65,6 +117,24 @@ public class MTR_AudioManager : FMODExt_EventManager
     //{
     //    FMODUnity.RuntimeManager.StudioSystem.setParameterByName(parameterName, parameterValue);
     //    Debug.Log("Set parameter " + parameterName + " to " + parameterValue);
+    //}
+
+    //public string GetEventPath(EventReference eventReference)
+    //{
+    //    FMOD.Studio.EventInstance eventInstance = FMODUnity.RuntimeManager.CreateInstance(eventReference);
+    //    string eventPath = GetInstantiatedEventPath(eventInstance);
+    //    eventInstance.release();
+    //    return eventPath;
+    //}
+
+    //private IEnumerator RepeatEventRoutine(string eventPath)
+    //{
+    //    isInkySFXLooping = true;
+    //    while (true)
+    //    {
+    //        FMODUnity.RuntimeManager.PlayOneShot(eventPath);
+    //        yield return new WaitForSeconds(1.0f); // Originally used "interval" for controlled nuance
+    //    }
     //}
     #endregion
 }

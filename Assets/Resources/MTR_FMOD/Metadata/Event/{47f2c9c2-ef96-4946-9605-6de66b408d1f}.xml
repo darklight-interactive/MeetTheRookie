@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{47f2c9c2-ef96-4946-9605-6de66b408d1f}">
 		<property name="name">
-			<value>gasStation_CashRegisterWhack</value>
+			<value>CashRegisterWhack</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -96,10 +96,15 @@
 	<object class="MixerBusPanner" id="{56a16be8-34aa-476e-a23e-fa09f3cb7aa5}" />
 	<object class="MixerBusEffectChain" id="{6cf9dced-1a8d-4189-95c8-44de32ea6ac4}">
 		<relationship name="effects">
+			<destination>{83222f50-7697-4173-8998-6bb05aee8404}</destination>
 			<destination>{6aba54c9-5ebc-4186-8fc0-7561ddfff5c2}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{dbffdae7-6b0d-4e20-848a-49dfb0cb22c2}" />
+	<object class="MixerBusPanner" id="{dbffdae7-6b0d-4e20-848a-49dfb0cb22c2}">
+		<property name="stereoPan">
+			<value>-16</value>
+		</property>
+	</object>
 	<object class="SilenceSound" id="{bc444322-21ee-4c47-8c8e-b890471a3949}">
 		<property name="duration">
 			<value>400</value>
@@ -114,5 +119,22 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{b8b36df6-3321-4d03-857e-489a445e995a}" />
+	<object class="ThreeEQEffect" id="{83222f50-7697-4173-8998-6bb05aee8404}">
+		<property name="lowGain">
+			<value>-45</value>
+		</property>
+		<property name="midGain">
+			<value>3</value>
+		</property>
+		<property name="highGain">
+			<value>-4.5</value>
+		</property>
+		<property name="lowCrossover">
+			<value>440</value>
+		</property>
+		<property name="highCrossover">
+			<value>9000</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{6aba54c9-5ebc-4186-8fc0-7561ddfff5c2}" />
 </objects>

@@ -42,6 +42,8 @@ EXTERNAL ChangeGameScene(knotName)
 EXTERNAL PlaySpecialAnimation(speaker)
 
 EXTERNAL PlaySFX(sfx)
+EXTERNAL PlayLoopingSFX(sfx)
+EXTERNAL StopLoopingSFX(sfx)
 
 == function ChangeGameScene(knotName)
     ~ return

@@ -1,11 +1,10 @@
-using UnityEngine;
 using FMODUnity;
+using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "MeetTheRookie/MTR_GeneralSFX")]
 public class MTR_GeneralSFX : FMODExt_SFXObject
 {
-
     [Space(20), Header("---->> MEET THE ROOKIE SPECIFIC SFX")]
 
     //----------------GENERAL AUDIO----------------//
@@ -28,7 +27,9 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     public EventReference doorUnlocked;
 
     [Header("Miscellaneous Audio")]
-    public EventReference phoneBeep;
+    public EventReference phoneDialBeep;
+    public EventReference phoneCallingTone;
+    public EventReference phoneVoicemailBeep;
     public EventReference doorBell;
     public EventReference carDoor; // Does this go with "Door Audio"?
     public EventReference carDrive;
@@ -47,16 +48,10 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     //----------------DATING SIM AUDIO----------------//
     [Header("Dating Audio")]
 
-    // ANIMALESE
-    //public EventReference animalese;
-    //public string parameterNameAnimalese;
-    //[Range(0, 1)] public float animalesePitchDefault;
-    //[Range(0, 1)] public float animalesePitchLupe;
-    //[Range(0, 1)] public float animalesePitchMisra;
-
-    public EventReference rollingTextDefault;
-    public EventReference rollingTextLupe;
-    public EventReference rollingTextMisra;
+    // ROLLING TEXT
+    //public EventReference rollingTextDefault;
+    //public EventReference rollingTextLupe;
+    //public EventReference rollingTextMisra;
 
     // HUMAN VOICE
     public EventReference voiceLupe;

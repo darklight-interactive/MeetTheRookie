@@ -15,8 +15,10 @@
 
 === scene2_DS ===
 # name: description
+# sfx : off
 # hide : Misra
 # emote : Lupe \| Serious_2
+# sfx : on
 <i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
 
 + [Ding the bell.] -> ding
@@ -164,6 +166,7 @@
 = treeFell
 
 # name : Lupe
+# emote : Lupe \| Neutral_2
 "There's a tree blocking the road out of town by the gas station. I need it cleared as soon as possible." 
 
 #name:Misra
@@ -178,7 +181,6 @@
 { sincerity_level >= tease_level: "Sorry about that!" } { tease_level >= sincerity_level:  "Looks like we might get to know each other after all." } 
 
 # hide : Misra
-# emote : Lupe \| Neutral_2
 <i>They excuse themselves to make the call.</i>
 
 <i>You wait patiently...</i>
@@ -190,7 +192,9 @@
 + [Keep waiting.] -> wait
 
 = snoop
+# sfx : off
 # emote : Lupe \| Inquistive_1
+# sfx : on
 ~ tease_level++
 <i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. They probably entered a different room to make the call. </i>
 
@@ -204,7 +208,9 @@
 + [Don't be ridiculous.] -> wait
 
 = peek
-# emote : Lupe \| Inquistive_1
+//# sfx : off
+//# emote : Lupe \| Inquistive_1
+//# sfx : on
 ~ tease_level++
 ~ snooped = true
 <i>You quietly reach over the front desk and take a look at the case.</i>
@@ -230,7 +236,7 @@ And a black and white picture of the winery stained with age.
 "AYE!!"
 
 #name:Lupe
-# emote : Lupe \| Fright_1
+//# emote : Lupe \| Fright_1
 "You CAN'T keep scaring me like that."
 
 {- spooked: 
@@ -288,10 +294,12 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Neutral_2
 "When are the other staff or patrol Units coming?" 
 
+#sfx : off
 #name:Misra
 # emote : Misra \| Inquisiting_1
 "..."
 
+#sfx : on
 #name:Lupe
 # emote : Lupe \| Annoyed_1
 "Is it <i> just </i> you?! "
@@ -301,6 +309,7 @@ And a black and white picture of the winery stained with age.
 "Yep!" 
 
 # name : Lupe
+# emote : Lupe \| Annoyed_1
 "...Wow."
 -> transition_to_case
 
@@ -383,9 +392,11 @@ And a black and white picture of the winery stained with age.
 "I mean this isn't a case. This is a bunch of bull-"
 
 #name: Misra 
+//# emote : Misra \| Curious_1
 "No, no. The case is right there! What else is there supposed to be?" 
 
 #name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "Oh, I don't know. Maybe the actual problem you're trying to solve." 
 
 #name: Lupe 
@@ -401,19 +412,23 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Inquisiting_1 
 "Oh." 
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Annoyed_1
 "Oh?" 
 
 #name: Misra
+//# emote : Misra \| Inquisiting_1
 "Yeah, I just didn't know what goes into a case file. "
 
 #name: Lupe
 "..."
 
 #name: Lupe
+# emote : Lupe \| Annoyed_1
 "How long have you been a Sheriff?" 
 
 #name: Misra
+# emote : Misra \| Inquisiting_1
 "Uhhhhhhhh..."
 
 #name: Misra
@@ -422,20 +437,24 @@ And a black and white picture of the winery stained with age.
 #name: Lupe 
 "..."
 #name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "And no one is here to help you?" 
 
 <i>Misra looks around the station.</i>
 
 #name: Misra 
+//# emote : Misra \| Inquisiting_1
 "Nope. Just me, myself, and I!" 
 
 #name: Lupe 
 "..."
 
 #name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "Well you're going to get nowhere with this." 
 
 #name: Misra 
+//# emote : Misra \| Inquisiting_1
 "Well then what do I need?" 
 +["Evidence."] ->Evidence 
 +["Witnesses."]->Witnesses 
@@ -466,9 +485,11 @@ And a black and white picture of the winery stained with age.
 
 
 #name: Lupe 
+//# emote : Lupe \| Inquistive_1
 "No. First go to the crime scene, see what evidence you can gather before questioning." 
 
 #name: Misra 
+//# emote : Misra \| Neutral_1
 "So we go to the Winery!" 
 
 #name:Lupe
@@ -503,28 +524,34 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Neutral_1
 "Come on! What if reality hangs in the balance, and we must solve this in order to save the world!! Woaaaahhhh!!! It's your destinyyyyyyyy!"
 
+# sfx : off
 #name:Lupe
 # emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  <i>Slight laughter escapes your nose.</i>  | "... "}
 
+# sfx : on
 #name:Misra
-# emote : Misra \| Neutral_1
+// emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "AH HA! Gotcha laughing!" | "Anyways."}
 
 #name: Lupe 
+//# emote : Lupe \| Neutral_2
 "Fine." 
 
 #name: Misra 
+//# emote : Misra \| Neutral_1
 "Fine?" 
 
 #name:Lupe 
+//# emote : Lupe \| Neutral_2
 "I'll help you." 
 
 #name:Misra
 # emote : Misra \| Surprised_2
 { tease_level > sincerity_level:  "HELL YEAH!" | "Oh! Thank you!" }
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 "Let me just make a quick call first." 
 
 ~ case_file_received = true
@@ -567,9 +594,11 @@ And a black and white picture of the winery stained with age.
 "So, what's the plan?" 
 
 # name: Lupe 
+# emote : Lupe \| Inquistive_1
 "Well I'm going to need to see this place itself. Can't really figure out much from this file alone." 
 
 # name : Misra
+# emote : Misra \| Neutral_1
 "Alright!! Road trip!!" 
 
 <i>They spring out from behind the desk, jokingly gesturing towards the door. </i>
@@ -581,11 +610,13 @@ And a black and white picture of the winery stained with age.
 *[Walk through door.] -> door 
 
 = JokeBack
+#sfx : off
 # emote : Lupe \| Fluster_1
 <i>That slight joke may have drained your social battery for the week.</i> 
 
 <i>Misra giggles as they walk out the door.</i>
 
+#sfx : on
 #name:Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 

@@ -9,6 +9,7 @@
         ->DONE
 = intro
     ~PlaySFX("Doors/genstore_doorBell")
+    //~PlayOneShotSFX("Doors/genstore_doorBell")
     -> Roy_Dialogue.roy_intro_cutscene
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
@@ -29,6 +30,6 @@
 = front_door
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
-    ~PlaySFX("Doors/doorClose")
+    ~closeDoor()
     ~ mainStreetCheck()
     ->DONE

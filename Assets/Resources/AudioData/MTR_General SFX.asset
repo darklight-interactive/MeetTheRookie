@@ -63,11 +63,11 @@ MonoBehaviour:
     Path: 
   itemUse:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1237607193
+      Data2: 1118749217
+      Data3: 653686435
+      Data4: -1081201298
+    Path: event:/SFX/itemPickup
   footstepInterval: 0.5
   footstep:
     Guid:
@@ -90,6 +90,27 @@ MonoBehaviour:
       Data3: -1959113035
       Data4: 851610127
     Path: event:/SFX/interact_paper
+  pinpadNumber:
+    Guid:
+      Data1: -81893159
+      Data2: 1283257426
+      Data3: 1651754124
+      Data4: -1405885778
+    Path: event:/SFX/Doors/PinpadNumber
+  pinpadFail:
+    Guid:
+      Data1: 501163523
+      Data2: 1109054599
+      Data3: 190621352
+      Data4: -900059870
+    Path: event:/SFX/Doors/PinpadFail
+  pinpadSuccess:
+    Guid:
+      Data1: -255920545
+      Data2: 1167686005
+      Data3: -1707336016
+      Data4: -359230030
+    Path: event:/SFX/Doors/PinpadSuccess
   doorOpen:
     Guid:
       Data1: 1617930935
@@ -118,7 +139,21 @@ MonoBehaviour:
       Data3: 1420878000
       Data4: -743673191
     Path: event:/SFX/Doors/doorUnlock
-  phoneBeep:
+  phoneDialBeep:
+    Guid:
+      Data1: 2041571327
+      Data2: 1076943419
+      Data3: 372156813
+      Data4: -867179343
+    Path: event:/SFX/phoneDialBeep
+  phoneCallingTone:
+    Guid:
+      Data1: -713248087
+      Data2: 1276932387
+      Data3: -291839349
+      Data4: -1795866040
+    Path: event:/SFX/phoneCallingTone
+  phoneVoicemailBeep:
     Guid:
       Data1: 370166711
       Data2: 1105532059
@@ -152,21 +187,21 @@ MonoBehaviour:
       Data2: 1229385622
       Data3: -429062762
       Data4: 529350763
-    Path: event:/SFX/GasStation_CashRegisterWhack
+    Path: event:/SFX/cashRegisterWhack
   sinkSqueak:
     Guid:
       Data1: 1759701490
       Data2: 1215600126
       Data3: 97147266
       Data4: 299293064
-    Path: event:/SFX/GasStation_SinkSqueak
+    Path: event:/SFX/SinkSqueak
   fallingTree:
     Guid:
       Data1: 866625939
       Data2: 1110863827
       Data3: -1723528784
       Data4: -958887752
-    Path: event:/SFX/GasStation_treeFalls
+    Path: event:/SFX/treeFalls
   misraAndTentacle:
     Guid:
       Data1: 1416263243
@@ -174,27 +209,6 @@ MonoBehaviour:
       Data3: 1490017682
       Data4: -1218815872
     Path: event:/SFX/winery_MisraAndTentacle
-  rollingTextDefault:
-    Guid:
-      Data1: -2103641306
-      Data2: 1341761278
-      Data3: 343787193
-      Data4: 910176984
-    Path: event:/SFX/Dialogue/defaultText
-  rollingTextLupe:
-    Guid:
-      Data1: 760163884
-      Data2: 1337989796
-      Data3: -371916125
-      Data4: 1413011193
-    Path: event:/SFX/Dialogue/lupeText
-  rollingTextMisra:
-    Guid:
-      Data1: 1072796421
-      Data2: 1076432248
-      Data3: 1024728459
-      Data4: 567284931
-    Path: event:/SFX/Dialogue/misraText
   voiceLupe:
     Guid:
       Data1: 1188000359

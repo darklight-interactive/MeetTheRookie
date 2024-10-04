@@ -42,6 +42,9 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
     VisualElement choiceParent;
     List<SelectableButton> choiceButtons = new List<SelectableButton>(4);
 
+    // SFX Variables
+    bool allowInkySFX;
+
     public override void Initialize(UXML_UIDocumentPreset preset, string[] tags = null)
     {
         base.Initialize(preset, tags);
@@ -165,7 +168,7 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         currentStory.ChooseChoiceIndex(choiceButtons.IndexOf(choiceMap.CurrentSelection));
         choiceParent.style.display = DisplayStyle.None;
         continueTriangle.style.visibility = Visibility.Visible;
-        MTR_AudioManager.Instance.PlayMenuSelectEvent();
+        //MTR_AudioManager.Instance.PlayMenuSelectEvent();
         choicesActive = false;
         ContinueStory();
     }
@@ -264,6 +267,19 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
                     speakerName = "misra";
                 }
             }
+            else if (splitTag[0].Trim() == "sfx")
+            {
+                if (splitTag[1].Trim() == "on")
+                {
+                    allowInkySFX = true;
+                    Debug.Log("Inky SFX are allowed!");
+                }
+                else if (splitTag[1].Trim() == "off")
+                {
+                    allowInkySFX = false;
+                    Debug.Log("Inky SFX are banned!");
+                }
+            }
             else if (splitTag[0].Trim() == "emote")
             {
                 string[] content = splitTag[1].Split("|");
@@ -295,9 +311,9 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         float buffer = 1f;
 
         // Start rolling text SFX
-        //if (speakerName == "lupe") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
-        //else if (speakerName == "misra") { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
-        //else { MTR_AudioManager.Instance.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }
+        //if (speakerName == "lupe") { FMODExt_EventManager..StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextLupe, (interval * 3.0f)); }
+        //else if (speakerName == "misra") { FMODExt_EventManager.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextMisra, (interval * 3.0f)); }
+        //else { FMODExt_EventManager.StartRepeatingEvent(MTR_AudioManager.Instance.generalSFX.rollingTextDefault, (interval * 3.0f)); }
 
         for (int i = 0; i < dialogueText.fullText.Length; i++)
         {
@@ -337,11 +353,11 @@ public class MTR_DatingSimManager : UXML_UIDocumentObject
         emote = emote.Trim().ToLower();
 
         success = emotes.SetEmote(name, emote);
-        if (name == "lupe")
+        if (name == "lupe" && allowInkySFX)
         {
             FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote));
         }
-        else if (name == "misra")
+        else if (name == "misra" && allowInkySFX)
         {
             FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote));
         }

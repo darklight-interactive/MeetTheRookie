@@ -29,9 +29,19 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         {
             PlaySpecialAnimation(speaker);
         });
+
+
         InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySFX", (string sfx) =>
         {
-            PlayInkySFX(sfx);
+            MTR_AudioManager.Instance.PlayOneShotByName(sfx);
+        });
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
+        {
+            MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
+        });
+        InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("StopLoopingSFX", (string sfx) =>
+        {
+            MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
         });
     }
 
@@ -58,11 +68,12 @@ public class MTR_GameManager : MonoBehaviourSingleton<MTR_GameManager>
         }
     }
 
-    public void PlayInkySFX(string eventName)
-    {
-        string eventPath = "event:/SFX/" + eventName;
-        FMODUnity.RuntimeManager.PlayOneShot(eventPath);
-    }
+    //public void PlayInkySFX(string eventName)
+    //{
+    //    //string eventPath = "event:/SFX/" + eventName;
+    //    //FMODUnity.RuntimeManager.PlayOneShot(eventPath);
+    //    MTR_AudioManager.Instance.PlayOneShotByName(eventName);
+    //}
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)
     {

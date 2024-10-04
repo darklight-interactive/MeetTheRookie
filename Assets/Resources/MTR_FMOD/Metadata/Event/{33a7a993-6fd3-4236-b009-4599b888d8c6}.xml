@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{33a7a993-6fd3-4236-b009-4599b888d8c6}">
 		<property name="name">
-			<value>gasStation_treeFalls</value>
+			<value>treeFalls</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -95,11 +95,19 @@
 	<object class="MixerBusPanner" id="{eefa9f2c-9b35-4850-8e56-04bc4fb98f05}" />
 	<object class="MixerBusEffectChain" id="{f8715ac8-8a28-435d-a907-a6b663225b2d}">
 		<relationship name="effects">
+			<destination>{310d3683-0028-4421-a895-0a77fa40d262}</destination>
 			<destination>{8e6f609e-87a1-4a1a-a478-2772ab1d73f1}</destination>
 			<destination>{43a4fa50-e536-4cb2-b36c-5e1a2af0ca63}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{8976708e-baba-42c8-8220-c9bbc50fd378}" />
+	<object class="MixerBusPanner" id="{8976708e-baba-42c8-8220-c9bbc50fd378}">
+		<property name="surroundPanDirection">
+			<value>-71.5650482</value>
+		</property>
+		<property name="surroundPanExtent">
+			<value>247.259537</value>
+		</property>
+	</object>
 	<object class="MultiSound" id="{22338a4c-5a30-4124-903f-fbd8fc0e7ad3}">
 		<relationship name="sounds">
 			<destination>{f17f8389-7288-4286-8bc5-a9cae945a19d}</destination>
@@ -107,6 +115,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{e4231391-5878-4729-8ad5-e25b4fbe4da2}" />
+	<object class="ThreeEQEffect" id="{310d3683-0028-4421-a895-0a77fa40d262}">
+		<property name="lowGain">
+			<value>-5</value>
+		</property>
+		<property name="highGain">
+			<value>-10</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{8e6f609e-87a1-4a1a-a478-2772ab1d73f1}" />
 	<object class="SpatialiserEffect" id="{43a4fa50-e536-4cb2-b36c-5e1a2af0ca63}" />
 	<object class="SingleSound" id="{f17f8389-7288-4286-8bc5-a9cae945a19d}">
