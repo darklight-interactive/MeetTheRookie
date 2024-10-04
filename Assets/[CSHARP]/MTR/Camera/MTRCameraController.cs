@@ -29,7 +29,11 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 
     public void OnEditorReloaded()
     {
-
+        MTRSceneManager.Instance.CameraBoundsLibrary.GetActiveCameraBounds(out MTRCameraRigBounds cameraBounds);
+        if (cameraBounds != null && Rig.Bounds != cameraBounds)
+        {
+            Rig.SetBounds(cameraBounds);
+        }
     }
 
     // Start is called before the first frame update

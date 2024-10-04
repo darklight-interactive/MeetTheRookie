@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MeetTheRookie/MTR_CameraRigBounds")]
 public class MTRCameraRigBounds : ScriptableObject
 {
-    const int DEFAULT_RANGE_VALUE = 20;
+    const int DEFAULT_RANGE_VALUE = 50;
     static Vector2 BOUND_RANGE = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
     static Vector2 BOUND_HALF_RANGE = new Vector2(-DEFAULT_RANGE_VALUE / 2, DEFAULT_RANGE_VALUE / 2);
 

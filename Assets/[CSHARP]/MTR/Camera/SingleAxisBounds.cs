@@ -42,8 +42,8 @@ public class SingleAxisBounds
     {
         _axis = axis;
         valueRange = range;
-        Min = range.x;
-        Max = range.y;
+        Min = range.x / 2;
+        Max = range.y / 2;
     }
 
     void GetAxisVector(out Vector3 direction)

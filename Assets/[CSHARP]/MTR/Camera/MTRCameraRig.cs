@@ -61,6 +61,31 @@ public class MTRCameraRig : MonoBehaviour
         }
     }
 
+    public MTRCameraRigSettings Settings
+    {
+        get
+        {
+            if (_settings == null)
+            {
+                _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigSettings>(SETTINGS_PATH, "DefaultCameraSettings");
+            }
+            return _settings;
+        }
+        set => _settings = value;
+    }
+
+    public MTRCameraRigBounds Bounds
+    {
+        get
+        {
+            if (_bounds == null)
+            {
+                _bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigBounds>(BOUNDS_PATH, "DefaultCameraBounds");
+            }
+            return _bounds;
+        }
+        set => _bounds = value;
+    }
 
     #region ( EDITOR UPDATE ) <PRIVATE_METHODS> ================================================
     private void OnEnable()

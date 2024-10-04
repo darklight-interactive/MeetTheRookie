@@ -47,6 +47,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     public MTRSceneController SceneController => GetComponent<MTRSceneController>();
     public MTRSceneDataObject SceneDataObject => _sceneDataObject;
     public List<string> SceneNames => _sceneDataObject.SceneNames;
+    public MTRCameraBoundsLibrary CameraBoundsLibrary => _cameraBoundsLibrary;
 
     public void OnEditorReloaded()
     {
