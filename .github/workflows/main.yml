@@ -78,7 +78,7 @@ jobs:
         if: failure()
         run: |
           echo "Listing Unity log directory"
-          ls -l /root/.config/unity3d/Unity
+          sudo ls -l /root/.config/unity3d/Unity
 
       # Print the Unity Editor log in case of failure
       - name: Upload Unity Editor Log on Failure
@@ -155,7 +155,7 @@ jobs:
         if: failure()
         run: |
           echo "Listing Unity log directory"
-          ls -l /root/.config/unity3d/Unity
+          sudo ls -l /root/.config/unity3d/Unity
 
       # Print the Unity Editor log in case of failure
       - name: Upload Unity Editor Log on Failure
