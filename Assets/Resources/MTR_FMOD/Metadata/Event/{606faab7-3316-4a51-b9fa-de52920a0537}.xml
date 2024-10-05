@@ -88,6 +88,8 @@
 	<object class="MultiSound" id="{8cf81d89-d9a9-4c74-a5ea-ee8f410983ee}">
 		<relationship name="sounds">
 			<destination>{bbe885ff-c08d-46d7-9e94-34cd28e53357}</destination>
+			<destination>{3069a0ee-4344-4dad-a713-dd144f281f9c}</destination>
+			<destination>{38ba4e2a-834b-4b97-90d9-7e6b8975a6f3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{d8ff2320-605c-4577-8309-6214ff90cc26}">
@@ -114,6 +116,24 @@
 		<relationship name="sounds">
 			<destination>{1cdd46a7-4c15-45bb-b8ab-984484b21a69}</destination>
 			<destination>{d9ce21f3-b02a-4311-8059-33dcb1a606f5}</destination>
+		</relationship>
+	</object>
+	<object class="SilenceSound" id="{3069a0ee-4344-4dad-a713-dd144f281f9c}">
+		<property name="duration">
+			<value>500</value>
+		</property>
+	</object>
+	<object class="MultiSound" id="{38ba4e2a-834b-4b97-90d9-7e6b8975a6f3}">
+		<property name="startOffset">
+			<value>5.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{ed0d85c7-5f74-4a02-9979-2e0d8541d6d8}</destination>
+			<destination>{5a43383e-8ec4-4798-be01-ac6b074bf824}</destination>
+		</relationship>
+		<relationship name="sounds">
+			<destination>{9c24dc01-1a04-4923-859a-b1bc69c46927}</destination>
+			<destination>{710b0e42-85c6-4764-a94f-1d3fa9411aff}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{11de18c6-388a-4501-b51a-b18f15ffb416}" />
@@ -156,6 +176,32 @@
 	<object class="SingleSound" id="{d9ce21f3-b02a-4311-8059-33dcb1a606f5}">
 		<relationship name="audioFile">
 			<destination>{e17c9c15-a831-45e4-bd4a-6c05d158ac03}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{ed0d85c7-5f74-4a02-9979-2e0d8541d6d8}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>21</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{5a43383e-8ec4-4798-be01-ac6b074bf824}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>6.5</value>
+		</property>
+	</object>
+	<object class="SingleSound" id="{9c24dc01-1a04-4923-859a-b1bc69c46927}">
+		<relationship name="audioFile">
+			<destination>{863165a2-187c-4919-807f-0a46ee9cb095}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{710b0e42-85c6-4764-a94f-1d3fa9411aff}">
+		<relationship name="audioFile">
+			<destination>{99c427b2-340e-4965-8ea7-640df309b5fc}</destination>
 		</relationship>
 	</object>
 </objects>

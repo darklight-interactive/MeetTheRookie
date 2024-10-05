@@ -309,7 +309,7 @@ And a black and white picture of the winery stained with age.
 "Yep!" 
 
 # name : Lupe
-# emote : Lupe \| Annoyed_1
+//# emote : Lupe \| Annoyed_1
 "...Wow."
 -> transition_to_case
 

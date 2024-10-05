@@ -13,6 +13,7 @@
 
 === scene4_5_DS ===
 # name: description
+# sfx : on
 <i>You sit on the hard bar stool and lean against the wooden table, trying to avoid a splinter from the old wood. </i>
 
 <i>Irene looks at you expectantly, waiting for you to order a drink. </i>
@@ -31,6 +32,7 @@
 "Huh." 
 
 # name: Lupe
+# emote : Lupe \| Neutral_2
 "What?"
 
 # name: Misra
@@ -88,6 +90,7 @@
 =bet 
 ~ tease_level++
 #name: Misra
+# emote : Misra \| Neutral_1
 "Ok, if I can guess...your favorite color! If I can guess it, you have to buy me a drink!" 
 +["And if you get it wrong?"] -> wrong 
 +["Ok."] -> color 
@@ -95,6 +98,7 @@
 
 =wrong 
 #name: Misra 
+# emote : Misra \| Neutral_1
 "Then I'll buy you a drink, deal?" 
 +["Ok."] -> color 
 +["Nevermind."] -> ShockedNo
@@ -136,7 +140,9 @@
 =GuessMisras
 #name: Misra
 # emote : Misra \| Surprised_2
+# sfx : off
 # emote : Lupe \| Inquistive_1
+# sfx : on
 { tease_level > sincerity_level:  "Oh ok! C'mon, you're not going to get it right." | "Sure!" }
 
 +["Green."] -> CorrectColor 
@@ -170,6 +176,7 @@
 "How did you...?" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  "Guess you're easy to read." | "Lucky guess." } 
 -> MisraOrder
 
@@ -180,6 +187,7 @@
 "Ha! Nope!" 
 
 #name: Lupe 
+# emote : Lupe \| Inquistive_1
 { tease_level > sincerity_level:  "What is it then?" | "Damn." }
 
 #name: Misra 
@@ -200,6 +208,7 @@
 =ShockedNo 
 ~ sincerity_level ++
 #name: Misra 
+# emote : Misra \| Neutral_1
 "Oh...ok!" 
 -> MisraOrder
 
@@ -221,6 +230,7 @@
 { tease_level > sincerity_level:  "What?! No way!" | "Um...no I can't let you do that!" }
 
 #name: Lupe
+# emote : Lupe \| Neutral_2
 " I insist..." 
 
 {- color:
@@ -259,7 +269,9 @@ They'll have...
 +[A Lemon Drop.] -> guessDrinkWrong
 
 =guessDrinkRight
+# sfx : off
 # emote : Lupe \| Neutral_2
+# sfx : on
 <i>You reach into the back of your mind, and for some reason this  resonates with you.</i> 
 
 ~ tease_level++
@@ -268,6 +280,7 @@ They'll have...
 "Oh! Thank you" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Was that right?" 
 
 #name: Misra 
@@ -288,6 +301,7 @@ They'll have...
 
 - else: 
 #name: Lupe
+# emote : Lupe \| Neutral_2
 "Oh, good." 
 } 
 
@@ -304,6 +318,7 @@ They'll have...
 "Oh! Um, actually can I get an Old Fashioned?" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Sorry." 
 
 {-  CorrectColor: 
@@ -352,9 +367,11 @@ They'll have...
 
 = close 
 #name: Misra 
-"Most definately! He took me under his wing when my parents left." 
+# emote : Misra \| Neutral_1
+"Most definitely! He took me under his wing when my parents left." 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Oh...I'm so sorry to hear that." 
 
 #name: Misra 
@@ -386,7 +403,8 @@ They'll have...
 # emote : Misra \| Neutral_1
 "27" 
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 "Wow." 
 +["Why didn't you leave with them?"] -> leaveWithThem 
 +["Seems like you're doing well on your own."] -> yourOwn 
@@ -413,6 +431,7 @@ They'll have...
 "No way! There has to be some way to get back on our feet. Kettle Rock has done it multiple times in the past, and we can do it again!"
 
 #name: Misra
+# sfx : off
 # emote : Misra \| Nervous_1
 "If I have to be the only person who truly believes that, then so be it." 
 
@@ -428,6 +447,7 @@ They'll have...
 "Augh, I'm being a debby downer."
 
 #name: Misra
+# sfx : on
 "You know what, we'll recover! I just know it!!" 
 
 ->RoyQuestions
@@ -445,6 +465,7 @@ They'll have...
 
 = itsAlright
 #name: Misra 
+# emote : Misra \| Nervous_1
 "It's alright! We'll get back on our feet eventually!" 
 -> RoyQuestions
 
@@ -483,11 +504,14 @@ They'll have...
 
 =RoySisterExplination
 #name: Misra 
+# sfx : off
 # emote : Misra \| Fright_2
+# sfx : on
 "She um..." 
 "Well, she went missing alongside the other folks of the tragedy." 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Sorry to hear that..." 
 
 +["Maybe she's out there somewhere."] -> maybe 
@@ -549,7 +573,9 @@ They'll have...
 
 =legendExplination
 #name: Misra 
+# sfx : off
 # emote : Misra \| Neutral_1
+# sfx : on
 "They say there was once a cult that called themselves 'The Council of Bachitan', though I don't know much about it myself." 
 
 #name: Lupe 
@@ -583,9 +609,11 @@ They'll have...
 <i> There's no new calls. </i>
 
 #name: Lupe 
+# emote : Lupe \| Inquistive_1
 "Just...strange." 
 
 #name: Misra 
+# emote : Misra \| Curious_1
 "What?" 
 
 #name: Lupe 
@@ -608,7 +636,9 @@ They'll have...
 
 = hometown1
 #name: Misra 
+# sfx : off
 # emote : Lupe \| Serious_2
+# sfx : on
 # emote : Misra \| Curious_1
 "Just wondering where you're from!"
 +["A couple hours away."] -> dontGiveLocation
@@ -630,13 +660,16 @@ They'll have...
 =hometown2
 #name: Misra 
 # emote : Misra \| Neutral_1
+# sfx : off
 # emote : Lupe \| Neutral_2
+# sfx : on
 "So you're not too far from home!" 
 
 #name: Misra 
 "That's, what, four...five hours away?" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "More or less." 
 
 ->questions
@@ -700,7 +733,9 @@ They'll have...
  "Hm?" 
  
  #name: Misra 
+ # sfx : off
 # emote : Misra \| Curious_1
+# sfx : on
  "Are we ready to crack this case right open!?" 
  
  +["Not even close."] -> NotEvenClose 
@@ -761,7 +796,9 @@ They'll have...
 "I may or may not have lost the keys..." 
 
 #name: Lupe 
+# sfx : off
 # emote : Lupe \| Serious_2
+# sfx : on
 "..." 
 
 #name: Misra

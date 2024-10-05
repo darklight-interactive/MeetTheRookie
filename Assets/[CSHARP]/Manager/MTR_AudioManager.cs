@@ -80,12 +80,12 @@ public class MTR_AudioManager : FMODExt_EventManager
     {
         string eventPath = "event:/SFX/" + eventName;
         FMODUnity.RuntimeManager.PlayOneShot(eventPath);
-        Debug.Log($"Started PlaySFX from Inky with SFX: {eventPath}");
+        //Debug.Log($"Started PlaySFX from Inky with SFX: {eventPath}");
     }
 
     public void StartRepeatSFXByPath(string eventName)//, float interval)
     {
-        Debug.Log("Started PlayLoopingSFX from Inky");
+        //Debug.Log("Started PlayLoopingSFX from Inky");
         string eventPath = "event:/SFX/" + eventName;
         EventInstance eventInstance = FMODUnity.RuntimeManager.CreateInstance(eventPath);
         activeEventInstances[eventPath] = eventInstance;
@@ -94,7 +94,7 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     public void StopRepeatSFXByPath(string eventName)
     {
-        Debug.Log("Started StopLoopingSFX");
+        //Debug.Log("Started StopLoopingSFX");
         string eventPath = "event:/SFX/" + eventName;
         if (activeEventInstances.ContainsKey(eventPath))
         {
