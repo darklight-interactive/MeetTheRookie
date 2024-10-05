@@ -10,8 +10,9 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
     // The characters currently occupying the destination
     Dictionary<string, MTRCharacterInteractable> _occupants = new Dictionary<string, MTRCharacterInteractable>();
     MTRInteractable _interactableParent;
+    Vector3 _lastInteractablePosition = Vector3.zero;
 
-    public MTRInteractable Parent => _interactableParent;
+    public MTRInteractable InteractableParent { get => _interactableParent; set => _interactableParent = value; }
 
     public MTRInteractableDestinationLibrary(MTRInteractable interactableParent)
     {
@@ -104,13 +105,25 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
     void CalculateDestinationX(string destinationKey, out float destinationX)
     {
         TryGetValue(destinationKey, out float xValue);
-        destinationX = _interactableParent.transform.position.x + xValue;
+
+        if (_interactableParent != null)
+        {
+            destinationX = _interactableParent.transform.position.x + xValue;
+            _lastInteractablePosition = _interactableParent.transform.position;
+        }
+        else
+        {
+            destinationX = _lastInteractablePosition.x + xValue;
+        }
     }
 
     void CalculateDestinationPoint(string destinationKey, out Vector3 destinationPoint)
     {
         CalculateDestinationX(destinationKey, out float destinationX);
-        destinationPoint = _interactableParent.transform.position;
+        if (_interactableParent != null)
+            destinationPoint = _interactableParent.transform.position;
+        else
+            destinationPoint = _lastInteractablePosition;
         destinationPoint.x = destinationX;
     }
 
@@ -119,8 +132,12 @@ public class MTRInteractableDestinationLibrary : Library<string, float>
         InternalAdd("Destination" + Count, 0.5f);
     }
 
-    public void DrawInEditor()
+    public void DrawInEditor(MTRInteractable interactableParent)
     {
+        _interactableParent = interactableParent;
+        if (_interactableParent == null)
+            return;
+
         int i = 0;
         Color[] colors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow };
         foreach (KeyValuePair<string, float> point in this)

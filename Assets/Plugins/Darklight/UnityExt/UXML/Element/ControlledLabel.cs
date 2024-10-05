@@ -108,8 +108,12 @@ namespace Darklight.UnityExt.UXML
                 {
                     overflow = Overflow.Hidden,
                     alignSelf = Align.Stretch,
-                    flexGrow = 1,
                     flexWrap = Wrap.Wrap,
+
+                    paddingTop = Length.Percent(10),
+                    paddingBottom = Length.Percent(15),
+                    paddingLeft = Length.Percent(10),
+                    paddingRight = Length.Percent(10),
 
                     unityBackgroundImageTintColor = Color.white
                 }

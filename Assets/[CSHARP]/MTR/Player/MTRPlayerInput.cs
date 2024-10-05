@@ -185,7 +185,7 @@ public class MTRPlayerInput : MonoBehaviour
             _script = (MTRPlayerInput)target;
             _buttonsDrawer = new ButtonsDrawer(target);
 
-            _script.Awake();
+            //_script.Awake();
         }
 
         public override void OnInspectorGUI()

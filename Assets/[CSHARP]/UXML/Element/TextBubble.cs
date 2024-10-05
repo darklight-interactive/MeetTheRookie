@@ -133,14 +133,6 @@ public partial class TextBubble : ControlledLabel
                 Sprite sprite = _library[_directionPoint];
                 BackgroundImage = sprite;
             }
-            else
-            {
-                Debug.LogError($"TextBubble Direction Point {_directionPoint} not found in library.");
-            }
-        }
-        else
-        {
-            Debug.LogError("TextBubble Library is null.");
         }
     }
 

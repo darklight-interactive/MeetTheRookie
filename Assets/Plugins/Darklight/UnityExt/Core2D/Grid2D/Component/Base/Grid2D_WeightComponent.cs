@@ -106,10 +106,7 @@ namespace Darklight.UnityExt.Core2D
         // ======== [[ METHODS ]] ================================== >>>>
         private void OnValidate()
         {
-            if (_weightDataObject != null)
-            {
-                Debug.Log("Validating Weight Data Object");
-            }
+
         }
 
         // -- (( INTERFACE )) : IComponent -------- ))
@@ -117,9 +114,8 @@ namespace Darklight.UnityExt.Core2D
         {
             if (_weightDataObject == null)
             {
-                _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH, this.gameObject.name);
+                _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH, "DefaultWeightDataObject");
             }
-
 
             base.OnInitialize(baseObj);
         }

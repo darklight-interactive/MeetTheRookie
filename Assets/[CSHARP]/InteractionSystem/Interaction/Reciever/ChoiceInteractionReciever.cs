@@ -110,7 +110,7 @@ public class ChoiceInteractionReciever : InteractionReciever
 
             _attachedBubbles[cell.Key] = choiceBubbleObject;
 
-            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform, true, false);
+            spawnerComponent.AttachTransformToCell(choiceBubbleObject.transform);
             choiceBubbleObject.transform.SetParent(this.transform);
 
             TextBubble choiceBubble = choiceBubbleObject.ElementQuery<TextBubble>();

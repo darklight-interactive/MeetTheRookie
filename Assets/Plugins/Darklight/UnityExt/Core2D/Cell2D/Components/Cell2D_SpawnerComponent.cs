@@ -15,10 +15,10 @@ namespace Darklight.UnityExt.Core2D
         {
 
             // ======== [[ FIELDS ]] ================================== >>>>
-            SpawnData _data;
+            InternalData _data;
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
-            public SpawnData Data { get => _data; set => _data = value; }
+            public InternalData Data { get => _data; set => _data = value; }
             public Spatial2D.AnchorPoint OriginAnchorPoint
             {
                 get
@@ -30,7 +30,7 @@ namespace Darklight.UnityExt.Core2D
                 set
                 {
                     if (_data == null)
-                        _data = new SpawnData(BaseCell.Key);
+                        _data = new InternalData(BaseCell.Key);
                     _data.OriginAnchor = value;
                 }
             }
@@ -43,7 +43,6 @@ namespace Darklight.UnityExt.Core2D
                     return Spatial2D.GetAnchorPointPosition(BaseCell.Position, BaseCell.Dimensions, OriginAnchorPoint);
                 }
             }
-
             public Spatial2D.AnchorPoint TargetAnchorPoint
             {
                 get
@@ -55,11 +54,10 @@ namespace Darklight.UnityExt.Core2D
                 set
                 {
                     if (_data == null)
-                        _data = new SpawnData(BaseCell.Key);
+                        _data = new InternalData(BaseCell.Key);
                     _data.TargetAnchor = value;
                 }
             }
-
             public Vector3 TargetAnchorPosition
             {
                 get
@@ -80,7 +78,7 @@ namespace Darklight.UnityExt.Core2D
             public override void OnInitialize(Cell2D cell)
             {
                 base.OnInitialize(cell);
-                _data = new SpawnData(cell.Key);
+                _data = new InternalData(cell.Key);
             }
 
             public override void DrawGizmos()
@@ -120,7 +118,7 @@ namespace Darklight.UnityExt.Core2D
                 _data.AttachedTransforms.Clear();
             }
 
-            public void AttachTransformToCell(Transform transform, bool inheritWidth = true, bool inheritHeight = true, bool inheritNormal = true)
+            public void AttachTransformToCell(Transform transform)
             {
                 if (!_data.AttachedTransforms.Contains(transform))
                     _data.AttachedTransforms.Add(transform);
@@ -134,19 +132,21 @@ namespace Darklight.UnityExt.Core2D
                 BaseCell.Data.GetWorldSpaceValues(out Vector3 cellPosition, out Vector2 cellDimensions, out Vector3 cellNormal);
 
                 // << SET SCALE >>
-                SetTransformToCellDimensions(transform, inheritWidth, inheritHeight);
+                SetTransformToCellDimensions(transform);
 
                 // << SET NORMAL >>
-                if (inheritNormal)
+                if (_data.InheritCellNormal)
                     Spatial2D.SetTransformRotation_ToNormal(transform, cellNormal);
 
                 // << SET NEW POSITION >>
                 Spatial2D.SetTransformPos_ToAnchor(transform, OriginAnchorPosition, newDimensions, OriginAnchorPoint);
             }
 
-            public void SetTransformToCellDimensions(Transform transform, bool inheritWidth = true, bool inheritHeight = true)
+            void SetTransformToCellDimensions(Transform transform)
             {
                 Vector2 cellDimensions = BaseCell.Data.Dimensions;
+                bool inheritWidth = _data.InheritCellWidth;
+                bool inheritHeight = _data.InheritCellHeight;
 
                 // << SET NEW DIMENSIONS >>
                 // If both are inherited, set the scale to the dimensions
@@ -172,39 +172,45 @@ namespace Darklight.UnityExt.Core2D
 
             // ======== [[ NESTED CLASSES ]] ================================== >>>>
             [System.Serializable]
-            public class SpawnData
+            public class InternalData
             {
+                // ======== [[ FIELDS ]] ================================== >>>>
                 [SerializeField, ShowOnly] Vector2Int _cellKey = Vector2Int.zero;
+                [SerializeField, NonReorderable, ShowOnly] List<Transform> _attachedTransforms = new List<Transform>();
 
-                List<Transform> _attachedTransforms = new List<Transform>();
+                [Header("Settings")]
+                [SerializeField, ShowOnly] bool _inheritCellWidth = true;
+                [SerializeField, ShowOnly] bool _inheritCellHeight = true;
+                [SerializeField, ShowOnly] bool _inheritCellNormal = true;
 
-
-                [Space(10)]
+                [Header("Anchors")]
                 [Tooltip("This determines the origin point of the object to be spawned and the cell anchor point that the object will be placed on")]
                 [SerializeField] Spatial2D.AnchorPoint _originAnchor = Spatial2D.AnchorPoint.CENTER;
                 [Tooltip("This is an identifier for the cell to be used as a 'direction anchor' to determine properties of the spawned object")]
                 [SerializeField] Spatial2D.AnchorPoint _targetAnchor = Spatial2D.AnchorPoint.CENTER;
 
+
+                // ======== [[ PROPERTIES ]] ================================== >>>>
                 public Vector2Int CellKey { get => _cellKey; set => _cellKey = value; }
                 public List<Transform> AttachedTransforms { get => _attachedTransforms; set => _attachedTransforms = value; }
+                public bool InheritCellWidth { get => _inheritCellWidth; set => _inheritCellWidth = value; }
+                public bool InheritCellHeight { get => _inheritCellHeight; set => _inheritCellHeight = value; }
+                public bool InheritCellNormal { get => _inheritCellNormal; set => _inheritCellNormal = value; }
                 public Spatial2D.AnchorPoint OriginAnchor { get => _originAnchor; set => _originAnchor = value; }
                 public Spatial2D.AnchorPoint TargetAnchor { get => _targetAnchor; set => _targetAnchor = value; }
 
-                public SpawnData(Vector2Int key)
+                // ======== [[ CONSTRUCTORS ]] ================================== >>>>
+                public InternalData(Vector2Int key)
                 {
                     _cellKey = key;
                 }
 
-                public SpawnData(Vector2Int key, Spatial2D.AnchorPoint origin, Spatial2D.AnchorPoint anchor, Object obj)
-                {
-                    _cellKey = key;
-                    _originAnchor = origin;
-                    _targetAnchor = anchor;
-                }
-
-                public SpawnData(SpawnData data)
+                public InternalData(InternalData data)
                 {
                     _cellKey = data.CellKey;
+                    _inheritCellWidth = data._inheritCellWidth;
+                    _inheritCellHeight = data._inheritCellHeight;
+                    _inheritCellNormal = data._inheritCellNormal;
                     _originAnchor = data._originAnchor;
                     _targetAnchor = data._targetAnchor;
                 }

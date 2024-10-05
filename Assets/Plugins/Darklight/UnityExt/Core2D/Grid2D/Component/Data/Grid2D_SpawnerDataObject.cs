@@ -17,21 +17,17 @@ namespace Darklight.UnityExt.Core2D
         [SerializeField] Spatial2D.AnchorPoint _default_OriginAnchorPoint = Spatial2D.AnchorPoint.CENTER;
         [SerializeField] Spatial2D.AnchorPoint _default_TargetAnchorPoint = Spatial2D.AnchorPoint.CENTER;
 
-        [Header("Objects")]
-        [SerializeField] Object _default_ObjectToSpawn;
-
         [Header("Serialized Data")]
         /// <summary>
         /// Serialized Data modified by user in the inspector. This data is used to update the data map.
         /// </summary>
-        [SerializeField, NonReorderable] List<Cell2D.SpawnerComponent.SpawnData> _serializedCellSpawnData;
+        [SerializeField, NonReorderable] List<Cell2D.SpawnerComponent.InternalData> _serializedCellSpawnData = new List<Cell2D.SpawnerComponent.InternalData>();
 
         public bool InheritCellWidth => _inheritCellWidth;
         public bool InheritCellHeight => _inheritCellHeight;
         public bool InheritCellNormal => _inheritCellNormal;
         public Spatial2D.AnchorPoint DefaultOriginAnchor => _default_OriginAnchorPoint;
         public Spatial2D.AnchorPoint DefaultTargetAnchor => _default_TargetAnchorPoint;
-        public Object DefaultObjectToSpawn => _default_ObjectToSpawn;
-        public List<Cell2D.SpawnerComponent.SpawnData> SerializedSpawnData { get => _serializedCellSpawnData; set => _serializedCellSpawnData = value; }
+        public List<Cell2D.SpawnerComponent.InternalData> SerializedSpawnData { get => _serializedCellSpawnData; set => _serializedCellSpawnData = value; }
     }
 }

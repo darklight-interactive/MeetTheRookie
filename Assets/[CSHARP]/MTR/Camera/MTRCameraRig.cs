@@ -255,18 +255,14 @@ public class MTRCameraRig : MonoBehaviour
     void UpdateCameraRig(bool useLerp)
     {
         // Update the main camera
-        UpdateCamera(_mainCamera, useLerp);
+        UpdateMainCamera(_mainCamera, useLerp);
 
         // Find all overlay cameras in the main camera's hierarchy
         _overlayCameras = _mainCamera.GetComponentsInChildren<Camera>().ToList();
-        foreach (Camera overlayCamera in _overlayCameras)
-        {
-            if (overlayCamera == _mainCamera) continue;
-            UpdateCamera(overlayCamera, useLerp);
-        }
+        UpdateOverlayCameras(_overlayCameras);
     }
 
-    void UpdateCamera(Camera cam, bool useLerp)
+    void UpdateMainCamera(Camera cam, bool useLerp)
     {
         // << CALCULATE TARGET VALUES >> -------------------------------------
         _targetPosition = CalculateTargetPosition();
@@ -295,6 +291,19 @@ public class MTRCameraRig : MonoBehaviour
 
             // ( Set Camera Field of View ) ---------------------------------
             cam.fieldOfView = _targetFOV;
+        }
+    }
+
+    void UpdateOverlayCameras(List<Camera> cameras)
+    {
+        foreach (Camera camera in cameras)
+        {
+            if (camera == _mainCamera) continue;
+            if (camera.transform.parent != _mainCamera.transform)
+                camera.transform.SetParent(_mainCamera.transform);
+
+            // Reset the local position and rotation of the camera
+            camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
     }
 

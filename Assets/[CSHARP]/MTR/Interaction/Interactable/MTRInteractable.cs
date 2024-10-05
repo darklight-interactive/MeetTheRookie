@@ -297,10 +297,14 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     #region ======== <PUBLIC_METHODS> [[ IInteractable ]] ================================== >>>>
     public override void Preload()
     {
+        _isPreloaded = false;
+
         //Debug.Log($"{PREFIX} {Name} :: Preload", this);
 
-        if (_destinations == null || _destinations.Parent == null)
+        if (_destinations == null || _destinations.InteractableParent == null)
             _destinations = new MTRInteractableDestinationLibrary(this);
+        if (_destinations.InteractableParent != this)
+            _destinations.InteractableParent = this;
         if (_destinations.Count == 0)
             _destinations.AddDefaultItem();
 
@@ -326,6 +330,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     public override void Register()
     {
+        _isRegistered = false;
+
         //Debug.Log($"{PREFIX} {Name} :: Register", this);
 
         // << REGISTER INTERACTABLE >> ------------------------------------
@@ -345,6 +351,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     public override void Initialize()
     {
+        _isInitialized = false;
+
         if (!IsPreloaded || !IsRegistered)
         {
             Debug.Log($"{PREFIX} {Name} :: Preload from Initialize", this);
@@ -372,8 +380,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     public override void Reset()
     {
-        _isPreloaded = false;
-        _isRegistered = false;
+        //_isPreloaded = false;
+        //_isRegistered = false;
         _isInitialized = false;
 
         if (StateMachine == null)
@@ -491,8 +499,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     private void OnDrawGizmosSelected()
     {
-        _destinations.DrawInEditor();
-
+        _destinations.DrawInEditor(this);
     }
 
 #if UNITY_EDITOR
@@ -505,8 +512,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         {
             _serializedObject = new SerializedObject(target);
             _script = (MTRInteractable)target;
-
-            _script.Preload();
         }
 
         public override void OnInspectorGUI()
