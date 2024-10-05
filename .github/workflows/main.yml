@@ -78,14 +78,14 @@ jobs:
         if: failure()
         run: |
           echo "Listing Unity log directory"
-          ls -l root/.config/unity3d/Unity
+          ls -l /dev/root/.config/unity3d/Unity
 
       # Print the Unity Editor log in case of failure
       - name: Upload Unity Editor Log on Failure
         if: failure()
         run: |
           echo "Build failed, uploading Unity Editor log"
-          cat root/.config/unity3d/Unity/Editor.log
+          cat /dev/root/.config/unity3d/Unity/Editor.log
           
       # Upload the Unity Editor log as an artifact
       - name: Upload Unity Editor Log as Artifact
@@ -93,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v4.3.3
         with:
           name: UnityEditorLog
-          path: root/.config/unity3d/Unity/Editor.log
+          path: /dev/root/.config/unity3d/Unity/Editor.log
           
       # Upload the build artifact only if it exists
       - name: Upload WebGL Build Artifact
@@ -155,14 +155,14 @@ jobs:
         if: failure()
         run: |
           echo "Listing Unity log directory"
-          ls -l root/.config/unity3d/Unity
+          ls -l /dev/root/.config/unity3d/Unity
 
       # Print the Unity Editor log in case of failure
       - name: Upload Unity Editor Log on Failure
         if: failure()
         run: |
           echo "Build failed, uploading Unity Editor log"
-          cat root/.config/unity3d/Unity/Editor.log
+          cat /dev/root/.config/unity3d/Unity/Editor.log
           
       # Upload the Unity Editor log as an artifact
       - name: Upload Unity Editor Log as Artifact
@@ -170,7 +170,7 @@ jobs:
         uses: actions/upload-artifact@v4.3.3
         with:
           name: UnityEditorLog
-          path: root/.config/unity3d/Unity/Editor.log
+          path: /dev/root/.config/unity3d/Unity/Editor.log
 
       # Upload the build artifact only if it exists
       - name: Upload Windows Build Artifact
