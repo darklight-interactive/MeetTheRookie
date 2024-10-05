@@ -35,10 +35,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
+
+      # Clean up Docker to free up space
       - name: Clean up Docker to free up space
         run: docker system prune -af
 
-      #- run: git submodule update --init --recursive
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -75,10 +86,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
+
+      # Clean up Docker to free up space
       - name: Clean up Docker to free up space
         run: docker system prune -af
 
-      #- run: git submodule update --init --recursive
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
