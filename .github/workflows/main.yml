@@ -70,8 +70,8 @@ jobs:
         with:
           targetPlatform: WebGL
           buildName: MeetTheRookie
-          buildPath: Build/WebGL
-        continue-on-error: true  # Continue even if the build fails to provide more output
+          buildsPath: Build/WebGL
+        #continue-on-error: true  # Continue even if the build fails to provide more output
 
       # Capture and log the Unity editor log if the build fails
       - name: Upload Unity Editor Log on Failure
@@ -132,8 +132,8 @@ jobs:
         with:
           targetPlatform: StandaloneWindows64
           buildName: MeetTheRookie
-          buildPath: Build/Windows
-        continue-on-error: true  # Continue even if the build fails to provide more output
+          buildsPath: Build/Windows
+        #continue-on-error: true  # Continue even if the build fails to provide more output
 
       # Capture and log the Unity editor log if the build fails
       - name: Upload Unity Editor Log on Failure
