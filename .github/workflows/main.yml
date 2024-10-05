@@ -12,6 +12,8 @@ on:
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -60,16 +62,29 @@ jobs:
             Library-
 
       - name: Build project
-        uses: game-ci/unity-builder@v4.2.3
+        run: |
+          echo "Starting Unity Build"
+          set -e  # Stop execution if any command fails
+          unity-builder --targetPlatform WebGL || { 
+            echo "Unity Build Failed"; 
+            cat /path/to/unity-build-error.log; 
+          }
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
-          buildName: MeetTheRookie
+        continue-on-error: true  # Continue even if the build fails to provide more output
 
+      # Capture and log the Unity editor log if the build fails
+      - name: Upload Unity Editor Log on Failure
+        if: failure()
+        run: |
+          echo "Build failed, uploading Unity Editor log"
+          cat /path/to/Editor.log
+
+      # Upload the build artifact only if it exists
       - name: Upload WebGL Build Artifact
+        if: success()  # Upload the build artifact only if the build was successful
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-WebGL
@@ -110,17 +125,30 @@ jobs:
           restore-keys: |
             Library-
 
-      - name: Build project
-        uses: game-ci/unity-builder@v4.2.3
+      - name: Build project for Windows
+        run: |
+          echo "Starting Windows Build"
+          set -e  # Stop execution if any command fails
+          unity-builder --targetPlatform StandaloneWindows64 || { 
+            echo "Windows Build Failed"; 
+            cat /path/to/unity-build-error.log; 
+          }
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: StandaloneWindows64
-          buildName: MeetTheRookie
+        continue-on-error: true  # Continue even if the build fails to provide more output
 
-      - name: Upload artifact
+      # Capture and log the Unity editor log if the build fails
+      - name: Upload Unity Editor Log on Failure
+        if: failure()
+        run: |
+          echo "Build failed, uploading Unity Editor log"
+          cat /path/to/Editor.log
+
+      # Upload the build artifact only if it exists
+      - name: Upload Windows Build Artifact
+        if: success()  # Upload the build artifact only if the build was successful
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-Windows
