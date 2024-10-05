@@ -31,29 +31,19 @@ using UnityEditor;
 /// </summary>
 public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
+    PauseMenuController _gameUI;
+    SynthesisManager _synthesisManager;
 
-    // ----- [[ PRIVATE FIELDS ]] ------------------------------------>
-    [SerializeField, ShowOnly]
-    Vector2 _screenSize;
 
-    [SerializeField, ShowOnly]
-    float _screenAspectRatio;
 
+    [SerializeField, ShowOnly] Vector2 _screenSize;
+    [SerializeField, ShowOnly] float _screenAspectRatio;
     [SerializeField] CharacterColors _characterColors;
 
-    // ----- [[ UI CONTROLLERS ]] ------------------------------------>
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
-
-    private PauseMenuController _gameUI;
     [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
-
-
-    [Header("Synthesis Manager")]
-    private SynthesisManager _synthesisManager;
-
-    [SerializeField]
-    UXML_UIDocumentPreset _synthesisUIPreset;
+    [SerializeField] UXML_UIDocumentPreset _synthesisUIPreset;
 
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -143,10 +133,7 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     #endregion
 
-    // ----- [[ PUBLIC FIELDS ]] ------------------------------------>
-    [Header("Render Texture")]
-    public Material UXML_RenderTextureMaterial;
-    public RenderTexture UXML_RenderTexture;
+
 
     // ----- [[ UNITY METHODS ]] ------------------------------------>
     public override void Initialize() { }

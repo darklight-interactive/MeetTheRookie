@@ -132,8 +132,6 @@ public class MTRCameraRig : MonoBehaviour
                 _mainCamera = new GameObject("MTR Main Camera").AddComponent<Camera>();
         }
         _mainCamera.transform.SetParent(transform);
-
-
     }
 
     public void FixedUpdate()

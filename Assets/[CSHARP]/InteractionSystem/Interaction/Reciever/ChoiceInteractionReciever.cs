@@ -40,8 +40,8 @@ public class ChoiceInteractionReciever : InteractionReciever
     }
     public bool ChoiceSelected => _selectedBubble != null;
 
-    Material _material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
-    RenderTexture _renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
+    Material _material => MTRGameManager.PrefabLibrary.uxmlRenderTextureMaterial;
+    RenderTexture _renderTexture => MTRGameManager.PrefabLibrary.uxmlRenderTexture;
 
     public void Awake()
     {

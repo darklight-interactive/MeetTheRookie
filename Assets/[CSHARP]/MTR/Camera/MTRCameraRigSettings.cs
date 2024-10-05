@@ -12,7 +12,7 @@ public class MTRCameraRigSettings : ScriptableObject
     static Vector2 DistRange = new Vector2(-DEFAULT_RANGE_VALUE * 2, 0);
     static Vector2 HorzRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
     static Vector2 VertRange = new Vector2(-DEFAULT_RANGE_VALUE, DEFAULT_RANGE_VALUE);
-    static Vector2 SpeedRange = new Vector2(0, 5);
+    static Vector2 SpeedRange = new Vector2(0, 10);
     readonly Vector2 rotationRange = new Vector2(-45, 45);
 
 

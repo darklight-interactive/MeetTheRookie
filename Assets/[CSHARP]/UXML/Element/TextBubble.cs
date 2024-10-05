@@ -16,8 +16,6 @@ public partial class TextBubble : ControlledLabel
     Spatial2D.AnchorPoint _originPoint = Spatial2D.AnchorPoint.CENTER;
     Spatial2D.AnchorPoint _directionPoint = Spatial2D.AnchorPoint.CENTER;
 
-
-
     [Header("[TEXT_BUBBLE] ================ >>>>")]
     [UxmlAttribute]
     public TextBubbleLibrary Library
@@ -135,6 +133,14 @@ public partial class TextBubble : ControlledLabel
                 Sprite sprite = _library[_directionPoint];
                 BackgroundImage = sprite;
             }
+            else
+            {
+                Debug.LogError($"TextBubble Direction Point {_directionPoint} not found in library.");
+            }
+        }
+        else
+        {
+            Debug.LogError("TextBubble Library is null.");
         }
     }
 
