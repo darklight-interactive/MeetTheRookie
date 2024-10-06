@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+
+using Darklight.UnityExt.BuildScene;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Library;
+
+using EasyButtons;
+
+using FMODUnity;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using FMODUnity;
-using Darklight.UnityExt.SceneManagement;
-using Darklight.UnityExt.Library;
-using EasyButtons;
-using Darklight.UnityExt.Editor;
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;

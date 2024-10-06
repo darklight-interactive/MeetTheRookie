@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.SceneManagement;
+using Darklight.UnityExt.BuildScene;
 using FMODUnity;
 using NaughtyAttributes;
 using UnityEngine;
@@ -25,11 +25,10 @@ public class MTRSceneData : BuildSceneData
     [Dropdown("_knotNames")]
     public string knot;
 
-    public override void InitializeData(string path)
-    {
-        base.InitializeData(path);
 
+    public MTRSceneData() : base("") { }
+    public MTRSceneData(string path) : base(path)
+    {
         _savedKnotData = knot;
-        //Debug.Log("InitializeData: " + _savedKnotData);
     }
 }

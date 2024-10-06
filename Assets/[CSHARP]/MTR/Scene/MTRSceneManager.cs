@@ -1,22 +1,22 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
+using Darklight.UnityExt.BuildScene;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.SceneManagement;
+using Darklight.UnityExt.Library;
+using Darklight.UnityExt.Utility;
+
 using FMODUnity;
+
 using Ink.Runtime;
+
+using NaughtyAttributes;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using NaughtyAttributes;
-using System.Linq;
-using Darklight.UnityExt.Utility;
-using Darklight.UnityExt.Library;
-using System.Collections;
-
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -118,10 +118,10 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {_sceneDataObject}");
         }
 
-        base.LoadBuildScenes();
+        base.LoadBuildScenesFromDirectory();
 #endif
 
-        _sceneDataObject.Initialize(buildScenePaths);
+        //_sceneDataObject.Initialize(_buildScenePaths);
 
         //SaveBuildSceneData(buildScenePaths);
         Debug.Log($"{Prefix} Initialized.");
@@ -140,7 +140,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     public override void SaveBuildSceneData(string[] buildScenePaths)
     {
 #if UNITY_EDITOR
-        this.buildScenePaths = buildScenePaths;
+        //this._buildScenePaths = buildScenePaths;
         List<MTRSceneData> buildSceneData = _sceneDataObject.GetBuildSceneData();
 
         for (int i = 0; i < buildScenePaths.Length; i++)
@@ -155,7 +155,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             }
 
             // Initialize the scene data.
-            buildSceneData[i].InitializeData(scenePath);
+            buildSceneData[i] = new MTRSceneData();
             //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
         }
 
