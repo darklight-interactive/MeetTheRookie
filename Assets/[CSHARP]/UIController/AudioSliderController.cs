@@ -35,7 +35,7 @@ public class AudioSliderController : MonoBehaviour
         foreach (SliderInt slider in volumeSliders)
         {
             Debug.Log($"[AudioSliderController] Loaded in the slider: {slider}");
-            slider.value = 100;
+            slider.value = 10; // Originally 100
         }
 
         // Register change event listeners
@@ -48,10 +48,9 @@ public class AudioSliderController : MonoBehaviour
     {
         // Normalize the value to a range suitable for FMOD
         float value2 = (float)value;
+        float FMODValue = value2 / 10.0f; // Value needs to be between 0 and 1
         //float FMODValue = (0.9f * value2) - 80.0f; // Value is between -80 and 10 for FMODExt_Bus `volume` variable
-        float FMODValue = value2 / 100.0f; // Value is between 0 and 1
-
-        Debug.Log($"Slider {sliderIndex} Integer Value: {FMODValue}");
+        //Debug.Log($"Slider {sliderIndex} Integer Value: {FMODValue}");
 
         // Set the relevant FMOD bus volume
         // Currently updates the bus directly, other option is to update the FMODExt_Bus `volume` variable and let its (currently disaled) update function set the volume
