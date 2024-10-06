@@ -19,33 +19,35 @@ using UnityEditor;
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
 /// </summary>
-public class MTRSceneDataObject : BuildSceneDataObject<MTRSceneData>
+public class MTRSceneDataObject : BuildSceneScriptableData<MTRSceneData>
 {
     [SerializeField, ShowOnly, NonReorderable] List<string> buildSceneNames = new List<string>();
 
-    public List<MTRSceneData> SceneData => buildSceneData.ToList();
     public List<string> SceneNames
     {
-        get => buildSceneNames = SceneData.Select(x => x.Name).ToList();
+        //get => buildSceneNames = SceneData.Select(x => x.Name).ToList();
+        get => buildSceneNames;
     }
 
     [Button]
     public void Initialize(string[] buildScenePaths)
     {
-        this.buildScenePaths = buildScenePaths;
-        this.buildSceneNames = SceneData.Select(x => x.Name).ToList();
+        //this.buildScenePaths = buildScenePaths;
+        //this.buildSceneNames = SceneData.Select(x => x.Name).ToList();
 
-        Initialize();
+        //Initialize();
     }
 
     public List<MTRSceneData> GetBuildSceneData()
     {
-        return buildSceneData.ToList();
+        //return buildSceneData.ToList();
+        return null;
     }
 
     public MTRSceneData GetSceneDataByKnot(string knot)
     {
-        return GetBuildSceneData().Find(x => x.knot == knot);
+        //return GetBuildSceneData().Find(x => x.knot == knot);
+        return null;
     }
 }
 
@@ -69,10 +71,7 @@ public class MTRSceneDataObjectCustomEditor : Editor
 
         base.OnInspectorGUI();
 
-        if (GUILayout.Button("Initialize"))
-        {
-            _script.Initialize();
-        }
+
 
         if (EditorGUI.EndChangeCheck())
         {

@@ -27,10 +27,10 @@ using UnityEditor;
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 [RequireComponent(typeof(MTRSceneController))]
-public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditorListener
+public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTRSceneDataObject>, IUnityEditorListener
 {
-    public new static string Prefix = "[ MTRSceneManager ]";
-    public new static MTRSceneManager Instance => BuildSceneDataManager<MTRSceneData>.Instance as MTRSceneManager;
+    public new static string Prefix = "[MTRSceneManager]";
+    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData, MTRSceneDataObject>.Instance as MTRSceneManager;
     public static MTRSceneBounds SceneBounds
     {
         get
@@ -40,9 +40,12 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
         }
     }
     public static string SceneToLoad => Instance._sceneToLoad;
+
     [SerializeField, ShowOnly] string _sceneToLoad;
     [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
+
+    protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
     public MTRSceneController SceneController => GetComponent<MTRSceneController>();
     public MTRSceneDataObject SceneDataObject => _sceneDataObject;
@@ -50,7 +53,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     public MTRCameraBoundsLibrary CameraBoundsLibrary => _cameraBoundsLibrary;
     public Scene ActiveScene => SceneManager.GetActiveScene();
 
-    public void OnEditorReloaded()
+    public override void OnEditorReloaded()
     {
         Awake();
     }
@@ -104,8 +107,8 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
     {
 #if UNITY_EDITOR
         _sceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRSceneDataObject>(
-            DATA_PATH,
-                DATA_FILENAME
+            AssetPath,
+                "DefaultMTRBuildSceneData"
             );
 
         if (_sceneDataObject == null)
@@ -133,59 +136,27 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             Debug.LogError($"{Prefix} Story is null.");
     }
 
-    /// <summary>
-    /// Saves the build scene data by updating the paths of the BuildSceneData objects
-    /// based on the paths in the EditorBuildSettingsScene array.
-    /// </summary>
-    public override void SaveBuildSceneData(string[] buildScenePaths)
-    {
-#if UNITY_EDITOR
-        //this._buildScenePaths = buildScenePaths;
-        List<MTRSceneData> buildSceneData = _sceneDataObject.GetBuildSceneData();
 
-        for (int i = 0; i < buildScenePaths.Length; i++)
-        {
-            string scenePath = buildScenePaths[i];
-
-            // If the current data array is smaller than the build scene paths array, or the path at the current index is different, create a new scene data object.
-            if (buildSceneData.Count <= i || buildSceneData[i].Path != scenePath)
-            {
-                buildSceneData.Add(new MTRSceneData());
-                Debug.Log($"{this.name} -> Added new MTR_SceneData object.");
-            }
-
-            // Initialize the scene data.
-            buildSceneData[i] = new MTRSceneData();
-            //mtr_SceneDataObject.SaveSceneData(buildSceneData[i]);
-        }
-
-        EditorUtility.SetDirty(this);
-        Debug.Log($"{this.name} Saved build scene data.");
-#endif
-    }
-
-
-
-    public MTRSceneData GetSceneData(string name)
-    {
-        return _sceneDataObject.GetSceneData(name);
-    }
 
     public MTRSceneData GetSceneDataByKnot(string knot)
     {
         return this._sceneDataObject.GetSceneDataByKnot(knot);
     }
 
+    /*
     public MTRSceneData GetActiveSceneData()
     {
         if (_sceneDataObject == null)
             return new MTRSceneData();
         return _sceneDataObject.GetActiveSceneData();
     }
+    */
 
     public MTRCameraRigBounds GetActiveCameraBounds()
     {
         MTRCameraRigBounds cameraBounds = null;
+
+        /*
         try
         {
             MTRSceneData activeSceneData = GetActiveSceneData();
@@ -195,6 +166,7 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
             cameraBounds = _cameraBoundsLibrary[GetActiveSceneData().Name];
         }
         finally { }
+        */
 
         return cameraBounds;
     }

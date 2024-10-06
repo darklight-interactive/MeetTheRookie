@@ -74,7 +74,8 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
     {
-        MTRSceneData newSceneData = SceneManager.GetSceneData(newScene.name);
+        //MTRSceneData newSceneData = SceneManager.GetSceneData(newScene.name);
+        MTRSceneData newSceneData = null;
         if (newSceneData == null)
         {
             Debug.LogError("No Scene Data found for scene: " + newScene.name);
