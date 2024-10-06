@@ -63,6 +63,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
   clueLibrary: {fileID: 11400000, guid: a3f42b5a64f1aa24bacc88d2196c2e28, type: 2}
+  itemsSelection:
+    _previousSelectionName: 
+    _currentSelectionName: 
 --- !u!1 &3100972142227852913
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +280,7 @@ GameObject:
   - component: {fileID: 2927568867421027592}
   - component: {fileID: 5155693147541508910}
   - component: {fileID: 6916120111172882240}
+  - component: {fileID: 6518913931919201701}
   - component: {fileID: 1339267217362005101}
   - component: {fileID: 5342227784319069846}
   - component: {fileID: 7427744868763189831}
@@ -284,7 +288,6 @@ GameObject:
   - component: {fileID: 1103200859854054853}
   - component: {fileID: 6736551505315507451}
   - component: {fileID: 255471297845677017}
-  - component: {fileID: 6518913931919201701}
   m_Layer: 0
   m_Name: '[SINGLETON] GameManager'
   m_TagString: Untagged
@@ -338,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f912f775e198d4fae447b8f4d511a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sceneToLoad: 
   _sceneDataObject: {fileID: 0}
   _cameraBoundsLibrary:
     _items: []
@@ -355,7 +359,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61b33c77ad81984f83d794bc57b829e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentState: 0
+  _currentSceneState: 0
+--- !u!114 &6518913931919201701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875938405744345426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3c1aefa25d1fd4cb20cd0f4c950bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1339267217362005101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,9 +385,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
-  _iconInteractionHandlerPrefab: {fileID: 0}
-  _dialogueInteractionHandlerPrefab: {fileID: 0}
-  _choiceInteractionHandlerPrefab: {fileID: 0}
   _interactableRegistry:
     _items: []
     _readOnlyKey: 1
@@ -408,6 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globalStoryObject: {fileID: 11400000, guid: 29aeabcbeac95434baef9564f444ebae, type: 2}
   _iterator:
+    _currentStoryState: 0
     _currentStoryKnot: 
     _currentStoryDialogue: 
   _speakerList:
@@ -447,8 +461,6 @@ MonoBehaviour:
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}
   _synthesisUIPreset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
-  UXML_RenderTextureMaterial: {fileID: 2100000, guid: 5d93726150f2d264e83e646e1eb1f014, type: 2}
-  UXML_RenderTexture: {fileID: 8400000, guid: e7ee34e8fb65d8548a8b02bafb328c7f, type: 2}
 --- !u!114 &1103200859854054853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,15 +522,3 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: -1
   OverrideMaxDistance: -1
---- !u!114 &6518913931919201701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8875938405744345426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c3c1aefa25d1fd4cb20cd0f4c950bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

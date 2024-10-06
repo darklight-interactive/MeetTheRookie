@@ -22,24 +22,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     public const string DEFAULT_KNOT = "scene_default";
     public const string DEFAULT_STITCH = "interaction_default";
 
-    public enum Type
-    {
-        BASE_INTERACTABLE,
-        CHARACTER_INTERACTABLE,
-        PLAYER_INTERACTOR,
-    }
-
-    public enum State
-    {
-        NULL,
-        READY,
-        TARGET,
-        START,
-        CONTINUE,
-        COMPLETE,
-        DISABLED
-    }
-
     protected readonly List<State> VALID_INTERACTION_STATES = new List<State>
     {
         State.TARGET,
@@ -495,11 +477,31 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         EnableOutline(false);
     }
 
-    // ====== [[ Destination Points ]] ======================================
 
     private void OnDrawGizmosSelected()
     {
         _destinations.DrawInEditor(this);
+    }
+
+
+
+    // ====== [[ Enums ]] ======================================
+    public enum Type
+    {
+        BASE_INTERACTABLE,
+        CHARACTER_INTERACTABLE,
+        PLAYER_INTERACTOR,
+    }
+
+    public enum State
+    {
+        NULL,
+        READY,
+        TARGET,
+        START,
+        CONTINUE,
+        COMPLETE,
+        DISABLED
     }
 
 #if UNITY_EDITOR

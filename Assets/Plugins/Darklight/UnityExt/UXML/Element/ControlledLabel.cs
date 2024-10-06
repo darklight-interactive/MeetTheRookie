@@ -26,6 +26,7 @@ namespace Darklight.UnityExt.UXML
         float _rollingTextPercentValue = 1;
         int _currentIndex;
         int _fontSizePercent = 100;
+        int _padding = 32;
 
         protected VisualElement labelContainer { get { return _labelContainer; } set { _labelContainer = value; } }
         protected Label label { get { return _label; } set { _label = value; } }
@@ -57,7 +58,7 @@ namespace Darklight.UnityExt.UXML
         }
 
         [Header("(( Text Style )) ---- >>")]
-        [UxmlAttribute, Range(5, 100)]
+        [UxmlAttribute, Range(0, 200)]
         public int FontSizePercentage
         {
             get { return _fontSizePercent; }
@@ -73,6 +74,20 @@ namespace Darklight.UnityExt.UXML
         {
             get { return label.style.unityTextAlign.value; }
             set { label.style.unityTextAlign = value; }
+        }
+
+        [UxmlAttribute]
+        public int Padding
+        {
+            get { return _padding; }
+            set
+            {
+                _padding = value;
+                _labelContainer.style.paddingTop = _padding;
+                _labelContainer.style.paddingBottom = _padding;
+                _labelContainer.style.paddingLeft = _padding;
+                _labelContainer.style.paddingRight = _padding;
+            }
         }
 
         [Header("(( Background Image )) ---- >>")]
@@ -109,11 +124,6 @@ namespace Darklight.UnityExt.UXML
                     overflow = Overflow.Hidden,
                     alignSelf = Align.Stretch,
                     flexWrap = Wrap.Wrap,
-
-                    paddingTop = Length.Percent(10),
-                    paddingBottom = Length.Percent(15),
-                    paddingLeft = Length.Percent(10),
-                    paddingRight = Length.Percent(10),
 
                     unityBackgroundImageTintColor = Color.white
                 }
