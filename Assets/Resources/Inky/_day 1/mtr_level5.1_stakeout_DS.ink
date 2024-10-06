@@ -13,8 +13,10 @@
 
 === scene5_1_DS ===
 # name: description
+# sfx : off
 # emote : Lupe \| Neutral_2
 # emote : Misra \| Neutral_1
+# sfx : on
 <i>You sit in the car in silence, keeping a close eye on the winery.</i>
 
 # name: Misra
@@ -38,6 +40,7 @@
 
 #name: Misra 
 "..." 
+# emote : Misra \| Nervous_1
 "Can we at least put on some music?" 
 
 +["No."] -> turnOffRadio 
@@ -56,13 +59,15 @@
 <i>The station erupts with sound effects before the song plays. </i>
 
 #name: Misra 
+# emote : Misra \| Neutral_1
 "I love Britney Smears! How about you?" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Never heard of her." 
 
 #name: Misra 
-# emote : Lupe \| Neutral_2
+//# emote : Lupe \| Neutral_2
 # emote : Misra \| Neutral_1
 "What?! Ok, then what kind of music do you listen to?" 
 +["Classical."] -> classical
@@ -76,6 +81,7 @@
 "Classical?! Who's favorite genre is classical?!" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Mine." 
 
 #name: Misra 
@@ -83,11 +89,11 @@
 "Then what's your favorite song? Beethoven the 28th?" 
 
 #name: Lupe 
-# emote : Lupe \| Neutral_2
+//# emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  "It's actually 'Distant Light' by Peteris Vasks."  | "I don't have a favorite." }
 
 #name: Misra
-# emote : Misra \| Neutral_1
+//# emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "Oh, I didn't know that."  | "...that's just sad." } 
 
 #name: Misra 
@@ -154,7 +160,9 @@
 "We need to remain quiet. The perpetrator can't know we're here if we want this to work." 
 
 #name: Misra 
+# sfx : off
 # emote : Misra \| Neutral_1
+# sfx : on
 "Fine, guess we'll sit in silence." 
 
 # name: Misra
@@ -204,6 +212,7 @@
 "Just something to keep in mind." 
 
 #name: Lupe 
+# emote : Lupe \| Serious_2
 "Say, what <i> was </i> that group?" 
 
 #name: Misra 
@@ -248,10 +257,13 @@
 "And were they not? They sounded like some sort of cult." 
 
 #name: Misra
+# sfx : off
 # emote : Misra \| Fright_2
+# sfx : on
 "..." 
 
 #name: Lupe 
+# emote : Lupe \| Inquistive_1
 { tease_level > sincerity_level: "I'm sorry if I'm overstepping, just trying to get an understanding if it this pertains to the case." | "Misra?" }
 
 #name: Misra
@@ -266,6 +278,7 @@
 "They were misguided more than anything." 
 
 #name: Lupe 
+# emote : Lupe \| Inquistive_1
 "How so?" 
 
 #name: Misra 
@@ -296,7 +309,9 @@
 "Yes, maybe." 
 
 #name: Lupe
+# sfx : off
 # emote : Lupe \| Annoyed_1
+# sfx : on
 "I'm not much for magic, but who knows what's out there?"
 
 #name: Misra 
@@ -339,6 +354,7 @@
 "What? { tease_level > sincerity_level: A giant group sacrifice?}" 
 
 #name: Misra 
+# emote : Misra \| Nervous_1
 { tease_level > sincerity_level: "Yeah! Sure! Let me just quickly get the KoolAid! I'm just joking."} 
 
 #name: Misra 
@@ -412,6 +428,7 @@
 "So it makes sense if they would like to look for...something better?"
 
 #name: Misra 
+# emote : Misra \| Curious_1
 "Even if this place is our home?" 
 
 #name: Lupe 
@@ -436,7 +453,9 @@
 
 #name: Lupe 
 # emote : Lupe \| Neutral_2
+# sfx : off
 # emote : Misra \| Neutral_1
+# sfx : on
 "It's not pleasent, but sometimes things happen." 
 
 #name: Lupe 
@@ -484,7 +503,9 @@
 
 #name: Misra 
 # emote : Misra \| Curious_1
+# sfx : off
 # emote : Lupe \| Annoyed_1
+# sfx : on
 "Well is this change necessary? I mean it feels like everyone's running for the hills when we can be-" 
 
 ->RuhRoah 
@@ -522,6 +543,7 @@
 "..."
 
 #name: Lupe 
+# emote : Lupe \| Inquistive_1
 "<b>You</b> feel...familiar, somehow. Like I've met you before. Or someone like you, at least." 
 
 ->RuhRoah
@@ -545,19 +567,23 @@
 "Graffiti?" 
 
 #name: Lupe
+# emote : Lupe \| Inquistive_1
 { tease_level > sincerity_level: "Maybe all three at the same time." | "Don't know. Teens can be unpredictable." }
 
 #name: Misra 
+# emote : Misra \| Curious_1
 { tease_level > sincerity_level: "I don't think they have enough arms to do that!" | "You're right." }
 
 { tease_level > sincerity_level: <i> You lightly laugh to yourself </i>}
 
 #name: Lupe
+# sfx : off
 # emote : Lupe \| Neutral_2
 "..." 
 
 #name: Misra
 # emote : Misra \| Neutral_1
+# sfx : on
 "..." 
 
 #name: Misra
@@ -581,13 +607,17 @@
 
 ==RuhRoah==
 //INSERT BIG BASH SOUND 
+TODO SFX big bash sound
 
 #name: Lupe 
 # emote : Lupe \| Fright_1
+# sfx : off
 # emote : Misra \| Surprised_2
+# sfx : on
 "What was that!?" 
 
 # hide : Misra
+~ PlaySFX("carDoorOpenAndClose")
 #name: Lupe 
 "Misra?!" 
 
