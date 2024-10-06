@@ -20,72 +20,75 @@
 
 = jenny 
 {IsQuestComplete(what_is_hosi) : // lupe asked about hosi
-    {
-    
-    - IsQuestComplete(jenny_suspicion): //after jenny has voiced suspicion, this is her FINAL closing statement in the arcade 
-            ~ SetSpeaker(Speaker.Jenny)
-            {Ugh! I just lost the level. I've got to focus, leave me alone.| I'm clearly busy. | See ya. } //END OF ARCADE INTERACTIONS
-             -> DONE
+
+    // after jenny has voiced suspicion, this is her FINAL closing statement in the arcade 
+    {IsQuestComplete(jenny_suspicion): 
+        ~ SetSpeaker(Speaker.Jenny)
         
-    - askedJennysQuestions():
-        -> jenny_suspects
+        //END OF ARCADE INTERACTIONS
+        {Ugh! I just lost the level. I've got to focus, leave me alone.| I'm clearly busy. | See ya. } 
+        -> DONE
+    }
+        
+    //- askedJennysQuestions():
+        //-> jenny_suspects
 //    TODO FIX - askedJennysQuestions():
     //    ~ SetSpeaker(Speaker.Jenny)
     //    I've already told you what I know.
     //    I've got a highscore to beat.
     //    -> DONE
-    - IsQuestComplete(lupe_not_a_cop): //lupe's done intro before questions
+    
+    //lupe's done intro before questions
+    {IsQuestComplete(lupe_not_a_cop): 
         -> jenny_questions
-    - else:
-        Well, <i>I'm</i> not a cop.
-        And I'm not the one blocking you from your high score.
-        ~ SetSpeaker(Speaker.Jenny)
-        ...
-        What do you want, then?
-        ~ SetSpeaker(Speaker.Lupe)
-        I'm...just passing through. 
-        I wanted to learn a little more about the town.
-        ~ SetSpeaker(Speaker.Jenny)
-        I can tell when someone's lying, you know.
-        ~ SetSpeaker(Speaker.Lupe)
-        Am I lying?
-        ~ SetSpeaker(Speaker.Jenny)
-        ...
-        ~ CompleteQuest(lupe_not_a_cop)
-    }
+        - else:
+            Well, <i>I'm</i> not a cop.
+            And I'm not the one blocking you from your high score.
+            ~ SetSpeaker(Speaker.Jenny)
+            ...
+            What do you want, then?
+            ~ SetSpeaker(Speaker.Lupe)
+            I'm...just passing through. 
+            I wanted to learn a little more about the town.
+            ~ SetSpeaker(Speaker.Jenny)
+            I can tell when someone's lying, you know.
+            ~ SetSpeaker(Speaker.Lupe)
+            Am I lying?
+            ~ SetSpeaker(Speaker.Jenny)
+            ...
+            ~ CompleteQuest(lupe_not_a_cop)
+        }
 - else: // lupe hasn't asked about hosi yet
     {IsQuestComplete(jenny_first_interact):
         Die, stupid snakes! Feel my wrath! //if you've already talked to jenny once 
         -> DONE
-   -else:
-   ~ CompleteQuest(jenny_first_interact)
-    ~ SetSpeaker(Speaker.Lupe)
-     Hey--
-    ~ SetSpeaker(Speaker.Jenny)
-     Do you mind?
-     We're kinda busy.
-    ~ SetSpeaker(Speaker.Lupe)
-     I just want to ask you a few questions.
-    ~ SetSpeaker(Speaker.Jenny)
-     I don't talk to cops.
-     Especially <i>you</i>, Rookie.
-    ~ SetSpeaker(Speaker.Misra)
-     Come on, Jenny.
-     You're still mad about the HO:SI thing?
-    ~ SetSpeaker(Speaker.Lupe)
-     HO:SI...?
-     
-     
-    {IsQuestComplete(calvin_first_interact) && IsQuestComplete(josh_first_interact) && IsQuestComplete(jenny_first_interact):
-        -> hosi
+        -else:
+            ~ CompleteQuest(jenny_first_interact)
+            ~ SetSpeaker(Speaker.Lupe)
+            Hey--
+            ~ SetSpeaker(Speaker.Jenny)
+            Do you mind?
+            We're kinda busy.
+            ~ SetSpeaker(Speaker.Lupe)
+            I just want to ask you a few questions.
+            ~ SetSpeaker(Speaker.Jenny)
+            I don't talk to cops.
+            Especially <i>you</i>, Rookie.
+            ~ SetSpeaker(Speaker.Misra)
+            Come on, Jenny.
+            You're still mad about the HO:SI thing?
+            ~ SetSpeaker(Speaker.Lupe)
+            HO:SI...?
         
-    -  else: 
-        ~ SetSpeaker(Speaker.Jenny)
-        Do you mind?
-        -> DONE 
+        {IsQuestComplete(calvin_first_interact) && IsQuestComplete(josh_first_interact) && IsQuestComplete(jenny_first_interact):
+            -> hosi
+            -  else: 
+            ~ SetSpeaker(Speaker.Jenny)
+            Do you mind?
+            -> DONE 
+        }
     }
 }
-    }
 = jenny_questions
     * [Tell me about Kettle Rock.] -> KR_Jenny
     * [The Old Winery on the hill...] -> winery_jenny

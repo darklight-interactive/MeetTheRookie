@@ -4,19 +4,18 @@ using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using System;
 using Darklight.UnityExt.Utility;
+using static WalkState;
 
-[RequireComponent(typeof(NPC_Animator))]
+[RequireComponent(typeof(MTRCharacterAnimator))]
 public class NPC_Controller : MonoBehaviour
 {
     public NPC_StateMachine stateMachine;
-    public NPC_Animator animator => GetComponent<NPC_Animator>();
+    public MTRCharacterAnimator animator => GetComponent<MTRCharacterAnimator>();
     [SerializeField, ShowOnly] NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
-    public GameObject player => FindFirstObjectByType<PlayerController>().gameObject;
+    public GameObject player => FindFirstObjectByType<MTRPlayerInput>().gameObject;
     public NPCState startingState = NPCState.IDLE;
-
-    public bool idleWalkLoop = false;
 
     [Tooltip("State to return to after animation")]
     public NPCState stateAfterAnimation = NPCState.IDLE;
@@ -33,26 +32,24 @@ public class NPC_Controller : MonoBehaviour
     [Tooltip("Speed for the CHASE state")]
     [Range(0.1f, 1f)] public float chaseSpeed = .5f;
 
-    [Tooltip("Left bound for the WALK state")]
-    public float leftBound;
-
-    [Tooltip("Right bound for the WALK state")]
-    public float rightBound;
-
     [Tooltip("Distance the NPC will follow the player")]
     public float followDistance = 1;
 
     [Tooltip("Distance to cause dialogue in the SPEAK state")]
     public float chaseSpeakDistance = .75f;
-    [Range(0f, 10f)] public float idleMaxDuration = 3f;
-    [Range(0f, 10f)] public float walkMaxDuration = 3f;
+
+    public float walkDestinationX = 0f;
+    public NPCState stateAfterWalking = NPCState.IDLE;
+    private DestinationWrapper destinationWrapper;
 
     // ================ [ UNITY MAIN METHODS ] =================== //
     public virtual void Start()
     {
+        destinationWrapper = new DestinationWrapper() { walkDestinationX = walkDestinationX };
+
         // Create instances of the states
-        IdleState idleState = new(stateMachine, NPCState.IDLE, new object[] { stateMachine, this, idleMaxDuration, idleWalkLoop });
-        WalkState walkState = new(stateMachine, NPCState.WALK, new object[] { stateMachine, this, npcSpeed, walkMaxDuration, leftBound, rightBound, idleWalkLoop });
+        IdleState idleState = new(stateMachine, NPCState.IDLE, new object[] { stateMachine, this });
+        WalkState walkState = new(stateMachine, NPCState.WALK, new object[] { stateMachine, this, npcSpeed, destinationWrapper, stateAfterWalking });
         SpeakState speakState = new(stateMachine, NPCState.SPEAK, new object[] { stateMachine });
         FollowState followState = new(stateMachine, NPCState.FOLLOW, new object[] { stateMachine, this, followDistance, followSpeed });
         HideState hideState = new(stateMachine, NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
@@ -90,11 +87,12 @@ public class NPC_Controller : MonoBehaviour
     {
         stateMachine.Step();
         currentState = stateMachine.CurrentState;
+        destinationWrapper.walkDestinationX = walkDestinationX;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawLine(new Vector3(leftBound, this.GetComponent<Transform>().position.y, 0), new Vector3(rightBound, this.GetComponent<Transform>().position.y, 0));
+        Gizmos.DrawLine(new Vector3(walkDestinationX, 0, this.GetComponent<Transform>().position.z), new Vector3(walkDestinationX, 5, this.GetComponent<Transform>().position.z));
     }
 
     // This is a workaround because you cannot call FindObjectsByType on a reference to this

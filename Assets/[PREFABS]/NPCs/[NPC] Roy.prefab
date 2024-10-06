@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2066201084648445117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7539039335003879059}
+  - component: {fileID: 2177824321612663400}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7539039335003879059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066201084648445117}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1614860629325698059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2177824321612663400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066201084648445117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedEntity: {fileID: 0}
 --- !u!1 &6879612917963182113
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,12 +54,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1614860629325698059}
-  - component: {fileID: 2958673987988220936}
+  - component: {fileID: 8672107320101818252}
   - component: {fileID: 2528446817011783710}
   - component: {fileID: 772944247808649281}
-  - component: {fileID: 3176214768115197876}
+  - component: {fileID: 2958673987988220936}
   - component: {fileID: 963346328399781227}
-  - component: {fileID: 4445833556569712823}
   m_Layer: 0
   m_Name: '[NPC] Roy'
   m_TagString: Untagged
@@ -34,9 +78,107 @@ Transform:
   m_LocalPosition: {x: -0.6730921, y: -2.71271, z: -14.568819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7539039335003879059}
+  - {fileID: 1931881112528706585}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8672107320101818252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879612917963182113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 205dc2afc2535084da85b1e6b53b9386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isPreloaded: 1
+  _isRegistered: 1
+  _isInitialized: 1
+  _request: {fileID: 11400000, guid: bb7119d448fa6c34d8b49b3e90e977f8, type: 2}
+  _recievers:
+    _items:
+    - _id: 0
+      _key: 2
+      _value: {fileID: 0}
+    - _id: 1
+      _key: 3
+      _value: {fileID: 0}
+    _readOnlyKey: 1
+    _readOnlyValue: 1
+    _defaultToAllKeys: 0
+  _data:
+    _name: DefaultName
+    _key: Speaker.Unknown
+    _layer: Default
+    _type: 1
+    _sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  _sceneKnot: Roy_Dialogue
+  _interactionStitch: Roy_Dialogue.roy_intro_cutscene
+  onStart: 0
+  isSpawn: 0
+  _outlineMaterial: {fileID: 0}
+  destinationPointsRelativeX:
+  - -1
+  - 1
+  _speakerTag: Speaker.Roy_Rodgerson
+--- !u!114 &2528446817011783710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879612917963182113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f255823f865124798f3a0812654ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  startingState: 1
+  stateAfterAnimation: 1
+  npcSpeed: 0.2
+  followSpeed: 0.5
+  hideSpeed: 0.5
+  chaseSpeed: 0.5
+  followDistance: 1
+  chaseSpeakDistance: 0.75
+  walkDestinationX: 0
+  stateAfterWalking: 1
+--- !u!114 &772944247808649281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879612917963182113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f970796c10c81c84bab8a77f4ea9081e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentFrame: 0
+  _currentDirection: 0
+  _currentSprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  _frameRate: 4
+  _defaultDirection: 0
+  animationStateOverride: 1
+  spriteSheets:
+  - state: 1
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      - {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  - state: 3
+    spriteSheet:
+      loop: 1
+      frames:
+      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
 --- !u!212 &2958673987988220936
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -80,7 +222,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  m_Sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,77 +233,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2528446817011783710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879612917963182113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f255823f865124798f3a0812654ecb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 0
-  startingState: 1
-  idleWalkLoop: 0
-  stateAfterAnimation: 1
-  npcSpeed: 0.2
-  followSpeed: 0.5
-  hideSpeed: 0.5
-  chaseSpeed: 0.5
-  leftBound: 2.33
-  rightBound: 8.53
-  followDistance: 1
-  chaseSpeakDistance: 0.75
-  idleMaxDuration: 10
-  walkMaxDuration: 0
---- !u!114 &772944247808649281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879612917963182113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f970796c10c81c84bab8a77f4ea9081e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationStateOverride: 1
-  spriteSheets:
-  - state: 1
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  - state: 3
-    spriteSheet:
-      loop: 1
-      frames:
-      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-      - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
---- !u!114 &3176214768115197876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879612917963182113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff34386d13dea954dbab4c3b802377fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frameRate: 4
-  spriteSheet:
-    loop: 1
-    frames:
-    - {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-    - {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  currentFrame: 1
 --- !u!61 &963346328399781227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -206,32 +277,50 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.45, y: 0.5}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4445833556569712823
+--- !u!1 &8667096728049838584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1931881112528706585}
+  - component: {fileID: 2430094261568721853}
+  m_Layer: 0
+  m_Name: Destination Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1931881112528706585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667096728049838584}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.99999994, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1614860629325698059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2430094261568721853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879612917963182113}
+  m_GameObject: {fileID: 8667096728049838584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02aff1112f9a1784c9a2b76838953ce1, type: 3}
+  m_Script: {fileID: 11500000, guid: dfe1cca77fe9c7041bf6813a10db6b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preset: {fileID: 11400000, guid: 0af6dde00b8423242a55ec1e859f58a0, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  editMode: 0
-  _sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
-  _sceneKnot: scene4_2
-  _interactionStitch: scene4_2.roy
-  _isTarget: 0
-  _isActive: 0
-  _isComplete: 0
-  _defaultTint: {r: 1, g: 1, b: 1, a: 1}
-  _interactionTint: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _outlineMaterial: {fileID: 0}
-  speakerTag: Speaker.Roy_Rodgerson
+  trackedEntity: {fileID: 0}

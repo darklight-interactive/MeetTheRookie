@@ -45,15 +45,15 @@ EXTERNAL PlaySFX(sfx)
 EXTERNAL PlayLoopingSFX(sfx)
 EXTERNAL StopLoopingSFX(sfx)
 
-== function ChangeGameScene(knotName)
+===function ChangeGameScene(knotName)
     ~ return
 
-== function AddSynthesisClue(clue)
+=== function AddSynthesisClue(clue)
     ~ return
-== function openDoor()
+=== function openDoor()
     ~PlaySFX("Doors/doorOpen")
     ~ return
-== function closeDoor()
+=== function closeDoor()
     ~PlaySFX("Doors/doorClose")
     ~ return
 
@@ -128,5 +128,12 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
 -> DONE
 
 
-
-
+=== scene_default ===
+= interaction_default
+~ SetSpeaker(Speaker.Lupe)
+Hey, it's Lupe here.
+It seems like you're hanging out in the default scene.
+Just so you're aware, this is for bug testing.
+Sky really likes little things like to help figure things out
+They tend to break stuff.
+-> DONE

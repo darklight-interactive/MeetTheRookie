@@ -12,6 +12,8 @@ on:
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,10 +37,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
+
+      # Clean up Docker to free up space
       - name: Clean up Docker to free up space
         run: docker system prune -af
 
-      #- run: git submodule update --init --recursive
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -47,9 +60,9 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
-
-      - name: Build project
-        uses: game-ci/unity-builder@v4
+            
+      - name: Build project for WebGL
+        uses: game-ci/unity-builder@v4.2.3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -57,12 +70,38 @@ jobs:
         with:
           targetPlatform: WebGL
           buildName: MeetTheRookie
+          buildsPath: Build/WebGL
+        #continue-on-error: true  # Continue even if the build fails to provide more output
 
+      # List the log directory to verify the path
+      - name: List Unity Editor Log Location
+        if: failure()
+        run: |
+          echo "Listing Unity log directory"
+          sudo ls -l /root/.config/unity3d/Unity
+
+      # Print the Unity Editor log in case of failure
+      - name: Upload Unity Editor Log on Failure
+        if: failure()
+        run: |
+          echo "Build failed, uploading Unity Editor log"
+          cat /root/.config/unity3d/Unity/Editor.log
+          
+      # Upload the Unity Editor log as an artifact
+      - name: Upload Unity Editor Log as Artifact
+        if: failure()
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: UnityEditorLog
+          path: /root/.config/unity3d/Unity/Editor.log
+          
+      # Upload the build artifact only if it exists
       - name: Upload WebGL Build Artifact
+        if: success()  # Upload the build artifact only if the build was successful
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-WebGL
-          path: ${{ vars.BUILD_PATH }}
+          path: Build/WebGL
           if-no-files-found: warn
 
   # ----- Build for Windows -----
@@ -75,10 +114,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
+
+      # Clean up Docker to free up space
       - name: Clean up Docker to free up space
         run: docker system prune -af
 
-      #- run: git submodule update --init --recursive
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
@@ -87,9 +137,9 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
-
-      - name: Build project
-        uses: game-ci/unity-builder@v4
+            
+      - name: Build project for Windows
+        uses: game-ci/unity-builder@v4.2.3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -97,10 +147,36 @@ jobs:
         with:
           targetPlatform: StandaloneWindows64
           buildName: MeetTheRookie
+          buildsPath: Build/Windows
+        #continue-on-error: true  # Continue even if the build fails to provide more output
 
-      - name: Upload artifact
+      # List the log directory to verify the path
+      - name: List Unity Editor Log Location
+        if: failure()
+        run: |
+          echo "Listing Unity log directory"
+          sudo ls -l /root/.config/unity3d/Unity
+
+      # Print the Unity Editor log in case of failure
+      - name: Upload Unity Editor Log on Failure
+        if: failure()
+        run: |
+          echo "Build failed, uploading Unity Editor log"
+          cat /root/.config/unity3d/Unity/Editor.log
+          
+      # Upload the Unity Editor log as an artifact
+      - name: Upload Unity Editor Log as Artifact
+        if: failure()
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: UnityEditorLog
+          path: /root/.config/unity3d/Unity/Editor.log
+
+      # Upload the build artifact only if it exists
+      - name: Upload Windows Build Artifact
+        if: success()  # Upload the build artifact only if the build was successful
         uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-Windows
-          path: ${{ vars.BUILD_PATH }}
+          path: Build/Windows
           if-no-files-found: warn

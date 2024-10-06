@@ -9,7 +9,7 @@ public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMAT
 public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
     public NPC_Controller controller;
-    public NPC_Animator animator;
+    public MTRCharacterAnimator animator;
 
     /// <summary>
     /// Constructor for the NPC State Machine
@@ -23,7 +23,7 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     public NPC_StateMachine(Dictionary<NPCState, FiniteState<NPCState>> possibleStates, NPCState initialState, params object[] args) : base(possibleStates, initialState, args)
     {
         controller = (NPC_Controller)args[0];
-        animator = (NPC_Animator)args[1];
+        animator = (MTRCharacterAnimator)args[1];
     }
 
     public override void Step()
@@ -31,11 +31,11 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
         base.Step();
     }
 
-    public override bool GoToState(NPCState newState)
+    public override bool GoToState(NPCState newState, bool force = false)
     {
         bool result = base.GoToState(newState);
         if (result)
-            animator.FrameAnimationPlayer.LoadSpriteSheet(animator.GetSpriteSheetWithState(newState));
+            animator.LoadSpriteSheet(animator.GetSpriteSheetWithState(newState));
         return result;
     }
 }
@@ -48,9 +48,6 @@ public class IdleState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
-    private readonly float _maxDuration;
-
-    private readonly bool _idleWalkLoop;
 
     /// <param name="args">
     ///     args[0] = NPC_StateMachine (_stateMachine)
@@ -62,15 +59,10 @@ public class IdleState : FiniteState<NPCState>
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
-        _maxDuration = (float)args[2];
-        _idleWalkLoop = (bool)args[3];
     }
 
     public override void Enter()
     {
-        if (_maxDuration == 0) { _stateMachine.GoToState(NPCState.WALK); }
-        
-        if (_idleWalkLoop) { coroutine = _coroutineRunner.StartCoroutine(IdleTimer()); }
     }
 
     public override void Exit()
@@ -81,12 +73,6 @@ public class IdleState : FiniteState<NPCState>
     }
 
     public override void Execute() { }
-
-    private IEnumerator IdleTimer()
-    {
-        yield return new WaitForSeconds(Random.Range(0, _maxDuration));
-        _stateMachine.GoToState(NPCState.WALK);
-    }
 }
 
 #endregion
@@ -97,12 +83,11 @@ public class IdleState : FiniteState<NPCState>
 public class WalkState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
-    private readonly float _maxDuration;
     private int _walkDirection = 1;
-    private readonly float _leftBound;
-    private readonly float _rightBound;
+    private float _walkDestinationX;
     private readonly float _walkSpeed;
-    private readonly bool _idleWalkLoop;
+    private DestinationWrapper _destinationWrapper;
+    private NPCState _stateAfterWalking;
 
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
@@ -121,20 +106,14 @@ public class WalkState : FiniteState<NPCState>
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
         _walkSpeed = (float)args[2];
-        _maxDuration = (float)args[3];
-        _leftBound = (float)args[4];
-        _rightBound = (float)args[5];
-        _idleWalkLoop = (bool)args[6];
+        _destinationWrapper = (DestinationWrapper)args[3];
+        _walkDestinationX = _destinationWrapper.walkDestinationX;
+        _stateAfterWalking = (NPCState)args[4];
+
     }
 
     public override void Enter()
     {
-        NPC_Animator _animator = _stateMachine.animator;
-
-        // When walking, it can be either direction randomly
-        _walkDirection = (Random.Range(0, 2) == 0) ? -1 : 1;
-
-        if (_idleWalkLoop) { coroutine = _coroutineRunner.StartCoroutine(WalkTimer()); }
     }
 
     public override void Exit()
@@ -148,44 +127,37 @@ public class WalkState : FiniteState<NPCState>
 
     public override void Execute()
     {
-
         Transform transform = _stateMachine.controller.transform;
-        float movement = _walkDirection * _walkSpeed;
-        float targetX = transform.position.x + movement;
+        _walkDestinationX = _destinationWrapper.walkDestinationX;
 
-        // If we're going out of bounds, flip directions
-        if (targetX < _leftBound || targetX > _rightBound)
+        if (Mathf.Abs(transform.position.x - _walkDestinationX) < .1)
         {
-            _walkDirection *= -1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
+            _stateMachine.GoToState(_stateAfterWalking);
+            return;
         }
 
-        // If we are already out of bounds, we want to walk back in bounds
-        if (transform.position.x <= _leftBound)
-        {
-            _walkDirection = 1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
-        }
-        if (transform.position.x >= _rightBound)
+        if (transform.position.x > _walkDestinationX)
         {
             _walkDirection = -1;
-            movement = _walkDirection * _walkSpeed;
-            targetX = transform.position.x + movement;
+        } else
+        {
+            _walkDirection = 1;
         }
+
+        float movement = _walkDirection * _walkSpeed;
+        float targetX = transform.position.x + movement;
 
         // move the character
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
 
         // Update the Animation
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-_walkDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-_walkDirection, 0));
     }
 
-    private IEnumerator WalkTimer()
+    // Wrapper class
+    public class DestinationWrapper
     {
-        yield return new WaitForSeconds(Random.Range(0, _maxDuration));
-        _stateMachine.GoToState(NPCState.IDLE);
+        public float walkDestinationX;
     }
 }
 
@@ -229,7 +201,6 @@ public class FollowState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
-    private NPC_Animator _animator;
     private NPC_Controller _controller;
     private GameObject player;
 
@@ -276,7 +247,7 @@ public class FollowState : FiniteState<NPCState>
     public override void Execute()
     {
         int followDirection = (currentFollowDistance < 0) ? -1 : 1;
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-followDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-followDirection, 0));
 
         if (movingInFollowState)
         {
@@ -306,13 +277,13 @@ public class FollowState : FiniteState<NPCState>
             if (!movingInFollowState && beyondFollowDistance)
             {
                 movingInFollowState = true;
-                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
+                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
             }
 
             // If NPC is moving and they're within distance, stop
             else if (movingInFollowState && !beyondFollowDistance)            {
                 movingInFollowState = false;
-                _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
             }
         }
     }
@@ -376,7 +347,7 @@ public class HideState : FiniteState<NPCState>
             npc.transform.position = Vector3.Lerp(npc.transform.position,
                 new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
                 Time.deltaTime);
-            _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-hideDirection, 0));
+            //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-hideDirection, 0));
         }
     }
 
@@ -416,13 +387,13 @@ public class HideState : FiniteState<NPCState>
                 if (beyondValidHideDistance && !movingInHideState)
                 {
                     movingInHideState = true;
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
                 }
                 // We just got in range, and need to stop moving
                 else if (!beyondValidHideDistance && movingInHideState)
                 {
                     movingInHideState = false;
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE));
                 }
             }
             else
@@ -431,7 +402,7 @@ public class HideState : FiniteState<NPCState>
             {
                 if (areThereHideableObjects || hideCheckCount == 0)
                 {
-                    _stateMachine.animator.FrameAnimationPlayer.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
                     areThereHideableObjects = false;
                     movingInHideState = false;
                 }
@@ -490,7 +461,7 @@ public class ChaseState : FiniteState<NPCState>
 
         // move the character
         npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
-        _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(-chaseDirection, 0));
+        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-chaseDirection, 0));
     }
 }
 
@@ -512,7 +483,8 @@ public class PlayAnimationState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if ( _stateMachine.animator.FrameAnimationPlayer.AnimationIsOver() ) {
+        if (_stateMachine.animator.AnimationIsOver())
+        {
             _stateMachine.GoToState(_returnState);
         }
 
@@ -535,7 +507,7 @@ public class GrabbedState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.STRUGGLE);
         }
@@ -576,7 +548,7 @@ public class DraggedState : FiniteState<NPCState>
     public override void Exit() { }
     public override void Execute()
     {
-        if (_stateMachine.animator.FrameAnimationPlayer.AnimationIsOver())
+        if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.IDLE);
         }

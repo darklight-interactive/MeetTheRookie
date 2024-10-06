@@ -1,36 +1,32 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/VisualNovel.uss?fileID=7433441132597879392&amp;guid=f355bbbc73f8b6f4e81577431e243ca6&amp;type=3#VisualNovel" />
-    <ui:VisualElement name="VisualElement" class="background">
-        <ui:VisualElement name="VisualElement" style="flex-grow: 0; width: 100%; height: 100%; flex-direction: row; flex-basis: 100%; flex-shrink: 0; position: absolute; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/UXML_WorldSpaceTexture.renderTexture?fileID=8400000&amp;guid=e7ee34e8fb65d8548a8b02bafb328c7f&amp;type=2#UXML_WorldSpaceTexture&quot;);">
-            <ui:VisualElement name="MisraSide" class="CharacterSide">
-                <ui:VisualElement name="MisraImage" class="CharacterSprite" style="flex-grow: 0; width: 60%; height: 100%; flex-shrink: 0; align-self: flex-start; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Misra-LinedInquisiting-2(neutral).png?fileID=2800000&amp;guid=8453062170d4ea1469e123b4825de57d&amp;type=3#Misra-LinedInquisiting-2(neutral)&quot;); -unity-background-scale-mode: scale-to-fit; transform-origin: left bottom;">
-                    <Bindings>
-                        <ui:DataBinding property="style.backgroundImage" binding-mode="ToTarget" data-source="project://database/Assets/Resources/ScriptableObjects/DatingSimEmotes.asset?fileID=11400000&amp;guid=a64166c2fdcc660428683bdb0e087b06&amp;type=2#DatingSimEmotes" data-source-path="currMisraEmote" />
-                    </Bindings>
-                </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="LupeSide" class="CharacterSide" style="align-self: flex-end; width: 50%; height: 100%;">
-                <ui:VisualElement name="LupeImage" class="CharacterSprite" style="flex-grow: 0; width: 60%; height: 100%; flex-shrink: 0; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Test%20Sprites/Lupe-Lined(neutral)2.png?fileID=2800000&amp;guid=33de4446f1bb9e24eae33556c1b74dbc&amp;type=3#Lupe-Lined(neutral)2&quot;); -unity-background-scale-mode: scale-to-fit; align-self: flex-end; transform-origin: right bottom;">
-                    <Bindings>
-                        <ui:DataBinding property="style.backgroundImage" binding-mode="ToTarget" data-source-path="currLupeEmote" data-source="project://database/Assets/Resources/ScriptableObjects/DatingSimEmotes.asset?fileID=11400000&amp;guid=a64166c2fdcc660428683bdb0e087b06&amp;type=2#DatingSimEmotes" />
-                    </Bindings>
-                </ui:VisualElement>
-            </ui:VisualElement>
+    <ui:VisualElement name="container" style="align-self: stretch; justify-content: space-between; position: absolute; width: 100%; height: 100%; flex-direction: column;">
+        <ui:VisualElement name="cinema-bar-top" class="cinema-bar" />
+        <ui:VisualElement name="character-control-container" style="flex-grow: 1; flex-direction: row; align-self: stretch; justify-content: space-between; transition-property: justify-content; transition-duration: 2s;">
+            <MTRCharacterControlElement misra-character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Misra/Misra_(Neutral_1).png?fileID=2800000&amp;guid=276d2e65bb97cc044aa0d5c4584c6478&amp;type=3#Misra_(Neutral_1)" lupe-character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Lupe/Lupe_(Neutral_2).png?fileID=2800000&amp;guid=b469b51234e124f408f8a9d4745f5e30&amp;type=3#Lupe_(Neutral_2)" name="character-control-misra" character-name="misra" active="false" character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Misra/Misra_(Neutral_1).png?fileID=2800000&amp;guid=276d2e65bb97cc044aa0d5c4584c6478&amp;type=3#Misra_(Neutral_1)" />
+            <MTRCharacterControlElement misra-character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Misra/Misra_(Neutral_1).png?fileID=2800000&amp;guid=276d2e65bb97cc044aa0d5c4584c6478&amp;type=3#Misra_(Neutral_1)" lupe-character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Lupe/Lupe_(Neutral_2).png?fileID=2800000&amp;guid=b469b51234e124f408f8a9d4745f5e30&amp;type=3#Lupe_(Neutral_2)" name="character-control-lupe" character-name="lupe" active="false" character-image="project://database/Assets/[SPRITES]/_datingSim/Dating%20Sim%20Lupe/Lupe_(Neutral_2).png?fileID=2800000&amp;guid=b469b51234e124f408f8a9d4745f5e30&amp;type=3#Lupe_(Neutral_2)" />
         </ui:VisualElement>
-        <ui:VisualElement name="ChoiceParent" style="top: 5%; align-items: center; justify-content: space-evenly; align-self: center; flex-direction: column; width: 70%; height: 48%; opacity: 1; display: flex;">
-            <Darklight.UnityExt.UXML.SelectableButton name="Choice1" class="Choice" />
-            <Darklight.UnityExt.UXML.SelectableButton name="Choice2" class="Choice" />
-            <Darklight.UnityExt.UXML.SelectableButton name="Choice3" class="Choice" />
-            <Darklight.UnityExt.UXML.SelectableButton name="Choice4" class="Choice" />
-        </ui:VisualElement>
-        <ui:VisualElement name="Dashboard" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Backgrounds/datingsim_stakeout_fg.png?fileID=2800000&amp;guid=3ab68fe5e91a142e68a112fc9f4c91b3&amp;type=3#datingsim_stakeout_fg&quot;); display: none;" />
-        <ui:VisualElement name="DialogueBoxParent" class="DialogueBoxParent" style="bottom: 0;">
-            <ui:VisualElement name="DialogueBox" class="DialogueBox" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Textbox.png?fileID=2800000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#Textbox&quot;); justify-content: space-between;">
-                <ui:VisualElement name="DialogueTriangle" class="TriangleDown TriangleDefault" style="transition-duration: 1s;" />
-                <Darklight.UnityExt.UXML.ControlledLabel name="DialogueText" rolling-text-percentage="1" font-size-min="24" font-size-max="96" class="DialogueText" style="align-self: flex-start;" />
+        <ui:VisualElement name="cinema-bar-bottom" class="cinema-bar" />
+        <ui:GroupBox name="choice-container-parent" style="width: 512px; align-self: center; height: 1024px; margin-top: 64px; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; display: flex;">
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-1" name="choice-button-1" class="choice-button" />
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-2 I have a lot more to say and Im gonna say it !!!" name="choice-button-2" class="choice-button" />
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-3" name="choice-button-3" class="choice-button" />
+            <Darklight.UnityExt.UXML.SelectableButton font-size-percentage="67" text="choice-button-4 " name="choice-button-4" class="choice-button" />
+        </ui:GroupBox>
+        <ui:VisualElement name="Dashboard" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/Backgrounds/datingsim_stakeout_fg.png?fileID=2800000&amp;guid=3ab68fe5e91a142e68a112fc9f4c91b3&amp;type=3#datingsim_stakeout_fg&quot;); display: none; visibility: hidden;" />
+        <ui:VisualElement name="dialogue-container-parent" tabindex="0" style="bottom: 0; align-self: center; justify-content: space-evenly; align-items: center; max-height: 320px; margin-left: 0; margin-right: 0; padding-left: 32px; padding-right: 32px; padding-bottom: 64px; visibility: visible; position: absolute; display: flex; min-height: 256px; flex-direction: column; left: auto; right: auto; top: auto; padding-top: 0; width: 80%;">
+            <ui:VisualElement name="dialogue-image-bkg" style="flex-grow: 1; position: absolute; background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/ds_dialogue_bkg.png?fileID=21300000&amp;guid=8c3a61bc5b4f709409e891ceb9d6f78d&amp;type=3#ds_dialogue_bkg&quot;); width: 100%; height: 100%; -unity-background-scale-mode: scale-and-crop; scale: 1 1.1; transform-origin: bottom;" />
+            <ui:VisualElement name="dialogue-text-container" style="justify-content: space-around; align-self: center; flex-wrap: wrap; display: flex; padding-top: 16px; align-items: stretch; flex-grow: 1; width: 85%; padding-left: 16px; padding-right: 16px; height: 100%; flex-direction: column-reverse; padding-bottom: 16px; margin-top: 96px;">
+                <Darklight.UnityExt.UXML.ControlledLabel name="dialogue-text" rolling-text-percentage="1" font-size-min="24" font-size-max="96" font-size="64" font-size-percentage="30" style="align-self: flex-start; justify-content: flex-start; flex-grow: 1;" />
+                <ui:VisualElement name="dialogue-triangle" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/icon_arrow.PNG?fileID=2800000&amp;guid=3d2147aafdb3f4d799719641631037c8&amp;type=3#icon_arrow&quot;); -unity-background-scale-mode: scale-to-fit; flex-grow: 0; width: 32px; height: 32px; align-self: flex-end; background-color: rgba(0, 0, 0, 0); -unity-background-image-tint-color: rgb(0, 0, 0); justify-content: space-around; rotate: -90deg; position: absolute; flex-direction: column;" />
             </ui:VisualElement>
-            <ui:VisualElement name="NameTag" class="NameTagLupe" style="bottom: auto; top: 5%; width: 30%; align-self: flex-start; justify-content: flex-end; height: 30%; overflow: visible; -unity-background-scale-mode: scale-to-fit; scale: 1.25 1.25;">
-                <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&apos;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&apos;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
+            <ui:VisualElement name="dialogue-nametag-container" style="flex-grow: 1; position: absolute; height: 64px; flex-direction: row; justify-content: space-between; width: 85%; align-self: center;">
+                <ui:VisualElement name="dialogue-nametag-misra" class="nametag" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_datingSim/ds_nametag_Misra.png?fileID=2800000&amp;guid=9e3b6ad581042a046b5072e32e184152&amp;type=3#ds_nametag_Misra&quot;);">
+                    <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&apos;project://database/Assets/[USER%20INTERFACE]/_fonts/zeldadxt.ttf?fileID=12800000&amp;guid=b615391fee7f2f449b46c6ff8b8cfc14&amp;type=3#zeldadxt&apos;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="dialogue-nametag-lupe" class="nametag">
+                    <ui:Label text="Name" name="NameText" style="width: 100%; height: 100%; -unity-font-definition: url(&apos;stretch&apos;); -unity-font-style: bold; font-size: 64px; -unity-text-align: upper-center; display: none;" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

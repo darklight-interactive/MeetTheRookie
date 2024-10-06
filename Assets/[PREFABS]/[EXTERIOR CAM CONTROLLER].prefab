@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08998afcf6cc38647a4cfe7993bd4742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentSpeaker: 
-  targetBasedOnSpeaker: 0
 --- !u!114 &-8567167801440001854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,20 +130,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2f4f69ce17324906b30b31788f0eede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camerasInChildren: []
+  _camerasInChildren:
+  - {fileID: 294617130321755958}
+  - {fileID: 1148548231494987092}
+  - {fileID: 6029335792472997658}
+  - {fileID: 5663657954300164996}
   _focusTarget: {fileID: 0}
-  _focusTargetPosition: {x: 0, y: 0, z: 0}
-  _focusTargetPositionOffset: {x: 0, y: 0, z: 0}
+  _focusTargetPosition: {x: 3.55, y: 0.625, z: 3.071}
+  _focusTargetPositionOffset: {x: 0, y: 0.25, z: 0}
   _focusOffsetY: 0.25
-  _offsetPosition: {x: 0, y: 0, z: 0}
+  _offsetPosition: {x: 0, y: 0, z: -20}
   _positionLerpSpeed: 10
   _rotationLerpSpeed: 10
   _fovLerpSpeed: 10
+  _distanceX: 0
   _distanceY: 0
-  _distanceZ: 20
+  _distanceZ: -20
   _baseFOV: 10
   _offsetFOV: 0
-  _currentFOV: 0
+  _currentFOV: 10
   defaultStateFOVOffset: 0
   followTargetStateFOVOffset: -0.25
   closeUpStateFOVOffset: -1
