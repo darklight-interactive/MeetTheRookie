@@ -29,6 +29,15 @@ namespace Darklight.UnityExt.Inky
                 return Instance._speakerList;
             }
         }
+        public static List<string> KnotList
+        {
+            get
+            {
+                if (Instance._knotList == null)
+                    Instance._knotList = new List<string>();
+                return Instance._knotList;
+            }
+        }
         public static string CurrentSpeaker => Instance._currentSpeaker;
 
         public delegate void StoryInitialized(Story story);
@@ -36,7 +45,8 @@ namespace Darklight.UnityExt.Inky
 
         [SerializeField, Expandable] InkyStoryObject _globalStoryObject;
         [SerializeField] InkyStoryIterator _iterator;
-        [SerializeField, ShowOnly] List<string> _speakerList;
+        [SerializeField, ShowOnly, NonReorderable] List<string> _knotList;
+        [SerializeField, ShowOnly, NonReorderable] List<string> _speakerList;
         [SerializeField, ShowOnly] string _currentSpeaker;
 
         // ------------------------ [[ GLOBAL STORY OBJECT ]] ------------------------ >>
@@ -79,7 +89,10 @@ namespace Darklight.UnityExt.Inky
         {
             if (_globalStoryObject == null)
                 return;
-            _globalStoryObject.Initialize(); // << INITIALIZE STORY DATA >>
+
+            // << INITIALIZE STORY DATA >>
+            _globalStoryObject.Initialize();
+            _knotList = _globalStoryObject.KnotList;
 
             // << GET VARIABLES >>
             _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();

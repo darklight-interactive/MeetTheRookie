@@ -27,10 +27,10 @@ using UnityEditor;
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 [RequireComponent(typeof(MTRSceneController))]
-public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTRSceneDataObject>, IUnityEditorListener
+public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTRSceneScriptableData>, IUnityEditorListener
 {
     public new static string Prefix = "[MTRSceneManager]";
-    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData, MTRSceneDataObject>.Instance as MTRSceneManager;
+    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData, MTRSceneScriptableData>.Instance as MTRSceneManager;
     public static MTRSceneBounds SceneBounds
     {
         get
@@ -41,38 +41,20 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     }
     public static string SceneToLoad => Instance._sceneToLoad;
 
+
+    public List<MTRSceneScriptableData> testList = new List<MTRSceneScriptableData>();
+    public List<ExpandableItem<MTRSceneScriptableData>> testList2 = new List<ExpandableItem<MTRSceneScriptableData>>();
+
     [SerializeField, ShowOnly] string _sceneToLoad;
-    [SerializeField, Expandable] MTRSceneDataObject _sceneDataObject;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
     public MTRSceneController SceneController => GetComponent<MTRSceneController>();
-    public MTRSceneDataObject SceneDataObject => _sceneDataObject;
-    public List<string> SceneNames => _sceneDataObject.SceneNames;
     public MTRCameraBoundsLibrary CameraBoundsLibrary => _cameraBoundsLibrary;
     public Scene ActiveScene => SceneManager.GetActiveScene();
 
-    public override void OnEditorReloaded()
-    {
-        Awake();
-    }
 
-    public override void Awake()
-    {
-        base.Awake();
-
-        if (_cameraBoundsLibrary == null
-            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNames.Count)
-            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(SceneNames);
-
-        MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
-        if (activeCameraBounds != null)
-        {
-            if (SceneController.CameraController != null)
-                SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
-        }
-    }
 
     void OnStoryInitialized(Story story)
     {
@@ -92,7 +74,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     bool ChangeGameScene(string knotName)
     {
-        MTRSceneData data = _sceneDataObject.GetSceneDataByKnot(knotName);
+        TryGetSceneDataByKnot(knotName, out MTRSceneData data);
         if (data == null)
             return false;
 
@@ -103,31 +85,23 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         return true;
     }
 
+
+
+    //  ---------------- [ Public Methods ] -----------------------------
     public override void Initialize()
     {
-#if UNITY_EDITOR
-        _sceneDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRSceneDataObject>(
-            AssetPath,
-                "DefaultMTRBuildSceneData"
-            );
+        base.Initialize();
 
-        if (_sceneDataObject == null)
+        if (_cameraBoundsLibrary == null
+            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNameList.Count)
+            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(SceneNameList);
+
+        MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
+        if (activeCameraBounds != null)
         {
-            Debug.LogError($"{this.name} Failed to create or load build scene data object.");
-            return;
+            if (SceneController.CameraController != null)
+                SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
         }
-        else
-        {
-            Debug.Log($"{this.name} Build Scene Data Object loaded successfully. {_sceneDataObject}");
-        }
-
-        base.LoadBuildScenesFromDirectory();
-#endif
-
-        //_sceneDataObject.Initialize(_buildScenePaths);
-
-        //SaveBuildSceneData(buildScenePaths);
-        Debug.Log($"{Prefix} Initialized.");
 
         Story story = InkyStoryManager.GlobalStory;
         if (story != null)
@@ -136,75 +110,33 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
             Debug.LogError($"{Prefix} Story is null.");
     }
 
-
-
-    public MTRSceneData GetSceneDataByKnot(string knot)
+    public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {
-        return this._sceneDataObject.GetSceneDataByKnot(knot);
+        sceneData = SceneDataList.Find(x => x.Knot == knot);
     }
-
-    /*
-    public MTRSceneData GetActiveSceneData()
-    {
-        if (_sceneDataObject == null)
-            return new MTRSceneData();
-        return _sceneDataObject.GetActiveSceneData();
-    }
-    */
 
     public MTRCameraRigBounds GetActiveCameraBounds()
     {
         MTRCameraRigBounds cameraBounds = null;
 
-        /*
         try
         {
-            MTRSceneData activeSceneData = GetActiveSceneData();
+            TryGetActiveSceneData(out MTRSceneData activeSceneData);
             if (activeSceneData == null)
                 return null;
 
-            cameraBounds = _cameraBoundsLibrary[GetActiveSceneData().Name];
+            cameraBounds = _cameraBoundsLibrary[activeSceneData.Name];
         }
         finally { }
-        */
 
         return cameraBounds;
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(MTRSceneManager))]
-public class MTR_SceneManagerCustomEditor : Editor
+[Serializable]
+public class ExpandableItem<T>
+    where T : ScriptableObject
 {
-    SerializedObject _serializedObject;
-    MTRSceneManager _script;
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (MTRSceneManager)target;
-
-        if (!Application.isPlaying)
-            _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Initialize"))
-        {
-            _script.Initialize();
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
+    [Expandable] public T Item;
 }
-#endif
 

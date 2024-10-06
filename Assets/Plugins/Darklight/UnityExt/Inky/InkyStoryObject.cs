@@ -140,7 +140,7 @@ namespace Darklight.UnityExt.Inky
                 return _story;
             }
         }
-        public List<string> KnotNameList
+        public List<string> KnotList
         {
             get => _knots.Select(knot => knot.name).ToList();
         }

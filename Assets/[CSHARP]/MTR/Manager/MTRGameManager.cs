@@ -81,7 +81,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             Debug.LogError("No Scene Data found for scene: " + newScene.name);
             return;
         }
-        InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.knot);
+        InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.Knot);
         MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }
 

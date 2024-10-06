@@ -70,7 +70,22 @@ namespace Darklight.UnityExt.BuildScene
         //  ================================ [[ PROPERTIES ]] ================================
         public List<string> ScenePathList { get => _paths.ToList(); protected set => _paths = value.ToArray(); }
         public List<TData> SceneDataList { get => _data.ToList(); protected set => _data = value.ToArray(); }
-        public List<string> SceneNameList => _data.Select(x => x.Name).ToList();
+        public List<string> SceneNameList
+        {
+            get
+            {
+                List<string> names = new List<string>();
+                if (_data != null && _data.Length > 0)
+                {
+                    foreach (TData data in _data)
+                    {
+                        if (data != null)
+                            names.Add(data.Name);
+                    }
+                }
+                return names;
+            }
+        }
 
         //  ================================ [[ EVENTS ]] ================================
         public delegate void SceneChangeEvent(Scene oldScene, Scene newScene);
@@ -126,7 +141,11 @@ namespace Darklight.UnityExt.BuildScene
                 }
                 else
                 {
-                    tempData[i] = new BuildSceneData(_paths[i]) as TData;
+                    tempData[i] = new TData()
+                    {
+                        Path = _paths[i]
+                    };
+
                     _sceneDataDict.Add(_paths[i], tempData[i]);
                 }
             }
@@ -178,13 +197,46 @@ namespace Darklight.UnityExt.BuildScene
         public void TryGetSceneDataByName<T>(string sceneName, out T sceneData)
             where T : TData
         {
+            if (_data == null || _data.Length == 0)
+            {
+                sceneData = null;
+                return;
+            }
+
             sceneData = _data.FirstOrDefault(x => x.Name == sceneName) as T;
         }
 
         public void TryGetSceneDataByPath<T>(string scenePath, out T sceneData)
             where T : TData
         {
+            if (_data == null || _data.Length == 0)
+            {
+                sceneData = null;
+                return;
+            }
+
             sceneData = _data.FirstOrDefault(x => x.Path == scenePath) as T;
+        }
+
+        public void TryGetActiveSceneData<T>(out T sceneData)
+            where T : TData
+        {
+            sceneData = null;
+            if (_data == null || _data.Length == 0)
+            {
+                return;
+            }
+
+            //sceneData = _data.FirstOrDefault(x => x.Path == SceneManager.GetActiveScene().path) as T;
+            string activeScenePath = SceneManager.GetActiveScene().path;
+            foreach (TData data in _data)
+            {
+                if (data != null && data.Path == activeScenePath)
+                {
+                    sceneData = data as T;
+                    return;
+                }
+            }
         }
     }
 
@@ -204,7 +256,7 @@ namespace Darklight.UnityExt.BuildScene
         {
             _serializedObject = new SerializedObject(target);
             _script = (IBuildSceneManager)target;
-            _script.Initialize();
+            //_script.Initialize();
         }
 
         public override void OnInspectorGUI()
@@ -213,7 +265,8 @@ namespace Darklight.UnityExt.BuildScene
 
             EditorGUI.BeginChangeCheck();
 
-            base.OnInspectorGUI();
+            if (GUILayout.Button("Initialize")) { _script.Initialize(); }
+            CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
 
             if (EditorGUI.EndChangeCheck())
             {
