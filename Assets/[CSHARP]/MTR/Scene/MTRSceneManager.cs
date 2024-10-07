@@ -41,9 +41,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     }
     public static string SceneToLoad => Instance._sceneToLoad;
 
-
-    public List<MTRSceneScriptableData> testList = new List<MTRSceneScriptableData>();
-    public List<ExpandableItem<MTRSceneScriptableData>> testList2 = new List<ExpandableItem<MTRSceneScriptableData>>();
+    //  ---------------- [ Serialized Fields ] -----------------------------
 
     [SerializeField, ShowOnly] string _sceneToLoad;
     [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;

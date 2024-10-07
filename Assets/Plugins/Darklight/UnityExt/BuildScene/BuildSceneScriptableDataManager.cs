@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+
 
 
 
@@ -18,20 +20,18 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.BuildScene
 {
-    public interface IBuildSceneScriptableDataManager
-    {
-        void CreateObjects();
-    }
+    public interface IBuildSceneScriptableDataManager : IBuildSceneManager { }
 
     public abstract class BuildSceneScriptableDataManager<TData, TScriptObj> : BuildSceneManager<TData>, IBuildSceneScriptableDataManager
         where TData : BuildSceneData, new()
         where TScriptObj : BuildSceneScriptableData<TData>
     {
+        ScriptableDataLibrary _library = new ScriptableDataLibrary();
+
         [Header("Scriptable Data Manager ---- >>")]
         [SerializeField, ShowOnly] string _assetPath;
 
-        [Space(10)]
-        [SerializeField] ScriptableDataLibrary _library = new ScriptableDataLibrary();
+        public List<ExpandableSceneScriptableData> expandableDataList = new List<ExpandableSceneScriptableData>();
 
         protected abstract string AssetPath { get; }
 
@@ -40,21 +40,32 @@ namespace Darklight.UnityExt.BuildScene
             base.Initialize();
             _library.SetRequiredKeys(SceneNameList);
             _assetPath = AssetPath;
+
+            RefreshScriptableData();
         }
 
-        public void CreateObjects()
+        void RefreshScriptableData()
         {
-            List<string> sceneNameKeys = _library.Keys.ToList();
+            expandableDataList.Clear();
             foreach (string sceneName in SceneNameList)
             {
-                CreateScriptableData(sceneName);
+                CreateScriptableData(sceneName, out TScriptObj obj);
+
+                if (obj != null)
+                    expandableDataList.Add(new ExpandableSceneScriptableData(obj));
             }
         }
 
-        void CreateScriptableData(string sceneName)
+        void CreateScriptableData(string sceneName, out TScriptObj obj)
         {
+            obj = null;
+
             // Check if the object already exists
-            if (_library.ContainsKey(sceneName) && _library[sceneName] != null) return;
+            if (_library.ContainsKey(sceneName) && _library[sceneName] != null)
+            {
+                obj = _library[sceneName];
+                return;
+            }
 
             // Get the scene data
             TryGetSceneDataByName(sceneName, out TData sceneData);
@@ -65,9 +76,10 @@ namespace Darklight.UnityExt.BuildScene
             }
 
             // Create the object
-            TScriptObj obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
-            obj.CopyData(sceneData); // Copy the scene data to the object
-            _library[sceneName] = obj; // Set the object value in the library
+            TScriptObj tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
+            tempObj.CopyData(sceneData); // Copy the scene data to the object
+            _library[sceneName] = tempObj; // Set the object value in the library
+            obj = tempObj;
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------
@@ -77,6 +89,19 @@ namespace Darklight.UnityExt.BuildScene
             public ScriptableDataLibrary()
             {
                 ReadOnlyKey = true;
+            }
+        }
+
+        [Serializable]
+        public class ExpandableSceneScriptableData
+        {
+            [SerializeField, ShowOnly] string _sceneName;
+            [SerializeField, Expandable] TScriptObj _data;
+
+            public ExpandableSceneScriptableData(TScriptObj data)
+            {
+                _data = data;
+                _sceneName = data.name;
             }
         }
     }
@@ -98,10 +123,6 @@ namespace Darklight.UnityExt.BuildScene
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (GUILayout.Button("Create Scriptable Scene Data"))
-            {
-                _script.CreateObjects();
-            }
         }
     }
 #endif
