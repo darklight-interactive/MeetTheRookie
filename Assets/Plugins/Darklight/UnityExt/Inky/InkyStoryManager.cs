@@ -52,6 +52,26 @@ namespace Darklight.UnityExt.Inky
             }
         }
 
+        public List<string> SceneKnotList
+        {
+            get
+            {
+                List<string> sceneKnotList = new List<string>();
+                if (_knotList != null)
+                {
+                    foreach (string knot in _knotList)
+                    {
+                        knot.ToLower();
+                        if (knot.Contains("scene"))
+                        {
+                            sceneKnotList.Add(knot);
+                        }
+                    }
+                }
+                return sceneKnotList;
+            }
+        }
+
         #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
         public delegate void SpeakerSet(string speaker);
         public event SpeakerSet OnSpeakerSet;

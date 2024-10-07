@@ -5,6 +5,8 @@ using Darklight.UnityExt.BuildScene;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
+
 
 
 #if UNITY_EDITOR
@@ -21,7 +23,7 @@ namespace Darklight.UnityExt.BuildScene
     {
         [SerializeField, ShowOnly] string _name;
         [SerializeField, ShowOnly] string _path;
-        [SerializeField] SceneObject _sceneObject;
+        [SerializeField, ReadOnly] SceneObject _sceneObject;
 
         public string Name { get => _name; protected set => _name = value; }
         public string Path { get => _path; protected set => _path = value; }

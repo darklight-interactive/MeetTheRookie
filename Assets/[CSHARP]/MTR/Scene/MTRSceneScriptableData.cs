@@ -27,18 +27,18 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 {
     string _savedKnot;
     List<string> _knotList = new List<string> { "Default" };
-    List<string> KnotList
+    List<string> SceneKnotList
     {
         get
         {
-            if (InkyStoryManager.Instance.KnotList != null)
-                _knotList = InkyStoryManager.Instance.KnotList;
+            if (InkyStoryManager.Instance.SceneKnotList != null)
+                _knotList = InkyStoryManager.Instance.SceneKnotList;
             return _knotList;
         }
     }
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, Dropdown("KnotList")] string _knot = "Default";
+    [SerializeField, Dropdown("SceneKnotList")] string _knot = "Default";
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
@@ -65,5 +65,66 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
             Knot = _knot,
         };
     }
+
+    [EasyButtons.Button]
+    public void Refresh()
+    {
+
+        if (!_knot.Contains("scene"))
+        {
+            // << PARSE SCENE NAME >>
+            string sceneName = Name.ToLower().Replace(" ", ""); // Get the scene name and remove spaces
+            sceneName = sceneName.Replace("-", "_"); // Replace hyphens with underscores
+
+            // << FIND RLEATED KNOT >>
+            List<string> sceneNameParts = sceneName.Split('_').ToList();
+            if (sceneNameParts.Contains("scene"))
+            {
+                string sceneIndex = sceneNameParts[1];
+                string sectionIndex = sceneNameParts[2];
+
+                // Check if the scene knot exists
+                if (SceneKnotList.Contains($"scene{sceneIndex}_{sectionIndex}"))
+                {
+                    _knot = $"scene{sceneIndex}_{sectionIndex}";
+                    Debug.Log($"Scriptable Data for scene {sceneName} has found a matching knot: {_knot}");
+                }
+            }
+        }
+
+    }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(MTRSceneScriptableData))]
+    public class MTRSceneScriptableDataCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        MTRSceneScriptableData _script;
+        EasyButtons.Editor.ButtonsDrawer _buttonsDrawer;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (MTRSceneScriptableData)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+            if (GUILayout.Button("Refresh"))
+            {
+                _script.Refresh();
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }
 

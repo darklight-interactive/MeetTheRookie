@@ -91,6 +91,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         base.CreateScriptableData(sceneName, out obj);
 
         obj.CameraRigBounds = _cameraBoundsLibrary[sceneName];
+        obj.Refresh();
     }
 
     public override void Initialize()
@@ -121,7 +122,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     public override void SaveModifiedData(MTRSceneScriptableData scriptObj)
     {
         base.SaveModifiedData(scriptObj);
-
 
     }
 
