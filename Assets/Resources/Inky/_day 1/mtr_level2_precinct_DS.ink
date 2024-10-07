@@ -575,6 +575,7 @@ And a black and white picture of the winery stained with age.
     
 = phone_call 
 # hide : Misra
+
 ~phoneCall++
 <i>You {phoneCall > 0: grab your phone and begin to} dial chief Thelton. </i>
 {phoneCall}
@@ -598,14 +599,11 @@ And a black and white picture of the winery stained with age.
 
 = voicemail
 #name: Lupe
-#emote: Lupe | Inquisitive_1
+
 
 {phoneCall < 2:
     "Thelton, Lupe here. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated."
-- else if phoneCall >= 2 && phoneCall < 5:
-    "Thelton, Lupe here, pick up. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated."
-- else if phoneCall >= 5 && phoneCall < 8:
-    "Thelton, Lupe here. Would really appreciate it if you don't ignore my calls. Currently stuck in Kettle Rock. I'll keep you updated."
+
 - else:
     "Thelton, seriously?! {phoneCall} !! I called you {phoneCall} times!! Currently stuck in Kettle Rock. I'll keep you updated."
 }
