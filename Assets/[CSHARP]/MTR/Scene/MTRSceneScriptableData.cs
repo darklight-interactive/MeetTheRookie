@@ -25,9 +25,9 @@ using UnityEditor;
 /// </summary>
 public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 {
-    string _savedKnot;
+    bool _foundSceneKnot;
     List<string> _knotList = new List<string> { "Default" };
-    List<string> SceneKnotList
+    List<string> _editor_sceneKnotList
     {
         get
         {
@@ -38,23 +38,28 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
     }
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, Dropdown("SceneKnotList")] string _knot = "Default";
+    [SerializeField, Dropdown("_editor_sceneKnotList"), DisableIf("_foundSceneKnot")] string _knot = "";
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
     [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
 
     [Header("MTR GAMEPLAY SETTINGS")]
-    [SerializeField] List<int> _spawnPoints = new List<int>();
+    [SerializeField] MTRSceneSpawnInfo _spawnInfo;
 
+
+    public string Knot { get => _knot; set => _knot = value; }
+    public MTRCameraRigSettings CameraRigSettings { get => _cameraRigSettings; set => _cameraRigSettings = value; }
     public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
+    public MTRSceneSpawnInfo SpawnInfo { get => _spawnInfo; set => _spawnInfo = value; }
 
-    void OnValidate()
+    public override void CopyData(MTRSceneData data)
     {
-        if (_knot != _savedKnot)
-        {
-            _savedKnot = _knot;
-        }
+        base.CopyData(data);
+
+        _foundSceneKnot = data.FoundSceneKnot;
+        _knot = data.Knot;
+        _spawnInfo = data.SpawnInfo;
     }
 
     public override MTRSceneData ToData()
@@ -63,34 +68,18 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         {
             Path = this.Path,
             Knot = _knot,
+            SpawnInfo = _spawnInfo,
         };
     }
 
-    [EasyButtons.Button]
-    public void Refresh()
+    public override void Refresh()
     {
-
-        if (!_knot.Contains("scene"))
+        if (_knot == null)
         {
-            // << PARSE SCENE NAME >>
-            string sceneName = Name.ToLower().Replace(" ", ""); // Get the scene name and remove spaces
-            sceneName = sceneName.Replace("-", "_"); // Replace hyphens with underscores
-
-            // << FIND RLEATED KNOT >>
-            List<string> sceneNameParts = sceneName.Split('_').ToList();
-            if (sceneNameParts.Contains("scene"))
-            {
-                string sceneIndex = sceneNameParts[1];
-                string sectionIndex = sceneNameParts[2];
-
-                // Check if the scene knot exists
-                if (SceneKnotList.Contains($"scene{sceneIndex}_{sectionIndex}"))
-                {
-                    _knot = $"scene{sceneIndex}_{sectionIndex}";
-                    Debug.Log($"Scriptable Data for scene {sceneName} has found a matching knot: {_knot}");
-                }
-            }
+            _knot = "Default";
         }
+
+
 
     }
 

@@ -34,21 +34,9 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        void RefreshScriptableData()
-        {
-            _expandableDataList.Clear();
-            foreach (string sceneName in SceneNameList)
-            {
-                CreateScriptableData(sceneName, out TScriptObj obj);
 
-                if (obj != null)
-                    _expandableDataList.Add(new ExpandableSceneScriptableData(obj));
 
-                SaveModifiedData(obj);
-            }
-        }
-
-        protected virtual void CreateScriptableData(string sceneName, out TScriptObj obj)
+        protected virtual void CreateOrLoadScriptableData(string sceneName, out TScriptObj obj)
         {
             TScriptObj tempObj;
             obj = null;
@@ -86,6 +74,27 @@ namespace Darklight.UnityExt.BuildScene
             RefreshScriptableData();
         }
 
+        /// <summary>
+        /// Refreshes the scriptable data to match the scene data. <br/>
+        /// Also recreates the expandable data list.
+        /// </summary>
+        public void RefreshScriptableData()
+        {
+            _expandableDataList.Clear();
+            foreach (string sceneName in SceneNameList)
+            {
+                CreateOrLoadScriptableData(sceneName, out TScriptObj obj);
+
+                if (obj != null)
+                {
+                    TryGetSceneDataByName(sceneName, out TData sceneData);
+                    obj.CopyData(sceneData);
+
+                    _expandableDataList.Add(new ExpandableSceneScriptableData(obj));
+                }
+            }
+        }
+
         public virtual void SaveModifiedData(TScriptObj scriptObj)
         {
             if (scriptObj == null || scriptObj.name == null || scriptObj.name == string.Empty)
@@ -95,6 +104,17 @@ namespace Darklight.UnityExt.BuildScene
             }
 
             SetSceneData(scriptObj.ToData());
+        }
+
+        public void TryGetActiveSceneScriptableData(out TScriptObj scriptObj)
+        {
+            scriptObj = null;
+            TryGetActiveSceneData(out TData sceneData);
+            if (sceneData != null)
+            {
+                if (_scriptableDataLibrary.ContainsKey(sceneData.Name))
+                    scriptObj = _scriptableDataLibrary[sceneData.Name];
+            }
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------

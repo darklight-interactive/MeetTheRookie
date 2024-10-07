@@ -27,26 +27,37 @@ namespace Darklight.UnityExt.BuildScene
 
         public string Name { get => _name; protected set => _name = value; }
         public string Path { get => _path; protected set => _path = value; }
+        public SceneObject SceneObject { get => _sceneObject; protected set => _sceneObject = value; }
+
+        public abstract TData ToData();
+        public abstract void Refresh();
 
         public virtual void CopyData(TData data)
         {
-            _name = data.Name;
-            _path = data.Path;
-            _sceneObject = _name;
-        }
+            Name = data.Name;
+            Path = data.Path;
 
-        public virtual TData ToData()
-        {
-            return new TData()
-            {
-                Path = _path,
-            };
+            _sceneObject = Name;
         }
     }
 
     public class BuildSceneScriptableData : BuildSceneScriptableData<BuildSceneData>
     {
 
+        public override void CopyData(BuildSceneData data)
+        {
+            base.CopyData(data);
+            SceneObject = Name;
+        }
 
+        public override BuildSceneData ToData()
+        {
+            return new BuildSceneData(Path);
+        }
+
+        public override void Refresh()
+        {
+            SceneObject = Name;
+        }
     }
 }

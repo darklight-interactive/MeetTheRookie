@@ -15,37 +15,7 @@ using UnityEditor;
 namespace Darklight.UnityExt.BuildScene
 {
 
-    //  ================================ [[ BUILD SCENE DATA ]] ================================
-    /// <summary>
-    /// A Serializable class that stores the data for a scene in the UnityEditor's build settings.
-    /// </summary>
-    [System.Serializable]
-    public class BuildSceneData
-    {
-        [SerializeField, ShowOnly] string _name = "Null Scene";
-        [SerializeField, ShowOnly] string _path;
 
-        public string Name => _name;
-        public string Path
-        {
-            get => _path;
-            set
-            {
-                _path = FormatPath(value);
-                _name = FormatNameFromPath(_path);
-            }
-        }
-
-        public BuildSceneData() { } // Empty constructor for serialization.
-        public BuildSceneData(string path)
-        {
-            _path = path.Replace("\\", "/"); // Replace all backslashes with forward slashes
-            _name = Path.Split('/').Last().Split('.').First(); // Get the name of the scene from the path
-        }
-
-        string FormatPath(string path) => path.Replace("\\", "/"); // Replace all backslashes with forward slashes
-        string FormatNameFromPath(string path) => path.Split('/').Last().Split('.').First(); // Get the name of the scene from the path
-    }
 
     //  ================================ [[ BUILD SCENE MANAGER ]] ================================
     public interface IBuildSceneManager
@@ -148,6 +118,8 @@ namespace Darklight.UnityExt.BuildScene
 
                     _sceneDataDict.Add(_pathKeys[i], tempData[i]);
                 }
+
+                tempData[i].Refresh();
             }
             _dataValues = tempData;
 

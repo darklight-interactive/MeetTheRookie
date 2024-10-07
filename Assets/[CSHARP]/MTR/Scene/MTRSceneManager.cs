@@ -86,9 +86,9 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
 
     //  ---------------- [ Public Methods ] -----------------------------
-    protected override void CreateScriptableData(string sceneName, out MTRSceneScriptableData obj)
+    protected override void CreateOrLoadScriptableData(string sceneName, out MTRSceneScriptableData obj)
     {
-        base.CreateScriptableData(sceneName, out obj);
+        base.CreateOrLoadScriptableData(sceneName, out obj);
 
         obj.CameraRigBounds = _cameraBoundsLibrary[sceneName];
         obj.Refresh();
