@@ -30,12 +30,10 @@ namespace Darklight.UnityExt.BuildScene
 
         [Header("Scriptable Data Manager ---- >>")]
         [SerializeField, ShowOnly] string _assetPath;
-        [SerializeField] List<ExpandableSceneScriptableData> _expandableDataList = new List<ExpandableSceneScriptableData>();
+        [SerializeField, Expandable] TScriptObj _activeSceneScriptableData;
+        [SerializeField] List<ExpandableSceneScriptableData> _fullSceneDataList = new List<ExpandableSceneScriptableData>();
 
         protected abstract string AssetPath { get; }
-
-
-
         protected virtual void CreateOrLoadScriptableData(string sceneName, out TScriptObj obj)
         {
             TScriptObj tempObj;
@@ -71,6 +69,9 @@ namespace Darklight.UnityExt.BuildScene
             _scriptableDataLibrary.SetRequiredKeys(SceneNameList);
             _assetPath = AssetPath;
 
+            string activeSceneName = SceneManager.GetActiveScene().name;
+            _activeSceneScriptableData = _scriptableDataLibrary.ContainsKey(activeSceneName) ? _scriptableDataLibrary[activeSceneName] : null;
+
             RefreshScriptableData();
         }
 
@@ -80,7 +81,7 @@ namespace Darklight.UnityExt.BuildScene
         /// </summary>
         public void RefreshScriptableData()
         {
-            _expandableDataList.Clear();
+            _fullSceneDataList.Clear();
             foreach (string sceneName in SceneNameList)
             {
                 CreateOrLoadScriptableData(sceneName, out TScriptObj obj);
@@ -90,7 +91,7 @@ namespace Darklight.UnityExt.BuildScene
                     TryGetSceneDataByName(sceneName, out TData sceneData);
                     obj.CopyData(sceneData);
 
-                    _expandableDataList.Add(new ExpandableSceneScriptableData(obj));
+                    _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
                 }
             }
         }
