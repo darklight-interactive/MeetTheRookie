@@ -26,7 +26,7 @@ namespace Darklight.UnityExt.Inky.Editor
 
             if (GUILayout.Button("Initialize"))
             {
-                _script.Initialize(true);
+                _script.Initialize();
             }
             base.OnInspectorGUI();
 

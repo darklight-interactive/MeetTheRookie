@@ -346,7 +346,6 @@ MonoBehaviour:
     _data: {fileID: 11400000, guid: aeaafc12032f02c459d18f3257cab40e, type: 2}
   - _sceneName: SCENE_7_0 - The Precinct - Dating Sim
     _data: {fileID: 11400000, guid: 600f3f1a1c04226429c3b7114a128b6f, type: 2}
-  _sceneToLoad: 
 --- !u!114 &398433143409627402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,15 +359,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storyAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
-  _variables: []
+  _isInitialized: 0
   _currentStoryKnot: 
   _currentStoryDialogue: 
   _currentStoryState: 0
-  _speakerList: []
+  _storyDataObject: {fileID: 11400000, guid: e57105a6ee81f41cfbfc83efa0577849, type: 2}
+  _speakerVariable:
+    _key: 
+    _valueAsString: 
   _currentSpeaker: 
   _mainQuestName: 
-  _activeQuestChain: []
-  _completedQuestChain: []
+  _activeQuestChain:
+    _key: 
+    _valueAsString: 
+  _completedQuestChain:
+    _key: 
+    _valueAsString: 
   _globalKnowledgeList: []
 --- !u!114 &5971960432346803214
 MonoBehaviour:
@@ -383,6 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentSceneState: 0
+  _sceneToLoad: 
 --- !u!114 &3231504660078741222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,7 +404,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
   _interactableRegistry:
-    _items: []
+    _items:
+    - _id: 0
+      _key: Speaker.Roy_Rodgerson
+      _value: {fileID: 0}
+    - _id: 1
+      _key: Speaker.Lupe
+      _value: {fileID: 0}
+    - _id: 2
+      _key: Speaker.Misra
+      _value: {fileID: 0}
+    - _id: 3
+      _key: scene4_2.store_window
+      _value: {fileID: 0}
+    - _id: 4
+      _key: scene4_2.front_door
+      _value: {fileID: 0}
+    - _id: 5
+      _key: scene4_2.merch_sticker
+      _value: {fileID: 0}
+    - _id: 6
+      _key: scene4_2.merch_shirt
+      _value: {fileID: 0}
+    - _id: 7
+      _key: scene4_2.intro
+      _value: {fileID: 0}
+    - _id: 8
+      _key: interaction_default
+      _value: {fileID: 0}
+    - _id: 9
+      _key: scene4_2.pamphlet
+      _value: {fileID: 0}
     _readOnlyKey: 1
     _readOnlyValue: 1
 --- !u!114 &3307535121424918597
@@ -430,8 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f9e632f00534402afc6812f07637ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _screenSize: {x: 821, y: 255}
-  _screenAspectRatio: 3.2196078
+  _screenSize: {x: 1388, y: 1320}
+  _screenAspectRatio: 1.0515151
   _characterColors: {fileID: 0}
   _mainMenuPreset: {fileID: 11400000, guid: 75276c9128e2d39448f28ebea66cabc9, type: 2}
   _gameUIPreset: {fileID: 11400000, guid: d6ee095377e40494693ad19b0767a725, type: 2}

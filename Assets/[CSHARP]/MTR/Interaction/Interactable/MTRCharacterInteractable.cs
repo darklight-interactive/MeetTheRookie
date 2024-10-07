@@ -20,10 +20,10 @@ public class MTRCharacterInteractable : MTRInteractable
     {
         get
         {
-            List<string> speakerList = new List<string>();
-            if (MTRStoryManager.SpeakerList != null)
+            List<string> speakerList = new List<string>(50);
+            if (MTRStoryManager.Instance.SpeakerList != null)
             {
-                speakerList = MTRStoryManager.SpeakerList;
+                speakerList = MTRStoryManager.Instance.SpeakerList;
             }
             return speakerList;
         }

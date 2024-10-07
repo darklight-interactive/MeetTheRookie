@@ -17,7 +17,7 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     MTRCameraRig _rig;
 
     MTRStoryManager StoryManager => MTRStoryManager.Instance;
-    List<string> _speakerList => MTRStoryManager.SpeakerList;
+    List<string> _speakerList => StoryManager.SpeakerList;
     public MTRCameraRig Rig
     {
         get

@@ -4,6 +4,7 @@ using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Darklight.UnityExt.Inky.InkyStoryManager;
 
 [System.Serializable]
 public class SynthesisClue
@@ -18,7 +19,9 @@ public class SynthesisClueLibrary : ScriptableObject
 
     public void LoadMysteryClues()
     {
-        List<string> clues = MTRStoryManager.GetVariableByName("Mystery1").ToStringList();
+        MTRStoryManager.TryGetVariableContainer("Mystery1", out StoryVariableContainer mystery1);
+        List<string> clues = mystery1.ToStringList();
+
         mystery1Clues = new SynthesisClue[clues.Count];
         foreach (string clue in clues)
         {

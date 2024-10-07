@@ -36,7 +36,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InteractionRequestDataObject _request;
     [SerializeField] InteractionRecieverLibrary _recievers;
-    [SerializeField] MTRInteractableDestinationLibrary _destinations;
+    //[SerializeField] MTRInteractableDestinationLibrary _destinations;
+    [SerializeField] List<float> _destinations;
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InternalData _data;
@@ -44,7 +45,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
 
     [HorizontalLine(color: EColor.Gray)]
-    [Dropdown("dropdown_sceneKnotList"), SerializeField] string _sceneKnot = "scene_default";
+    [Dropdown("dropdown_knotList"), SerializeField] string _sceneKnot = "scene_default";
     [Dropdown("dropdown_interactionStitchList"), SerializeField] string _interactionStitch = "interaction_default";
 
     [Header("Interactable")]
@@ -55,14 +56,14 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     protected SpriteRenderer spriteRenderer;
     protected new BoxCollider2D collider;
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    protected List<string> dropdown_sceneKnotList
+    protected List<string> dropdown_knotList
     {
         get
         {
-            List<string> knots = new List<string>();
+            List<string> knots = new List<string>(100);
             if (MTRStoryManager.Instance != null)
             {
-                knots = MTRStoryManager.Instance.SceneKnotList;
+                knots = MTRStoryManager.Instance.KnotList;
             }
             return knots;
         }
@@ -72,7 +73,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         get
         {
-            List<string> stitches = new List<string>();
+            List<string> stitches = new List<string>(100);
             if (MTRStoryManager.Instance != null)
             {
                 stitches = MTRStoryManager.GetAllStitchesInKnot(_sceneKnot);
@@ -120,14 +121,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             return _recievers;
         }
         protected set => _recievers = value;
-    }
-    public MTRInteractableDestinationLibrary Destinations
-    {
-        get
-        {
-            return _destinations;
-        }
-        protected set => _destinations = value;
     }
     public override bool IsPreloaded
     {
@@ -287,12 +280,17 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         //Debug.Log($"{PREFIX} {Name} :: Preload", this);
 
+        /*
         if (_destinations == null || _destinations.InteractableParent == null)
+        {
             _destinations = new MTRInteractableDestinationLibrary(this);
+            Debug.Log($"{Name} :: Created new destination library", this);
+        }
         if (_destinations.InteractableParent != this)
             _destinations.InteractableParent = this;
         if (_destinations.Count == 0)
             _destinations.AddDefaultItem();
+            */
 
         // << RESET >> ------------------------------------
         Reset();
@@ -415,6 +413,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         Debug.Log($"{PREFIX} {Name} :: AcceptInteractionRoutine from {player}", this);
 
         // << CONFIRM PLAYER OCCUPIES DESTINATION >> ------------------------------------
+        /*
         bool playerIsOccupant = _destinations.IsOccupant(player);
         if (!playerIsOccupant)
         {
@@ -433,7 +432,18 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             Debug.Log($"{PREFIX} {Name} :: Player is already at destination", this);
             player.Controller.EnterInteraction();
         }
-        yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
+        */
+
+        if (CurrentState == State.TARGET && _destinations.Count > 0)
+        {
+            player.Controller.StartWalkOverride(transform.position.x + _destinations[0]);
+            yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
+        }
+        else
+        {
+            player.Controller.EnterInteraction();
+        }
+
 
         // << ACCEPT INTERACTION >> ------------------------------------
         Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {player}", this);
@@ -445,7 +455,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
                 break;
             case State.COMPLETE:
             case State.DISABLED:
-                _destinations.TryRemoveOccupant(player);
+                //_destinations.TryRemoveOccupant(player);
                 break;
             default:
                 StateMachine.GoToState(State.START);
@@ -484,7 +494,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     private void OnDrawGizmosSelected()
     {
-        _destinations.DrawInEditor(this);
+        //_destinations.DrawInEditor(this);
     }
 
 
@@ -518,6 +528,11 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         {
             _serializedObject = new SerializedObject(target);
             _script = (MTRInteractable)target;
+
+            if (!Application.isPlaying)
+            {
+                _script.Preload();
+            }
         }
 
         public override void OnInspectorGUI()
@@ -525,8 +540,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             _serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
-
-
 
             // << BUTTONS >> ------------------------------------
             if (!_script.IsPreloaded)

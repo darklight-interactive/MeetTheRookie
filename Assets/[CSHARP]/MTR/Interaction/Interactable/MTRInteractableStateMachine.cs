@@ -244,6 +244,7 @@ public partial class MTRInteractable
 
                 //Debug.Log($"{PREFIX} :: {interactable.Name} >> Entered Complete State");
                 MTR_AudioManager.Instance.PlayEndInteractionEvent();
+                MTRSceneController.Instance.CameraController.SetPlayerAsFollowTarget();
             }
             public override void Execute() { }
             public override void Exit() { }

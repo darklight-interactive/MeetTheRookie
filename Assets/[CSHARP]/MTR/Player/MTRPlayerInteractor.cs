@@ -56,19 +56,6 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions
-    {
-        // This is just a getter a list of all the speakers in the story
-        get
-        {
-            List<string> speakers = new List<string>();
-            if (MTRStoryManager.Instance != null)
-            {
-                speakers = MTRStoryManager.SpeakerList;
-            }
-            return speakers;
-        }
-    }
     public MTRPlayerController PlayerController => GetComponent<MTRPlayerController>();
     #endregion
 

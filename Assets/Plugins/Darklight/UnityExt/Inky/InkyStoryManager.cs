@@ -8,6 +8,8 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Linq;
 using Ink;
+using Darklight.UnityExt.Utility;
+
 
 
 #if UNITY_EDITOR
@@ -21,6 +23,8 @@ namespace Darklight.UnityExt.Inky
     /// </summary>
     public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
+        const string ASSET_PATH = "Assets/Resources/Darklight/InkyStory";
+
         #region ---- < STATIC_PROPERTIES > --------------------------------- 
         protected static StoryIterator Iterator
         {
@@ -39,7 +43,6 @@ namespace Darklight.UnityExt.Inky
                 return Instance._iterator;
             }
         }
-
         public static Story GlobalStory
         {
             get
@@ -57,34 +60,20 @@ namespace Darklight.UnityExt.Inky
                 return Instance._story;
             }
         }
-
+        public static InkyStoryDataObject StoryDataObject => Instance._storyDataObject;
         public static bool IsInitialized => Instance._isInitialized;
-
         public static string CurrentKnot => Instance._currentStoryKnot;
-        public static string CurrentDialogue
-        {
-            get
-            {
-                return GlobalStory.currentText.Trim();
-            }
-        }
-        public static List<Choice> CurrentChoices
-        {
-            get
-            {
-                return GlobalStory.currentChoices;
-            }
-        }
-
+        public static string CurrentDialogue => GlobalStory.currentText.Trim();
+        public static List<Choice> CurrentChoices => GlobalStory.currentChoices;
         public static StoryState CurrentState => Iterator.CurrentState;
         #endregion
 
         //  ---------------- [ Private Fields ] -----------------------------
-        bool _isInitialized;
-
         Story _story;
         StoryIterator _iterator;
         string[] _knots;
+        Dictionary<string, List<string>> _stitchDitionary = new Dictionary<string, List<string>>();
+        Dictionary<string, object> _variableDictionary = new Dictionary<string, object>();
         string[] _globalTags;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
 
@@ -93,16 +82,14 @@ namespace Darklight.UnityExt.Inky
 
 
         [Header("Active Story Info")]
+        [SerializeField, ShowOnly] bool _isInitialized;
         [SerializeField, ShowOnly] string _currentStoryKnot;
         [SerializeField, ShowOnly] string _currentStoryDialogue;
         [SerializeField, ShowOnly] public StoryState _currentStoryState;
 
 
-        [Header("Story Data")]
-        [SerializeField] List<StoryKnotContainer> _storyKnotContainers = new List<StoryKnotContainer>();
-        [SerializeField] List<InkyVariable> _variables = new List<InkyVariable>();
-
-
+        [Header("Story Data Object")]
+        [SerializeField, Expandable] InkyStoryDataObject _storyDataObject;
 
         #region ---- < Properties > --------------------------------- 
         public List<string> KnotList
@@ -110,18 +97,30 @@ namespace Darklight.UnityExt.Inky
             get
             {
                 if (_knots == null)
-                    _knots = GetAllKnots(_story).ToArray();
+                    _knots = GetAllKnots().ToArray();
                 return _knots.ToList();
             }
         }
+
         #endregion
 
 
         #region ---- < Events > --------------------------------- 
+        /// <summary>
+        /// A parameterless delegate that is called to indicate different story states
+        /// </summary>
+        public delegate void StorySimpleEvent(); // Simple Event with no parameters
 
-
-        public delegate void StorySimpleEvent();
+        /// <summary>
+        /// Delegate that is called when the story has new dialogue to present to the player.
+        /// </summary>
+        /// <param name="text"></param>
         public delegate void StoryDialogueEvent(string text);
+
+        /// <summary>
+        /// Delegate that is called when a new set of choices is presented to the player.
+        /// </summary>
+        /// <param name="choices"></param>
         public delegate void StoryChoiceEvent(List<Choice> choices);
 
         public static event StorySimpleEvent OnStoryInitialized;
@@ -132,17 +131,134 @@ namespace Darklight.UnityExt.Inky
         #endregion
 
 
-        //  ================================ [[ METHODS ]] ================================
-        void RepopulateKnotContainers(List<string> knotList)
+
+        #region ---- < PROTECTED_VIRTUAL_METHODS > ( Internal Data Handling ) --------------------------------- 
+        protected virtual void Initialize(bool force, string suffix = "")
         {
-            _storyKnotContainers.Clear();
-            foreach (string knot in knotList)
+            if (!force && IsInitialized) return;
+            _isInitialized = false;
+
+            // << BASE CHECKS >> ------------------------------------ >>
+            if (_storyAsset == null)
             {
-                _storyKnotContainers.Add(new StoryKnotContainer(knot));
+                Debug.LogError($"{Prefix} Ink story not set.");
+                return;
             }
+
+            string initLog = $"{Prefix} Initialized {suffix}";
+            void AddToLog(string message) { initLog += $"\n>> {message}"; }
+
+            // << CREATE STORY >> ------------------------------------ >>
+            this._story = CreateStory(_storyAsset);
+            AddToLog($"Story: {_storyAsset.name}");
+
+            // << GET KNOTS >> ------------------------------------ >>
+            this._knots = GetAllKnots().ToArray();
+            AddToLog($"Knots: {_knots.Length}");
+
+            // << GET STITCHES >> ------------------------------------ >>
+            if (_stitchDitionary == null)
+                _stitchDitionary = new Dictionary<string, List<string>>();
+
+            // Remove any knots that are not in the current story
+            if (_stitchDitionary.Count > 0)
+            {
+                List<string> knotsToRemove = new List<string>();
+                foreach (string key in _stitchDitionary.Keys)
+                {
+                    if (!_knots.Contains(key))
+                    {
+                        knotsToRemove.Add(key);
+                    }
+                }
+                foreach (string key in knotsToRemove)
+                {
+                    _stitchDitionary.Remove(key);
+                }
+                AddToLog($"Removed Knots from _stitchDictionary: {knotsToRemove.Count}");
+            }
+
+            // Add any new knots to the dictionary
+            int stitchCount = 0;
+            int newKnotCount = 0;
+            int updatedKnotCount = 0;
+            foreach (string knot in _knots)
+            {
+                if (_stitchDitionary.ContainsKey(knot))
+                {
+                    _stitchDitionary[knot] = GetAllStitchesInKnot(knot);
+                    updatedKnotCount++;
+                    stitchCount += _stitchDitionary[knot].Count;
+                }
+                else
+                {
+                    _stitchDitionary.Add(knot, GetAllStitchesInKnot(knot));
+                    newKnotCount++;
+                    stitchCount += _stitchDitionary[knot].Count;
+                }
+            }
+            AddToLog($"Stitches: {stitchCount} (NewKnots: {newKnotCount}, UpdatedKnots: {updatedKnotCount})");
+
+            // << GET VARIABLES >> ------------------------------------ >>
+            if (_variableDictionary == null)
+                _variableDictionary = new Dictionary<string, object>();
+            if (_variableDictionary.Count > 0)
+                _variableDictionary.Clear();
+            foreach (string variableName in GlobalStory.variablesState)
+            {
+                object variableValue = GlobalStory.variablesState[variableName];
+                if (variableValue is not null)
+                    _variableDictionary.Add(variableName, variableValue);
+            }
+
+            // << GET GLOBAL TAGS >> ------------------------------------ >>
+            this._globalTags = new string[0];
+            if (_story.globalTags != null && _story.globalTags.Count > 0)
+            {
+                this._globalTags = _story.globalTags.ToArray();
+                AddToLog($"Global Tags: {_globalTags.Length}");
+            }
+
+            // << REFRESH DATA OBJECT >> ------------------------------------ >>
+            RefreshDataObject();
+
+            // << OBSERVE EVENTS >>
+            if (Application.isPlaying)
+            {
+                _story.onError += HandleStoryError;
+                OnStoryInitialized += HandleStoryInitialized;
+                OnStartKnot += HandleStoryStart;
+                OnNewDialogue += HandleStoryDialogue;
+                OnNewChoices += HandleStoryChoices;
+                OnEndKnot += HandleStoryEnd;
+                AddToLog("Subscribed to Story Events in PlayMode");
+            }
+
+            // << CREATE ITERATOR >> ------------------------------------ >>
+            _iterator = new StoryIterator();
+
+            // << CONFIRM INITIALIZATION >> ------------------------------------ >>
+            _isInitialized = true;
+            if (Application.isPlaying)
+                OnStoryInitialized?.Invoke();
+
+            Debug.Log(initLog);
         }
 
+        protected void RefreshDataObject()
+        {
+            if (_storyDataObject == null)
+            {
+                _storyDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<InkyStoryDataObject>(ASSET_PATH);
+            }
 
+            // Update Knot Containers
+            _storyDataObject.RepopulateKnotContainers(_stitchDitionary);
+            _storyDataObject.RepopulateVariableContainers(_variableDictionary);
+        }
+        #endregion
+
+        #region ---- < PROTECTED_METHODS > ( Story Event Handlers ) --------------------------------- 
         protected virtual void HandleStoryError(string message, ErrorType errorType)
         {
             Debug.LogError($"{Prefix} Ink Error: {errorType} :: {message}");
@@ -173,76 +289,37 @@ namespace Darklight.UnityExt.Inky
         {
             Debug.Log($"{Prefix} End of Knot");
         }
+        #endregion
 
+        #region ---- < PUBLIC_METHODS > ( Interface Methods ) --------------------------------- 
         // ---- ( IUnityEditorListener ) ---------------------------------
         public void OnEditorReloaded()
         {
-            if (!Application.isPlaying)
-                Initialize();
+            if (Application.isPlaying)
+                return;
+            else
+            {
+                Initialize(true, "from OnEditorReloaded()");
+            }
         }
 
         // ---- ( MonoBehaviourSingleton ) ---------------------------------
         public override void Initialize()
         {
-            Initialize();
-        }
-
-        public virtual void Initialize(bool force = false)
-        {
-            if (!force && IsInitialized) return;
-
-            // return if no ink story set
-            if (_storyAsset == null)
-            {
-                Debug.LogError($"{Prefix} Ink story not set.");
-                return;
-            }
-
-            // << CREATE STORY >> ------------------------------------ >>
-            this._story = CreateStory(_storyAsset);
-            this._knots = GetAllKnots(_story).ToArray();
-            this._variables = GetAllVariables(_story);
-
-            if (_story.globalTags != null)
-                this._globalTags = _story.globalTags.ToArray();
-
-            // << CREATE CONTAINERS >> ------------------------------------ >>
-            RepopulateKnotContainers(KnotList);
-
-
-            // << GET VARIABLES >>
-
-            // << OBSERVE EVENTS >>
             if (Application.isPlaying)
-            {
-                _story.onError += HandleStoryError;
-                OnStoryInitialized += HandleStoryInitialized;
-                OnStartKnot += HandleStoryStart;
-                OnNewDialogue += HandleStoryDialogue;
-                OnNewChoices += HandleStoryChoices;
-                OnEndKnot += HandleStoryEnd;
-            }
-
-            // << CREATE ITERATOR >> ------------------------------------ >>
-            _iterator = new StoryIterator();
-
-            // << CONFIRM INITIALIZATION >> ------------------------------------ >>
-            _isInitialized = true;
-
-            if (Application.isPlaying)
-                OnStoryInitialized?.Invoke();
+                Initialize(false, "from MonoBehaviourSingleton Initialize() in PlayMode");
             else
-                Debug.Log($"{Prefix} >> Story Initialized From Editor");
+                Initialize(true, "from MonoBehaviourSingleton Initialize() in EditorMode");
         }
+        #endregion
 
-
-
+        #region ---- < PUBLIC_METHODS > ( Getters ) ---------------------------------
         public void TryGetKnotsWithSubstring(string substring, out List<string> knots)
         {
             substring = substring.ToLower();
             knots = new List<string>();
 
-            if (this._knots != null)
+            if (this._knots != null && this._knots.Length > 0)
             {
                 foreach (string knot in this._knots)
                 {
@@ -253,10 +330,24 @@ namespace Darklight.UnityExt.Inky
                     }
                 }
             }
+            else if (this._storyDataObject != null && _storyDataObject.KnotContainers.Count > 0)
+            {
+                foreach (StoryKnotContainer container in _storyDataObject.KnotContainers)
+                {
+                    if (container.Knot.Contains(substring))
+                    {
+                        knots.Add(container.Knot);
+                    }
+                }
+            }
             return;
         }
+        #endregion
 
-        #region ---- < STATIC_METHODS > --------------------------------- 
+        #region ---- < PUBLIC_METHODS > ( Setters ) ---------------------------------
+        #endregion
+
+        #region ---- < STATIC_METHODS > ( InkyStory Utility Methods ) --------------------------------- 
 
         /// <summary>
         /// Creates an Ink story from a TextAsset.
@@ -278,9 +369,9 @@ namespace Darklight.UnityExt.Inky
         /// <returns>
         ///     A list of knot names.
         /// </returns>
-        static List<string> GetAllKnots(Story story)
+        static List<string> GetAllKnots()
         {
-            return story.mainContentContainer.namedContent.Keys.ToList();
+            return GlobalStory.mainContentContainer.namedContent.Keys.ToList();
         }
 
         /// <summary>
@@ -295,21 +386,16 @@ namespace Darklight.UnityExt.Inky
         ///    The variable value is an object, so it must be cast to the appropriate type.
         ///    For example, if the variable is an integer, cast it to an integer.
         /// </returns>
-        static List<InkyVariable> GetAllVariables(Story story)
+        static void GetAllVariables(out Dictionary<string, object> variableDictionary)
         {
-            List<InkyVariable> output = new List<InkyVariable>();
-            foreach (string variableName in story.variablesState)
+            Dictionary<string, object> output = new Dictionary<string, object>();
+            foreach (string variableName in GlobalStory.variablesState)
             {
-                object variableValue = story.variablesState[variableName];
-                InkyVariable inkyVariable = new InkyVariable(variableName, variableValue);
-                if (inkyVariable is null)
-                {
-                    Debug.LogWarning($"Variable {variableName} is null.");
-                    continue;
-                }
-                output.Add(inkyVariable);
+                object variableValue = GlobalStory.variablesState[variableName];
+                if (variableValue is not null)
+                    output.Add(variableName, variableValue);
             }
-            return output;
+            variableDictionary = output;
         }
 
         /// <summary>
@@ -345,11 +431,39 @@ namespace Darklight.UnityExt.Inky
             }
         }
 
-        public static InkyVariable GetVariableByName(string variableName)
+        public static void TryGetVariableValue(string variableName, out object value)
         {
-            return Instance._variables.Find(variable => variable.Key == variableName);
+            if (Instance._variableDictionary.ContainsKey(variableName))
+                value = Instance._variableDictionary[variableName];
+            else
+                value = null;
         }
 
+        public static void TryGetVariableContainer(string variableName, out StoryVariableContainer container)
+        {
+            if (Instance._variableDictionary.ContainsKey(variableName))
+            {
+                object value = Instance._variableDictionary[variableName];
+                container = new StoryVariableContainer(variableName, value);
+            }
+            else
+            {
+                container = null;
+            }
+        }
+
+        public static void SetVariable(string variableName, object value)
+        {
+            if (Instance._variableDictionary.ContainsKey(variableName))
+            {
+                Instance._variableDictionary[variableName] = value;
+            }
+            else
+            {
+                Instance._variableDictionary.Add(variableName, value);
+            }
+            Instance.RefreshDataObject();
+        }
 
         public static void GoToKnotOrStitch(string knotName)
         {
@@ -403,13 +517,80 @@ namespace Darklight.UnityExt.Inky
             [SerializeField, ShowOnly] string _knot;
             [SerializeField, ShowOnly, NonReorderable] List<string> _stitches;
 
-            public string Name { get => _knot; set => _knot = value; }
+            public string Knot { get => _knot; set => _knot = value; }
             public List<string> Stitches { get => _stitches; set => _stitches = value; }
 
             public StoryKnotContainer(string knot)
             {
                 _knot = knot;
                 _stitches = GetAllStitchesInKnot(knot);
+            }
+
+            public StoryKnotContainer(string knot, List<string> stitches)
+            {
+                _knot = knot;
+                _stitches = stitches;
+            }
+
+            public StoryKnotContainer(KeyValuePair<string, List<string>> pair)
+            {
+                _knot = pair.Key;
+                _stitches = pair.Value;
+            }
+        }
+        #endregion
+
+        #region < CLASS > [[ STORY VARIABLE CONTAINER ]] ============================================================
+
+        [System.Serializable]
+        public class StoryVariableContainer
+        {
+            bool _isInkList => _value is InkList;
+
+            object _value;
+            [SerializeField, ShowOnly] string _key;
+            [SerializeField, ShowOnly, HideIf("_isInkList")] string _valueAsString;
+            [SerializeField, ShowOnly, ShowIf("_isInkList")] List<string> _valueAsStringList;
+
+            public string Key { get => _key; set => _key = value; }
+            public object Value { get => _value; set => _value = value; }
+            public string ValueAsString => ToString();
+            public List<string> ValueAsStringList => ToStringList();
+
+            // Constructor for general use
+            public StoryVariableContainer(string key, object value)
+            {
+                _key = key;
+                _value = value;
+
+                _valueAsString = ToString();
+                _valueAsStringList = ToStringList();
+            }
+
+            public List<string> ToStringList()
+            {
+                if (_value is InkList inkList)
+                {
+                    List<string> list = new List<string>();
+                    foreach (KeyValuePair<InkListItem, int> item in inkList)
+                    {
+                        list.Add(item.Key.ToString());
+                    }
+                    return list;
+                }
+                return new List<string> { _valueAsString };
+            }
+
+            public override string ToString()
+            {
+                if (_value is InkList inkList)
+                {
+                    return _valueAsString = inkList.ToString().Trim();
+                }
+                else
+                {
+                    return _valueAsString = _value?.ToString() ?? "null";
+                }
             }
         }
         #endregion
