@@ -69,8 +69,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 
         //InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
 
-        InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerRemoveItem", RemoveItem);
-        InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerHasItem", HasItem);
+        MTRStoryManager.GlobalStory.BindExternalFunction("playerRemoveItem", (object[] args) => RemoveItem(args));
+        MTRStoryManager.GlobalStory.BindExternalFunction("playerHasItem", (object[] args) => HasItem(args));
     }
 
     void SelectMove(Vector2 move)
@@ -135,7 +135,7 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
             args.Add("");
         }
 
-        InkyStoryManager.GlobalStoryObject.RunExternalFunction("synthesize", args.ToArray());
+        //MTRStoryManager.GlobalStory.RunExternalFunction("synthesize", args.ToArray());
     }
 
     /*

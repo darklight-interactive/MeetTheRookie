@@ -6,6 +6,10 @@ using Darklight.UnityExt.Behaviour;
 using Ink.Runtime;
 using UnityEngine;
 using NaughtyAttributes;
+using System.Linq;
+using Ink;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,199 +21,493 @@ namespace Darklight.UnityExt.Inky
     /// </summary>
     public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
-        public static Ink.Runtime.Story GlobalStory => Instance._globalStoryObject.StoryValue;
-        public static InkyStoryObject GlobalStoryObject => Instance._globalStoryObject;
-        public static InkyStoryIterator Iterator => Instance._iterator;
-        public static List<string> SpeakerList
+        public static Story GlobalStory
         {
             get
             {
-                List<string> speakerList = new List<string>();
-                if (Instance && Instance._speakerList != null)
-                    speakerList = Instance._speakerList;
-                return speakerList;
+                if (Instance == null)
+                {
+                    Debug.LogError("InkyStoryManager: Instance is null.");
+                    return null;
+                }
+
+                if (Instance._story == null)
+                {
+                    Instance._story = CreateStory(Instance._storyAsset);
+                }
+                return Instance._story;
             }
         }
 
-        public static string CurrentSpeaker => Instance._currentSpeaker;
+        protected static StoryIterator Iterator
+        {
+            get
+            {
+                if (Instance == null)
+                {
+                    Debug.LogError("InkyStoryManager: Instance is null.");
+                    return null;
+                }
 
-        public delegate void StoryInitialized(Story story);
-        public event StoryInitialized OnStoryInitialized;
+                if (Instance._iterator == null)
+                {
+                    Instance._iterator = new StoryIterator();
+                }
+                return Instance._iterator;
+            }
+        }
 
-        [SerializeField, Expandable] InkyStoryObject _globalStoryObject;
-        [SerializeField] InkyStoryIterator _iterator;
-        [SerializeField, ShowOnly, NonReorderable] List<string> _knotList;
-        [SerializeField, ShowOnly, NonReorderable] List<string> _speakerList;
-        [SerializeField, ShowOnly] string _currentSpeaker;
+        public static string CurrentKnot => Instance._currentStoryKnot;
+        public static string CurrentDialogue
+        {
+            get
+            {
+                return GlobalStory.currentText.Trim();
+            }
+        }
+        public static List<Choice> CurrentChoices
+        {
+            get
+            {
+                return GlobalStory.currentChoices;
+            }
+        }
 
+        public static StoryState CurrentState => Iterator.CurrentState;
+
+
+        Story _story;
+        StoryIterator _iterator;
+        string[] _knots;
+        string[] _globalTags;
+        Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
+
+        [SerializeField] TextAsset _storyAsset;
+        [SerializeField] List<InkyVariable> _variables = new List<InkyVariable>();
+
+
+        [SerializeField, ShowOnly] string _currentStoryKnot;
+        [SerializeField, ShowOnly] string _currentStoryDialogue;
+        [SerializeField, ShowOnly] public StoryState _currentStoryState;
+
+
+
+
+        #region ---- < Properties > --------------------------------- 
         public List<string> KnotList
         {
             get
             {
-                if (_knotList == null)
-                    _knotList = new List<string>();
-                return _knotList;
+                if (_knots == null)
+                    _knots = GetAllKnots(_story).ToArray();
+                return _knots.ToList();
             }
         }
+        #endregion
 
-        public List<string> SceneKnotList
+
+        #region ---- < Events > --------------------------------- 
+
+
+        public delegate void StorySimpleEvent();
+        public delegate void StoryDialogueEvent(string text);
+        public delegate void StoryChoiceEvent(List<Choice> choices);
+
+        public static event StorySimpleEvent OnStartKnot;
+        public static event StoryDialogueEvent OnNewDialogue;
+        public static event StoryChoiceEvent OnNewChoices;
+        public static event StorySimpleEvent OnEndKnot;
+        #endregion
+
+
+        //  ================================ [[ METHODS ]] ================================
+
+        protected virtual void HandleStoryError(string message, ErrorType errorType)
         {
-            get
-            {
-                List<string> sceneKnotList = new List<string>();
-                if (_knotList != null)
-                {
-                    foreach (string knot in _knotList)
-                    {
-                        knot.ToLower();
-                        if (knot.Contains("scene"))
-                        {
-                            sceneKnotList.Add(knot);
-                        }
-                    }
-                }
-                return sceneKnotList;
-            }
+            Debug.LogError($"{Prefix} Ink Error: {errorType} :: {message}");
         }
 
-        #region ----- [[ SPEAKER HANDLING ]] ------------------------ >>
-        public delegate void SpeakerSet(string speaker);
-        public event SpeakerSet OnSpeakerSet;
-
-        /// <summary>
-        /// This is the forceful way to set the speaker value.
-        /// </summary>
-        /// <param name="speaker"></param>
-        public void SetSpeaker(string speaker)
+        protected virtual void HandleStoryStart()
         {
-            _currentSpeaker = speaker;
-            OnSpeakerSet?.Invoke(speaker);
+            Debug.Log($"{Prefix} Story Started");
         }
 
-        #endregion
+        protected virtual void HandleStoryDialogue(string dialogue)
+        {
+            _currentStoryDialogue = dialogue;
+            Debug.Log($"{Prefix} Dialogue: {dialogue}");
+        }
 
-        #region ----- [[ QUEST HANDLING ]] ------------------------ >>
-        [SerializeField, ShowOnly] private string _mainQuestName;
-        [SerializeField, ShowOnly] private List<string> _activeQuestChain = new List<string>();
-        [SerializeField, ShowOnly] private List<string> _completedQuestChain = new List<string>();
-        #endregion
+        protected virtual void HandleStoryChoices(List<Choice> choices)
+        {
+            Debug.Log($"{Prefix} Choices: {choices.Count}");
+        }
 
-        #region ----- [[ CLUE HANDLING ]] ------------------------ >>
-        [SerializeField, ShowOnly] private List<string> _globalKnowledgeList = new List<string>();
-        #endregion
+        protected virtual void HandleStoryEnd()
+        {
+            Debug.Log($"{Prefix} End of Knot");
+        }
 
-        // ------------------------ [[ METHODS ]] ------------------------ >>
+
+
+
+
+        // ---- ( IUnityEditorListener ) ---------------------------------
         public void OnEditorReloaded()
         {
             Initialize();
         }
 
+        // ---- ( MonoBehaviourSingleton ) ---------------------------------
         public override void Initialize()
         {
-            if (_globalStoryObject == null)
+            // return if no ink story set
+            if (_storyAsset == null)
+            {
+                Debug.LogError("InkyStoryObject: Ink story not set.");
                 return;
+            }
+            this._story = CreateStory(_storyAsset);
+            this._knots = GetAllKnots(_story).ToArray();
+            this._variables = GetAllVariables(_story);
+            this._globalTags = _story.globalTags.ToArray();
 
-            // << INITIALIZE STORY DATA >>
-            _globalStoryObject.Initialize();
-            _knotList = _globalStoryObject.KnotList;
+
+
 
             // << GET VARIABLES >>
-            _speakerList = _globalStoryObject.GetVariableByName("Speaker").ToStringList();
-            //Debug.Log($"{Prefix} >> Speaker List Count : {SpeakerList.Count}");
 
-            Story story = _globalStoryObject.StoryValue; // << GET STORY OBJECT >>
+            // << OBSERVE EVENTS >>
+            _story.onError += HandleStoryError;
+            OnStartKnot += HandleStoryStart;
+            OnNewDialogue += HandleStoryDialogue;
+            OnNewChoices += HandleStoryChoices;
+            OnEndKnot += HandleStoryEnd;
 
-            // << OBSERVE VARIABLES >>
-            story.ObserveVariable(
-                "CURRENT_SPEAKER",
-                (string varName, object newValue) =>
-                {
-                    _currentSpeaker = newValue.ToString();
-                    OnSpeakerSet?.Invoke(_currentSpeaker);
-                    Debug.Log($"{Prefix} >> Current Speaker: {_currentSpeaker}");
-                }
-            );
-
-            story.ObserveVariable(
-                "MAIN_QUEST",
-                (string varName, object newValue) =>
-                {
-                    _mainQuestName = newValue.ToString();
-                    Debug.Log($"{Prefix} >> Main Quest: {_mainQuestName}");
-                }
-            );
-
-            story.ObserveVariable(
-                "ACTIVE_QUEST_CHAIN",
-                (string varName, object newValue) =>
-                {
-                    _activeQuestChain = _globalStoryObject.GetVariableByName("ACTIVE_QUEST_CHAIN").ToStringList();
-                    Debug.Log($"{Prefix} >> Active Quest Chain: {_activeQuestChain.Count}");
-                }
-            );
-
-            story.ObserveVariable(
-                "COMPLETED_QUESTS",
-                (string varName, object newValue) =>
-                {
-                    _completedQuestChain = _globalStoryObject.GetVariableByName("COMPLETED_QUESTS").ToStringList();
-                    Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuestChain.Count}");
-                }
-            );
-
-            story.ObserveVariable(
-                "GLOBAL_KNOWLEDGE",
-                (string varName, object newValue) =>
-                {
-                    _globalKnowledgeList = _globalStoryObject.GetVariableByName("GLOBAL_KNOWLEDGE").ToStringList();
-                    Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledgeList.Count}");
-                }
-            );
 
             // << CREATE ITERATOR >> ------------------------------------ >>
-            _iterator = new InkyStoryIterator(_globalStoryObject);
-
-            Debug.Log($"{Prefix} >> Initialized Inky Story Manager with Story: {_globalStoryObject.name} {story}");
-            OnStoryInitialized?.Invoke(story);
+            _iterator = new StoryIterator();
         }
 
-        object QuestStarted(object[] args)
+
+
+        public void TryGetKnotsWithSubstring(string substring, out List<string> knots)
         {
-            Debug.Log("Quest Started! >> " + args[0].ToString());
-            return false;
-        }
-    }
+            substring = substring.ToLower();
+            knots = new List<string>();
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(InkyStoryManager))]
-    public class InkyStoryManagerCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        InkyStoryManager _script;
-
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (InkyStoryManager)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            if (GUILayout.Button("Initialize"))
+            if (this._knots != null)
             {
-                _script.Initialize();
+                foreach (string knot in this._knots)
+                {
+                    knot.ToLower();
+                    if (knot.Contains(substring))
+                    {
+                        knots.Add(knot);
+                    }
+                }
             }
-            base.OnInspectorGUI();
+            return;
+        }
 
-            if (EditorGUI.EndChangeCheck())
+        #region ---- < STATIC_METHODS > --------------------------------- 
+
+        /// <summary>
+        /// Creates an Ink story from a TextAsset.
+        /// </summary>
+        /// <param name="inkTextAsset">
+        ///     The TextAsset containing the Ink story. Typically, this is a generated .json file.
+        /// </param>
+        static Story CreateStory(TextAsset inkTextAsset)
+        {
+            return new Story(inkTextAsset.text);
+        }
+
+        /// <summary>
+        /// Retrieves all knots in an Ink story.
+        /// </summary>
+        /// <param name="story">
+        ///     The Ink story from which to extract knots.
+        /// </param>
+        /// <returns>
+        ///     A list of knot names.
+        /// </returns>
+        static List<string> GetAllKnots(Story story)
+        {
+            return story.mainContentContainer.namedContent.Keys.ToList();
+        }
+
+        /// <summary>
+        /// Retrieves all variables from an Ink story and wraps them in a dictionary.
+        /// </summary>
+        /// <param name="story">
+        ///    The Ink story from which to extract variables.
+        /// </param>
+        /// <returns>
+        ///    A dictionary of variable names and their values.
+        ///    The key is the variable name and the value is the variable value.
+        ///    The variable value is an object, so it must be cast to the appropriate type.
+        ///    For example, if the variable is an integer, cast it to an integer.
+        /// </returns>
+        static List<InkyVariable> GetAllVariables(Story story)
+        {
+            List<InkyVariable> output = new List<InkyVariable>();
+            foreach (string variableName in story.variablesState)
             {
-                _serializedObject.ApplyModifiedProperties();
+                object variableValue = story.variablesState[variableName];
+                InkyVariable inkyVariable = new InkyVariable(variableName, variableValue);
+                if (inkyVariable is null)
+                {
+                    Debug.LogWarning($"Variable {variableName} is null.");
+                    continue;
+                }
+                output.Add(inkyVariable);
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Retrieves all stitches in a knot from an Ink story.
+        /// </summary>
+        /// <param name="story">
+        ///     The Ink story from which to extract stitches.
+        /// </param>
+        /// <param name="knot">
+        ///     The knot from which to extract stitches.
+        /// </param>
+        /// <returns>
+        ///     A list of stitch names.
+        /// </returns>
+        public static List<string> GetAllStitchesInKnot(string knot)
+        {
+            Container container = GlobalStory.KnotContainerWithName(knot);
+            List<string> stitches = new List<string>();
+            foreach (string stitch in container.namedContent.Keys.ToList())
+            {
+                stitches.Add($"{knot}.{stitch}");
+            }
+            return stitches;
+        }
+
+
+        static void RepopulateChoiceMap()
+        {
+            Instance._choiceMap.Clear();
+            foreach (Choice choice in GlobalStory.currentChoices)
+            {
+                Instance._choiceMap.Add(choice, choice.index);
             }
         }
+
+        public static InkyVariable GetVariableByName(string variableName)
+        {
+            return Instance._variables.Find(variable => variable.Key == variableName);
+        }
+
+
+        public static void GoToKnotOrStitch(string knotName)
+        {
+            try
+            {
+                GlobalStory.ChoosePathString(knotName);
+                Instance._currentStoryKnot = knotName;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"{Prefix} Error: {e.Message}, this");
+            }
+            finally
+            {
+                Iterator.GoToState(StoryState.START);
+                Debug.Log($"{Prefix} Moved to Knot: {knotName}");
+            }
+        }
+
+        public static void ContinueStory()
+        {
+            Iterator.ContinueStory();
+        }
+
+        public static void ChooseChoice(Choice choice) => ChooseChoice(choice.index);
+        public static void ChooseChoice(int index)
+        {
+            TryGetChoices(out List<Choice> choices);
+            Debug.Log($"{Prefix} Choice Selected: {choices[index].text}");
+
+            GlobalStory.ChooseChoiceIndex(index);
+            Instance._choiceMap.Clear();
+            ContinueStory();
+        }
+
+        public static void TryGetChoices(out List<Choice> choices)
+        {
+            choices = GlobalStory.currentChoices;
+        }
+
+        public static void TryGetTags(out IEnumerable<string> tags)
+        {
+            tags = GlobalStory.currentTags;
+        }
+        #endregion
+
+
+
+        #region < CLASS > [[ STORY KNOT CONTAINER ]] ================================================================
+        [Serializable]
+        public class StoryKnotContainer
+        {
+            [ShowOnly] string _name;
+            [ShowOnly] List<string> _stitches;
+
+            public string Name { get => _name; set => _name = value; }
+            public List<string> Stitches { get => _stitches; set => _stitches = value; }
+        }
+        #endregion
+
+        #region < CLASS > [[ STORY ITERATOR ]] ================================================================
+        /// <summary>
+        /// This class is responsible for iterating through the Ink story and handling the different states of the story.
+        /// It implements a simple StoryState machine to track the current StoryState of the story.
+        /// </summary>
+        [Serializable]
+        public class StoryIterator : SimpleStateMachine<StoryState>
+        {
+
+            // ======== [[ PROPERTIES ]] ================================ >>
+            protected Story story => GlobalStory;
+
+            // ------------------- [[ CONSTRUCTORS ]] -------------------
+            public StoryIterator() : base(StoryState.NULL)
+            {
+                Instance._currentStoryState = CurrentState;
+            }
+
+            public override void OnStateChanged(StoryState previousState, StoryState newState)
+            {
+                Instance._currentStoryState = newState;
+            }
+
+            #region ---- ( Story Handlers ) --------------------------------- 
+            void HandleStoryDialogue()
+            {
+                GoToState(StoryState.DIALOGUE);
+                story.Continue();
+
+                // Check if empty, if so, continue again
+                string currentDialogue = story.currentText.Trim();
+                if (currentDialogue == null || currentDialogue == "" || currentDialogue == "\n")
+                {
+                    ContinueStory();
+                    return;
+                }
+
+                // Invoke the Dialogue Event
+                OnNewDialogue?.Invoke(currentDialogue);
+                Debug.Log($"{Prefix} Dialogue: {currentDialogue}");
+            }
+
+            void HandleStoryChoices()
+            {
+                // Return if already in choice StoryState
+                if (CurrentState == StoryState.CHOICE) return;
+
+                // Go To Choice StoryState
+                GoToState(StoryState.CHOICE);
+
+                // Set the choiceMap
+                RepopulateChoiceMap();
+
+                // Invoke the Choice Event
+                OnNewChoices?.Invoke(story.currentChoices);
+                Debug.Log($"{Prefix} Choices: {story.currentChoices.Count}");
+            }
+
+            void HandleStoryEnd()
+            {
+                GoToState(StoryState.END);
+
+                OnEndKnot?.Invoke();
+                Debug.Log($"{Prefix} End of Knot");
+            }
+
+            void HandleTags()
+            {
+                List<string> currentTags = story.currentTags;
+
+                // loop through each tag and handle it accordingly
+                foreach (string tag in currentTags)
+                {
+                    // parse the tag
+                    string[] splitTag = tag.Split(':');
+                    if (splitTag.Length != 2)
+                    {
+                        Debug.LogWarning($"{Prefix} Error: Tag is not formatted correctly: {tag}");
+                    }
+                    else
+                    {
+                        string tagKey = splitTag[0].Trim();
+                        string tagValue = splitTag[1].Trim();
+
+                        // handle the tag
+                        switch (tagKey)
+                        {
+                            default:
+                                Debug.LogWarning($"{Prefix} Tag not handled: {tag}");
+                                break;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            // ======== <PUBLIC_METHODS> ================================ >>
+
+
+            public void ContinueStory()
+            {
+                // Check if null
+                if (CurrentState == StoryState.NULL)
+                {
+                    Debug.LogError($"{Prefix} Error: Story is null");
+                    return;
+                }
+
+                // Check if end
+                if (CurrentState == StoryState.END)
+                {
+                    Debug.LogWarning($"{Prefix} Knot has ended");
+                    return;
+                }
+
+                // << HANDLE STORY StoryState >> ------------------------------------ >>
+                // -- ( DIALOGUE StoryState ) ----
+                if (story.canContinue) HandleStoryDialogue();
+
+                // -- ( CHOICE StoryState ) ----
+                else if (story.currentChoices.Count > 0) HandleStoryChoices();
+
+                // -- ( END StoryState ) ----
+                else HandleStoryEnd();
+
+                // << HANDLE TAGS >> ------------------------------------ >>
+                HandleTags();
+            }
+
+
+        }
+        #endregion
+
+        public enum StoryState
+        {
+            NULL,
+            START,
+            DIALOGUE,
+            CHOICE,
+            END
+        }
+
     }
-#endif
 }
+
+
+

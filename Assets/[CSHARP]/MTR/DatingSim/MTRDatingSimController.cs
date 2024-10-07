@@ -58,7 +58,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
 
     // ================ [[ PROPERTIES ]] ================================ >>>>
-    InkyStoryIterator _storyIterator => InkyStoryManager.Iterator;
 
     // ================ [[ UNITY METHODS ]] ============================ >>>>
     void OnEnable()
@@ -112,10 +111,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         _misra_characterControl = ElementQuery<MTRCharacterControlElement>(misraCtrlTag);
         _misra_nameTag = ElementQuery<VisualElement>(misraNameTag);
 
-
-
-
-
         CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
         _choiceParent = root.Q<VisualElement>(choiceParentTag);
 
@@ -125,7 +120,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         if (!boundEmote)
         {
             // In Inky file function should be: EXTERNAL SetEmote(name, emote)
-            InkyStoryManager.GlobalStoryObject.BindExternalFunction("SetEmote", (object[] args) =>
+            MTRStoryManager.GlobalStory.BindExternalFunction("SetEmote", (object[] args) =>
             {
                 return SetEmote((string)args[0], (string)args[1]);
             });
@@ -134,11 +129,11 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         _dialogueText.FullText = "";
 
-        _storyIterator.OnDialogue += HandleStoryDialogue;
-        _storyIterator.OnChoice += HandleStoryChoices;
+        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
+        MTRStoryManager.OnNewChoices += HandleStoryChoices;
 
         // Start story
-        _storyIterator.ContinueStory();
+        MTRStoryManager.ContinueStory();
 
         MoveTriangle(); // Cool dialogue triangle movement
 
@@ -178,12 +173,13 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// Update the dialogue 
     /// </summary>
     /// <param name="dialogue">The new dialogue</param>
-    void HandleStoryDialogue(string dialogue, string speaker = "")
+    void HandleStoryDialogue(string dialogue)
     {
-        Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {speaker}");
+        string speaker = MTRStoryManager.CurrentSpeaker;
         HandleSpeaker(speaker);
+        Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {speaker}");
 
-        _storyIterator.TryGetTags(out IEnumerable<string> tags);
+        MTRStoryManager.TryGetTags(out IEnumerable<string> tags);
 
         foreach (string tag in tags)
         {
@@ -338,7 +334,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
         else
         {
-            _storyIterator.ContinueStory();
+            MTRStoryManager.ContinueStory();
         }
     }
 
@@ -355,11 +351,11 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         _continueTriangle.style.visibility = Visibility.Visible;
 
-        _storyIterator.ChooseChoice(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
+        MTRStoryManager.ChooseChoice(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
         _choicesActive = false;
 
         ResetChoiceButtons();
-        _storyIterator.ContinueStory();
+        MTRStoryManager.ContinueStory();
     }
     #endregion
 

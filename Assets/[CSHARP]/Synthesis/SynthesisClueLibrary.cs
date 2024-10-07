@@ -18,14 +18,7 @@ public class SynthesisClueLibrary : ScriptableObject
 
     public void LoadMysteryClues()
     {
-        InkyStoryObject storyObject = InkyStoryManager.GlobalStoryObject;
-        if (storyObject == null)
-        {
-            Debug.LogWarning("Story Object is not initialized.");
-            return;
-        }
-
-        List<string> clues = storyObject.GetVariableByName("Mystery1").ToStringList();
+        List<string> clues = MTRStoryManager.GetVariableByName("Mystery1").ToStringList();
         mystery1Clues = new SynthesisClue[clues.Count];
         foreach (string clue in clues)
         {

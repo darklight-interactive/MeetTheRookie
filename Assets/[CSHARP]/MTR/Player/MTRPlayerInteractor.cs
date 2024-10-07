@@ -62,9 +62,9 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         get
         {
             List<string> speakers = new List<string>();
-            if (InkyStoryManager.Instance != null)
+            if (MTRStoryManager.Instance != null)
             {
-                speakers = InkyStoryManager.SpeakerList;
+                speakers = MTRStoryManager.SpeakerList;
             }
             return speakers;
         }

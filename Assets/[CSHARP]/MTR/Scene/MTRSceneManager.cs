@@ -110,7 +110,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         }
 
         // << Initialize Story >>
-        Story story = InkyStoryManager.GlobalStory;
+        Story story = MTRStoryManager.GlobalStory;
         if (story != null)
             OnStoryInitialized(story);
         else

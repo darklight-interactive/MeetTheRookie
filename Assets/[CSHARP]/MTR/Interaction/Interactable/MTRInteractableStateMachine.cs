@@ -12,11 +12,9 @@ public partial class MTRInteractable
     public new class InternalStateMachine : Interactable<InternalData, InternalStateMachine, State, Type>.InternalStateMachine
     {
         MTRInteractable _interactable;
-        InkyStoryIterator _storyIterator;
         public InternalStateMachine(MTRInteractable interactable) : base(interactable)
         {
             _interactable = interactable;
-            _storyIterator = InkyStoryManager.Iterator;
 
             NullState nullState = new NullState(this);
             this.currentFiniteState = nullState;
@@ -57,8 +55,6 @@ public partial class MTRInteractable
             protected MTRInteractable interactable;
             protected InternalStateMachine stateMachine;
             protected State stateType;
-            protected InkyStoryIterator storyIterator => InkyStoryManager.Iterator;
-
 
             public BaseInteractState(InternalStateMachine stateMachine, State stateType)
                 : base(stateMachine, stateType)
@@ -137,7 +133,7 @@ public partial class MTRInteractable
             public override void Enter()
             {
                 base.Enter();
-                storyIterator.GoToKnotOrStitch(interactable._interactionStitch);
+                MTRStoryManager.GoToKnotOrStitch(interactable._interactionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
                 stateMachine.GoToState(State.CONTINUE);
             }
@@ -155,7 +151,7 @@ public partial class MTRInteractable
             public override void Enter()
             {
                 // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
-                stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
                     out DialogueInteractionReciever speakerDialogueReciever);
 
                 if (speakerDialogueReciever.IsInDialogue)
@@ -166,19 +162,19 @@ public partial class MTRInteractable
                 }
 
                 // << CONTINUE THE STORY >>
-                storyIterator.ContinueStory();
+                MTRStoryManager.ContinueStory();
                 MTR_AudioManager.Instance.PlayContinuedInteractionEvent();
 
 
-                InkyStoryIterator.State storyState = storyIterator.CurrentState;
+                MTRStoryManager.StoryState storyState = MTRStoryManager.CurrentState;
                 Debug.Log($"{PREFIX} :: {interactable.Key} >> Continue >> InkyStoryState.{storyState}");
 
-                string text = storyIterator.CurrentStoryDialogue;
+                string text = MTRStoryManager.CurrentDialogue;
                 switch (storyState)
                 {
-                    case InkyStoryIterator.State.DIALOGUE:
+                    case MTRStoryManager.StoryState.DIALOGUE:
                         // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
-                        stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                        stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
                             out DialogueInteractionReciever dialogueReciever);
 
 
@@ -186,7 +182,7 @@ public partial class MTRInteractable
                         InteractionSystem.Invoke(new DialogueInteractionCommand(dialogueReciever, text));
                         break;
 
-                    case InkyStoryIterator.State.CHOICE:
+                    case MTRStoryManager.StoryState.CHOICE:
                         // << GET THE CHOICE RECIEVER >> -----------
                         MTRInteractionSystem.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
 
@@ -198,12 +194,12 @@ public partial class MTRInteractable
                         else
                         {
                             // << INVOKE THE CHOICE EVENT >> -----------
-                            InteractionSystem.Invoke(new ChoiceInteractionCommand(choiceReciever, storyIterator.CurrentStoryChoices));
+                            InteractionSystem.Invoke(new ChoiceInteractionCommand(choiceReciever, MTRStoryManager.CurrentChoices));
                         }
                         break;
-                    case InkyStoryIterator.State.END:
+                    case MTRStoryManager.StoryState.END:
                         // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
-                        stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                        stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
                             out DialogueInteractionReciever endDialogueReciever);
 
                         InteractionSystem.Invoke(new DialogueInteractionCommand(endDialogueReciever, true));
@@ -219,7 +215,7 @@ public partial class MTRInteractable
             public override void Exit()
             {
                 // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
-                stateMachine.TryGetDialogueReciever(InkyStoryManager.CurrentSpeaker,
+                stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
                     out DialogueInteractionReciever endDialogueReciever);
 
                 if (endDialogueReciever.IsInDialogue)

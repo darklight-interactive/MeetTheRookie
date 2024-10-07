@@ -15,7 +15,7 @@ using UnityEditor;
 [RequireComponent(typeof(UniversalInputManager))]
 [RequireComponent(typeof(MTRSceneManager))]
 [RequireComponent(typeof(MTRInteractionSystem))]
-[RequireComponent(typeof(InkyStoryManager))]
+[RequireComponent(typeof(MTRStoryManager))]
 [RequireComponent(typeof(MTR_UIManager))]
 [RequireComponent(typeof(MTR_AudioManager))]
 public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
@@ -58,11 +58,11 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
         if (Application.isPlaying)
         {
-            InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
+            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
             {
                 PlaySpecialAnimation(speaker);
             });
-            InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySFX", (string sfx) =>
+            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
             {
                 PlayInkySFX(sfx);
             });
@@ -81,7 +81,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             Debug.LogError("No Scene Data found for scene: " + newScene.name);
             return;
         }
-        InkyStoryManager.Iterator.GoToKnotOrStitch(newSceneData.Knot);
+        MTRStoryManager.GoToKnotOrStitch(newSceneData.Knot);
         MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
     }
 

@@ -20,11 +20,7 @@ public class MTRSceneData : BuildSceneData
 
     public bool FoundSceneKnot => _foundSceneKnot;
 
-    public MTRSceneData() : base()
-    {
-        TrySetSceneKnot();
-    }
-
+    public MTRSceneData() : base() { }
     public override void Refresh()
     {
         base.Refresh();
@@ -37,7 +33,7 @@ public class MTRSceneData : BuildSceneData
     void TrySetSceneKnot()
     {
         // << GET SCENE KNOT LIST >>
-        List<string> sceneKnotList = InkyStoryManager.Instance.SceneKnotList;
+        List<string> sceneKnotList = MTRStoryManager.Instance.SceneKnotList;
         if (sceneKnotList == null || sceneKnotList.Count == 0)
             return;
 

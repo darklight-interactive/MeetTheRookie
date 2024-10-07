@@ -177,7 +177,7 @@ public class ChoiceInteractionReciever : InteractionReciever
     public void ConfirmChoice()
     {
         Choice choice = _bubbleChoiceMap[_selectedBubble];
-        InkyStoryManager.Iterator.ChooseChoice(choice);
+        MTRStoryManager.ChooseChoice(choice);
         MTR_AudioManager.Instance.PlayMenuSelectEvent();
 
         _bubbleChoiceMap.Clear();

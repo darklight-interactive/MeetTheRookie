@@ -33,7 +33,7 @@ public class BuildSceneData : IBuildSceneData
     void SetPath(string path)
     {
         _path = FormatPath(path);
-        Refresh();
+        _name = FormatNameFromPath(_path);
     }
     string FormatPath(string path) => path.Replace("\\", "/"); // Replace all backslashes with forward slashes
     string FormatNameFromPath(string path) => path.Split('/').Last().Split('.').First(); // Get the name of the scene from the path

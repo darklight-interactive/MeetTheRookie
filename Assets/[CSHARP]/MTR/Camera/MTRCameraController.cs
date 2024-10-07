@@ -16,8 +16,8 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 {
     MTRCameraRig _rig;
 
-    InkyStoryManager StoryManager => InkyStoryManager.Instance;
-    List<string> _speakerList => InkyStoryManager.SpeakerList;
+    MTRStoryManager StoryManager => MTRStoryManager.Instance;
+    List<string> _speakerList => MTRStoryManager.SpeakerList;
     public MTRCameraRig Rig
     {
         get
@@ -52,12 +52,12 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     void OnEnable()
     {
         // Observe the current speaker variable in the story
-        StoryManager.OnSpeakerSet += SetSpeakerTarget;
+        MTRStoryManager.OnNewSpeaker += SetSpeakerTarget;
     }
 
     void OnDestroy()
     {
-        StoryManager.OnSpeakerSet -= SetSpeakerTarget;
+        MTRStoryManager.OnNewSpeaker -= SetSpeakerTarget;
     }
 
     [EasyButtons.Button]

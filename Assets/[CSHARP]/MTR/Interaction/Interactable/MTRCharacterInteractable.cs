@@ -16,7 +16,7 @@ public class MTRCharacterInteractable : MTRInteractable
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions => InkyStoryManager.SpeakerList;
+    List<string> _speakerOptions => MTRStoryManager.SpeakerList;
     public override Type TypeKey => Type.CHARACTER_INTERACTABLE;
     public string SpeakerTag => _speakerTag;
 
