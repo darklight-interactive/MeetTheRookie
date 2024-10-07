@@ -184,7 +184,12 @@ namespace Darklight.UnityExt.Inky
         // ---- ( MonoBehaviourSingleton ) ---------------------------------
         public override void Initialize()
         {
-            if (IsInitialized) return;
+            Initialize();
+        }
+
+        public virtual void Initialize(bool force = false)
+        {
+            if (!force && IsInitialized) return;
 
             // return if no ink story set
             if (_storyAsset == null)
@@ -218,14 +223,16 @@ namespace Darklight.UnityExt.Inky
                 OnEndKnot += HandleStoryEnd;
             }
 
-
-
             // << CREATE ITERATOR >> ------------------------------------ >>
             _iterator = new StoryIterator();
 
             // << CONFIRM INITIALIZATION >> ------------------------------------ >>
             _isInitialized = true;
-            OnStoryInitialized?.Invoke();
+
+            if (Application.isPlaying)
+                OnStoryInitialized?.Invoke();
+            else
+                Debug.Log($"{Prefix} >> Story Initialized From Editor");
         }
 
 

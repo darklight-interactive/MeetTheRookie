@@ -135,13 +135,9 @@ public class MTRStoryManager : InkyStoryManager
         base.HandleStoryDialogue(dialogue);
     }
 
-    public override void Initialize()
+    public override void Initialize(bool force = false)
     {
-        base.Initialize();
-
-
-
-
+        base.Initialize(force);
     }
 
 

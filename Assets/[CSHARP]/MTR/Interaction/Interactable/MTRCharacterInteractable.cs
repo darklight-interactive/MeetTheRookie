@@ -16,7 +16,18 @@ public class MTRCharacterInteractable : MTRInteractable
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions => MTRStoryManager.SpeakerList;
+    List<string> _speakerOptions
+    {
+        get
+        {
+            List<string> speakerList = new List<string>();
+            if (MTRStoryManager.SpeakerList != null)
+            {
+                speakerList = MTRStoryManager.SpeakerList;
+            }
+            return speakerList;
+        }
+    }
     public override Type TypeKey => Type.CHARACTER_INTERACTABLE;
     public string SpeakerTag => _speakerTag;
 

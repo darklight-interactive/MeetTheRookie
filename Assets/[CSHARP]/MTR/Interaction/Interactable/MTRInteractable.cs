@@ -55,7 +55,18 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     protected SpriteRenderer spriteRenderer;
     protected new BoxCollider2D collider;
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    protected List<string> dropdown_sceneKnotList => MTRStoryManager.Instance.SceneKnotList;
+    protected List<string> dropdown_sceneKnotList
+    {
+        get
+        {
+            List<string> knots = new List<string>();
+            if (MTRStoryManager.Instance != null)
+            {
+                knots = MTRStoryManager.Instance.SceneKnotList;
+            }
+            return knots;
+        }
+    }
 
     List<string> dropdown_interactionStitchList
     {
