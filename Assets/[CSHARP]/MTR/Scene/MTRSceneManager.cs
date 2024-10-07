@@ -41,10 +41,10 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     }
     public static string SceneToLoad => Instance._sceneToLoad;
 
-    //  ---------------- [ Serialized Fields ] -----------------------------
+    //  ================================ [[ Fields ]] ================================
+    MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
     [SerializeField, ShowOnly] string _sceneToLoad;
-    [SerializeField] MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
@@ -86,14 +86,21 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
 
     //  ---------------- [ Public Methods ] -----------------------------
+    protected override void CreateScriptableData(string sceneName, out MTRSceneScriptableData obj)
+    {
+        base.CreateScriptableData(sceneName, out obj);
+
+        obj.CameraRigBounds = _cameraBoundsLibrary[sceneName];
+    }
+
     public override void Initialize()
     {
-        base.Initialize();
-
+        // << Initialize Camera Bounds Library >>
         if (_cameraBoundsLibrary == null
             || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNameList.Count)
             _cameraBoundsLibrary = new MTRCameraBoundsLibrary(SceneNameList);
 
+        // << Set Active Camera Bounds >>
         MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
         if (activeCameraBounds != null)
         {
@@ -101,11 +108,14 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
                 SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
         }
 
+        // << Initialize Story >>
         Story story = InkyStoryManager.GlobalStory;
         if (story != null)
             OnStoryInitialized(story);
         else
             Debug.LogError($"{Prefix} Story is null.");
+
+        base.Initialize();
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)

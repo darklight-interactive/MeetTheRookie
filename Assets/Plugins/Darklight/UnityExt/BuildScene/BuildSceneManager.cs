@@ -266,7 +266,7 @@ namespace Darklight.UnityExt.BuildScene
             EditorGUI.BeginChangeCheck();
 
             if (GUILayout.Button("Initialize")) { _script.Initialize(); }
-            CustomInspectorGUI.DrawDefaultInspectorWithoutSelfReference(_serializedObject);
+            base.OnInspectorGUI();
 
             if (EditorGUI.EndChangeCheck())
             {

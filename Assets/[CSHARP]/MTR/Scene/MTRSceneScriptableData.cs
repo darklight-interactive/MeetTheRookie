@@ -25,9 +25,20 @@ using UnityEditor;
 /// </summary>
 public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 {
-    //List<string> _knotList => InkyStoryManager.KnotList;
-    //[SerializeField, Dropdown("_knotList")] string _knot = "Default";
+    List<string> _knotList = new List<string> { "Default" };
+    List<string> KnotList
+    {
+        get
+        {
+            if (InkyStoryManager.Instance.KnotList != null)
+                _knotList = InkyStoryManager.Instance.KnotList;
+            return _knotList;
+        }
+    }
+    [SerializeField, Dropdown("KnotList")] string _knot = "Default";
 
     [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
+
+    public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
 }
 
