@@ -62,22 +62,22 @@ namespace Darklight.UnityExt.BuildScene
 
         //  ================================ [[ FIELDS ]] ================================        
         Dictionary<string, TData> _sceneDataDict = new Dictionary<string, TData>();
-        string[] _paths = new string[0];
+        string[] _pathKeys = new string[0];
 
         [SerializeField, ShowOnly] string _directory; // Serialized field for debugging purposes only.
-        [SerializeField, NonReorderable] TData[] _data = new TData[0];
+        [SerializeField, NonReorderable] TData[] _dataValues = new TData[0];
 
         //  ================================ [[ PROPERTIES ]] ================================
-        public List<string> ScenePathList { get => _paths.ToList(); protected set => _paths = value.ToArray(); }
-        public List<TData> SceneDataList { get => _data.ToList(); protected set => _data = value.ToArray(); }
+        public List<string> ScenePathList { get => _pathKeys.ToList(); protected set => _pathKeys = value.ToArray(); }
+        public List<TData> SceneDataList { get => _dataValues.ToList(); protected set => _dataValues = value.ToArray(); }
         public List<string> SceneNameList
         {
             get
             {
                 List<string> names = new List<string>();
-                if (_data != null && _data.Length > 0)
+                if (_dataValues != null && _dataValues.Length > 0)
                 {
-                    foreach (TData data in _data)
+                    foreach (TData data in _dataValues)
                     {
                         if (data != null)
                             names.Add(data.Name);
@@ -108,17 +108,17 @@ namespace Darklight.UnityExt.BuildScene
         {
 #if UNITY_EDITOR
             // Get all unity scene paths in the specified directory.
-            this._paths = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
+            this._pathKeys = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
 
             // << CREATE EDITOR BUILD SETTING SCENES >> -----------------------------------
-            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[_paths.Length];
-            for (int i = 0; i < _paths.Length; i++)
+            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[_pathKeys.Length];
+            for (int i = 0; i < _pathKeys.Length; i++)
             {
                 // Replace all backslashes with forward slashes
-                _paths[i] = _paths[i].Replace("\\", "/");
+                _pathKeys[i] = _pathKeys[i].Replace("\\", "/");
 
                 // Create a new EditorBuildSettingsScene object and add it to the array.
-                string scenePath = _paths[i];
+                string scenePath = _pathKeys[i];
                 editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
                 EditorBuildSettingsScene newEditorBuildSettingsScene = editorBuildSettingsScenes[i];
 
@@ -132,27 +132,27 @@ namespace Darklight.UnityExt.BuildScene
             EditorBuildSettings.scenes = editorBuildSettingsScenes;
 
             // << CREATE BUILD SCENE DATA >> -----------------------------------
-            TData[] tempData = new TData[_paths.Length];
-            for (int i = 0; i < _paths.Length; i++)
+            TData[] tempData = new TData[_pathKeys.Length];
+            for (int i = 0; i < _pathKeys.Length; i++)
             {
-                if (_sceneDataDict.ContainsKey(_paths[i]))
+                if (_sceneDataDict.ContainsKey(_pathKeys[i]))
                 {
-                    tempData[i] = _sceneDataDict[_paths[i]];
+                    tempData[i] = _sceneDataDict[_pathKeys[i]];
                 }
                 else
                 {
                     tempData[i] = new TData()
                     {
-                        Path = _paths[i]
+                        Path = _pathKeys[i]
                     };
 
-                    _sceneDataDict.Add(_paths[i], tempData[i]);
+                    _sceneDataDict.Add(_pathKeys[i], tempData[i]);
                 }
             }
-            _data = tempData;
+            _dataValues = tempData;
 
             EditorUtility.SetDirty(this);
-            Debug.Log($"{Prefix} Loaded {_paths.Length} build scenes from directory. {BUILD_SCENE_DIRECTORY}");
+            Debug.Log($"{Prefix} Loaded {_pathKeys.Length} build scenes from directory. {BUILD_SCENE_DIRECTORY}");
 #endif
         }
 
@@ -178,6 +178,24 @@ namespace Darklight.UnityExt.BuildScene
             LoadBuildScenesFromDirectory();
         }
 
+        public void SetSceneData(TData data)
+        {
+            if (data == null)
+            {
+                Debug.LogError("Scene data is null.");
+                return;
+            }
+
+            if (_sceneDataDict.ContainsKey(data.Path))
+            {
+                _sceneDataDict[data.Path] = data;
+            }
+            else
+            {
+                _sceneDataDict.Add(data.Path, data);
+            }
+        }
+
         /// <summary>
         /// Loads a scene by name.
         /// </summary>
@@ -197,39 +215,39 @@ namespace Darklight.UnityExt.BuildScene
         public void TryGetSceneDataByName<T>(string sceneName, out T sceneData)
             where T : TData
         {
-            if (_data == null || _data.Length == 0)
+            if (_dataValues == null || _dataValues.Length == 0)
             {
                 sceneData = null;
                 return;
             }
 
-            sceneData = _data.FirstOrDefault(x => x.Name == sceneName) as T;
+            sceneData = _dataValues.FirstOrDefault(x => x.Name == sceneName) as T;
         }
 
         public void TryGetSceneDataByPath<T>(string scenePath, out T sceneData)
             where T : TData
         {
-            if (_data == null || _data.Length == 0)
+            if (_dataValues == null || _dataValues.Length == 0)
             {
                 sceneData = null;
                 return;
             }
 
-            sceneData = _data.FirstOrDefault(x => x.Path == scenePath) as T;
+            sceneData = _dataValues.FirstOrDefault(x => x.Path == scenePath) as T;
         }
 
         public void TryGetActiveSceneData<T>(out T sceneData)
             where T : TData
         {
             sceneData = null;
-            if (_data == null || _data.Length == 0)
+            if (_dataValues == null || _dataValues.Length == 0)
             {
                 return;
             }
 
             //sceneData = _data.FirstOrDefault(x => x.Path == SceneManager.GetActiveScene().path) as T;
             string activeScenePath = SceneManager.GetActiveScene().path;
-            foreach (TData data in _data)
+            foreach (TData data in _dataValues)
             {
                 if (data != null && data.Path == activeScenePath)
                 {

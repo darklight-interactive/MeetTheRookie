@@ -43,18 +43,26 @@ namespace Darklight.UnityExt.BuildScene
 
                 if (obj != null)
                     _expandableDataList.Add(new ExpandableSceneScriptableData(obj));
+
+                SaveModifiedData(obj);
             }
         }
 
         protected virtual void CreateScriptableData(string sceneName, out TScriptObj obj)
         {
+            TScriptObj tempObj;
             obj = null;
 
             // Check if the object already exists
             if (_scriptableDataLibrary.ContainsKey(sceneName) && _scriptableDataLibrary[sceneName] != null)
             {
-                obj = _scriptableDataLibrary[sceneName];
-                return;
+                tempObj = _scriptableDataLibrary[sceneName];
+            }
+            else
+            {
+                // Create the object
+                tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
+                _scriptableDataLibrary[sceneName] = tempObj; // Set the object value in the library
             }
 
             // Get the scene data
@@ -65,10 +73,7 @@ namespace Darklight.UnityExt.BuildScene
                 return;
             }
 
-            // Create the object
-            TScriptObj tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
             tempObj.CopyData(sceneData); // Copy the scene data to the object
-            _scriptableDataLibrary[sceneName] = tempObj; // Set the object value in the library
             obj = tempObj;
         }
 
@@ -79,6 +84,17 @@ namespace Darklight.UnityExt.BuildScene
             _assetPath = AssetPath;
 
             RefreshScriptableData();
+        }
+
+        public virtual void SaveModifiedData(TScriptObj scriptObj)
+        {
+            if (scriptObj == null || scriptObj.name == null || scriptObj.name == string.Empty)
+            {
+                Debug.LogError($"{Prefix} >> Scriptable object is null or has no name.");
+                return;
+            }
+
+            SetSceneData(scriptObj.ToData());
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------

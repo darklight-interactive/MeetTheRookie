@@ -118,6 +118,13 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         base.Initialize();
     }
 
+    public override void SaveModifiedData(MTRSceneScriptableData scriptObj)
+    {
+        base.SaveModifiedData(scriptObj);
+
+
+    }
+
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {
         sceneData = SceneDataList.Find(x => x.Knot == knot);

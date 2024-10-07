@@ -21,15 +21,30 @@ namespace Darklight.UnityExt.BuildScene
     {
         [SerializeField, ShowOnly] string _name;
         [SerializeField, ShowOnly] string _path;
+        [SerializeField] SceneObject _sceneObject;
+
+        public string Name { get => _name; protected set => _name = value; }
+        public string Path { get => _path; protected set => _path = value; }
 
         public virtual void CopyData(TData data)
         {
             _name = data.Name;
             _path = data.Path;
+            _sceneObject = _name;
+        }
+
+        public virtual TData ToData()
+        {
+            return new TData()
+            {
+                Path = _path,
+            };
         }
     }
 
     public class BuildSceneScriptableData : BuildSceneScriptableData<BuildSceneData>
     {
+
+
     }
 }
