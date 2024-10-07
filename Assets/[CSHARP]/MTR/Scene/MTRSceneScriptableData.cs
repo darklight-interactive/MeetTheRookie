@@ -26,20 +26,29 @@ using UnityEditor;
 public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 {
     bool _foundSceneKnot;
-    List<string> _knotList = new List<string>(100);
-    List<string> _editor_sceneKnotList
+    List<string> _dropdown_sceneKnotList
     {
         get
         {
+            List<string> _knotList = new List<string>(100);
             if (MTRStoryManager.Instance.SceneKnotList != null)
                 _knotList = MTRStoryManager.Instance.SceneKnotList;
             return _knotList;
         }
     }
 
-    //[Header("MTR STORY SETTINGS")]
-    //[SerializeField, Dropdown("_editor_sceneKnotList"), DisableIf("_foundSceneKnot")] 
-    string _knot = "";
+    List<string> _dropdown_sceneStitchLit
+    {
+        get
+        {
+            List<string> sceneStitches = InkyStoryManager.GetAllStitchesInKnot(_knot);
+        }
+    }
+
+    [Header("MTR STORY SETTINGS")]
+    [SerializeField]
+    [Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")] string _knot;
+
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
@@ -79,9 +88,6 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         {
             _knot = "Default";
         }
-
-
-
     }
 
 #if UNITY_EDITOR
