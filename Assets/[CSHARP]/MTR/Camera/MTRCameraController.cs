@@ -35,10 +35,10 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 
     public void OnEditorReloaded()
     {
-        Awake();
+        Start();
     }
 
-    void Awake()
+    void Start()
     {
         if (MTRSceneManager.Instance == null) return;
         MTRSceneManager.Instance.CameraBoundsLibrary.GetActiveCameraBounds(out MTRCameraRigBounds cameraBounds);
@@ -92,7 +92,8 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     public void SetPlayerAsFollowTarget()
     {
         MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
-        Rig.SetFollowTarget(player.transform);
+        if (player != null)
+            Rig.SetFollowTarget(player.transform);
     }
 
 #if UNITY_EDITOR
@@ -108,7 +109,7 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
             _script = (MTRCameraController)target;
             _buttonsDrawer = new ButtonsDrawer(target);
 
-            _script.Awake();
+            _script.Start();
         }
 
         public override void OnInspectorGUI()

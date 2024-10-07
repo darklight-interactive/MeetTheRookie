@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using Darklight.UnityExt.Editor;
+using System.Collections;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -45,6 +47,26 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
     [SerializeField, ShowOnly] MTRCameraController _cameraController;
     [SerializeField, ShowOnly] MTRPlayerController _playerController;
 
+
+
+    IEnumerator SceneChangeRoutine(Scene newScene)
+    {
+        SceneManager.TryGetSceneDataByName(newScene.name, out MTRSceneData newSceneData);
+        if (newSceneData != null)
+        {
+            if (MTRStoryManager.IsInitialized == false)
+                yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
+
+            MTRStoryManager.GoToKnotOrStitch(newSceneData.Knot);
+            MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
+        }
+        else
+        {
+            Debug.LogError($"{Prefix} >> SceneChangeRoutine: Scene data not found for scene {newScene.name}");
+        }
+        yield return null;
+    }
+
     public override void Initialize()
     {
         Cursor.visible = false;
@@ -58,14 +80,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
         if (Application.isPlaying)
         {
-            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
-            {
-                PlaySpecialAnimation(speaker);
-            });
-            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
-            {
-                PlayInkySFX(sfx);
-            });
             SceneManager.OnSceneChanged += OnSceneChanged;
 
         }
@@ -74,15 +88,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
     public void OnSceneChanged(Scene oldScene, Scene newScene)
     {
-        //MTRSceneData newSceneData = SceneManager.GetSceneData(newScene.name);
-        MTRSceneData newSceneData = null;
-        if (newSceneData == null)
-        {
-            Debug.LogError("No Scene Data found for scene: " + newScene.name);
-            return;
-        }
-        MTRStoryManager.GoToKnotOrStitch(newSceneData.Knot);
-        MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
+
     }
 
     public void PlaySpecialAnimation(string speakerName)

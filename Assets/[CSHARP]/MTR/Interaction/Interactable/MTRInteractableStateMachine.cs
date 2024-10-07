@@ -35,16 +35,15 @@ public partial class MTRInteractable
         {
             reciever = null;
 
-            string fullTag = $"Speaker.{speakerName}";
-            InteractionSystem.Registry.Interactables.TryGetValue(fullTag, out MTRCharacterInteractable character);
+            InteractionSystem.Registry.Interactables.TryGetValue(speakerName, out MTRCharacterInteractable character);
             if (character == null)
-                Debug.LogError($"{PREFIX} :: Could not find character with speaker tag: {fullTag}");
+                Debug.LogError($"{PREFIX} :: Could not find character with speaker tag: {speakerName}");
 
             if (character != null)
                 character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
 
             if (reciever == null)
-                Debug.LogError($"{PREFIX} :: Could not find dialogue reciever for character: {fullTag}");
+                Debug.LogError($"{PREFIX} :: Could not find dialogue reciever for character: {speakerName}");
             return;
         }
 

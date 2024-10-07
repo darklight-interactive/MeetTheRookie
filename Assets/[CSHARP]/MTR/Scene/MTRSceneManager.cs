@@ -39,30 +39,41 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
             return bounds.Length > 0 ? bounds[0] : null;
         }
     }
-    public static string SceneToLoad => Instance._sceneToLoad;
 
     //  ================================ [[ Fields ]] ================================
+    MTRSceneController _sceneController;
     MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
-    [SerializeField, ShowOnly] string _sceneToLoad;
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
-    public MTRSceneController SceneController => GetComponent<MTRSceneController>();
+    public MTRSceneController SceneController
+    {
+        get
+        {
+            if (_sceneController == null)
+            {
+                _sceneController = FindFirstObjectByType<MTRSceneController>();
+            }
+            return _sceneController;
+        }
+    }
     public MTRCameraBoundsLibrary CameraBoundsLibrary => _cameraBoundsLibrary;
     public Scene ActiveScene => SceneManager.GetActiveScene();
 
 
 
-    void OnStoryInitialized(Story story)
+    void HandleStoryInitialized()
     {
         if (!Application.isPlaying)
             return;
-        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
-        story.BindExternalFunction(
+
+        MTRStoryManager.GlobalStory.BindExternalFunction(
             "ChangeGameScene",
             (string knotName) => ChangeGameScene(knotName)
         );
+
+        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
     }
 
     /// <summary>
@@ -76,9 +87,8 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         if (data == null)
             return false;
 
-        _sceneToLoad = data.Name;
-        Debug.Log($"{Prefix} >> Inky ChangeGameScene" + _sceneToLoad);
-        SceneController.TryLoadScene(_sceneToLoad);
+        SceneController.TryLoadScene(data.Name);
+        Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
 
         return true;
     }
@@ -110,11 +120,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         }
 
         // << Initialize Story >>
-        Story story = MTRStoryManager.GlobalStory;
-        if (story != null)
-            OnStoryInitialized(story);
-        else
-            Debug.LogError($"{Prefix} Story is null.");
+        MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
 
         base.Initialize();
     }

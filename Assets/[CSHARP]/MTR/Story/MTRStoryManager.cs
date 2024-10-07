@@ -8,7 +8,7 @@ public class MTRStoryManager : InkyStoryManager
     public static new MTRStoryManager Instance => (MTRStoryManager)InkyStoryManager.Instance;
     public static string CurrentSpeaker => Instance._currentSpeaker;
 
-
+    [Header("MTR Speaker Variable")]
     [SerializeField, ShowOnly, NonReorderable] List<string> _speakerList;
     [SerializeField, ShowOnly] string _currentSpeaker;
 
@@ -48,12 +48,36 @@ public class MTRStoryManager : InkyStoryManager
     public delegate void SpeakerSet(string speaker);
     public static event SpeakerSet OnNewSpeaker;
 
-    public override void Initialize()
+    protected override void HandleStoryInitialized()
     {
-        base.Initialize();
+        base.HandleStoryInitialized();
 
-        _speakerList = GetVariableByName("Speaker").ToStringList();
+        if (!Application.isPlaying)
+            return;
 
+        if (!MTRStoryManager.GlobalStory.HasFunction("PlaySpecialAnimation"))
+        {
+            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
+            {
+                MTRGameManager.Instance.PlaySpecialAnimation(speaker);
+            });
+            Debug.Log($"{Prefix} >> BOUND 'PlaySpecialAnimation' to external function.");
+        }
+
+        if (!MTRStoryManager.GlobalStory.HasFunction("PlaySFX"))
+        {
+            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
+            {
+                MTRGameManager.Instance.PlayInkySFX(sfx);
+            });
+            Debug.Log($"{Prefix} >> BOUND 'PlaySFX' to external function.");
+        }
+
+        MTRStoryManager.GlobalStory.BindExternalFunction("SetSpeaker", (string speaker) =>
+        {
+            SetSpeaker(speaker);
+        });
+        Debug.Log($"{Prefix} >> BOUND 'SetSpeaker' to external function.");
 
         // << OBSERVE VARIABLES >>
         GlobalStory.ObserveVariable(
@@ -101,6 +125,23 @@ public class MTRStoryManager : InkyStoryManager
                 Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledgeList.Count}");
             }
         );
+
+        _speakerList = GetVariableByName("Speaker").ToStringList();
+        SetSpeaker(GetVariableByName("CURRENT_SPEAKER").GetValueAsString());
+    }
+
+    protected override void HandleStoryDialogue(string dialogue)
+    {
+        base.HandleStoryDialogue(dialogue);
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+
+
+
     }
 
 
@@ -110,6 +151,9 @@ public class MTRStoryManager : InkyStoryManager
     /// <param name="speaker"></param>
     public void SetSpeaker(string speaker)
     {
+        if (!speaker.Contains("Speaker"))
+            speaker = "Speaker." + speaker;
+
         _currentSpeaker = speaker;
         OnNewSpeaker?.Invoke(speaker);
     }

@@ -28,10 +28,13 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 {
     const string PREFIX = "[MTRSceneController]";
     public static InternalStateMachine StateMachine => Instance._stateMachine;
+    public static string SceneToLoad => Instance._sceneToLoad;
 
 
     InternalStateMachine _stateMachine;
     [SerializeField, ShowOnly] MTRSceneState _currentSceneState;
+    [SerializeField, ShowOnly] string _sceneToLoad;
+
 
     public MTR_UIManager UIManager => MTR_UIManager.Instance;
     public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
@@ -67,6 +70,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             return;
         }
 
+        _sceneToLoad = sceneName;
         StateMachine.GoToState(MTRSceneState.EXIT);
     }
 
@@ -137,7 +141,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             {
                 // Begin loading the scene asynchronously
                 UnityEngine.AsyncOperation asyncOperation =
-                    SceneManager.LoadSceneAsync(MTRSceneManager.SceneToLoad);
+                    SceneManager.LoadSceneAsync(MTRSceneController.SceneToLoad);
 
                 // Prevent the scene from being activated immediately
                 asyncOperation.allowSceneActivation = false;

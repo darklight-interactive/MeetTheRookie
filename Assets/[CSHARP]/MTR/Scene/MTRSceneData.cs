@@ -55,7 +55,7 @@ public class MTRSceneData : BuildSceneData
                 Knot = $"scene{sceneIndex}_{sectionIndex}";
                 _foundSceneKnot = true;
 
-                Debug.Log($"< MTRSceneData > >> Found SceneKnot for {Name} >> ({Knot})");
+                //Debug.Log($"< MTRSceneData > >> Found SceneKnot for {Name} >> ({Knot})");
                 return;
             }
         }

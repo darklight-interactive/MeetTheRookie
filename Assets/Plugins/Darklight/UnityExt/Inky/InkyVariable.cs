@@ -38,7 +38,7 @@ namespace Darklight.UnityExt.Inky
         public InkyVariable(string key, object value)
         {
             _key = key;
-            Value = value;
+            _value = value;
         }
 
         // Updates the string representation for the Inspector
@@ -71,6 +71,12 @@ namespace Darklight.UnityExt.Inky
         public override string ToString()
         {
             return $"{_key} = {_valueAsString}";
+        }
+
+        public string GetValueAsString()
+        {
+            UpdateValueAsString();
+            return _valueAsString;
         }
     }
 }

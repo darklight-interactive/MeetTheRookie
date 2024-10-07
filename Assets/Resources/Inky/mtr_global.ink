@@ -38,30 +38,21 @@ INCLUDE _day 2/mtr_level6.1_melOmart.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
-//EXTERNAL AddSynthesisClue(clue)
+EXTERNAL SetSpeaker(speaker)
 EXTERNAL PlaySpecialAnimation(speaker)
-
 EXTERNAL PlaySFX(sfx)
 
-===function ChangeGameScene(knotName)
+// ====== SCENE HANDLING == >>
+=== function ChangeGameScene(knotName)
     ~ return
-
-=== function AddSynthesisClue(clue)
-    ~ return
-=== function openDoor()
-    ~PlaySFX("Doors/doorOpen")
-    ~ return
-=== function closeDoor()
-    ~PlaySFX("Doors/doorClose")
-    ~ return
-
 
 // ====== SPEAKER HANDLING == >>
 LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
 VAR CURRENT_SPEAKER = Speaker.Lupe
-=== function SetSpeaker(value)
-    # SetSpeaker >> {value}
-    ~ CURRENT_SPEAKER = value
+=== function SetSpeaker(speaker)
+    # SetSpeaker >> {speaker}
+    ~ CURRENT_SPEAKER = speaker
+    ~ return
 
 // ====== QUEST HANDLING == >>
 VAR MAIN_QUEST = () // <- highest priority quest
@@ -93,6 +84,15 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 === function IsClueFound(clue)
     ~ return GLOBAL_KNOWLEDGE ? clue
 
+
+=== function AddSynthesisClue(clue)
+    ~ return
+=== function openDoor()
+    ~PlaySFX("Doors/doorOpen")
+    ~ return
+=== function closeDoor()
+    ~PlaySFX("Doors/doorClose")
+    ~ return
 
 // -------------------- LEVEL 1 ------------------------------------
 LIST Level1_Quests = (first_interact), (pay_for_gas), (look_at_tree)

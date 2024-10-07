@@ -16,7 +16,6 @@ namespace Darklight.UnityExt.Inky.Editor
         {
             _serializedObject = new SerializedObject(target);
             _script = (InkyStoryManager)target;
-            _script.Initialize();
         }
 
         public override void OnInspectorGUI()
