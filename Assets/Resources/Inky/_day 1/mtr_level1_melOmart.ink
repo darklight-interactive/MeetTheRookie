@@ -164,7 +164,7 @@ TODO SFX Door close
         TODO ^^ SFX, cash register hit noise
         ~ PlaySpecialAnimation(Speaker.Beth)
         ~ SetSpeaker(Speaker.Beth) 
-        Cool. $76.45.
+        Cool. $20.34.
         ~ SetSpeaker(Speaker.Lupe)
         Finally
         ~ CompleteQuest(pay_for_gas)
