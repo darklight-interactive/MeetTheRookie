@@ -42,6 +42,7 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         get
         {
             List<string> sceneStitches = InkyStoryManager.GetAllStitchesInKnot(_knot);
+            return sceneStitches;
         }
     }
 
