@@ -75,9 +75,27 @@ public class MTRStoryManager : InkyStoryManager
         {
             MTRStoryManager.GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
             {
-                MTRGameManager.Instance.PlayInkySFX(sfx);
+                MTR_AudioManager.Instance.PlayOneShotByPath(sfx);
             });
             Debug.Log($"{Prefix} >> BOUND 'PlaySFX' to external function.");
+        }
+
+        if (!MTRStoryManager.GlobalStory.HasFunction("PlayLoopingSFX"))
+        {
+            MTRStoryManager.GlobalStory.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
+            {
+                MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
+            });
+            Debug.Log($"{Prefix} >> BOUND 'PlayLoopingSFX' to external function.");
+        }
+
+        if (!MTRStoryManager.GlobalStory.HasFunction("StopLoopingSFX"))
+        {
+            MTRStoryManager.GlobalStory.BindExternalFunction("StopLoopingSFX", (string sfx) =>
+            {
+                MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
+            });
+            Debug.Log($"{Prefix} >> BOUND 'StopLoopingSFX' to external function.");
         }
 
         MTRStoryManager.GlobalStory.BindExternalFunction("SetSpeaker", (string speaker) =>

@@ -76,7 +76,7 @@ public class MTR_AudioManager : FMODExt_EventManager
     }
 
     // Inky SFX
-    public void PlayOneShotByName(string eventName)
+    public void PlayOneShotByPath(string eventName)
     {
         string eventPath = "event:/SFX/Inky/" + eventName;
         FMODUnity.RuntimeManager.PlayOneShot(eventPath);

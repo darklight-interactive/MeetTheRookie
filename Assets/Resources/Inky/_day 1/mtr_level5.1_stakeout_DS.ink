@@ -12,6 +12,7 @@
 * [Scene 5.1 - The Stakeout] -> scene5_1_DS
 
 === scene5_1_DS ===
+# sfx : off
 # name: description
 # emote : Lupe \| Neutral_2
 # emote : Misra \| Neutral_1
@@ -23,6 +24,7 @@
 #name: Lupe
 "..."
 
+# sfx : on
 #name: Misra 
 # emote : Misra \| Nervous_1
 "This is alot more boring than the movies." 
@@ -62,11 +64,12 @@
 "I love Britney Smears! How about you?" 
 
 #name: Lupe 
+# emote : Misra \| Neutral_1
 "Never heard of her." 
 
 #name: Misra 
 # emote : Lupe \| Neutral_2
-# emote : Misra \| Neutral_1
+//# emote : Misra \| Neutral_1
 "What?! Ok, then what kind of music do you listen to?" 
 +["Classical."] -> classical
 +["Pop."] -> pop 
@@ -90,7 +93,7 @@
 { tease_level > sincerity_level:  "It's actually 'Distant Light' by Peteris Vasks."  | "I don't have a favorite." }
 
 #name: Misra
-# emote : Misra \| Neutral_1
+//# emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "Oh, I didn't know that."  | "...that's just sad." } 
 
 #name: Misra 
@@ -244,10 +247,12 @@
 # emote : Lupe \| Inquistive_1
 "And were they not? They sounded like some sort of cult." 
 
+# sfx : off
 #name: Misra
 # emote : Misra \| Fright_2
 "..." 
 
+# sfx : on
 #name: Lupe 
 { tease_level > sincerity_level: "I'm sorry if I'm overstepping, just trying to get an understanding in case if this pertains to the case." | "Misra?" }
 
@@ -351,7 +356,7 @@
 "Yeah. Alot of us here are just looking for a quiet place to call home. You know?" 
 
 #name: Lupe 
-# emote : Lupe \| Neutral_2
+//# emote : Lupe \| Neutral_2
 "I hear you..." 
 
 +["And I wish you all the best."] -> allTheBest
@@ -424,7 +429,9 @@
 
 #name: Lupe 
 # emote : Lupe \| Neutral_2
+# sfx : off
 # emote : Misra \| Neutral_1
+# sfx : on
 "It's not pleasent, but sometimes things happen." 
 
 "Change is..." 
@@ -446,7 +453,7 @@
 =normal
 ~ sincerity_level++
 #name: Lupe 
-"Change is normal. As absurd as it sounds, it's just a part of life we  have no control over." 
+"Change is normal. As absurd as it sounds, it's just a part of life we have no control over." 
 
 "Plants change..." 
 
@@ -465,7 +472,9 @@
 
 #name: Misra 
 # emote : Misra \| Curious_1
+# sfx : off
 # emote : Lupe \| Annoyed_1
+# sfx : on
 "Well is this change necessary? I mean it feels like everyone's running for the hills when we can be-" 
 
 ->RuhRoah 
@@ -526,12 +535,14 @@
 
 { tease_level > sincerity_level: <i> You lightly laugh to yourself </i> }
 
+# sfx : off
 #name: Lupe
 # emote : Lupe \| Neutral_2
 "..." 
 
 #name: Misra
 # emote : Misra \| Neutral_1
+# sfx : on
 "..." 
 
 { tease_level > sincerity_level: "Can I ask you a strange question?" | ->RuhRoah }
@@ -554,11 +565,13 @@
 
 ==RuhRoah==
 //INSERT BIG BASH SOUND 
+~PlaySFX("stakeoutThud")
 
 <i> A sudden crash from within the winery causes you to jump nearly out of your seat. </i> 
 
 #name: Lupe 
 # emote : Lupe \| Fright_1
+# sfx : off
 # emote : Misra \| Surprised_2
 "What was that!?" 
 
@@ -567,11 +580,13 @@
 
 <i> They take a deep sigh, holding their tears in. </i> 
 
+# sfx : on
 #name: Lupe 
 "Misra?" 
 
 <i> They hold it up with trembling hands before suddenly bolting out of the car. </i> 
 
+~PlaySFX("CarDoorOpenAndClose")
 # hide : Misra
 #name: Lupe 
 "Misra?!" 
@@ -586,5 +601,6 @@
 "Goddamn it!!!" 
 
 <i> You rapidly unbuckle your seatbelt to follow. </i> 
+~PlaySFX("carDoorOpenAndClose")
 ~ ChangeGameScene("scene5_2")
 -> DONE
