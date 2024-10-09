@@ -51,10 +51,10 @@ EXTERNAL StopLoopingSFX(sfx)
 === function AddSynthesisClue(clue)
     ~ return
 === function openDoor()
-    ~PlaySFX("Doors/doorOpen")
+    ~PlaySFX("doorOpen")
     ~ return
 === function closeDoor()
-    ~PlaySFX("Doors/doorClose")
+    ~PlaySFX("doorClose")
     ~ return
 
 

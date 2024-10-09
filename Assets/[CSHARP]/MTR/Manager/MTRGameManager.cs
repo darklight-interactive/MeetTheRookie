@@ -64,7 +64,15 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             });
             InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlaySFX", (string sfx) =>
             {
-                PlayInkySFX(sfx);
+                MTR_AudioManager.Instance.PlayOneShotByName(sfx);
+            });
+            InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
+            {
+                MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
+            });
+            InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("StopLoopingSFX", (string sfx) =>
+            {
+                MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
             });
             SceneManager.OnSceneChanged += OnSceneChanged;
 
@@ -95,12 +103,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
                 interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
             }
         }
-    }
-
-    public void PlayInkySFX(string eventName)
-    {
-        string eventPath = "event:/SFX/" + eventName;
-        FMODUnity.RuntimeManager.PlayOneShot(eventPath);
     }
 
     public Vector3 GetMidpoint(Vector3 point1, Vector3 point2)

@@ -608,6 +608,7 @@
 ==RuhRoah==
 //INSERT BIG BASH SOUND 
 TODO SFX big bash sound
+~PlaySFX("stakeoutThud")
 
 #name: Lupe 
 # emote : Lupe \| Fright_1

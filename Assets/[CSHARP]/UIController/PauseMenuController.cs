@@ -121,9 +121,12 @@ public class PauseMenuController : UXML_UIDocumentObject
         RotateChoiceSelection((int)directionInScreenSpace.y);
 
         // Select the next button in the direction
+        SelectableButton oldButton = selectableVectorField.CurrentSelection;
         selectableVectorField.CurrentSelection.Deselect();
         SelectableButton newButton = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
         newButton?.Select();
+
+        if (directionInScreenSpace.y != 0.0 && oldButton != newButton) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
     }
 
     void RotateChoiceSelection(int direction)
@@ -145,6 +148,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         }
         */
 
+        if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
         selectableVectorField.CurrentSelection?.InvokeClickAction();
     }
 

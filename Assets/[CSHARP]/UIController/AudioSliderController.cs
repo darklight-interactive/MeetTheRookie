@@ -9,32 +9,32 @@ public class AudioSliderController : MonoBehaviour
     private SliderInt dialogue;
     private List<SliderInt> volumeSliders;
 
-    private GameUIController gameUIController;
+    private PauseMenuController pauseMenuController;
 
     void OnEnable()
     {
-        // GameUIController
-        gameUIController = GetComponent<GameUIController>();
-        if (gameUIController == null)
+        // PauseMenuController
+        pauseMenuController = GetComponent<PauseMenuController>();
+        if (pauseMenuController == null)
         {
-            Debug.LogWarning("Cannot find the GameUIController, volume sliders are broken");
+            Debug.LogWarning("Cannot find the PauseMenuController, volume sliders are likely broken");
             return;
         }
 
         // Sliders
         volumeSliders = new List<SliderInt>();
         //music = gameUIController.root.Q<SliderInt>("Music");
-        music = gameUIController.root.Q<VisualElement>("Settings").Q<SliderInt>("Music");
+        music = pauseMenuController.root.Q<VisualElement>("Settings").Q<SliderInt>("Music");
         volumeSliders.Add(music);
         //sfx = gameUIController.root.Q<SliderInt>("Sounds");
-        sfx = gameUIController.root.Q<VisualElement>("Settings").Q<SliderInt>("Sounds");
+        sfx = pauseMenuController.root.Q<VisualElement>("Settings").Q<SliderInt>("Sounds");
         volumeSliders.Add(sfx);
         //dialogue = gameUIController.root.Q<SliderInt>("Dialogue");
-        dialogue = gameUIController.root.Q<VisualElement>("Settings").Q<SliderInt>("Dialogue");
+        dialogue = pauseMenuController.root.Q<VisualElement>("Settings").Q<SliderInt>("Dialogue");
         volumeSliders.Add(dialogue);
         foreach (SliderInt slider in volumeSliders)
         {
-            Debug.Log($"[AudioSliderController] Loaded in the slider: {slider}");
+            //Debug.Log($"[AudioSliderController] Loaded in the slider: {slider}");
             slider.value = 10; // Originally 100
         }
 

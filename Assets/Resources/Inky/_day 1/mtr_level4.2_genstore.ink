@@ -8,7 +8,6 @@
     
         ->DONE
 = intro
-    ~PlaySFX("Doors/genstore_doorBell")
     -> Roy_Dialogue.roy_intro_cutscene
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)

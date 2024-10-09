@@ -104,7 +104,7 @@ TODO SFX door closing
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
         ~ ChangeGameScene("scene2_DS")
                 TODO SFX Car closing door noise and leaving
-                ~PlaySFX("carStartAndLeave")
+                //~PlaySFX("carStartAndLeave")
 
         -> DONE
     - IsQuestComplete(pay_for_gas):
@@ -170,7 +170,7 @@ TODO SFX Door close
         ~ SetSpeaker(Speaker.Lupe)
         Mel said to hit it. In the side.
         // the employee whacks the side of the register.The Drawer pops open.
-        TODO ^^ SFX, cash register hit noise
+        //TODO ^^ SFX, cash register hit noise
         ~ PlaySpecialAnimation(Speaker.Beth)
         ~PlaySFX("cashRegisterWhack")
         ~ SetSpeaker(Speaker.Beth) 
@@ -229,7 +229,7 @@ TODO SFX
 
 = door_to_outside
 {IsQuestComplete(pay_for_gas):
-    TODO SFX
+    //TODO SFX
     ~ openDoor()
     ~ChangeGameScene("scene1_4")
 
@@ -242,7 +242,7 @@ TODO SFX
 
 // ------------- SCENE1.3 Breakroom ---- >>
 === scene1_3 ===
-TODO SFX door close
+//TODO SFX door close
 ~closeDoor()
 // Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
  
@@ -281,7 +281,7 @@ TODO SFX door close
 
 = door_back_to_interior
     ~ ChangeGameScene("scene1_2") 
-    TODO SFX Door open
+    //TODO SFX Door open
     ~openDoor()
     ->DONE
 // ------------- SCENE1.4 Tree Falls
