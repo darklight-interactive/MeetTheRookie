@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d175075f63c93498902915b616badd, type: 3}
+  m_Name: MTR_BackgroundMusicObject
+  m_EditorClassIdentifier: 
+  backgroundMusicEvents:
+  - scene:
+      m_SceneName: 
+    eventReference:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  MTR_BackgroundMusicEvents:
+  - scene:
+      m_SceneName: MAIN_MENU
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_1_0 - Intro
+    eventReference:
+      Guid:
+        Data1: 1521097929
+        Data2: 1149101224
+        Data3: 297203391
+        Data4: 1812824776
+      Path: event:/Music/silence
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_1_1 - The Gas Station Ext
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_1_2 - The Gas Station Int
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_1_3 - The Gas Station Int Bathroom
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_1_4 - The Gas Station Ext.
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_2_0 - The Precinct - Dating Sim
+    eventReference:
+      Guid:
+        Data1: 1214400848
+        Data2: 1121225987
+        Data3: -1898062926
+        Data4: 1934244084
+      Path: event:/Music/datingGeneric
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_3_1 - The Winery Ext.
+    eventReference:
+      Guid:
+        Data1: -872978490
+        Data2: 1164822914
+        Data3: 1610690945
+        Data4: -1741293319
+      Path: event:/Music/investigate
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_3_2 - The Winery Int.
+    eventReference:
+      Guid:
+        Data1: -872978490
+        Data2: 1164822914
+        Data3: 1610690945
+        Data4: -1741293319
+      Path: event:/Music/investigate
+    musicIntensityValue: 1
+  - scene:
+      m_SceneName: SCENE_4_1 - Main Street_AFTERNOON
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 1
+  - scene:
+      m_SceneName: SCENE_4_1 - Main Street_DUSK
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 1
+  - scene:
+      m_SceneName: SCENE_4_1 - Main Street_GOLDENHOUR
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 1
+  - scene:
+      m_SceneName: SCENE_4_2 - The General Store
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_4_3 - The Arcade
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_4_4 - The Bar
+    eventReference:
+      Guid:
+        Data1: 147986987
+        Data2: 1285635400
+        Data3: -1874987639
+        Data4: 1898160848
+      Path: event:/Music/townSomber
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_4_5 - The Bar - Dating Sim
+    eventReference:
+      Guid:
+        Data1: 1214400848
+        Data2: 1121225987
+        Data3: -1898062926
+        Data4: 1934244084
+      Path: event:/Music/datingGeneric
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_5_1 - Stakeout - Dating Sim
+    eventReference:
+      Guid:
+        Data1: -872978490
+        Data2: 1164822914
+        Data3: 1610690945
+        Data4: -1741293319
+      Path: event:/Music/investigate
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_5_2 - The Winery Ext_EVENING
+    eventReference:
+      Guid:
+        Data1: 1521097929
+        Data2: 1149101224
+        Data3: 297203391
+        Data4: 1812824776
+      Path: event:/Music/silence
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_5_3 - The Winery Int_EVENING
+    eventReference:
+      Guid:
+        Data1: -832811596
+        Data2: 1172840838
+        Data3: 2009673630
+        Data4: 1630228377
+      Path: event:/Music/horror
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_5_4 - The Winery Office Interior_EVENING
+    eventReference:
+      Guid:
+        Data1: -832811596
+        Data2: 1172840838
+        Data3: 2009673630
+        Data4: 1630228377
+      Path: event:/Music/horror
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_6_1 - The Gas Station Ext
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_6_2 - The Gas Station Int
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_6_3 - The Gas Station Int Bathroom
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_6_4 - The Gas Station Int
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_6_5 - The Gas Station Ext.
+    eventReference:
+      Guid:
+        Data1: -676630717
+        Data2: 1282898668
+        Data3: -783550817
+        Data4: 2002162249
+      Path: event:/Music/townEmpty
+    musicIntensityValue: 0
+  - scene:
+      m_SceneName: SCENE_7_0 - The Precinct - Dating Sim
+    eventReference:
+      Guid:
+        Data1: 1214400848
+        Data2: 1121225987
+        Data3: -1898062926
+        Data4: 1934244084
+      Path: event:/Music/datingGeneric
+    musicIntensityValue: 0
