@@ -16,9 +16,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-
-
-
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public partial class MTRInteractable : Interactable<MTRInteractable.InternalData, MTRInteractable.InternalStateMachine, MTRInteractable.State, MTRInteractable.Type>
 {
@@ -71,11 +68,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [Header("Interactable")]
     [SerializeField] bool onStart;
     public bool isSpawn;
-
-
-
-    [Header("Outline")]
-    [SerializeField] Material _outlineMaterial;
 
     protected InternalStateMachine stateMachine;
     protected SpriteRenderer spriteRenderer;
@@ -201,6 +193,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
 
         // << SET THE DEFAULT TINT >> ------------------------------------
+        spriteRenderer.material = MTRGameManager.PrefabLibrary.spriteDefaultMaterial;
         spriteRenderer.color = Color.white;
     }
     protected virtual void PreloadBoxCollider()

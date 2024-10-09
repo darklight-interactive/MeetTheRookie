@@ -7,7 +7,8 @@ TODO SFX RING RING RING
 You've reached Chief Detective Inspector Thelton, Boise Precinct. 
 I'm not available right now. You know what to do!
 // We hear a generic voicemail beep.
-~ PlaySFX("phoneBeep")
+~ PlaySFX("phoneVoicemailBeep")
+//~PlayOneShotSFX("phoneVoicemailBeep")
 ~ SetSpeaker(Speaker.Lupe)
 Hey...it's Lupe. Had to change my route; tank was running low.
 I pit stopped outside of Kettle Rock, Idaho.

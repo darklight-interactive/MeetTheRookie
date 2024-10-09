@@ -81,8 +81,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348082412807241120}
-  - component: {fileID: 7335559274320760579}
   - component: {fileID: 52010867723927389}
+  - component: {fileID: 7335559274320760579}
   m_Layer: 0
   m_Name: '[ MTR CAMERA ]'
   m_TagString: Untagged
@@ -106,6 +106,19 @@ Transform:
   - {fileID: 5314045156112960354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &52010867723927389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2895742502396242152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054c97aa31b61cc41ada867d5d90b7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSpeaker: Speaker.Lupe
 --- !u!114 &7335559274320760579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,19 +145,6 @@ MonoBehaviour:
   - {fileID: 6029335792472997658}
   _settings: {fileID: 11400000, guid: e243d8381f1de0043b3c59a16649a9ef, type: 2}
   _bounds: {fileID: 11400000, guid: f41d077041ea708428355b10f05fae54, type: 2}
---- !u!114 &52010867723927389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2895742502396242152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054c97aa31b61cc41ada867d5d90b7de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentSpeaker: Speaker.Lupe
 --- !u!1 &3605313824413459967
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,12 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
+using EasyButtons.Editor;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [RequireComponent(typeof(MTRCameraRig))]
 public class MTRCameraController : MonoBehaviour, IUnityEditorListener
@@ -29,6 +35,12 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 
     public void OnEditorReloaded()
     {
+        Awake();
+    }
+
+    void Awake()
+    {
+        if (MTRSceneManager.Instance == null) return;
         MTRSceneManager.Instance.CameraBoundsLibrary.GetActiveCameraBounds(out MTRCameraRigBounds cameraBounds);
         if (cameraBounds != null && Rig.Bounds != cameraBounds)
         {
@@ -48,8 +60,8 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         StoryManager.OnSpeakerSet -= SetSpeakerTarget;
     }
 
-    [Button]
-    void SetSpeakerAsFollowTarget()
+    [EasyButtons.Button]
+    public void SetSpeakerAsFollowTarget()
     {
         SetSpeakerTarget(currentSpeaker);
     }
@@ -82,5 +94,38 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
         Rig.SetFollowTarget(player.transform);
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(MTRCameraController))]
+    public class MTRCameraControllerCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        MTRCameraController _script;
+        ButtonsDrawer _buttonsDrawer;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (MTRCameraController)target;
+            _buttonsDrawer = new ButtonsDrawer(target);
+
+            _script.Awake();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            base.OnInspectorGUI();
+            _buttonsDrawer.DrawButtons(targets);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 
 }

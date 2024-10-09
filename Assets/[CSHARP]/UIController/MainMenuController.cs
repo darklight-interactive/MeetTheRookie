@@ -69,6 +69,7 @@ public class MainMenuController : UXML_UIDocumentObject
     void OnPrimaryInteractAction()
     {
         selectableVectorField.CurrentSelection?.InvokeClickAction();
+        MTR_AudioManager.Instance.PlayMenuSelectEvent();
     }
 
     void PlayButtonAction()

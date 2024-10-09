@@ -35,7 +35,7 @@ public class FMODExt_Bus
 
     public void Update()
     {
-        volume = Mathf.Pow(10.0f, busVolume / 20f);
-        _bus.setVolume(volume);
+        //volume = Mathf.Pow(10.0f, busVolume / 20f);
+        //_bus.setVolume(volume);
     }
 }

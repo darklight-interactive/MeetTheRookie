@@ -14,46 +14,51 @@
 * [Scene 2 - The Precinct] -> scene2_DS
 
 === scene2_DS ===
-    ~ SetSpeaker(Speaker.Unknown)
-    # name : description
-    # hide : Misra
-    # emote : Lupe \| Serious_2
-    <i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
-    
-    + [Ding the bell.] -> ding
-    + [Call out.] -> hello
+# name: description
+# sfx : off
+# hide : Misra
+# emote : Lupe \| Serious_2
+# sfx : on
+<i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
+
++ [Ding the bell.] -> ding
+
++ [Call out.] -> hello
 
 = ding
-    <i>You ding the bell, but no one responds.</i>
-    -> soul
+
+<i>You ding the bell, but no one responds.</i>
+
+-> soul
 
 = hello
-    ~ SetSpeaker(Speaker.Lupe)
-    # emote : Lupe \| Serious_2
-    "Hello?"
-    <i>... No response.</i>
-    -> soul
+#name:Lupe
+# emote : Lupe \| Serious_2
+"Hello?" 
+
+<i>... No response.</i>
+-> soul
 
 = soul
 <i>Is there a single person in this town that's helpful?</i>
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Annoyed_1
 "Hmph... well can't say I didn't try. I'm wasting my time here anywa-"
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Hey!"
 
-~ SetSpeaker(Speaker.Lupe)
+#name: Lupe
 # emote : Lupe \| Fright_1
 "AYE! DIOS MIO!"
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Sorry for the wait! We're a bit understaffed."
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 "...You ok?"
 
 + ["You almost gave me a heart attack!"] -> chastise //scared
@@ -61,50 +66,50 @@
 
 = chastise 
 ~ sincerity_level ++
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Oh! I'm truly sorry!"
 
 <i>Their words stutter a bit from holding back a laugh.</i>
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
 "I didn't mean to scare you." //laughing
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Serious_2
 "Oh, ha ha, very funny." //sarcastic
 
-~ SetSpeaker(Speaker.Misra)
+#name : Misra
 "And to whom do I owe the pleasure of almost sending into cardiac arrest?"
 -> introductions
 
 = scared
 ~ tease_level ++
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Inquisiting_1
 "Oh really? I must have been confused then."
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 "I don't understand spanish, but last I checked 'AYE! DIOS MIO!' means scared." 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Serious_2
 "I wasn't scared. Just surprised. That's all."
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Yeah, yeah!" //laughing
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 "Well, does this fearless person have a name?"
 -> introductions
 
 = introductions
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Neutral_2
 "Detective Lupe. And you are...?"
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Sheriff Misra! Nice to meet you, Lupe!"
 //also : [Shake their hand in silence], [Return the greeting]
@@ -114,13 +119,13 @@
 = silence
 <i>You attempt to ignore that they've already decided to drop your title as "Detective" and shake their hand.</i>
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
 "..."
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "..."
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
 "Yep...very nice to meet you. " 
 
  -> precinct
@@ -134,14 +139,14 @@
 -> precinct
 
 = precinct
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Curious_1
 "So, what's the issue? Normally folks don't come here just to chit-chat." 
 +["Is it illegal to chit-chat?"] -> Company
 +["A tree fell."] -> treeFell
 = Company
 ~ tease_level++
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Not here, plus I'm not opposed to some company." //flirty
 
@@ -160,22 +165,22 @@
 
 = treeFell
 
-~ SetSpeaker(Speaker.Lupe)
+# name : Lupe
+# emote : Lupe \| Neutral_2
 "There's a tree blocking the road out of town by the gas station. I need it cleared as soon as possible." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Curious_1
 { tease_level > sincerity_level:  "Leaving already?! | "Ah, I see. } Well, I'll call the tree people and get that cleared out." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 "May take a while though! As you may have noticed, we don't have many people who can help around here. "
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 { sincerity_level >= tease_level: "Sorry about that!" } { tease_level >= sincerity_level:  "Looks like we might get to know each other after all." } 
 
 # hide : Misra
-# emote : Lupe \| Neutral_2
 <i>They excuse themselves to make the call.</i>
 
 <i>You wait patiently...</i>
@@ -187,7 +192,9 @@
 + [Keep waiting.] -> wait
 
 = snoop
+# sfx : off
 # emote : Lupe \| Inquistive_1
+# sfx : on
 ~ tease_level++
 <i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. They probably entered a different room to make the call. </i>
 
@@ -201,7 +208,9 @@
 + [Don't be ridiculous.] -> wait
 
 = peek
-# emote : Lupe \| Inquistive_1
+//# sfx : off
+//# emote : Lupe \| Inquistive_1
+//# sfx : on
 ~ tease_level++
 ~ snooped = true
 <i>You quietly reach over the front desk and take a look at the case.</i>
@@ -218,45 +227,45 @@
 And a black and white picture of the winery stained with age.
 */
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
 # emote : Misra \| Inquisiting_1
 "So...thoughts?" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Fright_1
 "AYE!!"
 
-~ SetSpeaker(Speaker.Lupe)
-# emote : Lupe \| Fright_1
+#name:Lupe
+//# emote : Lupe \| Fright_1
 "You CAN'T keep scaring me like that."
 
 {- spooked: 
-    ~ SetSpeaker(Speaker.Misra)
+    # name : Misra
     # emote : Misra \| Nervous_1
     "Sorry, sorry!" 
   - else: 
-    ~ SetSpeaker(Speaker.Misra)
+    # name : Misra
     # emote : Misra \| Surprised_2
     "So, you admit you were scared! "
 }
 
 <i>They're going to give you a headache. </i>
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Inquisiting_1
 "I'd also like to point out you probably just broke some kind of law by peeking at that. You know, confidentiality and such."
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Neutral_2 
 "My apologies."
 
 <i>You try to hand the file back to them, but they push it towards your direction.</i>
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Surprised_2
 "No! No worries, 'Detective'! You didn't answer my question..."
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 "What are your thoughts?"
 -> police_report
 
@@ -269,7 +278,7 @@ And a black and white picture of the winery stained with age.
 
 <i>You continue waiting, and after what feels like an eternity, the Sheriff returns.</i>
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Yep, as expected! They said it'll take a while."
 + ["Is it just you here?"] -> solo
@@ -277,40 +286,43 @@ And a black and white picture of the winery stained with age.
 
 = solo
 ~ sincerity_level ++
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Yup! At the moment it's just me!"
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Neutral_2
 "When are the other staff or patrol Units coming?" 
 
-~ SetSpeaker(Speaker.Misra)
+#sfx : off
+#name:Misra
 # emote : Misra \| Inquisiting_1
 "..."
 
-~ SetSpeaker(Speaker.Lupe)
+#sfx : on
+#name:Lupe
 # emote : Lupe \| Annoyed_1
 "Is it <i> just </i> you?! "
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Yep!" 
 
-~ SetSpeaker(Speaker.Lupe)
+# name : Lupe
+//# emote : Lupe \| Annoyed_1
 "...Wow."
 -> transition_to_case
 
 = transition_to_case
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Well, since you're going to be here a while, 'Detective', I could use your help!"
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Serious_2
 "My help?"
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Yeah! We got a bit of a cold-case going on." 
 
@@ -326,21 +338,21 @@ Date: August 29th, 1995
 And a black and white picture of the winery stained with age.
 */
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Inquisiting_1
 "Well, what are your thoughts?"
 -> police_report
 
 = time
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Inquisiting_1
 "It's hard to say. The time tends to range between a couple hours to a couple...days." //pondering misra
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Fright_1
 "DAYS?! "
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Yeah. Things happen a lot...slower here in Kettle Rock. But don't worry! I'll make sure they know it's urgent."
 
@@ -348,11 +360,11 @@ And a black and white picture of the winery stained with age.
 ->police_report
 
 = police_report
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "Is this the whole file?" 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Yeah!" 
 
@@ -360,174 +372,192 @@ And a black and white picture of the winery stained with age.
 +["Where's the rest?"] -> theRest
 
 =theRest
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Curious_1 
 "The rest?" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Annoyed_1
 "Yes! The rest of the file!" 
 
 ->nothingHere
 
 =nothingHere
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Curious_1 
 "What do you mean?" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Annoyed_1
 "I mean this isn't a case. This is a bunch of bull-"
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
+//# emote : Misra \| Curious_1
 "No, no. The case is right there! What else is there supposed to be?" 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "Oh, I don't know. Maybe the actual problem you're trying to solve." 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "Or witnesses." 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "Or anything else pertaining to the case." 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "I mean, there's some stuff there, sure, but it's flimsy."
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Inquisiting_1 
 "Oh." 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe
+# emote : Lupe \| Annoyed_1
 "Oh?" 
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
+//# emote : Misra \| Inquisiting_1
 "Yeah, I just didn't know what goes into a case file. "
 
-~ SetSpeaker(Speaker.Lupe)
+#name: Lupe
 "..."
 
-~ SetSpeaker(Speaker.Lupe)
+#name: Lupe
+# emote : Lupe \| Annoyed_1
 "How long have you been a Sheriff?" 
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
+# emote : Misra \| Inquisiting_1
 "Uhhhhhhhh..."
 
-~ SetSpeaker(Speaker.Misra)
+#name: Misra
 "A week." 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "..."
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "And no one is here to help you?" 
 
 <i>Misra looks around the station.</i>
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
+//# emote : Misra \| Inquisiting_1
 "Nope. Just me, myself, and I!" 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 "..."
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
+//# emote : Lupe \| Annoyed_1
 "Well you're going to get nowhere with this." 
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
+//# emote : Misra \| Inquisiting_1
 "Well then what do I need?" 
 +["Evidence."] ->Evidence 
 +["Witnesses."]->Witnesses 
 +["Help."] -> Help
 
 =Evidence 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Serious_2
 "Well for starters, evidence. You're not sure who placed this call, so any clues will narrow down suspects." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "So we go to the Winery and look around!" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "I'm sorry, 'we'?" 
 -> We 
 
 =Witnesses
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "Well for starters, witnesses. If something was going down, someone must have heard or seen something." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "So, go into town and question people!"
 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
+//# emote : Lupe \| Inquistive_1
 "No. First go to the crime scene, see what evidence you can gather before questioning." 
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
+//# emote : Misra \| Neutral_1
 "So we go to the Winery!" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "I'm sorry, 'we'?" 
 -> We 
 
 = Help 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Serious_2
 "What you need is someone to help you on this case. You're too fresh to handle a cold case." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Nervous_1
 "Someone like yourself?" 
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "I'm sorry?" 
 -> We 
 
 =We
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Yeah! I mean, what else are you going to do in the meantime?"
 
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Fluster_1
 "I mean...I don't know." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "Come on! What if reality hangs in the balance, and we must solve this in order to save the world!! Woaaaahhhh!!! It's your destinyyyyyyyy!"
 
-~ SetSpeaker(Speaker.Lupe)
+# sfx : off
+#name:Lupe
 # emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  <i>Slight laughter escapes your nose.</i>  | "... "}
 
-~ SetSpeaker(Speaker.Misra)
-# emote : Misra \| Neutral_1
+# sfx : on
+#name:Misra
+// emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "AH HA! Gotcha laughing!" | "Anyways."}
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
+//# emote : Lupe \| Neutral_2
 "Fine." 
 
-~ SetSpeaker(Speaker.Misra) 
+#name: Misra 
+//# emote : Misra \| Neutral_1
 "Fine?" 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name:Lupe 
+//# emote : Lupe \| Neutral_2
 "I'll help you." 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Surprised_2
 { tease_level > sincerity_level:  "HELL YEAH!" | "Oh! Thank you!" }
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 "Let me just make a quick call first." 
 
 ~ case_file_received = true
 // TO PROGRAMMERS: ADD EVIDENCE TO SYNTHESIS GAME! 
 
-~ SetSpeaker(Speaker.Lupe) 
+#name: Lupe 
 * "[It's a simple case."] Shouldn't take me more than a day to figure this out." 
 -> phone_call
 + [Call your boss.]
@@ -553,37 +583,41 @@ And a black and white picture of the winery stained with age.
 +[Leave a voicemail.] -> voicemail
 
 = voicemail
-~ SetSpeaker(Speaker.Lupe)
+#name:Lupe
 # emote : Lupe \| Inquistive_1
 "Thelton, Lupe here. Currently stuck in Kettle Rock. Should be back in Dafenport by tomorrow morning. I'll keep you updated." 
 
 <i>You hang up.</i> 
 
-~ SetSpeaker(Speaker.Misra)
+#name:Misra
 # emote : Misra \| Neutral_1
 "So, what's the plan?" 
 
-~ SetSpeaker(Speaker.Lupe)
+# name: Lupe 
+# emote : Lupe \| Inquistive_1
 "Well I'm going to need to see this place itself. Can't really figure out much from this file alone." 
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
+# emote : Misra \| Neutral_1
 "Alright!! Road trip!!" 
 
 <i>They spring out from behind the desk, jokingly gesturing towards the door. </i>
 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 "Eh-shall we?"
 
 *["We shall."] ->JokeBack
 *[Walk through door.] -> door 
 
 = JokeBack
+#sfx : off
 # emote : Lupe \| Fluster_1
 <i>That slight joke may have drained your social battery for the week.</i> 
 
 <i>Misra giggles as they walk out the door.</i>
 
-~ SetSpeaker(Speaker.Misra)
+#sfx : on
+#name:Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
 ~ ChangeGameScene("scene3_1") 
@@ -592,7 +626,7 @@ And a black and white picture of the winery stained with age.
 = door 
 # hide : Lupe
 <i>You walk through the door, not saying a word to Misra.</i> 
-~ SetSpeaker(Speaker.Misra)
+# name : Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!"
 ~ ChangeGameScene("scene3_1") 

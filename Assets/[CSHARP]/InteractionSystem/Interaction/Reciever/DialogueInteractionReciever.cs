@@ -22,6 +22,9 @@ public class DialogueInteractionReciever : InteractionReciever
     [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
     [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
 
+    Material _material => MTRGameManager.PrefabLibrary.uxmlRenderTextureMaterial;
+    RenderTexture _renderTexture => MTRGameManager.PrefabLibrary.uxmlRenderTexture;
+
     public bool IsInDialogue => _isInDialogue;
     public override InteractionType InteractionType => InteractionType.DIALOGUE;
     public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
@@ -57,7 +60,7 @@ public class DialogueInteractionReciever : InteractionReciever
         }
 
         // Create a new Bubble
-        _dialogueBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_speechBubblePreset, MTR_UIManager.Instance.UXML_RenderTextureMaterial, MTR_UIManager.Instance.UXML_RenderTexture);
+        _dialogueBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_speechBubblePreset, _material, _renderTexture);
         _dialogueBubbleObject.transform.SetParent(transform);
 
 

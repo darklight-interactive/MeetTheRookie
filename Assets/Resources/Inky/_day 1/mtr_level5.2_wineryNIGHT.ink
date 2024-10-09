@@ -11,6 +11,7 @@
 
 = lupe_intro
 TODO SFX CAR DOOR CLOSE NOISE
+~PlaySFX("carDoorOpenAndClose")
 ~ SetSpeaker(Speaker.Lupe)
 Misra, WAIT!
 -> DONE 
@@ -38,7 +39,7 @@ Whoever left these here...are they here again?
 
 ===scene5_3===
 //Inside the winery
-    TODO SFX DOOR CLOSE
+    //TODO SFX DOOR CLOSE
 
 
 * [wine barrels] -> wine_barrels
@@ -51,7 +52,7 @@ Whoever left these here...are they here again?
 * [inside_window] -> inside_window
 
 = lupe_inside_intro
-~ closeDoor()
+//~ closeDoor()
 ~ SetSpeaker(Speaker.Lupe)
 Misra??
 -> DONE
@@ -111,7 +112,7 @@ I can't leave--not without Misra.
 -> DONE
 
 === scene5_4 ====
-    TODO SFX DOOR CLOSE 
+    //TODO SFX DOOR CLOSE 
 
 
   + [handwritten_note_on_corkboard] -> handwritten_note

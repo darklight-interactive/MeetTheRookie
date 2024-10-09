@@ -20,8 +20,8 @@ public class TargetInteractionReciever : InteractionReciever
     [SerializeField, ShowOnly] bool _visible = false;
 
     Grid2D_OverlapWeightSpawner gridSpawner => GetComponent<Grid2D_OverlapWeightSpawner>();
-    Material material => MTR_UIManager.Instance.UXML_RenderTextureMaterial;
-    RenderTexture renderTexture => MTR_UIManager.Instance.UXML_RenderTexture;
+    Material material => MTRGameManager.PrefabLibrary.uxmlRenderTextureMaterial;
+    RenderTexture renderTexture => MTRGameManager.PrefabLibrary.uxmlRenderTexture;
 
     public override InteractionType InteractionType => InteractionType.TARGET;
 
@@ -52,13 +52,13 @@ public class TargetInteractionReciever : InteractionReciever
             _interactIconObject = UXML_Utility.CreateUXMLRenderTextureObject<UXML_RenderTextureObject>(_interactIconPreset, material, renderTexture);
 
             Cell2D.SpawnerComponent spawnerComponent = bestCell.GetComponent<Cell2D.SpawnerComponent>();
-            spawnerComponent.AttachTransformToCell(_interactIconObject.transform);
+            spawnerComponent.AttachTransformToCell(_interactIconObject.transform, false);
 
             // Set the Icon as a child of the InteractIconSpawner
             _interactIconObject.transform.SetParent(transform);
         }
 
-        _interactIconObject.SetLocalScale(dimensions.y);
+        //_interactIconObject.SetLocalScale(dimensions.y);
         _visible = true;
     }
 

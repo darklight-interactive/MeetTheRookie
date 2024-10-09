@@ -25,7 +25,7 @@ public class PlayerAudioController : MonoBehaviour
 
         if (lastState == MTRPlayerState.WALK && newState != MTRPlayerState.WALK)
         {
-            MTR_AudioManager.Instance.StopRepeatingEvent();
+            MTR_AudioManager.Instance.StopFootstepEvent();
         }
 
         lastState = newState;

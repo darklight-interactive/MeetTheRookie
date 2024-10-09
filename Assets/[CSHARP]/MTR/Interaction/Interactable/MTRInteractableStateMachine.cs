@@ -111,7 +111,9 @@ public partial class MTRInteractable
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
 
-                //Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
+                interactable.spriteRenderer.material = MTRGameManager.PrefabLibrary.spriteOutlineMaterial;
+
+                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
             }
 
             public override void Execute() { }
@@ -119,6 +121,9 @@ public partial class MTRInteractable
             {
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
+
+                interactable.spriteRenderer.material = MTRGameManager.PrefabLibrary.spriteDefaultMaterial;
+
                 //Debug.Log($"{PREFIX} :: {interactable.Print()} >> Exited Target State >> Reciever: {reciever}");
             }
         }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using UltEvents;
 using UnityEngine;
 using UnityEngine.Events;
 

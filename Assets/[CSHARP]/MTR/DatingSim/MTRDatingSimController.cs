@@ -50,6 +50,8 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     VisualElement _choiceParent;
     List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
 
+    private bool allowInkySFX;
+
     [HorizontalLine(color: EColor.Gray, order = 1)]
     [SerializeField, ShowOnly] bool _inputEnabled = false;
     [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
@@ -205,6 +207,19 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                     _misra_characterControl.style.visibility = Visibility.Hidden;
                 }
             }
+            else if (splitTag[0].Trim() == "sfx")
+            {
+                if (splitTag[1].Trim() == "on")
+                {
+                    allowInkySFX = true;
+                    //Debug.Log("Inky SFX are allowed!");
+                }
+                else if (splitTag[1].Trim() == "off")
+                {
+                    allowInkySFX = false;
+                    //Debug.Log("Inky SFX are banned!");
+                }
+            }
         }
 
         StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
@@ -310,6 +325,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         SelectableButton selected = _choiceMap.SelectElementInDirection(direction);
         if (selected != null)
         {
+            if(_choiceMap.PreviousSelection != selected) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
             _choiceMap.PreviousSelection.Deselect();
             selected.Select();
             //Debug.Log($"{PREFIX} >> Move: {move} - Selected: {selected.text}");
@@ -416,19 +432,19 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         emote = emote.Trim().ToLower();
 
         success = emotes.SetEmote(name, emote);
-        if (name == "lupe")
+        if (name == "lupe" )
         {
             _lupe_characterControl.style.visibility = Visibility.Visible;
             _lupe_characterControl.CharacterImage = emotes.currLupeEmote;
 
-            FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceLupeEvent, (emotes.fmodLupeParameterName, emote));
+            if (allowInkySFX) { FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote)); }
         }
         else if (name == "misra")
         {
             _misra_characterControl.style.visibility = Visibility.Visible;
             _misra_characterControl.CharacterImage = emotes.currMisraEmote;
 
-            FMODExt_EventManager.PlayEventWithParametersByName(emotes.voiceMisraEvent, (emotes.fmodMisraParameterName, emote));
+            if (allowInkySFX) { FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote)); }
         }
 
         return success;

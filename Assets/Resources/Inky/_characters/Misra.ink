@@ -48,6 +48,7 @@ Idk to each their own , just take it away now. -> DONE
     I can give you directions in the car.
     ~ CompleteQuest(discover_inside_clues)
     TODO SFX once fade to black, car leave noises
+    ~PlaySFX("carStartAndLeave")
     -> DONE
     
 - else:

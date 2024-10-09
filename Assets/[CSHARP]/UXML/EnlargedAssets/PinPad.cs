@@ -110,6 +110,7 @@ public class PinPad : MonoBehaviour
             {
             Inputted += 1;
             Numbers.text += currentselected.name;
+            MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadNumber);
             }
         }
         if (currentselected.name == "Star")
@@ -134,6 +135,7 @@ public class PinPad : MonoBehaviour
     }
     IEnumerator Correct()
     {
+        MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadSuccess);
         yield return new WaitForSecondsRealtime(0.6f);
         LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
         ispinpadcorrect = true;
@@ -141,6 +143,7 @@ public class PinPad : MonoBehaviour
     }
     IEnumerator Incorrect()
     {
+        MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadFail);
         RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
         yield return new WaitForSecondsRealtime(0.2f);
         RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(.4156f,.4156f,.4156f,1));

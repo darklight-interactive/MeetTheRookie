@@ -184,7 +184,18 @@ public class MTRSceneManager : BuildSceneDataManager<MTRSceneData>, IUnityEditor
 
     public MTRCameraRigBounds GetActiveCameraBounds()
     {
-        return _cameraBoundsLibrary[GetActiveSceneData().Name];
+        MTRCameraRigBounds cameraBounds = null;
+        try
+        {
+            MTRSceneData activeSceneData = GetActiveSceneData();
+            if (activeSceneData == null)
+                return null;
+
+            cameraBounds = _cameraBoundsLibrary[GetActiveSceneData().Name];
+        }
+        finally { }
+
+        return cameraBounds;
     }
 }
 
