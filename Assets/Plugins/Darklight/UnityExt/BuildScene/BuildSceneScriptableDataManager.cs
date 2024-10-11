@@ -34,6 +34,9 @@ namespace Darklight.UnityExt.BuildScene
         [SerializeField] List<ExpandableSceneScriptableData> _fullSceneDataList = new List<ExpandableSceneScriptableData>();
 
         protected abstract string AssetPath { get; }
+
+        public TScriptObj ActiveSceneScriptableData => _activeSceneScriptableData;
+
         protected virtual void CreateOrLoadScriptableData(string sceneName, out TScriptObj obj)
         {
             TScriptObj tempObj;
@@ -49,17 +52,18 @@ namespace Darklight.UnityExt.BuildScene
                 // Create the object
                 tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
                 _scriptableDataLibrary[sceneName] = tempObj; // Set the object value in the library
+
+                // Get the scene data
+                /*
+                TryGetSceneDataByName(sceneName, out TData sceneData);
+                if (sceneData != null)
+                {
+                    tempObj.CopyData(sceneData); // Copy the scene data to the object
+                }
+                */
             }
 
-            // Get the scene data
-            TryGetSceneDataByName(sceneName, out TData sceneData);
-            if (sceneData == null)
-            {
-                Debug.LogError($"{Prefix} Scene data for scene {sceneName} not found.");
-                return;
-            }
 
-            tempObj.CopyData(sceneData); // Copy the scene data to the object
             obj = tempObj;
         }
 
@@ -68,11 +72,10 @@ namespace Darklight.UnityExt.BuildScene
             base.Initialize();
             _scriptableDataLibrary.SetRequiredKeys(SceneNameList);
             _assetPath = AssetPath;
+            RefreshScriptableData();
 
             string activeSceneName = SceneManager.GetActiveScene().name;
             _activeSceneScriptableData = _scriptableDataLibrary.ContainsKey(activeSceneName) ? _scriptableDataLibrary[activeSceneName] : null;
-
-            RefreshScriptableData();
         }
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace Darklight.UnityExt.BuildScene
                 if (obj != null)
                 {
                     TryGetSceneDataByName(sceneName, out TData sceneData);
-                    obj.CopyData(sceneData);
+                    //obj.CopyData(sceneData);
 
                     _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
                 }
@@ -105,17 +108,6 @@ namespace Darklight.UnityExt.BuildScene
             }
 
             SetSceneData(scriptObj.ToData());
-        }
-
-        public void TryGetActiveSceneScriptableData(out TScriptObj scriptObj)
-        {
-            scriptObj = null;
-            TryGetActiveSceneData(out TData sceneData);
-            if (sceneData != null)
-            {
-                if (_scriptableDataLibrary.ContainsKey(sceneData.Name))
-                    scriptObj = _scriptableDataLibrary[sceneData.Name];
-            }
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------

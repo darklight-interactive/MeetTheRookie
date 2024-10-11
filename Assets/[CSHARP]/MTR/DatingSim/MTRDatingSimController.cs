@@ -133,6 +133,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         MTRStoryManager.OnNewChoices += HandleStoryChoices;
 
         // Start story
+        MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.Instance.ActiveSceneScriptableData.Knot);
         MTRStoryManager.ContinueStory();
 
         MoveTriangle(); // Cool dialogue triangle movement

@@ -486,6 +486,8 @@ namespace Darklight.UnityExt.Inky
         public static void ContinueStory()
         {
             Iterator.ContinueStory();
+
+            Debug.Log($"{Prefix} Continue Story at {Instance._currentStoryKnot}");
         }
 
         public static void ChooseChoice(Choice choice) => ChooseChoice(choice.index);
@@ -612,6 +614,7 @@ namespace Darklight.UnityExt.Inky
             public override void OnStateChanged(StoryState previousState, StoryState newState)
             {
                 Instance._currentStoryState = newState;
+                Debug.Log($"{Prefix} Story State: {previousState} -> {newState}");
             }
 
             #region ---- ( Story Handlers ) --------------------------------- 
@@ -689,13 +692,6 @@ namespace Darklight.UnityExt.Inky
 
             public void ContinueStory()
             {
-                // Check if null
-                if (CurrentState == StoryState.NULL)
-                {
-                    Debug.LogError($"{Prefix} Error: Story is null");
-                    return;
-                }
-
                 // Check if end
                 if (CurrentState == StoryState.END)
                 {

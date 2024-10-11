@@ -90,6 +90,8 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         SceneController.TryLoadScene(data.Name);
         Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
 
+        InkyStoryManager.GoToKnotOrStitch(knotName);
+
         return true;
     }
 
@@ -160,4 +162,3 @@ public class ExpandableItem<T>
 {
     [Expandable] public T Item;
 }
-

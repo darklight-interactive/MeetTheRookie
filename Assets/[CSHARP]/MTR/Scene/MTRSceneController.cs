@@ -1,5 +1,6 @@
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
 using EasyButtons;
 using System;
 using System.Collections;
@@ -177,6 +178,9 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             {
                 if (cameraController != null && cameraController.Rig.FollowTarget == null)
                     cameraController.SetPlayerAsFollowTarget();
+
+                string activeSceneKnot = MTRSceneManager.Instance.ActiveSceneScriptableData.Knot;
+                InkyStoryManager.GoToKnotOrStitch(activeSceneKnot);
             }
             public override void Execute()
             {

@@ -246,7 +246,7 @@ namespace Darklight.UnityExt.BuildScene
         {
             _serializedObject = new SerializedObject(target);
             _script = (IBuildSceneManager)target;
-            //_script.Initialize();
+            _script.Initialize();
         }
 
         public override void OnInspectorGUI()
