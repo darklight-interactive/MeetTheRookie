@@ -25,9 +25,9 @@ namespace Darklight.UnityExt.BuildScene
         [SerializeField, ShowOnly] string _path;
         [SerializeField, ReadOnly] SceneObject _sceneObject;
 
-        public string Name { get => _name; protected set => _name = value; }
-        public string Path { get => _path; protected set => _path = value; }
-        public SceneObject SceneObject { get => _sceneObject; protected set => _sceneObject = value; }
+        public string Name { get => _name; set => _name = value; }
+        public string Path { get => _path; set => _path = value; }
+        public SceneObject SceneObject { get => _sceneObject; set => _sceneObject = value; }
 
         public abstract TData ToData();
         public abstract void Refresh();

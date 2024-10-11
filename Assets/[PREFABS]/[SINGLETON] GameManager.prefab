@@ -76,7 +76,7 @@ MonoBehaviour:
   _dataValues:
   - _name: MAIN_MENU
     _path: Assets/Scenes/Build/MAIN_MENU.unity
-    Knot: 
+    Knot: Default
     CameraRigSettings: {fileID: 0}
     CameraRigBounds: {fileID: 0}
     SpawnInfo:
@@ -124,7 +124,7 @@ MonoBehaviour:
       _spawnPoints: []
   - _name: SCENE_2_0 - The Precinct - Dating Sim
     _path: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-    Knot: 
+    Knot: scene2_DS
     CameraRigSettings: {fileID: 0}
     CameraRigBounds: {fileID: 0}
     SpawnInfo:
@@ -196,7 +196,7 @@ MonoBehaviour:
       _spawnPoints: []
   - _name: SCENE_4_5 - The Bar - Dating Sim
     _path: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-    Knot: 
+    Knot: scene4_5_DS
     CameraRigSettings: {fileID: 0}
     CameraRigBounds: {fileID: 0}
     SpawnInfo:
@@ -204,7 +204,7 @@ MonoBehaviour:
       _spawnPoints: []
   - _name: SCENE_5_1 - Stakeout - Dating Sim
     _path: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-    Knot: 
+    Knot: scene5_1_DS
     CameraRigSettings: {fileID: 0}
     CameraRigBounds: {fileID: 0}
     SpawnInfo:
@@ -284,7 +284,7 @@ MonoBehaviour:
       _spawnPoints: []
   - _name: SCENE_7_0 - The Precinct - Dating Sim
     _path: Assets/Scenes/Build/SCENE_7_0 - The Precinct - Dating Sim.unity
-    Knot: 
+    Knot: Default
     CameraRigSettings: {fileID: 0}
     CameraRigBounds: {fileID: 0}
     SpawnInfo:
@@ -410,34 +410,25 @@ MonoBehaviour:
   _interactableRegistry:
     _items:
     - _id: 0
-      _key: Speaker.Roy_Rodgerson
-      _value: {fileID: 0}
-    - _id: 1
       _key: Speaker.Lupe
       _value: {fileID: 0}
+    - _id: 1
+      _key: Speaker.Mel
+      _value: {fileID: 0}
     - _id: 2
-      _key: Speaker.Misra
+      _key: scene1_3.door_back_to_interior
       _value: {fileID: 0}
     - _id: 3
-      _key: scene4_2.store_window
+      _key: Speaker.Beth
       _value: {fileID: 0}
     - _id: 4
-      _key: scene4_2.front_door
+      _key: scene1_2.door_to_backroom
       _value: {fileID: 0}
     - _id: 5
-      _key: scene4_2.merch_sticker
+      _key: scene1_2.vending_machine
       _value: {fileID: 0}
     - _id: 6
-      _key: scene4_2.merch_shirt
-      _value: {fileID: 0}
-    - _id: 7
-      _key: scene4_2.intro
-      _value: {fileID: 0}
-    - _id: 8
-      _key: interaction_default
-      _value: {fileID: 0}
-    - _id: 9
-      _key: scene4_2.pamphlet
+      _key: scene1_2.door_to_outside
       _value: {fileID: 0}
     _readOnlyKey: 1
     _readOnlyValue: 1
@@ -727,9 +718,9 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 0}
+  m_PanelSettings: {fileID: 11400000, guid: be5faf2d31b77e343b2dc2a877de3407, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: cebcef851a43c4a438892aa9518ced2a, type: 3}
   m_SortingOrder: 0
 --- !u!114 &951309218336446131
 MonoBehaviour:

@@ -132,8 +132,16 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
         MTRStoryManager.OnNewChoices += HandleStoryChoices;
 
+        StartCoroutine(Start());
+    }
+
+    IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => MTRSceneManager.Instance.GetActiveSceneScriptableData() != null);
+
         // Start story
-        MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.Instance.ActiveSceneScriptableData.Knot);
+        MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.Instance.GetActiveSceneScriptableData().Knot);
         MTRStoryManager.ContinueStory();
 
         MoveTriangle(); // Cool dialogue triangle movement

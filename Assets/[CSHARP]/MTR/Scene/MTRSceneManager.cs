@@ -98,11 +98,11 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
 
     //  ---------------- [ Public Methods ] -----------------------------
-    protected override void CreateOrLoadScriptableData(string sceneName, out MTRSceneScriptableData obj)
+    protected override void CreateOrLoadScriptableData(string scenePath, out MTRSceneScriptableData obj)
     {
-        base.CreateOrLoadScriptableData(sceneName, out obj);
+        base.CreateOrLoadScriptableData(scenePath, out obj);
 
-        obj.CameraRigBounds = _cameraBoundsLibrary[sceneName];
+        obj.CameraRigBounds = _cameraBoundsLibrary[obj.Name];
         obj.Refresh();
     }
 
@@ -131,6 +131,15 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     {
         base.SaveModifiedData(scriptObj);
 
+        TryGetSceneDataByName(scriptObj.Name, out MTRSceneData sceneData);
+        if (sceneData == null)
+        {
+            Debug.LogError($"{Prefix} >> SceneData not found for {scriptObj.Name}");
+            return;
+        }
+
+        sceneData.Knot = scriptObj.Knot;
+        //Debug.Log($"{Prefix} >> Saved modified data for {scriptObj.name}. Knot : {sceneData.Knot}");
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)

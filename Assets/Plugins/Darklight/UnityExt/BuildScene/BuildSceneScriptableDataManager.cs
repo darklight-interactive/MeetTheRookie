@@ -35,25 +35,39 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        public TScriptObj ActiveSceneScriptableData => _activeSceneScriptableData;
+        public TScriptObj GetActiveSceneScriptableData()
+        {
+            string scenePath = SceneManager.GetActiveScene().path;
+            if (_scriptableDataLibrary.ContainsKey(scenePath))
+            {
+                return _scriptableDataLibrary[scenePath];
+            }
+            return null;
+        }
 
-        protected virtual void CreateOrLoadScriptableData(string sceneName, out TScriptObj obj)
+        protected virtual void CreateOrLoadScriptableData(string scenePath, out TScriptObj obj)
         {
             TScriptObj tempObj;
             obj = null;
 
+            // Create the object
+            TData data = SceneDataDict.ContainsKey(scenePath) ? SceneDataDict[scenePath] : new TData();
+            data.Path = scenePath;
+
             // Check if the object already exists
-            if (_scriptableDataLibrary.ContainsKey(sceneName) && _scriptableDataLibrary[sceneName] != null)
+            if (_scriptableDataLibrary.ContainsKey(scenePath) && _scriptableDataLibrary[scenePath] != null)
             {
-                tempObj = _scriptableDataLibrary[sceneName];
+                tempObj = _scriptableDataLibrary[scenePath];
             }
             else
             {
-                // Create the object
-                tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
-                _scriptableDataLibrary[sceneName] = tempObj; // Set the object value in the library
+                tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, data.Name);
+                _scriptableDataLibrary[scenePath] = tempObj; // Set the object value in the library
             }
 
+            tempObj.Name = data.Name;
+            tempObj.Path = data.Path;
+            tempObj.SceneObject = data.Name;
 
             obj = tempObj;
         }
@@ -61,12 +75,11 @@ namespace Darklight.UnityExt.BuildScene
         public override void Initialize()
         {
             base.Initialize();
-            _scriptableDataLibrary.SetRequiredKeys(SceneNameList);
+
+            _scriptableDataLibrary = new ScriptableDataLibrary();
+            _scriptableDataLibrary.SetRequiredKeys(ScenePathList);
             _assetPath = AssetPath;
             RefreshScriptableData();
-
-            string activeSceneName = SceneManager.GetActiveScene().name;
-            _activeSceneScriptableData = _scriptableDataLibrary.ContainsKey(activeSceneName) ? _scriptableDataLibrary[activeSceneName] : null;
         }
 
         /// <summary>
@@ -76,14 +89,13 @@ namespace Darklight.UnityExt.BuildScene
         public void RefreshScriptableData()
         {
             _fullSceneDataList.Clear();
-            foreach (string sceneName in SceneNameList)
+            foreach (string scenePath in ScenePathList)
             {
-                CreateOrLoadScriptableData(sceneName, out TScriptObj obj);
+                CreateOrLoadScriptableData(scenePath, out TScriptObj obj);
                 if (obj != null)
                 {
-                    SetSceneData(obj.ToData());
-
                     _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
+                    SaveModifiedData(obj);
                 }
             }
         }

@@ -304,6 +304,8 @@ public class MTRCameraRig : MonoBehaviour
 
             // Reset the local position and rotation of the camera
             camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            camera.fieldOfView = _mainCamera.fieldOfView;
         }
     }
 

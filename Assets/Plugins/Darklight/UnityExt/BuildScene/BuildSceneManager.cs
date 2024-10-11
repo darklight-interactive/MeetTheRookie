@@ -38,6 +38,7 @@ namespace Darklight.UnityExt.BuildScene
         [SerializeField, NonReorderable] TData[] _dataValues = new TData[0];
 
         //  ================================ [[ PROPERTIES ]] ================================
+        public Dictionary<string, TData> SceneDataDict { get => _sceneDataDict; protected set => _sceneDataDict = value; }
         public List<string> ScenePathList { get => _pathKeys.ToList(); protected set => _pathKeys = value.ToArray(); }
         public List<TData> SceneDataList { get => _dataValues.ToList(); protected set => _dataValues = value.ToArray(); }
         public List<string> SceneNameList

@@ -31,6 +31,11 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
     {
         base.Initialize(preset, clonePanelSettings);
         _screenTransitionElement = ElementQuery<ScreenTransition>();
+
+        if (!Application.isPlaying)
+        {
+            StartFadeIn();
+        }
     }
 
     public void StartFadeIn()
