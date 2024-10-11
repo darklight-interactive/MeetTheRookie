@@ -28,12 +28,14 @@ namespace Darklight.UnityExt.Core2D
         Dictionary<Vector2Int, Cell2D> _cellMap;
         ComponentRegistry _componentRegistry;
 
-
-        // -- (( STATES )) ------------------ >>
+        [Header("States")]
         [SerializeField, ShowOnly] bool _isLoaded = false;
         [SerializeField, ShowOnly] bool _isInitialized = false;
 
-        [Space(5), Header("Config Data")]
+        [Header("Gizmos")]
+        [SerializeField] bool _showGizmos;
+
+        [Space(5), Header("Config")]
         [SerializeField] Config _config;
         [SerializeField, Expandable] Grid2D_ConfigDataObject _configObj;
 
@@ -42,6 +44,9 @@ namespace Darklight.UnityExt.Core2D
 
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
+        protected ConsoleGUI GridConsole => _consoleGUI;
+
+        public bool ShowGizmos => _showGizmos;
         public Config Configuration
         {
             get
@@ -64,7 +69,6 @@ namespace Darklight.UnityExt.Core2D
         }
         public HashSet<Vector2Int> CellKeys => new HashSet<Vector2Int>(CellMap.Keys);
         public HashSet<Cell2D> CellValues => new HashSet<Cell2D>(CellMap.Values);
-        protected ConsoleGUI consoleGUI => _consoleGUI;
 
         // -- (( VISITORS )) ------------------ >>
         protected Cell2D.Visitor CellUpdateVisitor => new Cell2D.Visitor(cell =>
@@ -215,8 +219,6 @@ namespace Darklight.UnityExt.Core2D
         }
         #endregion
 
-        // ======== [[ PRIVATE METHODS ]] ============================================================ >>>>
-
         #region -- (( RUNTIME )) -------- )))
         void Preload()
         {
@@ -242,7 +244,7 @@ namespace Darklight.UnityExt.Core2D
 
             // Invoke the grid preloaded event
             OnGridPreloaded?.Invoke();
-            consoleGUI.Log($"Preloaded: {_isLoaded}");
+            GridConsole.Log($"Preloaded: {_isLoaded}");
         }
 
         void Initialize()
@@ -260,7 +262,7 @@ namespace Darklight.UnityExt.Core2D
 
             // Invoke the grid initialized event
             OnGridInitialized?.Invoke();
-            consoleGUI.Log($"Initialized: {_isInitialized}");
+            GridConsole.Log($"Initialized: {_isInitialized}");
         }
 
         void Refresh()
@@ -297,10 +299,11 @@ namespace Darklight.UnityExt.Core2D
             if (CellMap != null)
                 CellMap.Clear(); // << Clear the map
 
-            consoleGUI.Log("Cleared");
+            GridConsole.Log("Cleared");
         }
         #endregion
 
+        #region -- (( HANDLE CELLS )) -------- )))
         bool CreateCell(Vector2Int key)
         {
             if (_cellMap.ContainsKey(key))
@@ -371,6 +374,7 @@ namespace Darklight.UnityExt.Core2D
                 }
             }
         }
+        #endregion
 
         Grid2D_ConfigDataObject CreateNewConfigDataObject()
         {
@@ -401,7 +405,7 @@ namespace Darklight.UnityExt.Core2D
                 _serializedObject = new SerializedObject(target);
                 _script = (Grid2D)target;
 
-                _script.consoleGUI.Clear();
+                _script.GridConsole.Clear();
                 _script.Reset();
             }
 

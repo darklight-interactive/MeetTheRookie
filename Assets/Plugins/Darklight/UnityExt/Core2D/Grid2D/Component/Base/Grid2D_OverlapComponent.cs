@@ -10,7 +10,6 @@ namespace Darklight.UnityExt.Core2D
     {
         // ======== [[ FIELDS ]] =========================== >>>>
         [SerializeField] LayerMask _layerMask;
-        [SerializeField] bool _showGizmos;
         Dictionary<Cell2D, int> _colliderWeightMap = new Dictionary<Cell2D, int>();
 
         #region ======== [[ PROPERTIES ]] ================================== >>>>
@@ -60,23 +59,6 @@ namespace Darklight.UnityExt.Core2D
             _colliderWeightMap.Clear();
 
             base.OnInitialize(baseObj);
-        }
-
-        public override void OnUpdate()
-        {
-            BaseGrid.SendVisitorToAllCells(CellComponent_UpdateVisitor);
-        }
-
-        public override void DrawGizmos()
-        {
-            if (!_showGizmos) return;
-            BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
-        }
-
-        public override void DrawEditorGizmos()
-        {
-            if (!_showGizmos) return;
-            BaseGrid.SendVisitorToAllCells(CellComponent_EditorGizmosVisitor);
         }
         #endregion
 

@@ -20,7 +20,6 @@ namespace Darklight.UnityExt.Core2D
         const int MIN_WEIGHT = 0;
 
         // ======== [[ FIELDS ]] ================================== >>>>
-        [SerializeField] bool _showGizmos;
         [SerializeField, Expandable] Grid2D_WeightDataObject _weightDataObject;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -123,12 +122,6 @@ namespace Darklight.UnityExt.Core2D
         public override void OnUpdate()
         {
             base.OnUpdate();
-        }
-
-        public override void DrawGizmos()
-        {
-            if (!_showGizmos) return;
-            base.DrawGizmos();
         }
 
         // -- (( HANDLER METHODS )) -------- ))
@@ -295,43 +288,6 @@ namespace Darklight.UnityExt.Core2D
                 this.weight = weight;
             }
         }
-
-
-#if UNITY_EDITOR
-        [CustomEditor(typeof(Grid2D_WeightComponent))]
-        public class Grid2D_WeightComponentCustomEditor : UnityEditor.Editor
-        {
-            SerializedObject _serializedObject;
-            Grid2D_WeightComponent _script;
-            private void OnEnable()
-            {
-                _serializedObject = new SerializedObject(target);
-                _script = (Grid2D_WeightComponent)target;
-                _script.Awake();
-            }
-
-            public override void OnInspectorGUI()
-            {
-                _serializedObject.Update();
-
-                EditorGUI.BeginChangeCheck();
-
-                base.OnInspectorGUI();
-
-                if (GUILayout.Button("Reset Weights")) _script.ResetWeights();
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    _serializedObject.ApplyModifiedProperties();
-                }
-            }
-
-            private void OnSceneGUI()
-            {
-                _script.DrawEditorGizmos();
-            }
-        }
-#endif
     }
 }
 

@@ -26,8 +26,6 @@ namespace Darklight.UnityExt.Core2D
         // ======== [[ FIELDS ]] ================================== >>>>
         Dictionary<Vector2Int, Cell2D.SpawnerComponent.InternalData> _dataMap = new Dictionary<Vector2Int, Cell2D.SpawnerComponent.InternalData>();
 
-
-        [SerializeField] bool _showGizmos = true;
         [SerializeField, Expandable] Grid2D_SpawnerDataObject _dataObject;
 
         // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -173,13 +171,6 @@ namespace Darklight.UnityExt.Core2D
             UpdateData();
         }
 
-        public override void DrawGizmos()
-        {
-            if (!_showGizmos) return;
-            base.DrawGizmos();
-        }
-
-
         public void AssignTransformToCell(Transform transform, Cell2D cell)
         {
             Cell2D.SpawnerComponent cellSpawner = cell.GetComponent<Cell2D.SpawnerComponent>();
@@ -237,49 +228,5 @@ namespace Darklight.UnityExt.Core2D
             [ShowOnly] public Spatial2D.AnchorPoint targetAnchor;
             [ShowAssetPreview] public Object obj;
         }
-
-
-
-
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(Grid2D_SpawnerComponent))]
-        public class CustomEditor : UnityEditor.Editor
-        {
-            SerializedObject _serializedObject;
-            Grid2D_SpawnerComponent _script;
-            private void OnEnable()
-            {
-                _serializedObject = new SerializedObject(target);
-                _script = (Grid2D_SpawnerComponent)target;
-                _script.Awake();
-            }
-
-            public override void OnInspectorGUI()
-            {
-                _serializedObject.Update();
-
-                EditorGUI.BeginChangeCheck();
-
-                if (_script._dataObject == null && GUILayout.Button("Create Data Object"))
-                {
-                    _script.CreateOrLoadDataObject();
-                }
-
-                base.OnInspectorGUI();
-
-
-                if (GUILayout.Button("Set All Cells to Default"))
-                {
-                    _script.SetAllCellsToDefault();
-                }
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    _serializedObject.ApplyModifiedProperties();
-                }
-            }
-        }
-#endif
-
     }
 }

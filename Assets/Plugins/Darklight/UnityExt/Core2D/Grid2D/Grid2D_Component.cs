@@ -24,20 +24,13 @@ namespace Darklight.UnityExt.Core2D
         public abstract class Component : MonoBehaviour, IComponent<Grid2D>
         {
             // ======== [[ FIELDS ]] ================================== >>>>
-            [SerializeField, ShowOnly] int _guid;
-            [SerializeField, ShowOnly] ComponentTypeKey _typeKey;
             Grid2D _baseGrid;
 
+            [SerializeField, ShowOnly] int _guid;
+            [SerializeField, ShowOnly] ComponentTypeKey _typeKey;
+            [SerializeField] bool _showGizmos;
+
             // ======== [[ PROPERTIES ]] ================================== >>>>
-            public int GUID => _guid;
-            public ComponentTypeKey TypeKey
-            {
-                get
-                {
-                    _typeKey = GetTypeKey();
-                    return _typeKey;
-                }
-            }
             public Grid2D BaseGrid
             {
                 get
@@ -46,6 +39,19 @@ namespace Darklight.UnityExt.Core2D
                     return _baseGrid;
                 }
                 private set => _baseGrid = value;
+            }
+
+            public int GUID => _guid;
+            public ComponentTypeKey TypeKey => GetTypeKey();
+            public bool ShowGizmos
+            {
+                get
+                {
+                    if (BaseGrid.ShowGizmos == false)
+                        return false;
+                    else
+                        return _showGizmos;
+                }
             }
 
             // -- (( VISITORS )) -------- ))
@@ -83,10 +89,12 @@ namespace Darklight.UnityExt.Core2D
             }
             public virtual void DrawGizmos()
             {
+                if (ShowGizmos == false) return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
             }
             public virtual void DrawSelectedGizmos()
             {
+                if (ShowGizmos == false) return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_SelectedGizmosVisitor);
             }
             public virtual void DrawEditorGizmos()
@@ -110,6 +118,12 @@ namespace Darklight.UnityExt.Core2D
                     _serializedObject = new SerializedObject(target);
                     _script = (Component)target;
                     _script.Awake();
+                }
+
+                void OnDisable()
+                {
+                    _script._showGizmos = false;
+                    EditorUtility.SetDirty(_script);
                 }
 
                 public override void OnInspectorGUI()

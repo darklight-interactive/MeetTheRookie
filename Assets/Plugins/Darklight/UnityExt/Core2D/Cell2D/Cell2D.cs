@@ -12,7 +12,6 @@ namespace Darklight.UnityExt.Core2D
     public partial class Cell2D : IVisitable<Cell2D>, ISpatial2D
     {
         // ======== [[ FIELDS ]] ======================================================= >>>>
-        List<string> _componentDebugLabels = new List<string>();
         InternalComponentRegistry _componentRegistry;
 
         bool _enabled;
