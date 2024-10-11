@@ -19,4 +19,18 @@ public class MTRInteractionSystem : InteractionSystem
             return PlayerInteractor.GetComponent<MTRPlayerInput>();
         }
     }
+
+    public static void TryGetInteractableByStitch(string stitchName, out MTRInteractable interactable)
+    {
+        interactable = null;
+
+        foreach (MTRInteractable i in Registry.Interactables.Values)
+        {
+            if (i.InteractionStitch == stitchName)
+            {
+                interactable = i;
+                return;
+            }
+        }
+    }
 }

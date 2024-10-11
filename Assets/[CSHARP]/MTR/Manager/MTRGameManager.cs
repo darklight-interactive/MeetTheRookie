@@ -57,7 +57,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             if (MTRStoryManager.IsInitialized == false)
                 yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
 
-            MTRStoryManager.GoToKnotOrStitch(newSceneData.Knot);
+            MTRStoryManager.GoToKnotOrStitch(newSceneData.SceneKnot);
             MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
         }
         else

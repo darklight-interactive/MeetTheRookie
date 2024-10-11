@@ -37,57 +37,85 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         }
     }
 
-    List<string> _dropdown_sceneStitchLit
+    List<string> _dropdown_sceneStitchList
     {
         get
         {
-            List<string> sceneStitches = InkyStoryManager.GetAllStitchesInKnot(_knot);
-            return sceneStitches;
+            List<string> stitchList = new List<string>(100) { "None" };
+            if (MTRStoryManager.Instance.SceneKnotList != null && _sceneKnot != null)
+            {
+                List<string> tempList = InkyStoryManager.GetAllStitchesInKnot(_sceneKnot);
+                if (tempList != null && tempList.Count > 0)
+                    stitchList = tempList;
+            }
+            return stitchList;
         }
     }
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField]
-    [Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")] string _knot;
+    [SerializeField, Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")] string _sceneKnot;
+    [SerializeField, Dropdown("_dropdown_sceneStitchList")] string _onStartInteractionStitch = "None";
 
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
     [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
 
-    [Header("MTR GAMEPLAY SETTINGS")]
-    [SerializeField] MTRSceneSpawnInfo _spawnInfo;
 
 
-    public string Knot { get => _knot; set => _knot = value; }
+    public string SceneKnot { get => _sceneKnot; set => _sceneKnot = value; }
+    public string OnStartInteractionStitch { get => _onStartInteractionStitch; set => _onStartInteractionStitch = value; }
     public MTRCameraRigSettings CameraRigSettings { get => _cameraRigSettings; set => _cameraRigSettings = value; }
     public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
-    public MTRSceneSpawnInfo SpawnInfo { get => _spawnInfo; set => _spawnInfo = value; }
-
-    public override void CopyData(MTRSceneData data)
-    {
-        base.CopyData(data);
-
-        _foundSceneKnot = data.FoundSceneKnot;
-        _knot = data.Knot;
-        _spawnInfo = data.SpawnInfo;
-    }
 
     public override MTRSceneData ToData()
     {
         return new MTRSceneData()
         {
             Path = this.Path,
-            Knot = _knot,
-            SpawnInfo = _spawnInfo,
+            SceneKnot = _sceneKnot,
+            //OnStartInteractionStitch = _onStartInteractionStitch
         };
     }
 
     public override void Refresh()
     {
-        if (_knot == null)
+        if (_sceneKnot == null)
         {
-            _knot = "Default";
+            _sceneKnot = "Default";
+        }
+
+        TrySearchForSceneKnot();
+    }
+
+    void TrySearchForSceneKnot()
+    {
+        // << GET SCENE KNOT LIST >>
+        List<string> sceneKnotList = MTRStoryManager.Instance.SceneKnotList;
+        if (sceneKnotList == null || sceneKnotList.Count == 0)
+            return;
+
+        // << PARSE SCENE NAME >>
+        string sceneName = Name.ToLower();
+        sceneName = sceneName.Replace(" ", ""); // Get the scene name and remove spaces
+        sceneName = sceneName.Replace("-", "_"); // Replace hyphens with underscores
+
+        // << FIND RLEATED KNOT >>
+        List<string> sceneNameParts = sceneName.Split('_').ToList();
+        if (sceneNameParts.Contains("scene"))
+        {
+            string sceneIndex = sceneNameParts[1];
+            string sectionIndex = sceneNameParts[2];
+
+            // Check if the scene knot exists
+            if (sceneKnotList.Contains($"scene{sceneIndex}_{sectionIndex}"))
+            {
+                _sceneKnot = $"scene{sceneIndex}_{sectionIndex}";
+                _foundSceneKnot = true;
+
+                //Debug.Log($"< MTRSceneData > >> Found SceneKnot for {Name} >> ({Knot})");
+                return;
+            }
         }
     }
 

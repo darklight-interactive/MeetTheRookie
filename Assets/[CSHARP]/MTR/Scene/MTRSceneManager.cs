@@ -95,8 +95,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         return true;
     }
 
-
-
     //  ---------------- [ Public Methods ] -----------------------------
     protected override void CreateOrLoadScriptableData(string scenePath, out MTRSceneScriptableData obj)
     {
@@ -138,13 +136,13 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
             return;
         }
 
-        sceneData.Knot = scriptObj.Knot;
+        sceneData.SceneKnot = scriptObj.SceneKnot;
         //Debug.Log($"{Prefix} >> Saved modified data for {scriptObj.name}. Knot : {sceneData.Knot}");
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {
-        sceneData = SceneDataList.Find(x => x.Knot == knot);
+        sceneData = SceneDataList.Find(x => x.SceneKnot == knot);
     }
 
     public MTRCameraRigBounds GetActiveCameraBounds()

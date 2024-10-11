@@ -48,12 +48,13 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
     [Header("Interactable")]
     [SerializeField] bool autoSizeCollider = true;
-    [SerializeField] bool onStart;
-    public bool isSpawn;
 
     protected InternalStateMachine stateMachine;
     protected SpriteRenderer spriteRenderer;
     protected new BoxCollider2D collider;
+
+
+
     #region ======== [[ PROPERTIES ]] ================================== >>>>
     protected List<string> dropdown_knotList
     {
@@ -67,7 +68,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             return knots;
         }
     }
-
     List<string> dropdown_interactionStitchList
     {
         get
@@ -145,8 +145,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
         protected set => _isInitialized = value;
     }
-
-
     public override InternalData Data => _data;
     public override InternalStateMachine StateMachine => stateMachine;
     public override State CurrentState
@@ -158,8 +156,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
     }
     public override Type TypeKey => Type.BASE_INTERACTABLE;
-    public float CurrentXPosition => transform.position.x;
-
+    public string InteractionStitch { get => _interactionStitch; set => _interactionStitch = value; }
     #endregion
 
     #region ======== <PRIVATE_METHODS> ================================== >>>>
@@ -422,40 +419,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         _currentState = CurrentState;
         yield return null;
     }
-
-    void OnStart()
-    {
-        if (onStart)
-        {
-            MTRPlayerInteractor playerInteractor = FindFirstObjectByType<MTRPlayerInteractor>();
-            playerInteractor.InteractWith(this, true);
-        }
-    }
-
-    private void EnableOutline(bool enable)
-    {
-        /*
-        if (_spriteRenderer != null)
-        {
-            _spriteRenderer.material = enable ? _outlineMaterial : null;
-        }
-        */
-    }
-
-    private IEnumerator FlashOutlineRoutine()
-    {
-        EnableOutline(true);
-        yield return new WaitForSeconds(0.25f);
-        EnableOutline(false);
-    }
-
-
-    private void OnDrawGizmosSelected()
-    {
-        //_destinations.DrawInEditor(this);
-    }
-
-
 
     // ====== [[ Enums ]] ======================================
     public enum Type
