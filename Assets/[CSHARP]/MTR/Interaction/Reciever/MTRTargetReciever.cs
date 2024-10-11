@@ -13,7 +13,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
-public class TargetInteractionReciever : InteractionReciever
+public class MTRTargetIconReciever : InteractionReciever
 {
     [SerializeField, Expandable] UXML_UIDocumentPreset _interactIconPreset;
     [SerializeField, ShowOnly] UXML_RenderTextureObject _interactIconObject;
@@ -87,15 +87,15 @@ public class TargetInteractionReciever : InteractionReciever
         _visible = false;
     }
 #if UNITY_EDITOR
-    [CustomEditor(typeof(TargetInteractionReciever))]
+    [CustomEditor(typeof(MTRTargetIconReciever))]
     public class TargetInteractionRecieverCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        TargetInteractionReciever _script;
+        MTRTargetIconReciever _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (TargetInteractionReciever)target;
+            _script = (MTRTargetIconReciever)target;
         }
 
         public override void OnInspectorGUI()

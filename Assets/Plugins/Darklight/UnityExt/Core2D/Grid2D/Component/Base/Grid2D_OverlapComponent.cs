@@ -103,6 +103,25 @@ namespace Darklight.UnityExt.Core2D
             }
             return cells;
         }
+
+        public Cell2D GetClosestCellWithColliderCount(int count, Vector2 position)
+        {
+            Cell2D closestCell = null;
+            float closestDistance = float.MaxValue;
+            foreach (KeyValuePair<Cell2D, int> pair in _colliderWeightMap)
+            {
+                if (pair.Value == count)
+                {
+                    float distance = Vector2.Distance(pair.Key.Position, position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestCell = pair.Key;
+                    }
+                }
+            }
+            return closestCell;
+        }
     }
 }
 

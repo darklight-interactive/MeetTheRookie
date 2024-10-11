@@ -172,6 +172,22 @@ namespace Darklight.UnityExt.Core2D
             }
             return components;
         }
+
+        public Cell2D GetClosestCellTo(Vector2 position)
+        {
+            Cell2D closestCell = null;
+            float closestDistance = float.MaxValue;
+            foreach (Cell2D cell in CellMap.Values)
+            {
+                float distance = Vector2.Distance(cell.Position, position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestCell = cell;
+                }
+            }
+            return closestCell;
+        }
         #endregion
 
         #region -- (( SETTERS )) -------- )))

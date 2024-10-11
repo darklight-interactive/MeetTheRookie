@@ -204,9 +204,17 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 cameraController?.SetPlayerAsFollowTarget();
                 yield return new WaitForSeconds(2f);
 
+                if (MTRSceneManager.Instance.ActiveSceneScriptableData == null)
+                {
+                    Debug.LogError("Active Scene Scriptable Data is null.");
+                }
+                else
+                {
+                    string activeSceneKnot = MTRSceneManager.Instance.ActiveSceneScriptableData.Knot;
+                    InkyStoryManager.GoToKnotOrStitch(activeSceneKnot);
+                }
 
-                string activeSceneKnot = MTRSceneManager.Instance.ActiveSceneScriptableData.Knot;
-                InkyStoryManager.GoToKnotOrStitch(activeSceneKnot);
+
 
                 //transitionController.StartFadeIn();
                 transitionController?.StartWipeOpen();

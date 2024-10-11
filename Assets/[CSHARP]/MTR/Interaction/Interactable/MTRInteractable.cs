@@ -36,8 +36,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InteractionRequestDataObject _request;
     [SerializeField] InteractionRecieverLibrary _recievers;
-    //[SerializeField] MTRInteractableDestinationLibrary _destinations;
-    [SerializeField] List<float> _destinations;
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField] InternalData _data;
@@ -49,6 +47,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     [Dropdown("dropdown_interactionStitchList"), SerializeField] string _interactionStitch = "interaction_default";
 
     [Header("Interactable")]
+    [SerializeField] bool autoSizeCollider = true;
     [SerializeField] bool onStart;
     public bool isSpawn;
 
@@ -183,7 +182,8 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         // << SET THE COLLIDER SIZE >> ------------------------------------
         // Set the collider size to half the size of the transform scale
-        collider.size = Vector2.one * transform.localScale.x * 0.5f;
+        if (autoSizeCollider)
+            collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
     protected virtual void PreloadData()
     {
@@ -279,18 +279,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         _isPreloaded = false;
 
         //Debug.Log($"{PREFIX} {Name} :: Preload", this);
-
-        /*
-        if (_destinations == null || _destinations.InteractableParent == null)
-        {
-            _destinations = new MTRInteractableDestinationLibrary(this);
-            Debug.Log($"{Name} :: Created new destination library", this);
-        }
-        if (_destinations.InteractableParent != this)
-            _destinations.InteractableParent = this;
-        if (_destinations.Count == 0)
-            _destinations.AddDefaultItem();
-            */
 
         // << RESET >> ------------------------------------
         Reset();
@@ -412,44 +400,13 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         Debug.Log($"{PREFIX} {Name} :: AcceptInteractionRoutine from {player}", this);
 
-        // << CONFIRM PLAYER OCCUPIES DESTINATION >> ------------------------------------
-        /*
-        bool playerIsOccupant = _destinations.IsOccupant(player);
-        if (!playerIsOccupant)
-        {
-            bool result = _destinations.TryAddOccupant(player, out float destinationX);
-            if (!result)
-            {
-                Debug.Log($"{PREFIX} {Name} :: No Available Destinations", this);
-                yield break;
-            }
-
-            Debug.Log($"{PREFIX} {Name} :: Force Player to walk to destination", this);
-            player.Controller.StartWalkOverride(destinationX);
-        }
-        else
-        {
-            Debug.Log($"{PREFIX} {Name} :: Player is already at destination", this);
-            player.Controller.EnterInteraction();
-        }
-        */
-
-        if (CurrentState == State.TARGET && _destinations.Count > 0)
-        {
-            player.Controller.StartWalkOverride(transform.position.x + _destinations[0]);
-            yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
-        }
-        else
-        {
-            player.Controller.EnterInteraction();
-        }
-
-
         // << ACCEPT INTERACTION >> ------------------------------------
         Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {player}", this);
         switch (CurrentState)
         {
             case State.START:
+                StateMachine.GoToState(State.START, true);
+                break;
             case State.CONTINUE:
                 StateMachine.GoToState(State.CONTINUE, true);
                 break;
@@ -463,6 +420,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
 
         _currentState = CurrentState;
+        yield return null;
     }
 
     void OnStart()

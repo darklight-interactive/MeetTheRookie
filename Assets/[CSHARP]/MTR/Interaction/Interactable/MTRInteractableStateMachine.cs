@@ -2,6 +2,7 @@ using UnityEngine;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Inky;
 using Ink.Runtime;
+using System.Collections;
 
 public partial class MTRInteractable
 {
@@ -31,7 +32,7 @@ public partial class MTRInteractable
             GoToState(State.NULL);
         }
 
-        protected void TryGetDialogueReciever(string speakerName, out DialogueInteractionReciever reciever)
+        protected void TryGetDialogueReciever(string speakerName, out MTRDialogueReciever reciever)
         {
             reciever = null;
 
@@ -94,13 +95,13 @@ public partial class MTRInteractable
         #region ---- <STATE_CLASS> [[ TARGET_STATE ]] ------------------------------------ >>>>
         public class TargetState : BaseInteractState
         {
-            TargetInteractionReciever reciever;
+            MTRTargetIconReciever reciever;
 
             public TargetState(InternalStateMachine stateMachine)
                 : base(stateMachine, State.TARGET) { }
             public override void Enter()
             {
-                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever targetReciever);
+                interactable.Recievers.TryGetValue(InteractionType.TARGET, out MTRTargetIconReciever targetReciever);
                 this.reciever = targetReciever;
 
                 if (reciever != null)
@@ -131,13 +132,32 @@ public partial class MTRInteractable
                 : base(stateMachine, State.START) { }
             public override void Enter()
             {
-                base.Enter();
+                interactable.StartCoroutine(StartInteractionRoutine());
+            }
+            public override void Execute() { }
+            public override void Exit() { }
+
+            IEnumerator StartInteractionRoutine()
+            {
+                MTRPlayerInteractor player = MTRInteractionSystem.PlayerInteractor;
+                interactable.Recievers.TryGetValue(InteractionType.DESTINATION, out MTRDestinationReciever destinationReciever);
+                if (destinationReciever != null)
+                {
+                    destinationReciever.GetClosestDestination(player.transform.position, out Vector2 destination);
+
+                    player.Controller.StartWalkOverride(destination.x);
+
+                }
+                else
+                {
+                    player.Controller.EnterInteraction();
+                }
+
+                yield return new WaitUntil(() => player.Controller.CurrentState == MTRPlayerState.INTERACTION);
                 MTRStoryManager.GoToKnotOrStitch(interactable._interactionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
                 stateMachine.GoToState(State.CONTINUE);
             }
-            public override void Execute() { }
-            public override void Exit() { }
         }
         #endregion
 
@@ -151,7 +171,7 @@ public partial class MTRInteractable
             {
                 // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
                 stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
-                    out DialogueInteractionReciever speakerDialogueReciever);
+                    out MTRDialogueReciever speakerDialogueReciever);
 
                 if (speakerDialogueReciever.IsInDialogue)
                 {
@@ -174,7 +194,7 @@ public partial class MTRInteractable
                     case MTRStoryManager.StoryState.DIALOGUE:
                         // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
                         stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
-                            out DialogueInteractionReciever dialogueReciever);
+                            out MTRDialogueReciever dialogueReciever);
 
 
                         // << INVOKE BUBBLE CREATION EVENT >> -----------
@@ -183,7 +203,7 @@ public partial class MTRInteractable
 
                     case MTRStoryManager.StoryState.CHOICE:
                         // << GET THE CHOICE RECIEVER >> -----------
-                        MTRInteractionSystem.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out ChoiceInteractionReciever choiceReciever);
+                        MTRInteractionSystem.PlayerInteractor.Recievers.TryGetValue(InteractionType.CHOICE, out MTRChoiceReciever choiceReciever);
 
                         if (choiceReciever.ChoiceSelected)
                         {
@@ -199,7 +219,7 @@ public partial class MTRInteractable
                     case MTRStoryManager.StoryState.END:
                         // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
                         stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
-                            out DialogueInteractionReciever endDialogueReciever);
+                            out MTRDialogueReciever endDialogueReciever);
 
                         InteractionSystem.Invoke(new DialogueInteractionCommand(endDialogueReciever, true));
                         stateMachine.GoToState(State.COMPLETE);
@@ -215,7 +235,7 @@ public partial class MTRInteractable
             {
                 // << GET THE DIALOGUE RECIEVER OF THE SPEAKER >>
                 stateMachine.TryGetDialogueReciever(MTRStoryManager.CurrentSpeaker,
-                    out DialogueInteractionReciever endDialogueReciever);
+                    out MTRDialogueReciever endDialogueReciever);
 
                 if (endDialogueReciever.IsInDialogue)
                 {

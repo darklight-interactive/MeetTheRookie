@@ -18,13 +18,14 @@ public enum InteractionType
     TOGGLE,
     TARGET,
     DIALOGUE,
-    CHOICE
+    CHOICE,
+    DESTINATION
 }
 
 
 
 [ExecuteAlways]
-public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
+public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
     [SerializeField, Expandable] InteractionSystemSettings _settings;
 
@@ -43,17 +44,6 @@ public partial class InteractionSystem : MonoBehaviourSingleton<InteractionSyste
         // Confirm Settings are loaded
         if (_settings == null)
             _settings = Factory.CreateSettings();
-
-        /*
-        if (_baseInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.BASE, out _baseInteractionRequest);
-        if (_interactorInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.INTERACTOR, out _interactorInteractionRequest);
-        if (_npcInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.NPC, out _npcInteractionRequest);
-        if (_playerInteractionRequest == null)
-            Factory.CreateOrLoadInteractionRequestDataObject(BaseInteractableType.PLAYER, out _playerInteractionRequest);
-        */
     }
 
     void Update()

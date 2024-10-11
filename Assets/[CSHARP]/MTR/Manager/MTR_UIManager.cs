@@ -94,10 +94,10 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     #region ------ [[ DIALOGUE BUBBLE ]] ------------------------ >>
     public void CreateDialogueBubbleAtSpeaker(string speaker, string text)
     {
-        List<DialogueInteractionReciever> dialogueHandlers = FindObjectsByType<DialogueInteractionReciever>(FindObjectsSortMode.InstanceID).ToList();
+        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(FindObjectsSortMode.InstanceID).ToList();
 
-        DialogueInteractionReciever dialogueHandler = null;
-        foreach (DialogueInteractionReciever d in dialogueHandlers)
+        MTRDialogueReciever dialogueHandler = null;
+        foreach (MTRDialogueReciever d in dialogueHandlers)
         {
             d.DestroySpeechBubble();
 
@@ -120,9 +120,9 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 
     public void DestroyAllSpeechBubbles()
     {
-        List<DialogueInteractionReciever> dialogueHandlers = FindObjectsByType<DialogueInteractionReciever>(FindObjectsSortMode.InstanceID).ToList();
+        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(FindObjectsSortMode.InstanceID).ToList();
 
-        foreach (DialogueInteractionReciever d in dialogueHandlers)
+        foreach (MTRDialogueReciever d in dialogueHandlers)
         {
             d.DestroySpeechBubble();
         }

@@ -86,7 +86,7 @@ public partial class BaseInteractable
                 : base(stateMachine, State.TARGET) { }
             public override void Enter()
             {
-                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
+                interactable.Recievers.TryGetValue(InteractionType.TARGET, out MTRTargetIconReciever reciever);
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, true));
             }
@@ -94,7 +94,7 @@ public partial class BaseInteractable
             public override void Execute() { }
             public override void Exit()
             {
-                interactable.Recievers.TryGetValue(InteractionType.TARGET, out TargetInteractionReciever reciever);
+                interactable.Recievers.TryGetValue(InteractionType.TARGET, out MTRTargetIconReciever reciever);
                 if (reciever != null)
                     InteractionSystem.Invoke(new TargetInteractionCommand(reciever, false));
             }

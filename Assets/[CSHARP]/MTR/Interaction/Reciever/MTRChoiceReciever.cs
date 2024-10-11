@@ -14,7 +14,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
-public class ChoiceInteractionReciever : InteractionReciever
+public class MTRChoiceReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
 
@@ -213,15 +213,15 @@ public class ChoiceInteractionReciever : InteractionReciever
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(ChoiceInteractionReciever))]
+    [CustomEditor(typeof(MTRChoiceReciever))]
     public class ChoiceInteractionHandlerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        ChoiceInteractionReciever _script;
+        MTRChoiceReciever _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (ChoiceInteractionReciever)target;
+            _script = (MTRChoiceReciever)target;
             _script.Awake();
         }
 

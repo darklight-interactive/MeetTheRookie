@@ -21,11 +21,9 @@ interface IInteractionReciever
 public abstract class InteractionReciever : MonoBehaviour, IInteractionReciever
 {
     public abstract InteractionType InteractionType { get; }
+}
 
-    public virtual void ResetTransform()
-    {
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
-        transform.localScale = Vector3.one;
-    }
+public abstract class Grid2DInteractionReciever : Grid2D, IInteractionReciever
+{
+    public abstract InteractionType InteractionType { get; }
 }

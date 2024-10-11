@@ -12,7 +12,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(Grid2D_OverlapWeightSpawner))]
-public class DialogueInteractionReciever : InteractionReciever
+public class MTRDialogueReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
     bool _isInDialogue = false;
@@ -175,15 +175,15 @@ public class DialogueInteractionReciever : InteractionReciever
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(DialogueInteractionReciever))]
+    [CustomEditor(typeof(MTRDialogueReciever))]
     public class DialogueInteractionHandlerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
-        DialogueInteractionReciever _script;
+        MTRDialogueReciever _script;
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
-            _script = (DialogueInteractionReciever)target;
+            _script = (MTRDialogueReciever)target;
             _script.Awake();
         }
 

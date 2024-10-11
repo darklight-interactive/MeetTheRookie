@@ -19,11 +19,11 @@ public abstract class InteractionCommand<IReciever> : IInteractionCommand
 }
 
 
-public class TargetInteractionCommand : InteractionCommand<TargetInteractionReciever>
+public class TargetInteractionCommand : InteractionCommand<MTRTargetIconReciever>
 {
     bool _visible;
 
-    public TargetInteractionCommand(TargetInteractionReciever reciever, bool visible) : base(reciever)
+    public TargetInteractionCommand(MTRTargetIconReciever reciever, bool visible) : base(reciever)
     {
         _visible = visible;
     }
@@ -37,16 +37,16 @@ public class TargetInteractionCommand : InteractionCommand<TargetInteractionReci
     }
 }
 
-public class DialogueInteractionCommand : InteractionCommand<DialogueInteractionReciever>
+public class DialogueInteractionCommand : InteractionCommand<MTRDialogueReciever>
 {
     bool _destroy;
     string _text;
-    public DialogueInteractionCommand(DialogueInteractionReciever reciever, bool destroy) : base(reciever)
+    public DialogueInteractionCommand(MTRDialogueReciever reciever, bool destroy) : base(reciever)
     {
         _destroy = destroy;
     }
 
-    public DialogueInteractionCommand(DialogueInteractionReciever reciever, string text) : base(reciever)
+    public DialogueInteractionCommand(MTRDialogueReciever reciever, string text) : base(reciever)
     {
         _text = text;
     }
@@ -60,10 +60,10 @@ public class DialogueInteractionCommand : InteractionCommand<DialogueInteraction
     }
 }
 
-public class ChoiceInteractionCommand : InteractionCommand<ChoiceInteractionReciever>
+public class ChoiceInteractionCommand : InteractionCommand<MTRChoiceReciever>
 {
     List<Choice> _choices;
-    public ChoiceInteractionCommand(ChoiceInteractionReciever reciever, List<Choice> choices) : base(reciever)
+    public ChoiceInteractionCommand(MTRChoiceReciever reciever, List<Choice> choices) : base(reciever)
     {
         _choices = choices;
     }
