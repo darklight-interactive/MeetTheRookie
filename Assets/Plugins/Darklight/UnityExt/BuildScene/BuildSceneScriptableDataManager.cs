@@ -52,15 +52,6 @@ namespace Darklight.UnityExt.BuildScene
                 // Create the object
                 tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, sceneName);
                 _scriptableDataLibrary[sceneName] = tempObj; // Set the object value in the library
-
-                // Get the scene data
-                /*
-                TryGetSceneDataByName(sceneName, out TData sceneData);
-                if (sceneData != null)
-                {
-                    tempObj.CopyData(sceneData); // Copy the scene data to the object
-                }
-                */
             }
 
 
@@ -88,11 +79,9 @@ namespace Darklight.UnityExt.BuildScene
             foreach (string sceneName in SceneNameList)
             {
                 CreateOrLoadScriptableData(sceneName, out TScriptObj obj);
-
                 if (obj != null)
                 {
-                    TryGetSceneDataByName(sceneName, out TData sceneData);
-                    //obj.CopyData(sceneData);
+                    SetSceneData(obj.ToData());
 
                     _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
                 }
