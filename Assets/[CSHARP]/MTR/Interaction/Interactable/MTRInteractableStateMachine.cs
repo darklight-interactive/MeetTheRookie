@@ -144,7 +144,6 @@ public partial class MTRInteractable
                 if (destinationReciever != null)
                 {
                     destinationReciever.GetClosestDestination(player.transform.position, out Vector2 destination);
-
                     player.Controller.StartWalkOverride(destination.x);
 
                 }

@@ -222,6 +222,11 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     public bool InteractWith(Interactable interactable, bool force = false)
     {
         if (interactable == null) return false;
+
+        // If the interactable is not the target, assign it as the target.
+        if (force && _target != interactable)
+            _target = interactable;
+
         return interactable.AcceptInteraction(this, force);
     }
 

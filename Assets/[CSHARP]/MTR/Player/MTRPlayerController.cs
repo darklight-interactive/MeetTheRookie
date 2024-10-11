@@ -92,7 +92,7 @@ public class MTRPlayerController : MonoBehaviour
         SetAnimationDirection(_direction);
 
         // << UPDATE STATE MACHINE >> ======================================================== >>
-        if (Input.IsAllInputEnabled)
+        if (Input.IsAllInputEnabled && CurrentState != MTRPlayerState.WALK_OVERRIDE)
         {
             if (moveDirection.magnitude > 0.1f)
                 StateMachine.GoToState(MTRPlayerState.WALK);
@@ -201,6 +201,7 @@ public class MTRPlayerController : MonoBehaviour
 
         _moveTargetX = targetXPos;
         GetDirectionToPos(targetXPos, out Vector2 direction);
+
         OverrideSetMoveDirection(direction);
         StateMachine.GoToState(MTRPlayerState.WALK_OVERRIDE);
     }

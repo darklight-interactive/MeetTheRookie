@@ -151,7 +151,14 @@ namespace Darklight.UnityExt.BuildScene
         IBuildSceneScriptableDataManager _script => target as IBuildSceneScriptableDataManager;
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
+
             base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(target);
+            }
         }
     }
 #endif

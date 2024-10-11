@@ -143,10 +143,11 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         IEnumerator WaitAndGoToInteractionState()
         {
-            Vector3 targetPos = interactor.TargetInteractable.transform.position;
             stateMachine.GoToState(MTRPlayerState.IDLE); // Go to idle state for animation
 
+
             // Wait for the player to face the target position
+            Vector3 targetPos = interactor.TargetInteractable.transform.position;
             if (!controller.IsFacingPosition(targetPos))
             {
                 yield return new WaitForSeconds(0.15f);

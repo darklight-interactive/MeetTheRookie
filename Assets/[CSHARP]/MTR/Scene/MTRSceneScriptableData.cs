@@ -2,19 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Darklight.UnityExt.BuildScene;
-using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Library;
-
-using EasyButtons;
-
-using FMODUnity;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -26,31 +17,9 @@ using UnityEditor;
 public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 {
     bool _foundSceneKnot;
-    List<string> _dropdown_sceneKnotList
-    {
-        get
-        {
-            List<string> _knotList = new List<string>(100);
-            if (MTRStoryManager.Instance.SceneKnotList != null)
-                _knotList = MTRStoryManager.Instance.SceneKnotList;
-            return _knotList;
-        }
-    }
+    List<string> _knotList = new List<string> { "None" };
+    List<string> _stitchList = new List<string> { "None" };
 
-    List<string> _dropdown_sceneStitchList
-    {
-        get
-        {
-            List<string> stitchList = new List<string>(100) { "None" };
-            if (MTRStoryManager.Instance.SceneKnotList != null && _sceneKnot != null)
-            {
-                List<string> tempList = InkyStoryManager.GetAllStitchesInKnot(_sceneKnot);
-                if (tempList != null && tempList.Count > 0)
-                    stitchList = tempList;
-            }
-            return stitchList;
-        }
-    }
 
     [Header("MTR STORY SETTINGS")]
     [SerializeField, Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")] string _sceneKnot;
@@ -62,7 +31,30 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
     [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
 
 
-
+    List<string> _dropdown_sceneKnotList
+    {
+        get
+        {
+            if (MTRStoryManager.Instance.SceneKnotList != null)
+            {
+                _knotList = new List<string>() { "None" };
+                _knotList.AddRange(MTRStoryManager.Instance.SceneKnotList);
+            }
+            return _knotList;
+        }
+    }
+    List<string> _dropdown_sceneStitchList
+    {
+        get
+        {
+            if (MTRStoryManager.Instance.SceneKnotList != null && _sceneKnot != null)
+            {
+                _stitchList = new List<string>() { "None" };
+                _stitchList.AddRange(InkyStoryManager.GetAllStitchesInKnot(_sceneKnot));
+            }
+            return _stitchList;
+        }
+    }
     public string SceneKnot { get => _sceneKnot; set => _sceneKnot = value; }
     public string OnStartInteractionStitch { get => _onStartInteractionStitch; set => _onStartInteractionStitch = value; }
     public MTRCameraRigSettings CameraRigSettings { get => _cameraRigSettings; set => _cameraRigSettings = value; }

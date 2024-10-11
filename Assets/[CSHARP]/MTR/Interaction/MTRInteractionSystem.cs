@@ -9,6 +9,8 @@ public class MTRInteractionSystem : InteractionSystem
         get
         {
             Registry.TryGetInteractable(out MTRPlayerInteractor playerInteractor);
+            if (playerInteractor == null)
+                playerInteractor = FindFirstObjectByType<MTRPlayerInteractor>();
             return playerInteractor;
         }
     }

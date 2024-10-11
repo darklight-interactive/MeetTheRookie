@@ -216,7 +216,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnStartInteractionStitch, out MTRInteractable interactable);
                 if (interactable != null)
                 {
-                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable);
+                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                    Debug.Log($"{PREFIX} >> OnStartInteractionStitch: {activeSceneData.OnStartInteractionStitch}");
                 }
 
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
