@@ -91,6 +91,15 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                 break;
         }
     }
+
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
+    {
+        base.Initialize(preset, clonePanelSettings);
+
+        // << SET THE KNOT >>
+        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
+    }
+
     void InitializeDatingSim()
     {
         Debug.Log($"{PREFIX} >> Initialize");
@@ -148,7 +157,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     void ResetDatingSim()
     {
-        _dialogueText.FullText = "";
+        if (_dialogueText != null) _dialogueText.FullText = "";
         ResetChoiceMap();
     }
 
