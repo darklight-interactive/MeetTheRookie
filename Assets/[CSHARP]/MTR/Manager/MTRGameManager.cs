@@ -81,7 +81,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
         if (Application.isPlaying)
         {
             SceneManager.OnSceneChanged += OnSceneChanged;
-
         }
 
     }
