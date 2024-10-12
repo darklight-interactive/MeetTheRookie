@@ -17,6 +17,7 @@ using Debug = UnityEngine.Debug;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using NaughtyAttributes;
 
 namespace Darklight.UnityExt.FMODExt
 {
@@ -49,13 +50,13 @@ namespace Darklight.UnityExt.FMODExt
         #region == [[ FMODExt EVENT OBJECTS ]] ============================================== >>
 
         [Header("FMOD Event Objects")]
-        [SerializeField] FMODExt_MusicObject _backgroundMusic;
-        [SerializeField] FMODExt_SFXObject _generalSFX;
+        [SerializeField, Expandable] FMODExt_MusicObject _backgroundMusic;
+        [SerializeField, Expandable] FMODExt_SFXObject _generalSFX;
         public FMODExt_MusicObject BackgroundMusic => _backgroundMusic;
         public FMODExt_SFXObject GeneralSFX => _generalSFX;
 
         #region -- (( PLAY EVENTS )) ----------------------- ))
-        public void PlaySceneBackgroundMusic(string sceneName)
+        public virtual void PlaySceneBackgroundMusic(string sceneName)
         {
             EventReference bg_music = _backgroundMusic.GetBackgroundMusicByScene(sceneName);
             PlaySong(bg_music);

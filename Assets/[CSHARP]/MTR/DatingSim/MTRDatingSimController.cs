@@ -67,9 +67,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     // ================ [[ UNITY METHODS ]] ============================ >>>>
     void OnEnable()
     {
-        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
-        MTRStoryManager.OnNewChoices += HandleStoryChoices;
-
         MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
     }
     void OnDestroy()
@@ -94,22 +91,17 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                 break;
         }
     }
-
-    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
-    {
-        base.Initialize(preset, clonePanelSettings);
-
-        // << SET THE KNOT >>
-        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
-    }
-
     void InitializeDatingSim()
     {
         Debug.Log($"{PREFIX} >> Initialize");
         base.Initialize(preset);
 
+        // << SET THE KNOT >>
+        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
+
         // << DISABLE INPUTS >>
         SetInputEnabled(false);
+        ResetDatingSim();
 
         // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
@@ -163,6 +155,9 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     IEnumerator Start()
     {
         yield return new WaitForSeconds(2f);
+
+        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
+        MTRStoryManager.OnNewChoices += HandleStoryChoices;
 
         // Start story
         MTRStoryManager.GoToKnotOrStitch(_knot);

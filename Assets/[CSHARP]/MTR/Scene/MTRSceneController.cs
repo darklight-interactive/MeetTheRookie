@@ -210,14 +210,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 InkyStoryManager.GoToKnotOrStitch(activeSceneData.SceneKnot);
 
                 transitionController?.StartWipeOpen();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(2f);
 
-                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnStartInteractionStitch, out MTRInteractable interactable);
-                if (interactable != null)
-                {
-                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable);
-                }
 
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
@@ -230,6 +224,14 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             public PlayModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
             public override void Enter()
             {
+                MTRSceneScriptableData activeSceneData = sceneManager.GetActiveSceneScriptableData();
+
+                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
+                MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnStartInteractionStitch, out MTRInteractable interactable);
+                if (interactable != null)
+                {
+                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                }
             }
             public override void Execute() { }
             public override void Exit() { }

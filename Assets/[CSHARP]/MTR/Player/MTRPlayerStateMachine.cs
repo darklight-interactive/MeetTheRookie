@@ -105,6 +105,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             if (targetInteractable != null && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
             {
                 stateMachine.GoToState(MTRPlayerState.IDLE);
+                interactor.ClearTarget();
             }
         }
 

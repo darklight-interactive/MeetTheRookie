@@ -4,6 +4,7 @@ using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MTR_AudioManager : FMODExt_EventManager
 {
@@ -21,7 +22,19 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     #region ///--Accessing FMODExt_EventManager Static Events--/// 
 
-    public new void PlaySceneBackgroundMusic(string sceneName)
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        MTRSceneManager.Instance.OnSceneChanged += HandleSceneChange;
+    }
+
+    void HandleSceneChange(Scene oldScene, Scene newScene)
+    {
+        PlaySceneBackgroundMusic(newScene.name);
+    }
+
+    public override void PlaySceneBackgroundMusic(string sceneName)
     {
         EventReference bg_music = backgroundMusic.GetBackgroundMusicByScene(sceneName);
         backgroundMusic.SetMusicIntensity(sceneName);
@@ -52,9 +65,16 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     public void StartFootstepEvent()
     {
-        if (player == null) { player = GameObject.Find("[PLAYER] Lupe"); }
-        
-        repeatFootstepCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
+        if (player == null) { player = FindFirstObjectByType<MTRPlayerController>().gameObject; }
+
+        if (generalSFX != null && !generalSFX.footstep.IsNull)
+        {
+            repeatFootstepCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
+        }
+        else
+        {
+            Debug.LogError("Footstep event is null.");
+        }
     }
 
     // Handling spatialized repeated events
