@@ -198,7 +198,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
         if (interactable == null) return false;
         if (_target == interactable) return false;
-        if (_lastTarget == interactable) return false;
+        //if (_lastTarget == interactable) return false;
 
         bool result = interactable.AcceptTarget(this);
         if (result)
