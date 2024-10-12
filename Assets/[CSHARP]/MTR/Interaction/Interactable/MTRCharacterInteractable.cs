@@ -28,7 +28,7 @@ public class MTRCharacterInteractable : MTRInteractable
             return speakerList;
         }
     }
-    public override Type TypeKey => Type.CHARACTER_INTERACTABLE;
+    public override Type TypeKey => Type.CHARACTER;
     public string SpeakerTag => _speakerTag;
 
 
@@ -56,31 +56,6 @@ public class MTRCharacterInteractable : MTRInteractable
     {
         base.Initialize();
         //Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
-
-
-        /*
-            // >> ON FIRST INTERACTION -------------------------------
-            this.OnStartInteraction += () =>
-            {
-                _stateBeforeTalkedTo = _stateMachine.CurrentState;
-
-                // If the statemachine is not null, go to the speak state
-                _stateMachine?.GoToState(NPCState.SPEAK);
-            };
-
-            // >> ON INTERACT ---------------------------------------
-            // NOTE :: This event is only called when an Interaction is confirmed
-            this.OnContinueInteraction += (string text) =>
-            {
-
-            };
-
-            this.OnCompleteInteraction += () =>
-            {
-                // If the statemachine is not null, go to the state before talked to
-                _stateMachine?.GoToState(_stateBeforeTalkedTo);
-            };
-            */
     }
 
     public void PlayAnimation(NPCState state)

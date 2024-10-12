@@ -67,7 +67,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     void OnDestroy()
     {
         SetInputEnabled(false); // Unbind input events
-        MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
+        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
     }
     // ================ [[ INTERNAL METHODS ]] ========================== >>>>
     void OnSceneStateChanged(MTRSceneState newState)

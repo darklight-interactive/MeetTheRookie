@@ -73,16 +73,18 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     public class BasePlayerState : FiniteState<MTRPlayerState>
     {
         protected MTRPlayerStateMachine stateMachine;
-        protected MTRPlayerController controller;
+        protected MTRPlayerController controller => stateMachine.controller;
         protected MTRPlayerInput input => controller.Input;
         protected PlayerAnimator animator => controller.Animator;
         protected MTRPlayerInteractor interactor => controller.Interactor;
         public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
         {
             this.stateMachine = stateMachine;
-            this.controller = stateMachine.controller;
         }
-        public override void Enter() { }
+        public override void Enter()
+        {
+            interactor.SetEnabled(true);
+        }
         public override void Execute() { }
         public override void Exit() { }
 
@@ -100,7 +102,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         public override void Execute()
         {
-            if (targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
+            if (targetInteractable != null && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
             {
                 stateMachine.GoToState(MTRPlayerState.IDLE);
             }
@@ -125,12 +127,18 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
                 interactor.SetEnabled(false);
             }
         }
-
         public override void Execute()
         {
             if (controller.IsAtMoveTarget() && !_isAtMoveTarget)
             {
                 _isAtMoveTarget = true;
+
+                if (controller == null)
+                {
+                    Debug.LogError("Controller is null");
+                    return;
+                }
+
                 controller.OverrideResetMoveDirection();
                 controller.StartCoroutine(WaitAndGoToInteractionState());
             }
@@ -144,7 +152,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         IEnumerator WaitAndGoToInteractionState()
         {
             stateMachine.GoToState(MTRPlayerState.IDLE); // Go to idle state for animation
-
 
             // Wait for the player to face the target position
             Vector3 targetPos = interactor.TargetInteractable.transform.position;

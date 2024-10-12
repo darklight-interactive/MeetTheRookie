@@ -94,7 +94,9 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
 
         public override void OnInspectorGUI()
         {
-            _serializedObject.Update();
+            serializedObject.Update();
+
+            _sceneTransitionScript = (MTRSceneTransitionController)target;
 
             EditorGUI.BeginChangeCheck();
 

@@ -32,10 +32,15 @@ public class MTRPlayerInput : MonoBehaviour
 
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
-    public bool IsAllInputEnabled => _allInputEnabled;
+    public bool IsAllInputEnabled
+    {
+        get
+        {
+            return _allInputEnabled = _movementInputEnabled && _interactInputEnabled;
+        }
+    }
 
-
-    // =================================== [[ PROPERTIES ]] =================================== >>
+    #region ---- < PRIVATE_METHODS > ( UNITY_RUNTIME ) --------------------------------- 
     void Awake()
     {
         SetAllInputsEnabled(false);
@@ -52,8 +57,16 @@ public class MTRPlayerInput : MonoBehaviour
 
     void Update()
     {
-
+        _allInputEnabled = _movementInputEnabled && _interactInputEnabled;
     }
+
+    void OnDestroy()
+    {
+        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
+        SetAllInputsEnabled(false);
+    }
+    #endregion
+
 
     void OnSceneStateChanged(MTRSceneState state)
     {
@@ -61,22 +74,11 @@ public class MTRPlayerInput : MonoBehaviour
         {
             case MTRSceneState.PLAY_MODE:
                 SetAllInputsEnabled(true);
-                Interactor.SetEnabled(true);
                 break;
             default:
                 SetAllInputsEnabled(false);
                 break;
         }
-    }
-
-
-    // Update is called once per frame
-
-
-    public void OnDestroy()
-    {
-        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
-        SetAllInputsEnabled(false);
     }
 
     [Button]

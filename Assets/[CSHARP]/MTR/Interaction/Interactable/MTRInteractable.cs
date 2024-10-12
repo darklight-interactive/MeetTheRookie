@@ -155,7 +155,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
             return StateMachine.CurrentState;
         }
     }
-    public override Type TypeKey => Type.BASE_INTERACTABLE;
+    public override Type TypeKey => Type.BASE;
     public string InteractionStitch { get => _interactionStitch; set => _interactionStitch = value; }
     #endregion
 
@@ -423,9 +423,9 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     // ====== [[ Enums ]] ======================================
     public enum Type
     {
-        BASE_INTERACTABLE,
-        CHARACTER_INTERACTABLE,
-        PLAYER_INTERACTOR,
+        BASE,
+        CHARACTER,
+        PLAYER,
     }
 
     public enum State

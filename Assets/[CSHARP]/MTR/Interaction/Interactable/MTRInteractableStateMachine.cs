@@ -244,7 +244,6 @@ public partial class MTRInteractable
                 }
                 else
                 {
-
                     // Destroy the bubble on exit
                     InteractionSystem.Invoke(new DialogueInteractionCommand(endDialogueReciever, true));
                 }

@@ -23,7 +23,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
 
     [Header("Interactor Settings")]
-    [SerializeField] bool _enabled = false;
+    [SerializeField, ShowOnly] bool _enabled = false;
     [SerializeField] LayerMask _layerMask;
     [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
     [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
@@ -45,7 +45,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
-    public override Type TypeKey => Type.PLAYER_INTERACTOR;
+    public override Type TypeKey => Type.PLAYER;
     public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
     public Library<Interactable, string> NearbyInteractables => _nearbyInteractables;
     public Interactable TargetInteractable => _target;
@@ -194,6 +194,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public bool TryAssignTarget(Interactable interactable)
     {
+        if (!_enabled) return false;
+
         if (interactable == null) return false;
         if (_target == interactable) return false;
         if (_lastTarget == interactable) return false;
@@ -213,9 +215,10 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void ClearTarget()
     {
+        if (!_enabled) return;
+
         _lastTarget = _target;
         _target = null;
-
         _lastTarget.Reset();
     }
 
@@ -223,9 +226,10 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     {
         if (interactable == null) return false;
 
-        // If the interactable is not the target, assign it as the target.
-        if (force && _target != interactable)
-            _target = interactable;
+        _target = interactable;
+        SetEnabled(false);
+
+        Debug.Log($"[{name}] Interacting with: {interactable.name} : force={force}");
 
         return interactable.AcceptInteraction(this, force);
     }
@@ -234,6 +238,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void RefreshNearbyInteractables()
     {
+        if (!_enabled) return;
+
         // Update the interactables dictionary with the overlap interactables.
         List<Interactable> overlapInteractables = FindInteractables();
         foreach (Interactable interactable in overlapInteractables)
@@ -241,6 +247,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             TryAddInteractable(interactable);
         }
 
+        /*
         if (_target != null && !overlapInteractables.Contains(_target))
         {
             _target.Reset();
@@ -252,6 +259,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             _lastTarget.Reset();
             _lastTarget = null;
         }
+        */
 
         // Remove interactables from the dict that are no longer in the overlap interactables.
         List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Keys);
@@ -270,21 +278,9 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     }
     #endregion
 
-    void OnSceneStateChanged(MTRSceneState sceneState)
-    {
-        switch (sceneState)
-        {
-            case MTRSceneState.PLAY_MODE:
-                SetEnabled(true);
-                break;
-            default:
-                SetEnabled(false);
-                break;
-        }
-    }
-
     public void SetEnabled(bool enabled)
     {
         _enabled = enabled;
+        Debug.Log($"[{name}] Interactor Enabled: {_enabled}");
     }
 }

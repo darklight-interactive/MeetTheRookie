@@ -49,8 +49,15 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         {
             if (MTRStoryManager.Instance.SceneKnotList != null && _sceneKnot != null)
             {
-                _stitchList = new List<string>() { "None" };
-                _stitchList.AddRange(InkyStoryManager.GetAllStitchesInKnot(_sceneKnot));
+                if (MTRStoryManager.Instance.SceneKnotList.Contains(_sceneKnot))
+                {
+                    _stitchList = new List<string>() { "None" };
+                    _stitchList.AddRange(InkyStoryManager.GetAllStitchesInKnot(_sceneKnot));
+                }
+                else
+                {
+                    _stitchList = new List<string>() { "None" };
+                }
             }
             return _stitchList;
         }
