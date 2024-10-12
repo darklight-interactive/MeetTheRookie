@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5679918992375444960}
   - component: {fileID: 2858154478255356125}
+  - component: {fileID: 5971960432346803214}
   - component: {fileID: 188870416500937314}
   - component: {fileID: 398433143409627402}
-  - component: {fileID: 5971960432346803214}
   - component: {fileID: 3231504660078741222}
   - component: {fileID: 3307535121424918597}
   - component: {fileID: 5979479830694930934}
@@ -60,6 +60,20 @@ MonoBehaviour:
   _prefabLibrary: {fileID: 11400000, guid: b01b970eb78cf3247b7cebe873a55e22, type: 2}
   _cameraController: {fileID: 0}
   _playerController: {fileID: 0}
+--- !u!114 &5971960432346803214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011494858324646440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61b33c77ad81984f83d794bc57b829e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentSceneState: 0
+  _sceneToLoad: 
 --- !u!114 &188870416500937314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,220 +90,112 @@ MonoBehaviour:
   _dataValues:
   - _name: MAIN_MENU
     _path: Assets/Scenes/Build/MAIN_MENU.unity
-    Knot: Default
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene_default
+    OnStartInteractionStitch: 
   - _name: SCENE_1_0 - Intro
     _path: Assets/Scenes/Build/SCENE_1_0 - Intro.unity
-    Knot: scene1_0
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene1_0
+    OnStartInteractionStitch: 
   - _name: SCENE_1_1 - The Gas Station Ext
     _path: Assets/Scenes/Build/SCENE_1_1 - The Gas Station Ext.unity
-    Knot: scene1_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene1_1
+    OnStartInteractionStitch: 
   - _name: SCENE_1_2 - The Gas Station Int
     _path: Assets/Scenes/Build/SCENE_1_2 - The Gas Station Int.unity
-    Knot: scene1_2
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene1_2
+    OnStartInteractionStitch: 
   - _name: SCENE_1_3 - The Gas Station Int Bathroom
     _path: Assets/Scenes/Build/SCENE_1_3 - The Gas Station Int Bathroom.unity
-    Knot: scene1_3
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene1_3
+    OnStartInteractionStitch: 
   - _name: SCENE_1_4 - The Gas Station Ext
     _path: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Ext.unity
-    Knot: scene1_4
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene1_4
+    OnStartInteractionStitch: 
   - _name: SCENE_2_0 - The Precinct - Dating Sim
     _path: Assets/Scenes/Build/SCENE_2_0 - The Precinct - Dating Sim.unity
-    Knot: scene2_DS
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene2_DS
+    OnStartInteractionStitch: 
   - _name: SCENE_3_1 - The Winery Ext
     _path: Assets/Scenes/Build/SCENE_3_1 - The Winery Ext.unity
-    Knot: scene3_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene3_1
+    OnStartInteractionStitch: 
   - _name: SCENE_3_2 - The Winery Int
     _path: Assets/Scenes/Build/SCENE_3_2 - The Winery Int.unity
-    Knot: scene3_2
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene3_2
+    OnStartInteractionStitch: 
   - _name: SCENE_4_1 - Main Street_AFTERNOON
     _path: Assets/Scenes/Build/SCENE_4_1 - Main Street_AFTERNOON.unity
-    Knot: scene4_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_1
+    OnStartInteractionStitch: 
   - _name: SCENE_4_1 - Main Street_DUSK
     _path: Assets/Scenes/Build/SCENE_4_1 - Main Street_DUSK.unity
-    Knot: scene4_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_1
+    OnStartInteractionStitch: 
   - _name: SCENE_4_1 - Main Street_GOLDENHOUR
     _path: Assets/Scenes/Build/SCENE_4_1 - Main Street_GOLDENHOUR.unity
-    Knot: scene4_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_1
+    OnStartInteractionStitch: 
   - _name: SCENE_4_2 - The General Store
     _path: Assets/Scenes/Build/SCENE_4_2 - The General Store.unity
-    Knot: scene4_2
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_2
+    OnStartInteractionStitch: 
   - _name: SCENE_4_3 - The Arcade
     _path: Assets/Scenes/Build/SCENE_4_3 - The Arcade.unity
-    Knot: scene4_3
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_3
+    OnStartInteractionStitch: 
   - _name: SCENE_4_4 - The Bar
     _path: Assets/Scenes/Build/SCENE_4_4 - The Bar.unity
-    Knot: scene4_4
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene4_4
+    OnStartInteractionStitch: 
   - _name: SCENE_4_5 - The Bar - Dating Sim
     _path: Assets/Scenes/Build/SCENE_4_5 - The Bar - Dating Sim.unity
-    Knot: scene4_5_DS
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: 
+    OnStartInteractionStitch: 
   - _name: SCENE_5_1 - Stakeout - Dating Sim
     _path: Assets/Scenes/Build/SCENE_5_1 - Stakeout - Dating Sim.unity
-    Knot: scene5_1_DS
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: 
+    OnStartInteractionStitch: 
   - _name: SCENE_5_2 - The Winery Ext_EVENING
     _path: Assets/Scenes/Build/SCENE_5_2 - The Winery Ext_EVENING.unity
-    Knot: scene5_2
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene5_2
+    OnStartInteractionStitch: 
   - _name: SCENE_5_3 - The Winery Int_EVENING
     _path: Assets/Scenes/Build/SCENE_5_3 - The Winery Int_EVENING.unity
-    Knot: scene5_3
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene5_3
+    OnStartInteractionStitch: 
   - _name: SCENE_5_4 - The Winery Office Interior_EVENING
     _path: Assets/Scenes/Build/SCENE_5_4 - The Winery Office Interior_EVENING.unity
-    Knot: scene5_4
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene5_4
+    OnStartInteractionStitch: 
   - _name: SCENE_6_0 - Intro
     _path: Assets/Scenes/Build/SCENE_6_0 - Intro.unity
-    Knot: scene6_0
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_0
+    OnStartInteractionStitch: 
   - _name: SCENE_6_1 - The Gas Station Ext
     _path: Assets/Scenes/Build/SCENE_6_1 - The Gas Station Ext.unity
-    Knot: scene6_1
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_1
+    OnStartInteractionStitch: 
   - _name: SCENE_6_2 - The Gas Station Int
     _path: Assets/Scenes/Build/SCENE_6_2 - The Gas Station Int.unity
-    Knot: scene6_2
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_2
+    OnStartInteractionStitch: 
   - _name: SCENE_6_3 - The Gas Station Int Bathroom
     _path: Assets/Scenes/Build/SCENE_6_3 - The Gas Station Int Bathroom.unity
-    Knot: scene6_3
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_3
+    OnStartInteractionStitch: 
   - _name: SCENE_6_4 - The Gas Station Int
     _path: Assets/Scenes/Build/SCENE_6_4 - The Gas Station Int.unity
-    Knot: scene6_4
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_4
+    OnStartInteractionStitch: 
   - _name: SCENE_6_5 - The Gas Station Ext
     _path: Assets/Scenes/Build/SCENE_6_5 - The Gas Station Ext.unity
-    Knot: scene6_5
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: scene6_5
+    OnStartInteractionStitch: 
   - _name: SCENE_7_0 - The Precinct - Dating Sim
     _path: Assets/Scenes/Build/SCENE_7_0 - The Precinct - Dating Sim.unity
-    Knot: Default
-    CameraRigSettings: {fileID: 0}
-    CameraRigBounds: {fileID: 0}
-    SpawnInfo:
-      _sceneName: 
-      _spawnPoints: []
+    SceneKnot: 
+    OnStartInteractionStitch: 
   _assetPath: Assets/Resources/MeetTheRookie/BuildSceneData
   _activeSceneScriptableData: {fileID: 0}
   _fullSceneDataList:
@@ -380,20 +286,6 @@ MonoBehaviour:
     _valueAsString: 
     _valueAsStringList: []
   _globalKnowledgeList: []
---- !u!114 &5971960432346803214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011494858324646440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e61b33c77ad81984f83d794bc57b829e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentSceneState: 0
-  _sceneToLoad: 
 --- !u!114 &3231504660078741222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,28 +300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
   _interactableRegistry:
-    _items:
-    - _id: 0
-      _key: Speaker.Lupe
-      _value: {fileID: 0}
-    - _id: 1
-      _key: Speaker.Mel
-      _value: {fileID: 0}
-    - _id: 2
-      _key: scene1_3.door_back_to_interior
-      _value: {fileID: 0}
-    - _id: 3
-      _key: Speaker.Beth
-      _value: {fileID: 0}
-    - _id: 4
-      _key: scene1_2.door_to_backroom
-      _value: {fileID: 0}
-    - _id: 5
-      _key: scene1_2.vending_machine
-      _value: {fileID: 0}
-    - _id: 6
-      _key: scene1_2.door_to_outside
-      _value: {fileID: 0}
+    _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1
 --- !u!114 &3307535121424918597

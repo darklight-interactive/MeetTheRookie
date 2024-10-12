@@ -132,20 +132,24 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
                 }
             }
 
-            if (_sceneTransitionScript._screenTransitionElement.screenAlignment == ScreenTransition.Alignment.Left)
+            if (_sceneTransitionScript._screenTransitionElement != null)
             {
-                if (GUILayout.Button("Set Alignment Right"))
+                if (_sceneTransitionScript._screenTransitionElement.screenAlignment == ScreenTransition.Alignment.Left)
                 {
-                    _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Right);
+                    if (GUILayout.Button("Set Alignment Right"))
+                    {
+                        _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Right);
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("Set Alignment Left"))
+                    {
+                        _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Left);
+                    }
                 }
             }
-            else
-            {
-                if (GUILayout.Button("Set Alignment Left"))
-                {
-                    _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Left);
-                }
-            }
+
 
             if (EditorGUI.EndChangeCheck())
             {

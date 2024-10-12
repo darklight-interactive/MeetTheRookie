@@ -22,7 +22,8 @@ using UnityEditor;
 
 public partial class MTRDatingSimController : UXML_UIDocumentObject
 {
-    const string PREFIX = "<MTRDatingSimController>";
+    #region ==== (( CONSTANTS )) ===================================== >>>>
+    const string PREFIX = "< MTRDatingSimController >";
     const string DIALOGUE_TAG = "dialogue";
     const string CHARACTER_TAG = "character";
     const string CHOICE_TAG = "choice";
@@ -33,6 +34,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     const string ACTIVE_CLASS = "active";
     const string INACTIVE_CLASS = "inactive";
+    #endregion
 
     static bool boundEmote = false;
 
@@ -52,6 +54,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     [HorizontalLine(color: EColor.Gray, order = 1)]
     [SerializeField, ShowOnly] bool _inputEnabled = false;
+    [SerializeField, ShowOnly] string _knot = "";
     [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
     public bool inCar = false;
     [Tooltip("Next scene to load")] public SceneObject nextScene;
@@ -62,11 +65,18 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     // ================ [[ UNITY METHODS ]] ============================ >>>>
     void OnEnable()
     {
+        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
+        MTRStoryManager.OnNewChoices += HandleStoryChoices;
+
         MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
     }
     void OnDestroy()
     {
         SetInputEnabled(false); // Unbind input events
+
+        MTRStoryManager.OnNewDialogue -= HandleStoryDialogue;
+        MTRStoryManager.OnNewChoices -= HandleStoryChoices;
+
         MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
     }
     // ================ [[ INTERNAL METHODS ]] ========================== >>>>
@@ -74,13 +84,24 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     {
         switch (newState)
         {
+            case MTRSceneState.INITIALIZE:
+                ResetDatingSim();
+                break;
             case MTRSceneState.ENTER:
-                Initialize();
+                InitializeDatingSim();
                 break;
         }
     }
 
-    void Initialize()
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
+    {
+        base.Initialize(preset, clonePanelSettings);
+
+        // << SET THE KNOT >>
+        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
+    }
+
+    void InitializeDatingSim()
     {
         Debug.Log($"{PREFIX} >> Initialize");
         base.Initialize(preset);
@@ -91,7 +112,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
         _choiceButtons = temp.OrderBy(x => x.name).ToList();
-        ResetChoiceButtons();
+        ResetChoiceMap();
         Debug.Log($"{PREFIX} >> Choice Buttons: {_choiceButtons.Count}");
 
         // << QUERY UXML ELEMENTS >>
@@ -127,21 +148,22 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
             boundEmote = true;
         }
 
-        _dialogueText.FullText = "";
-
-        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
-        MTRStoryManager.OnNewChoices += HandleStoryChoices;
 
         StartCoroutine(Start());
     }
 
+    void ResetDatingSim()
+    {
+        _dialogueText.FullText = "";
+        ResetChoiceMap();
+    }
+
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitUntil(() => MTRSceneManager.Instance.GetActiveSceneScriptableData() != null);
+        yield return new WaitForSeconds(2f);
 
         // Start story
-        MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot);
+        MTRStoryManager.GoToKnotOrStitch(_knot);
         MTRStoryManager.ContinueStory();
 
         MoveTriangle(); // Cool dialogue triangle movement
@@ -165,16 +187,26 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         switch (enabled)
         {
             case true:
-                UniversalInputManager.OnMoveInputStarted += HandleSelectionInput;
-                UniversalInputManager.OnPrimaryInteract += Select;
-                _inputEnabled = true;
+                EnableInput();
                 break;
             case false:
-                UniversalInputManager.OnMoveInputStarted -= HandleSelectionInput;
-                UniversalInputManager.OnPrimaryInteract -= Select;
-                _inputEnabled = false;
+                DisableInput();
                 break;
         }
+    }
+
+    void EnableInput()
+    {
+        UniversalInputManager.OnMoveInputStarted += HandleSelectionInput;
+        UniversalInputManager.OnPrimaryInteract += Select;
+        _inputEnabled = true;
+    }
+
+    void DisableInput()
+    {
+        UniversalInputManager.OnMoveInputStarted -= HandleSelectionInput;
+        UniversalInputManager.OnPrimaryInteract -= Select;
+        _inputEnabled = false;
     }
 
     #region ======== [[ STORY DIALOGUE ]] <PRIVATE_METHODS> ========================== >>>>
@@ -278,7 +310,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     {
         _continueTriangle.style.visibility = Visibility.Hidden;
 
-        ResetChoiceButtons();
+        ResetChoiceMap();
 
         StartCoroutine(HandleStoryChoicesRoutine(choices));
     }
@@ -311,19 +343,27 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// <param name="direction">The movement vector</param>
     void HandleSelectionInput(Vector2 direction)
     {
+        if (!_inputEnabled) return;
+
         direction.y = -direction.y;
         SelectableButton selected = _choiceMap.SelectElementInDirection(direction);
         if (selected != null)
         {
             _choiceMap.PreviousSelection.Deselect();
             selected.Select();
-            //Debug.Log($"{PREFIX} >> Move: {move} - Selected: {selected.text}");
+
+            DisableInput();
+            Invoke(nameof(EnableInput), 0.25f);
+
+            Debug.Log($"{PREFIX} >> Move: {direction} - Selected: {selected.text}");
         }
         else
         {
             //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
         }
     }
+
+
 
     /// <summary>
     /// The function to select choice via input
@@ -363,18 +403,21 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         MTRStoryManager.ChooseChoice(_choiceButtons.IndexOf(_choiceMap.CurrentSelection));
         _choicesActive = false;
 
-        ResetChoiceButtons();
+        ResetChoiceMap();
         MTRStoryManager.ContinueStory();
     }
     #endregion
 
-    void ResetChoiceButtons()
+    void ResetChoiceMap()
     {
         foreach (SelectableButton button in _choiceButtons)
         {
             button.Deselect();
             button.Disable();
         }
+
+        if (_choiceMap != null && _choiceMap.Selectables.Count > 0)
+            _choiceMap.Clear();
     }
 
     void ResetCharacterControls()
@@ -404,9 +447,9 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// </summary>
     void MoveTriangle()
     {
-        _continueTriangle.ToggleInClassList("TriangleDown");
-        _continueTriangle.RegisterCallback<TransitionEndEvent>(evt => _continueTriangle.ToggleInClassList("TriangleDown"));
-        root.schedule.Execute(() => _continueTriangle.ToggleInClassList("TriangleDown")).StartingIn(100);
+        _continueTriangle?.ToggleInClassList("TriangleDown");
+        _continueTriangle?.RegisterCallback<TransitionEndEvent>(evt => _continueTriangle.ToggleInClassList("TriangleDown"));
+        root.schedule.Execute(() => _continueTriangle?.ToggleInClassList("TriangleDown")).StartingIn(100);
     }
 
     /// <summary>
@@ -438,30 +481,4 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         return success;
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MTRDatingSimController))]
-    public class MTRDatingSimControllerCustomEditor : UXML_UIDocumentObjectCustomEditor
-    {
-        SerializedObject _serializedObject;
-        MTRDatingSimController _script;
-        public override void OnInspectorGUI()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (MTRDatingSimController)target;
-
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-            }
-        }
-    }
-#endif
-
 }

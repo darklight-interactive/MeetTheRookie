@@ -43,7 +43,8 @@ namespace Darklight.UnityExt.UXML
             private set
             {
                 _currentSelection = value;
-                _currentSelectionName = value.name;
+                if (value != null)
+                    _currentSelectionName = value.name;
             }
         }
         public void Add(TElement selectable)
@@ -104,7 +105,7 @@ namespace Darklight.UnityExt.UXML
                 }
                 else
                 {
-                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: No new selection.");
+                    //Debug.Log($"SelectableVectorField :: GetElementInDirection :: No new selection.");
                 }
                 return pick;
             }
