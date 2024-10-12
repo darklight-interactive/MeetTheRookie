@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{16104bb7-149b-41e5-881b-1961eb268646}">
 		<property name="name">
-			<value>phoneBeep</value>
+			<value>phoneVoicemailBeep</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{7376cfb2-4996-4baa-b0a4-1bdfa589967c}</destination>
+			<destination>{1fe3a578-3159-46c1-a088-5ff94204a0ec}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{d6360578-16bd-4141-a702-e74585ca2729}</destination>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{7825f360-32e2-4bce-aa50-7ae2115a7fe5}">
+		<property name="volume">
+			<value>-13.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{e014c083-f90d-462e-8298-8a37669ea6d8}</destination>
 		</relationship>
@@ -95,6 +98,7 @@
 	<object class="MixerBusPanner" id="{d91b9943-5c9d-41bf-9716-4f9b457d337c}" />
 	<object class="MixerBusEffectChain" id="{e014c083-f90d-462e-8298-8a37669ea6d8}">
 		<relationship name="effects">
+			<destination>{6272478f-27b9-4b78-8ed0-0685ac427267}</destination>
 			<destination>{e5dfeec8-e1f7-4bdc-a1a1-fa9dbf637a3e}</destination>
 		</relationship>
 	</object>
@@ -105,5 +109,13 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d4ac41ec-516d-4098-a36e-e4afa05968a4}" />
+	<object class="ThreeEQEffect" id="{6272478f-27b9-4b78-8ed0-0685ac427267}">
+		<property name="lowGain">
+			<value>-5.5</value>
+		</property>
+		<property name="highGain">
+			<value>-2</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{e5dfeec8-e1f7-4bdc-a1a1-fa9dbf637a3e}" />
 </objects>

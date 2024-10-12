@@ -5,10 +5,10 @@
 			<value>carDoorOpenAndClose</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{7376cfb2-4996-4baa-b0a4-1bdfa589967c}</destination>
+			<destination>{1fe3a578-3159-46c1-a088-5ff94204a0ec}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{015caa08-11be-4dd4-b6a2-384d68ca5592}</destination>
@@ -105,7 +105,6 @@
 	<object class="MixerBusEffectChain" id="{8b303369-db37-4dfc-9ad4-dad604fc7b18}">
 		<relationship name="effects">
 			<destination>{7ac6152a-ded2-484e-ab16-67409635a4b1}</destination>
-			<destination>{4d754cd0-7bf1-4c3a-b58d-d62c120775d2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{1781dd45-2f47-48d7-b90c-36130dd3359d}" />
@@ -127,6 +126,9 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{95a9bdf8-dbd0-4460-b66d-720ed9f11221}">
+		<property name="pitch">
+			<value>0.699999988</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{b3321e31-13ab-4ea7-b6a0-d36361f94425}</destination>
 		</relationship>
@@ -137,7 +139,6 @@
 	</object>
 	<object class="MixerBusFader" id="{219f6548-753f-4959-9d76-a968224a84dd}" />
 	<object class="MixerBusFader" id="{7ac6152a-ded2-484e-ab16-67409635a4b1}" />
-	<object class="SpatialiserEffect" id="{4d754cd0-7bf1-4c3a-b58d-d62c120775d2}" />
 	<object class="RandomizerModulator" id="{2f727c3f-ad0b-40cd-b3a4-71460ac30381}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>

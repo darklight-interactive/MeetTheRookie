@@ -15,6 +15,11 @@ public class TownPamphlet : MonoBehaviour
     void Start()
     {
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        UniversalInputManager.OnMenuButton += OnMenuButtonAction;
+
+        // Audio
+        MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.paperInteract);
+
         VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         pamphlet = root.Q<VisualElement>("Pamphlet");
         foreach (VisualElement page in pamphlet.Children())
@@ -49,6 +54,11 @@ public class TownPamphlet : MonoBehaviour
             currentselected.RemoveFromClassList("Unselected");
             }
         }
+    }
+
+    void OnMenuButtonAction()
+    {
+        // Remove visibility
     }
 
     // Update is called once per frame
