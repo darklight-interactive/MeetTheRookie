@@ -4,7 +4,7 @@ using UnityEngine;
 using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
 
 
-public enum MTRPlayerState { NULL, IDLE, WALK, INTERACTION, HIDE, WALK_OVERRIDE }
+public enum MTRPlayerState { NULL, IDLE, WALK, INTERACTION, HIDE, WALK_TO_DESTINATION }
 public enum MTRPlayerDirection { NONE, RIGHT, LEFT }
 
 [RequireComponent(typeof(MTRPlayerInput))]
@@ -92,7 +92,7 @@ public class MTRPlayerController : MonoBehaviour
         SetAnimationDirection(_direction);
 
         // << UPDATE STATE MACHINE >> ======================================================== >>
-        if (Input.IsAllInputEnabled && CurrentState != MTRPlayerState.WALK_OVERRIDE)
+        if (Input.IsAllInputEnabled && CurrentState != MTRPlayerState.WALK_TO_DESTINATION)
         {
             if (moveDirection.magnitude > 0.1f)
                 StateMachine.GoToState(MTRPlayerState.WALK);
@@ -171,7 +171,13 @@ public class MTRPlayerController : MonoBehaviour
     #endregion
 
     // << PUBLIC_METHODS >> ==================================================================== >>
-    public void HandleMoveInput(Vector2 moveInput) => SetMoveDirection(moveInput);
+    public void HandleMoveInput(Vector2 moveInput)
+    {
+        if (CurrentState != MTRPlayerState.IDLE && CurrentState != MTRPlayerState.WALK) return;
+        Debug.Log($"PlayerController :: HandleMoveInput({moveInput}) :: CurrentState: {CurrentState}");
+
+        SetMoveDirection(moveInput);
+    }
     public void HandleOnMoveInputCanceled() => SetMoveDirection(Vector2.zero);
     public void OverrideSetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection);
     public void OverrideResetMoveDirection() => SetMoveDirection(Vector2.zero);
@@ -203,7 +209,7 @@ public class MTRPlayerController : MonoBehaviour
         GetDirectionToPos(targetXPos, out Vector2 direction);
 
         OverrideSetMoveDirection(direction);
-        StateMachine.GoToState(MTRPlayerState.WALK_OVERRIDE);
+        StateMachine.GoToState(MTRPlayerState.WALK_TO_DESTINATION);
     }
 
     public bool IsAtMoveTarget()

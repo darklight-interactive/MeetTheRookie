@@ -43,16 +43,16 @@ public class MTRPlayerInput : MonoBehaviour
     #region ---- < PRIVATE_METHODS > ( UNITY_RUNTIME ) --------------------------------- 
     void Awake()
     {
+        MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
+        Controller.StateMachine.OnStateChanged += OnPlayerStateChanged;
         SetAllInputsEnabled(false);
     }
 
-
-    void Start()
+    void OnDestroy()
     {
-        if (Application.isPlaying)
-        {
-            MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
-        }
+        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
+        Controller.StateMachine.OnStateChanged -= OnPlayerStateChanged;
+        SetAllInputsEnabled(false);
     }
 
     void Update()
@@ -60,11 +60,7 @@ public class MTRPlayerInput : MonoBehaviour
         _allInputEnabled = _movementInputEnabled && _interactInputEnabled;
     }
 
-    void OnDestroy()
-    {
-        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
-        SetAllInputsEnabled(false);
-    }
+
     #endregion
 
 
@@ -77,6 +73,20 @@ public class MTRPlayerInput : MonoBehaviour
                 break;
             default:
                 SetAllInputsEnabled(false);
+                break;
+        }
+    }
+
+    void OnPlayerStateChanged(MTRPlayerState state)
+    {
+        switch (state)
+        {
+            case MTRPlayerState.IDLE:
+                SetAllInputsEnabled(true);
+                break;
+            case MTRPlayerState.INTERACTION:
+            case MTRPlayerState.WALK_TO_DESTINATION:
+                SetMovementInputEnabled(false);
                 break;
         }
     }

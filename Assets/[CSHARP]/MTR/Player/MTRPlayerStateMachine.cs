@@ -23,7 +23,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             {MTRPlayerState.WALK, new BasePlayerState(this, MTRPlayerState.WALK)},
             {MTRPlayerState.INTERACTION, new InteractionState(this)},
             {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)},
-            {MTRPlayerState.WALK_OVERRIDE, new WalkOverrideState(this)}};
+            {MTRPlayerState.WALK_TO_DESTINATION, new WalkOverrideState(this)}};
     }
 
     public override bool GoToState(MTRPlayerState stateType, bool force = false)
@@ -40,7 +40,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
     void SetAnimation(MTRPlayerState stateType)
     {
-        if (stateType == MTRPlayerState.WALK_OVERRIDE)
+        if (stateType == MTRPlayerState.WALK_TO_DESTINATION)
             stateType = MTRPlayerState.WALK;
         _animator.PlayStateAnimation(stateType);
     }
@@ -62,7 +62,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             case MTRPlayerState.HIDE:
                 _input.SetAllInputsEnabled(false);
                 break;
-            case MTRPlayerState.WALK_OVERRIDE:
+            case MTRPlayerState.WALK_TO_DESTINATION:
                 _input.SetAllInputsEnabled(false);
                 break;
         }
@@ -118,7 +118,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     public class WalkOverrideState : BasePlayerState
     {
         bool _isAtMoveTarget = false;
-        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.WALK_OVERRIDE) { }
+        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.WALK_TO_DESTINATION) { }
 
         public override void Enter()
         {
@@ -152,7 +152,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         IEnumerator WaitAndGoToInteractionState()
         {
-            stateMachine.GoToState(MTRPlayerState.IDLE); // Go to idle state for animation
+            animator.PlayStateAnimation(MTRPlayerState.IDLE); // Play idle animation
 
             // Wait for the player to face the target position
             Vector3 targetPos = interactor.TargetInteractable.transform.position;
