@@ -127,6 +127,7 @@
 <i> How did they know? </i> 
 
 #name: Lupe
+# emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  "Lucky guess." | "Alright." }
 
 #name: Misra
@@ -138,7 +139,9 @@
 =GuessMisras
 #name: Misra
 # emote : Misra \| Surprised_2
+# sfx : off
 # emote : Lupe \| Inquistive_1
+# sfx : on
 { tease_level > sincerity_level:  "Oh ok! C'mon, you're not going to get it right." | "Sure!" }
 
 +["Green."] -> CorrectColor 
@@ -183,7 +186,8 @@
 # emote : Misra \| Nervous_1
 "Ha! Nope!" 
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  "What is it then?" | "Damn." }
 
 #name: Misra 
@@ -261,15 +265,15 @@ They'll have...
 +[Lemon Drop] -> guessDrinkWrong
 
 =guessDrinkRight
-# emote : Lupe \| Neutral_2
-<i>You reach into the back of your mind, and for some reason this  resonates with you.</i> 
+<i>You reach into the back of your mind, and for some reason this drink resonates with you.</i> 
 
 ~ tease_level++
 #name: Misra
 # emote : Misra \| Surprised_2
 "Oh! Thank you" 
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 "Was that right?" 
 
 #name: Misra 
@@ -306,6 +310,7 @@ They'll have...
 "Oh! Um, actually can I get an Old Fashioned?" 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Sorry." 
 
 {-  CorrectColor: 
@@ -398,10 +403,12 @@ They'll have...
 +["Seems like you're doing well on your own."] -> yourOwn 
 
 = leaveWithThem
+# sfx : off
 #name: Misra 
 # emote : Misra \| Curious_1
 "..." 
 
+# sfx : on
 #name: Misra 
 # emote : Misra \| Nervous_1
 "Because I still have hope for this town." 
@@ -421,13 +428,15 @@ They'll have...
 # emote : Misra \| Nervous_1
 "Even if I have to be the only person working towards that, then so be it." 
 
+# sfx : off
 # emote : Misra \| Fright_2
 "I just..." 
 
 "I just wish more people cared about our home, you know?" 
 
+# sfx : on
 #name: Misra 
-# emote : Misra \| Fright_2
+//# emote : Misra \| Fright_2
 "Augh, I'm being a debby downer."
 
 "You know what, we'll recover! I just know it!!" 
@@ -454,9 +463,11 @@ They'll have...
 
 = buyOut 
 
+# sfx : off
 # emote : Misra \| Fright_2
 "Yeah...he's been...planning for a while." 
 
+# sfx : on
 #name: Lupe 
 # emote : Lupe \| Inquistive_1 
 "Planning?" 
@@ -480,6 +491,7 @@ They'll have...
 
 "..."
 
+# sfx : off
 # emote : Misra \| Fright_2
 "...losing hope?" 
 
@@ -487,6 +499,7 @@ They'll have...
 
 <i> They break eye contact for a brief moment, attemping to blink away the tears at the edge of their eyes. </i> 
 
+# sfx : on
 # emote : Misra \| Nervous_1
 "Or!"
 "Maybe he's the richest man in town and we don't know it!!" 
@@ -523,14 +536,17 @@ They'll have...
 "Well, she went missing alongside the other folks of the tragedy." 
 
 #name: Lupe 
+# emote : Lupe \| Neutral_2
 "Sorry to hear that..." 
 
 +["Maybe she's out there somewhere."] -> maybe 
 +["Maybe she's doing well."] -> doingWell
 
 = maybe 
+# sfx : off
 #name: Misra 
 # emote : Misra \| Nervous_1
+# sfx : on
 "..." 
 "...maybe." 
 <i> There's a slight crack in their voice, and rapidly clear it before taking another sip of their drink. </i>
@@ -662,7 +678,7 @@ They'll have...
 =hometown2
 #name: Misra 
 # emote : Misra \| Neutral_1
-# emote : Lupe \| Neutral_2
+//# emote : Lupe \| Neutral_2
 "So you're not too far from home!" 
 
 "That's, what, four...five hours away?" 
@@ -702,10 +718,12 @@ They'll have...
 #name: Misra 
 "Oh ok good! You haven't caught me yet!" 
 
+# sfx : off
 #name: Lupe 
 # emote : Lupe \| Serious_2 
 "..." 
 
+# sfx : on
 #name: Misra 
 # emote : Misra \| Nervous_1 
 "I'm joking! I'm joking! Relax!" 
@@ -771,10 +789,12 @@ They'll have...
  +["Company.] -> company 
  +{LupeQuestioning > 1} ["We should focus on the case."] ->whatNowContinue
  = boredom 
- #name: Misra 
+ #name: Misra
+ # emote : Misra \| Curious_1
  "Really?" 
  
  #name: Lupe 
+ # emote : Lupe \| Neutral_2
  "Yeah...I mean there's not much else to do." 
  
  #name: Misra 
@@ -834,7 +854,8 @@ They'll have...
 "With who?" 
 
 #name: Lupe 
-"My cheif." 
+# emote : Lupe \| Neutral_2
+"My chief." 
 
 #name: Misra 
 "What kind of bet?" 
@@ -1031,7 +1052,7 @@ They'll have...
  "Hm?" 
  
  #name: Misra 
-# emote : Misra \| Curious_1
+//# emote : Misra \| Curious_1
  "Are we ready to crack this case right open!?" 
  
  +["Not even close."] -> NotEvenClose 
@@ -1090,6 +1111,7 @@ They'll have...
 # emote : Misra \| Nervous_1
 "I may or may not have lost the keys..." 
 
+# sfx : off
 #name: Lupe 
 # emote : Lupe \| Serious_2
 "..." 
@@ -1097,7 +1119,9 @@ They'll have...
 #name: Misra
 "..." 
 
+# sfx : on
 #name: Lupe 
+# emote : Lupe \| Serious_2
 "Fine."
 
 "We can use mine." 

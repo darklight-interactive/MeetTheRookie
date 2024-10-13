@@ -12,12 +12,18 @@ VAR spooked = false
 VAR snooped = false
 VAR phoneCall = 0
 
+// ---------------NOTE TO OTHER PROGRAMMERS------------------
+// Every #emote tag will generate a voice line sfx using the name and emotion type. If you see repeats of #emote tags or #sfx tags around other ones, that is done for audio purposes
+// Thanks, and good luck today! -Jackson
+
 * [Scene 2 - The Precinct] -> scene2_DS
 
 === scene2_DS ===
+# sfx : off
 # hide : Lupe
 # hide : Misra
 # emote : Lupe \| Serious_2
+# sfx : on
 <i> You open the door to the precinct and are met with... no one. The place is frozen in time, with dust collecting on the window sills.</i> 
 
 + [Ding the bell] -> ding
@@ -132,6 +138,7 @@ VAR phoneCall = 0
 "..."
 
 #name: Misra
+# emote : Misra \| Neutral_1
 "Yep...very nice to meet you. " 
 
  -> precinct
@@ -157,6 +164,9 @@ VAR phoneCall = 0
 "Not here, and I'm not opposed to some company." //flirty
 
 //flustured Lupe
+# sfx : off
+# emote : Lupe \| Fluster_1
+# sfx : on
 <i>Your train of thought scatters for a brief moment with a slight flutter of your heart rate.</i>
 
 <i>How...strange. </i>
@@ -172,6 +182,7 @@ VAR phoneCall = 0
 = treeFell
 
 # name : Lupe
+# emote : Lupe \| Neutral_2
 "There's a tree blocking the road out of town by the gas station. I need it cleared as soon as possible." 
 #name:Misra
 # emote : Misra \| Curious_1
@@ -202,7 +213,7 @@ VAR phoneCall = 0
 "Let me see what I can do for you!" 
 
 # hide : Misra
-# emote : Lupe \| Neutral_2
+//# emote : Lupe \| Neutral_2
 <i>They excuse themselves to make the call.</i>
 
 <i>You wait patiently...</i>
@@ -247,6 +258,7 @@ VAR phoneCall = 0
 And a black and white picture of the winery stained with age.
 */
 
+# sfx : on
 #name: Misra
 # emote : Misra \| Inquisiting_1
 "So...thoughts?" 
@@ -298,6 +310,7 @@ And a black and white picture of the winery stained with age.
 
 <i>You continue waiting, and after what feels like an eternity, the Sheriff returns.</i>
 
+# sfx : on
 #name:Misra
 # emote : Misra \| Neutral_1
 "Yep, as expected! They said it'll take a while."
@@ -314,10 +327,12 @@ And a black and white picture of the winery stained with age.
 # emote : Lupe \| Neutral_2
 "When are the other staff or patrol Units coming?" 
 
+# sfx : off
 #name:Misra
 # emote : Misra \| Inquisiting_1
 "..."
 
+# sfx : on
 #name:Lupe
 # emote : Lupe \| Annoyed_1
 "Is it <i> just </i> you?! "
@@ -340,7 +355,7 @@ And a black and white picture of the winery stained with age.
 "My help?"
 
 #name:Misra
-# emote : Misra \| Neutral_1
+//# emote : Misra \| Neutral_1
 "Yeah! We got a bit of a cold-case going on." 
 
 <i>They hand you a thin manilla folder.</i>
@@ -439,6 +454,7 @@ And a black and white picture of the winery stained with age.
 "..."
 
 #name: Lupe
+# emote : Lupe \| Annoyed_1
 "How long have you been a Sheriff?" 
 
 #name: Misra
@@ -449,12 +465,14 @@ And a black and white picture of the winery stained with age.
 
 #name: Lupe 
 "..."
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Annoyed_1
 "And no one is here to help you?" 
 
 <i>Misra looks around the station.</i>
 
 #name: Misra 
+# emote : Misra \| Inquisiting_1
 "Yep. Just me, myself, and I!" 
 
 #name: Lupe 
@@ -467,9 +485,11 @@ And a black and white picture of the winery stained with age.
 <i> You've solved much more nearly-impossible cases. The fact that they're tied up on this is...baffling. </i>
 
 #name: Lupe 
+# emote : Lupe \| Annoyed_1
 "This isn't enough." 
 
 #name: Misra 
+# emote : Misra \| Inquisiting_1
 "Well then what do I need?" 
 +["Evidence."] ->Evidence 
 +["Witnesses."]->Witnesses 
@@ -537,10 +557,12 @@ And a black and white picture of the winery stained with age.
 # emote : Misra \| Neutral_1
 "Come on! What if reality hangs in the balance, and we must figure this out to save the world!! Woaaaahhhh!!! It's your destinyyyyyyyy!"
 
+# sfx : off
 #name:Lupe
 # emote : Lupe \| Neutral_2
 { tease_level > sincerity_level:  "A slight laughter escapes your nose" | "... "}
 
+# sfx : on
 #name:Misra
 # emote : Misra \| Neutral_1
 { tease_level > sincerity_level:  "AH HA! Gotcha laughing!" | "Anyways."}
@@ -550,7 +572,8 @@ And a black and white picture of the winery stained with age.
 
 <i> It shouldn't be too hard, and may keep you occupied while the "tree people" arrive. </i> 
 
-#name: Lupe 
+#name: Lupe
+# emote : Lupe \| Neutral_2
 "Fine." 
 
 #name: Misra 
@@ -610,26 +633,33 @@ And a black and white picture of the winery stained with age.
 
 <i>You hang up.</i>
 
+TODO Test this dialogue conditional to see if it works
+{phoneCall >= 8:
 #name: Misra
 # emote : Misra \| Neutral_1
-{phoneCall >= 8: "...Is your Cheif mad at you?"} 
+"...Is your Chief mad at you?"
 
 #name: Lupe
 # emote : Lupe \| Annoyed_1
-{phoneCall >= 8: "The better question is when is she not."} 
+"The better question is when is she not."
 
+# sfx : off
 # emote : Lupe \| Inquistive_1
-{phoneCall >= 8: "...How'd you know I called my Chief?"} 
+"...How'd you know I called my Chief?" 
 
+# sfx : on
 #name: Misra
 # emote : Misra \| Nervous_1
-{phoneCall >= 8: "Lucky guess!"} 
+"Lucky guess!"
+}
+ 
 
 #name:Misra
 # emote : Misra \| Neutral_1
 "So, what's the plan?" 
 
 # name: Lupe 
+# emote : Lupe \| Neutral_2
 "Well I'm going to need to see this place itself. Can't really figure out much from this file alone." 
 
 # name : Misra
@@ -644,12 +674,14 @@ And a black and white picture of the winery stained with age.
 *[Walk through door] -> door 
 
 = JokeBack
+# sfx : off
 #name:Lupe
 # emote : Lupe \| Fluster_1
 <i>That slight joke may have drained your social battery for the week.</i> 
 
 <i>Misra giggles as they walk out the door</i>
 
+# sfx : on
 #name:Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
