@@ -19,7 +19,7 @@ namespace Darklight.UnityExt.UXML
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
+    public class UXML_UIDocumentObject : MonoBehaviour
     {
         // << PUBLIC ACCESSORS >> //
         [Header("UXML_UIDocumentObject")]
@@ -29,10 +29,6 @@ namespace Darklight.UnityExt.UXML
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
 
-        public void OnEditorReloaded()
-        {
-            Initialize(preset);
-        }
         public virtual void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
         {
             this.preset = preset;

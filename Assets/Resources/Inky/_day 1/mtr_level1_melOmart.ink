@@ -18,35 +18,28 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
+~ SetSpeaker(Speaker.Chief_Thelton)
+//TODO SFX phone ringing and ringing,
+//~PlayLoopingSFX("phoneCallingTone")
+...
+//~StopLoopingSFX("phoneCallingTone")
+You've reached Chief Detective Inspector Thelton, Boise Precinct. 
+I'm not available right now. You know what to do!
+// We hear a generic voicemail beep.
+~PlaySFX("phoneVoicemailBeep")
 
-= intro
-    Let's get in and get out.
-    ->DONE
-* [thelton] -> thelton
-
-= thelton
-    ~ SetSpeaker(Speaker.Chief_Thelton)
-    TODO SFX phone ringing and ringing,
-    ~PlayLoopingSFX("phoneCallingTone")
-    ...
-    ~StopLoopingSFX("phoneCallingTone")
-    You've reached Chief Detective Inspector Thelton, Boise Precinct. 
-    I'm not available right now. You know what to do!
-    // We hear a generic voicemail beep.
-    ~PlaySFX("phoneVoicemailBeep")
-    
-    ~ SetSpeaker(Speaker.Lupe)
-    ...
-    Hey, it's Lupe. Had to change my route; 
-    tank was running low. 
-    I pit stopped outside of Kettle Rock, Idaho. 
-    Should be back on the road soon
-    don't jump on me for being late. 
-    I'll debrief the Watchowski Case with you when I get back.
-    Alright. Bye.
-        ~PlaySFX("phoneDialBeep")
-        ~ChangeGameScene("scene1_1")
-        -> DONE
+~ SetSpeaker(Speaker.Lupe)
+...
+Hey, it's Lupe. Had to change my route; 
+tank was running low. 
+I pit stopped outside of Kettle Rock, Idaho. 
+Should be back on the road soon
+don't jump on me for being late. 
+I'll debrief the Watchowski Case with you when I get back.
+Alright. Bye.
+    ~PlaySFX("phoneDialBeep")
+    ~ChangeGameScene("scene1_1")
+    -> DONE
 
 // ------------- SCENE1.1 Outside MelOMarket
 === scene1_1 ===

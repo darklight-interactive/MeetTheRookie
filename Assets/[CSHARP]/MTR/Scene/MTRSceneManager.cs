@@ -106,6 +106,8 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
     public override void Initialize()
     {
+
+
         // << Initialize Camera Bounds Library >>
         if (_cameraBoundsLibrary == null
             || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNameList.Count)

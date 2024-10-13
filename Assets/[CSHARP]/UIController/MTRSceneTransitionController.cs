@@ -3,6 +3,8 @@ using EasyButtons;
 using UnityEngine;
 using UnityEngine.UIElements;
 using EasyButtons.Editor;
+using Darklight.UnityExt.Editor;
+
 
 
 #if UNITY_EDITOR
@@ -10,7 +12,7 @@ using UnityEditor;
 #endif
 
 
-public class MTRSceneTransitionController : UXML_UIDocumentObject
+public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorListener
 {
     const string FULLSCREEN_BLACK_TAG = "fullscreen-black";
     const string FADE_IN_CLASS = "fade-in";
@@ -36,6 +38,11 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject
         {
             StartFadeIn();
         }
+    }
+
+    public new void OnEditorReloaded()
+    {
+        Initialize(preset);
     }
 
     public void StartFadeIn()

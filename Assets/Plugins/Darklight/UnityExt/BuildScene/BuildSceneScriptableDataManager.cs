@@ -80,6 +80,8 @@ namespace Darklight.UnityExt.BuildScene
             _scriptableDataLibrary.SetRequiredKeys(ScenePathList);
             _assetPath = AssetPath;
             RefreshScriptableData();
+
+            _activeSceneScriptableData = GetActiveSceneScriptableData();
         }
 
         /// <summary>

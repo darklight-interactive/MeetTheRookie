@@ -476,12 +476,9 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
   _data:
     _name: defaultname
+    _scene: 
     _key: scene3_1.door_main_room
     _layer: Interactable
     _type: 0
@@ -489,8 +486,7 @@ MonoBehaviour:
   _currentState: 0
   _sceneKnot: scene3_1
   _interactionStitch: scene3_1.door_main_room
-  onStart: 0
-  isSpawn: 0
+  autoSizeCollider: 1
 --- !u!61 &190903640
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -652,12 +648,9 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
   _data:
     _name: defaultname
+    _scene: 
     _key: scene3_1.fence
     _layer: Interactable
     _type: 0
@@ -665,8 +658,7 @@ MonoBehaviour:
   _currentState: 0
   _sceneKnot: scene3_1
   _interactionStitch: scene3_1.fence
-  onStart: 0
-  isSpawn: 0
+  autoSizeCollider: 1
 --- !u!61 &222049325
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1093,8 +1085,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1359381313
+  _guid: 5636030
   _typeKey: 0
+  _showGizmos: 0
 --- !u!114 &469359636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,7 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1720791651
+  _guid: -1622979716
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -1123,12 +1116,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1325810518
+  _guid: -1918973707
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &469359638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1141,7 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -16765447
+  _guid: 1151832519
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -1159,6 +1152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -1168,7 +1162,7 @@ MonoBehaviour:
     _gridDimensions: {x: 3, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.125, y: 0.125}
-      _cellSpacing: {x: 0, y: 0}
+      _cellSpacing: {x: -1, y: 0}
       _cellBonding: {x: 0, y: 0.05}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
@@ -1178,10 +1172,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -245646346
+      _guid: -331674669
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: -2.0852697, y: 0.24488251, z: 3.2244399}
+      _position: {x: -2.0227697, y: 0.24488251, z: 3.2244399}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -1191,7 +1185,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1307796491
+      _guid: 1395069383
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -1.9602697, y: 0.19488251, z: 3.2244399}
@@ -1204,10 +1198,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1843517837
+      _guid: 253502480
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: -1.8352697, y: 0.24488251, z: 3.2244399}
+      _position: {x: -1.8977697, y: 0.24488251, z: 3.2244399}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -1275,8 +1269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 252410644
+  _guid: -759352524
   _typeKey: 0
+  _showGizmos: 0
 --- !u!114 &478637425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,7 +1284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1963089911
+  _guid: -469395014
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -1305,12 +1300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 29212599
+  _guid: -1099091839
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &478637427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,7 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1264540745
+  _guid: -1217445937
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -1341,6 +1336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -1350,7 +1346,7 @@ MonoBehaviour:
     _gridDimensions: {x: 3, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.125, y: 0.125}
-      _cellSpacing: {x: 0, y: 0}
+      _cellSpacing: {x: -1, y: 0}
       _cellBonding: {x: 0, y: 0.05}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
@@ -1360,10 +1356,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -438157455
+      _guid: -1817245789
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: -0.15326965, y: -0.1131175, z: 3.2934399}
+      _position: {x: -0.09076965, y: -0.1131175, z: 3.2934399}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -1373,7 +1369,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1025400375
+      _guid: -1631193117
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -0.028269649, y: -0.1631175, z: 3.2934399}
@@ -1386,10 +1382,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1481640724
+      _guid: 2057591588
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: 0.09673035, y: -0.1131175, z: 3.2934399}
+      _position: {x: 0.03423035, y: -0.1131175, z: 3.2934399}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -2174,12 +2170,9 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
   _data:
     _name: defaultname
+    _scene: 
     _key: scene3_1.intro
     _layer: Interactable
     _type: 0
@@ -2187,8 +2180,7 @@ MonoBehaviour:
   _currentState: 0
   _sceneKnot: scene3_1
   _interactionStitch: scene3_1.intro
-  onStart: 1
-  isSpawn: 1
+  autoSizeCollider: 1
 --- !u!212 &962838252
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2650,8 +2642,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1557154613
+  _guid: -573966914
   _typeKey: 0
+  _showGizmos: 0
 --- !u!114 &1229662469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2664,7 +2657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -539077326
+  _guid: -1333124307
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -2680,12 +2673,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -521638644
+  _guid: -679527001
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &1229662471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,7 +2691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1673663727
+  _guid: -1043162972
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -2716,6 +2709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -2725,7 +2719,7 @@ MonoBehaviour:
     _gridDimensions: {x: 3, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.125, y: 0.125}
-      _cellSpacing: {x: 0, y: 0}
+      _cellSpacing: {x: -1, y: 0}
       _cellBonding: {x: 0, y: 0.05}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
@@ -2735,10 +2729,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 811889675
+      _guid: 371431114
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: -2.9672697, y: 1.025, z: 8.65144}
+      _position: {x: -2.9047697, y: 1.025, z: 8.65144}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -2748,7 +2742,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -764380295
+      _guid: -1986758066
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -2.8422697, y: 0.975, z: 8.65144}
@@ -2761,10 +2755,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 612266697
+      _guid: -823988049
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: -2.7172697, y: 1.025, z: 8.65144}
+      _position: {x: -2.7797697, y: 1.025, z: 8.65144}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -2967,7 +2961,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.043
@@ -3017,6 +3011,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+--- !u!4 &1364886416 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5360866141128978865, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
+  m_PrefabInstance: {fileID: 1364886415}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1464848186
 GameObject:
   m_ObjectHideFlags: 0
@@ -3066,8 +3065,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1660042611
+  _guid: -1017549071
   _typeKey: 0
+  _showGizmos: 0
 --- !u!114 &1464848189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3080,7 +3080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1696718709
+  _guid: 1578516389
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -3096,12 +3096,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1350172970
+  _guid: -796504938
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &1464848191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3114,7 +3114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -245955503
+  _guid: -533220940
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -3132,6 +3132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -3141,7 +3142,7 @@ MonoBehaviour:
     _gridDimensions: {x: 3, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.125, y: 0.125}
-      _cellSpacing: {x: 0, y: 0}
+      _cellSpacing: {x: -1, y: 0}
       _cellBonding: {x: 0, y: 0.05}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
@@ -3151,10 +3152,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -974382450
+      _guid: -1069796526
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: -4.7262697, y: 0.7738825, z: 5.8754396}
+      _position: {x: -4.6637697, y: 0.7738825, z: 5.8754396}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -3164,7 +3165,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -44612278
+      _guid: -2004972521
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -4.6012697, y: 0.7238825, z: 5.8754396}
@@ -3177,10 +3178,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 600405339
+      _guid: -105253669
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: -4.4762697, y: 0.7738825, z: 5.8754396}
+      _position: {x: -4.5387697, y: 0.7738825, z: 5.8754396}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -3479,15 +3480,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.043
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.78547794
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -45
+      value: -39.35
       objectReference: {fileID: 0}
     - target: {fileID: 5409168742065500744, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3506,12 +3507,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e31ce71d3b41aac428231a73de509057, type: 2}
     - target: {fileID: 7335559274320760579, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _followTarget
+      value: 
+      objectReference: {fileID: 1364886416}
+    - target: {fileID: 7335559274320760579, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _targetPosition.x
-      value: 0
+      value: 2.9307883
       objectReference: {fileID: 0}
     - target: {fileID: 7335559274320760579, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _targetPosition.y
       value: 0.78547794
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335559274320760579, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
+      propertyPath: _targetPosition.z
+      value: -39.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3937,8 +3946,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 680445692
+  _guid: -1984884719
   _typeKey: 0
+  _showGizmos: 0
 --- !u!114 &1805956630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3951,7 +3961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1171065157
+  _guid: -702437998
   _typeKey: 3
   _showGizmos: 0
   _dataObject: {fileID: 11400000, guid: 2349cc028f9f3a64a924784932090812, type: 2}
@@ -3967,12 +3977,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1986889572
+  _guid: -1550220708
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &1805956632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3985,7 +3995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1694600106
+  _guid: 1618213713
   _typeKey: 2
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 0b698459b63a5b146937dbdad8270ae3, type: 2}
@@ -4003,6 +4013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -4012,7 +4023,7 @@ MonoBehaviour:
     _gridDimensions: {x: 3, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.125, y: 0.125}
-      _cellSpacing: {x: 0, y: 0}
+      _cellSpacing: {x: -1, y: 0}
       _cellBonding: {x: 0, y: 0.05}
   _configObj: {fileID: 11400000, guid: fe15df40f30556b4f9ec5a8c2f850b0c, type: 2}
   _cellsInMap:
@@ -4022,10 +4033,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 642560578
+      _guid: 937034423
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
-      _position: {x: 3.8457596, y: 0.81000006, z: 6.0713177}
+      _position: {x: 3.9082596, y: 0.81000006, z: 6.0713177}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -4035,7 +4046,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -324469126
+      _guid: -115798673
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: 3.9707596, y: 0.76000005, z: 6.0713177}
@@ -4048,10 +4059,10 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1394898125
+      _guid: -171837919
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
-      _position: {x: 4.0957594, y: 0.81000006, z: 6.0713177}
+      _position: {x: 4.0332594, y: 0.81000006, z: 6.0713177}
       _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.125, y: 0.125}
       _isDisabled: 0
@@ -4346,6 +4357,98 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[1].SceneKnot
+      value: scene1_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[2].SceneKnot
+      value: scene1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[3].SceneKnot
+      value: scene1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[4].SceneKnot
+      value: scene1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[5].SceneKnot
+      value: scene1_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[6].SceneKnot
+      value: scene2_DS
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[7].SceneKnot
+      value: scene3_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[8].SceneKnot
+      value: scene3_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[9].SceneKnot
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[10].SceneKnot
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[11].SceneKnot
+      value: scene4_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[12].SceneKnot
+      value: scene4_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[13].SceneKnot
+      value: scene4_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[14].SceneKnot
+      value: scene4_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[17].SceneKnot
+      value: scene5_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[18].SceneKnot
+      value: scene5_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[19].SceneKnot
+      value: scene5_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[20].SceneKnot
+      value: scene6_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[21].SceneKnot
+      value: scene6_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[22].SceneKnot
+      value: scene6_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[23].SceneKnot
+      value: scene6_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[24].SceneKnot
+      value: scene6_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.data[25].SceneKnot
+      value: scene6_5
+      objectReference: {fileID: 0}
     - target: {fileID: 2433518505442435673, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _screenSize.x
       value: 927.50006
@@ -4850,7 +4953,7 @@ PrefabInstance:
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -115184736, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
+      objectReference: {fileID: -826221020, guid: 0a99c2bcbcc487f4ebf2102232c5d3dc, type: 3}
     - target: {fileID: 4369842979011664183, guid: ee70ebf7ce8e16444b2f4219e5b3a888, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -5264,12 +5367,9 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
   _data:
     _name: defaultname
+    _scene: 
     _key: scene3_1.window
     _layer: Interactable
     _type: 0
@@ -5277,8 +5377,7 @@ MonoBehaviour:
   _currentState: 0
   _sceneKnot: scene3_1
   _interactionStitch: scene3_1.window
-  onStart: 0
-  isSpawn: 0
+  autoSizeCollider: 1
 --- !u!61 &2047642283
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5440,12 +5539,9 @@ MonoBehaviour:
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-    _items: []
-    _readOnlyKey: 0
-    _readOnlyValue: 0
   _data:
     _name: defaultname
+    _scene: 
     _key: scene3_1.strange_footsteps
     _layer: Interactable
     _type: 0
@@ -5453,8 +5549,7 @@ MonoBehaviour:
   _currentState: 0
   _sceneKnot: scene3_1
   _interactionStitch: scene3_1.strange_footsteps
-  onStart: 0
-  isSpawn: 0
+  autoSizeCollider: 1
 --- !u!61 &2066502545
 BoxCollider2D:
   m_ObjectHideFlags: 0

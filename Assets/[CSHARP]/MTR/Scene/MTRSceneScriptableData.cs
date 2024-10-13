@@ -85,6 +85,11 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         }
 
         TrySearchForSceneKnot();
+
+        if (_sceneKnot == "None")
+        {
+            _foundSceneKnot = false;
+        }
     }
 
     void TrySearchForSceneKnot()

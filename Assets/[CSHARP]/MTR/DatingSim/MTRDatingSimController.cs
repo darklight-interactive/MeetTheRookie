@@ -65,7 +65,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     // ================ [[ PROPERTIES ]] ================================ >>>>
 
     // ================ [[ UNITY METHODS ]] ============================ >>>>
-    void OnEnable()
+    void Start()
     {
         MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
     }
@@ -152,7 +152,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
 
 
-        StartCoroutine(Start());
+        StartCoroutine(StartDatingSimRoutine());
     }
 
     void ResetDatingSim()
@@ -161,7 +161,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         ResetChoiceMap();
     }
 
-    IEnumerator Start()
+    IEnumerator StartDatingSimRoutine()
     {
         yield return new WaitForSeconds(2f);
 
