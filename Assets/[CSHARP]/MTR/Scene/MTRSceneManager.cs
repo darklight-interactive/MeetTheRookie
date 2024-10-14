@@ -50,8 +50,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         }
     }
 
-
-
     void HandleStoryInitialized()
     {
         if (!Application.isPlaying)
@@ -88,13 +86,15 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
     {
         base.Initialize();
 
+        // If in editor, set the camera to follow the player
+        if (!Application.isPlaying)
+            SceneController.CameraController?.SetPlayerAsFollowTarget();
+
         // << Set Active Camera Bounds >>
-        if (SceneController.CameraController != null && ActiveSceneData != null)
-            SceneController.CameraController.Rig.SetBounds(ActiveSceneData.CameraRigBounds);
+        SceneController.CameraController?.Rig.SetBounds(ActiveSceneData.CameraRigBounds);
 
         // << Initialize Story >>
         MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
-
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
@@ -106,10 +106,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
     {
         Gizmos.color = Color.green;
         if (ActiveSceneData != null)
-        {
-            ActiveSceneData.SceneBounds.DrawGizmos();
-            ActiveSceneData.CameraRigBounds.DrawGizmos();
-        }
+            ActiveSceneData.DrawGizmos();
 
     }
 

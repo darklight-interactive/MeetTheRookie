@@ -20,12 +20,12 @@ namespace Darklight.UnityExt.BuildScene
     /// </summary>
     public class BuildSceneScriptableData : ScriptableObject, IBuildSceneData
     {
-        bool _foundSceneObject;
+        bool _isValid;
 
-        [Header("Scene Identification")]
+        [Header("Build Scene Data")]
         [SerializeField, ReadOnly] SceneObject _sceneObject;
-        [SerializeField, ShowOnly, DisableIf("IsValid")] string _name;
-        [SerializeField, ShowOnly, DisableIf("IsValid")] string _path;
+        [SerializeField, ShowOnly, HideIf("_isValid")] string _name;
+        [SerializeField, ShowOnly, HideIf("_isValid")] string _path;
 
         public SceneObject SceneObject => _sceneObject;
         public string Name { get => _name; set => _name = value; }
@@ -33,8 +33,14 @@ namespace Darklight.UnityExt.BuildScene
 
         public virtual void Initialize(string path)
         {
-            _name = IBuildSceneData.ExtractNameFromPath(path);
-            _path = IBuildSceneData.FormatPath(path);
+            if (string.IsNullOrEmpty(path)) return;
+
+            if (!IsValid())
+            {
+                _name = IBuildSceneData.ExtractNameFromPath(path);
+                _path = IBuildSceneData.FormatPath(path);
+            }
+
             Refresh();
         }
 
@@ -49,11 +55,12 @@ namespace Darklight.UnityExt.BuildScene
         {
             _sceneObject = Name;
         }
+
         public virtual bool IsValid()
         {
             bool isPathValid = !string.IsNullOrEmpty(_path);
             bool isNameValid = !string.IsNullOrEmpty(_name);
-            return isPathValid && isNameValid;
+            return _isValid = isPathValid && isNameValid;
         }
 
     }

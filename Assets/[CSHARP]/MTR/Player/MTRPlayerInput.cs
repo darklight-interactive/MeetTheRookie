@@ -20,7 +20,7 @@ using EasyButtons.Editor;
 /// </summary>
 [RequireComponent(typeof(MTRPlayerController))]
 [RequireComponent(typeof(MTRPlayerInteractor))]
-[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(MTRPlayerAnimator))]
 public class MTRPlayerInput : MonoBehaviour
 {
     bool _sceneListenerInitialized = false;
@@ -85,7 +85,7 @@ public class MTRPlayerInput : MonoBehaviour
                 SetAllInputsEnabled(true);
                 break;
             case MTRPlayerState.INTERACTION:
-            case MTRPlayerState.WALK_TO_DESTINATION:
+            case MTRPlayerState.OVERRIDE_WALK:
                 SetMovementInputEnabled(false);
                 break;
         }

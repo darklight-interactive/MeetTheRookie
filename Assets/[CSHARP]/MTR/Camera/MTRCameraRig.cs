@@ -32,7 +32,7 @@ public class MTRCameraRig : MonoBehaviour
     [SerializeField] Camera _mainCamera;
     [SerializeField, ShowOnly] List<Camera> _overlayCameras = new List<Camera>();
     [SerializeField, Expandable] MTRCameraRigSettings _settings;
-    [SerializeField] MTRCameraBounds _bounds;
+    [SerializeField] MTRCameraBounds _bounds = new MTRCameraBounds();
 
     // << PROPERTIES >> -------------------------------------------------
     public Transform FollowTarget => _followTarget;
@@ -41,7 +41,7 @@ public class MTRCameraRig : MonoBehaviour
     public float CameraFOV => _settings.fov;
     public float CameraAspect => _mainCamera.aspect;
 
-    public Vector3 BoundsCenter => _bounds.center;
+    public Vector3 BoundsCenter => _bounds.Center;
     public float HalfWidth
     {
         get
@@ -180,8 +180,13 @@ public class MTRCameraRig : MonoBehaviour
     Vector3 EnforceBounds(Vector3 position)
     {
 
-        _bounds.xAxisBounds.GetWorldValues(_bounds.center, out float minXBound, out float maxXBound);
-        _bounds.yAxisBounds.GetWorldValues(_bounds.center, out float minYBound, out float maxYBound);
+        //_bounds.xAxisBounds.GetWorldValues(_bounds.Center, out float minXBound, out float maxXBound);
+        //_bounds.yAxisBounds.GetWorldValues(_bounds.Center, out float minYBound, out float maxYBound);
+
+        float minXBound = _bounds.Left;
+        float maxXBound = _bounds.Right;
+        float minYBound = _bounds.Bottom;
+        float maxYBound = _bounds.Top;
 
         // << CALCULATE POSITION >> ------------------------------
         Vector3 adjustedPosition = position;

@@ -6,10 +6,14 @@ using Darklight.UnityExt.BuildScene;
 using UnityEngine;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
+using Darklight.UnityExt.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+
 
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
@@ -22,19 +26,23 @@ public class MTRSceneData : BuildSceneScriptableData
 
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")]
-    string _sceneKnot = "None";
+    [SerializeField, ShowOnly] string _internalSceneKnot = "None";
+    [SerializeField, Dropdown("_dropdown_sceneKnotList"), HideIf("_foundSceneKnot")] string _sceneKnot = "None";
 
-    [SerializeField, Dropdown("_dropdown_sceneStitchList")]
+    [Header("MTR INTERACTION SETTINGS")]
+    [SerializeField] bool _forceInteractionOnEnter;
+    [SerializeField, Dropdown("_dropdown_sceneStitchList"), ShowIf("_forceInteractionOnEnter")]
     string _onEnterInteractionStitch = "None";
 
     [Header("MTR SCENE SETTINGS")]
+    [SerializeField, Range(0f, 2f)] float _cameraBoundsOffset = 1f;
     [SerializeField] MTRSceneBounds _sceneBounds = new MTRSceneBounds();
     [SerializeField] MTRCameraBounds _cameraBounds = new MTRCameraBounds();
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
 
+    #region ---- < PROPERTIES > --------------------------------- 
     List<string> _dropdown_sceneKnotList
     {
         get
@@ -72,36 +80,68 @@ public class MTRSceneData : BuildSceneScriptableData
     public MTRSceneBounds SceneBounds => _sceneBounds;
     public MTRCameraRigSettings CameraRigSettings => _cameraRigSettings;
     public MTRCameraBounds CameraRigBounds => _cameraBounds;
+    #endregion
 
-    public override void Initialize(string path)
-    {
-        base.Initialize(path);
-    }
-
-    public override void Copy(IBuildSceneData data)
-    {
-        base.Copy(data);
-    }
-
+    //  ---------------- [ METHODS ] -----------------------------
     public override void Refresh()
     {
         base.Refresh();
 
-        if (_sceneKnot == "None")
-            FindSceneKnot();
-
-        if (_sceneBounds == null)
-            _sceneBounds = new MTRSceneBounds();
-
-        if (_cameraBounds == null)
-            _cameraBounds = new MTRCameraBounds();
-        _cameraBounds.center.x = _sceneBounds.Center.x;
-        _cameraBounds.xAxisBounds.Min = _sceneBounds.Left - 1;
-        _cameraBounds.xAxisBounds.Max = _sceneBounds.Right + 1;
+        RefreshSceneSettings();
+        RefreshStorySettings();
     }
 
-    void FindSceneKnot()
+    void RefreshSceneSettings()
     {
+        // Initialize scene bounds if not set
+        _sceneBounds ??= new MTRSceneBounds();
+
+        // Set default X-axis values for the scene bounds if not set
+        if (_sceneBounds.XAxisValues == Vector2.zero)
+            _sceneBounds.XAxisValues = new Vector2(-5, 5);
+
+        // Initialize camera bounds if not set
+        _cameraBounds ??= new MTRCameraBounds();
+
+        // Set the camera bounds to match the scene bounds
+        _cameraBounds.Center = _sceneBounds.Center;
+        _cameraBounds.XAxisValues.x = _sceneBounds.Left - _cameraBoundsOffset;
+        _cameraBounds.XAxisValues.y = _sceneBounds.Right + _cameraBoundsOffset;
+
+        // Hard code the YBounds to be a distance of 2
+        _cameraBounds.YAxisValues = new Vector2(-1, 1);
+    }
+
+
+    void RefreshStorySettings()
+    {
+        // << VALIDATE FOUND KNOT
+        if (_foundSceneKnot)
+        {
+            // Update the internal scene knot if the scene knot has changed
+            if (_sceneKnot != "None" && _internalSceneKnot != _sceneKnot)
+            {
+                _internalSceneKnot = _sceneKnot;
+                return;
+            }
+            else if (_sceneKnot == "None" && _internalSceneKnot != "None")
+            {
+                _sceneKnot = _internalSceneKnot;
+                return;
+            }
+            else if (_sceneKnot == "None" && _internalSceneKnot == "None")
+            {
+                _foundSceneKnot = false;
+            }
+        }
+
+        // << CHECK IF SCENE KNOT IS SET >>
+        if (!_foundSceneKnot && _sceneKnot != "None")
+        {
+            _internalSceneKnot = _sceneKnot;
+            _foundSceneKnot = true;
+        }
+
         // << GET SCENE KNOT LIST >>
         List<string> sceneKnotList = MTRStoryManager.Instance.SceneKnotList;
         if (sceneKnotList == null || sceneKnotList.Count == 0)
@@ -126,54 +166,17 @@ public class MTRSceneData : BuildSceneScriptableData
             if (sceneKnotList.Contains($"scene{sceneIndex}_{sectionIndex}"))
             {
                 _sceneKnot = $"scene{sceneIndex}_{sectionIndex}";
+                _internalSceneKnot = _sceneKnot;
                 _foundSceneKnot = true;
                 return;
             }
         }
-        else
-        {
-            _sceneKnot = "None";
-            _foundSceneKnot = false;
-        }
     }
 
-    void DrawGizmos()
+    public void DrawGizmos()
     {
         SceneBounds.DrawGizmos();
+        CameraRigBounds.DrawGizmos();
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MTRSceneData))]
-    public class MTRSceneScriptableDataCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        MTRSceneData _script;
-        EasyButtons.Editor.ButtonsDrawer _buttonsDrawer;
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (MTRSceneData)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-            if (GUILayout.Button("Refresh"))
-            {
-                _script.Refresh();
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-                _script.Refresh();
-            }
-        }
-    }
-#endif
 }
 

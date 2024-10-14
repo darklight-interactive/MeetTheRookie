@@ -9,7 +9,7 @@ using UnityEditor;
 
 [RequireComponent(typeof(MTRPlayerController))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class PlayerAnimator : FrameAnimationPlayer
+public class MTRPlayerAnimator : FrameAnimationPlayer
 {
     MTRPlayerController _playerController;
 
@@ -46,9 +46,9 @@ public class PlayerAnimator : FrameAnimationPlayer
     {
         // Update facing direction from the player controller
         if (_playerController == null) return;
-        if (_playerController.Facing == MTRPlayerDirection.LEFT)
+        if (_playerController.DirectionFacing == MTRPlayerDirectionFacing.LEFT)
             SetFacing(SpriteDirection.LEFT);
-        else if (_playerController.Facing == MTRPlayerDirection.RIGHT)
+        else if (_playerController.DirectionFacing == MTRPlayerDirectionFacing.RIGHT)
             SetFacing(SpriteDirection.RIGHT);
     }
 
@@ -77,15 +77,15 @@ public class PlayerAnimator : FrameAnimationPlayer
 
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(PlayerAnimator)), CanEditMultipleObjects]
+[CustomEditor(typeof(MTRPlayerAnimator)), CanEditMultipleObjects]
 public class PlayerAnimationEditor : UnityEditor.Editor
 {
     SerializedObject _serializedObject;
-    PlayerAnimator _script;
+    MTRPlayerAnimator _script;
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
-        _script = (PlayerAnimator)target;
+        _script = (MTRPlayerAnimator)target;
         _script.Awake();
     }
 

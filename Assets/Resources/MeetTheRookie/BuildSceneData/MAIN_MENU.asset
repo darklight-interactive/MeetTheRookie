@@ -12,7 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fd94c0ac5e6a043a2040bbf5552065, type: 3}
   m_Name: MAIN_MENU
   m_EditorClassIdentifier: 
-  _name: 
-  _path: 
-  _knot: ChangeGameScene
-  _cameraRigBounds: {fileID: 11400000, guid: dd7d21532ba5e9341acb5a6c381ae527, type: 2}
+  _sceneObject:
+    m_SceneName: MAIN_MENU
+  _name: MAIN_MENU
+  _path: Assets/Scenes/Build/MAIN_MENU.unity
+  _internalSceneKnot: None
+  _sceneKnot: None
+  _forceInteractionOnEnter: 0
+  _onEnterInteractionStitch: None
+  _sceneBounds:
+    _center: {x: 0, y: 1}
+    _minX: -5
+    _maxX: 5
+  _cameraBounds:
+    Center: {x: 0, y: 1}
+    XAxisValues: {x: -5, y: 5}
+    YAxisValues: {x: -1, y: 1}
+  _cameraRigSettings: {fileID: 0}

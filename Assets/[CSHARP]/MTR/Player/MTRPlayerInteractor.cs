@@ -116,7 +116,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         TryAssignTarget(_closestInteractable);
 
         // << UPDATE FACING >> --------
-        if (PlayerController.Facing == MTRPlayerDirection.LEFT)
+        if (PlayerController.DirectionFacing == MTRPlayerDirectionFacing.LEFT)
         {
             OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
 
@@ -125,7 +125,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
                 TargetInteractable.transform.position.x > transform.position.x)
                 ClearTarget();
         }
-        else if (PlayerController.Facing == MTRPlayerDirection.RIGHT)
+        else if (PlayerController.DirectionFacing == MTRPlayerDirectionFacing.RIGHT)
         {
             OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
 

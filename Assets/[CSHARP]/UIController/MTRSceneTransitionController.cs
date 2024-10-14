@@ -40,7 +40,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         }
     }
 
-    public new void OnEditorReloaded()
+    public void OnEditorReloaded()
     {
         Initialize(preset);
     }

@@ -25,7 +25,6 @@ public class MTR_AudioManager : FMODExt_EventManager
     public override void Initialize()
     {
         base.Initialize();
-
         MTRSceneManager.Instance.OnSceneChanged += HandleSceneChange;
     }
 

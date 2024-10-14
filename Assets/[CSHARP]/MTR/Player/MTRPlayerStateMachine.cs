@@ -9,7 +9,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
     protected MTRPlayerController controller;
     protected MTRPlayerInput _input => controller.Input;
-    protected PlayerAnimator _animator => controller.Animator;
+    protected MTRPlayerAnimator _animator => controller.Animator;
 
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )
@@ -19,11 +19,16 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         this.controller = controller;
         possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>> {
             {MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL)},
+
             {MTRPlayerState.IDLE, new BasePlayerState(this, MTRPlayerState.IDLE)},
+            {MTRPlayerState.OVERRIDE_IDLE, new BasePlayerState(this, MTRPlayerState.OVERRIDE_IDLE)},
+
             {MTRPlayerState.WALK, new BasePlayerState(this, MTRPlayerState.WALK)},
+            {MTRPlayerState.OVERRIDE_WALK, new WalkOverrideState(this)},
+
             {MTRPlayerState.INTERACTION, new InteractionState(this)},
-            {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)},
-            {MTRPlayerState.WALK_TO_DESTINATION, new WalkOverrideState(this)}};
+            {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)}
+        };
     }
 
     public override bool GoToState(MTRPlayerState stateType, bool force = false)
@@ -40,8 +45,16 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
     void SetAnimation(MTRPlayerState stateType)
     {
-        if (stateType == MTRPlayerState.WALK_TO_DESTINATION)
-            stateType = MTRPlayerState.WALK;
+        switch (stateType)
+        {
+            case MTRPlayerState.OVERRIDE_IDLE:
+                stateType = MTRPlayerState.IDLE;
+                break;
+            case MTRPlayerState.OVERRIDE_WALK:
+                stateType = MTRPlayerState.WALK;
+                break;
+        }
+
         _animator.PlayStateAnimation(stateType);
     }
 
@@ -50,8 +63,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         switch (stateType)
         {
             case MTRPlayerState.IDLE:
-                _input.SetAllInputsEnabled(true);
-                break;
             case MTRPlayerState.WALK:
                 _input.SetAllInputsEnabled(true);
                 break;
@@ -59,10 +70,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
                 _input.SetMovementInputEnabled(false);
                 _input.SetInteractInputEnabled(true);
                 break;
-            case MTRPlayerState.HIDE:
-                _input.SetAllInputsEnabled(false);
-                break;
-            case MTRPlayerState.WALK_TO_DESTINATION:
+            default:
                 _input.SetAllInputsEnabled(false);
                 break;
         }
@@ -75,7 +83,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         protected MTRPlayerStateMachine stateMachine;
         protected MTRPlayerController controller => stateMachine.controller;
         protected MTRPlayerInput input => controller.Input;
-        protected PlayerAnimator animator => controller.Animator;
+        protected MTRPlayerAnimator animator => controller.Animator;
         protected MTRPlayerInteractor interactor => controller.Interactor;
         public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
         {
@@ -118,7 +126,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     public class WalkOverrideState : BasePlayerState
     {
         bool _isAtMoveTarget = false;
-        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.WALK_TO_DESTINATION) { }
+        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.OVERRIDE_WALK) { }
 
         public override void Enter()
         {

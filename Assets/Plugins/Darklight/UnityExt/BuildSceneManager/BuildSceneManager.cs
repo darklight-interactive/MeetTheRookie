@@ -203,6 +203,7 @@ namespace Darklight.UnityExt.BuildScene
                     data.Refresh();
                 }
             }
+            UpdateActiveSceneData();
         }
         #endregion
 
@@ -215,7 +216,7 @@ namespace Darklight.UnityExt.BuildScene
         {
             _directory = BUILD_SCENE_DIRECTORY;
             LoadBuildScenesFromDirectory();
-            UpdateActiveSceneData();
+            RefreshData();
 
             Debug.Log($"{Prefix} Loaded {_pathKeys.Length} build scenes from directory.");
         }

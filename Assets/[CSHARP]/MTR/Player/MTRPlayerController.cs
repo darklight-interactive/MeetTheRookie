@@ -4,25 +4,42 @@ using UnityEngine;
 using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
 
 
-public enum MTRPlayerState { NULL, IDLE, WALK, INTERACTION, HIDE, WALK_TO_DESTINATION }
-public enum MTRPlayerDirection { NONE, RIGHT, LEFT }
+public enum MTRPlayerState
+{
+    NULL,
+    IDLE,
+    WALK,
+    INTERACTION,
+    HIDE,
+    OVERRIDE_WALK,
+    OVERRIDE_IDLE
+}
+public enum MTRPlayerDirectionFacing { NONE, RIGHT, LEFT }
 
 [RequireComponent(typeof(MTRPlayerInput))]
 [RequireComponent(typeof(MTRPlayerInteractor))]
-[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(MTRPlayerAnimator))]
 public class MTRPlayerController : MonoBehaviour
 {
+    readonly float _speed = 1f;
     MTRPlayerStateMachine _stateMachine;
 
+
+    [Header("States")]
     [SerializeField, ShowOnly] MTRPlayerState _currentState = MTRPlayerState.NULL;
-    [SerializeField, ShowOnly] float _speed = 1f;
-    [SerializeField, ShowOnly] Vector2 _activeMoveDirection = Vector2.zero;
-    [SerializeField] MTRPlayerDirection _direction;
-    [SerializeField, ShowOnly] float _moveTargetX;
+    [SerializeField] MTRPlayerDirectionFacing _directionFacing;
+
+    [Header("Movement")]
+    [SerializeField, ShowOnly] float _moveDir;
+    [SerializeField, ShowOnly] float _currentPosX;
+    [SerializeField, ShowOnly] float _targetPosX;
+    [SerializeField, ShowOnly] bool _inBounds;
+    [SerializeField, ShowOnly] bool _canWalkLeft;
+    [SerializeField, ShowOnly] bool _canWalkRight;
 
     public MTRPlayerInput Input => GetComponent<MTRPlayerInput>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
-    public PlayerAnimator Animator => GetComponent<PlayerAnimator>();
+    public MTRPlayerAnimator Animator => GetComponent<MTRPlayerAnimator>();
     public MTRPlayerStateMachine StateMachine
     {
         get
@@ -43,7 +60,7 @@ public class MTRPlayerController : MonoBehaviour
             return _currentState;
         }
     }
-    public MTRPlayerDirection Facing => _direction;
+    public MTRPlayerDirectionFacing DirectionFacing => _directionFacing;
 
     void Awake()
     {
@@ -63,85 +80,88 @@ public class MTRPlayerController : MonoBehaviour
         // If the player is in an interaction state, do not allow movement
         if (CurrentState == MTRPlayerState.INTERACTION) return;
 
-        // << HANDLE INPUT >>
-        Vector2 moveDirection = new Vector2(_activeMoveDirection.x, 0); // Get the horizontal input
-        moveDirection *= _speed; // Scalar
+        // << Calculate Direction >>
+        if (_moveDir < 0) _directionFacing = MTRPlayerDirectionFacing.LEFT;
+        else if (_moveDir > 0) _directionFacing = MTRPlayerDirectionFacing.RIGHT;
 
-        // << SET FACING >>
-        if (moveDirection.x > 0) _direction = MTRPlayerDirection.RIGHT;
-        if (moveDirection.x < 0) _direction = MTRPlayerDirection.LEFT;
+        // << UPDATE ANIMATOR >>
+        SetAnimationDirection(_directionFacing);
 
-        // Set Target Position & Apply
-        Vector3 targetPosition = transform.position + (Vector3)moveDirection;
+        // << CALCULATE POSITION >>
+        _currentPosX = transform.position.x;
+        _targetPosX = _currentPosX + (_moveDir * _speed);
 
-        // Don't allow moving outside of SceneBounds
-        /*
-        if (_sceneBounds)
+        // << CALCULATE RELATION TO BOUNDS >>
+        MTRSceneBounds sceneBounds = MTRSceneManager.ActiveSceneData.SceneBounds;
+        _inBounds = sceneBounds.Contains(_currentPosX);
+        _canWalkLeft = _currentPosX > sceneBounds.Left + 0.05f;
+        _canWalkRight = _currentPosX < sceneBounds.Right - 0.05f;
+
+        // << UPDATE POSITION >>
+        bool isWalkingLeft = _canWalkLeft && _moveDir < 0;
+        bool isWalkingRight = _canWalkRight && _moveDir > 0;
+        if (_inBounds && (isWalkingLeft || isWalkingRight))
         {
-            if ((transform.position.x > _sceneBounds.leftBound && moveDirection.x < 0) || (transform.position.x < _sceneBounds.rightBound && moveDirection.x > 0))
-            {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
-            }
+            Vector3 targetPos = new Vector3(_targetPosX, transform.position.y, transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
+            Vector3 clampedPos = transform.position;
+            clampedPos.x = Mathf.Clamp(clampedPos.x, sceneBounds.Left, sceneBounds.Right);
+            transform.position = clampedPos;
         }
-        */
 
-        // Update the Animator
-        SetAnimationDirection(_direction);
+        //if (CurrentState == MTRPlayerState.OVERRIDE_IDLE) return;
+        if (CurrentState == MTRPlayerState.OVERRIDE_WALK) return;
 
-        // << UPDATE STATE MACHINE >> ======================================================== >>
-        if (Input.IsAllInputEnabled && CurrentState != MTRPlayerState.WALK_TO_DESTINATION)
-        {
-            if (moveDirection.magnitude > 0.1f)
-                StateMachine.GoToState(MTRPlayerState.WALK);
-            else
-                StateMachine.GoToState(MTRPlayerState.IDLE);
-        }
+        // << UPDATE STATE >>
+        if (Mathf.Abs(_moveDir) > 0.1f)
+            StateMachine.GoToState(MTRPlayerState.WALK);
+        else
+            StateMachine.GoToState(MTRPlayerState.IDLE);
     }
 
-    void SetMoveDirection(Vector2 moveDirection)
+    void SetMoveDirection(float moveDir)
     {
-        _activeMoveDirection = moveDirection;
-        switch (moveDirection.x)
+        _moveDir = Mathf.Clamp(moveDir, -1, 1);
+        switch (moveDir)
         {
             case > 0.5f:
-                _direction = MTRPlayerDirection.RIGHT;
+                _directionFacing = MTRPlayerDirectionFacing.RIGHT;
                 break;
             case < -0.5f:
-                _direction = MTRPlayerDirection.LEFT;
+                _directionFacing = MTRPlayerDirectionFacing.LEFT;
                 break;
             default:
-                _direction = MTRPlayerDirection.NONE;
+                _directionFacing = MTRPlayerDirectionFacing.NONE;
                 break;
         }
     }
 
-    void SetAnimationDirection(MTRPlayerDirection direction)
+    void SetAnimationDirection(MTRPlayerDirectionFacing direction)
     {
         switch (direction)
         {
-            case MTRPlayerDirection.RIGHT:
+            case MTRPlayerDirectionFacing.RIGHT:
                 Animator.SetFacing(SpriteDirection.RIGHT);
                 break;
-            case MTRPlayerDirection.LEFT:
+            case MTRPlayerDirectionFacing.LEFT:
                 Animator.SetFacing(SpriteDirection.LEFT);
                 break;
-            case MTRPlayerDirection.NONE:
+            case MTRPlayerDirectionFacing.NONE:
                 break;
         }
     }
 
-    void GetDirectionEnum(Vector2 direction, out MTRPlayerDirection playerDirection)
+    void GetDirectionEnum(Vector2 direction, out MTRPlayerDirectionFacing playerDirection)
     {
         if (direction.x > 0)
-            playerDirection = MTRPlayerDirection.RIGHT;
+            playerDirection = MTRPlayerDirectionFacing.RIGHT;
         else if (direction.x < 0)
-            playerDirection = MTRPlayerDirection.LEFT;
+            playerDirection = MTRPlayerDirectionFacing.LEFT;
         else
-            playerDirection = MTRPlayerDirection.NONE;
+            playerDirection = MTRPlayerDirectionFacing.NONE;
     }
 
     void GetDirectionToPos(float targetX, out Vector2 direction)
@@ -158,13 +178,13 @@ public class MTRPlayerController : MonoBehaviour
         }
     }
 
-    void GetDirectionToPos(float targetX, out MTRPlayerDirection direction)
+    void GetDirectionToPos(float targetX, out MTRPlayerDirectionFacing direction)
     {
         GetDirectionToPos(targetX, out Vector2 dir);
         GetDirectionEnum(dir, out direction);
     }
 
-    void GetDirectionToInteractable(MTRInteractable interactable, out MTRPlayerDirection direction)
+    void GetDirectionToInteractable(MTRInteractable interactable, out MTRPlayerDirectionFacing direction)
     {
         GetDirectionToPos(interactable.transform.position.x, out Vector2 dir);
         GetDirectionEnum(dir, out direction);
@@ -174,14 +194,12 @@ public class MTRPlayerController : MonoBehaviour
     // << PUBLIC_METHODS >> ==================================================================== >>
     public void HandleMoveInput(Vector2 moveInput)
     {
-        if (CurrentState != MTRPlayerState.IDLE && CurrentState != MTRPlayerState.WALK) return;
-        Debug.Log($"PlayerController :: HandleMoveInput({moveInput}) :: CurrentState: {CurrentState}");
-
-        SetMoveDirection(moveInput);
+        Debug.Log("<MTRPlayerController> HandleMoveInput :: " + moveInput);
+        SetMoveDirection(moveInput.x);
     }
-    public void HandleOnMoveInputCanceled() => SetMoveDirection(Vector2.zero);
-    public void OverrideSetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection);
-    public void OverrideResetMoveDirection() => SetMoveDirection(Vector2.zero);
+    public void HandleOnMoveInputCanceled() => SetMoveDirection(0);
+    public void OverrideSetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection.x);
+    public void OverrideResetMoveDirection() => SetMoveDirection(0);
     /// <summary>
     /// Moves the player into the interaction state
     /// </summary>
@@ -206,25 +224,25 @@ public class MTRPlayerController : MonoBehaviour
 
         Debug.Log($"PlayerController :: StartWalkOverride({targetXPos})");
 
-        _moveTargetX = targetXPos;
+        _targetPosX = targetXPos;
         GetDirectionToPos(targetXPos, out Vector2 direction);
 
         OverrideSetMoveDirection(direction);
-        StateMachine.GoToState(MTRPlayerState.WALK_TO_DESTINATION);
+        StateMachine.GoToState(MTRPlayerState.OVERRIDE_WALK);
     }
 
     public bool IsAtMoveTarget()
     {
-        if (Mathf.Abs(transform.position.x - _moveTargetX) < 0.05f)
+        if (Mathf.Abs(transform.position.x - _targetPosX) < 0.05f)
         {
             return true;
         }
 
-        if (Facing == MTRPlayerDirection.RIGHT && transform.position.x > _moveTargetX)
+        if (DirectionFacing == MTRPlayerDirectionFacing.RIGHT && transform.position.x > _targetPosX)
         {
             return true;
         }
-        else if (Facing == MTRPlayerDirection.LEFT && transform.position.x < _moveTargetX)
+        else if (DirectionFacing == MTRPlayerDirectionFacing.LEFT && transform.position.x < _targetPosX)
         {
             return true;
         }
@@ -233,9 +251,9 @@ public class MTRPlayerController : MonoBehaviour
 
     public bool IsFacingPosition(Vector3 position)
     {
-        if (Facing == MTRPlayerDirection.RIGHT && transform.position.x < position.x)
+        if (DirectionFacing == MTRPlayerDirectionFacing.RIGHT && transform.position.x < position.x)
             return true;
-        else if (Facing == MTRPlayerDirection.LEFT && transform.position.x > position.x)
+        else if (DirectionFacing == MTRPlayerDirectionFacing.LEFT && transform.position.x > position.x)
             return true;
         return false;
     }
@@ -243,8 +261,8 @@ public class MTRPlayerController : MonoBehaviour
     public void FacePosition(Vector3 position)
     {
         if (transform.position.x < position.x)
-            SetAnimationDirection(MTRPlayerDirection.RIGHT);
+            SetAnimationDirection(MTRPlayerDirectionFacing.RIGHT);
         else if (transform.position.x > position.x)
-            SetAnimationDirection(MTRPlayerDirection.LEFT);
+            SetAnimationDirection(MTRPlayerDirectionFacing.LEFT);
     }
 }
