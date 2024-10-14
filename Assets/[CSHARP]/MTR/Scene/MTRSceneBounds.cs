@@ -6,14 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class MTRSceneBounds
 {
-    bool _disableEdit = false;
+    [SerializeField] float _centerX = 0;
+    [SerializeField] Vector2 _xAxisBounds = new Vector2(-10, 10);
+    [SerializeField] Vector2 _yAxisBounds = new Vector2(0, 2);
 
-    [SerializeField, DisableIf("_disableEdit"), AllowNesting] Vector2 _center = Vector2.zero;
-    [SerializeField, DisableIf("_disableEdit"), AllowNesting] Vector2 _xAxisBounds = new Vector2(-10, 10);
-    [SerializeField, DisableIf("_disableEdit"), AllowNesting] Vector2 _yAxisBounds = new Vector2(0, 2);
-
-    public bool DisableEdit { get => _disableEdit; set => _disableEdit = value; }
-    public Vector3 Center { get => _center; set => _center = value; }
+    public Vector3 Center { get => Vector3.right * _centerX; }
     public float Left { get => _xAxisBounds.x; set => _xAxisBounds.x = value; }
     public float Right { get => _xAxisBounds.y; set => _xAxisBounds.y = value; }
     public float Top { get => _yAxisBounds.y; set => _yAxisBounds.y = value; }
@@ -22,10 +19,9 @@ public class MTRSceneBounds
     public MTRSceneBounds() { }
     public MTRSceneBounds(MTRSceneBounds bounds, bool disableEdit)
     {
-        _center = bounds.Center;
+        _centerX = bounds.Center.x;
         _xAxisBounds = bounds._xAxisBounds;
         _yAxisBounds = bounds._yAxisBounds;
-        _disableEdit = disableEdit;
     }
 
     public void DrawGizmos()

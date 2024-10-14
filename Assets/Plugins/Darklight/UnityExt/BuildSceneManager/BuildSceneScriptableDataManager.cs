@@ -32,10 +32,17 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        protected override void CreateNewData(string path, out TScriptObj obj)
+        protected override TScriptObj CreateData(string path)
         {
-            string objName = ExtractNameFromPath(path);
-            obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(AssetPath, objName);
+            string objName = IBuildSceneData.ExtractNameFromPath(path);
+            TScriptObj obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(AssetPath, objName);
+
+            if (!obj.IsValid())
+                obj.Initialize(path);
+            else
+                obj.Refresh();
+
+            return obj;
         }
 
         public override void Initialize()
@@ -70,12 +77,11 @@ namespace Darklight.UnityExt.BuildScene
             foreach (string path in PathList)
             {
                 // Load the scriptable object if it is not already loaded
-                string name = ExtractNameFromPath(path);
+                string name = IBuildSceneData.ExtractNameFromPath(path);
                 _objLibrary.TryGetValue(name, out TScriptObj obj);
                 if (obj == null)
                 {
-                    CreateNewData(path, out obj);
-                    _objLibrary[name] = obj;
+                    obj = _objLibrary[name] = CreateData(path);
                     debugStr += $"\n -- Loaded {obj.Name}";
                 }
 

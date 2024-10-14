@@ -21,12 +21,13 @@ namespace Darklight.UnityExt.BuildScene
         string Name { get; set; }
         string Path { get; set; }
 
-        /// <summary>
-        /// Copy the data from another IBuildSceneData object.
-        /// </summary>
-        void Copy(IBuildSceneData data);
-
+        void Initialize(string path);
         void Refresh();
+        void Copy(IBuildSceneData data);
+        bool IsValid();
+
+        public static string FormatPath(string path) => path.Replace("\\", "/");
+        public static string ExtractNameFromPath(string path) => path.Split('/').Last().Split('.').First();
     }
 
     #region < PUBLIC_CLASS > [[ BuildSceneData ]] =========================
@@ -39,15 +40,17 @@ namespace Darklight.UnityExt.BuildScene
         [SerializeField, ShowOnly] string _name = "None";
         [SerializeField, ShowOnly] string _path = "None";
 
-
         //  ---------------- [ PROPERTIES ] -----------------------------
         public string Name { get => _name; set => _name = value; }
         public string Path { get => _path; set => _path = value; }
 
-
-        // ---------------- [ CONSTRUCTORS ] -----------------------------
-        public BuildSceneData() { } // Empty constructor for serialization.
-
+        // ---------------- [ METHODS ] -----------------------------
+        public virtual void Initialize(string path)
+        {
+            _name = IBuildSceneData.ExtractNameFromPath(path);
+            _path = IBuildSceneData.FormatPath(path);
+            Refresh();
+        }
 
         public virtual void Copy(IBuildSceneData data)
         {
@@ -56,6 +59,13 @@ namespace Darklight.UnityExt.BuildScene
         }
 
         public virtual void Refresh() { }
+
+        public virtual bool IsValid()
+        {
+            bool isPathValid = !string.IsNullOrEmpty(_path);
+            bool isNameValid = !string.IsNullOrEmpty(_name);
+            return isPathValid && isNameValid;
+        }
     }
     #endregion
 
@@ -132,15 +142,15 @@ namespace Darklight.UnityExt.BuildScene
             _dataValues = new TData[_pathKeys.Length];
             for (int i = 0; i < _pathKeys.Length; i++)
             {
-                if (_dataMap.ContainsKey(_pathKeys[i]))
+                if (_dataMap.ContainsKey(_pathKeys[i]) && _dataMap[_pathKeys[i]] != null)
                 {
+                    if (!_dataMap[_pathKeys[i]].IsValid())
+                        _dataMap[_pathKeys[i]] = CreateData(_pathKeys[i]);
                     _dataValues[i] = _dataMap[_pathKeys[i]];
-                    _dataValues[i].Refresh();
                 }
                 else
                 {
-                    CreateNewData(_pathKeys[i], out TData data);
-                    _dataValues[i] = data;
+                    _dataValues[i] = CreateData(_pathKeys[i]);
                     _dataMap.Add(_pathKeys[i], _dataValues[i]);
                 }
             }
@@ -177,24 +187,11 @@ namespace Darklight.UnityExt.BuildScene
         #endregion
 
         #region < PROTECTED_METHODS > [[ Data Creation ]] =============================
-        /// <summary>
-        /// Formats a path to use forward slashes.
-        /// </summary>
-        protected string FormatPath(string path) => path.Replace("\\", "/");
-
-        /// <summary>
-        /// Extracts the name of a scene from a path.
-        /// </summary>
-        protected string ExtractNameFromPath(string path) => path.Split('/').Last().Split('.').First();
-
-        protected virtual void CreateNewData(string path, out TData data)
+        protected virtual TData CreateData(string path)
         {
-            data = new TData()
-            {
-                Name = ExtractNameFromPath(path),
-                Path = FormatPath(path)
-            };
-            data.Refresh();
+            TData data = new TData();
+            data.Initialize(path);
+            return data;
         }
         #endregion
 
@@ -235,8 +232,7 @@ namespace Darklight.UnityExt.BuildScene
                     data = _dataMap[scenePath];
 
                 // Build the data from the given scene
-                CreateNewData(scenePath, out TData newData);
-                data = newData;
+                data = CreateData(scenePath);
                 return true;
             }
             else
