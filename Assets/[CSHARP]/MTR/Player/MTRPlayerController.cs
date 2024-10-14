@@ -12,7 +12,6 @@ public enum MTRPlayerDirection { NONE, RIGHT, LEFT }
 [RequireComponent(typeof(PlayerAnimator))]
 public class MTRPlayerController : MonoBehaviour
 {
-    MTRSceneBounds _sceneBounds;
     MTRPlayerStateMachine _stateMachine;
 
     [SerializeField, ShowOnly] MTRPlayerState _currentState = MTRPlayerState.NULL;
@@ -76,6 +75,7 @@ public class MTRPlayerController : MonoBehaviour
         Vector3 targetPosition = transform.position + (Vector3)moveDirection;
 
         // Don't allow moving outside of SceneBounds
+        /*
         if (_sceneBounds)
         {
             if ((transform.position.x > _sceneBounds.leftBound && moveDirection.x < 0) || (transform.position.x < _sceneBounds.rightBound && moveDirection.x > 0))
@@ -87,6 +87,7 @@ public class MTRPlayerController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime);
         }
+        */
 
         // Update the Animator
         SetAnimationDirection(_direction);

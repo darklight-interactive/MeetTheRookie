@@ -22,14 +22,18 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
 
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")] string _sceneKnot;
-    [SerializeField, Dropdown("_dropdown_sceneStitchList")] string _onStartInteractionStitch = "None";
+    [SerializeField, Dropdown("_dropdown_sceneKnotList"), DisableIf("_foundSceneKnot")]
+    string _sceneKnot = "None";
 
+    [SerializeField, Dropdown("_dropdown_sceneStitchList")]
+    string _onEnterInteractionStitch = "None";
+
+    [Header("MTR SCENE SETTINGS")]
+    [SerializeField] MTRSceneBounds _sceneBounds = new MTRSceneBounds();
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
     [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
-
 
     List<string> _dropdown_sceneKnotList
     {
@@ -62,10 +66,6 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
             return _stitchList;
         }
     }
-    public string SceneKnot { get => _sceneKnot; set => _sceneKnot = value; }
-    public string OnStartInteractionStitch { get => _onStartInteractionStitch; set => _onStartInteractionStitch = value; }
-    public MTRCameraRigSettings CameraRigSettings { get => _cameraRigSettings; set => _cameraRigSettings = value; }
-    public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
 
     public override MTRSceneData ToData()
     {
@@ -73,23 +73,24 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         {
             Path = this.Path,
             SceneKnot = _sceneKnot,
-            //OnStartInteractionStitch = _onStartInteractionStitch
+            OnEnterStitch = _onEnterInteractionStitch,
+
+            SceneBounds = new MTRSceneBounds(_sceneBounds, true),
+
+            CameraRigSettings = _cameraRigSettings,
+            CameraRigBounds = _cameraRigBounds
         };
     }
 
     public override void Refresh()
     {
-        if (_sceneKnot == null)
-        {
-            _sceneKnot = "Default";
-        }
-
         TrySearchForSceneKnot();
-
         if (_sceneKnot == "None")
         {
             _foundSceneKnot = false;
         }
+
+        _sceneBounds = new MTRSceneBounds(_sceneBounds, true);
     }
 
     void TrySearchForSceneKnot()

@@ -97,7 +97,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         // << SET THE KNOT >>
-        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
+        _knot = MTRSceneManager.Instance.ActiveSceneData.SceneKnot;
     }
 
     void InitializeDatingSim()

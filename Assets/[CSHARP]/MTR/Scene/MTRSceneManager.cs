@@ -31,14 +31,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 {
     public new static string Prefix = "[MTRSceneManager]";
     public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData, MTRSceneScriptableData>.Instance as MTRSceneManager;
-    public static MTRSceneBounds SceneBounds
-    {
-        get
-        {
-            MTRSceneBounds[] bounds = FindObjectsByType<MTRSceneBounds>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-            return bounds.Length > 0 ? bounds[0] : null;
-        }
-    }
 
     //  ================================ [[ Fields ]] ================================
     MTRSceneController _sceneController;
@@ -96,18 +88,16 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     }
 
     //  ---------------- [ Public Methods ] -----------------------------
-    protected override void CreateOrLoadScriptableData(string scenePath, out MTRSceneScriptableData obj)
+    protected override void CreateOrLoadScriptableDataObject(string scenePath, out MTRSceneScriptableData obj)
     {
-        base.CreateOrLoadScriptableData(scenePath, out obj);
+        base.CreateOrLoadScriptableDataObject(scenePath, out obj);
 
-        obj.CameraRigBounds = _cameraBoundsLibrary[obj.Name];
+        //obj.CameraRigBounds = _cameraBoundsLibrary[obj.Name];
         obj.Refresh();
     }
 
     public override void Initialize()
     {
-
-
         // << Initialize Camera Bounds Library >>
         if (_cameraBoundsLibrary == null
             || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNameList.Count)
@@ -127,24 +117,9 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         base.Initialize();
     }
 
-    public override void SaveModifiedData(MTRSceneScriptableData scriptObj)
-    {
-        base.SaveModifiedData(scriptObj);
-
-        TryGetSceneDataByName(scriptObj.Name, out MTRSceneData sceneData);
-        if (sceneData == null)
-        {
-            Debug.LogError($"{Prefix} >> SceneData not found for {scriptObj.Name}");
-            return;
-        }
-
-        sceneData.SceneKnot = scriptObj.SceneKnot;
-        //Debug.Log($"{Prefix} >> Saved modified data for {scriptObj.name}. Knot : {sceneData.Knot}");
-    }
-
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {
-        sceneData = SceneDataList.Find(x => x.SceneKnot == knot);
+        sceneData = DataList.Find(x => x.SceneKnot == knot);
     }
 
     public MTRCameraRigBounds GetActiveCameraBounds()
@@ -153,15 +128,17 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
         try
         {
-            TryGetActiveSceneData(out MTRSceneData activeSceneData);
-            if (activeSceneData == null)
-                return null;
-
-            cameraBounds = _cameraBoundsLibrary[activeSceneData.Name];
+            cameraBounds = _cameraBoundsLibrary[ActiveSceneData.Name];
         }
         finally { }
 
         return cameraBounds;
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        ActiveSceneData.SceneBounds.DrawGizmos();
     }
 }
 

@@ -20,9 +20,7 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.BuildScene
 {
-    public interface IBuildSceneScriptableDataManager : IBuildSceneManager { }
-
-    public abstract class BuildSceneScriptableDataManager<TData, TScriptObj> : BuildSceneManager<TData>, IBuildSceneScriptableDataManager
+    public abstract class BuildSceneScriptableDataManager<TData, TScriptObj> : BuildSceneManager<TData>
         where TData : BuildSceneData, new()
         where TScriptObj : BuildSceneScriptableData<TData>
     {
@@ -35,23 +33,13 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        public TScriptObj GetActiveSceneScriptableData()
-        {
-            string scenePath = SceneManager.GetActiveScene().path;
-            if (_scriptableDataLibrary.ContainsKey(scenePath))
-            {
-                return _scriptableDataLibrary[scenePath];
-            }
-            return null;
-        }
-
-        protected virtual void CreateOrLoadScriptableData(string scenePath, out TScriptObj obj)
+        protected virtual void CreateOrLoadScriptableDataObject(string scenePath, out TScriptObj obj)
         {
             TScriptObj tempObj;
             obj = null;
 
-            // Create the object
-            TData data = SceneDataDict.ContainsKey(scenePath) ? SceneDataDict[scenePath] : new TData();
+            // Get the scene data from the dictionary
+            TData data = dataMap.ContainsKey(scenePath) ? dataMap[scenePath] : new TData();
             data.Path = scenePath;
 
             // Check if the object already exists
@@ -77,11 +65,9 @@ namespace Darklight.UnityExt.BuildScene
             base.Initialize();
 
             _scriptableDataLibrary = new ScriptableDataLibrary();
-            _scriptableDataLibrary.SetRequiredKeys(ScenePathList);
+            _scriptableDataLibrary.SetRequiredKeys(PathList);
             _assetPath = AssetPath;
             RefreshScriptableData();
-
-            _activeSceneScriptableData = GetActiveSceneScriptableData();
         }
 
         /// <summary>
@@ -91,15 +77,18 @@ namespace Darklight.UnityExt.BuildScene
         public void RefreshScriptableData()
         {
             _fullSceneDataList.Clear();
-            foreach (string scenePath in ScenePathList)
+            foreach (string scenePath in PathList)
             {
-                CreateOrLoadScriptableData(scenePath, out TScriptObj obj);
+                CreateOrLoadScriptableDataObject(scenePath, out TScriptObj obj);
                 if (obj != null)
                 {
                     _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
                     SaveModifiedData(obj);
                 }
             }
+
+            // Set the active scene scriptable data
+            _activeSceneScriptableData = _scriptableDataLibrary[ActiveScenePath];
         }
 
         public virtual void SaveModifiedData(TScriptObj scriptObj)
@@ -110,7 +99,7 @@ namespace Darklight.UnityExt.BuildScene
                 return;
             }
 
-            SetSceneData(scriptObj.ToData());
+            ReplaceData(scriptObj.ToData());
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------
@@ -145,24 +134,4 @@ namespace Darklight.UnityExt.BuildScene
     {
         protected override string AssetPath => "Assets/Resources/Darklight/BuildSceneData";
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(BuildSceneScriptableDataManager<,>), true)]
-    public class BuildSceneScriptableDataManagerCustomEditor : BuildSceneManagerCustomEditor
-    {
-        IBuildSceneScriptableDataManager _script => target as IBuildSceneScriptableDataManager;
-        public override void OnInspectorGUI()
-        {
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorUtility.SetDirty(target);
-            }
-        }
-    }
-#endif
-
 }
