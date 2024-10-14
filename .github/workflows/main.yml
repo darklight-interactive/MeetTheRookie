@@ -72,28 +72,6 @@ jobs:
           buildName: MeetTheRookie
           buildsPath: Build/WebGL
         #continue-on-error: true  # Continue even if the build fails to provide more output
-
-      # List the log directory to verify the path
-      - name: List Unity Editor Log Location
-        if: failure()
-        run: |
-          echo "Listing Unity log directory"
-          sudo ls -l /root/.config/unity3d/Unity
-
-      # Print the Unity Editor log in case of failure
-      - name: Upload Unity Editor Log on Failure
-        if: failure()
-        run: |
-          echo "Build failed, uploading Unity Editor log"
-          cat /root/.config/unity3d/Unity/Editor.log
-          
-      # Upload the Unity Editor log as an artifact
-      - name: Upload Unity Editor Log as Artifact
-        if: failure()
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: UnityEditorLog
-          path: /root/.config/unity3d/Unity/Editor.log
           
       # Upload the build artifact only if it exists
       - name: Upload WebGL Build Artifact
@@ -149,28 +127,6 @@ jobs:
           buildName: MeetTheRookie
           buildsPath: Build/Windows
         #continue-on-error: true  # Continue even if the build fails to provide more output
-
-      # List the log directory to verify the path
-      - name: List Unity Editor Log Location
-        if: failure()
-        run: |
-          echo "Listing Unity log directory"
-          sudo ls -l /root/.config/unity3d/Unity
-
-      # Print the Unity Editor log in case of failure
-      - name: Upload Unity Editor Log on Failure
-        if: failure()
-        run: |
-          echo "Build failed, uploading Unity Editor log"
-          cat /root/.config/unity3d/Unity/Editor.log
-          
-      # Upload the Unity Editor log as an artifact
-      - name: Upload Unity Editor Log as Artifact
-        if: failure()
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: UnityEditorLog
-          path: /root/.config/unity3d/Unity/Editor.log
 
       # Upload the build artifact only if it exists
       - name: Upload Windows Build Artifact
