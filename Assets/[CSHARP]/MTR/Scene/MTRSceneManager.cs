@@ -27,10 +27,10 @@ using UnityEditor;
 /// This is the Custom Scene Manager for Meet The Rookie
 /// </summary>
 [RequireComponent(typeof(MTRSceneController))]
-public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTRSceneScriptableData>, IUnityEditorListener
+public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneScriptableData>, IUnityEditorListener
 {
     public new static string Prefix = "[MTRSceneManager]";
-    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData, MTRSceneScriptableData>.Instance as MTRSceneManager;
+    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneScriptableData>.Instance as MTRSceneManager;
 
     //  ================================ [[ Fields ]] ================================
     MTRSceneController _sceneController;
@@ -75,7 +75,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
     bool ChangeGameScene(string knotName)
     {
-        TryGetSceneDataByKnot(knotName, out MTRSceneData data);
+        TryGetSceneDataByKnot(knotName, out MTRSceneScriptableData data);
         if (data == null)
             return false;
 
@@ -108,7 +108,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         base.Initialize();
     }
 
-    public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
+    public void TryGetSceneDataByKnot(string knot, out MTRSceneScriptableData sceneData)
     {
         sceneData = DataList.Find(x => x.SceneKnot == knot);
     }
@@ -116,12 +116,11 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
     public MTRCameraRigBounds GetActiveCameraBounds()
     {
         MTRCameraRigBounds cameraBounds = null;
-
         try
         {
             _cameraBoundsLibrary.TryGetValue(ActiveSceneData.Name, out cameraBounds);
         }
-        finally { }
+        catch (Exception e) { }
 
         return cameraBounds;
     }

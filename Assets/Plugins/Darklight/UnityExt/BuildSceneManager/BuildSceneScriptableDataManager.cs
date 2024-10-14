@@ -20,11 +20,10 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.BuildScene
 {
-    public abstract class BuildSceneScriptableDataManager<TData, TScriptObj> : BuildSceneManager<TData>
-        where TData : BuildSceneData, new()
-        where TScriptObj : BuildSceneScriptableData<TData>
+    public abstract class BuildSceneScriptableDataManager<TScriptObj> : BuildSceneManager<TScriptObj>
+        where TScriptObj : ScriptableObject, IBuildSceneData, new()
     {
-        ScriptableDataLibrary _scriptableDataLibrary = new ScriptableDataLibrary();
+        ScriptableSceneDataLibrary _objLibrary = new ScriptableSceneDataLibrary();
 
         [Header("Scriptable Data Manager ---- >>")]
         [SerializeField, ShowOnly] string _assetPath;
@@ -33,40 +32,29 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        protected virtual void CreateOrLoadSceneDataObject(TData data, out TScriptObj obj)
+        protected override void CreateNewData(string path, out TScriptObj obj)
         {
-            obj = null;
-
-            /*
-                        TScriptObj tempObj;
-
-            // Check if the object already exists
-            if (_scriptableDataLibrary.ContainsKey(scenePath) && _scriptableDataLibrary[scenePath] != null)
-            {
-                tempObj = _scriptableDataLibrary[scenePath];
-            }
-            else
-            {
-                tempObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(_assetPath, data.Name);
-                _scriptableDataLibrary[scenePath] = tempObj; // Set the object value in the library
-            }
-
-            tempObj.Name = data.Name;
-            tempObj.Path = data.Path;
-            tempObj.SceneObject = data.Name;
-
-            obj = tempObj;
-            */
+            string objName = ExtractNameFromPath(path);
+            obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(AssetPath, objName);
         }
 
         public override void Initialize()
         {
             base.Initialize();
-
-            _scriptableDataLibrary = new ScriptableDataLibrary();
-            _scriptableDataLibrary.SetRequiredKeys(PathList);
             _assetPath = AssetPath;
+            _objLibrary = new ScriptableSceneDataLibrary()
+            {
+                ReadOnlyKey = true,
+                RequiredKeys = NameList
+            };
+
             RefreshScriptableData();
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+            _fullSceneDataList.Clear();
         }
 
         /// <summary>
@@ -75,21 +63,29 @@ namespace Darklight.UnityExt.BuildScene
         /// </summary>
         public void RefreshScriptableData()
         {
+            string debugStr = $"{Prefix} Loading scriptable objects from {AssetPath}";
             _fullSceneDataList.Clear();
-            foreach (string scenePath in PathList)
+
+            // Load all the scriptable objects
+            foreach (string path in PathList)
             {
-                /*
-                CreateOrLoadSceneDataObject(scenePath, out TScriptObj obj);
-                if (obj != null)
+                // Load the scriptable object if it is not already loaded
+                string name = ExtractNameFromPath(path);
+                _objLibrary.TryGetValue(name, out TScriptObj obj);
+                if (obj == null)
                 {
-                    _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
-                    SaveModifiedData(obj);
+                    CreateNewData(path, out obj);
+                    _objLibrary[name] = obj;
+                    debugStr += $"\n -- Loaded {obj.Name}";
                 }
-                */
+
+                // Add to the expandable list
+                _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
             }
+            Debug.Log(debugStr);
 
             // Set the active scene scriptable data
-            _activeSceneScriptableData = _scriptableDataLibrary[ActiveSceneData.Path];
+            _activeSceneScriptableData = _objLibrary[ActiveSceneData.Name];
         }
 
         public virtual void SaveModifiedData(TScriptObj scriptObj)
@@ -99,15 +95,14 @@ namespace Darklight.UnityExt.BuildScene
                 Debug.LogError($"{Prefix} >> Scriptable object is null or has no name.");
                 return;
             }
-
-            ReplaceData(scriptObj.ToData());
+            ReplaceData(scriptObj);
         }
 
         //  ---------------- [ Internal Library Class ] -----------------------------
         [Serializable]
-        public class ScriptableDataLibrary : Library<string, TScriptObj>
+        public class ScriptableSceneDataLibrary : Library<string, TScriptObj>
         {
-            public ScriptableDataLibrary()
+            public ScriptableSceneDataLibrary()
             {
                 ReadOnlyKey = true;
             }
@@ -119,10 +114,10 @@ namespace Darklight.UnityExt.BuildScene
             [SerializeField, ShowOnly] string _sceneName;
             [SerializeField, Expandable] TScriptObj _data;
 
-            public ExpandableSceneScriptableData(TScriptObj data)
+            public ExpandableSceneScriptableData(TScriptObj obj)
             {
-                _data = data;
-                _sceneName = data.name;
+                _data = obj;
+                _sceneName = obj.name;
             }
         }
     }
@@ -131,7 +126,7 @@ namespace Darklight.UnityExt.BuildScene
     /// A base class for managing the build scene data for a project using scriptable objects.
     /// </summary>
     public class BuildSceneScriptableDataManager :
-        BuildSceneScriptableDataManager<BuildSceneData, BuildSceneScriptableData>
+        BuildSceneScriptableDataManager<BuildSceneScriptableData>
     {
         protected override string AssetPath => "Assets/Resources/Darklight/BuildSceneData";
     }

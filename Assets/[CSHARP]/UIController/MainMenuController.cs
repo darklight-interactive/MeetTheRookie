@@ -74,7 +74,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
     void PlayButtonAction()
     {
-        sceneManager.TryGetSceneDataByKnot("scene1_0", out MTRSceneData scene);
+        sceneManager.TryGetSceneDataByKnot("scene1_0", out MTRSceneScriptableData scene);
         sceneManager.LoadScene(scene.Name);
     }
 

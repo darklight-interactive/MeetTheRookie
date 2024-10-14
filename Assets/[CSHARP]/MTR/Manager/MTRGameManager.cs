@@ -22,7 +22,6 @@ using UnityEditor;
 [RequireComponent(typeof(MTR_AudioManager))]
 public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 {
-    public static MTRSceneManager SceneManager => MTRSceneManager.Instance;
     public static MTRPrefabLibrary PrefabLibrary => Instance._prefabLibrary;
     public static MTRCameraController CameraController
     {
@@ -51,13 +50,12 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
     IEnumerator SceneChangeRoutine(Scene newScene)
     {
-        SceneManager.TryGetSceneDataByName(newScene.name, out MTRSceneData newSceneData);
-        if (newSceneData != null)
+        if (MTRSceneManager.ActiveSceneData != null)
         {
             if (MTRStoryManager.IsInitialized == false)
                 yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
 
-            MTRStoryManager.GoToKnotOrStitch(newSceneData.SceneKnot);
+            MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.ActiveSceneData.SceneKnot);
             MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
         }
         else
@@ -80,7 +78,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
 
         if (Application.isPlaying)
         {
-            SceneManager.OnSceneChanged += OnSceneChanged;
+            MTRSceneManager.Instance.OnSceneChanged += OnSceneChanged;
         }
 
     }

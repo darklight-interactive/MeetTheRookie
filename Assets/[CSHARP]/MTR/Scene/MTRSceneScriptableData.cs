@@ -14,7 +14,7 @@ using UnityEditor;
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
 /// </summary>
-public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
+public class MTRSceneScriptableData : BuildSceneScriptableData
 {
     bool _foundSceneKnot;
     List<string> _knotList = new List<string> { "None" };
@@ -67,22 +67,22 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
         }
     }
 
-    public override MTRSceneData ToData()
+    public string SceneKnot => _sceneKnot;
+    public string OnEnterStitch => _onEnterInteractionStitch;
+    public MTRSceneBounds SceneBounds => _sceneBounds;
+    public MTRCameraRigSettings CameraRigSettings => _cameraRigSettings;
+    public MTRCameraRigBounds CameraRigBounds => _cameraRigBounds;
+
+
+    public override void Copy(IBuildSceneData data)
     {
-        return new MTRSceneData()
-        {
-            SceneKnot = _sceneKnot,
-            OnEnterStitch = _onEnterInteractionStitch,
-
-            SceneBounds = new MTRSceneBounds(_sceneBounds, true),
-
-            CameraRigSettings = _cameraRigSettings,
-            CameraRigBounds = _cameraRigBounds
-        };
+        base.Copy(data);
     }
 
     public override void Refresh()
     {
+        base.Refresh();
+
         TrySearchForSceneKnot();
         if (_sceneKnot == "None")
         {

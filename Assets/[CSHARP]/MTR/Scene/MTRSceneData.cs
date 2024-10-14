@@ -15,8 +15,8 @@ public class MTRSceneData : BuildSceneData
     bool _foundSceneKnot;
 
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, ShowOnly] string _sceneKnot;
-    [SerializeField, ShowOnly] string _onEnterStitch;
+    [SerializeField, ShowOnly] string _sceneKnot = "None";
+    [SerializeField, ShowOnly] string _onEnterStitch = "None";
 
     [Header("MTR SCENE SETTINGS")]
     [SerializeField]
@@ -36,8 +36,6 @@ public class MTRSceneData : BuildSceneData
     public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
 
     public MTRSceneData() : base() { }
-    public MTRSceneData(string path) : base(path) { }
-    public MTRSceneData(Scene scene) : base(scene) { }
 
     public void DrawGizmos()
     {

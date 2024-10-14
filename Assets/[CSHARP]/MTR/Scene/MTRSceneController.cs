@@ -101,7 +101,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ BASE STATE ] ==================
         public abstract class BaseState : FiniteState<MTRSceneState>
         {
-            protected MTRSceneData activeSceneData => MTRSceneManager.ActiveSceneData;
+            protected MTRSceneScriptableData activeSceneData => MTRSceneManager.ActiveSceneData;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
             protected MTRSceneTransitionController transitionController
