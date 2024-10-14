@@ -30,10 +30,10 @@ public class MTRSceneData : BuildSceneScriptableData
 
     [Header("MTR SCENE SETTINGS")]
     [SerializeField] MTRSceneBounds _sceneBounds = new MTRSceneBounds();
+    [SerializeField] MTRCameraBounds _cameraBounds = new MTRCameraBounds();
 
     [Header("MTR CAMERA SETTINGS")]
     [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
-    [SerializeField, Expandable] MTRCameraRigBounds _cameraRigBounds;
 
     List<string> _dropdown_sceneKnotList
     {
@@ -71,7 +71,7 @@ public class MTRSceneData : BuildSceneScriptableData
     public string OnEnterStitch => _onEnterInteractionStitch;
     public MTRSceneBounds SceneBounds => _sceneBounds;
     public MTRCameraRigSettings CameraRigSettings => _cameraRigSettings;
-    public MTRCameraRigBounds CameraRigBounds => _cameraRigBounds;
+    public MTRCameraBounds CameraRigBounds => _cameraBounds;
 
     public override void Initialize(string path)
     {
@@ -87,21 +87,28 @@ public class MTRSceneData : BuildSceneScriptableData
     {
         base.Refresh();
 
-        TrySearchForSceneKnot();
         if (_sceneKnot == "None")
-        {
-            _foundSceneKnot = false;
-        }
+            FindSceneKnot();
 
-        _sceneBounds = new MTRSceneBounds(_sceneBounds, true);
+        if (_sceneBounds == null)
+            _sceneBounds = new MTRSceneBounds();
+
+        if (_cameraBounds == null)
+            _cameraBounds = new MTRCameraBounds();
+        _cameraBounds.center.x = _sceneBounds.Center.x;
+        _cameraBounds.xAxisBounds.Min = _sceneBounds.Left - 1;
+        _cameraBounds.xAxisBounds.Max = _sceneBounds.Right + 1;
     }
 
-    void TrySearchForSceneKnot()
+    void FindSceneKnot()
     {
         // << GET SCENE KNOT LIST >>
         List<string> sceneKnotList = MTRStoryManager.Instance.SceneKnotList;
         if (sceneKnotList == null || sceneKnotList.Count == 0)
+        {
+            _foundSceneKnot = false;
             return;
+        }
 
         // << PARSE SCENE NAME >>
         string sceneName = Name.ToLower();
@@ -120,10 +127,13 @@ public class MTRSceneData : BuildSceneScriptableData
             {
                 _sceneKnot = $"scene{sceneIndex}_{sectionIndex}";
                 _foundSceneKnot = true;
-
-                //Debug.Log($"< MTRSceneData > >> Found SceneKnot for {Name} >> ({Knot})");
                 return;
             }
+        }
+        else
+        {
+            _sceneKnot = "None";
+            _foundSceneKnot = false;
         }
     }
 
@@ -160,6 +170,7 @@ public class MTRSceneData : BuildSceneScriptableData
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
+                _script.Refresh();
             }
         }
     }

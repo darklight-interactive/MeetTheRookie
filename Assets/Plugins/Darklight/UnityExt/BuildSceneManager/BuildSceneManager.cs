@@ -193,6 +193,17 @@ namespace Darklight.UnityExt.BuildScene
             data.Initialize(path);
             return data;
         }
+
+        protected virtual void RefreshData()
+        {
+            foreach (TData data in _dataValues)
+            {
+                if (data != null)
+                {
+                    data.Refresh();
+                }
+            }
+        }
         #endregion
 
         #region < PUBLIC_METHODS > ================================================================ 

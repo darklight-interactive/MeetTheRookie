@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fd94c0ac5e6a043a2040bbf5552065, type: 3}
   m_Name: SCENE_1_4 - The Gas Station Ext
   m_EditorClassIdentifier: 
-  Name: SCENE_1_4 - The Gas Station Ext
-  Path: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Ext.unity
-  Center: {x: 0, y: 0, z: 0}
-  SceneObject:
+  _sceneObject:
     m_SceneName: SCENE_1_4 - The Gas Station Ext
+  _name: SCENE_1_4 - The Gas Station Ext
+  _path: Assets/Scenes/Build/SCENE_1_4 - The Gas Station Ext.unity
   _sceneKnot: scene1_4
   _onEnterInteractionStitch: None
   _sceneBounds:
-    _center: {x: 0, y: 0}
-    _xAxisBounds: {x: -10, y: 10}
-    _yAxisBounds: {x: 0, y: 2}
+    _centerX: 0
+    _xAxisBounds: {x: -2, y: 6}
+  _cameraBounds:
+    center: {x: 0, y: 0}
+    xAxisBounds:
+      _axis: 0
+      _min: -3
+      _max: 7
+    yAxisBounds:
+      _axis: 1
+      _min: 0
+      _max: 2
   _cameraRigSettings: {fileID: 0}
-  _cameraRigBounds: {fileID: 11400000, guid: e392da6a3e4b83a4a91af955254e1008, type: 2}

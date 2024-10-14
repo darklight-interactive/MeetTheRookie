@@ -41,10 +41,9 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     void Start()
     {
         if (MTRSceneManager.Instance == null) return;
-        MTRSceneManager.Instance.CameraBoundsLibrary.GetActiveCameraBounds(out MTRCameraRigBounds cameraBounds);
-        if (cameraBounds != null && Rig.Bounds != cameraBounds)
+        if (Rig.Bounds == null || Rig.Bounds != MTRSceneManager.ActiveSceneData.CameraRigBounds)
         {
-            Rig.SetBounds(cameraBounds);
+            Rig.SetBounds(MTRSceneManager.ActiveSceneData.CameraRigBounds);
         }
     }
 

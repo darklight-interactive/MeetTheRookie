@@ -34,7 +34,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
     //  ================================ [[ Fields ]] ================================
     MTRSceneController _sceneController;
-    MTRCameraBoundsLibrary _cameraBoundsLibrary;
 
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
@@ -50,8 +49,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
             return _sceneController;
         }
     }
-    public MTRCameraBoundsLibrary CameraBoundsLibrary => _cameraBoundsLibrary;
-    public Scene ActiveScene => SceneManager.GetActiveScene();
 
 
 
@@ -89,23 +86,15 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
     public override void Initialize()
     {
-        // << Initialize Camera Bounds Library >>
-        if (_cameraBoundsLibrary == null
-            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != NameList.Count)
-            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(NameList);
+        base.Initialize();
 
         // << Set Active Camera Bounds >>
-        MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
-        if (activeCameraBounds != null)
-        {
-            if (SceneController.CameraController != null)
-                SceneController.CameraController.Rig.SetBounds(activeCameraBounds);
-        }
+        if (SceneController.CameraController != null && ActiveSceneData != null)
+            SceneController.CameraController.Rig.SetBounds(ActiveSceneData.CameraRigBounds);
 
         // << Initialize Story >>
         MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
 
-        base.Initialize();
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
@@ -113,22 +102,15 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         sceneData = DataList.Find(x => x.SceneKnot == knot);
     }
 
-    public MTRCameraRigBounds GetActiveCameraBounds()
-    {
-        MTRCameraRigBounds cameraBounds = null;
-        try
-        {
-            _cameraBoundsLibrary.TryGetValue(ActiveSceneData.Name, out cameraBounds);
-        }
-        catch (Exception e) { }
-
-        return cameraBounds;
-    }
-
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        ActiveSceneData.SceneBounds.DrawGizmos();
+        if (ActiveSceneData != null)
+        {
+            ActiveSceneData.SceneBounds.DrawGizmos();
+            ActiveSceneData.CameraRigBounds.DrawGizmos();
+        }
+
     }
 
 #if UNITY_EDITOR
@@ -160,6 +142,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
+                _script.RefreshData();
             }
         }
     }

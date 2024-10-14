@@ -32,7 +32,7 @@ public class MTRCameraRig : MonoBehaviour
     [SerializeField] Camera _mainCamera;
     [SerializeField, ShowOnly] List<Camera> _overlayCameras = new List<Camera>();
     [SerializeField, Expandable] MTRCameraRigSettings _settings;
-    [SerializeField, Expandable] MTRCameraRigBounds _bounds;
+    [SerializeField] MTRCameraBounds _bounds;
 
     // << PROPERTIES >> -------------------------------------------------
     public Transform FollowTarget => _followTarget;
@@ -74,13 +74,13 @@ public class MTRCameraRig : MonoBehaviour
         set => _settings = value;
     }
 
-    public MTRCameraRigBounds Bounds
+    public MTRCameraBounds Bounds
     {
         get
         {
             if (_bounds == null)
             {
-                _bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigBounds>(BOUNDS_PATH, "DefaultCameraBounds");
+                _bounds = MTRSceneManager.ActiveSceneData.CameraRigBounds;
             }
             return _bounds;
         }
@@ -120,10 +120,7 @@ public class MTRCameraRig : MonoBehaviour
             _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigSettings>(SETTINGS_PATH, "DefaultCameraSettings");
         }
 
-        if (_bounds == null)
-        {
-            _bounds = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraRigBounds>(BOUNDS_PATH, "DefaultCameraBounds");
-        }
+        _bounds = MTRSceneManager.ActiveSceneData.CameraRigBounds;
 
         if (_mainCamera == null)
         {
@@ -317,7 +314,7 @@ public class MTRCameraRig : MonoBehaviour
         _followTarget = target;
     }
 
-    public void SetBounds(MTRCameraRigBounds bounds)
+    public void SetBounds(MTRCameraBounds bounds)
     {
         _bounds = bounds;
     }
@@ -325,20 +322,11 @@ public class MTRCameraRig : MonoBehaviour
     #endregion
 
     #region ( GIZMOS ) <PRIVATE_METHODS> ================================================
-    void OnDrawGizmos()
-    {
-        if (!_showGizmos) return;
-
-        // Draw the bounds
-        if (_bounds != null)
-            _bounds.DrawInScene();
-
-
-    }
 
     void OnDrawGizmosSelected()
     {
         if (!_showGizmos) return;
+        _bounds.DrawGizmos();
 
         // Draw the camera frustum
         Gizmos.color = Color.yellow;
