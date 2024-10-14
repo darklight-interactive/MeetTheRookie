@@ -97,7 +97,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         // << SET THE KNOT >>
-        _knot = MTRSceneManager.Instance.ActiveSceneData.SceneKnot;
+        _knot = MTRSceneManager.ActiveSceneData.SceneKnot;
     }
 
     void InitializeDatingSim()
@@ -106,7 +106,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         base.Initialize(preset);
 
         // << SET THE KNOT >>
-        _knot = MTRSceneManager.Instance.GetActiveSceneScriptableData().SceneKnot;
+        _knot = MTRSceneManager.ActiveSceneData.SceneKnot;
 
         // << DISABLE INPUTS >>
         SetInputEnabled(false);

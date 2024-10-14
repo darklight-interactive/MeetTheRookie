@@ -101,7 +101,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ BASE STATE ] ==================
         public abstract class BaseState : FiniteState<MTRSceneState>
         {
-            protected MTRSceneManager sceneManager => MTRSceneManager.Instance;
+            protected MTRSceneData activeSceneData => MTRSceneManager.ActiveSceneData;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
             protected MTRSceneTransitionController transitionController
@@ -114,7 +114,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                     return controller;
                 }
             }
-            protected MTRSceneData activeSceneData => sceneManager.ActiveSceneData;
 
             protected InternalStateMachine stateMachine;
             protected MTRSceneController sceneController;

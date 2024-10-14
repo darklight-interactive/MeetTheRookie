@@ -31,13 +31,6 @@ namespace Darklight.UnityExt.BuildScene
 
     public class BuildSceneScriptableData : BuildSceneScriptableData<BuildSceneData>
     {
-
-        public override void CopyData(BuildSceneData data)
-        {
-            base.CopyData(data);
-            SceneObject = Name;
-        }
-
         public override BuildSceneData ToData()
         {
             return new BuildSceneData(Path);

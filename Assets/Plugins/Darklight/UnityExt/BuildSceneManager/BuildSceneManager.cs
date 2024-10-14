@@ -14,8 +14,83 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.BuildScene
 {
+    public interface IBuildSceneData
+    {
+        bool IsValid { get; }
+        Scene Scene { get; }
+        string Name { get; }
+        string Path { get; }
+
+        IBuildSceneData BuildFromScene(Scene scene);
+        IBuildSceneData BuildFromPath(string path);
+        void Copy(IBuildSceneData data);
+    }
+
+    #region < PUBLIC_CLASS > [[ BuildSceneData ]] =========================
+    /// <summary>
+    /// A Serializable class that stores the data for a scene in the UnityEditor's build settings.
+    /// </summary>
+    [System.Serializable]
+    public class BuildSceneData : IBuildSceneData
+    {
+        Scene _scene;
+        [SerializeField, ShowOnly] string _name = "None";
+        [SerializeField, ShowOnly] string _path = "None";
+        [SerializeField, ShowOnly] bool _isValid;
+
+
+        //  ---------------- [ PROPERTIES ] -----------------------------
+        public Scene Scene => _scene;
+        public string Name => _name;
+        public string Path => _path;
+        public bool IsValid => _isValid;
+
+
+        // ---------------- [ CONSTRUCTORS ] -----------------------------
+        public BuildSceneData() { } // Empty constructor for serialization.
+        public BuildSceneData(string path) => BuildFromPath(path);
+        public BuildSceneData(Scene scene) => BuildFromScene(scene);
+
+        //  ---------------- [ Private Methods ] -----------------------------
+        string FormatPath(string path) => path.Replace("\\", "/"); // Replace all backslashes with forward slashes
+        string ExtractName(string path) => path.Split('/').Last().Split('.').First();
+
+        //  ---------------- [ Public Abstract Methods ] -------------------------------
+        public virtual IBuildSceneData BuildFromScene(Scene scene)
+        {
+            if (_scene.IsValid())
+            {
+                _scene = scene;
+                _name = _scene.name;
+                _path = FormatPath(_scene.path);
+                _isValid = true;
+            }
+            return this;
+        }
+
+        public virtual IBuildSceneData BuildFromPath(string path)
+        {
+            _scene = SceneManager.GetSceneByPath(path);
+            if (!_scene.IsValid())
+            {
+                _name = ExtractName(path);
+                _path = FormatPath(path);
+                _isValid = false;
+            }
+            return BuildFromScene(_scene);
+        }
+
+        public virtual void Copy(IBuildSceneData data)
+        {
+            _scene = data.Scene;
+            _name = data.Name;
+            _path = data.Path;
+        }
+    }
+    #endregion
+
     public abstract class BuildSceneManager<TData> : MonoBehaviourSingleton<BuildSceneManager<TData>>, IUnityEditorListener
-        where TData : BuildSceneData, new()
+        where TData : IBuildSceneData, new()
     {
         const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
 
@@ -33,7 +108,8 @@ namespace Darklight.UnityExt.BuildScene
         [Header("Build Scene Manager ---- >>")]
         [SerializeField, ShowOnly] string _directory;
         [SerializeField] TData _activeSceneData;
-        [SerializeField, NonReorderable] TData[] _dataValues = new TData[0]; // Copy of the dictionary values.
+        [SerializeField, NonReorderable] TData[] _dataValues = new TData[0];
+
 
         //  ================================ [[ EVENTS ]] ================================
         public delegate void SceneChangeEvent(Scene oldScene, Scene newScene);
@@ -57,10 +133,10 @@ namespace Darklight.UnityExt.BuildScene
         void LoadBuildScenesFromDirectory()
         {
 #if UNITY_EDITOR
-            // Get all unity scene paths in the specified directory.
+            //  ---- ( CREATE PATH KEYS ) ---- >>
             this._pathKeys = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
 
-            // << CREATE EDITOR BUILD SETTING SCENES >> -----------------------------------
+            // << CREATE EDITOR BUILD SCENES >> -----------------------------------
             EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[_pathKeys.Length];
             for (int i = 0; i < _pathKeys.Length; i++)
             {
@@ -81,27 +157,22 @@ namespace Darklight.UnityExt.BuildScene
             }
             EditorBuildSettings.scenes = editorBuildSettingsScenes;
 
-            // << CREATE BUILD SCENE DATA >> -----------------------------------
-            TData[] tempData = new TData[_pathKeys.Length];
+
+            //  ---- ( CREATE OR STORE DATA VALUES ) ---- >>
+            _dataValues = new TData[_pathKeys.Length];
             for (int i = 0; i < _pathKeys.Length; i++)
             {
                 if (_dataMap.ContainsKey(_pathKeys[i]))
                 {
-                    tempData[i] = _dataMap[_pathKeys[i]];
+                    _dataValues[i] = _dataMap[_pathKeys[i]];
                 }
                 else
                 {
-                    tempData[i] = new TData()
-                    {
-                        Path = _pathKeys[i]
-                    };
-
-                    _dataMap.Add(_pathKeys[i], tempData[i]);
+                    _dataValues[i] = new TData();
+                    _dataValues[i].BuildFromPath(_pathKeys[i]);
+                    _dataMap.Add(_pathKeys[i], _dataValues[i]);
                 }
-
-                tempData[i].Refresh();
             }
-            _dataValues = tempData;
 
             EditorUtility.SetDirty(this);
             Debug.Log($"{Prefix} Loaded {_pathKeys.Length} build scenes from directory. {BUILD_SCENE_DIRECTORY}");
@@ -135,8 +206,6 @@ namespace Darklight.UnityExt.BuildScene
 
         #endregion
 
-
-
         #region < PUBLIC_METHODS > ================================================================ 
         // ---- ( IUnityEditorListener ) ----
         public void OnEditorReloaded() => Initialize();
@@ -150,21 +219,35 @@ namespace Darklight.UnityExt.BuildScene
             UpdateActiveSceneData();
         }
 
-        // ---- ( Public Handlers ) ----
-        public void TryAddScene(Scene scene, out bool result)
+        public virtual void Clear()
         {
-            result = false;
+            _dataMap.Clear();
+            _pathKeys = new string[0];
+            _dataValues = new TData[0];
+
+            _activeSceneData = default(TData);
+        }
+
+        // ---- ( Public Handlers ) ----
+        public bool TryAddSceneData(Scene scene, out TData data)
+        {
+            data = default(TData);
             if (scene.IsValid())
             {
+                data = new TData();
+
+                // Check if the scene data already exists.
                 string scenePath = scene.path;
-                if (!_dataMap.ContainsKey(scenePath))
-                {
-                    TData data = new TData(scenePath);
-                }
-                else
-                {
-                    _dataMap[scenePath] = new TData();
-                }
+                if (_dataMap.ContainsKey(scenePath))
+                    data = _dataMap[scenePath];
+
+                // Build the data from the given scene
+                data.BuildFromScene(scene);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

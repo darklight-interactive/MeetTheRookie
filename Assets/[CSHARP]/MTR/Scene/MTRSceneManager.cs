@@ -87,21 +87,12 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         return true;
     }
 
-    //  ---------------- [ Public Methods ] -----------------------------
-    protected override void CreateOrLoadScriptableDataObject(string scenePath, out MTRSceneScriptableData obj)
-    {
-        base.CreateOrLoadScriptableDataObject(scenePath, out obj);
-
-        //obj.CameraRigBounds = _cameraBoundsLibrary[obj.Name];
-        obj.Refresh();
-    }
-
     public override void Initialize()
     {
         // << Initialize Camera Bounds Library >>
         if (_cameraBoundsLibrary == null
-            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != SceneNameList.Count)
-            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(SceneNameList);
+            || _cameraBoundsLibrary.Count == 0 || _cameraBoundsLibrary.Count != NameList.Count)
+            _cameraBoundsLibrary = new MTRCameraBoundsLibrary(NameList);
 
         // << Set Active Camera Bounds >>
         MTRCameraRigBounds activeCameraBounds = GetActiveCameraBounds();
@@ -128,7 +119,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
 
         try
         {
-            cameraBounds = _cameraBoundsLibrary[ActiveSceneData.Name];
+            _cameraBoundsLibrary.TryGetValue(ActiveSceneData.Name, out cameraBounds);
         }
         finally { }
 
@@ -140,6 +131,40 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData, MTR
         Gizmos.color = Color.green;
         ActiveSceneData.SceneBounds.DrawGizmos();
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(MTRSceneManager))]
+    public class MTRSceneManagerCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        MTRSceneManager _script;
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (MTRSceneManager)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            _serializedObject.Update();
+
+            EditorGUI.BeginChangeCheck();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Initialize")) _script.Initialize();
+            if (GUILayout.Button("Clear")) _script.Clear();
+            EditorGUILayout.EndHorizontal();
+
+
+            base.OnInspectorGUI();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+#endif
 }
 
 [Serializable]

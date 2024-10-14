@@ -33,14 +33,12 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
-        protected virtual void CreateOrLoadScriptableDataObject(string scenePath, out TScriptObj obj)
+        protected virtual void CreateOrLoadSceneDataObject(TData data, out TScriptObj obj)
         {
-            TScriptObj tempObj;
             obj = null;
 
-            // Get the scene data from the dictionary
-            TData data = dataMap.ContainsKey(scenePath) ? dataMap[scenePath] : new TData();
-            data.Path = scenePath;
+            /*
+                        TScriptObj tempObj;
 
             // Check if the object already exists
             if (_scriptableDataLibrary.ContainsKey(scenePath) && _scriptableDataLibrary[scenePath] != null)
@@ -58,6 +56,7 @@ namespace Darklight.UnityExt.BuildScene
             tempObj.SceneObject = data.Name;
 
             obj = tempObj;
+            */
         }
 
         public override void Initialize()
@@ -79,16 +78,18 @@ namespace Darklight.UnityExt.BuildScene
             _fullSceneDataList.Clear();
             foreach (string scenePath in PathList)
             {
-                CreateOrLoadScriptableDataObject(scenePath, out TScriptObj obj);
+                /*
+                CreateOrLoadSceneDataObject(scenePath, out TScriptObj obj);
                 if (obj != null)
                 {
                     _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
                     SaveModifiedData(obj);
                 }
+                */
             }
 
             // Set the active scene scriptable data
-            _activeSceneScriptableData = _scriptableDataLibrary[ActiveScenePath];
+            _activeSceneScriptableData = _scriptableDataLibrary[ActiveSceneData.Path];
         }
 
         public virtual void SaveModifiedData(TScriptObj scriptObj)

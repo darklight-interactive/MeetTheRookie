@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class MTRSceneData : BuildSceneData
@@ -35,19 +36,12 @@ public class MTRSceneData : BuildSceneData
     public MTRCameraRigBounds CameraRigBounds { get => _cameraRigBounds; set => _cameraRigBounds = value; }
 
     public MTRSceneData() : base() { }
-    public MTRSceneData(MTRSceneData originData)
-    { }
-
-    public override void Refresh()
-    {
-        base.Refresh();
-    }
+    public MTRSceneData(string path) : base(path) { }
+    public MTRSceneData(Scene scene) : base(scene) { }
 
     public void DrawGizmos()
     {
-        Gizmos.color = Color.green;
-
-        Vector3 leftBound = Center + new Vector3(SceneBounds.Left, 0, 0);
+        SceneBounds.DrawGizmos();
     }
 }
 

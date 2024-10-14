@@ -71,7 +71,6 @@ public class MTRSceneScriptableData : BuildSceneScriptableData<MTRSceneData>
     {
         return new MTRSceneData()
         {
-            Path = this.Path,
             SceneKnot = _sceneKnot,
             OnEnterStitch = _onEnterInteractionStitch,
 
