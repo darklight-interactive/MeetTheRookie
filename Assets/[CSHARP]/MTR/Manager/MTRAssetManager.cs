@@ -5,7 +5,9 @@ using UnityEngine;
 public static class MTRAssetManager
 {
     public const string RESOURCE_PATH = "Assets/Resources/MeetTheRookie";
-    const string SCENE_BOUNDS_PATH = RESOURCE_PATH + "/SceneBounds";
+
+    const string CAMERA_SETTINGS_PATH = RESOURCE_PATH + "/CameraSettings";
+    const string CAMERA_SETTINGS_PREFIX = "MTRCameraSetting_";
 
     /// <summary>
     /// Create or load a ScriptableObject of type T from the Resources folder
@@ -30,5 +32,11 @@ public static class MTRAssetManager
     {
         T scriptableObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<T>(RESOURCE_PATH, name);
         return scriptableObject;
+    }
+
+    public static MTRCameraSettingPreset CreateOrLoadCameraSettingPreset(MTRCameraController.SettingType settingType)
+    {
+        MTRCameraSettingPreset preset = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraSettingPreset>(CAMERA_SETTINGS_PATH, CAMERA_SETTINGS_PREFIX + settingType.ToString());
+        return preset;
     }
 }

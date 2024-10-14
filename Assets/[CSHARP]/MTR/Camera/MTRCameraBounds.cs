@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class MTRCameraBounds
 {
-    [ShowOnly] public Vector2 Center = new Vector2(0, 0);
+    [ShowOnly] public Vector2 Center = new Vector2(0, 1);
     [ShowOnly] public Vector2 XAxisValues = new Vector2(-5, 5);
     [ShowOnly] public Vector2 YAxisValues = new Vector2(-1, 1);
 

@@ -81,8 +81,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 348082412807241120}
-  - component: {fileID: 52010867723927389}
-  - component: {fileID: 7335559274320760579}
+  - component: {fileID: 4161724790638664471}
+  - component: {fileID: 6981254604495658046}
   m_Layer: 0
   m_Name: '[ MTR CAMERA ]'
   m_TagString: Untagged
@@ -106,7 +106,7 @@ Transform:
   - {fileID: 5314045156112960354}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &52010867723927389
+--- !u!114 &4161724790638664471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,8 +118,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054c97aa31b61cc41ada867d5d90b7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSpeaker: Speaker.Lupe
---- !u!114 &7335559274320760579
+  _currSpeaker: Speaker.Lupe
+  _currSettingType: 2
+  _currSetting: {fileID: 11400000, guid: fa8327c2e1fadb840b580c5f19efe584, type: 2}
+  _settings:
+    _items:
+    - _id: 0
+      _key: 0
+      _value: {fileID: 11400000, guid: e243d8381f1de0043b3c59a16649a9ef, type: 2}
+    - _id: 1
+      _key: 1
+      _value: {fileID: 11400000, guid: c0de12f09c498459e9fd4c8f7bf6b202, type: 2}
+    - _id: 2
+      _key: 2
+      _value: {fileID: 11400000, guid: fa8327c2e1fadb840b580c5f19efe584, type: 2}
+    _readOnlyKey: 1
+    _readOnlyValue: 0
+    _defaultToAllKeys: 0
+--- !u!114 &6981254604495658046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,11 +147,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd2e9653ea29d34ebea7dc119a3e4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetPosition: {x: -2.1349216, y: 0.28547794, z: -45}
+  _origin: {x: 0, y: 1, z: 0}
+  _targetPosition: {x: 0, y: 1.047437, z: -40}
   _targetRotation: {x: 0, y: 0, z: 0, w: 1}
-  _targetFOV: 2
-  _showGizmos: 1
-  _lerpInEditor: 1
+  _targetFOV: 3
+  _showGizmos: 0
+  _lerpInEditor: 0
   _followTarget: {fileID: 0}
   _mainCamera: {fileID: 294617130321755958}
   _overlayCameras:
@@ -143,8 +160,14 @@ MonoBehaviour:
   - {fileID: 1148548231494987092}
   - {fileID: 5663657954300164996}
   - {fileID: 6029335792472997658}
-  _settings: {fileID: 11400000, guid: e243d8381f1de0043b3c59a16649a9ef, type: 2}
-  _bounds: {fileID: 11400000, guid: f41d077041ea708428355b10f05fae54, type: 2}
+  _positionLerpSpeed: 10
+  _rotationLerpSpeed: 10
+  _fovLerpSpeed: 10
+  _settings: {fileID: 11400000, guid: fa8327c2e1fadb840b580c5f19efe584, type: 2}
+  _bounds:
+    Center: {x: 0, y: 1}
+    XAxisValues: {x: -6, y: 10.4}
+    YAxisValues: {x: -1, y: 1}
 --- !u!1 &3605313824413459967
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +234,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 2
+  field of view: 3
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -301,7 +324,7 @@ Transform:
   m_GameObject: {fileID: 5947460541986450070}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1349216, y: 0.28547794, z: -45}
+  m_LocalPosition: {x: 0, y: 1.047437, z: -40}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -343,7 +366,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 2
+  field of view: 3
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -487,7 +510,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 2
+  field of view: 3
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -727,7 +750,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 2
+  field of view: 3
   orthographic: 0
   orthographic size: 5
   m_Depth: 2

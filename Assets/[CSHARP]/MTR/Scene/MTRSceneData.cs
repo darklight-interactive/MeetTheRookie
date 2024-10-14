@@ -35,12 +35,12 @@ public class MTRSceneData : BuildSceneScriptableData
     string _onEnterInteractionStitch = "None";
 
     [Header("MTR SCENE SETTINGS")]
-    [SerializeField, Range(0f, 2f)] float _cameraBoundsOffset = 1f;
+    [SerializeField, Range(0f, 5f)] float _cameraBoundsOffset = 0.25f;
     [SerializeField] MTRSceneBounds _sceneBounds = new MTRSceneBounds();
     [SerializeField] MTRCameraBounds _cameraBounds = new MTRCameraBounds();
 
     [Header("MTR CAMERA SETTINGS")]
-    [SerializeField, Expandable] MTRCameraRigSettings _cameraRigSettings;
+    [SerializeField] MTRCameraController.SettingType _onStartCameraSetting = MTRCameraController.SettingType.DEFAULT;
 
     #region ---- < PROPERTIES > --------------------------------- 
     List<string> _dropdown_sceneKnotList
@@ -78,7 +78,7 @@ public class MTRSceneData : BuildSceneScriptableData
     public string SceneKnot => _sceneKnot;
     public string OnEnterStitch => _onEnterInteractionStitch;
     public MTRSceneBounds SceneBounds => _sceneBounds;
-    public MTRCameraRigSettings CameraRigSettings => _cameraRigSettings;
+    public MTRCameraController.SettingType OnStartCameraSetting => _onStartCameraSetting;
     public MTRCameraBounds CameraRigBounds => _cameraBounds;
     #endregion
 
@@ -88,6 +88,7 @@ public class MTRSceneData : BuildSceneScriptableData
         base.Refresh();
 
         RefreshSceneSettings();
+        RefreshCameraSettings();
         RefreshStorySettings();
     }
 
@@ -99,19 +100,21 @@ public class MTRSceneData : BuildSceneScriptableData
         // Set default X-axis values for the scene bounds if not set
         if (_sceneBounds.XAxisValues == Vector2.zero)
             _sceneBounds.XAxisValues = new Vector2(-5, 5);
+    }
 
+    void RefreshCameraSettings()
+    {
         // Initialize camera bounds if not set
         _cameraBounds ??= new MTRCameraBounds();
 
         // Set the camera bounds to match the scene bounds
         _cameraBounds.Center = _sceneBounds.Center;
-        _cameraBounds.XAxisValues.x = _sceneBounds.Left - _cameraBoundsOffset;
-        _cameraBounds.XAxisValues.y = _sceneBounds.Right + _cameraBoundsOffset;
+        _cameraBounds.XAxisValues.x = _sceneBounds.XAxisValues.x - _cameraBoundsOffset;
+        _cameraBounds.XAxisValues.y = _sceneBounds.XAxisValues.y + _cameraBoundsOffset;
 
         // Hard code the YBounds to be a distance of 2
         _cameraBounds.YAxisValues = new Vector2(-1, 1);
     }
-
 
     void RefreshStorySettings()
     {

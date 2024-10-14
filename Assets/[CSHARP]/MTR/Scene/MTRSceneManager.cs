@@ -82,6 +82,13 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         return true;
     }
 
+    protected override void RefreshData()
+    {
+        base.RefreshData();
+
+        SceneController.CameraController?.Refresh();
+    }
+
     public override void Initialize()
     {
         base.Initialize();
@@ -96,6 +103,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         // << Initialize Story >>
         MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
     }
+
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {

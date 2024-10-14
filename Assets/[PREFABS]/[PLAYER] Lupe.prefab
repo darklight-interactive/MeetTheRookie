@@ -68,28 +68,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPreloaded: 1
-  _isRegistered: 1
-  _isInitialized: 1
+  _isRegistered: 0
+  _isInitialized: 0
   _request: {fileID: 11400000, guid: 6c6beac1a35ef3942995708da5877fdf, type: 2}
   _recievers:
-    _items:
-    - _id: 0
-      _key: 3
-      _value: {fileID: 0}
-    - _id: 1
-      _key: 4
-      _value: {fileID: 0}
+    _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
   _data:
     _name: Lupe
-    _scene: 
+    _scene: scene_default
     _key: Speaker.Lupe
     _layer: Player
     _type: 2
     _sprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
-  _currentState: 0
+  _currentState: 1
   _sceneKnot: scene_default
   _interactionStitch: scene_default.interaction_default
   autoSizeCollider: 1
@@ -123,10 +117,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
-  _speed: 1
-  _activeMoveDirection: {x: 0, y: 0}
-  _direction: 0
-  _moveTargetX: 0
+  _directionFacing: 0
+  _moveDir: 0
+  _currentPosX: 0
+  _targetPosX: 0
+  _inBounds: 0
+  _canWalkLeft: 0
+  _canWalkRight: 0
 --- !u!114 &1866593596376281087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,9 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentFrame: 3
+  _currentFrame: 0
   _currentDirection: 2
-  _currentSprite: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+  _currentSprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
   _frameRate: 4
   _defaultDirection: 0
   animationStateOverride: 1
@@ -300,7 +297,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+  m_Sprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0

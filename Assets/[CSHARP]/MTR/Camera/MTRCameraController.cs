@@ -5,6 +5,10 @@ using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
 using EasyButtons.Editor;
+using Darklight.UnityExt.Library;
+using System;
+
+
 
 
 #if UNITY_EDITOR
@@ -14,7 +18,27 @@ using UnityEditor;
 [RequireComponent(typeof(MTRCameraRig))]
 public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 {
+    public enum SettingType { DEFAULT, CLOSE, FAR }
+
     MTRCameraRig _rig;
+
+
+    [Dropdown("_speakerList"), SerializeField, ShowOnly] string _currSpeaker;
+
+
+
+    [Header("Camera Setting Preset")]
+    [SerializeField] SettingType _currSettingType = SettingType.DEFAULT;
+    [SerializeField, Expandable] MTRCameraSettingPreset _currSetting;
+
+    [Space(10)]
+    [SerializeField]
+    EnumObjectLibrary<SettingType, MTRCameraSettingPreset> _settings = new EnumObjectLibrary<SettingType, MTRCameraSettingPreset>
+    {
+        ReadOnlyKey = true,
+        RequiredKeys = Enum.GetValues(typeof(SettingType)) as SettingType[]
+    };
+
 
     MTRStoryManager StoryManager => MTRStoryManager.Instance;
     List<string> _speakerList => StoryManager.SpeakerList;
@@ -31,19 +55,46 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     }
 
 
-    [Dropdown("_speakerList"), SerializeField, ShowOnly] public string currentSpeaker;
-
-    public void OnEditorReloaded()
-    {
-        Start();
-    }
 
     void Start()
     {
-        if (MTRSceneManager.Instance == null) return;
+        Refresh();
+        SetPlayerAsFollowTarget();
+    }
+
+
+    void RefreshBounds()
+    {
         if (Rig.Bounds == null || Rig.Bounds != MTRSceneManager.ActiveSceneData.CameraRigBounds)
         {
             Rig.SetBounds(MTRSceneManager.ActiveSceneData.CameraRigBounds);
+        }
+    }
+
+    void RefreshSettings(bool ignoreSceneData = false)
+    {
+        // Set the required keys for the settings library
+        _settings.SetRequiredKeys(Enum.GetValues(typeof(SettingType)) as SettingType[]);
+
+        // Create or load the camera setting presets
+        foreach (SettingType settingType in _settings.Keys)
+        {
+            if (_settings[settingType] == null)
+            {
+                _settings[settingType] = MTRAssetManager.CreateOrLoadCameraSettingPreset(settingType);
+            }
+        }
+
+        // Get the current setting type
+        if (MTRSceneManager.ActiveSceneData != null && !ignoreSceneData)
+            _currSettingType = MTRSceneManager.ActiveSceneData.OnStartCameraSetting;
+
+        // Set the camera settings
+        _settings.TryGetValue(_currSettingType, out MTRCameraSettingPreset settingsPreset);
+        if (settingsPreset != null && _currSetting != settingsPreset)
+        {
+            Rig.Settings = settingsPreset;
+            _currSetting = settingsPreset;
         }
     }
 
@@ -59,18 +110,12 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         MTRStoryManager.OnNewSpeaker -= SetSpeakerTarget;
     }
 
-    [EasyButtons.Button]
-    public void SetSpeakerAsFollowTarget()
-    {
-        SetSpeakerTarget(currentSpeaker);
-    }
-
     void SetSpeakerTarget(string speaker)
     {
-        currentSpeaker = speaker;
+        _currSpeaker = speaker;
 
         // Set the Camera Target to the Player
-        if (currentSpeaker == "Lupe")
+        if (_currSpeaker == "Lupe")
         {
             MTRPlayerInteractor player = FindObjectsByType<MTRPlayerInteractor>(FindObjectsSortMode.None)[0];
             Rig.SetFollowTarget(player.transform);
@@ -81,12 +126,30 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
         foreach (MTRCharacterInteractable interactable in interactables)
         {
-            if (interactable.SpeakerTag.Contains(currentSpeaker))
+            if (interactable.SpeakerTag.Contains(_currSpeaker))
             {
                 Rig.SetFollowTarget(interactable.transform);
             }
         }
     }
+
+
+    public void OnEditorReloaded() => Start();
+
+    public void Refresh()
+    {
+        if (MTRSceneManager.Instance == null) return;
+        RefreshBounds();
+        RefreshSettings();
+    }
+
+    [EasyButtons.Button]
+    public void SetSpeakerAsFollowTarget()
+    {
+        SetSpeakerTarget(_currSpeaker);
+    }
+
+
 
     public void SetPlayerAsFollowTarget()
     {
@@ -117,12 +180,14 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 
             EditorGUI.BeginChangeCheck();
 
-            base.OnInspectorGUI();
             _buttonsDrawer.DrawButtons(targets);
+            base.OnInspectorGUI();
 
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
+                _script.RefreshBounds();
+                _script.RefreshSettings(true);
             }
         }
     }
