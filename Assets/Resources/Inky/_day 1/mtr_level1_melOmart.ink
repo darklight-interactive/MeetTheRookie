@@ -19,7 +19,6 @@ LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
 ~ SetSpeaker(Speaker.Chief_Thelton)
-//TODO SFX phone ringing and ringing,
 //~PlayLoopingSFX("phoneCallingTone")
 ...
 //~StopLoopingSFX("phoneCallingTone")
@@ -47,7 +46,7 @@ Alright. Bye.
 // PLAYER_PROMPT -> highlight gas pump
 ~ SetActiveQuestChain(QuestChain_1)
 ~ StartQuest(pay_for_gas)
-TODO SFX door closing
+//TODO SFX door closing
 ~PlaySFX("carDoorOpenAndClose")
 
 * [npc] -> marlowe
@@ -65,10 +64,11 @@ TODO SFX door closing
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
         Ugh. Guess I'll be more than a little late...
         Thelton's gonna kill me. Gah. Let's blow this popsicle stand. 
+         ~ PlaySFX("carStartAndLeave")
+         //TODO SFX Car closing door noise and leaving
          ~ ChangeGameScene("scene2_DS")
         -> DONE 
-        TODO SFX Car closing door noise and leaving
-        //~PlaySFX("carStartAndLeave") Doesn't play audio after scene changes!
+        
         //fade to black, go to precinct day 1 
      - IsQuestComplete(pay_for_gas):
         That noise didn't sound good. I should probably see what's up.
@@ -95,9 +95,9 @@ TODO SFX door closing
     - IsQuestComplete(look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
+        ~ PlaySFX("carStartAndLeave")
+        //TODO SFX Car closing door noise and leaving
         ~ ChangeGameScene("scene2_DS")
-                TODO SFX Car closing door noise and leaving
-                //~PlaySFX("carStartAndLeave")
 
         -> DONE
     - IsQuestComplete(pay_for_gas):
@@ -134,7 +134,6 @@ TODO SFX door closing
 = enter_store
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
-    TODO SFX Door open
     ~openDoor()
     
     ~ ChangeGameScene("scene1_2")
@@ -142,8 +141,8 @@ TODO SFX door closing
 
 // ------------- SCENE1.2 MelOMarket Store
 === scene1_2 ===
-TODO SFX Door close
-~closeDoor()
+//TODO SFX Door close
+//~closeDoor()
 //The gas station door chimes with a slightly out of tune jingle.
 //Lupe hears the employee mutter a very unattentive "Welcome to MelOMart".
 * [vending_machine] -> vending_machine
@@ -209,7 +208,6 @@ TODO SFX Door close
 }
 
 = door_to_backroom
-TODO SFX
 {IsClueFound(broken_cash_reg):
     ~ openDoor()
     ~ ChangeGameScene("scene1_3")
@@ -222,7 +220,6 @@ TODO SFX
 
 = door_to_outside
 {IsQuestComplete(pay_for_gas):
-    //TODO SFX
     ~ openDoor()
     ~ChangeGameScene("scene1_4")
 
@@ -236,7 +233,7 @@ TODO SFX
 // ------------- SCENE1.3 Breakroom ---- >>
 === scene1_3 ===
 //TODO SFX door close
-~closeDoor()
+//~closeDoor()
 // Lupe pushes through the door to the backroom of the gas station. The room is a small break room. The presumed manager stands at the sink, scrubbing goop.
  
 + [mel] -> mel
@@ -273,13 +270,13 @@ TODO SFX
 
 
 = door_back_to_interior
-    ~ ChangeGameScene("scene1_2") 
-    //TODO SFX Door open
     ~openDoor()
+    ~ ChangeGameScene("scene1_2") 
+    
     ->DONE
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
-
+//~ closeDoor()
 // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
 ~ SetSpeaker(Speaker.Lupe)
 * [fallen tree] -> fallen_tree

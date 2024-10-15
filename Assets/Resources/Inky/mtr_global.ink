@@ -41,6 +41,8 @@ EXTERNAL ChangeGameScene(knotName)
 EXTERNAL SetSpeaker(speaker)
 EXTERNAL PlaySpecialAnimation(speaker)
 EXTERNAL PlaySFX(sfx)
+EXTERNAL PlayLoopingSFX(sfx)
+EXTERNAL StopLoopingSFX(sfx)
 
 // ====== SCENE HANDLING == >>
 === function ChangeGameScene(knotName)
@@ -88,10 +90,10 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 === function AddSynthesisClue(clue)
     ~ return
 === function openDoor()
-    ~PlaySFX("Doors/doorOpen")
+    ~PlaySFX("doorOpen")
     ~ return
 === function closeDoor()
-    ~PlaySFX("Doors/doorClose")
+    ~PlaySFX("doorClose")
     ~ return
 
 // -------------------- LEVEL 1 ------------------------------------
