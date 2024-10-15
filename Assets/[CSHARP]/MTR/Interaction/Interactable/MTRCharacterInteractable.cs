@@ -13,6 +13,7 @@ using UnityEditor;
 
 public class MTRCharacterInteractable : MTRInteractable
 {
+    List<string> _speakerList = new List<string>(30) { "None" };
     [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
@@ -20,12 +21,12 @@ public class MTRCharacterInteractable : MTRInteractable
     {
         get
         {
-            List<string> speakerList = new List<string>(50);
-            if (MTRStoryManager.Instance.SpeakerList != null)
+            if (MTRStoryManager.Instance.SpeakerList != null && MTRStoryManager.Instance.SpeakerList.Count > 4)
             {
-                speakerList = MTRStoryManager.Instance.SpeakerList;
+                _speakerList = new List<string>() { "None" };
+                _speakerList.AddRange(MTRStoryManager.Instance.SpeakerList);
             }
-            return speakerList;
+            return _speakerList;
         }
     }
     public override Type TypeKey => Type.CHARACTER;

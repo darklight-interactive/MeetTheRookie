@@ -159,22 +159,7 @@ namespace Darklight.UnityExt.BuildScene
 #endif
         }
 
-        void UpdateActiveSceneData()
-        {
-            _activeScene = SceneManager.GetActiveScene();
-            if (_dataValues == null || _dataValues.Length == 0)
-                return;
 
-            string activeScenePath = SceneManager.GetActiveScene().path;
-            foreach (TData data in _dataValues)
-            {
-                if (data != null && data.Path == activeScenePath)
-                {
-                    _activeSceneData = data;
-                    return;
-                }
-            }
-        }
 
         void HandleActiveSceneChanged(Scene oldScene, Scene newScene)
         {
@@ -204,6 +189,23 @@ namespace Darklight.UnityExt.BuildScene
                 }
             }
             UpdateActiveSceneData();
+        }
+
+        protected virtual void UpdateActiveSceneData()
+        {
+            _activeScene = SceneManager.GetActiveScene();
+            if (_dataValues == null || _dataValues.Length == 0)
+                return;
+
+            string activeScenePath = SceneManager.GetActiveScene().path;
+            foreach (TData data in _dataValues)
+            {
+                if (data != null && data.Path == activeScenePath)
+                {
+                    _activeSceneData = data;
+                    return;
+                }
+            }
         }
         #endregion
 

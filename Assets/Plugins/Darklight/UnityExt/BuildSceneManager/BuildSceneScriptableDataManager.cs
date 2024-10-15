@@ -55,7 +55,7 @@ namespace Darklight.UnityExt.BuildScene
                 RequiredKeys = NameList
             };
 
-            RefreshScriptableData();
+            RefreshData();
         }
 
         public override void Clear()
@@ -64,16 +64,25 @@ namespace Darklight.UnityExt.BuildScene
             _fullSceneDataList.Clear();
         }
 
+        protected override void UpdateActiveSceneData()
+        {
+            base.UpdateActiveSceneData();
+
+            _activeSceneScriptableData = _objLibrary[ActiveSceneData.Name];
+        }
+
         /// <summary>
         /// Refreshes the scriptable data to match the scene data. <br/>
         /// Also recreates the expandable data list.
         /// </summary>
-        public void RefreshScriptableData()
+        protected override void RefreshData()
         {
-            string debugStr = $"{Prefix} Loading scriptable objects from {AssetPath}";
+            string debugPrefix = $"{Prefix} >> Loaded";
+            string debugStr = $"scriptable objects from {AssetPath}";
             _fullSceneDataList.Clear();
 
             // Load all the scriptable objects
+            int objectCount = 0;
             foreach (string path in PathList)
             {
                 // Load the scriptable object if it is not already loaded
@@ -83,15 +92,18 @@ namespace Darklight.UnityExt.BuildScene
                 {
                     obj = _objLibrary[name] = CreateData(path);
                     debugStr += $"\n -- Loaded {obj.Name}";
+                    objectCount++;
                 }
 
                 // Add to the expandable list
                 _fullSceneDataList.Add(new ExpandableSceneScriptableData(obj));
             }
-            Debug.Log(debugStr);
 
-            // Set the active scene scriptable data
-            _activeSceneScriptableData = _objLibrary[ActiveSceneData.Name];
+            if (objectCount > 0)
+            {
+                Debug.Log($"{debugPrefix} {objectCount} {debugStr}");
+            }
+            base.RefreshData();
         }
 
         public virtual void SaveModifiedData(TScriptObj scriptObj)

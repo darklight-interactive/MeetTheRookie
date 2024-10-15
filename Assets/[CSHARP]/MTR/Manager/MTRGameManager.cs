@@ -20,7 +20,7 @@ using UnityEditor;
 [RequireComponent(typeof(MTRStoryManager))]
 [RequireComponent(typeof(MTR_UIManager))]
 [RequireComponent(typeof(MTR_AudioManager))]
-public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
+public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEditorListener
 {
     public static MTRPrefabLibrary PrefabLibrary => Instance._prefabLibrary;
     public static MTRCameraController CameraController
@@ -65,6 +65,15 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
         yield return null;
     }
 
+    public void OnEditorReloaded()
+    {
+#if UNITY_EDITOR
+        Initialize();
+
+        InkyStoryManager.Instance.Awake();
+#endif
+    }
+
     public override void Initialize()
     {
         Cursor.visible = false;
@@ -73,19 +82,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>
             _prefabLibrary = MTRAssetManager.CreateOrLoadScriptableObject<MTRPrefabLibrary>();
         if (_cameraController == null)
             _cameraController = FindFirstObjectByType<MTRCameraController>();
-
-
-
-        if (Application.isPlaying)
-        {
-            MTRSceneManager.Instance.OnSceneChanged += OnSceneChanged;
-        }
-
-    }
-
-    public void OnSceneChanged(Scene oldScene, Scene newScene)
-    {
-
     }
 
     public void PlaySpecialAnimation(string speakerName)

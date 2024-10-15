@@ -198,7 +198,7 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
         if (interactable == null) return false;
         if (_target == interactable) return false;
-        //if (_lastTarget == interactable) return false;
+        if (_lastTarget == interactable) return false;
 
         bool result = interactable.AcceptTarget(this);
         if (result)
@@ -227,7 +227,6 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         if (interactable == null) return false;
 
         _target = interactable;
-        SetEnabled(false);
 
         Debug.Log($"[{name}] Interacting with: {interactable.name} : force={force}");
 
@@ -247,7 +246,6 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             TryAddInteractable(interactable);
         }
 
-        /*
         if (_target != null && !overlapInteractables.Contains(_target))
         {
             _target.Reset();
@@ -259,7 +257,6 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             _lastTarget.Reset();
             _lastTarget = null;
         }
-        */
 
         // Remove interactables from the dict that are no longer in the overlap interactables.
         List<Interactable> dictInteractables = new List<Interactable>(_nearbyInteractables.Keys);
@@ -280,6 +277,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void SetEnabled(bool enabled)
     {
+        if (_enabled == enabled) return;
+
         _enabled = enabled;
         Debug.Log($"[{name}] Interactor Enabled: {_enabled}");
     }

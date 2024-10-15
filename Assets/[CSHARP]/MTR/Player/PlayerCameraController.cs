@@ -47,13 +47,13 @@ public class PlayerCameraController : CameraController
         switch (state)
         {
             case MTRPlayerState.NULL:
-            case MTRPlayerState.IDLE:
+            case MTRPlayerState.FREE_IDLE:
                 stateMachine.GoToState(CameraStateKey.DEFAULT);
                 break;
             case MTRPlayerState.INTERACTION:
                 stateMachine.GoToState(CameraStateKey.CLOSE_UP);
                 break;
-            case MTRPlayerState.WALK:
+            case MTRPlayerState.FREE_WALK:
                 stateMachine.GoToState(CameraStateKey.FOLLOW_TARGET);
                 break;
         }

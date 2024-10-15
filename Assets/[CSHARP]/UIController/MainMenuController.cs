@@ -75,7 +75,7 @@ public class MainMenuController : UXML_UIDocumentObject
     void PlayButtonAction()
     {
         sceneManager.TryGetSceneDataByKnot("scene1_0", out MTRSceneData scene);
-        sceneManager.LoadScene(scene.Name);
+        MTRSceneController.Instance.TryLoadScene(scene.Name);
     }
 
     void UnlockSelection()

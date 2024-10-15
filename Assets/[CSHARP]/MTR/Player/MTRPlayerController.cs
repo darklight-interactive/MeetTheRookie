@@ -7,8 +7,8 @@ using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
 public enum MTRPlayerState
 {
     NULL,
-    IDLE,
-    WALK,
+    FREE_IDLE,
+    FREE_WALK,
     INTERACTION,
     HIDE,
     OVERRIDE_WALK,
@@ -22,6 +22,7 @@ public enum MTRPlayerDirectionFacing { NONE, RIGHT, LEFT }
 public class MTRPlayerController : MonoBehaviour
 {
     readonly float _speed = 1f;
+    readonly float _boundPadding = 0.05f;
     MTRPlayerStateMachine _stateMachine;
 
 
@@ -32,7 +33,7 @@ public class MTRPlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField, ShowOnly] float _moveDir;
     [SerializeField, ShowOnly] float _currentPosX;
-    [SerializeField, ShowOnly] float _targetPosX;
+    [SerializeField, ShowOnly] float _overrideTargetPosX;
     [SerializeField, ShowOnly] bool _inBounds;
     [SerializeField, ShowOnly] bool _canWalkLeft;
     [SerializeField, ShowOnly] bool _canWalkRight;
@@ -89,37 +90,49 @@ public class MTRPlayerController : MonoBehaviour
 
         // << CALCULATE POSITION >>
         _currentPosX = transform.position.x;
-        _targetPosX = _currentPosX + (_moveDir * _speed);
 
         // << CALCULATE RELATION TO BOUNDS >>
         MTRSceneBounds sceneBounds = MTRSceneManager.ActiveSceneData.SceneBounds;
         _inBounds = sceneBounds.Contains(_currentPosX);
-        _canWalkLeft = _currentPosX > sceneBounds.Left + 0.05f;
-        _canWalkRight = _currentPosX < sceneBounds.Right - 0.05f;
+        _canWalkLeft = _currentPosX > sceneBounds.Left + (_boundPadding * 2);
+        _canWalkRight = _currentPosX < sceneBounds.Right - (_boundPadding * 2);
+
+
+
+        // << CALCULATE TARGET POSITION >>
+        // Default target position is the current position + the move direction * speed
+        Vector3 targetPos = new Vector3(_currentPosX + _moveDir, transform.position.y, transform.position.z);
+        if (CurrentState == MTRPlayerState.OVERRIDE_WALK)
+        {
+            // If the player is in an override walk state, the target position is the override target position
+            targetPos = new Vector3(_overrideTargetPosX, transform.position.y, transform.position.z);
+        }
+
 
         // << UPDATE POSITION >>
         bool isWalkingLeft = _canWalkLeft && _moveDir < 0;
         bool isWalkingRight = _canWalkRight && _moveDir > 0;
         if (_inBounds && (isWalkingLeft || isWalkingRight))
         {
-            Vector3 targetPos = new Vector3(_targetPosX, transform.position.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, _speed * Time.deltaTime);
         }
         else
         {
+            // Clamp the player's position to the scene bounds
             Vector3 clampedPos = transform.position;
-            clampedPos.x = Mathf.Clamp(clampedPos.x, sceneBounds.Left, sceneBounds.Right);
+            clampedPos.x = Mathf.Clamp(clampedPos.x, sceneBounds.Left + _boundPadding, sceneBounds.Right - _boundPadding);
             transform.position = clampedPos;
         }
 
-        //if (CurrentState == MTRPlayerState.OVERRIDE_IDLE) return;
+        // << RETURN IF IN OVERRIDE STATE >>
+        if (CurrentState == MTRPlayerState.OVERRIDE_IDLE) return;
         if (CurrentState == MTRPlayerState.OVERRIDE_WALK) return;
 
-        // << UPDATE STATE >>
-        if (Mathf.Abs(_moveDir) > 0.1f)
-            StateMachine.GoToState(MTRPlayerState.WALK);
+        // << UPDATE FREE STATE >>
+        if (Mathf.Abs(_moveDir) < 0.1f)
+            StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
         else
-            StateMachine.GoToState(MTRPlayerState.IDLE);
+            StateMachine.GoToState(MTRPlayerState.FREE_WALK);
     }
 
     void SetMoveDirection(float moveDir)
@@ -199,7 +212,12 @@ public class MTRPlayerController : MonoBehaviour
     }
     public void HandleOnMoveInputCanceled() => SetMoveDirection(0);
     public void OverrideSetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection.x);
-    public void OverrideResetMoveDirection() => SetMoveDirection(0);
+    public void OverrideResetMoveDirection()
+    {
+        _overrideTargetPosX = _currentPosX;
+        SetMoveDirection(0);
+        StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
+    }
     /// <summary>
     /// Moves the player into the interaction state
     /// </summary>
@@ -214,7 +232,7 @@ public class MTRPlayerController : MonoBehaviour
     /// </summary>
     public void ExitInteraction()
     {
-        StateMachine.GoToState(MTRPlayerState.IDLE);
+        StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
         //Debug.Log("Player Controller :: Exit Interaction");
     }
 
@@ -224,7 +242,7 @@ public class MTRPlayerController : MonoBehaviour
 
         Debug.Log($"PlayerController :: StartWalkOverride({targetXPos})");
 
-        _targetPosX = targetXPos;
+        _overrideTargetPosX = targetXPos;
         GetDirectionToPos(targetXPos, out Vector2 direction);
 
         OverrideSetMoveDirection(direction);
@@ -233,16 +251,16 @@ public class MTRPlayerController : MonoBehaviour
 
     public bool IsAtMoveTarget()
     {
-        if (Mathf.Abs(transform.position.x - _targetPosX) < 0.05f)
+        if (Mathf.Abs(transform.position.x - _overrideTargetPosX) < 0.05f)
         {
             return true;
         }
 
-        if (DirectionFacing == MTRPlayerDirectionFacing.RIGHT && transform.position.x > _targetPosX)
+        if (DirectionFacing == MTRPlayerDirectionFacing.RIGHT && transform.position.x > _overrideTargetPosX)
         {
             return true;
         }
-        else if (DirectionFacing == MTRPlayerDirectionFacing.LEFT && transform.position.x < _targetPosX)
+        else if (DirectionFacing == MTRPlayerDirectionFacing.LEFT && transform.position.x < _overrideTargetPosX)
         {
             return true;
         }

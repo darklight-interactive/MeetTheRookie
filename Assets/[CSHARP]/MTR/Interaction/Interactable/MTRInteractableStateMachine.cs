@@ -116,7 +116,7 @@ public partial class MTRInteractable
 
                 interactable.spriteRenderer.material = MTRGameManager.PrefabLibrary.spriteOutlineMaterial;
 
-                Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
+                //Debug.Log($"{PREFIX} :: {interactable.Print()} >> Entered Target State >> Reciever: {reciever}");
             }
 
             public override void Execute() { }
@@ -152,6 +152,7 @@ public partial class MTRInteractable
                 {
                     destinationReciever.GetClosestDestination(player.transform.position, out Vector2 destination);
                     player.Controller.StartWalkOverride(destination.x);
+                    Debug.Log($"{PREFIX} :: {interactable.Name} >> Starting walk override to {destination}");
                 }
                 else
                 {

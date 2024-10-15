@@ -52,14 +52,15 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
     void HandleStoryInitialized()
     {
+#if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
+#endif
 
         MTRStoryManager.GlobalStory.BindExternalFunction(
             "ChangeGameScene",
             (string knotName) => ChangeGameScene(knotName)
         );
-
         Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
     }
 
@@ -77,6 +78,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         SceneController.TryLoadScene(data.Name);
         Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
 
+        RefreshData();
         InkyStoryManager.GoToKnotOrStitch(knotName);
 
         return true;

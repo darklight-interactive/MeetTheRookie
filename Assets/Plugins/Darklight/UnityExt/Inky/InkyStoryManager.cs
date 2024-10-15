@@ -182,9 +182,15 @@ namespace Darklight.UnityExt.Inky
 
         #region ---- < PUBLIC_METHODS > ( Interface Methods ) --------------------------------- 
         // ---- ( MonoBehaviourSingleton ) ---------------------------------
+        public override void Awake()
+        {
+            _isInitialized = false;
+            base.Awake();
+        }
 
         public override void Initialize()
         {
+            if (_isInitialized) return;
             _isInitialized = false;
 
             // << BASE CHECKS >> ------------------------------------ >>

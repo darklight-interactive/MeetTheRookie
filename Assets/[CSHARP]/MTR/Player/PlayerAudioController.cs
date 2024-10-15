@@ -18,12 +18,12 @@ public class PlayerAudioController : MonoBehaviour
     {
         switch (newState)
         {
-            case MTRPlayerState.WALK:
+            case MTRPlayerState.FREE_WALK:
                 MTR_AudioManager.Instance.StartFootstepEvent();
                 break;
         }
 
-        if (lastState == MTRPlayerState.WALK && newState != MTRPlayerState.WALK)
+        if (lastState == MTRPlayerState.FREE_WALK && newState != MTRPlayerState.FREE_WALK)
         {
             MTR_AudioManager.Instance.StopFootstepEvent();
         }

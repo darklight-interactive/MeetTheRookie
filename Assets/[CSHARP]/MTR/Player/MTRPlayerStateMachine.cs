@@ -10,6 +10,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     protected MTRPlayerController controller;
     protected MTRPlayerInput _input => controller.Input;
     protected MTRPlayerAnimator _animator => controller.Animator;
+    protected MTRPlayerInteractor _interactor => controller.Interactor;
 
     /// <param name="args">
     ///    args[0] = PlayerController ( playerController )
@@ -20,10 +21,10 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>> {
             {MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL)},
 
-            {MTRPlayerState.IDLE, new BasePlayerState(this, MTRPlayerState.IDLE)},
+            {MTRPlayerState.FREE_IDLE, new BasePlayerState(this, MTRPlayerState.FREE_IDLE)},
             {MTRPlayerState.OVERRIDE_IDLE, new BasePlayerState(this, MTRPlayerState.OVERRIDE_IDLE)},
 
-            {MTRPlayerState.WALK, new BasePlayerState(this, MTRPlayerState.WALK)},
+            {MTRPlayerState.FREE_WALK, new BasePlayerState(this, MTRPlayerState.FREE_WALK)},
             {MTRPlayerState.OVERRIDE_WALK, new WalkOverrideState(this)},
 
             {MTRPlayerState.INTERACTION, new InteractionState(this)},
@@ -36,8 +37,10 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         bool result = base.GoToState(stateType);
         if (result)
         {
+            Debug.Log($"Player GoToState: {stateType}");
             SetAnimation(stateType);
             SetInputs(stateType);
+            SetInteractor(stateType);
         }
 
         return result;
@@ -48,10 +51,10 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         switch (stateType)
         {
             case MTRPlayerState.OVERRIDE_IDLE:
-                stateType = MTRPlayerState.IDLE;
+                stateType = MTRPlayerState.FREE_IDLE;
                 break;
             case MTRPlayerState.OVERRIDE_WALK:
-                stateType = MTRPlayerState.WALK;
+                stateType = MTRPlayerState.FREE_WALK;
                 break;
         }
 
@@ -62,8 +65,8 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     {
         switch (stateType)
         {
-            case MTRPlayerState.IDLE:
-            case MTRPlayerState.WALK:
+            case MTRPlayerState.FREE_IDLE:
+            case MTRPlayerState.FREE_WALK:
                 _input.SetAllInputsEnabled(true);
                 break;
             case MTRPlayerState.INTERACTION:
@@ -76,6 +79,19 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         }
     }
 
+    void SetInteractor(MTRPlayerState stateType)
+    {
+        switch (stateType)
+        {
+            case MTRPlayerState.FREE_IDLE:
+            case MTRPlayerState.FREE_WALK:
+                _interactor.SetEnabled(true);
+                break;
+            default:
+                _interactor.SetEnabled(false);
+                break;
+        }
+    }
     #region  [[ STATES ]] ======================================================== >>
 
     public class BasePlayerState : FiniteState<MTRPlayerState>
@@ -89,10 +105,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         {
             this.stateMachine = stateMachine;
         }
-        public override void Enter()
-        {
-            interactor.SetEnabled(true);
-        }
+        public override void Enter() { }
         public override void Execute() { }
         public override void Exit() { }
 
@@ -103,23 +116,13 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         MTRInteractable targetInteractable => interactor.TargetInteractable as MTRInteractable;
         public InteractionState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.INTERACTION) { }
 
-        public override void Enter()
-        {
-            interactor.SetEnabled(false);
-        }
-
         public override void Execute()
         {
             if (targetInteractable != null && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
             {
-                stateMachine.GoToState(MTRPlayerState.IDLE);
+                stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
                 interactor.ClearTarget();
             }
-        }
-
-        public override void Exit()
-        {
-            interactor.SetEnabled(true);
         }
     }
 
@@ -131,10 +134,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         public override void Enter()
         {
             _isAtMoveTarget = false;
-            if (input.IsAllInputEnabled == true)
-            {
-                interactor.SetEnabled(false);
-            }
         }
         public override void Execute()
         {
@@ -153,14 +152,9 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
             }
         }
 
-        public override void Exit()
-        {
-
-        }
-
         IEnumerator WaitAndGoToInteractionState()
         {
-            animator.PlayStateAnimation(MTRPlayerState.IDLE); // Play idle animation
+            animator.PlayStateAnimation(MTRPlayerState.FREE_IDLE); // Play idle animation
 
             // Wait for the player to face the target position
             Vector3 targetPos = interactor.TargetInteractable.transform.position;

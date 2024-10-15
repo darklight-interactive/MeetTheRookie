@@ -24,11 +24,15 @@ using EasyButtons.Editor;
 public class MTRPlayerInput : MonoBehaviour
 {
     bool _sceneListenerInitialized = false;
+
+    [Header("Enabled States")]
     [SerializeField, ShowOnly] bool _allInputEnabled;
     [SerializeField, ShowOnly] bool _movementInputEnabled;
     [SerializeField, ShowOnly] bool _interactInputEnabled;
 
+    [Header("Active Inputs")]
     [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
+    [SerializeField, ShowOnly] bool _activePrimaryInteractInput = false;
 
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
@@ -43,15 +47,11 @@ public class MTRPlayerInput : MonoBehaviour
     #region ---- < PRIVATE_METHODS > ( UNITY_RUNTIME ) --------------------------------- 
     void Awake()
     {
-        MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
-        Controller.StateMachine.OnStateChanged += OnPlayerStateChanged;
         SetAllInputsEnabled(false);
     }
 
     void OnDestroy()
     {
-        MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
-        Controller.StateMachine.OnStateChanged -= OnPlayerStateChanged;
         SetAllInputsEnabled(false);
     }
 
@@ -62,34 +62,6 @@ public class MTRPlayerInput : MonoBehaviour
 
 
     #endregion
-
-
-    void OnSceneStateChanged(MTRSceneState state)
-    {
-        switch (state)
-        {
-            case MTRSceneState.PLAY_MODE:
-                SetAllInputsEnabled(true);
-                break;
-            default:
-                SetAllInputsEnabled(false);
-                break;
-        }
-    }
-
-    void OnPlayerStateChanged(MTRPlayerState state)
-    {
-        switch (state)
-        {
-            case MTRPlayerState.IDLE:
-                SetAllInputsEnabled(true);
-                break;
-            case MTRPlayerState.INTERACTION:
-            case MTRPlayerState.OVERRIDE_WALK:
-                SetMovementInputEnabled(false);
-                break;
-        }
-    }
 
     [Button]
     public void SetAllInputsEnabled(bool enable)
@@ -116,31 +88,56 @@ public class MTRPlayerInput : MonoBehaviour
     {
         if (enable && !_movementInputEnabled)
         {
-            UniversalInputManager.OnMoveInput += Controller.HandleMoveInput;
-            UniversalInputManager.OnMoveInputCanceled += Controller.HandleOnMoveInputCanceled;
+            UniversalInputManager.OnMoveInput += HandleMoveInput;
+            UniversalInputManager.OnMoveInputCanceled += HandleOnMoveInputCanceled;
         }
         else if (!enable && _movementInputEnabled)
         {
-            UniversalInputManager.OnMoveInput -= Controller.HandleMoveInput;
-            UniversalInputManager.OnMoveInputCanceled -= Controller.HandleOnMoveInputCanceled;
+            UniversalInputManager.OnMoveInput -= HandleMoveInput;
+            UniversalInputManager.OnMoveInputCanceled -= HandleOnMoveInputCanceled;
         }
         _movementInputEnabled = enable;
+        Debug.Log("MTRPlayerInput :: SetMovementInputEnabled :: " + enable, this);
     }
 
     public void SetInteractInputEnabled(bool enable)
     {
         if (enable && !_interactInputEnabled)
+        {
             UniversalInputManager.OnPrimaryInteract += HandlePrimaryInteract;
+            UniversalInputManager.OnPrimaryInteractCanceled += HandlePrimaryInteractCanceled;
+        }
         else if (!enable && _interactInputEnabled)
+        {
             UniversalInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
+            UniversalInputManager.OnPrimaryInteractCanceled -= HandlePrimaryInteractCanceled;
+        }
         _interactInputEnabled = enable;
+        Debug.Log("MTRPlayerInput :: SetInteractInputEnabled :: " + enable, this);
+    }
+
+    void HandleMoveInput(Vector2 moveInput)
+    {
+        Controller.HandleMoveInput(moveInput);
+        _activeMoveInput = moveInput;
+    }
+
+    void HandleOnMoveInputCanceled()
+    {
+        Controller.HandleOnMoveInputCanceled();
+        _activeMoveInput = Vector2.zero;
     }
 
     void HandlePrimaryInteract()
     {
         Interactor.InteractWithTarget();
+        _activePrimaryInteractInput = true;
     }
 
+    void HandlePrimaryInteractCanceled()
+    {
+        _activePrimaryInteractInput = false;
+    }
 
 
     // =================================== [[ TRIGGER ]] =================================== >>

@@ -37,24 +37,15 @@ public class MTRStoryManager : InkyStoryManager
     {
         get
         {
-            List<string> outList = new List<string>();
-            TryGetVariableContainer("Speaker", out StoryVariableContainer speakerVar);
-            if (speakerVar == null && StoryDataObject != null)
-            {
-                speakerVar = StoryDataObject.VariableContainers.Find(x => x.Key == "Speaker");
-                outList = speakerVar.ToStringList();
-            }
-            else
-            {
-                outList = speakerVar.ToStringList();
-            }
-            return outList;
+            return _speakerVariable.ValueAsStringList;
         }
     }
 
 
     public delegate void SpeakerSet(string speaker);
     public static event SpeakerSet OnNewSpeaker;
+
+
 
     protected override void HandleStoryInitialized()
     {

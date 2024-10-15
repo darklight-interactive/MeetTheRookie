@@ -202,8 +202,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             IEnumerator EnterStateCoroutine()
             {
                 cameraController?.SetPlayerAsFollowTarget();
-                yield return new WaitForSeconds(2f);
-
 
                 // << GO TO ACTIVE SCENE KNOT >>
                 InkyStoryManager.GoToKnotOrStitch(activeSceneData.SceneKnot);

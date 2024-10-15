@@ -29,7 +29,8 @@ public class MTRDestinationReciever : InteractionReciever
             cellLibrary.SetRequiredKeys(_overlapGrid.BaseGrid.CellKeys);
         }
 
-        destination = _overlapGrid.BaseGrid.GetClosestCellTo(origin).Position;
+        Cell2D closestCell = _overlapGrid.BaseGrid.GetClosestCellTo(origin);
+        destination = closestCell.Position;
 
         List<Cell2D> emptyCells = _overlapGrid.GetCellsWithColliderCount(0);
 
@@ -46,6 +47,7 @@ public class MTRDestinationReciever : InteractionReciever
                 destination = cell.Position;
             }
         }
+
     }
 
 

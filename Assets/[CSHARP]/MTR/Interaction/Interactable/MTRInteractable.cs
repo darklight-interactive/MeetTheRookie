@@ -223,10 +223,13 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
 
+        if (Request == null)
+        {
+            InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
+                out InteractionRequestDataObject newRequest, new List<InteractionType> { InteractionType.TARGET, InteractionType.DESTINATION });
+            Request = newRequest;
+        }
 
-        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
-            out InteractionRequestDataObject newRequest, new List<InteractionType> { InteractionType.TARGET });
-        Request = newRequest;
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
     protected virtual bool ValidateRegistration()
@@ -371,6 +374,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
         // << ACCEPT TARGET >> ------------------------------------
         StateMachine.GoToState(State.TARGET);
+        Debug.Log($"{PREFIX} {Name} :: AcceptTarget from {interactor}", this);
         return true;
     }
 
@@ -387,16 +391,12 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         if (interactor is MTRPlayerInteractor playerInteractor)
             StartCoroutine(AcceptInteractionRoutine(interactor as MTRPlayerInteractor, force));
 
-
-
         return true;
     }
     #endregion
 
     IEnumerator AcceptInteractionRoutine(MTRPlayerInteractor player, bool force = false)
     {
-        Debug.Log($"{PREFIX} {Name} :: AcceptInteractionRoutine from {player}", this);
-
         // << ACCEPT INTERACTION >> ------------------------------------
         Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {player}", this);
         switch (CurrentState)

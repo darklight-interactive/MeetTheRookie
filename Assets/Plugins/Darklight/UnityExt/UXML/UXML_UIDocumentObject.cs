@@ -59,7 +59,7 @@ namespace Darklight.UnityExt.UXML
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
 
-            Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
+            //Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
         }
 
         [Button("Initialize UIDocument")]
