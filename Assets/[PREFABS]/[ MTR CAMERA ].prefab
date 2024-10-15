@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currSpeaker: Speaker.Lupe
-  _currSettingType: 2
-  _currSetting: {fileID: 11400000, guid: fa8327c2e1fadb840b580c5f19efe584, type: 2}
+  _currSettingType: 1
+  _currSetting: {fileID: 11400000, guid: c0de12f09c498459e9fd4c8f7bf6b202, type: 2}
   _settings:
     _items:
     - _id: 0
@@ -147,10 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd2e9653ea29d34ebea7dc119a3e4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {x: 0, y: 1, z: 0}
-  _targetPosition: {x: 0, y: 1.047437, z: -40}
-  _targetRotation: {x: 0, y: 0, z: 0, w: 1}
-  _targetFOV: 3
+  _origin: {x: -2.5, y: 0.5, z: 0.5}
+  _targetPosition: {x: -2.5872672, y: 0.7858021, z: -19.49981}
+  _targetRotation: {x: 0, y: 0.0021816841, z: 0, w: 0.9999976}
+  _targetFOV: 4.5
   _showGizmos: 0
   _lerpInEditor: 0
   _followTarget: {fileID: 0}
@@ -163,10 +163,10 @@ MonoBehaviour:
   _positionLerpSpeed: 10
   _rotationLerpSpeed: 10
   _fovLerpSpeed: 10
-  _settings: {fileID: 11400000, guid: fa8327c2e1fadb840b580c5f19efe584, type: 2}
+  _settings: {fileID: 11400000, guid: c0de12f09c498459e9fd4c8f7bf6b202, type: 2}
   _bounds:
-    Center: {x: 0, y: 1}
-    XAxisValues: {x: -6, y: 10.4}
+    Center: {x: -3, y: 1}
+    XAxisValues: {x: -3.2, y: 2.6}
     YAxisValues: {x: -1, y: 1}
 --- !u!1 &3605313824413459967
 GameObject:
@@ -234,7 +234,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 3
+  field of view: 4.5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -323,8 +323,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5947460541986450070}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.047437, z: -40}
+  m_LocalRotation: {x: -0, y: 0.0021816841, z: -0, w: 0.9999976}
+  m_LocalPosition: {x: -2.5872672, y: 0.7858021, z: -19.49981}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -366,13 +366,13 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 3
+  field of view: 4.5
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 2049
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -510,7 +510,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 3
+  field of view: 4.5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2
@@ -750,7 +750,7 @@ Camera:
     height: 1
   near clip plane: 2
   far clip plane: 1000
-  field of view: 3
+  field of view: 4.5
   orthographic: 0
   orthographic size: 5
   m_Depth: 2

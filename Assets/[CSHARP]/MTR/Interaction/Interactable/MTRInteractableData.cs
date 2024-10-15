@@ -43,21 +43,22 @@ public partial class MTRInteractable
                 _key = (interactable as MTRPlayerInteractor).SpeakerTag;
                 _layer = InteractionSystem.Settings.PlayerLayer;
 
-                interactable.gameObject.name = $"<PLAYER> Lupe";
+                interactable.gameObject.name = $"PLAYER_Lupe";
             }
             else if (interactable is MTRCharacterInteractable)
             {
                 _key = (interactable as MTRCharacterInteractable).SpeakerTag;
                 _layer = InteractionSystem.Settings.NPCLayer;
 
-                interactable.gameObject.name = $"<CHARACTER> {_key}";
+                string name = _key.Replace("Speaker.", "");
+                interactable.gameObject.name = $"CHARACTER_{name}";
             }
             else if (interactable is MTRInteractable)
             {
                 _key = interactable._interactionStitch;
                 _layer = InteractionSystem.Settings.InteractableLayer;
 
-                interactable.gameObject.name = $"<INTRCT> {_key}";
+                interactable.gameObject.name = $"INTRCT_{_key}";
             }
             else
             {

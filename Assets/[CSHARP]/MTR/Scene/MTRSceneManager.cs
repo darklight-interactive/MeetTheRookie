@@ -99,8 +99,8 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         if (!Application.isPlaying)
             SceneController.CameraController?.SetPlayerAsFollowTarget();
 
-        // << Set Active Camera Bounds >>
-        SceneController.CameraController?.Rig.SetBounds(ActiveSceneData.CameraRigBounds);
+        // << Set Active Camera Bounds && Settings >>
+        SceneController.CameraController?.Refresh();
 
         // << Initialize Story >>
         MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;

@@ -61,7 +61,7 @@ namespace Darklight.UnityExt.Inky
             }
         }
         public static InkyStoryDataObject StoryDataObject => Instance._storyDataObject;
-        public static bool IsInitialized => Instance._isInitialized;
+        public static bool IsInitialized { get => Instance._isInitialized; protected set => Instance._isInitialized = value; }
         public static string CurrentKnot => Instance._currentStoryKnot;
         public static string CurrentDialogue => GlobalStory.currentText.Trim();
         public static List<Choice> CurrentChoices => GlobalStory.currentChoices;

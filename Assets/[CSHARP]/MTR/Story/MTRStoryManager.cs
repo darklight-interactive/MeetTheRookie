@@ -165,7 +165,10 @@ public class MTRStoryManager : InkyStoryManager
             Debug.Log($"{Prefix} >> Speaker List: {speakerVar.ToString()}");
         }
         else
+        {
             Debug.LogError($"{Prefix} >> Speaker List not found.");
+            IsInitialized = false;
+        }
 
         // << INITIALIZE CURRENT SPEAKER >> ------------------------ >>
         TryGetVariableValue("CURRENT_SPEAKER", out object currentSpeaker);
