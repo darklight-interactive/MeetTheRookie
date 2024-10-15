@@ -62,6 +62,11 @@ namespace Darklight.UnityExt.UXML
             Debug.Log($"Initialized UIDocumentObject with preset {preset.name}");
         }
 
+        [Button("Initialize UIDocument")]
+        public void Initialize()
+        {
+            Initialize(preset);
+        }
 
         /// <summary>
         /// Query the root element for a VisualElement of the given type with an optional tag or class.
@@ -135,34 +140,4 @@ namespace Darklight.UnityExt.UXML
         }
 
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(UXML_UIDocumentObject), true)]
-    public class UXML_UIDocumentObjectCustomEditor : UnityEditor.Editor
-    {
-        SerializedObject _serializedObject;
-        UXML_UIDocumentObject _script;
-        public virtual void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (UXML_UIDocumentObject)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            _script = (UXML_UIDocumentObject)target;
-            serializedObject.Update();
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("Initialize UIDocumentObject"))
-            {
-                _script.Initialize(_script.preset);
-            }
-
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-#endif
-
 }

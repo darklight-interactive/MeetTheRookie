@@ -81,43 +81,45 @@ public class TextBubbleObject : UXML_RenderTextureObject
         _textBubble.Deselect();
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(TextBubbleObject))]
-    public class TextBubbleObjectCustomEditor : UXML_RenderTextureObjectCustomEditor
-    {
-        public override void OnInspectorGUI()
+    /*
+    #if UNITY_EDITOR
+        [CustomEditor(typeof(TextBubbleObject))]
+        public class TextBubbleObjectCustomEditor : UXML_RenderTextureObjectCustomEditor
         {
-            serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (GUILayout.Button("Select"))
+            public override void OnInspectorGUI()
             {
-                (target as TextBubbleObject).Select();
-            }
+                serializedObject.Update();
 
-            if (GUILayout.Button("Deselect"))
-            {
-                (target as TextBubbleObject).Deselect();
-            }
+                EditorGUI.BeginChangeCheck();
 
-            if (GUILayout.Button("SetOriginToBottom"))
-            {
-                (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.BOTTOM_CENTER;
-            }
+                base.OnInspectorGUI();
 
-            if (GUILayout.Button("SetOriginToTop"))
-            {
-                (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.TOP_CENTER;
-            }
+                if (GUILayout.Button("Select"))
+                {
+                    (target as TextBubbleObject).Select();
+                }
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
+                if (GUILayout.Button("Deselect"))
+                {
+                    (target as TextBubbleObject).Deselect();
+                }
+
+                if (GUILayout.Button("SetOriginToBottom"))
+                {
+                    (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.BOTTOM_CENTER;
+                }
+
+                if (GUILayout.Button("SetOriginToTop"))
+                {
+                    (target as TextBubbleObject)._textBubble.OriginPoint = Spatial2D.AnchorPoint.TOP_CENTER;
+                }
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                }
             }
         }
-    }
-#endif
+    #endif
+    */
 }

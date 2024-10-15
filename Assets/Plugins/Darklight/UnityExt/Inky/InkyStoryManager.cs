@@ -21,7 +21,7 @@ namespace Darklight.UnityExt.Inky
     /// <summary>
     ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data.
     /// </summary>
-    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
+    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InkyStory";
 
@@ -133,9 +133,58 @@ namespace Darklight.UnityExt.Inky
 
 
         #region ---- < PROTECTED_VIRTUAL_METHODS > ( Internal Data Handling ) --------------------------------- 
-        protected virtual void Initialize(bool force, string suffix = "")
+
+        protected void RefreshDataObject()
         {
-            if (!force && IsInitialized) return;
+            if (_storyDataObject == null)
+            {
+                _storyDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<InkyStoryDataObject>(ASSET_PATH);
+            }
+
+            // Update Knot Containers
+            _storyDataObject.RepopulateKnotContainers(_stitchDitionary);
+            _storyDataObject.RepopulateVariableContainers(_variableDictionary);
+        }
+        #endregion
+
+        #region ---- < PROTECTED_METHODS > ( Story Event Handlers ) --------------------------------- 
+        protected virtual void HandleStoryError(string message, ErrorType errorType)
+        {
+            Debug.LogError($"{Prefix} Ink Error: {errorType} :: {message}");
+        }
+
+        protected virtual void HandleStoryInitialized()
+        {
+            Debug.Log($"{Prefix} Story Initialized");
+        }
+
+        protected virtual void HandleStoryStart()
+        {
+            Debug.Log($"{Prefix} Story Started");
+        }
+
+        protected virtual void HandleStoryDialogue(string dialogue)
+        {
+            _currentStoryDialogue = dialogue;
+            Debug.Log($"{Prefix} Dialogue: {dialogue}");
+        }
+
+        protected virtual void HandleStoryChoices(List<Choice> choices)
+        {
+            Debug.Log($"{Prefix} Choices: {choices.Count}");
+        }
+
+        protected virtual void HandleStoryEnd()
+        {
+            Debug.Log($"{Prefix} End of Knot");
+        }
+        #endregion
+
+        #region ---- < PUBLIC_METHODS > ( Interface Methods ) --------------------------------- 
+        // ---- ( MonoBehaviourSingleton ) ---------------------------------
+
+        public override void Initialize()
+        {
             _isInitialized = false;
 
             // << BASE CHECKS >> ------------------------------------ >>
@@ -145,7 +194,7 @@ namespace Darklight.UnityExt.Inky
                 return;
             }
 
-            string initLog = $"{Prefix} Initialized {suffix}";
+            string initLog = $"{Prefix} Initialized";
             void AddToLog(string message) { initLog += $"\n>> {message}"; }
 
             // << CREATE STORY >> ------------------------------------ >>
@@ -243,73 +292,6 @@ namespace Darklight.UnityExt.Inky
                 OnStoryInitialized?.Invoke();
 
             Debug.Log(initLog);
-        }
-
-        protected void RefreshDataObject()
-        {
-            if (_storyDataObject == null)
-            {
-                _storyDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<InkyStoryDataObject>(ASSET_PATH);
-            }
-
-            // Update Knot Containers
-            _storyDataObject.RepopulateKnotContainers(_stitchDitionary);
-            _storyDataObject.RepopulateVariableContainers(_variableDictionary);
-        }
-        #endregion
-
-        #region ---- < PROTECTED_METHODS > ( Story Event Handlers ) --------------------------------- 
-        protected virtual void HandleStoryError(string message, ErrorType errorType)
-        {
-            Debug.LogError($"{Prefix} Ink Error: {errorType} :: {message}");
-        }
-
-        protected virtual void HandleStoryInitialized()
-        {
-            Debug.Log($"{Prefix} Story Initialized");
-        }
-
-        protected virtual void HandleStoryStart()
-        {
-            Debug.Log($"{Prefix} Story Started");
-        }
-
-        protected virtual void HandleStoryDialogue(string dialogue)
-        {
-            _currentStoryDialogue = dialogue;
-            Debug.Log($"{Prefix} Dialogue: {dialogue}");
-        }
-
-        protected virtual void HandleStoryChoices(List<Choice> choices)
-        {
-            Debug.Log($"{Prefix} Choices: {choices.Count}");
-        }
-
-        protected virtual void HandleStoryEnd()
-        {
-            Debug.Log($"{Prefix} End of Knot");
-        }
-        #endregion
-
-        #region ---- < PUBLIC_METHODS > ( Interface Methods ) --------------------------------- 
-        // ---- ( IUnityEditorListener ) ---------------------------------
-        public void OnEditorReloaded()
-        {
-            if (Application.isPlaying)
-                return;
-            else
-            {
-                Initialize(true, "from OnEditorReloaded()");
-            }
-        }
-
-        // ---- ( MonoBehaviourSingleton ) ---------------------------------
-        public override void Initialize()
-        {
-            if (Application.isPlaying)
-                Initialize(false, "from MonoBehaviourSingleton Initialize() in PlayMode");
-            else
-                Initialize(true, "from MonoBehaviourSingleton Initialize() in EditorMode");
         }
         #endregion
 

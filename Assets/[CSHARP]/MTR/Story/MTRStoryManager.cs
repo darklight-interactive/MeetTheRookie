@@ -7,6 +7,7 @@ public class MTRStoryManager : InkyStoryManager
 {
     public static new MTRStoryManager Instance => (MTRStoryManager)InkyStoryManager.Instance;
     public static string CurrentSpeaker => Instance._currentSpeaker;
+    public static bool IsReady;
 
     [Header("MTR Speaker Variable")]
     [SerializeField] StoryVariableContainer _speakerVariable;
@@ -152,6 +153,8 @@ public class MTRStoryManager : InkyStoryManager
             }
         );
         */
+
+        IsReady = true;
     }
 
     protected override void HandleStoryDialogue(string dialogue)
@@ -159,9 +162,9 @@ public class MTRStoryManager : InkyStoryManager
         base.HandleStoryDialogue(dialogue);
     }
 
-    protected override void Initialize(bool force, string suffix = "")
+    public override void Initialize()
     {
-        base.Initialize(force, suffix);
+        base.Initialize();
 
         // << INITIALIZE SPEAKER VARIABLE >> ------------------------ >>
         TryGetVariableContainer("Speaker", out StoryVariableContainer speakerVar);

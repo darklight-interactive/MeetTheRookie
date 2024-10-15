@@ -23,6 +23,7 @@ namespace Darklight.UnityExt.UXML
         Label _label;
         Sprite _backgroundImage;
 
+        string _fullText = "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
         float _rollingTextPercentValue = 1;
         int _currentIndex;
         int _fontSizePercent = 100;
@@ -35,8 +36,12 @@ namespace Darklight.UnityExt.UXML
 
         [Header("[CONTROLLED_LABEL] ================ >>>>")]
         [UxmlAttribute, TextArea(3, 10)]
-        public string FullText =
-            "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
+        public string FullText
+        {
+            get { return _fullText; }
+            set { SetFullText(value); }
+        }
+
 
         [UxmlAttribute, ShowOnly]
         public string CurrentText
@@ -154,9 +159,9 @@ namespace Darklight.UnityExt.UXML
             label.style.fontSize = _fontSizePercent;
         }
 
-        public void SetFullText(string fullText)
+        public void SetFullText(string text)
         {
-            this.FullText = fullText;
+            this._fullText = text;
             SetTextToIndex(0);
         }
 

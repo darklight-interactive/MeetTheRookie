@@ -87,83 +87,85 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         _screenTransitionElement.screenAlignment = alignment;
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MTRSceneTransitionController))]
-    public class SceneTransitionControllerCustomEditor : UXML_UIDocumentObjectCustomEditor
-    {
-        SerializedObject _serializedObject;
-        MTRSceneTransitionController _sceneTransitionScript;
-        public override void OnEnable()
+    /*
+    #if UNITY_EDITOR
+        [CustomEditor(typeof(MTRSceneTransitionController))]
+        public class SceneTransitionControllerCustomEditor : UXML_UIDocumentObjectCustomEditor
         {
-            _serializedObject = new SerializedObject(target);
-            _sceneTransitionScript = (MTRSceneTransitionController)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            _sceneTransitionScript = (MTRSceneTransitionController)target;
-
-            EditorGUI.BeginChangeCheck();
-
-            base.OnInspectorGUI();
-
-            if (_sceneTransitionScript._fadeIn)
+            SerializedObject _serializedObject;
+            MTRSceneTransitionController _sceneTransitionScript;
+            public override void OnEnable()
             {
-                if (GUILayout.Button("Start Fade Out"))
-                {
-                    _sceneTransitionScript.StartFadeOut();
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("Start Fade In"))
-                {
-                    _sceneTransitionScript.StartFadeIn();
-                }
+                _serializedObject = new SerializedObject(target);
+                _sceneTransitionScript = (MTRSceneTransitionController)target;
             }
 
-            if (_sceneTransitionScript._wipeOpen)
+            public override void OnInspectorGUI()
             {
-                if (GUILayout.Button("Start Wipe Close"))
-                {
-                    _sceneTransitionScript.StartWipeClose();
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("Start Wipe Open"))
-                {
-                    _sceneTransitionScript.StartWipeOpen();
-                }
-            }
+                serializedObject.Update();
 
-            if (_sceneTransitionScript._screenTransitionElement != null)
-            {
-                if (_sceneTransitionScript._screenTransitionElement.screenAlignment == ScreenTransition.Alignment.Left)
+                _sceneTransitionScript = (MTRSceneTransitionController)target;
+
+                EditorGUI.BeginChangeCheck();
+
+                base.OnInspectorGUI();
+
+                if (_sceneTransitionScript._fadeIn)
                 {
-                    if (GUILayout.Button("Set Alignment Right"))
+                    if (GUILayout.Button("Start Fade Out"))
                     {
-                        _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Right);
+                        _sceneTransitionScript.StartFadeOut();
                     }
                 }
                 else
                 {
-                    if (GUILayout.Button("Set Alignment Left"))
+                    if (GUILayout.Button("Start Fade In"))
                     {
-                        _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Left);
+                        _sceneTransitionScript.StartFadeIn();
                     }
                 }
-            }
+
+                if (_sceneTransitionScript._wipeOpen)
+                {
+                    if (GUILayout.Button("Start Wipe Close"))
+                    {
+                        _sceneTransitionScript.StartWipeClose();
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("Start Wipe Open"))
+                    {
+                        _sceneTransitionScript.StartWipeOpen();
+                    }
+                }
+
+                if (_sceneTransitionScript._screenTransitionElement != null)
+                {
+                    if (_sceneTransitionScript._screenTransitionElement.screenAlignment == ScreenTransition.Alignment.Left)
+                    {
+                        if (GUILayout.Button("Set Alignment Right"))
+                        {
+                            _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Right);
+                        }
+                    }
+                    else
+                    {
+                        if (GUILayout.Button("Set Alignment Left"))
+                        {
+                            _sceneTransitionScript.SetAlignment(ScreenTransition.Alignment.Left);
+                        }
+                    }
+                }
 
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
+                if (EditorGUI.EndChangeCheck())
+                {
+                    _serializedObject.ApplyModifiedProperties();
+                }
             }
         }
-    }
-#endif
+    #endif
+    */
 
 }

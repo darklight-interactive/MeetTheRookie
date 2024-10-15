@@ -40,7 +40,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     bool _choicesActive;
     bool _isRolling = false;
-    ControlledLabel _dialogueText;
+    ControlledLabel _dialogueLabel;
     VisualElement _continueTriangle;
     VisualElement _lupe_nameTag;
     VisualElement _misra_nameTag;
@@ -59,7 +59,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     [SerializeField, ShowOnly] string _knot = "";
     [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
     public bool inCar = false;
-    [Tooltip("Next scene to load")] public SceneObject nextScene;
     [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
 
     // ================ [[ PROPERTIES ]] ================================ >>>>
@@ -68,7 +67,11 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     void Start()
     {
         MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
+
+        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
+        MTRStoryManager.OnNewChoices += HandleStoryChoices;
     }
+
     void OnDestroy()
     {
         SetInputEnabled(false); // Unbind input events
@@ -97,9 +100,17 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         // << SET THE KNOT >>
-        _knot = MTRSceneManager.ActiveSceneData.SceneKnot;
+        if (MTRSceneManager.ActiveSceneData != null)
+            _knot = MTRSceneManager.ActiveSceneData.SceneKnot;
+
+        // << QUERY UXML ELEMENTS >>
+        CreateTag(new List<string> { DIALOGUE_TAG, "text" }, out string dialogueTextTag);
+        _dialogueLabel = ElementQuery<ControlledLabel>(dialogueTextTag);
+        _dialogueLabel.SetFullText("Hello Dating Sim!");
+        _dialogueLabel.RollingTextPercentage = 1;
     }
 
+    [Button]
     void InitializeDatingSim()
     {
         Debug.Log($"{PREFIX} >> Initialize");
@@ -110,7 +121,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         // << DISABLE INPUTS >>
         SetInputEnabled(false);
-        ResetDatingSim();
 
         // << QUERY SELECTABLE BUTTONS >>
         IEnumerable<SelectableButton> temp = ElementQueryAll<SelectableButton>();
@@ -120,8 +130,10 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         // << QUERY UXML ELEMENTS >>
         CreateTag(new List<string> { DIALOGUE_TAG, "text" }, out string dialogueTextTag);
+        _dialogueLabel = ElementQuery<ControlledLabel>(dialogueTextTag);
+        _dialogueLabel.FullText = "";
+
         CreateTag(new List<string> { DIALOGUE_TAG, "triangle" }, out string triangleTag);
-        _dialogueText = ElementQuery<ControlledLabel>(dialogueTextTag);
         _continueTriangle = ElementQuery<VisualElement>(triangleTag);
 
         CreateTag(new List<string> { CHARACTER_TAG, "control", LUPE_TAG }, out string lupeCtrlTag);
@@ -151,31 +163,39 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
             boundEmote = true;
         }
 
-
-        StartCoroutine(StartDatingSimRoutine());
+        if (Application.isPlaying)
+            StartCoroutine(StartDatingSimRoutine());
     }
 
     void ResetDatingSim()
     {
-        if (_dialogueText != null) _dialogueText.FullText = "";
+        if (_dialogueLabel != null) _dialogueLabel.FullText = "";
         ResetChoiceMap();
+        Debug.Log($"{PREFIX} >> Reset Dating Sim");
     }
 
     IEnumerator StartDatingSimRoutine()
     {
-        yield return new WaitForSeconds(2f);
+        ResetDatingSim();
 
-        MTRStoryManager.OnNewDialogue += HandleStoryDialogue;
-        MTRStoryManager.OnNewChoices += HandleStoryChoices;
+        yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
+        Debug.Log($"{PREFIX} >> Story Initialized: {MTRStoryManager.IsInitialized}");
+        yield return new WaitUntil(() => MTRStoryManager.IsReady);
+        Debug.Log($"{PREFIX} >> Story Ready: {MTRStoryManager.IsReady}");
+
 
         // Start story
         MTRStoryManager.GoToKnotOrStitch(_knot);
         MTRStoryManager.ContinueStory();
+        Debug.Log($"{PREFIX} >> Initialize Dating Sim: {_knot}");
 
         MoveTriangle(); // Cool dialogue triangle movement
 
         // << ENABLE INPUTS >>
         SetInputEnabled(true);
+        Debug.Log($"{PREFIX} >> Input Enabled: {_inputEnabled}");
+
+        yield return null;
     }
 
     void CreateTag(List<string> tag_parts, out string outString)
@@ -199,6 +219,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                 DisableInput();
                 break;
         }
+        Debug.Log($"{PREFIX} >> Input Enabled: {enabled}");
     }
 
     void EnableInput()
@@ -301,12 +322,12 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     {
         _isRolling = true;
         _continueTriangle.visible = false;
-        _dialogueText.SetFullText(fullText); // << Set rolling text
+        _dialogueLabel.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
-        for (int i = 0; i < _dialogueText.FullText.Length; i++)
+        for (int i = 0; i < _dialogueLabel.FullText.Length; i++)
         {
-            _dialogueText.RollingTextStep();
+            _dialogueLabel.RollingTextStep();
             buffer -= interval;
             yield return new WaitForSeconds(interval);
         }
@@ -393,7 +414,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         if (_isRolling)
         {
             StopAllCoroutines();
-            _dialogueText.InstantCompleteText();
+            _dialogueLabel.InstantCompleteText();
             _isRolling = false;
             _continueTriangle.visible = true;
         }
@@ -453,7 +474,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     {
         HandleStoryDialogue("END OF STORY");
         Debug.Log("END OF STORY");
-        SceneManager.LoadScene(nextScene);
     }
 
 
