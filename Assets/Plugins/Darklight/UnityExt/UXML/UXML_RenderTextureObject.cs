@@ -1,14 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Darklight.UnityExt;
 using Darklight.UnityExt.Editor;
-using UnityEngine.UI;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace Darklight.UnityExt.UXML
 {
@@ -155,9 +147,11 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
+#if UNITY_EDITOR
         void OnDrawGizmosSelected()
         {
             CustomGizmos.DrawWireRect(this.transform.position, this.transform.localScale, Vector3.forward, Color.white);
         }
+#endif
     }
 }

@@ -1,9 +1,12 @@
 using UnityEngine;
-using UnityEditor;
-using UnityEditorInternal;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
+
+#if UNITY_EDITOR
+using UnityEditorInternal;
+using UnityEditor;
+#endif
+
 
 namespace Darklight.UnityExt.Library.Editor
 {
