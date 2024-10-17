@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditorInternal;
-using Darklight.UnityExt.Editor;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -58,8 +55,10 @@ namespace Darklight.UnityExt.Library
         public void Refresh()
         {
             DataLibrary.Refresh();
+#if UNITY_EDITOR
             EditorUtility.SetDirty(this); // Mark the ScriptableObject as dirty
             AssetDatabase.SaveAssets(); // Save changes to the asset
+#endif
         }
         public void Reset() => DataLibrary.Reset();
         public bool HasUnsetKeysOrValues() => DataLibrary.HasUnsetKeysOrValues();

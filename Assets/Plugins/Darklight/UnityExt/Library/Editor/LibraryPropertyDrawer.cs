@@ -1,20 +1,14 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
 using System;
 using System.Reflection;
-using System.Collections.Generic;
-using Darklight.UnityExt.Editor;
-using System.Linq;
-using Darklight.UnityExt.Editor.Utility;
 
 namespace Darklight.UnityExt.Library.Editor
 {
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(Library<,>), true)]
     public class LibraryPropertyDrawer : PropertyDrawer
     {
-        const float ELEMENT_PADDING = 10f;
-
         const string ITEMS_PROP = "_items";
         const string READ_ONLY_KEY = "_readOnlyKey";
         const string READ_ONLY_VALUE = "_readOnlyValue";
@@ -368,4 +362,5 @@ namespace Darklight.UnityExt.Library.Editor
         }
 
     }
+#endif
 }

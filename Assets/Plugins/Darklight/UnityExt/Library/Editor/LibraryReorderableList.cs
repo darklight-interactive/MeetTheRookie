@@ -7,9 +7,9 @@ using System.Reflection;
 
 namespace Darklight.UnityExt.Library.Editor
 {
+#if UNITY_EDITOR
     public class LibraryReorderableList : ReorderableList
     {
-
         readonly float ELEMENT_PROP_HEIGHT = EditorGUIUtility.singleLineHeight;
         readonly float ELEMENT_HEIGHT = EditorGUIUtility.singleLineHeight + (EditorGUIUtility.standardVerticalSpacing * 2);
         public const int COLUMN_COUNT = 3;
@@ -240,6 +240,6 @@ namespace Darklight.UnityExt.Library.Editor
 
             return finalPercentages;
         }
-
     }
+#endif
 }
