@@ -214,8 +214,10 @@ namespace Darklight.UnityExt.Core2D
         {
             if (_dataObject != null) return _dataObject;
 
+#if UNITY_EDITOR
             // Create or load the data object
             _dataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_SpawnerDataObject>(Grid2D.DataObjectRegistry.DATA_PATH, "DefaultSpawnerDataObject");
+#endif
             return _dataObject;
         }
 

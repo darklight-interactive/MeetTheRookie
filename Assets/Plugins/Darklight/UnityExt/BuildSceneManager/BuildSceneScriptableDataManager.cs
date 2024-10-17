@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Editor;
 using NaughtyAttributes;
 
-
-
-
-
 #if UNITY_EDITOR
+using Darklight.UnityExt.Utility;
 using UnityEditor;
 #endif
 
@@ -32,11 +25,11 @@ namespace Darklight.UnityExt.BuildScene
 
         protected abstract string AssetPath { get; }
 
+#if UNITY_EDITOR
         protected override TScriptObj CreateData(string path)
         {
             string objName = IBuildSceneData.ExtractNameFromPath(path);
             TScriptObj obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(AssetPath, objName);
-
             if (!obj.IsValid())
                 obj.Initialize(path);
             else
@@ -44,6 +37,7 @@ namespace Darklight.UnityExt.BuildScene
 
             return obj;
         }
+#endif
 
         public override void Initialize()
         {

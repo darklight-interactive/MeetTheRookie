@@ -1,16 +1,6 @@
 using Darklight.UnityExt.UXML;
-using EasyButtons;
 using UnityEngine;
-using UnityEngine.UIElements;
-using EasyButtons.Editor;
 using Darklight.UnityExt.Editor;
-
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 
 public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorListener
 {

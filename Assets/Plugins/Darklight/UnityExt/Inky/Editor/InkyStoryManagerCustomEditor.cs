@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-using Darklight.UnityExt.Inky;
 
 namespace Darklight.UnityExt.Inky.Editor
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(InkyStoryManager), true)]
     public class InkyStoryManagerCustomEditor : UnityEditor.Editor
     {
@@ -36,4 +34,5 @@ namespace Darklight.UnityExt.Inky.Editor
             }
         }
     }
+#endif
 }
