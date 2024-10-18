@@ -33,19 +33,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        project-path:
+          - .
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - WebGL # WebGL.
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.4
 
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.2
         id: lfs-cache
         with:
           path: .git/lfs
@@ -58,20 +60,21 @@ jobs:
           git reset --hard
 
       - name: Restore Library cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ matrix.projectPath }}/Library
           key: Library-Build-${{ matrix.projectPath }}-Build-${{ matrix.targetPlatform }}
           restore-keys: |
-            Library-${{ matrix.projectPath }}-buildAndTest-
+            Library-${{ matrix.projectPath }}-build-
             Library-${{ matrix.projectPath }}-
 
-      - uses: game-ci/unity-builder@v2
+      - uses: game-ci/unity-builder@v4.2.3
         with:
           projectPath: ${{ matrix.projectPath }}
           targetPlatform: ${{ matrix.targetPlatform }}
           customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
-      - uses: actions/upload-artifact@v2
+          
+      - uses: actions/upload-artifact@v4.3.3
         with:
           name: Build-(${{ matrix.targetPlatform }})
           path: build/${{ matrix.targetPlatform }}
