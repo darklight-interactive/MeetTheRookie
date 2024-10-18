@@ -456,7 +456,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
             if (!Application.isPlaying)
             {
-                _script.Preload();
+                //_script.Preload();
             }
         }
 
