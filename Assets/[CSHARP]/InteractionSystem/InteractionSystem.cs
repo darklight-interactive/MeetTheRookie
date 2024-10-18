@@ -142,8 +142,8 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
             foreach (InteractionType key in requestedKeys)
             {
-                interactable.Recievers.TryGetValue(key, out InteractionReciever interactableReciever);
-                if (interactableReciever == null)
+                interactable.Recievers.TryGetValue(key, out InteractionReciever currRequestedReciever);
+                if (currRequestedReciever == null)
                 {
                     InteractionReciever recieverInChild = GetRecieverInChildren(interactable, key);
                     if (recieverInChild != null)
@@ -153,6 +153,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
                     }
 
                     InstantiateInteractionReciever(interactable, key, out GameObject recieverGameObject);
+
                 }
                 else
                 {

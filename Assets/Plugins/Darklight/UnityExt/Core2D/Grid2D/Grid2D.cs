@@ -376,15 +376,14 @@ namespace Darklight.UnityExt.Core2D
         }
         #endregion
 
-#if UNITY_EDITOR
         Grid2D_ConfigDataObject CreateNewConfigDataObject()
         {
             string name = this.name;
+
             _configObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_ConfigDataObject>(Grid2D.DataObjectRegistry.CONFIG_PATH, name);
             _configObj.name = name;
             return _configObj;
         }
-#endif
 
         // ======== [[ NESTED TYPES ]] ======================================================= >>>>
         public enum Alignment

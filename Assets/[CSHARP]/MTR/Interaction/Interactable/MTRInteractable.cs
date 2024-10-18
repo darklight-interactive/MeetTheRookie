@@ -389,9 +389,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
         }
 
         if (interactor is MTRPlayerInteractor playerInteractor)
-        {
-            StartCoroutine(AcceptInteractionRoutine(playerInteractor, force));
-        }
+            StartCoroutine(AcceptInteractionRoutine(interactor as MTRPlayerInteractor, force));
 
         return true;
     }
@@ -401,8 +399,6 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
     {
         // << ACCEPT INTERACTION >> ------------------------------------
         Debug.Log($"{PREFIX} {Name} :: AcceptInteraction from {player}", this);
-        MTRInteractionSystem.ResetAllInteractablesExcept(new List<MTRInteractable> { this, player });
-
         switch (CurrentState)
         {
             case State.START:
@@ -456,7 +452,7 @@ public partial class MTRInteractable : Interactable<MTRInteractable.InternalData
 
             if (!Application.isPlaying)
             {
-                //_script.Preload();
+                _script.Preload();
             }
         }
 

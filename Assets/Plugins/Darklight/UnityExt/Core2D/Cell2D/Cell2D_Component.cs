@@ -61,13 +61,11 @@ namespace Darklight.UnityExt.Core2D
             {
                 if (BaseCell == null) return;
             }
-
             public override void DrawGizmos() { }
             public override void DrawSelectedGizmos()
             {
                 BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
 
-#if UNITY_EDITOR
                 Color faintWhite = new Color(1, 1, 1, 0.5f);
                 CustomGizmos.DrawWireRect(position, dimensions, normal, faintWhite);
 
@@ -76,7 +74,6 @@ namespace Darklight.UnityExt.Core2D
                 {
                     alignment = TextAnchor.MiddleCenter,
                 });
-#endif
             }
             public override void DrawEditorGizmos() { }
             public override ComponentTypeKey GetTypeKey() => ComponentTypeKey.BASE;

@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Core2D;
+using NaughtyAttributes;
+using UnityEditor.EditorTools;
+using UnityEditor;
+using Unity.VisualScripting;
 
 [UxmlElement]
 public partial class TextBubble : ControlledLabel

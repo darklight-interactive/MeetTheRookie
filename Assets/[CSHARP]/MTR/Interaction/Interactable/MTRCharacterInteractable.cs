@@ -13,10 +13,8 @@ using UnityEditor;
 
 public class MTRCharacterInteractable : MTRInteractable
 {
-    bool _speakerTagIsSet = false;
     List<string> _speakerList = new List<string>(30) { "None" };
-    [SerializeField, ShowOnly] string _speakerTag = "None";
-    [SerializeField, Dropdown("_speakerOptions"), HideIf("_speakerTagIsSet")] string _speakerTagDropdown;
+    [SerializeField, Dropdown("_speakerOptions")] string _speakerTag;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     List<string> _speakerOptions
@@ -34,14 +32,6 @@ public class MTRCharacterInteractable : MTRInteractable
     public override Type TypeKey => Type.CHARACTER;
     public string SpeakerTag => _speakerTag;
 
-    void OnValidate()
-    {
-        if (_speakerTagDropdown != "" && _speakerTagDropdown != "None")
-        {
-            _speakerTag = _speakerTagDropdown;
-            _speakerTagIsSet = true;
-        }
-    }
 
     // ======== [[ METHODS ]] ================================== >>>>
     protected override void PreloadBoxCollider()
@@ -52,17 +42,6 @@ public class MTRCharacterInteractable : MTRInteractable
             collider = gameObject.AddComponent<BoxCollider2D>();
         }
         collider.size = new Vector2(0.5f, 1);
-    }
-
-    protected override void PreloadData()
-    {
-        base.PreloadData();
-
-
-        if (Data.Key == null && SpeakerTag != "None")
-        {
-            Data.SetKey(SpeakerTag);
-        }
     }
 
     protected override void GenerateRecievers()

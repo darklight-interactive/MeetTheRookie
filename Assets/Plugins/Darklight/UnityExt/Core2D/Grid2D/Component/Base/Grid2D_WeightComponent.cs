@@ -111,12 +111,10 @@ namespace Darklight.UnityExt.Core2D
         // -- (( INTERFACE )) : IComponent -------- ))
         public override void OnInitialize(Grid2D baseObj)
         {
-#if UNITY_EDITOR
             if (_weightDataObject == null)
             {
                 _weightDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_WeightDataObject>(DATA_OBJECT_PATH, "DefaultWeightDataObject");
             }
-#endif
 
             base.OnInitialize(baseObj);
         }

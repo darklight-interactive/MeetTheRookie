@@ -27,57 +27,60 @@ permissions:
   contents: write
 
 jobs:
-  BuildForMultiplePlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
+  # ----- Build for WebGL -----
+  buildWebGL:
+    name: Build for WebGL 🖥️
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        project-path:
-          - .
-        targetPlatform:
-          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - WebGL # WebGL.
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4.1.4
 
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
 
-      - name: Restore LFS cache
-        uses: actions/cache@v4.0.2
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+      # Clean up Docker to free up space
+      - name: Clean up Docker to free up space
+        run: docker system prune -af
 
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
 
       - name: Restore Library cache
         uses: actions/cache@v4.0.2
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-Build-${{ matrix.projectPath }}-Build-${{ matrix.targetPlatform }}
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-${{ matrix.projectPath }}-build-
-            Library-${{ matrix.projectPath }}-
-
-      - uses: game-ci/unity-builder@v4.2.3
+            Library-
+            
+      - name: Build project for WebGL
+        uses: game-ci/unity-builder@v4.2.3
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ matrix.projectPath }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
+          targetPlatform: WebGL
+          buildName: MeetTheRookie
+          buildsPath: Build/WebGL
+        #continue-on-error: true  # Continue even if the build fails to provide more output
           
-      - uses: actions/upload-artifact@v4.3.3
+      # Upload the build artifact only if it exists
+      - name: Upload WebGL Build Artifact
+        if: success()  # Upload the build artifact only if the build was successful
+        uses: actions/upload-artifact@v4.3.3
         with:
-          name: Build-(${{ matrix.targetPlatform }})
-          path: build/${{ matrix.targetPlatform }}
+          name: Build-WebGL
+          path: Build/WebGL
+          if-no-files-found: warn
 
   # ----- Build for Windows -----
   buildWindows:
@@ -133,115 +136,3 @@ jobs:
           name: Build-Windows
           path: Build/Windows
           if-no-files-found: warn
-
-# ----- Build for WebGL -----
-  buildWebGL:
-    name: Build for WebGL 🖥️
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.4
-
-      # Check available memory
-      - name: Check Memory Usage
-        run: free -h
-      
-      # Check available disk space
-      - name: Check Disk Space Before Cleanup
-        run: df -h
-
-      # Clean up Docker to free up space
-      - name: Clean up Docker to free up space
-        run: docker system prune -af
-
-      # Check available disk space after cleanup
-      - name: Check Disk Space After Cleanup
-        run: df -h
-
-      - name: Restore Library cache
-        uses: actions/cache@v4.0.2
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-            
-      - name: Build project for WebGL
-        uses: game-ci/unity-builder@v4.2.3
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
-          buildName: MeetTheRookie
-          buildsPath: Build/WebGL
-        #continue-on-error: true  # Continue even if the build fails to provide more output
-          
-      # Upload the build artifact only if it exists
-      - name: Upload WebGL Build Artifact
-        if: success()  # Upload the build artifact only if the build was successful
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: Build-WebGL
-          path: Build/WebGL
-          if-no-files-found: warn
-
-  # ----- Deploy to Github Pages -----
-  deployPages:
-    needs: buildWebGL
-    name: Deploy to Github Pages 🚀
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v4.1.4
-        with:
-          ref: gh-pages
-
-      # Check available memory
-      - name: Check Memory Usage
-        run: free -h
-      
-      # Check available disk space
-      - name: Check Disk Space Before Cleanup
-        run: df -h
-
-      # Clean up Docker to free up space
-      - name: Clean up Docker to free up space
-        run: docker system prune -af
-
-      # Check available disk space after cleanup
-      - name: Check Disk Space After Cleanup
-        run: df -h
-
-      - name: Restore Library cache
-        uses: actions/cache@v4.0.2
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
-      - name: Download WebGL build artifact
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Build-WebGL
-          path: build
-
-      - name: Copy WebGL build to gh-pages
-        run: |
-          mkdir -p ./Build-WebGL
-          cp -r build/* ./Build-WebGL
-
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Commit and Push changes
-        run: |
-          git add .
-          git commit -m "Update WebGL build"
-          git push origin gh-pages

@@ -8,10 +8,12 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Linq;
 using Ink;
+using Darklight.UnityExt.Utility;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
-using Darklight.UnityExt.Utility;
 #endif
 
 namespace Darklight.UnityExt.Inky
@@ -134,12 +136,10 @@ namespace Darklight.UnityExt.Inky
 
         protected void RefreshDataObject()
         {
-#if UNITY_EDITOR
             if (_storyDataObject == null)
             {
                 _storyDataObject = ScriptableObjectUtility.CreateOrLoadScriptableObject<InkyStoryDataObject>(ASSET_PATH);
             }
-#endif
 
             // Update Knot Containers
             _storyDataObject.RepopulateKnotContainers(_stitchDitionary);

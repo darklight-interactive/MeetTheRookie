@@ -71,7 +71,7 @@ MonoBehaviour:
   _isPreloaded: 1
   _isRegistered: 0
   _isInitialized: 0
-  _request: {fileID: 11400000, guid: 6c6beac1a35ef3942995708da5877fdf, type: 2}
+  _request: {fileID: 0}
   _recievers:
     _items: []
     _readOnlyKey: 1
@@ -80,7 +80,7 @@ MonoBehaviour:
   _data:
     _name: Lupe
     _scene: scene_default
-    _key: None
+    _key: Speaker.Lupe
     _layer: Player
     _type: 2
     _sprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
@@ -88,7 +88,7 @@ MonoBehaviour:
   _sceneKnot: scene_default
   _interactionStitch: scene_default.interaction_default
   autoSizeCollider: 1
-  _speakerTag: None
+  _speakerTag: Speaker.Lupe
   _enabled: 0
   _layerMask:
     serializedVersion: 2
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef63c25b78121034aa71b2f88d1c86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentFrame: 1
+  _currentFrame: 0
   _currentDirection: 2
   _currentSprite: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
   _frameRate: 4

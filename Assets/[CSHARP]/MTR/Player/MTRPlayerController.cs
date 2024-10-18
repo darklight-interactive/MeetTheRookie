@@ -67,8 +67,6 @@ public class MTRPlayerController : MonoBehaviour
     {
         _stateMachine = new MTRPlayerStateMachine(this);
         _stateMachine.OnStateChanged += (state) => _currentState = state;
-
-        _stateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
     }
 
     void FixedUpdate()
