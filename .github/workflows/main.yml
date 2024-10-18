@@ -27,6 +27,55 @@ permissions:
   contents: write
 
 jobs:
+  BuildForMultiplePlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - WebGL # WebGL.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Restore Library cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-Build-${{ matrix.projectPath }}-Build-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-${{ matrix.projectPath }}-buildAndTest-
+            Library-${{ matrix.projectPath }}-
+
+      - uses: game-ci/unity-builder@v2
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Build-(${{ matrix.targetPlatform }})
+          path: build/${{ matrix.targetPlatform }}
+
   # ----- Build for Windows -----
   buildWindows:
     name: Build for Windows 🖥️
