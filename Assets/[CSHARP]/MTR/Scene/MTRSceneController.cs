@@ -178,6 +178,9 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             {
                 if (cameraController != null && cameraController.Rig.FollowTarget == null)
                     cameraController.SetPlayerAsFollowTarget();
+
+                // << GO TO ACTIVE SCENE KNOT >>
+                InkyStoryManager.GoToKnotOrStitch(activeSceneData.SceneKnot);
             }
             public override void Execute()
             {
@@ -203,12 +206,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             {
                 cameraController?.SetPlayerAsFollowTarget();
 
-                // << GO TO ACTIVE SCENE KNOT >>
-                InkyStoryManager.GoToKnotOrStitch(activeSceneData.SceneKnot);
-
                 transitionController?.StartWipeOpen();
-                yield return new WaitForSeconds(2f);
-
+                yield return new WaitForSeconds(0.5f);
 
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }

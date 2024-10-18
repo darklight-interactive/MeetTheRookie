@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System;
 using System.Reflection;
 using System.Linq;
@@ -23,6 +22,7 @@ public class DynamicRangeSlider : MonoBehaviour
 namespace Darklight.UnityExt.Editor
 {
 
+
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
     public class DynamicRangeAttribute : PropertyAttribute
     {
@@ -33,6 +33,7 @@ namespace Darklight.UnityExt.Editor
         }
     }
 
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(DynamicRangeAttribute))]
     public class DynamicRangeDrawer : PropertyDrawer
     {
@@ -163,4 +164,6 @@ namespace Darklight.UnityExt.Editor
             return obj;
         }
     }
+#endif
+
 }

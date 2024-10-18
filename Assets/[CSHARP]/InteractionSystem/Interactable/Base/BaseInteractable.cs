@@ -1,21 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
 using UnityEngine;
-using Darklight.UnityExt.Library;
 using System;
-using UnityEditorInternal;
 using NaughtyAttributes;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
-
-
-
 
 #region ==== < MAIN_CLASS > [[ BASE INTERACTABLE ]] ================================== >>>>
 public partial class BaseInteractable : Interactable<BaseInteractable.InternalData, BaseInteractable.InternalStateMachine, BaseInteractable.State, BaseInteractable.Type>,

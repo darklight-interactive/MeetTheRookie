@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
 using UnityEngine;
-using EasyButtons.Editor;
 using Darklight.UnityExt.Library;
 using System;
 
@@ -13,6 +10,7 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using EasyButtons.Editor;
 #endif
 
 [RequireComponent(typeof(MTRCameraRig))]

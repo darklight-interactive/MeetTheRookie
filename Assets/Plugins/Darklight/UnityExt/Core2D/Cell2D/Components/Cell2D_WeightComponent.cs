@@ -37,9 +37,11 @@ namespace Darklight.UnityExt.Core2D
                 Color color = GetColor();
                 color = new Color(color.r, color.g, color.b, 0.5f);
 
+#if UNITY_EDITOR
                 // << DRAW RECT >>
                 Vector2 smallerDimensions = dimensions * 0.75f;
                 CustomGizmos.DrawSolidRect(position, smallerDimensions, normal, color);
+#endif
             }
             public override void DrawSelectedGizmos() { }
 

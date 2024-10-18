@@ -24,10 +24,10 @@ public class MTRCameraBounds
 
     public void DrawGizmos()
     {
-        Handles.color = Color.cyan;
-        Handles.DrawLine(new Vector3(Left, Top, 0), new Vector3(Left, Bottom, 0));
-        Handles.DrawLine(new Vector3(Right, Top, 0), new Vector3(Right, Bottom, 0));
-        Handles.DrawLine(new Vector3(Left, Top, 0), new Vector3(Right, Top, 0));
-        Handles.DrawLine(new Vector3(Left, Bottom, 0), new Vector3(Right, Bottom, 0));
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(new Vector3(Left, Top, 0), new Vector3(Left, Bottom, 0));
+        Gizmos.DrawLine(new Vector3(Right, Top, 0), new Vector3(Right, Bottom, 0));
+        Gizmos.DrawLine(new Vector3(Left, Top, 0), new Vector3(Right, Top, 0));
+        Gizmos.DrawLine(new Vector3(Left, Bottom, 0), new Vector3(Right, Bottom, 0));
     }
 }

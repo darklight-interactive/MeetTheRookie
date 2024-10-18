@@ -33,14 +33,13 @@ public class MTRSceneBounds
 
     public void DrawGizmos()
     {
-        Handles.color = Color.white;
         CustomGizmos.DrawLabel("SceneCenter", Center, new GUIStyle()
         {
             normal = new GUIStyleState() { textColor = Color.white }
         });
 
-        Handles.color = Color.red;
-        Handles.DrawLine(new Vector3(Left, SCENE_HEIGHT, 0), new Vector3(Left, 0, 0));
-        Handles.DrawLine(new Vector3(Right, SCENE_HEIGHT, 0), new Vector3(Right, 0, 0));
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(Left, SCENE_HEIGHT, 0), new Vector3(Left, 0, 0));
+        Gizmos.DrawLine(new Vector3(Right, SCENE_HEIGHT, 0), new Vector3(Right, 0, 0));
     }
 }
