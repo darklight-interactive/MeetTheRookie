@@ -166,8 +166,9 @@ public class MTRStoryManager : InkyStoryManager
         }
         else
         {
-            Debug.LogError($"{Prefix} >> Speaker List not found.");
+            //Debug.LogError($"{Prefix} >> Speaker List not found.");
             IsInitialized = false;
+            Initialize(); // Call again
         }
 
         // << INITIALIZE CURRENT SPEAKER >> ------------------------ >>
