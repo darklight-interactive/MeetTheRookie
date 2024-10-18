@@ -16,7 +16,7 @@ namespace Darklight.UnityExt.BuildScene
     public abstract class BuildSceneScriptableDataManager<TScriptObj> : BuildSceneManager<TScriptObj>
         where TScriptObj : ScriptableObject, IBuildSceneData, new()
     {
-        ScriptableSceneDataLibrary _objLibrary = new ScriptableSceneDataLibrary();
+        [SerializeField] ScriptableSceneDataLibrary _objLibrary = new ScriptableSceneDataLibrary();
 
         [Header("Scriptable Data Manager ---- >>")]
         [SerializeField, ShowOnly] string _assetPath;
@@ -43,12 +43,15 @@ namespace Darklight.UnityExt.BuildScene
         {
             base.Initialize();
             _assetPath = AssetPath;
-            _objLibrary = new ScriptableSceneDataLibrary()
-            {
-                ReadOnlyKey = true,
-                RequiredKeys = NameList
-            };
 
+            if (_objLibrary == null)
+            {
+                _objLibrary = new ScriptableSceneDataLibrary()
+                {
+                    ReadOnlyKey = true,
+                    RequiredKeys = NameList
+                };
+            }
             RefreshData();
         }
 
