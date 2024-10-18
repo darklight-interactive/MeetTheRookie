@@ -148,6 +148,30 @@ jobs:
         with:
           ref: gh-pages
 
+      # Check available memory
+      - name: Check Memory Usage
+        run: free -h
+      
+      # Check available disk space
+      - name: Check Disk Space Before Cleanup
+        run: df -h
+
+      # Clean up Docker to free up space
+      - name: Clean up Docker to free up space
+        run: docker system prune -af
+
+      # Check available disk space after cleanup
+      - name: Check Disk Space After Cleanup
+        run: df -h
+
+      - name: Restore Library cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
       - name: Download WebGL build artifact
         uses: actions/download-artifact@v4.1.7
         with:
