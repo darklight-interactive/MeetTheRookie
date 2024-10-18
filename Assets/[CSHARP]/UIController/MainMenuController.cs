@@ -11,7 +11,8 @@ public class MainMenuController : UXML_UIDocumentObject
 {
     MTRSceneManager sceneManager;
     SelectableButton playButton;
-    SelectableButton optionsButton;
+    SelectableButton settingsButton;
+    SelectableButton creditsButton;
     SelectableButton quitButton;
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     bool lockSelection = false;
@@ -26,12 +27,14 @@ public class MainMenuController : UXML_UIDocumentObject
     {
         // Store the local references to the buttons
         playButton = ElementQuery<SelectableButton>("play-button");
-        optionsButton = ElementQuery<SelectableButton>("options-button");
+        settingsButton = ElementQuery<SelectableButton>("settings-button");
+        creditsButton = ElementQuery<SelectableButton>("credits-button");
         quitButton = ElementQuery<SelectableButton>("quit-button");
 
         // Assign the events
         playButton.OnClick += PlayButtonAction;
-        optionsButton.OnClick += () => Debug.Log("Options Button Clicked");
+        settingsButton.OnClick += () => Debug.Log("Options Button Clicked");
+        creditsButton.OnClick += () => Debug.Log("Credits Button Clicked");
         quitButton.OnClick += Quit;
 
         // Load the Selectable Elements
