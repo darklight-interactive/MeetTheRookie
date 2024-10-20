@@ -11,18 +11,19 @@ public class FMODExt_Bus
     FMOD.Studio.Bus _bus;
     [SerializeField, ShowOnly] string _path;
     [SerializeField, ShowOnly] FMOD.RESULT _loadResult = FMOD.RESULT.ERR_UNIMPLEMENTED;
+
+
+    [SerializeField, Range(-80f, 10f)] float _volume;
+
     public string Path => _path;
     public FMOD.RESULT LoadResult => _loadResult;
-
-    [SerializeField]
-    [Range(-80f, 10f)]
-    private float busVolume;
-    private float volume;
+    public float Volume { get => GetVolume(); set => SetVolume(value); }
 
     public FMODExt_Bus(FMOD.Studio.Bus bus)
     {
         this._bus = bus;
         _loadResult = bus.getPath(out _path);
+        bus.getVolume(out _volume);
     }
 
     public FMODExt_Bus(string path)
@@ -31,7 +32,17 @@ public class FMODExt_Bus
         _path = path;
     }
 
-    public FMOD.RESULT setVolume(float volume) => _bus.setVolume(volume);
+    public float GetVolume()
+    {
+        _bus.getVolume(out _volume);
+        return _volume;
+    }
+
+    public FMOD.RESULT SetVolume(float volume)
+    {
+        _volume = volume;
+        return _bus.setVolume(volume);
+    }
 
     public void Update()
     {

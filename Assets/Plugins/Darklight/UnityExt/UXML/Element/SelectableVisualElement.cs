@@ -8,12 +8,7 @@ using UnityEngine.UIElements;
 
 namespace Darklight.UnityExt.UXML
 {
-    public interface ISelectable
-    {
-        public event Action OnSelect;
-        void Select();
-        void Deselect();
-    }
+
 
     #region ---- [[ SELECTABLE VISUAL ELEMENT ]] ----
     /// <summary>
@@ -22,7 +17,7 @@ namespace Darklight.UnityExt.UXML
     /// <typeparam name="TElement">The Type of the </typeparam>
     // Base class for controlled elements that encapsulates common functionalities for UXML elements.
     [UxmlElement]
-    public partial class SelectableVisualElement : VisualElement, ISelectable
+    public partial class SelectableVisualElement : VisualElement, ISelectableElement
     {
         public class SelectableVisualElementFactory : UxmlFactory<SelectableVisualElement> { }
         public VisualElement Element { get; protected set; }
@@ -43,6 +38,15 @@ namespace Darklight.UnityExt.UXML
         public virtual void Deselect()
         {
             this.RemoveFromClassList("selected");
+        }
+        public virtual void Enable()
+        {
+            this.RemoveFromClassList("disabled");
+        }
+
+        public virtual void Disable()
+        {
+            this.AddToClassList("disabled");
         }
     }
     #endregion

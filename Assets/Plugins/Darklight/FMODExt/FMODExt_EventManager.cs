@@ -139,6 +139,17 @@ namespace Darklight.UnityExt.FMODExt
         }
         #endregion
 
+        public FMODExt_Bus GetBus(string path)
+        {
+            return _busData.Find(b => b.Path == path);
+        }
+
+        public void SetBusVolume(string path, float volume)
+        {
+            FMODExt_Bus bus = _busData.Find(b => b.Path == path);
+            bus?.SetVolume(volume);
+        }
+
         #endregion
 
         #region == [[ PLAY EVENT FUNCTIONS ]] =============================================== >>

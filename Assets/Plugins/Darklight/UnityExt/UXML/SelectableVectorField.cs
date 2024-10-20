@@ -79,6 +79,14 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
+        public void RemoveRange(IEnumerable<TElement> selectables)
+        {
+            foreach (TElement selectable in selectables)
+            {
+                _selectables.Remove(selectable);
+            }
+        }
+
 
         /// <summary>
 
@@ -91,6 +99,8 @@ namespace Darklight.UnityExt.UXML
             if (_selectables == null || _selectables.Count == 0)
                 return null;
 
+            PrintSelectables();
+
             // If we have a direction, we can try to find the next element.
             if (dir != Vector2.zero)
             {
@@ -101,11 +111,13 @@ namespace Darklight.UnityExt.UXML
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
-                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {PreviousSelection.name} -> {CurrentSelection.name}");
+                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}");
                 }
                 else
                 {
-                    //Debug.Log($"SelectableVectorField :: GetElementInDirection :: No new selection.");
+                    // If we didn't find a new element, just return the old one.
+                    pick = CurrentSelection;
+                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection.");
                 }
                 return pick;
             }
@@ -114,6 +126,17 @@ namespace Darklight.UnityExt.UXML
                 Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
             }
             return CurrentSelection;
+        }
+
+        void PrintSelectables()
+        {
+            string s = "Selectables: ";
+            foreach (TElement selectable in _selectables)
+            {
+                s += $"{selectable}, {selectable.worldBound.center} {selectable == CurrentSelection}";
+                s += "\n";
+            }
+            Debug.Log(s);
         }
 
         #region ---- Raycast Estimation -------- >>
