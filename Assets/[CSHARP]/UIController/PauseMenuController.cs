@@ -22,41 +22,33 @@ using UnityEditor;
 /// </summary>
 public class PauseMenuController : UXML_UIDocumentObject
 {
-    const string PAUSEMENU_CTN = "PauseMenuContainer";
+    const string PAUSE_MENU_CTN = "pausemenu-container";
     VisualElement _pauseMenuContainer;
 
+
     // << MENU ELEMENTS >>
-    const string MENU_FOLDER = "Menu";
-    const string RESUME_BTN = "resume-btn";
+    const string CONTROLS_PAGE = "controls-page";
+    const string SETTINGS_PAGE = "settings-page";
+    const string SCENES_PAGE = "scenes-page";
+    VisualElement _controlsPage;
+    VisualElement _settingsPage;
+    VisualElement _scenesPage;
+
+
+    const string CONTROLS_BTN = "controls-btn";
     const string SETTINGS_BTN = "settings-btn";
     const string SCENES_BTN = "scenes-btn";
-    const string MAINMENU_BTN = "mainmenu-btn";
-    VisualElement _menuFolder;
-
-    const string SETTINGS_FOLDER = "Settings";
-    VisualElement _settingsFolder;
-
-    const string SCENES_FOLDER = "Scenes";
-    VisualElement _scenesFolder;
+    SelectableButton _controlsButton;
+    SelectableButton _settingsButton;
+    SelectableButton _scenesButton;
 
 
 
-    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
 
-    List<SelectableButton> _choiceButtons = new List<SelectableButton>();
+    SelectableVectorField<VisualElement> selectableElements = new SelectableVectorField<VisualElement>();
+
+    List<SelectableButton> _selectableButtons = new List<SelectableButton>();
     int selectedChoiceIndex = 0;
-    SelectableButton previousButton;
-    SelectableButton selectedButton;
-
-    private Dictionary<SelectableButton, Action> _buttonHandlers = new Dictionary<SelectableButton, Action>();
-
-    VisualElement _header;
-    VisualElement _body;
-    VisualElement _footer;
-    VisualElement _menuPanel;
-    VisualElement _choicePanel;
-    GroupBox _choiceBox;
-    bool lockSelection = false;
 
     public void Awake()
     {
@@ -65,77 +57,135 @@ public class PauseMenuController : UXML_UIDocumentObject
 
     public void Start()
     {
-        // Listen to the input manager
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-        UniversalInputManager.OnMenuButton += OnMenuButtonAction;
-
         // Load the selectable buttons
-        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().Select();
+        selectableElements.Load(ElementQueryAll<SelectableButton>());
+        if (selectableElements.Selectables.First() is SelectableButton button)
+        {
+            button.Select();
+        }
 
         // Store the pause menu container
-        _pauseMenuContainer = ElementQuery<VisualElement>(PAUSEMENU_CTN);
+        _pauseMenuContainer = ElementQuery<VisualElement>(PAUSE_MENU_CTN);
         _pauseMenuContainer.style.visibility = Visibility.Hidden;
 
         // Store references to the folders
-        _menuFolder = ElementQuery<VisualElement>(MENU_FOLDER);
-        _settingsFolder = ElementQuery<VisualElement>(SETTINGS_FOLDER);
-        _scenesFolder = ElementQuery<VisualElement>(SCENES_FOLDER);
+        _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
+        _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
+        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        _controlsPage.visible = false;
+        _settingsPage.visible = false;
+        _scenesPage.visible = false;
 
         // << PAUSE MENU ACTIONS >>
-        SelectableButton resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
-        resumeButton.OnClick += () =>
+        _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
+        _controlsButton.OnSelect += () =>
         {
-            SetVisibility(false);
-            _pauseMenuContainer.visible = false;
-            _menuFolder.visible = false;
-            _settingsFolder.visible = false;
-            _scenesFolder.visible = false;
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _controlsPage.visible = true;
+            _settingsPage.visible = false;
+            _scenesPage.visible = false;
         };
 
-        SelectableButton settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
-        settingsButton.OnClick += () =>
+        _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
+        _settingsButton.OnSelect += () =>
         {
-            _menuFolder.visible = false;
-            _settingsFolder.visible = true;
-            _scenesFolder.visible = true;
+            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+
+            _controlsPage.visible = false;
+            _settingsPage.visible = true;
+            _scenesPage.visible = true;
+
+            SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
+            musicSlider.OnValueChanged += () =>
+            {
+                MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
+            };
+
+            SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
+            sfxSlider.OnValueChanged += () =>
+            {
+                MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", sfxSlider.value);
+            };
+
+            SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
+            dialogueSlider.OnValueChanged += () =>
+            {
+                MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
+            };
+
+
+            musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
+            sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
+            dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
+
+            Debug.Log("MUSIC: " + musicSlider.value);
         };
-
-        SelectableButton scenesButton = ElementQuery<SelectableButton>(SCENES_BTN);
-        scenesButton.OnClick += () =>
-        {
-            _menuFolder.visible = false;
-            _settingsFolder.visible = false;
-            _scenesFolder.visible = true;
-        };
-
-
 
         SetVisibility(false);
+    }
+
+    void OnDestroy()
+    {
+        UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+        UniversalInputManager.OnMenuButton -= OnMenuButtonAction;
     }
 
     void OnMoveInputStartAction(Vector2 dir)
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
-        RotateChoiceSelection((int)directionInScreenSpace.y);
+        //RotateChoiceSelection((int)directionInScreenSpace.y);
+
+        if (selectableElements.CurrentSelection is SelectableSlider slider)
+        {
+            if (dir.y == 0)
+            {
+                if (dir.x > 0) { slider.Increment(); }
+                else if (dir.x < 0) { slider.Decrement(); }
+                return;
+            }
+        }
+
+
+
+
+
 
         // Select the next button in the direction
-        SelectableButton oldButton = selectableVectorField.CurrentSelection;
-        selectableVectorField.CurrentSelection.Deselect();
-        SelectableButton newButton = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
-        newButton?.Select();
+        VisualElement oldButton = selectableElements.CurrentSelection;
+        if (oldButton is SelectableSlider oldSlider)
+        {
+            oldSlider.Deselect();
+        }
+        else if (oldButton is SelectableButton button)
+        {
+            button.Deselect();
+        }
+
+        VisualElement newButton = selectableElements.SelectElementInDirection(directionInScreenSpace);
+
+
+        if (newButton is SelectableSlider newSlider)
+        {
+            newSlider.Select();
+
+        }
+        else if (newButton is SelectableButton newSelectableButton)
+        {
+            newSelectableButton.Select();
+        }
 
         if (directionInScreenSpace.y != 0.0 && oldButton != newButton) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
     }
 
     void RotateChoiceSelection(int direction)
     {
-        if (_choiceButtons.Count == 0) return;
+        if (_selectableButtons.Count == 0) return;
 
         selectedChoiceIndex += direction;
-        if (selectedChoiceIndex < 0) selectedChoiceIndex = _choiceButtons.Count - 1;
-        if (selectedChoiceIndex >= _choiceButtons.Count) selectedChoiceIndex = 0;
+        if (selectedChoiceIndex < 0) selectedChoiceIndex = _selectableButtons.Count - 1;
+        if (selectedChoiceIndex >= _selectableButtons.Count) selectedChoiceIndex = 0;
 
     }
 
@@ -149,7 +199,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         */
 
         if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
-        selectableVectorField.CurrentSelection?.InvokeClickAction();
+        if (selectableElements.CurrentSelection is SelectableButton button)
+        {
+            button.InvokeClickAction();
+        }
     }
 
     void OnMenuButtonAction()
@@ -158,11 +211,32 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
+            _controlsPage.style.visibility = Visibility.Hidden;
+            _settingsPage.style.visibility = Visibility.Hidden;
+            _scenesPage.style.visibility = Visibility.Hidden;
+
+            MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
+
+            UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+            UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+            UniversalInputManager.OnMenuButton -= OnMenuButtonAction;
         }
         else
         {
+            if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
+
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
+            _controlsPage.style.visibility = Visibility.Visible;
+            _settingsPage.style.visibility = Visibility.Visible;
+            _scenesPage.style.visibility = Visibility.Visible;
+
+            MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
+
+            // Listen to the input manager
+            UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+            UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+            UniversalInputManager.OnMenuButton += OnMenuButtonAction;
         }
     }
 

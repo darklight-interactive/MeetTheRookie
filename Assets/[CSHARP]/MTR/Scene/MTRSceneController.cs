@@ -209,6 +209,13 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 transitionController?.StartWipeOpen();
                 yield return new WaitForSeconds(0.5f);
 
+                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
+                MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnEnterStitch, out MTRInteractable interactable);
+                if (interactable != null)
+                {
+                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                }
+
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }
@@ -218,15 +225,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         public class PlayModeState : BaseState
         {
             public PlayModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
-            public override void Enter()
-            {
-                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnEnterStitch, out MTRInteractable interactable);
-                if (interactable != null)
-                {
-                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
-                }
-            }
+            public override void Enter() { }
             public override void Execute() { }
             public override void Exit() { }
         }
@@ -261,20 +260,21 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                Debug.Log("Pause Mode State Enter");
+                playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
             public override void Exit()
             {
-                Debug.Log("Pause Mode State Exit");
+                playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 
             public override void Execute()
             {
-                StateMachine.GoToState(MTRSceneState.SYNTHESIS_MODE);
+                //StateMachine.GoToState(MTRSceneState.SYNTHESIS_MODE);
             }
         }
         #endregion
+
 
         #region ================== [ SYNTHESIS MODE STATE ] ==================
         public class SynthesisModeState : BaseState

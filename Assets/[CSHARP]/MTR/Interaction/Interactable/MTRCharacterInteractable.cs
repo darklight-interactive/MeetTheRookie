@@ -57,8 +57,6 @@ public class MTRCharacterInteractable : MTRInteractable
     protected override void PreloadData()
     {
         base.PreloadData();
-
-
         if (Data.Key == null && SpeakerTag != "None")
         {
             Data.SetKey(SpeakerTag);
