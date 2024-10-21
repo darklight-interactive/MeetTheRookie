@@ -1,60 +1,57 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/PauseMenu.uss?fileID=7433441132597879392&amp;guid=6627ac181f9b66f46ad8d2ace8d36769&amp;type=3#PauseMenu" />
-    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
-    <engine:VisualElement name="bg" style="flex-grow: 1; position: absolute; background-color: rgba(0, 0, 0, 0.47); width: 100%; height: 100%; display: flex;">
-        <engine:VisualElement name="PauseMenuContainer" style="flex-grow: 1; align-items: center; justify-content: center; align-self: stretch; margin-top: 2%; margin-right: 2%; margin-bottom: 2%; margin-left: 2%; display: flex; visibility: visible; opacity: 1; -unity-background-image-tint-color: rgba(0, 0, 0, 0);">
-            <engine:VisualElement name="Scenes" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-3.png?fileID=2800000&amp;guid=ceeb3bc4224274849acc3febcf1c316a&amp;type=3#ui-folder-3&quot;); display: flex;">
-                <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
-                    <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 10%; margin-bottom: 0; width: 25%; padding-left: 0; align-self: flex-end;">
-                        <engine:Label text="Scenes" style="font-size: 50px; -unity-font-definition: resource(&apos;Fonts/digital_disco/DigitalDisco&apos;); -unity-text-align: middle-left; width: 300px; display: flex;" />
-                    </engine:VisualElement>
-                    <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center; margin-bottom: 5%;">
-                        <engine:GroupBox>
-                            <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                            </engine:GroupBox>
-                            <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                            </engine:GroupBox>
-                            <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                                <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
-                            </engine:GroupBox>
+    <engine:VisualElement name="pausemenu-container" style="flex-grow: 1; align-items: center; justify-content: center; align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; display: flex; visibility: visible; opacity: 1; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgba(0, 0, 0, 0.19); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+        <engine:VisualElement name="scenes-page" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-3.png?fileID=2800000&amp;guid=ceeb3bc4224274849acc3febcf1c316a&amp;type=3#ui-folder-3&quot;); display: none;">
+            <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
+                <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 10%; margin-bottom: 0; width: 25%; padding-left: 0; align-self: flex-end;">
+                    <engine:Label text="Scenes" style="font-size: 50px; -unity-font-definition: resource(&apos;Fonts/digital_disco/DigitalDisco&apos;); -unity-text-align: middle-left; width: 300px; display: flex;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center; margin-bottom: 5%;">
+                    <engine:GroupBox>
+                        <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
                         </engine:GroupBox>
-                    </engine:VisualElement>
+                        <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                        </engine:GroupBox>
+                        <engine:GroupBox style="justify-content: space-evenly; align-self: stretch; flex-direction: row; flex-wrap: wrap;">
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                            <Darklight.UnityExt.UXML.SelectableVisualElement name="scene-box" class="SceneBox" />
+                        </engine:GroupBox>
+                    </engine:GroupBox>
                 </engine:VisualElement>
             </engine:VisualElement>
-            <engine:VisualElement name="Settings" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-2.png?fileID=2800000&amp;guid=af2b793e2b63a4d12bd4f075f280b701&amp;type=3#ui-folder-2&quot;); display: flex;">
-                <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
-                    <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; width: 25%; padding-left: 0; position: absolute; left: 32%;">
-                        <engine:Label text="Settings" style="font-size: 50px; -unity-font-definition: resource(&apos;Fonts/digital_disco/DigitalDisco&apos;); -unity-text-align: middle-left; width: 300px; display: flex;" />
-                    </engine:VisualElement>
-                    <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center;">
-                        <engine:GroupBox class="MenuBox" style="justify-content: space-evenly; align-self: stretch;">
-                            <engine:SliderInt label="Music" value="10" high-value="10" show-input-field="true" name="Music" class="SoundSlider SliderInt" />
-                            <engine:SliderInt label="Sounds" value="10" high-value="10" show-input-field="true" name="Sounds" class="SoundSlider" />
-                            <engine:SliderInt label="Dialogue" value="10" high-value="10" show-input-field="true" name="Dialogue" class="SoundSlider" />
-                        </engine:GroupBox>
-                    </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="settings-page" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-2.png?fileID=2800000&amp;guid=af2b793e2b63a4d12bd4f075f280b701&amp;type=3#ui-folder-2&quot;); display: flex;">
+            <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
+                <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; width: 25%; padding-left: 0; position: absolute; left: 32%;">
+                    <Darklight.UnityExt.UXML.SelectableButton text="Settings" name="settings-btn" />
+                </engine:VisualElement>
+                <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center;">
+                    <engine:GroupBox class="MenuBox" style="justify-content: space-evenly; align-self: stretch;">
+                        <Darklight.UnityExt.UXML.SelectableSlider label="Music" name="music-slider" />
+                        <Darklight.UnityExt.UXML.SelectableSlider label="SFX" name="sfx-slider" />
+                        <Darklight.UnityExt.UXML.SelectableSlider label="Dialogue" name="dialogue-slider" />
+                    </engine:GroupBox>
                 </engine:VisualElement>
             </engine:VisualElement>
-            <engine:VisualElement name="Menu" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1.png?fileID=2800000&amp;guid=5f5584b70461d403c99a6a4e41b71133&amp;type=3#ui-folder-1&quot;); display: flex;">
-                <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
-                    <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; width: 25%;">
-                        <engine:Label text="Menu" style="font-size: 50px; -unity-font-definition: resource(&apos;Fonts/digital_disco/DigitalDisco&apos;); -unity-text-align: middle-left;" />
-                    </engine:VisualElement>
-                    <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center; min-height: 100%; padding-bottom: 5%;">
-                        <engine:GroupBox name="GroupBox" class="MenuBox" style="-unity-text-align: middle-left; justify-content: flex-start; flex-shrink: 1; flex-grow: 1;">
-                            <Darklight.UnityExt.UXML.SelectableButton name="resume-btn" text="Resume" class="Menu" style="max-height: 128px; -unity-text-align: middle-center;" />
-                            <Darklight.UnityExt.UXML.SelectableButton name="mainmenu-btn" text="Main Menu" class="Menu" style="font-size: 50%; -unity-text-align: middle-center; white-space: nowrap;" />
-                        </engine:GroupBox>
-                        <engine:Label text="A/D or &lt;- -&gt; to walk&#10;Z - Select/Interact&#10;X - Deselect/Back OR Open Synthesis&#10;C - Combine/Flip Character Stack&#10;? - Open Synthesis&#10;" name="control-desc" style="-unity-font-definition: resource(&apos;Fonts/cour&apos;); -unity-font-style: bold; font-size: 15px; -unity-text-align: middle-left; align-self: center;" />
-                    </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="controls-page" class="Folder" style="background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1.png?fileID=2800000&amp;guid=5f5584b70461d403c99a6a4e41b71133&amp;type=3#ui-folder-1&quot;); display: flex; visibility: hidden;">
+            <engine:VisualElement name="inner-container" style="flex-grow: 1; margin-top: 2%; margin-right: 20%; margin-bottom: 2%; margin-left: 15%;">
+                <engine:VisualElement name="tab" style="flex-grow: 0; height: 5%; justify-content: center; margin-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; width: 25%;">
+                    <Darklight.UnityExt.UXML.SelectableButton text="Controls" name="controls-btn" />
+                </engine:VisualElement>
+                <engine:VisualElement name="content" style="flex-grow: 1; min-width: 100%; padding-top: 10%; flex-direction: row; align-items: flex-end; align-self: center; min-height: 100%; padding-bottom: 5%;">
+                    <engine:GroupBox name="GroupBox" class="MenuBox" style="-unity-text-align: middle-left; justify-content: flex-start; flex-shrink: 1; flex-grow: 1;">
+                        <Darklight.UnityExt.UXML.SelectableButton name="resume-btn" text="Resume" class="Menu" style="max-height: 128px; -unity-text-align: middle-center;" />
+                        <Darklight.UnityExt.UXML.SelectableButton name="mainmenu-btn" text="Main Menu" class="Menu" style="font-size: 50%; -unity-text-align: middle-center; white-space: nowrap;" />
+                    </engine:GroupBox>
+                    <engine:Label text="A/D or &lt;- -&gt; to walk&#10;Z - Select/Interact&#10;X - Deselect/Back OR Open Synthesis&#10;C - Combine/Flip Character Stack&#10;? - Open Synthesis&#10;" name="control-desc" style="-unity-font-definition: resource(&apos;Fonts/cour&apos;); -unity-font-style: bold; font-size: 15px; -unity-text-align: middle-left; align-self: center;" />
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>

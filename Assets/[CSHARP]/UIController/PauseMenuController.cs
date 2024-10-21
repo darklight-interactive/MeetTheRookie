@@ -53,16 +53,14 @@ public class PauseMenuController : UXML_UIDocumentObject
     public void Awake()
     {
         Initialize(preset);
+
+        UniversalInputManager.OnMenuButton += OnMenuButtonAction;
     }
 
     public void Start()
     {
         // Load the selectable buttons
         selectableElements.Load(ElementQueryAll<SelectableButton>());
-        if (selectableElements.Selectables.First() is SelectableButton button)
-        {
-            button.Select();
-        }
 
         // Store the pause menu container
         _pauseMenuContainer = ElementQuery<VisualElement>(PAUSE_MENU_CTN);
@@ -71,10 +69,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         // Store references to the folders
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
         _controlsPage.visible = false;
         _settingsPage.visible = false;
-        _scenesPage.visible = false;
+        //_scenesPage.visible = false;
 
         // << PAUSE MENU ACTIONS >>
         _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
@@ -83,8 +81,8 @@ public class PauseMenuController : UXML_UIDocumentObject
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
             _controlsPage.visible = true;
-            _settingsPage.visible = false;
-            _scenesPage.visible = false;
+            _settingsPage.visible = true;
+            //_scenesPage.visible = false;
         };
 
         _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
@@ -94,7 +92,7 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             _controlsPage.visible = false;
             _settingsPage.visible = true;
-            _scenesPage.visible = true;
+            //_scenesPage.visible = true;
 
             SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
             musicSlider.OnValueChanged += () =>
@@ -147,11 +145,6 @@ public class PauseMenuController : UXML_UIDocumentObject
             }
         }
 
-
-
-
-
-
         // Select the next button in the direction
         VisualElement oldButton = selectableElements.CurrentSelection;
         if (oldButton is SelectableSlider oldSlider)
@@ -164,12 +157,9 @@ public class PauseMenuController : UXML_UIDocumentObject
         }
 
         VisualElement newButton = selectableElements.SelectElementInDirection(directionInScreenSpace);
-
-
         if (newButton is SelectableSlider newSlider)
         {
             newSlider.Select();
-
         }
         else if (newButton is SelectableButton newSelectableButton)
         {
@@ -209,34 +199,39 @@ public class PauseMenuController : UXML_UIDocumentObject
     {
         if (_pauseMenuContainer.visible)
         {
+            Debug.Log("PAUSE MENU CONTAINER VISIBLE");
+
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
             _controlsPage.style.visibility = Visibility.Hidden;
             _settingsPage.style.visibility = Visibility.Hidden;
-            _scenesPage.style.visibility = Visibility.Hidden;
+            //_scenesPage.style.visibility = Visibility.Hidden;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
 
             UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
             UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-            UniversalInputManager.OnMenuButton -= OnMenuButtonAction;
+            //UniversalInputManager.OnMenuButton -= OnMenuButtonAction;
         }
         else
         {
             if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
 
+            Debug.Log("PAUSE MENU CONTAINER NOT VISIBLE");
+            _controlsButton.Select();
+
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
             _controlsPage.style.visibility = Visibility.Visible;
             _settingsPage.style.visibility = Visibility.Visible;
-            _scenesPage.style.visibility = Visibility.Visible;
+            //_scenesPage.style.visibility = Visibility.Visible;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
 
             // Listen to the input manager
             UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
             UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-            UniversalInputManager.OnMenuButton += OnMenuButtonAction;
+            //UniversalInputManager.OnMenuButton += OnMenuButtonAction;
         }
     }
 
