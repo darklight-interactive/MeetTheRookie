@@ -21,7 +21,7 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
     MTRCameraRig _rig;
 
 
-    [Dropdown("_speakerList"), SerializeField, ShowOnly] string _currSpeaker;
+    [Dropdown("_speakerList"), SerializeField, ShowOnly] MTRSpeaker _currSpeaker;
 
 
 
@@ -39,7 +39,6 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
 
 
     MTRStoryManager StoryManager => MTRStoryManager.Instance;
-    List<string> _speakerList => StoryManager.SpeakerList;
     public MTRCameraRig Rig
     {
         get
@@ -108,12 +107,12 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         MTRStoryManager.OnNewSpeaker -= SetSpeakerTarget;
     }
 
-    void SetSpeakerTarget(string speaker)
+    void SetSpeakerTarget(MTRSpeaker speaker)
     {
         _currSpeaker = speaker;
 
         // Set the Camera Target to the Player
-        if (_currSpeaker == "Lupe")
+        if (_currSpeaker == MTRSpeaker.LUPE)
         {
             MTRPlayerInteractor player = FindObjectsByType<MTRPlayerInteractor>(FindObjectsSortMode.None)[0];
             Rig.SetFollowTarget(player.transform);
@@ -124,7 +123,7 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
         foreach (MTRCharacterInteractable interactable in interactables)
         {
-            if (interactable.SpeakerTag.Contains(_currSpeaker))
+            if (interactable.SpeakerTag == _currSpeaker)
             {
                 Rig.SetFollowTarget(interactable.transform);
             }

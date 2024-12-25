@@ -19,10 +19,7 @@ GroupBox.MenuBox {
     width: 75%;
 }
 
-SelectableButton.Menu {
-    font-size: 500%;
-    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
-    -unity-text-align: lower-center;
+SelectableButton {
     margin-top: 2%;
     margin-right: 2%;
     margin-bottom: 2%;
@@ -57,7 +54,6 @@ SliderInt Label {
     color: rgb(35, 40, 46);
     -unity-font-definition: resource('Fonts/cour');
     -unity-font-style: bold;
-    font-size: 30px;
     background-image: none;
     -unity-text-align: middle-right;
 }
@@ -163,7 +159,6 @@ Button.Fullscreen.Selected {
 SelectableSlider {
     flex-grow: 1;
     align-items: center;
-    font-size: 40px;
 }
 
 .selected {
@@ -175,4 +170,8 @@ SelectableSlider {
     border-right-width: 5px;
     border-bottom-width: 5px;
     border-left-width: 5px;
+}
+
+.unity-text-element {
+    color: rgb(255, 255, 255);
 }

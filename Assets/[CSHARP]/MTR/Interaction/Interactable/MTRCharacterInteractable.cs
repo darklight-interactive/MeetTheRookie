@@ -14,33 +14,15 @@ using UnityEditor;
 public class MTRCharacterInteractable : MTRInteractable
 {
     bool _speakerTagIsSet = false;
-    List<string> _speakerList = new List<string>(30) { "None" };
-    [SerializeField, ShowOnly] string _speakerTag = "None";
-    [SerializeField, Dropdown("_speakerOptions"), HideIf("_speakerTagIsSet")] string _speakerTagDropdown;
+    [SerializeField, ShowOnly] MTRSpeaker _speakerTag = MTRSpeaker.UNKNOWN;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    List<string> _speakerOptions
-    {
-        get
-        {
-            if (MTRStoryManager.Instance.SpeakerList != null && MTRStoryManager.Instance.SpeakerList.Count > 4)
-            {
-                _speakerList = new List<string>() { "None" };
-                _speakerList.AddRange(MTRStoryManager.Instance.SpeakerList);
-            }
-            return _speakerList;
-        }
-    }
     public override Type TypeKey => Type.CHARACTER;
-    public string SpeakerTag => _speakerTag;
+    public MTRSpeaker SpeakerTag => _speakerTag;
 
     void OnValidate()
     {
-        if (_speakerTagDropdown != "" && _speakerTagDropdown != "None")
-        {
-            _speakerTag = _speakerTagDropdown;
-            _speakerTagIsSet = true;
-        }
+        if (_speakerTag != MTRSpeaker.UNKNOWN) _speakerTagIsSet = true;
     }
 
     // ======== [[ METHODS ]] ================================== >>>>
@@ -57,9 +39,9 @@ public class MTRCharacterInteractable : MTRInteractable
     protected override void PreloadData()
     {
         base.PreloadData();
-        if (Data.Key == null && SpeakerTag != "None")
+        if (Data.Key == null && SpeakerTag != MTRSpeaker.UNKNOWN)
         {
-            Data.SetKey(SpeakerTag);
+            Data.SetKey(SpeakerTag.ToString());
         }
     }
 

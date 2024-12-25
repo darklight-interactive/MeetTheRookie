@@ -4,9 +4,7 @@ using Darklight.UnityExt.UXML;
 
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.Input;
-//using Darklight.UnityExt.Audio;
 using System.Linq;
 using System.Collections.Generic;
 using Ink.Runtime;
@@ -57,22 +55,28 @@ public class PauseMenuController : UXML_UIDocumentObject
         UniversalInputManager.OnMenuButton += OnMenuButtonAction;
     }
 
+    public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
+    {
+        base.Initialize(preset, clonePanelSettings);
+
+        // Store the pause menu container
+        _pauseMenuContainer = ElementQuery<VisualElement>(PAUSE_MENU_CTN);
+        _pauseMenuContainer.style.visibility = Visibility.Hidden;
+    }
+
     public void Start()
     {
         // Load the selectable buttons
         selectableElements.Load(ElementQueryAll<SelectableButton>());
 
-        // Store the pause menu container
-        _pauseMenuContainer = ElementQuery<VisualElement>(PAUSE_MENU_CTN);
-        _pauseMenuContainer.style.visibility = Visibility.Hidden;
-
+        /*
         // Store references to the folders
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
         _controlsPage.visible = false;
         _settingsPage.visible = false;
-        //_scenesPage.visible = false;
+        _scenesPage.visible = false;
 
         // << PAUSE MENU ACTIONS >>
         _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
@@ -81,8 +85,8 @@ public class PauseMenuController : UXML_UIDocumentObject
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
             _controlsPage.visible = true;
-            _settingsPage.visible = true;
-            //_scenesPage.visible = false;
+            _settingsPage.visible = false;
+            _scenesPage.visible = false;
         };
 
         _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
@@ -92,33 +96,36 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             _controlsPage.visible = false;
             _settingsPage.visible = true;
-            //_scenesPage.visible = true;
-
-            SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
-            musicSlider.OnValueChanged += () =>
-            {
-                MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
-            };
-
-            SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
-            sfxSlider.OnValueChanged += () =>
-            {
-                MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", sfxSlider.value);
-            };
-
-            SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
-            dialogueSlider.OnValueChanged += () =>
-            {
-                MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
-            };
+            _scenesPage.visible = false;
 
 
-            musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
-            sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
-            dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
 
-            Debug.Log("MUSIC: " + musicSlider.value);
         };
+        */
+
+        SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
+        musicSlider.OnValueChanged += () =>
+        {
+            MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
+        };
+        Debug.Log("MUSIC: " + musicSlider.value);
+
+        SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
+        sfxSlider.OnValueChanged += () =>
+        {
+            MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", sfxSlider.value);
+        };
+
+        SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
+        dialogueSlider.OnValueChanged += () =>
+        {
+            MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
+        };
+
+
+        musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
+        sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
+        dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
 
         SetVisibility(false);
     }
@@ -218,7 +225,7 @@ public class PauseMenuController : UXML_UIDocumentObject
             if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
 
             Debug.Log("PAUSE MENU CONTAINER NOT VISIBLE");
-            _controlsButton.Select();
+            _controlsButton?.Select();
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;

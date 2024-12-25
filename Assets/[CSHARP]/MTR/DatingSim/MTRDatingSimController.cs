@@ -139,13 +139,19 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         CreateTag(new List<string> { CHARACTER_TAG, "control", LUPE_TAG }, out string lupeCtrlTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "nametag", LUPE_TAG }, out string lupeNameTag);
         _lupe_characterControl = ElementQuery<MTRCharacterControlElement>(lupeCtrlTag);
+        if (_lupe_characterControl == null) Debug.LogError($"{PREFIX} >> Lupe Character Control not found");
+        
         _lupe_nameTag = ElementQuery<VisualElement>(lupeNameTag);
+        if (_lupe_nameTag == null) Debug.LogError($"{PREFIX} >> Lupe Name Tag not found");
 
 
         CreateTag(new List<string> { CHARACTER_TAG, "control", MISRA_TAG }, out string misraCtrlTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "nametag", MISRA_TAG }, out string misraNameTag);
         _misra_characterControl = ElementQuery<MTRCharacterControlElement>(misraCtrlTag);
+        if (_misra_characterControl == null) Debug.LogError($"{PREFIX} >> Misra Character Control not found");
+
         _misra_nameTag = ElementQuery<VisualElement>(misraNameTag);
+        if (_misra_nameTag == null) Debug.LogError($"{PREFIX} >> Misra Name Tag not found");
 
         CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
         _choiceParent = root.Q<VisualElement>(choiceParentTag);
@@ -243,63 +249,62 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// <param name="dialogue">The new dialogue</param>
     void HandleStoryDialogue(string dialogue)
     {
-        string speaker = MTRStoryManager.CurrentSpeaker;
-        HandleSpeaker(speaker);
-        Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {speaker}");
+        // TODO: Convert tags to function calls
 
         MTRStoryManager.TryGetTags(out IEnumerable<string> tags);
 
         foreach (string tag in tags)
         {
-            Debug.Log($"{PREFIX} >> Tag: {tag}");
             string[] splitTag = tag.ToLower().Split(":");
-            if (splitTag[0].Trim() == "emote")
+
+            string prefix = splitTag[0].Trim();
+            string key = splitTag[1].Trim();
+
+            Debug.Log($"{PREFIX} >> Tag: #{prefix}:{key}");
+
+            switch (prefix)
             {
-                string[] content = splitTag[1].Split("|");
-                SetEmote(content[0].Trim(), content[1].Trim());
-            }
-            else if (splitTag[0].Trim() == "hide")
-            {
-                if (splitTag[1].Trim() == "lupe")
-                {
-                    _lupe_characterControl.style.visibility = Visibility.Hidden;
-                }
-                else if (splitTag[1].Trim() == "misra")
-                {
-                    _misra_characterControl.style.visibility = Visibility.Hidden;
-                }
-            }
-            else if (splitTag[0].Trim() == "sfx")
-            {
-                if (splitTag[1].Trim() == "on")
-                {
-                    allowInkySFX = true;
-                    //Debug.Log("Inky SFX are allowed!");
-                }
-                else if (splitTag[1].Trim() == "off")
-                {
-                    allowInkySFX = false;
-                    //Debug.Log("Inky SFX are banned!");
-                }
+                case "name":
+                    MTRSpeaker speaker = MTRStoryManager.GetSpeaker(key);
+                    HandleSpeaker(speaker);
+                    break;
+                case "emote":
+                    string[] emoteSplit = key.Split("|");
+                    string characterName = emoteSplit[0].Trim();
+                    string emoteName = emoteSplit[1].Trim();
+                    SetEmote(characterName, emoteName);
+                    break;
+                case "hide":
+                    if (key == "lupe") { _lupe_characterControl.style.visibility = Visibility.Hidden; }
+                    else if (key == "misra") { _misra_characterControl.style.visibility = Visibility.Hidden; }
+                    break;
+                case "sfx":
+                    if (key == "on") { allowInkySFX = true; }
+                    else if (key == "off") { allowInkySFX = false; }
+                    break;
             }
         }
+
+
+        Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {MTRStoryManager.CurrentSpeaker}");
 
         StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
     }
 
-    void HandleSpeaker(string speaker)
+    void HandleSpeaker(MTRSpeaker speaker)
     {
         Debug.Log($"{PREFIX} >> Handle Speaker: {speaker}");
+        
         switch (speaker)
         {
-            case "Lupe":
+            case MTRSpeaker.LUPE:
                 _lupe_nameTag.style.visibility = Visibility.Visible;
                 _misra_nameTag.style.visibility = Visibility.Hidden;
 
                 _lupe_characterControl.Active = true;
                 _misra_characterControl.Active = false;
                 break;
-            case "Misra":
+            case MTRSpeaker.MISRA:
                 _lupe_nameTag.style.visibility = Visibility.Hidden;
                 _misra_nameTag.style.visibility = Visibility.Visible;
 

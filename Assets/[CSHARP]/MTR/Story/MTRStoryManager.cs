@@ -3,15 +3,36 @@ using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using UnityEngine;
 
+public enum MTRSpeaker
+{
+    UNKNOWN,
+    LUPE,
+    MISRA,
+    CHIEF_THELTON,
+    MARLOWE,
+    BETH,
+    MEL,
+    ROY_RODGERS,
+    JENNY,
+    CALVIN,
+    JOSH,
+    IRENE,
+    JENKINS
+}
+
 public class MTRStoryManager : InkyStoryManager
 {
     public static new MTRStoryManager Instance => (MTRStoryManager)InkyStoryManager.Instance;
-    public static string CurrentSpeaker => Instance._currentSpeaker;
+    public static MTRSpeaker CurrentSpeaker 
+    {
+        get => Instance._currentSpeaker;
+        set => Instance._currentSpeaker = value;
+    }
     public static bool IsReady;
 
     [Header("MTR Speaker Variable")]
     [SerializeField] StoryVariableContainer _speakerVariable;
-    [SerializeField, ShowOnly] string _currentSpeaker;
+    [SerializeField, ShowOnly] MTRSpeaker _currentSpeaker;
 
     #region ( Quest Fields ) ------------------------ >>
     [SerializeField, ShowOnly] private string _mainQuestName;
@@ -33,16 +54,7 @@ public class MTRStoryManager : InkyStoryManager
         }
     }
 
-    public List<string> SpeakerList
-    {
-        get
-        {
-            return _speakerVariable.ValueAsStringList;
-        }
-    }
-
-
-    public delegate void SpeakerSet(string speaker);
+    public delegate void SpeakerSet(MTRSpeaker speaker);
     public static event SpeakerSet OnNewSpeaker;
 
 
@@ -54,47 +66,49 @@ public class MTRStoryManager : InkyStoryManager
         if (!Application.isPlaying)
             return;
 
-        if (!MTRStoryManager.GlobalStory.HasFunction("PlaySpecialAnimation"))
+        if (!GlobalStory.HasFunction("PlaySpecialAnimation"))
         {
-            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
+            GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
             {
-                MTRGameManager.Instance.PlaySpecialAnimation(speaker);
+                MTRSpeaker speakerEnum = GetSpeaker(speaker);
+                MTRGameManager.Instance.PlaySpecialAnimation(speakerEnum);
             });
             Debug.Log($"{Prefix} >> BOUND 'PlaySpecialAnimation' to external function.");
         }
 
-        if (!MTRStoryManager.GlobalStory.HasFunction("PlaySFX"))
+        if (!GlobalStory.HasFunction("PlaySFX"))
         {
-            MTRStoryManager.GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
+            GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
             {
                 MTR_AudioManager.Instance.PlayOneShotByPath(sfx);
             });
             Debug.Log($"{Prefix} >> BOUND 'PlaySFX' to external function.");
         }
 
-        if (!MTRStoryManager.GlobalStory.HasFunction("PlayLoopingSFX"))
+        if (!GlobalStory.HasFunction("PlayLoopingSFX"))
         {
-            MTRStoryManager.GlobalStory.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
+            GlobalStory.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
             {
                 MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
             });
             Debug.Log($"{Prefix} >> BOUND 'PlayLoopingSFX' to external function.");
         }
 
-        if (!MTRStoryManager.GlobalStory.HasFunction("StopLoopingSFX"))
+        if (!GlobalStory.HasFunction("StopLoopingSFX"))
         {
-            MTRStoryManager.GlobalStory.BindExternalFunction("StopLoopingSFX", (string sfx) =>
+            GlobalStory.BindExternalFunction("StopLoopingSFX", (string sfx) =>
             {
                 MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
             });
             Debug.Log($"{Prefix} >> BOUND 'StopLoopingSFX' to external function.");
         }
 
-        MTRStoryManager.GlobalStory.BindExternalFunction("SetSpeaker", (string speaker) =>
+        GlobalStory.BindExternalFunction("SetSpeaker", (string speaker) =>
         {
             SetSpeaker(speaker);
         });
         Debug.Log($"{Prefix} >> BOUND 'SetSpeaker' to external function.");
+
 
 
         // << OBSERVE VARIABLES >> ------------------------ >>
@@ -177,18 +191,28 @@ public class MTRStoryManager : InkyStoryManager
             SetSpeaker(currentSpeaker.ToString());
     }
 
+    public static MTRSpeaker GetSpeaker(string speaker)
+    {
+        // Remove "Speaker." prefix if present
+        speaker = speaker.Replace("Speaker.", "").ToUpper();
 
+        // Try to parse the string to enum
+        if (System.Enum.TryParse(speaker, out MTRSpeaker speakerEnum))
+        {
+            return speakerEnum;
+        }
+        return MTRSpeaker.UNKNOWN;
+    }
 
     /// <summary>
-    /// This is the forceful way to set the speaker value.
+    /// Sets the current speaker by converting the input string to its corresponding MTRSpeaker enum value
     /// </summary>
-    /// <param name="speaker"></param>
-    public void SetSpeaker(string speaker)
+    /// <param name="speaker">Speaker name, with or without "Speaker." prefix</param>
+    public static void SetSpeaker(string speaker)
     {
-        if (!speaker.Contains("Speaker"))
-            speaker = "Speaker." + speaker;
-
-        _currentSpeaker = speaker;
-        OnNewSpeaker?.Invoke(speaker);
+        MTRSpeaker speakerEnum = GetSpeaker(speaker);
+        CurrentSpeaker = speakerEnum;
+        OnNewSpeaker?.Invoke(speakerEnum);
     }
+
 }

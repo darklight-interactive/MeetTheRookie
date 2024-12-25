@@ -32,6 +32,8 @@ public partial class MTRCharacterControlElement : VisualElement
 
             SetActive(this, value);
             SetActive(_imageElement, value);
+
+            Debug.Log($"{_characterName} is {(value ? "active" : "inactive")}");
         }
     }
 

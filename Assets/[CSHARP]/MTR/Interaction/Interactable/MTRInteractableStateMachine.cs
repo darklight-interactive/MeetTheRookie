@@ -32,25 +32,25 @@ public partial class MTRInteractable
             GoToState(State.NULL);
         }
 
-        protected void TryGetDialogueReciever(string speakerName, out MTRDialogueReciever reciever)
+        protected void TryGetDialogueReciever(MTRSpeaker speaker, out MTRDialogueReciever reciever)
         {
             reciever = null;
 
-            if (speakerName.Contains("Lupe"))
+            if (speaker == MTRSpeaker.LUPE)
             {
                 MTRInteractionSystem.PlayerInteractor.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
             }
             else
             {
-                InteractionSystem.Registry.Interactables.TryGetValue(speakerName, out MTRCharacterInteractable character);
+                InteractionSystem.Registry.Interactables.TryGetValue(speaker.ToString(), out MTRCharacterInteractable character);
                 if (character == null)
-                    Debug.LogError($"{PREFIX} :: Could not find character with speaker tag: {speakerName}");
+                    Debug.LogError($"{PREFIX} :: Could not find character with speaker tag: {speaker}");
 
                 if (character != null)
                     character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
 
                 if (reciever == null)
-                    Debug.LogError($"{PREFIX} :: Could not find dialogue reciever for character: {speakerName}");
+                    Debug.LogError($"{PREFIX} :: Could not find dialogue reciever for character: {speaker}");
             }
             return;
         }

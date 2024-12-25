@@ -539,7 +539,7 @@ namespace Darklight.UnityExt.Inky
 
             object _value;
             [SerializeField, ShowOnly] string _key;
-            [SerializeField, ShowOnly, HideIf("_isInkList")] string _valueAsString;
+            [SerializeField, TextArea(1, 10), HideIf("_isInkList")] string _valueAsString;
             [SerializeField, ShowOnly, ShowIf("_isInkList")] List<string> _valueAsStringList;
 
             public string Key { get => _key; set => _key = value; }

@@ -84,13 +84,13 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
             _cameraController = FindFirstObjectByType<MTRCameraController>();
     }
 
-    public void PlaySpecialAnimation(string speakerName)
+    public void PlaySpecialAnimation(MTRSpeaker speaker)
     {
         // Set the Camera Target to a NPC
         MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
         foreach (MTRCharacterInteractable interactable in interactables)
         {
-            if (interactable.SpeakerTag.Contains(speakerName))
+            if (interactable.SpeakerTag == speaker)
             {
                 interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
             }
