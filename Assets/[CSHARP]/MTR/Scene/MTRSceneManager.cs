@@ -2,26 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Darklight.UnityExt.BuildScene;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
-
 using FMODUnity;
-
 using Ink.Runtime;
-
 using NaughtyAttributes;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 
 /// <summary>
 /// This is the Custom Scene Manager for Meet The Rookie
@@ -29,12 +22,12 @@ using UnityEditor;
 [RequireComponent(typeof(MTRSceneController))]
 public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IUnityEditorListener
 {
-    public new static string Prefix = "[MTRSceneManager]";
-    public new static MTRSceneManager Instance => BuildSceneScriptableDataManager<MTRSceneData>.Instance as MTRSceneManager;
+    public static new string Prefix = "[MTRSceneManager]";
+    public static new MTRSceneManager Instance =>
+        BuildSceneScriptableDataManager<MTRSceneData>.Instance as MTRSceneManager;
 
     //  ================================ [[ Fields ]] ================================
     MTRSceneController _sceneController;
-
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
@@ -79,7 +72,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
 
         RefreshData();
-        InkyStoryManager.GoToKnotOrStitch(knotName);
+        InkyStoryManager.GoToPath(knotName);
 
         return true;
     }
@@ -106,7 +99,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
     }
 
-
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)
     {
         sceneData = DataList.Find(x => x.SceneKnot == knot);
@@ -117,7 +109,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         Gizmos.color = Color.green;
         if (ActiveSceneData != null)
             ActiveSceneData.DrawGizmos();
-
     }
 
 #if UNITY_EDITOR
@@ -126,6 +117,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
     {
         SerializedObject _serializedObject;
         MTRSceneManager _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -139,10 +131,11 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Initialize")) _script.Initialize();
-            if (GUILayout.Button("Clear")) _script.Clear();
+            if (GUILayout.Button("Initialize"))
+                _script.Initialize();
+            if (GUILayout.Button("Clear"))
+                _script.Clear();
             EditorGUILayout.EndHorizontal();
-
 
             base.OnInspectorGUI();
 
@@ -160,5 +153,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 public class ExpandableItem<T>
     where T : ScriptableObject
 {
-    [Expandable] public T Item;
+    [Expandable]
+    public T Item;
 }

@@ -56,8 +56,8 @@ VAR CURRENT_SPEAKER = Speaker.Lupe
 
 // ====== QUEST HANDLING == >>
 VAR MAIN_QUEST = () // <- highest priority quest
-LIST ACTIVE_QUEST_CHAIN = DEFAULTQUEST // <- overwrite this list
-LIST COMPLETED_QUESTS = DEFAULTQUEST // <- all completed quests
+LIST ACTIVE_QUEST_CHAIN = (DEFAULTQUEST) // <- overwrite this list
+LIST COMPLETED_QUESTS = (DEFAULTQUEST) // <- all completed quests
 === function SetActiveQuestChain(chain)
     # SetActiveQuestChain >> {chain}
     ~ ACTIVE_QUEST_CHAIN = chain
@@ -96,6 +96,7 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 
 // -------------------- LEVEL 1 ------------------------------------
 LIST Level1_Quests = (first_interact), (pay_for_gas), (look_at_tree)
+LIST Level1_Clues = (broken_gas_pump)
 
 // -------------------- LEVEL 3 ------------------------------------
 LIST Level3_Quests = (talk_to_misra_quest), (visit_fence), (visit_window), (discover_outside_clues), (discuss_misra), (visit_footsteps), (visit_floor), (visit_barrels), (visit_backroom_door), (discover_inside_clues), (visit_inside_window)

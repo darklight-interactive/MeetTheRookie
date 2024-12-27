@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.FMODExt;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Input;
-using Darklight.UnityExt.UXML;
 using Darklight.UnityExt.Utility;
-using Darklight.UnityExt.FMODExt;
-
+using Darklight.UnityExt.UXML;
 using Ink.Runtime;
-
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using NaughtyAttributes;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -48,18 +44,26 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     MTRCharacterControlElement _lupe_characterControl;
     MTRCharacterControlElement _misra_characterControl;
 
-
     VisualElement _choiceParent;
     List<SelectableButton> _choiceButtons = new List<SelectableButton>(4);
 
     private bool allowInkySFX;
 
     [HorizontalLine(color: EColor.Gray, order = 1)]
-    [SerializeField, ShowOnly] bool _inputEnabled = false;
-    [SerializeField, ShowOnly] string _knot = "";
-    [SerializeField] SelectableVectorField<SelectableButton> _choiceMap = new SelectableVectorField<SelectableButton>();
+    [SerializeField, ShowOnly]
+    bool _inputEnabled = false;
+
+    [SerializeField, ShowOnly]
+    string _knot = "";
+
+    [SerializeField]
+    SelectableVectorField<SelectableButton> _choiceMap =
+        new SelectableVectorField<SelectableButton>();
     public bool inCar = false;
-    [SerializeField][Tooltip("Place Dating Sim Emotes Asset Here Please")] private DatingSimEmotes emotes;
+
+    [SerializeField]
+    [Tooltip("Place Dating Sim Emotes Asset Here Please")]
+    private DatingSimEmotes emotes;
 
     // ================ [[ PROPERTIES ]] ================================ >>>>
 
@@ -81,6 +85,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         MTRSceneController.StateMachine.OnStateChanged -= OnSceneStateChanged;
     }
+
     // ================ [[ INTERNAL METHODS ]] ========================== >>>>
     void OnSceneStateChanged(MTRSceneState newState)
     {
@@ -139,33 +144,51 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         CreateTag(new List<string> { CHARACTER_TAG, "control", LUPE_TAG }, out string lupeCtrlTag);
         CreateTag(new List<string> { DIALOGUE_TAG, "nametag", LUPE_TAG }, out string lupeNameTag);
         _lupe_characterControl = ElementQuery<MTRCharacterControlElement>(lupeCtrlTag);
-        if (_lupe_characterControl == null) Debug.LogError($"{PREFIX} >> Lupe Character Control not found");
-        
+        if (_lupe_characterControl == null)
+            Debug.LogError($"{PREFIX} >> Lupe Character Control not found");
+
         _lupe_nameTag = ElementQuery<VisualElement>(lupeNameTag);
-        if (_lupe_nameTag == null) Debug.LogError($"{PREFIX} >> Lupe Name Tag not found");
+        if (_lupe_nameTag == null)
+            Debug.LogError($"{PREFIX} >> Lupe Name Tag not found");
 
-
-        CreateTag(new List<string> { CHARACTER_TAG, "control", MISRA_TAG }, out string misraCtrlTag);
+        CreateTag(
+            new List<string> { CHARACTER_TAG, "control", MISRA_TAG },
+            out string misraCtrlTag
+        );
         CreateTag(new List<string> { DIALOGUE_TAG, "nametag", MISRA_TAG }, out string misraNameTag);
         _misra_characterControl = ElementQuery<MTRCharacterControlElement>(misraCtrlTag);
-        if (_misra_characterControl == null) Debug.LogError($"{PREFIX} >> Misra Character Control not found");
+        if (_misra_characterControl == null)
+            Debug.LogError($"{PREFIX} >> Misra Character Control not found");
 
         _misra_nameTag = ElementQuery<VisualElement>(misraNameTag);
-        if (_misra_nameTag == null) Debug.LogError($"{PREFIX} >> Misra Name Tag not found");
+        if (_misra_nameTag == null)
+            Debug.LogError($"{PREFIX} >> Misra Name Tag not found");
 
-        CreateTag(new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" }, out string choiceParentTag);
+        CreateTag(
+            new List<string> { CHOICE_TAG, CONTAINER_TAG, "parent" },
+            out string choiceParentTag
+        );
         _choiceParent = root.Q<VisualElement>(choiceParentTag);
 
-        if (inCar) { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex; }
-        else { root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None; }
+        if (inCar)
+        {
+            root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            root.Q<VisualElement>("Dashboard").style.display = DisplayStyle.None;
+        }
 
         if (!boundEmote)
         {
             // In Inky file function should be: EXTERNAL SetEmote(name, emote)
-            MTRStoryManager.GlobalStory.BindExternalFunction("SetEmote", (object[] args) =>
-            {
-                return SetEmote((string)args[0], (string)args[1]);
-            });
+            MTRStoryManager.GlobalStory.BindExternalFunction(
+                "SetEmote",
+                (object[] args) =>
+                {
+                    return SetEmote((string)args[0], (string)args[1]);
+                }
+            );
             boundEmote = true;
         }
 
@@ -175,7 +198,8 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     void ResetDatingSim()
     {
-        if (_dialogueLabel != null) _dialogueLabel.FullText = "";
+        if (_dialogueLabel != null)
+            _dialogueLabel.FullText = "";
         ResetChoiceMap();
         Debug.Log($"{PREFIX} >> Reset Dating Sim");
     }
@@ -189,9 +213,8 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         yield return new WaitUntil(() => MTRStoryManager.IsReady);
         Debug.Log($"{PREFIX} >> Story Ready: {MTRStoryManager.IsReady}");
 
-
         // Start story
-        MTRStoryManager.GoToKnotOrStitch(_knot);
+        MTRStoryManager.GoToPath(_knot);
         MTRStoryManager.ContinueStory();
         Debug.Log($"{PREFIX} >> Initialize Dating Sim: {_knot}");
 
@@ -209,7 +232,8 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         outString = "";
         foreach (string part in tag_parts)
         {
-            if (outString != "") outString += "-";
+            if (outString != "")
+                outString += "-";
             outString += part;
         }
     }
@@ -244,7 +268,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     #region ======== [[ STORY DIALOGUE ]] <PRIVATE_METHODS> ========================== >>>>
     /// <summary>
-    /// Update the dialogue 
+    /// Update the dialogue
     /// </summary>
     /// <param name="dialogue">The new dialogue</param>
     void HandleStoryDialogue(string dialogue)
@@ -275,16 +299,27 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                     SetEmote(characterName, emoteName);
                     break;
                 case "hide":
-                    if (key == "lupe") { _lupe_characterControl.style.visibility = Visibility.Hidden; }
-                    else if (key == "misra") { _misra_characterControl.style.visibility = Visibility.Hidden; }
+                    if (key == "lupe")
+                    {
+                        _lupe_characterControl.style.visibility = Visibility.Hidden;
+                    }
+                    else if (key == "misra")
+                    {
+                        _misra_characterControl.style.visibility = Visibility.Hidden;
+                    }
                     break;
                 case "sfx":
-                    if (key == "on") { allowInkySFX = true; }
-                    else if (key == "off") { allowInkySFX = false; }
+                    if (key == "on")
+                    {
+                        allowInkySFX = true;
+                    }
+                    else if (key == "off")
+                    {
+                        allowInkySFX = false;
+                    }
                     break;
             }
         }
-
 
         Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {MTRStoryManager.CurrentSpeaker}");
 
@@ -294,7 +329,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     void HandleSpeaker(MTRSpeaker speaker)
     {
         Debug.Log($"{PREFIX} >> Handle Speaker: {speaker}");
-        
+
         switch (speaker)
         {
             case MTRSpeaker.LUPE:
@@ -320,8 +355,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
                 break;
         }
     }
-
-
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
     {
@@ -388,13 +421,17 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     /// <param name="direction">The movement vector</param>
     void HandleSelectionInput(Vector2 direction)
     {
-        if (!_inputEnabled) return;
+        if (!_inputEnabled)
+            return;
 
         direction.y = -direction.y;
         SelectableButton selected = _choiceMap.SelectElementInDirection(direction);
         if (selected != null)
         {
-            if(_choiceMap.PreviousSelection != selected) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
+            if (_choiceMap.PreviousSelection != selected)
+            {
+                MTR_AudioManager.Instance.PlayMenuHoverEvent();
+            }
             _choiceMap.PreviousSelection.Deselect();
             selected.Select();
 
@@ -408,8 +445,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
             //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
         }
     }
-
-
 
     /// <summary>
     /// The function to select choice via input
@@ -481,20 +516,17 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         Debug.Log("END OF STORY");
     }
 
-
-
-
-
-
-
     /// <summary>
     /// Moves the cool dialogue triangle up and down
     /// </summary>
     void MoveTriangle()
     {
         _continueTriangle?.ToggleInClassList("TriangleDown");
-        _continueTriangle?.RegisterCallback<TransitionEndEvent>(evt => _continueTriangle.ToggleInClassList("TriangleDown"));
-        root.schedule.Execute(() => _continueTriangle?.ToggleInClassList("TriangleDown")).StartingIn(100);
+        _continueTriangle?.RegisterCallback<TransitionEndEvent>(evt =>
+            _continueTriangle.ToggleInClassList("TriangleDown")
+        );
+        root.schedule.Execute(() => _continueTriangle?.ToggleInClassList("TriangleDown"))
+            .StartingIn(100);
     }
 
     /// <summary>
@@ -509,19 +541,31 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         emote = emote.Trim().ToLower();
 
         success = emotes.SetEmote(name, emote);
-        if (name == "lupe" )
+        if (name == "lupe")
         {
             _lupe_characterControl.style.visibility = Visibility.Visible;
             _lupe_characterControl.CharacterImage = emotes.currLupeEmote;
 
-            if (allowInkySFX) { FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceLupe, (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote)); }
+            if (allowInkySFX)
+            {
+                FMODExt_EventManager.PlayEventWithParametersByName(
+                    MTR_AudioManager.Instance.generalSFX.voiceLupe,
+                    (MTR_AudioManager.Instance.generalSFX.parameterNameLupe, emote)
+                );
+            }
         }
         else if (name == "misra")
         {
             _misra_characterControl.style.visibility = Visibility.Visible;
             _misra_characterControl.CharacterImage = emotes.currMisraEmote;
 
-            if (allowInkySFX) { FMODExt_EventManager.PlayEventWithParametersByName(MTR_AudioManager.Instance.generalSFX.voiceMisra, (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote)); }
+            if (allowInkySFX)
+            {
+                FMODExt_EventManager.PlayEventWithParametersByName(
+                    MTR_AudioManager.Instance.generalSFX.voiceMisra,
+                    (MTR_AudioManager.Instance.generalSFX.parameterNameMisra, emote)
+                );
+            }
         }
 
         return success;

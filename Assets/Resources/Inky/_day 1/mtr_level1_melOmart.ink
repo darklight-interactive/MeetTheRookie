@@ -4,8 +4,6 @@
 // ---------------------------------------------- >>/^*
 // ====== INCLUDE == >>
 VAR gas_pumps = 0
-LIST Clues_1 = (GAS_PUMP_BROKEN), (CASHREG_BROKEN), (CASHREG_FIX)
-LIST QuestChain_1 = (FIRST_INTERACT), (PAY_FOR_GAS)
 
 === level1 ===
 * [Scene1_0] -> scene1_0
@@ -45,8 +43,8 @@ Alright. Bye.
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
-~ SetActiveQuestChain(QuestChain_1)
-~ StartQuest(pay_for_gas)
+// ~ SetActiveQuestChain(Level1_Quests)
+~ StartQuest(Level1_Quests.pay_for_gas)
 TODO SFX door closing
 ~PlaySFX("carDoorOpenAndClose")
 
@@ -56,8 +54,8 @@ TODO SFX door closing
 * [front door] -> enter_store
 
 = gas_pump
-    ~ CompleteQuest(first_interact)
-    ~ DiscoverClue(broken_gas_pump)
+    ~ CompleteQuest(Level1_Quests.first_interact)
+    ~ DiscoverClue(Level1_Clues.broken_gas_pump)
     ~ gas_pumps += 1
     {
     - IsQuestComplete(pay_for_gas) && (look_at_tree):

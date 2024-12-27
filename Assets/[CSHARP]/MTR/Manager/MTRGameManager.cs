@@ -1,15 +1,13 @@
-using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.Input;
-using Darklight.UnityExt.Behaviour;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
-using System.Collections;
-
-
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Input;
+using NaughtyAttributes;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -36,17 +34,17 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
     }
     public static MTRPlayerController PlayerController
     {
-        get
-        {
-            return Instance._playerController = FindFirstObjectByType<MTRPlayerController>();
-        }
+        get { return Instance._playerController = FindFirstObjectByType<MTRPlayerController>(); }
     }
 
-    [SerializeField, Expandable] MTRPrefabLibrary _prefabLibrary;
-    [SerializeField, ShowOnly] MTRCameraController _cameraController;
-    [SerializeField, ShowOnly] MTRPlayerController _playerController;
+    [SerializeField, Expandable]
+    MTRPrefabLibrary _prefabLibrary;
 
+    [SerializeField, ShowOnly]
+    MTRCameraController _cameraController;
 
+    [SerializeField, ShowOnly]
+    MTRPlayerController _playerController;
 
     IEnumerator SceneChangeRoutine(Scene newScene)
     {
@@ -55,12 +53,14 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
             if (MTRStoryManager.IsInitialized == false)
                 yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
 
-            MTRStoryManager.GoToKnotOrStitch(MTRSceneManager.ActiveSceneData.SceneKnot);
+            MTRStoryManager.GoToPath(MTRSceneManager.ActiveSceneData.SceneKnot);
             MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
         }
         else
         {
-            Debug.LogError($"{Prefix} >> SceneChangeRoutine: Scene data not found for scene {newScene.name}");
+            Debug.LogError(
+                $"{Prefix} >> SceneChangeRoutine: Scene data not found for scene {newScene.name}"
+            );
         }
         yield return null;
     }
@@ -87,12 +87,16 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
     public void PlaySpecialAnimation(MTRSpeaker speaker)
     {
         // Set the Camera Target to a NPC
-        MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(FindObjectsSortMode.None);
+        MTRCharacterInteractable[] interactables = FindObjectsByType<MTRCharacterInteractable>(
+            FindObjectsSortMode.None
+        );
         foreach (MTRCharacterInteractable interactable in interactables)
         {
             if (interactable.SpeakerTag == speaker)
             {
-                interactable.GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);
+                interactable
+                    .GetComponent<NPC_Controller>()
+                    .stateMachine.GoToState(NPCState.PLAY_ANIMATION);
             }
         }
     }
@@ -114,6 +118,7 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
     {
         SerializedObject _serializedObject;
         MTRGameManager _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -139,4 +144,3 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
     }
 #endif
 }
-

@@ -1,11 +1,11 @@
-using Darklight.UnityExt.Behaviour;
-using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Inky;
-using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using EasyButtons;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
@@ -31,11 +31,13 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
     public static InternalStateMachine StateMachine => Instance._stateMachine;
     public static string SceneToLoad => Instance._sceneToLoad;
 
-
     InternalStateMachine _stateMachine;
-    [SerializeField, ShowOnly] MTRSceneState _currentSceneState;
-    [SerializeField, ShowOnly] string _sceneToLoad;
 
+    [SerializeField, ShowOnly]
+    MTRSceneState _currentSceneState;
+
+    [SerializeField, ShowOnly]
+    string _sceneToLoad;
 
     public MTR_UIManager UIManager => MTR_UIManager.Instance;
     public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
@@ -90,7 +92,10 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 { MTRSceneState.PLAY_MODE, new PlayModeState(this, MTRSceneState.PLAY_MODE) },
                 { MTRSceneState.CINEMA_MODE, new CinemaModeState(this, MTRSceneState.CINEMA_MODE) },
                 { MTRSceneState.PAUSE_MODE, new PauseModeState(this, MTRSceneState.PAUSE_MODE) },
-                { MTRSceneState.SYNTHESIS_MODE, new SynthesisModeState(this, MTRSceneState.SYNTHESIS_MODE) },
+                {
+                    MTRSceneState.SYNTHESIS_MODE,
+                    new SynthesisModeState(this, MTRSceneState.SYNTHESIS_MODE)
+                },
                 { MTRSceneState.EXIT, new ExitState(this, MTRSceneState.EXIT) },
                 { MTRSceneState.LOADING, new LoadingState(this, MTRSceneState.LOADING) },
                 { MTRSceneState.CHOICEMODE, new ChoiceModeState(this, MTRSceneState.CHOICEMODE) },
@@ -108,7 +113,9 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             {
                 get
                 {
-                    MTRSceneTransitionController controller = sceneController.UIManager.SceneTransitionController;
+                    MTRSceneTransitionController controller = sceneController
+                        .UIManager
+                        .SceneTransitionController;
                     if (controller == null)
                         controller = FindFirstObjectByType<MTRSceneTransitionController>();
                     return controller;
@@ -118,7 +125,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             protected InternalStateMachine stateMachine;
             protected MTRSceneController sceneController;
 
-            public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType)
+            public BaseState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType)
             {
                 this.stateMachine = stateMachine;
                 this.sceneController = stateMachine._controller;
@@ -129,20 +137,24 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ LOADING STATE ] ==================
         public class LoadingState : BaseState
         {
-            public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public LoadingState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
                 sceneController.StartCoroutine(LoadSceneAsyncRoutine());
             }
+
             public override void Execute() { }
+
             public override void Exit() { }
 
             IEnumerator LoadSceneAsyncRoutine()
             {
                 // Begin loading the scene asynchronously
-                UnityEngine.AsyncOperation asyncOperation =
-                    SceneManager.LoadSceneAsync(MTRSceneController.SceneToLoad);
+                UnityEngine.AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(
+                    MTRSceneController.SceneToLoad
+                );
 
                 // Prevent the scene from being activated immediately
                 asyncOperation.allowSceneActivation = false;
@@ -172,7 +184,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ INITIALIZE STATE ] ==================
         public class InitializeState : BaseState
         {
-            public InitializeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public InitializeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -180,12 +193,14 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                     cameraController.SetPlayerAsFollowTarget();
 
                 // << GO TO ACTIVE SCENE KNOT >>
-                InkyStoryManager.GoToKnotOrStitch(activeSceneData.SceneKnot);
+                InkyStoryManager.GoToPath(activeSceneData.SceneKnot);
             }
+
             public override void Execute()
             {
                 stateMachine.GoToState(MTRSceneState.ENTER);
             }
+
             public override void Exit() { }
         }
         #endregion
@@ -193,13 +208,16 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ ENTER STATE ] ==================
         public class EnterState : BaseState
         {
-            public EnterState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public EnterState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
                 sceneController.StartCoroutine(EnterStateCoroutine());
             }
+
             public override void Execute() { }
+
             public override void Exit() { }
 
             IEnumerator EnterStateCoroutine()
@@ -210,7 +228,10 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 yield return new WaitForSeconds(0.5f);
 
                 // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                MTRInteractionSystem.TryGetInteractableByStitch(activeSceneData.OnEnterStitch, out MTRInteractable interactable);
+                MTRInteractionSystem.TryGetInteractableByStitch(
+                    activeSceneData.OnEnterStitch,
+                    out MTRInteractable interactable
+                );
                 if (interactable != null)
                 {
                     MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
@@ -224,9 +245,13 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ PLAY MODE STATE ] ==================
         public class PlayModeState : BaseState
         {
-            public PlayModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public PlayModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
+
             public override void Enter() { }
+
             public override void Execute() { }
+
             public override void Exit() { }
         }
         #endregion
@@ -234,7 +259,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ CINEMA MODE STATE ] ==================
         public class CinemaModeState : BaseState
         {
-            public CinemaModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public CinemaModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -256,7 +282,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ PAUSE MODE STATE ] ==================
         public class PauseModeState : BaseState
         {
-            public PauseModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public PauseModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -279,7 +306,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ SYNTHESIS MODE STATE ] ==================
         public class SynthesisModeState : BaseState
         {
-            public SynthesisModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public SynthesisModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
@@ -301,13 +329,16 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ EXIT STATE ] ==================
         public class ExitState : BaseState
         {
-            public ExitState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public ExitState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
 
             public override void Enter()
             {
                 sceneController.StartCoroutine(ExitStateCoroutine());
             }
+
             public override void Execute() { }
+
             public override void Exit() { }
 
             IEnumerator ExitStateCoroutine()
@@ -317,7 +348,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 yield return new WaitForSeconds(2f);
                 stateMachine.GoToState(MTRSceneState.LOADING);
             }
-
         }
         #endregion
 
@@ -326,17 +356,16 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         #region ================== [ CHOICE MODE STATE ] ==================
         public class ChoiceModeState : BaseState
         {
-            public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType) : base(stateMachine, stateType) { }
+            public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
+                : base(stateMachine, stateType) { }
+
             public override void Enter() { }
+
             public override void Execute() { }
+
             public override void Exit() { }
         }
         #endregion
-
-
-
     }
     #endregion
-
 }
-

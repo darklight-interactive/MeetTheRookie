@@ -23,7 +23,7 @@ public enum MTRSpeaker
 public class MTRStoryManager : InkyStoryManager
 {
     public static new MTRStoryManager Instance => (MTRStoryManager)InkyStoryManager.Instance;
-    public static MTRSpeaker CurrentSpeaker 
+    public static MTRSpeaker CurrentSpeaker
     {
         get => Instance._currentSpeaker;
         set => Instance._currentSpeaker = value;
@@ -31,17 +31,26 @@ public class MTRStoryManager : InkyStoryManager
     public static bool IsReady;
 
     [Header("MTR Speaker Variable")]
-    [SerializeField] StoryVariableContainer _speakerVariable;
-    [SerializeField, ShowOnly] MTRSpeaker _currentSpeaker;
+    [SerializeField]
+    StoryVariableContainer _speakerVariable;
+
+    [SerializeField, ShowOnly]
+    MTRSpeaker _currentSpeaker;
 
     #region ( Quest Fields ) ------------------------ >>
-    [SerializeField, ShowOnly] private string _mainQuestName;
-    [SerializeField] StoryVariableContainer _activeQuestChain;
-    [SerializeField] StoryVariableContainer _completedQuestChain;
+    [SerializeField, ShowOnly]
+    private string _mainQuestName;
+
+    [SerializeField]
+    StoryVariableContainer _activeQuestChain;
+
+    [SerializeField]
+    StoryVariableContainer _completedQuestChain;
     #endregion
 
     #region ( Clue Fields ) ------------------------ >>
-    [SerializeField, ShowOnly] private List<string> _globalKnowledgeList = new List<string>();
+    [SerializeField]
+    StoryVariableContainer _globalKnowledge;
     #endregion
 
 
@@ -57,8 +66,6 @@ public class MTRStoryManager : InkyStoryManager
     public delegate void SpeakerSet(MTRSpeaker speaker);
     public static event SpeakerSet OnNewSpeaker;
 
-
-
     protected override void HandleStoryInitialized()
     {
         base.HandleStoryInitialized();
@@ -68,48 +75,61 @@ public class MTRStoryManager : InkyStoryManager
 
         if (!GlobalStory.HasFunction("PlaySpecialAnimation"))
         {
-            GlobalStory.BindExternalFunction("PlaySpecialAnimation", (string speaker) =>
-            {
-                MTRSpeaker speakerEnum = GetSpeaker(speaker);
-                MTRGameManager.Instance.PlaySpecialAnimation(speakerEnum);
-            });
+            GlobalStory.BindExternalFunction(
+                "PlaySpecialAnimation",
+                (string speaker) =>
+                {
+                    MTRSpeaker speakerEnum = GetSpeaker(speaker);
+                    MTRGameManager.Instance.PlaySpecialAnimation(speakerEnum);
+                }
+            );
             Debug.Log($"{Prefix} >> BOUND 'PlaySpecialAnimation' to external function.");
         }
 
         if (!GlobalStory.HasFunction("PlaySFX"))
         {
-            GlobalStory.BindExternalFunction("PlaySFX", (string sfx) =>
-            {
-                MTR_AudioManager.Instance.PlayOneShotByPath(sfx);
-            });
+            GlobalStory.BindExternalFunction(
+                "PlaySFX",
+                (string sfx) =>
+                {
+                    MTR_AudioManager.Instance.PlayOneShotByPath(sfx);
+                }
+            );
             Debug.Log($"{Prefix} >> BOUND 'PlaySFX' to external function.");
         }
 
         if (!GlobalStory.HasFunction("PlayLoopingSFX"))
         {
-            GlobalStory.BindExternalFunction("PlayLoopingSFX", (string sfx) =>
-            {
-                MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
-            });
+            GlobalStory.BindExternalFunction(
+                "PlayLoopingSFX",
+                (string sfx) =>
+                {
+                    MTR_AudioManager.Instance.StartRepeatSFXByPath(sfx);
+                }
+            );
             Debug.Log($"{Prefix} >> BOUND 'PlayLoopingSFX' to external function.");
         }
 
         if (!GlobalStory.HasFunction("StopLoopingSFX"))
         {
-            GlobalStory.BindExternalFunction("StopLoopingSFX", (string sfx) =>
-            {
-                MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
-            });
+            GlobalStory.BindExternalFunction(
+                "StopLoopingSFX",
+                (string sfx) =>
+                {
+                    MTR_AudioManager.Instance.StopRepeatSFXByPath(sfx);
+                }
+            );
             Debug.Log($"{Prefix} >> BOUND 'StopLoopingSFX' to external function.");
         }
 
-        GlobalStory.BindExternalFunction("SetSpeaker", (string speaker) =>
-        {
-            SetSpeaker(speaker);
-        });
+        GlobalStory.BindExternalFunction(
+            "SetSpeaker",
+            (string speaker) =>
+            {
+                SetSpeaker(speaker);
+            }
+        );
         Debug.Log($"{Prefix} >> BOUND 'SetSpeaker' to external function.");
-
-
 
         // << OBSERVE VARIABLES >> ------------------------ >>
         GlobalStory.ObserveVariable(
@@ -120,7 +140,6 @@ public class MTRStoryManager : InkyStoryManager
             }
         );
 
-        /*
         GlobalStory.ObserveVariable(
             "MAIN_QUEST",
             (string varName, object newValue) =>
@@ -134,8 +153,8 @@ public class MTRStoryManager : InkyStoryManager
             "ACTIVE_QUEST_CHAIN",
             (string varName, object newValue) =>
             {
-                SetVariable("ACTIVE_QUEST_CHAIN", newValue);
-                TryGetVariableContainer(varName, out StoryVariableContainer _activeQuestChain);
+                SetVariable(varName, newValue);
+                TryGetVariableContainer(varName, out _activeQuestChain);
                 Debug.Log($"{Prefix} >> Active Quest Chain: {_activeQuestChain.Value}");
             }
         );
@@ -144,8 +163,9 @@ public class MTRStoryManager : InkyStoryManager
             "COMPLETED_QUESTS",
             (string varName, object newValue) =>
             {
-                _completedQuestChain = TryGetVariableByName("COMPLETED_QUESTS").ToStringList();
-                Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuestChain.Count}");
+                SetVariable(varName, newValue);
+                TryGetVariableContainer(varName, out _completedQuestChain);
+                Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuestChain.Value}");
             }
         );
 
@@ -153,11 +173,11 @@ public class MTRStoryManager : InkyStoryManager
             "GLOBAL_KNOWLEDGE",
             (string varName, object newValue) =>
             {
-                _globalKnowledgeList = TryGetVariableByName("GLOBAL_KNOWLEDGE").ToStringList();
-                Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledgeList.Count}");
+                SetVariable(varName, newValue);
+                TryGetVariableContainer(varName, out _globalKnowledge);
+                Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledge.Value}");
             }
         );
-        */
 
         IsReady = true;
     }
@@ -214,5 +234,4 @@ public class MTRStoryManager : InkyStoryManager
         CurrentSpeaker = speakerEnum;
         OnNewSpeaker?.Invoke(speakerEnum);
     }
-
 }
