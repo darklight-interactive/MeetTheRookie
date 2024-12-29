@@ -1,12 +1,10 @@
-using UnityEngine;
-using Darklight.UnityExt.Editor;
 using System.Collections.Generic;
-using Darklight.UnityExt.Inky;
-using NaughtyAttributes;
 using Darklight.UnityExt.Core2D;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Utility;
-
-
+using NaughtyAttributes;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,7 +12,9 @@ using UnityEditor;
 public class MTRCharacterInteractable : MTRInteractable
 {
     bool _speakerTagIsSet = false;
-    [SerializeField, ShowOnly] MTRSpeaker _speakerTag = MTRSpeaker.UNKNOWN;
+
+    [SerializeField]
+    MTRSpeaker _speakerTag = MTRSpeaker.UNKNOWN;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public override Type TypeKey => Type.CHARACTER;
@@ -22,7 +22,8 @@ public class MTRCharacterInteractable : MTRInteractable
 
     void OnValidate()
     {
-        if (_speakerTag != MTRSpeaker.UNKNOWN) _speakerTagIsSet = true;
+        if (_speakerTag != MTRSpeaker.UNKNOWN)
+            _speakerTagIsSet = true;
     }
 
     // ======== [[ METHODS ]] ================================== >>>>
@@ -47,9 +48,11 @@ public class MTRCharacterInteractable : MTRInteractable
 
     protected override void GenerateRecievers()
     {
-        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
+        InteractionSystem.Factory.CreateOrLoadInteractionRequest(
+            TypeKey.ToString(),
             out InteractionRequestDataObject interactionRequest,
-            new List<InteractionType> { InteractionType.TARGET, InteractionType.DIALOGUE });
+            new List<InteractionType> { InteractionType.TARGET, InteractionType.DIALOGUE }
+        );
         Request = interactionRequest;
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }

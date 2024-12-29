@@ -43,10 +43,6 @@ Alright. Bye.
 === scene1_1 ===
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
-// ~ SetActiveQuestChain(Level1_Quests)
-~ StartQuest(Level1_Quests.pay_for_gas)
-TODO SFX door closing
-~PlaySFX("carDoorOpenAndClose")
 
 * [npc] -> marlowe
 * [lupe's car] -> car
@@ -74,7 +70,9 @@ TODO SFX door closing
         ~ SetSpeaker(Speaker.Lupe)
         {
         	- gas_pumps == 1:
-        		"Out of order. Pay inside." Of course. Just my luck. -> DONE
+        		"Out of order. Pay inside." Of course. Just my luck. 
+                ~ StartQuest(Level1_Quests.pay_for_gas)
+        		-> DONE
             - gas_pumps == 2: 
                 Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE
             - gas_pumps == 3: 

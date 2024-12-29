@@ -42,10 +42,10 @@ public class MTRStoryManager : InkyStoryManager
     private string _mainQuestName;
 
     [SerializeField]
-    StoryVariableContainer _activeQuestChain;
+    StoryVariableContainer _activeQuests;
 
     [SerializeField]
-    StoryVariableContainer _completedQuestChain;
+    StoryVariableContainer _completedQuests;
     #endregion
 
     #region ( Clue Fields ) ------------------------ >>
@@ -150,12 +150,12 @@ public class MTRStoryManager : InkyStoryManager
         );
 
         GlobalStory.ObserveVariable(
-            "ACTIVE_QUEST_CHAIN",
+            "ACTIVE_QUESTS",
             (string varName, object newValue) =>
             {
                 SetVariable(varName, newValue);
-                TryGetVariableContainer(varName, out _activeQuestChain);
-                Debug.Log($"{Prefix} >> Active Quest Chain: {_activeQuestChain.Value}");
+                TryGetVariableContainer(varName, out _activeQuests);
+                Debug.Log($"{Prefix} >> Active Quest Chain: {_activeQuests.Value}");
             }
         );
 
@@ -164,8 +164,8 @@ public class MTRStoryManager : InkyStoryManager
             (string varName, object newValue) =>
             {
                 SetVariable(varName, newValue);
-                TryGetVariableContainer(varName, out _completedQuestChain);
-                Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuestChain.Value}");
+                TryGetVariableContainer(varName, out _completedQuests);
+                Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuests.Value}");
             }
         );
 

@@ -77,6 +77,9 @@ namespace Darklight.UnityExt.Inky
         Dictionary<string, object> _variableDictionary = new Dictionary<string, object>();
         string[] _globalTags;
         Dictionary<Choice, int> _choiceMap = new Dictionary<Choice, int>();
+        bool _isInitialized;
+        string _currentStoryKnot;
+        string _currentStoryStitch;
 
         //  ---------------- [ Serialized Fields ] -----------------------------
         [SerializeField]
@@ -84,13 +87,7 @@ namespace Darklight.UnityExt.Inky
 
         [Header("Active Story Info")]
         [SerializeField, ShowOnly]
-        bool _isInitialized;
-
-        [SerializeField, ShowOnly]
-        string _currentStoryKnot;
-
-        [SerializeField, ShowOnly]
-        string _currentStoryStitch;
+        string _currentStoryPath;
 
         [SerializeField, ShowOnly]
         string _currentStoryDialogue;
@@ -487,6 +484,7 @@ namespace Darklight.UnityExt.Inky
             finally
             {
                 Iterator.GoToState(StoryState.START);
+                Instance._currentStoryPath = path;
                 Debug.Log($"{Prefix} Moved to Path: {path}");
             }
         }

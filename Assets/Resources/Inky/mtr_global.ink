@@ -56,24 +56,21 @@ VAR CURRENT_SPEAKER = Speaker.Lupe
 
 // ====== QUEST HANDLING == >>
 VAR MAIN_QUEST = () // <- highest priority quest
-LIST ACTIVE_QUEST_CHAIN = (DEFAULTQUEST) // <- overwrite this list
-LIST COMPLETED_QUESTS = (DEFAULTQUEST) // <- all completed quests
-=== function SetActiveQuestChain(chain)
-    # SetActiveQuestChain >> {chain}
-    ~ ACTIVE_QUEST_CHAIN = chain
+LIST ACTIVE_QUESTS = DEFAULT // <- overwrite this list
+LIST COMPLETED_QUESTS = DEFAULT // <- all completed quests
 === function StartQuest(quest)
     #StartQuest >> {quest}
-    ~ ACTIVE_QUEST_CHAIN += quest
+    ~ ACTIVE_QUESTS += quest
 === function CompleteQuest(quest)
     #CompleteQuest >> {quest}
-    ~ ACTIVE_QUEST_CHAIN -= quest
+    ~ ACTIVE_QUESTS -= quest
     ~ COMPLETED_QUESTS += quest
 === function IsQuestComplete(quest)
     #IsQuestComplete >> {quest}
     ~ return COMPLETED_QUESTS ? quest
 === function IsQuestActive(quest)
     #IsQuestActive >> {quest}
-    ~ return ACTIVE_QUEST_CHAIN ? quest
+    ~ return ACTIVE_QUESTS ? quest
 
 // ====== CLUE HANDLING == >>
 LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)

@@ -8,7 +8,6 @@
 // location : The Winery, outside
 
 // Lupe and Misra arrive at the Winery. For a place having just closed a short time ago, it looks pretty run down. The whole building is in obvious disrepair with loose wood on the ground and vines creeping up the sides of the walls. Kind of creepy.
-~ SetActiveQuestChain(Level3_Quests)
 * [cut fence] -> fence
 * [window] -> window
 * [tracks] -> strange_footsteps

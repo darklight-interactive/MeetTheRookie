@@ -22,8 +22,6 @@ VAR canIntroArcade = true
 # The Bar is not.
 # Any store marked with a closed sign is not accessible.
 
-~ SetActiveQuestChain(Level4_Quests)
-
 + [talk to misra] -> talk_to_misra
 + [go to gen store] -> door_idahome_and_goods
 + [go to arcade] -> door_powerup_arcade
