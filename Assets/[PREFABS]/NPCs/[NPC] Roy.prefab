@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 0
@@ -148,10 +149,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 415502929
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _showGizmos: 0
 --- !u!114 &6191997840655572862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 1076486413
   _typeKey: 0
+  _showGizmos: 0
 --- !u!1 &2243979563928760883
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
     _lockNormalToTransform: 1
@@ -370,10 +373,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: -701419863
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 192
-  _showGizmos: 0
 --- !u!114 &5531249014731183879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: -1761843160
   _typeKey: 0
+  _showGizmos: 0
 --- !u!1 &6879612917963182113
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,8 +459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPreloaded: 1
-  _isRegistered: 1
-  _isInitialized: 1
+  _isRegistered: 0
+  _isInitialized: 0
   _request: {fileID: 11400000, guid: bb7119d448fa6c34d8b49b3e90e977f8, type: 2}
   _recievers:
     _items:
@@ -466,24 +470,24 @@ MonoBehaviour:
     - _id: 1
       _key: 3
       _value: {fileID: 204762628531812549}
+    - _id: 2
+      _key: 5
+      _value: {fileID: 0}
     _readOnlyKey: 1
     _readOnlyValue: 1
     _defaultToAllKeys: 0
-  _destinations:
-  - -0.5
-  - 0.5
   _data:
-    _name: DefaultName
-    _key: Speaker.Roy_Rodgerson
+    _name: roy_intro_cutscene
+    _scene: Roy_Dialogue
+    _key: ROY_RODGERS
     _layer: NPC
     _type: 1
     _sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   _currentState: 0
   _sceneKnot: Roy_Dialogue
   _interactionStitch: Roy_Dialogue.roy_intro_cutscene
-  onStart: 0
-  isSpawn: 0
-  _speakerTag: Speaker.Roy_Rodgerson
+  autoSizeCollider: 1
+  _speakerTag: 7
 --- !u!114 &2528446817011783710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,9 +523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f970796c10c81c84bab8a77f4ea9081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentFrame: 1
+  _currentFrame: 0
   _currentDirection: 0
-  _currentSprite: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  _currentSprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   _frameRate: 4
   _defaultDirection: 0
   animationStateOverride: 1
@@ -581,7 +585,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1263404788, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
+  m_Sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

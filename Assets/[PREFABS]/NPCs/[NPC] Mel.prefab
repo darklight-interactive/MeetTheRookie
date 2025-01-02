@@ -460,8 +460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPreloaded: 1
-  _isRegistered: 1
-  _isInitialized: 1
+  _isRegistered: 0
+  _isInitialized: 0
   _request: {fileID: 11400000, guid: bb7119d448fa6c34d8b49b3e90e977f8, type: 2}
   _recievers:
     _items:
@@ -480,7 +480,7 @@ MonoBehaviour:
   _data:
     _name: mel
     _scene: scene1_3
-    _key: Speaker.Mel
+    _key: MEL
     _layer: NPC
     _type: 1
     _sprite: {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
@@ -488,7 +488,7 @@ MonoBehaviour:
   _sceneKnot: scene1_3
   _interactionStitch: scene1_3.mel
   autoSizeCollider: 1
-  _speakerTag: Speaker.Mel
+  _speakerTag: 6
 --- !u!114 &8703908369491067701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,7 +619,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1597186226610899330, guid: bad536425cbd56b47aca7332018d781e, type: 3}
+  m_Sprite: {fileID: 4860594408084818676, guid: bad536425cbd56b47aca7332018d781e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
