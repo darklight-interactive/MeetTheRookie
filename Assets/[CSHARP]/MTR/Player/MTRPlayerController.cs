@@ -116,7 +116,7 @@ public class MTRPlayerController : MonoBehaviour
 
         // << CALCULATE RELATION TO BOUNDS >>
         MTRSceneBounds sceneBounds = MTRSceneManager.ActiveSceneData.SceneBounds;
-        _inBounds = sceneBounds.Contains(_currentPosX);
+        _inBounds = sceneBounds.ContainsXPos(_currentPosX);
         _canWalkLeft = _currentPosX > sceneBounds.Left + (_boundPadding * 2);
         _canWalkRight = _currentPosX < sceneBounds.Right - (_boundPadding * 2);
 

@@ -6,14 +6,31 @@ using UnityEngine;
 [System.Serializable]
 public class MTRCameraBounds
 {
-    [ShowOnly] public Vector2 Center = new Vector2(0, 1);
-    [ShowOnly] public Vector2 XAxisValues = new Vector2(-5, 5);
-    [ShowOnly] public Vector2 YAxisValues = new Vector2(-1, 1);
+    [ShowOnly]
+    public Vector2 Center = new Vector2(0, 1);
 
-    public float Left { get => Center.x + XAxisValues.x; }
-    public float Right { get => Center.x + XAxisValues.y; }
-    public float Top { get => Center.y + YAxisValues.y; }
-    public float Bottom { get => Center.y + YAxisValues.x; }
+    [ShowOnly]
+    public Vector2 XAxisValues = new Vector2(-5, 5);
+
+    [ShowOnly]
+    public Vector2 YAxisValues = new Vector2(-1, 1);
+
+    public float Left
+    {
+        get => Center.x + XAxisValues.x;
+    }
+    public float Right
+    {
+        get => Center.x + XAxisValues.y;
+    }
+    public float Top
+    {
+        get => Center.y + YAxisValues.y;
+    }
+    public float Bottom
+    {
+        get => Center.y + YAxisValues.x;
+    }
 
     public void SetBounds(Vector2 center, Vector2 xAxisBounds, Vector2 yAxisBounds)
     {

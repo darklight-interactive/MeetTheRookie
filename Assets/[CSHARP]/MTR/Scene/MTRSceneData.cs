@@ -1,19 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-
 using Darklight.UnityExt.BuildScene;
-
-using UnityEngine;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using NaughtyAttributes;
-using Darklight.UnityExt.Editor;
-
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
-
 
 /// <summary>
 /// Custom Scriptable object to hold MTR_SceneData.
@@ -24,25 +18,35 @@ public class MTRSceneData : BuildSceneScriptableData
     List<string> _knotList = new List<string> { "None" };
     List<string> _stitchList = new List<string> { "None" };
 
-
     [Header("MTR STORY SETTINGS")]
-    [SerializeField, ShowOnly] string _internalSceneKnot = "None";
-    [SerializeField, Dropdown("_dropdown_sceneKnotList"), HideIf("_foundSceneKnot")] string _sceneKnot = "None";
+    [SerializeField, ShowOnly]
+    string _internalSceneKnot = "None";
+
+    [SerializeField, Dropdown("_dropdown_sceneKnotList"), HideIf("_foundSceneKnot")]
+    string _sceneKnot = "None";
 
     [Header("MTR INTERACTION SETTINGS")]
-    [SerializeField] bool _forceInteractionOnEnter;
+    [SerializeField]
+    bool _forceInteractionOnEnter;
+
     [SerializeField, Dropdown("_dropdown_sceneStitchList"), ShowIf("_forceInteractionOnEnter")]
     string _onEnterInteractionStitch = "None";
 
     [Header("MTR SCENE SETTINGS")]
-    [SerializeField, Range(0f, 5f)] float _cameraBoundsOffset = 0.25f;
-    [SerializeField] MTRSceneBounds _sceneBounds = new MTRSceneBounds();
-    [SerializeField] MTRCameraBounds _cameraBounds = new MTRCameraBounds();
+    [SerializeField, Range(0f, 5f)]
+    float _cameraBoundsOffset = 0.25f;
+
+    [SerializeField]
+    MTRSceneBounds _sceneBounds = new MTRSceneBounds();
+
+    [SerializeField]
+    MTRCameraBounds _cameraBounds = new MTRCameraBounds();
 
     [Header("MTR CAMERA SETTINGS")]
-    [SerializeField] MTRCameraController.SettingType _onStartCameraSetting = MTRCameraController.SettingType.DEFAULT;
+    [SerializeField]
+    MTRCameraController.SettingType _onStartCameraSetting = MTRCameraController.SettingType.DEFAULT;
 
-    #region ---- < PROPERTIES > --------------------------------- 
+    #region ---- < PROPERTIES > ---------------------------------
     List<string> _dropdown_sceneKnotList
     {
         get
@@ -111,9 +115,8 @@ public class MTRSceneData : BuildSceneScriptableData
         _cameraBounds.Center = _sceneBounds.Center;
         _cameraBounds.XAxisValues.x = _sceneBounds.XAxisValues.x - _cameraBoundsOffset;
         _cameraBounds.XAxisValues.y = _sceneBounds.XAxisValues.y + _cameraBoundsOffset;
-
-        // Hard code the YBounds to be a distance of 2
-        _cameraBounds.YAxisValues = new Vector2(-1, 1);
+        _cameraBounds.YAxisValues.x = _sceneBounds.YAxisValues.x - _cameraBoundsOffset;
+        _cameraBounds.YAxisValues.y = _sceneBounds.YAxisValues.y + _cameraBoundsOffset;
     }
 
     void RefreshStorySettings()
@@ -182,4 +185,3 @@ public class MTRSceneData : BuildSceneScriptableData
         CameraRigBounds.DrawGizmos();
     }
 }
-
