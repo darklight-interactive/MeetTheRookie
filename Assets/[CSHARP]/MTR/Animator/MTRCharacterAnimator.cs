@@ -7,8 +7,8 @@ using UnityEditor;
 
 [RequireComponent(
     typeof(SpriteRenderer)
-    //typeof(FrameAnimationPlayer)
-    )]
+//typeof(FrameAnimationPlayer)
+)]
 public class MTRCharacterAnimator : FrameAnimationPlayer
 {
     private NPC_Controller _controller => GetComponent<NPC_Controller>();
@@ -32,20 +32,15 @@ public class MTRCharacterAnimator : FrameAnimationPlayer
             else
                 Debug.LogError("No sprite sheet found for state: " + animationStateOverride);
         }
-        else { Debug.LogError("No animation state set for player animator"); }
-
-        UpdateFacing();
+        else
+        {
+            Debug.LogError("No animation state set for player animator");
+        }
     }
 
     public override void Update()
     {
         base.Update();
-        UpdateFacing();
-    }
-
-    void UpdateFacing()
-    {
-
     }
 
     public void PlayStateAnimation(NPCState state)
@@ -69,6 +64,14 @@ public class MTRCharacterAnimator : FrameAnimationPlayer
         }
         return null;
     }
+
+    public void SetFacingTowardsPosition(Vector2 position)
+    {
+        if (position.x > transform.position.x)
+            SetFacing(SpriteDirection.RIGHT);
+        else
+            SetFacing(SpriteDirection.LEFT);
+    }
 }
 
 #if UNITY_EDITOR
@@ -77,6 +80,7 @@ public class NPCAnimationEditor : Editor
 {
     SerializedObject _serializedObject;
     MTRCharacterAnimator _script;
+
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
@@ -96,7 +100,9 @@ public class NPCAnimationEditor : Editor
         {
             if (_script.animationStateOverride != NPCState.NONE)
             {
-                _script.LoadSpriteSheet(_script.GetSpriteSheetWithState(_script.animationStateOverride));
+                _script.LoadSpriteSheet(
+                    _script.GetSpriteSheetWithState(_script.animationStateOverride)
+                );
             }
 
             _serializedObject.ApplyModifiedProperties();

@@ -4,7 +4,20 @@ using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Utility;
 using UnityEngine;
 
-public enum NPCState { NONE, IDLE, WALK, SPEAK, FOLLOW, HIDE, CHASE, PLAY_ANIMATION, GRABBED, STRUGGLE, DRAGGED }
+public enum NPCState
+{
+    NONE,
+    IDLE,
+    WALK,
+    SPEAK,
+    FOLLOW,
+    HIDE,
+    CHASE,
+    PLAY_ANIMATION,
+    GRABBED,
+    STRUGGLE,
+    DRAGGED
+}
 
 public class NPC_StateMachine : FiniteStateMachine<NPCState>
 {
@@ -20,7 +33,12 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     ///     args[0] = NPC_Controller
     ///     args[1] = NPC_Animator
     /// </param>
-    public NPC_StateMachine(Dictionary<NPCState, FiniteState<NPCState>> possibleStates, NPCState initialState, params object[] args) : base(possibleStates, initialState, args)
+    public NPC_StateMachine(
+        Dictionary<NPCState, FiniteState<NPCState>> possibleStates,
+        NPCState initialState,
+        params object[] args
+    )
+        : base(possibleStates, initialState, args)
     {
         controller = (NPC_Controller)args[0];
         animator = (MTRCharacterAnimator)args[1];
@@ -55,15 +73,14 @@ public class IdleState : FiniteState<NPCState>
     ///     args[2] = float (_maxDuration)
     ///     args[3] = bool  (_idleWalkLoop)
     /// </param>
-    public IdleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public IdleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
     }
 
-    public override void Enter()
-    {
-    }
+    public override void Enter() { }
 
     public override void Exit()
     {
@@ -101,7 +118,8 @@ public class WalkState : FiniteState<NPCState>
     ///   args[5] = float (_rightBound)
     ///   args[6] = bool  (_idleWalkLoop)
     /// </param>
-    public WalkState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public WalkState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -109,12 +127,9 @@ public class WalkState : FiniteState<NPCState>
         _destinationWrapper = (DestinationWrapper)args[3];
         _walkDestinationX = _destinationWrapper.walkDestinationX;
         _stateAfterWalking = (NPCState)args[4];
-
     }
 
-    public override void Enter()
-    {
-    }
+    public override void Enter() { }
 
     public override void Exit()
     {
@@ -139,7 +154,8 @@ public class WalkState : FiniteState<NPCState>
         if (transform.position.x > _walkDestinationX)
         {
             _walkDirection = -1;
-        } else
+        }
+        else
         {
             _walkDirection = 1;
         }
@@ -148,7 +164,11 @@ public class WalkState : FiniteState<NPCState>
         float targetX = transform.position.x + movement;
 
         // move the character
-        transform.position = Vector3.Lerp(transform.position, new Vector3(targetX, transform.position.y, transform.position.z), Time.deltaTime);
+        transform.position = Vector3.Lerp(
+            transform.position,
+            new Vector3(targetX, transform.position.y, transform.position.z),
+            Time.deltaTime
+        );
 
         // Update the Animation
         //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-_walkDirection, 0));
@@ -169,7 +189,8 @@ public class SpeakState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public SpeakState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public SpeakState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
@@ -184,12 +205,10 @@ public class SpeakState : FiniteState<NPCState>
         _stateMachine.animator.FrameAnimationPlayer.FlipTransform(new Vector2(npcPos.x < playerPos.x ? -1 : 1, 0));
         */
     }
+
     public override void Exit() { }
-    public override void Execute()
-    {
 
-
-    }
+    public override void Execute() { }
 }
 
 #endregion
@@ -216,7 +235,8 @@ public class FollowState : FiniteState<NPCState>
     ///    args[2] = float (followDistance)
     ///    args[3] = float (followSpeed)
     /// </param>
-    public FollowState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public FollowState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -228,9 +248,12 @@ public class FollowState : FiniteState<NPCState>
     {
         Debug.Log("Entering Follow State");
 
-        if (player == null) { player = _stateMachine.controller.player; }
+        if (player == null)
+        {
+            player = _stateMachine.controller.player;
+        }
 
-         coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
+        coroutine = _coroutineRunner.StartCoroutine(FollowCheck());
 
         movingInFollowState = true;
     }
@@ -247,7 +270,7 @@ public class FollowState : FiniteState<NPCState>
     public override void Execute()
     {
         int followDirection = (currentFollowDistance < 0) ? -1 : 1;
-        //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-followDirection, 0));
+        _stateMachine.animator.SetFacingTowardsPosition(player.transform.position);
 
         if (movingInFollowState)
         {
@@ -257,7 +280,11 @@ public class FollowState : FiniteState<NPCState>
             float targetX = npc.transform.position.x + movement;
 
             // move the character
-            npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
+            npc.transform.position = Vector3.Lerp(
+                npc.transform.position,
+                new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
+                Time.deltaTime
+            );
         }
     }
 
@@ -277,13 +304,17 @@ public class FollowState : FiniteState<NPCState>
             if (!movingInFollowState && beyondFollowDistance)
             {
                 movingInFollowState = true;
-                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW));
+                _stateMachine.animator.LoadSpriteSheet(
+                    _stateMachine.animator.GetSpriteSheetWithState(NPCState.FOLLOW)
+                );
             }
-
             // If NPC is moving and they're within distance, stop
-            else if (movingInFollowState && !beyondFollowDistance)            {
+            else if (movingInFollowState && !beyondFollowDistance)
+            {
                 movingInFollowState = false;
-                _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                _stateMachine.animator.LoadSpriteSheet(
+                    _stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE)
+                );
             }
         }
     }
@@ -312,7 +343,8 @@ public class HideState : FiniteState<NPCState>
     ///   args[1] = MonoBehaviour (_coroutineRunner)
     ///   args[2] = float (hideSpeed)
     /// </param>
-    public HideState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public HideState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _coroutineRunner = (MonoBehaviour)args[1];
@@ -344,9 +376,11 @@ public class HideState : FiniteState<NPCState>
             float targetX = npcPos.x + movement;
 
             // move the character
-            npc.transform.position = Vector3.Lerp(npc.transform.position,
+            npc.transform.position = Vector3.Lerp(
+                npc.transform.position,
                 new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
-                Time.deltaTime);
+                Time.deltaTime
+            );
             //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-hideDirection, 0));
         }
     }
@@ -356,7 +390,9 @@ public class HideState : FiniteState<NPCState>
         int hideCheckCount = 0;
         for (; ; )
         {
-            hideableObjects = GameObject.FindObjectsByType<Hideable_Object>(FindObjectsSortMode.None);
+            hideableObjects = GameObject.FindObjectsByType<Hideable_Object>(
+                FindObjectsSortMode.None
+            );
 
             // find the closest hideable object, only if there are any
             if (hideableObjects != null && hideableObjects.Length > 0)
@@ -365,11 +401,15 @@ public class HideState : FiniteState<NPCState>
 
                 GameObject currentClosest = hideableObjects[0].gameObject;
                 float currentPos = _stateMachine.controller.transform.position.x;
-                float currentClosestDistance = Mathf.Abs(currentPos - currentClosest.transform.position.x);
+                float currentClosestDistance = Mathf.Abs(
+                    currentPos - currentClosest.transform.position.x
+                );
 
                 for (int i = 1; i < hideableObjects.Length; i++)
                 {
-                    float newDistance = Mathf.Abs(currentPos - hideableObjects[i].transform.position.x);
+                    float newDistance = Mathf.Abs(
+                        currentPos - hideableObjects[i].transform.position.x
+                    );
 
                     if (newDistance < currentClosestDistance)
                     {
@@ -387,13 +427,17 @@ public class HideState : FiniteState<NPCState>
                 if (beyondValidHideDistance && !movingInHideState)
                 {
                     movingInHideState = true;
-                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK));
+                    _stateMachine.animator.LoadSpriteSheet(
+                        _stateMachine.animator.GetSpriteSheetWithState(NPCState.WALK)
+                    );
                 }
                 // We just got in range, and need to stop moving
                 else if (!beyondValidHideDistance && movingInHideState)
                 {
                     movingInHideState = false;
-                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE));
+                    _stateMachine.animator.LoadSpriteSheet(
+                        _stateMachine.animator.GetSpriteSheetWithState(NPCState.HIDE)
+                    );
                 }
             }
             else
@@ -402,7 +446,9 @@ public class HideState : FiniteState<NPCState>
             {
                 if (areThereHideableObjects || hideCheckCount == 0)
                 {
-                    _stateMachine.animator.LoadSpriteSheet(_stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE));
+                    _stateMachine.animator.LoadSpriteSheet(
+                        _stateMachine.animator.GetSpriteSheetWithState(NPCState.IDLE)
+                    );
                     areThereHideableObjects = false;
                     movingInHideState = false;
                 }
@@ -431,7 +477,8 @@ public class ChaseState : FiniteState<NPCState>
     ///  args[1] = float (chaseSpeakDistance)
     ///  args[2] = float (chaseSpeed)
     /// </param>
-    public ChaseState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public ChaseState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         chaseSpeakDistance = (float)args[1];
@@ -439,6 +486,7 @@ public class ChaseState : FiniteState<NPCState>
     }
 
     public override void Enter() { }
+
     public override void Exit() { }
 
     public override void Execute()
@@ -460,7 +508,11 @@ public class ChaseState : FiniteState<NPCState>
         float targetX = npcPos.x + movement;
 
         // move the character
-        npc.transform.position = Vector3.Lerp(npc.transform.position, new Vector3(targetX, npc.transform.position.y, npc.transform.position.z), Time.deltaTime);
+        npc.transform.position = Vector3.Lerp(
+            npc.transform.position,
+            new Vector3(targetX, npc.transform.position.y, npc.transform.position.z),
+            Time.deltaTime
+        );
         //_stateMachine.animator.FrameAnimationPlayer.FlipSprite(new Vector2(-chaseDirection, 0));
     }
 }
@@ -473,21 +525,27 @@ public class PlayAnimationState : FiniteState<NPCState>
     public NPC_StateMachine _stateMachine;
     public NPCState _returnState;
 
-    public PlayAnimationState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public PlayAnimationState(
+        NPC_StateMachine stateMachine,
+        NPCState stateType,
+        params object[] args
+    )
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
         _returnState = (NPCState)args[1];
     }
 
     public override void Enter() { }
+
     public override void Exit() { }
+
     public override void Execute()
     {
         if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(_returnState);
         }
-
     }
 }
 
@@ -498,20 +556,22 @@ public class GrabbedState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public GrabbedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public GrabbedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
 
     public override void Enter() { }
+
     public override void Exit() { }
+
     public override void Execute()
     {
         if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.STRUGGLE);
         }
-
     }
 }
 
@@ -522,13 +582,16 @@ public class StruggleState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public StruggleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public StruggleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
 
     public override void Enter() { }
+
     public override void Exit() { }
+
     public override void Execute() { }
 }
 
@@ -539,20 +602,22 @@ public class DraggedState : FiniteState<NPCState>
 {
     public NPC_StateMachine _stateMachine;
 
-    public DraggedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args) : base(stateMachine, stateType)
+    public DraggedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
+        : base(stateMachine, stateType)
     {
         _stateMachine = (NPC_StateMachine)args[0];
     }
 
     public override void Enter() { }
+
     public override void Exit() { }
+
     public override void Execute()
     {
         if (_stateMachine.animator.AnimationIsOver())
         {
             _stateMachine.GoToState(NPCState.IDLE);
         }
-
     }
 }
 

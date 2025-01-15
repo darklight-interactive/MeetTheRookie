@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
-using System;
 using Darklight.UnityExt.Utility;
+using UnityEngine;
 using static WalkState;
 
 [RequireComponent(typeof(MTRCharacterAnimator))]
@@ -11,7 +11,9 @@ public class NPC_Controller : MonoBehaviour
 {
     public NPC_StateMachine stateMachine;
     public MTRCharacterAnimator animator => GetComponent<MTRCharacterAnimator>();
-    [SerializeField, ShowOnly] NPCState currentState;
+
+    [SerializeField, ShowOnly]
+    NPCState currentState;
 
     // =============== [ PUBLIC INSPECTOR VALUES ] =================== //
     public GameObject player => FindFirstObjectByType<MTRPlayerInput>().gameObject;
@@ -21,16 +23,20 @@ public class NPC_Controller : MonoBehaviour
     public NPCState stateAfterAnimation = NPCState.IDLE;
 
     [Tooltip("Speed for the WALK state")]
-    [Range(0.1f, 1f)] public float npcSpeed = .2f;
+    [Range(0.1f, 1f)]
+    public float npcSpeed = .2f;
 
     [Tooltip("Speed for the FOLLOW state")]
-    [Range(0.1f, 1f)] public float followSpeed = .5f;
+    [Range(0.1f, 1f)]
+    public float followSpeed = .5f;
 
     [Tooltip("Speed for the HIDE state")]
-    [Range(0.1f, 1f)] public float hideSpeed = .5f;
+    [Range(0.1f, 1f)]
+    public float hideSpeed = .5f;
 
     [Tooltip("Speed for the CHASE state")]
-    [Range(0.1f, 1f)] public float chaseSpeed = .5f;
+    [Range(0.1f, 1f)]
+    public float chaseSpeed = .5f;
 
     [Tooltip("Distance the NPC will follow the player")]
     public float followDistance = 1;
@@ -49,28 +55,49 @@ public class NPC_Controller : MonoBehaviour
 
         // Create instances of the states
         IdleState idleState = new(stateMachine, NPCState.IDLE, new object[] { stateMachine, this });
-        WalkState walkState = new(stateMachine, NPCState.WALK, new object[] { stateMachine, this, npcSpeed, destinationWrapper, stateAfterWalking });
+        WalkState walkState =
+            new(
+                stateMachine,
+                NPCState.WALK,
+                new object[] { stateMachine, this, npcSpeed, destinationWrapper, stateAfterWalking }
+            );
         SpeakState speakState = new(stateMachine, NPCState.SPEAK, new object[] { stateMachine });
-        FollowState followState = new(stateMachine, NPCState.FOLLOW, new object[] { stateMachine, this, followDistance, followSpeed });
-        HideState hideState = new(stateMachine, NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
-        ChaseState chaseState = new(stateMachine, NPCState.CHASE, new object[] { stateMachine, chaseSpeakDistance, chaseSpeed });
-        PlayAnimationState playAnimationState = new(stateMachine, NPCState.PLAY_ANIMATION, new object[] { stateMachine, stateAfterAnimation });
+        FollowState followState =
+            new(
+                stateMachine,
+                NPCState.FOLLOW,
+                new object[] { stateMachine, this, followDistance, followSpeed }
+            );
+        HideState hideState =
+            new(stateMachine, NPCState.HIDE, new object[] { stateMachine, this, hideSpeed });
+        ChaseState chaseState =
+            new(
+                stateMachine,
+                NPCState.CHASE,
+                new object[] { stateMachine, chaseSpeakDistance, chaseSpeed }
+            );
+        PlayAnimationState playAnimationState =
+            new(
+                stateMachine,
+                NPCState.PLAY_ANIMATION,
+                new object[] { stateMachine, stateAfterAnimation }
+            );
 
         // Create dictionary to hold the possible states
-        Dictionary<NPCState, FiniteState<NPCState>> possibleStates = new()
-        {
-            { NPCState.IDLE, idleState },
-            { NPCState.WALK, walkState },
-            { NPCState.SPEAK, speakState },
-            { NPCState.FOLLOW, followState },
-            { NPCState.HIDE, hideState },
-            { NPCState.CHASE, chaseState },
-            { NPCState.PLAY_ANIMATION, playAnimationState}, 
-        };
+        Dictionary<NPCState, FiniteState<NPCState>> possibleStates =
+            new()
+            {
+                { NPCState.IDLE, idleState },
+                { NPCState.WALK, walkState },
+                { NPCState.SPEAK, speakState },
+                { NPCState.FOLLOW, followState },
+                { NPCState.HIDE, hideState },
+                { NPCState.CHASE, chaseState },
+                { NPCState.PLAY_ANIMATION, playAnimationState },
+            };
 
         // Create the NPCStateMachine
         stateMachine = new(possibleStates, startingState, this, animator);
-
 
         // Hacky solution to fix null reference bug, setting the stateMachine field for each state
         idleState._stateMachine = stateMachine;
@@ -92,12 +119,18 @@ public class NPC_Controller : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawLine(new Vector3(walkDestinationX, 0, this.GetComponent<Transform>().position.z), new Vector3(walkDestinationX, 5, this.GetComponent<Transform>().position.z));
+        Gizmos.DrawLine(
+            new Vector3(walkDestinationX, 0, this.GetComponent<Transform>().position.z),
+            new Vector3(walkDestinationX, 5, this.GetComponent<Transform>().position.z)
+        );
     }
 
     // This is a workaround because you cannot call FindObjectsByType on a reference to this
     public Hideable_Object[] FindHideableObjects()
     {
-        return FindObjectsByType<Hideable_Object>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        return FindObjectsByType<Hideable_Object>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
     }
 }

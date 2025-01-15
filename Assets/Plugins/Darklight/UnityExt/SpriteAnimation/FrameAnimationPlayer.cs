@@ -1,7 +1,6 @@
 using Darklight.UnityExt.Editor;
-using UnityEngine;
 using NaughtyAttributes;
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,40 +11,60 @@ namespace Darklight.UnityExt.Animation
     [RequireComponent(typeof(SpriteRenderer))]
     public class FrameAnimationPlayer : MonoBehaviour
     {
-        public enum SpriteDirection { NONE, LEFT, RIGHT, UP, DOWN }
+        public enum SpriteDirection
+        {
+            NONE,
+            LEFT,
+            RIGHT,
+            UP,
+            DOWN
+        }
+
         protected const string PREFIX = "FrameAnimationPlayer";
 
         float _timer = 0f; // Timer to track when to switch to the next frame
         bool _animationDone = false;
 
-        [SerializeField, ShowOnly] int _currentFrame = 0;
-        [SerializeField, ShowOnly] SpriteDirection _currentDirection = SpriteDirection.NONE;
-        [SerializeField, ShowAssetPreview] Sprite _currentSprite;
-        [SerializeField, Range(0, 16)] int _frameRate = 4;
-        [SerializeField] SpriteDirection _defaultDirection = SpriteDirection.NONE;
-        SpriteSheet _spriteSheet;
+        [SerializeField, ShowOnly]
+        int _currentFrame = 0;
 
+        [SerializeField, ShowOnly]
+        SpriteDirection _currentDirection = SpriteDirection.NONE;
+
+        [SerializeField, ShowAssetPreview]
+        Sprite _currentSprite;
+
+        [SerializeField, Range(0, 16)]
+        int _frameRate = 4;
+
+        [SerializeField]
+        SpriteDirection _defaultDirection = SpriteDirection.NONE;
+        SpriteSheet _spriteSheet;
 
         public SpriteSheet SpriteSheet => _spriteSheet;
         protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
         protected float timePerFrame => 1 / (float)_frameRate; // Time each frame should be displayed
 
         public void Awake() => Initialize();
+
         public virtual void Update()
         {
-            if (_spriteSheet == null) return;
+            if (_spriteSheet == null)
+                return;
             UpdateFrame();
         }
 
         public virtual void Initialize()
         {
-            if (_spriteSheet == null) return;
+            if (_spriteSheet == null)
+                return;
             LoadSpriteSheet(_spriteSheet);
         }
 
         void UpdateFrame()
         {
-            if (_spriteSheet == null) return;
+            if (_spriteSheet == null)
+                return;
             if (_currentFrame + 1 == _spriteSheet.Length && !_spriteSheet.loop)
             {
                 _animationDone = true;
@@ -93,7 +112,8 @@ namespace Darklight.UnityExt.Animation
         public void SetFacing(SpriteDirection direction)
         {
             _currentDirection = direction;
-            if (_spriteSheet == null) return;
+            if (_spriteSheet == null)
+                return;
 
             if (_currentDirection == SpriteDirection.LEFT)
                 spriteRenderer.flipX = false;
@@ -101,7 +121,8 @@ namespace Darklight.UnityExt.Animation
                 spriteRenderer.flipX = true;
         }
 
-        public bool AnimationIsOver() {
+        public bool AnimationIsOver()
+        {
             return _animationDone;
         }
     }
@@ -112,6 +133,7 @@ namespace Darklight.UnityExt.Animation
     {
         SerializedObject _serializedObject;
         FrameAnimationPlayer _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -135,5 +157,4 @@ namespace Darklight.UnityExt.Animation
         }
     }
 #endif
-
 }
