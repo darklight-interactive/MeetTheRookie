@@ -63,8 +63,21 @@ public class MTRStoryManager : InkyStoryManager
         }
     }
 
-    public delegate void SpeakerSet(MTRSpeaker speaker);
-    public static event SpeakerSet OnNewSpeaker;
+    public List<string> ActiveQuestList
+    {
+        get { return _activeQuests.ValueAsStringList; }
+    }
+
+    public List<string> CompletedQuestList
+    {
+        get { return _completedQuests.ValueAsStringList; }
+    }
+
+    public delegate void SpeakerUpdateEvent(MTRSpeaker speaker);
+    public delegate void ListUpdateEvent(List<string> list);
+    public static event SpeakerUpdateEvent OnNewSpeaker;
+    public static event ListUpdateEvent OnActiveQuestListUpdate;
+    public static event ListUpdateEvent OnCompletedQuestListUpdate;
 
     protected override void HandleStoryInitialized()
     {
@@ -155,6 +168,7 @@ public class MTRStoryManager : InkyStoryManager
             {
                 SetVariable(varName, newValue);
                 TryGetVariableContainer(varName, out _activeQuests);
+                OnActiveQuestListUpdate?.Invoke(_activeQuests.ValueAsStringList);
                 Debug.Log($"{Prefix} >> Active Quest Chain: {_activeQuests.Value}");
             }
         );
@@ -165,6 +179,7 @@ public class MTRStoryManager : InkyStoryManager
             {
                 SetVariable(varName, newValue);
                 TryGetVariableContainer(varName, out _completedQuests);
+                OnCompletedQuestListUpdate?.Invoke(_completedQuests.ValueAsStringList);
                 Debug.Log($"{Prefix} >> Completed Quest Chain: {_completedQuests.Value}");
             }
         );

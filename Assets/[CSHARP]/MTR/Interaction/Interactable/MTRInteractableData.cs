@@ -7,12 +7,23 @@ public partial class MTRInteractable
     [Serializable]
     public new class InternalData : InternalData<MTRInteractable>
     {
-        [SerializeField, ShowOnly] string _name;
-        [SerializeField, ShowOnly] string _scene;
-        [SerializeField, ShowOnly] string _key;
-        [SerializeField, ShowOnly] string _layer;
-        [SerializeField, ShowOnly] Type _type = Type.BASE;
-        [SerializeField] Sprite _sprite;
+        [SerializeField, ShowOnly]
+        string _name;
+
+        [SerializeField, ShowOnly]
+        string _scene;
+
+        [SerializeField, ShowOnly]
+        string _key;
+
+        [SerializeField, ShowOnly]
+        string _layer;
+
+        [SerializeField, ShowOnly]
+        Type _type = Type.BASE;
+
+        [SerializeField]
+        Sprite _sprite;
 
         public override string Name => _name;
         public override string Key => _key;
@@ -22,7 +33,8 @@ public partial class MTRInteractable
         public Type Type => _type;
         public Sprite Sprite => _sprite;
 
-        public InternalData(MTRInteractable interactable) : base(interactable)
+        public InternalData(MTRInteractable interactable)
+            : base(interactable)
         {
             LoadData(interactable);
         }
@@ -36,7 +48,7 @@ public partial class MTRInteractable
         /// Set the key value of the interactable. <br/>
         /// This is the value that will be used to identify the interactable in the story. <br/>
         /// If the interactable is a character, the key will be the character's name. <br/>
-        /// Otherwise, the key will be the interactable's corresponding stitch.
+        /// /// Otherwise, the key will be the interactable's corresponding stitch.
         /// </summary>
         /// <param name="key"></param>
         public void SetKey(string key) => _key = key;
@@ -54,22 +66,25 @@ public partial class MTRInteractable
                 _key = (interactable as MTRPlayerInteractor).SpeakerTag.ToString();
                 _layer = InteractionSystem.Settings.PlayerLayer;
 
-                interactable.gameObject.name = $"PLAYER_Lupe";
+                _name = $"PLAYER_{_key}";
+                //interactable.gameObject.name = $"PLAYER_Lupe";
             }
             else if (interactable is MTRCharacterInteractable)
             {
                 _key = (interactable as MTRCharacterInteractable).SpeakerTag.ToString();
                 _layer = InteractionSystem.Settings.NPCLayer;
 
-                string name = _key.Replace("Speaker.", "");
-                interactable.gameObject.name = $"CHARACTER_{name}";
+                string split_name = _key.Replace("Speaker.", "");
+                _name = $"CHARACTER_{split_name}";
+                //interactable.gameObject.name = $"CHARACTER_{name}";
             }
             else if (interactable is MTRInteractable)
             {
                 _key = interactable._interactionStitch;
                 _layer = InteractionSystem.Settings.InteractableLayer;
 
-                interactable.gameObject.name = $"INTRCT_{_key}";
+                _name = $"INTRCT_{_key}";
+                //interactable.gameObject.name = $"INTRCT_{_key}";
             }
             else
             {

@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
+    <engine:VisualElement name="container" style="flex-grow: 1; flex-direction: row;">
+        <engine:VisualElement name="quest-container" class="panel" style="flex-grow: 0;">
+            <engine:GroupBox name="quest-group-box" style="justify-content: space-evenly; align-items: flex-start; align-self: flex-start; flex-grow: 0;">
+                <engine:Label text="Quest A" class="h3" />
+            </engine:GroupBox>
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 6;" />
+    </engine:VisualElement>
+</engine:UXML>

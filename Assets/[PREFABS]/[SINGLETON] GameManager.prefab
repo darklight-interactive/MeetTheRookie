@@ -43,6 +43,7 @@ Transform:
   - {fileID: 7401420707896709730}
   - {fileID: 8726485604991540131}
   - {fileID: 7529712480445616838}
+  - {fileID: 8956101955322927365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2858154478255356125
@@ -271,8 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storyAsset: {fileID: 4900000, guid: d3591a36bfee79947b7fe0046e67d8e2, type: 3}
-  _isInitialized: 1
-  _currentStoryKnot: 
+  _currentStoryPath: 
   _currentStoryDialogue: 
   _currentStoryState: 0
   _storyDataObject: {fileID: 11400000, guid: e57105a6ee81f41cfbfc83efa0577849, type: 2}
@@ -294,17 +294,20 @@ MonoBehaviour:
     - Speaker.Josh
     - Speaker.Irene
     - Speaker.Jenkins
-  _currentSpeaker: Speaker.Lupe
+  _currentSpeaker: 0
   _mainQuestName: 
-  _activeQuestChain:
+  _activeQuests:
     _key: 
     _valueAsString: 
     _valueAsStringList: []
-  _completedQuestChain:
+  _completedQuests:
     _key: 
     _valueAsString: 
     _valueAsStringList: []
-  _globalKnowledgeList: []
+  _globalKnowledge:
+    _key: 
+    _valueAsString: 
+    _valueAsStringList: []
 --- !u!114 &3231504660078741222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,16 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
   _interactableRegistry:
-    _items:
-    - _id: 0
-      _key: Speaker.Lupe
-      _value: {fileID: 0}
-    - _id: 1
-      _key: scene1_1.enter_store
-      _value: {fileID: 0}
-    - _id: 2
-      _key: scene1_1.gas_pump
-      _value: {fileID: 0}
+    _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1
 --- !u!114 &3307535121424918597
@@ -506,6 +500,68 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!1 &5394230022270883758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8956101955322927365}
+  - component: {fileID: 497600930602257893}
+  - component: {fileID: 3150071391316046395}
+  m_Layer: 5
+  m_Name: StoryUIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8956101955322927365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394230022270883758}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5679918992375444960}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497600930602257893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394230022270883758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 9b3a92b9a918eea40b11e9a8e06da64b, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 28f3dc5d2630baf4ab20c1a76f69ceb4, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &3150071391316046395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394230022270883758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c126a7a00b929140b7985da2857c04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: {fileID: 11400000, guid: edd809d35122df948839c0de65098950, type: 2}
 --- !u!1 &6381094831533181254
 GameObject:
   m_ObjectHideFlags: 0

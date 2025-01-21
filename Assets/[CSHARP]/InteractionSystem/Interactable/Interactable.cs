@@ -57,7 +57,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable
     public abstract void Register();
 
     /// <summary>
-    /// Initialize the interactable within the scene by 
+    /// Initialize the interactable within the scene by
     /// storing scene specific references and data.
     /// This is called when the interactable is first created, typically in Start()
     /// </summary>
@@ -82,9 +82,16 @@ public abstract class Interactable : MonoBehaviour, IInteractable
     }
 }
 
-public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> : Interactable, IInteractable
+public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum>
+    : Interactable,
+        IInteractable
     where TData : Interactable<TData, TStateMachine, TStateEnum, TTypeEnum>.InternalData
-    where TStateMachine : Interactable<TData, TStateMachine, TStateEnum, TTypeEnum>.InternalStateMachine
+    where TStateMachine : Interactable<
+            TData,
+            TStateMachine,
+            TStateEnum,
+            TTypeEnum
+        >.InternalStateMachine
     where TStateEnum : Enum
     where TTypeEnum : Enum
 {
@@ -99,18 +106,25 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> 
 
     #region [[ UNITY_METHODS ]] < PROTECTED > ================================== >>>>
     protected void Awake() => Preload();
+
     protected void Start() => Initialize();
+
     protected void Update() => Refresh();
+
     protected virtual void OnDrawGizmos()
     {
         Vector2 labelPos = (Vector2)transform.position + (Vector2.up * 0.25f);
-        CustomGizmos.DrawLabel(CurrentState.ToString(), labelPos, new GUIStyle()
-        {
-            fontSize = 12,
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter,
-            normal = new GUIStyleState() { textColor = Color.white }
-        });
+        CustomGizmos.DrawLabel(
+            CurrentState.ToString(),
+            labelPos,
+            new GUIStyle()
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                normal = new GUIStyleState() { textColor = Color.white }
+            }
+        );
     }
     #endregion
 
@@ -118,11 +132,12 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> 
     public abstract class InternalStateMachine : FiniteStateMachine<TStateEnum>
     {
         Interactable _interactable;
-        public InternalStateMachine(Interactable interactable) : base()
+
+        public InternalStateMachine(Interactable interactable)
+            : base()
         {
             _interactable = interactable;
         }
-
     }
 
     [Serializable]
@@ -137,13 +152,13 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum> 
         where TInteractable : Interactable
     {
         protected TInteractable interactable;
+
         public InternalData(TInteractable interactable)
         {
             this.interactable = interactable;
             LoadData(interactable);
         }
+
         public abstract void LoadData(TInteractable interactable);
     }
 }
-
-

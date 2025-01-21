@@ -15,10 +15,10 @@
 * [misra] -> Misra_Dialogue.3_1
 // QUEST OBJECTIVE: What Happened at the Winery?
 // Needed evidence to progress to inside the Winery: window evidence, fence evidence, footsteps evidence
-= misra 
--> Misra_Dialogue.3_1
+
 
 = intro
+    ~ StartQuest(Level3_Quests)
     ~ SetSpeaker(Speaker.Misra)
     Here we are! Kettle Rock's pride and joy. Best wine north of California.
     ~ SetSpeaker(Speaker.Lupe)
@@ -28,7 +28,12 @@
     ~ SetSpeaker(Speaker.Lupe)
     Right... 
     ~ CompleteQuest(talk_to_misra_quest)
+    
     -> DONE
+
+= misra 
+-> Misra_Dialogue.3_1    
+
 = door_main_room
 {outsideCluesFound():
     ~ SetSpeaker(Speaker.Lupe)

@@ -36,11 +36,8 @@ public class MTRCharacterAnimator : FrameAnimationPlayer
         {
             Debug.LogError("No animation state set for player animator");
         }
-    }
 
-    public override void Update()
-    {
-        base.Update();
+        base.Initialize();
     }
 
     public void PlayStateAnimation(NPCState state)
@@ -73,40 +70,3 @@ public class MTRCharacterAnimator : FrameAnimationPlayer
             SetFacing(SpriteDirection.LEFT);
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(MTRCharacterAnimator)), CanEditMultipleObjects]
-public class NPCAnimationEditor : Editor
-{
-    SerializedObject _serializedObject;
-    MTRCharacterAnimator _script;
-
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (MTRCharacterAnimator)target;
-        _script.Awake();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            if (_script.animationStateOverride != NPCState.NONE)
-            {
-                _script.LoadSpriteSheet(
-                    _script.GetSpriteSheetWithState(_script.animationStateOverride)
-                );
-            }
-
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

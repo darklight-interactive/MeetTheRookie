@@ -580,17 +580,15 @@ namespace Darklight.UnityExt.Inky
         [System.Serializable]
         public class StoryVariableContainer
         {
-            bool _isInkList => _value is InkList;
-
             object _value;
 
             [SerializeField, ShowOnly]
             string _key;
 
-            [SerializeField, TextArea(1, 10), HideIf("_isInkList")]
+            [SerializeField, ReadOnly]
             string _valueAsString;
 
-            [SerializeField, ShowOnly, ShowIf("_isInkList")]
+            [SerializeField, ReadOnly]
             List<string> _valueAsStringList;
 
             public string Key

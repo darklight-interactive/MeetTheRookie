@@ -19,9 +19,9 @@ Idk to each their own , just take it away now. -> DONE
     The plot thickens!! Shall we check inside? 
     ~ CompleteQuest(discover_outside_clues)
     -> DONE
+- else:
 ~ SetSpeaker(Speaker.Misra)
 {Find anything, Detective? | What are you looking at me for? I thought you were the expert. | ... | yes? | Okaayyy... | ...}
-- else:
     -> DONE
 }
 

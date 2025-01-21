@@ -1,16 +1,21 @@
+using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Editor;
-using UnityEngine;
-using System;
 using NaughtyAttributes;
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 #region ==== < MAIN_CLASS > [[ BASE INTERACTABLE ]] ================================== >>>>
-public partial class BaseInteractable : Interactable<BaseInteractable.InternalData, BaseInteractable.InternalStateMachine, BaseInteractable.State, BaseInteractable.Type>,
-    IUnityEditorListener
+public partial class BaseInteractable
+    : Interactable<
+        BaseInteractable.InternalData,
+        BaseInteractable.InternalStateMachine,
+        BaseInteractable.State,
+        BaseInteractable.Type
+    >,
+        IUnityEditorListener
 {
     public enum Type
     {
@@ -36,23 +41,35 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
         State.CONTINUE
     };
 
-    [SerializeField, ShowOnly] bool _isPreloaded;
-    [SerializeField, ShowOnly] bool _isRegistered;
-    [SerializeField, ShowOnly] bool _isInitialized;
+    [SerializeField, ShowOnly]
+    bool _isPreloaded;
+
+    [SerializeField, ShowOnly]
+    bool _isRegistered;
+
+    [SerializeField, ShowOnly]
+    bool _isInitialized;
 
     [HorizontalLine(color: EColor.Gray)]
-    [SerializeField] InteractionRequestDataObject _request;
-    [SerializeField] InteractionRecieverLibrary _recievers;
+    [SerializeField]
+    InteractionRequestDataObject _request;
+
+    [SerializeField]
+    InteractionRecieverLibrary _recievers;
 
     [HorizontalLine(color: EColor.Gray)]
-    [SerializeField] protected InternalData data;
-    [SerializeField] protected InternalStateMachine stateMachine;
+    [SerializeField]
+    protected InternalData data;
+
+    [SerializeField]
+    protected InternalStateMachine stateMachine;
 
     public override string Name
     {
         get
         {
-            if (data == null) return DEFAULT_NAME;
+            if (data == null)
+                return DEFAULT_NAME;
             return data.Name;
         }
     }
@@ -60,7 +77,8 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
     {
         get
         {
-            if (data == null) return DEFAULT_KEY;
+            if (data == null)
+                return DEFAULT_KEY;
             return data.Key;
         }
     }
@@ -68,51 +86,36 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
     {
         get
         {
-            if (data == null) return DEFAULT_LAYER;
+            if (data == null)
+                return DEFAULT_LAYER;
             return data.Layer;
         }
     }
     public override InteractionRequestDataObject Request
     {
-        get
-        {
-            return _request;
-        }
+        get { return _request; }
         protected set => _request = value;
     }
     public override InteractionRecieverLibrary Recievers
     {
-        get
-        {
-            return _recievers;
-        }
+        get { return _recievers; }
         protected set => _recievers = value;
     }
     public override bool IsPreloaded
     {
-        get
-        {
-            return _isPreloaded;
-        }
+        get { return _isPreloaded; }
         protected set => _isPreloaded = value;
     }
     public override bool IsRegistered
     {
-        get
-        {
-            return _isRegistered;
-        }
+        get { return _isRegistered; }
         protected set => _isRegistered = value;
     }
     public override bool IsInitialized
     {
-        get
-        {
-            return _isInitialized;
-        }
+        get { return _isInitialized; }
         protected set => _isInitialized = value;
     }
-
 
     public override InternalData Data => data;
     public override InternalStateMachine StateMachine => stateMachine;
@@ -120,7 +123,8 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
     {
         get
         {
-            if (StateMachine == null) return State.NULL;
+            if (StateMachine == null)
+                return State.NULL;
             return StateMachine.CurrentState;
         }
     }
@@ -144,9 +148,7 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
 
     protected virtual bool ValidateRegister(bool logErrors = false)
     {
-        bool isValid = IsRegistered
-            && Recievers.Count > 0
-            && !Recievers.HasUnsetKeysOrValues();
+        bool isValid = IsRegistered && Recievers.Count > 0 && !Recievers.HasUnsetKeysOrValues();
 
         if (!isValid && logErrors)
         {
@@ -205,13 +207,15 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
 
     public override bool AcceptTarget(IInteractor interactor, bool force = false)
     {
-        if (interactor == null) return false;
+        if (interactor == null)
+            return false;
 
         // If not forced, check to make sure the interactable is in a valid state
         if (!force)
         {
             // << CONFIRM VALIDITY >> ------------------------------------
-            if (CurrentState != State.READY) return false;
+            if (CurrentState != State.READY)
+                return false;
         }
 
         // << ACCEPT TARGET >> ------------------------------------
@@ -221,12 +225,14 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
 
     public override bool AcceptInteraction(IInteractor interactor, bool force = false)
     {
-        if (interactor == null) return false;
+        if (interactor == null)
+            return false;
 
         if (!force)
         {
             // << CONFIRM VALIDITY >> ------------------------------------
-            if (!VALID_INTERACTION_STATES.Contains(CurrentState)) return false;
+            if (!VALID_INTERACTION_STATES.Contains(CurrentState))
+                return false;
         }
 
         // << ACCEPT INTERACTION >> ------------------------------------
@@ -255,6 +261,7 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
     {
         SerializedObject _serializedObject;
         BaseInteractable _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -287,8 +294,6 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
                 }
             }
 
-
-
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
@@ -296,7 +301,6 @@ public partial class BaseInteractable : Interactable<BaseInteractable.InternalDa
         }
     }
 #endif
-
 }
 
 #endregion

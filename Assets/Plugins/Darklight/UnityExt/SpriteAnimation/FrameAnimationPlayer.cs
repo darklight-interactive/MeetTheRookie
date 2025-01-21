@@ -25,13 +25,13 @@ namespace Darklight.UnityExt.Animation
         float _timer = 0f; // Timer to track when to switch to the next frame
         bool _animationDone = false;
 
-        [SerializeField, ShowOnly]
+        [SerializeField, ReadOnly]
         int _currentFrame = 0;
 
         [SerializeField, ShowOnly]
         SpriteDirection _currentDirection = SpriteDirection.NONE;
 
-        [SerializeField, ShowAssetPreview]
+        [SerializeField, ReadOnly]
         Sprite _currentSprite;
 
         [SerializeField, Range(0, 16)]
@@ -59,6 +59,9 @@ namespace Darklight.UnityExt.Animation
             if (_spriteSheet == null)
                 return;
             LoadSpriteSheet(_spriteSheet);
+
+            if (_defaultDirection != SpriteDirection.NONE)
+                SetFacing(_defaultDirection);
         }
 
         void UpdateFrame()
