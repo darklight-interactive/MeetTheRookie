@@ -76,7 +76,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
         _controlsPage.visible = false;
         _settingsPage.visible = false;
-        _scenesPage.visible = false;
+        //_scenesPage.visible = false;
 
         // << PAUSE MENU ACTIONS >>
         _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
@@ -84,9 +84,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
+            Debug.Log("Selected the 'controls' button!");
             _controlsPage.visible = true;
             _settingsPage.visible = false;
-            _scenesPage.visible = false;
+            //_scenesPage.visible = false;
         };
 
         _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
@@ -94,12 +95,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
 
+            Debug.Log("Selected the 'settings' button!");
             _controlsPage.visible = false;
             _settingsPage.visible = true;
-            _scenesPage.visible = false;
-
-
-
+            //_scenesPage.visible = false;
         };
         */
 
@@ -196,9 +195,11 @@ public class PauseMenuController : UXML_UIDocumentObject
         */
 
         if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
+        
         if (selectableElements.CurrentSelection is SelectableButton button)
         {
             button.InvokeClickAction();
+            if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
         }
     }
 
@@ -229,8 +230,8 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
-            _controlsPage.style.visibility = Visibility.Visible;
-            _settingsPage.style.visibility = Visibility.Visible;
+            //_controlsPage.style.visibility = Visibility.Visible;
+            //_settingsPage.style.visibility = Visibility.Visible;
             //_scenesPage.style.visibility = Visibility.Visible;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
