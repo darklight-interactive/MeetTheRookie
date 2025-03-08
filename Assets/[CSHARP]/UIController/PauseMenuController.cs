@@ -73,7 +73,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         // Store references to the folders
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
         _controlsPage.visible = false;
         _settingsPage.visible = false;
         //_scenesPage.visible = false;
@@ -194,7 +194,6 @@ public class PauseMenuController : UXML_UIDocumentObject
         }
         */
 
-        if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
         
         if (selectableElements.CurrentSelection is SelectableButton button)
         {
