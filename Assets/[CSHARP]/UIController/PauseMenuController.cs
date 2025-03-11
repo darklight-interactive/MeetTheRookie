@@ -33,12 +33,11 @@ public class PauseMenuController : UXML_UIDocumentObject
     VisualElement _scenesPage;
 
 
-    const string CONTROLS_BTN = "controls-btn";
-    const string SETTINGS_BTN = "settings-btn";
-    const string SCENES_BTN = "scenes-btn";
-    SelectableButton _controlsButton;
-    SelectableButton _settingsButton;
-    SelectableButton _scenesButton;
+    const string RESUME_BTN = "resume-btn";
+    const string CONTROLS_RETRUN_BTN = "return-btn";
+    SelectableButton _resumeButton;
+    SelectableButton _controlsReturnButton;
+
 
 
 
@@ -73,10 +72,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         // Store references to the folders
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
         _controlsPage.visible = false;
         _settingsPage.visible = false;
-        //_scenesPage.visible = false;
+        _scenesPage.visible = false;
 
         // << PAUSE MENU ACTIONS >>
         _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
@@ -84,10 +83,9 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
-            Debug.Log("Selected the 'controls' button!");
             _controlsPage.visible = true;
             _settingsPage.visible = false;
-            //_scenesPage.visible = false;
+            _scenesPage.visible = false;
         };
 
         _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
@@ -95,12 +93,20 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
 
-            Debug.Log("Selected the 'settings' button!");
             _controlsPage.visible = false;
             _settingsPage.visible = true;
-            //_scenesPage.visible = false;
+            _scenesPage.visible = false;
         };
         */
+
+        _resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
+        _resumeButton.OnClick += OnMenuButtonAction;
+
+        _controlsReturnButton = ElementQuery<SelectableButton>(CONTROLS_RETRUN_BTN);
+        _controlsReturnButton.OnSelect += () =>
+        {
+            Debug.Log("CONTROLS RETURN BUTTON SELECTED");
+        };
 
         SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
         musicSlider.OnValueChanged += () =>
@@ -194,11 +200,10 @@ public class PauseMenuController : UXML_UIDocumentObject
         }
         */
 
-        
+        if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
         if (selectableElements.CurrentSelection is SelectableButton button)
         {
             button.InvokeClickAction();
-            if (_pauseMenuContainer.visible) { MTR_AudioManager.Instance.PlayMenuSelectEvent(); }
         }
     }
 
@@ -210,8 +215,8 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
-            _controlsPage.style.visibility = Visibility.Hidden;
-            _settingsPage.style.visibility = Visibility.Hidden;
+            //_controlsPage.style.visibility = Visibility.Hidden;
+            //_settingsPage.style.visibility = Visibility.Hidden;
             //_scenesPage.style.visibility = Visibility.Hidden;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -225,7 +230,7 @@ public class PauseMenuController : UXML_UIDocumentObject
             if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
 
             Debug.Log("PAUSE MENU CONTAINER NOT VISIBLE");
-            _controlsButton?.Select();
+            _controlsReturnButton?.Select();
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;

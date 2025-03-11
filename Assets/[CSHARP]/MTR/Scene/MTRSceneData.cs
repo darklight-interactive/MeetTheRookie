@@ -104,6 +104,8 @@ public class MTRSceneData : BuildSceneScriptableData
         // Set default X-axis values for the scene bounds if not set
         if (_sceneBounds.XAxisValues == Vector2.zero)
             _sceneBounds.XAxisValues = new Vector2(-5, 5);
+        if (_sceneBounds.YAxisValues == Vector2.zero)
+            _sceneBounds.YAxisValues = new Vector2(-1, 1);
     }
 
     void RefreshCameraSettings()
