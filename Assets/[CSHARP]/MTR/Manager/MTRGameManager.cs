@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-[RequireComponent(typeof(UniversalInputManager))]
+[RequireComponent(typeof(MTRInputManager))]
 [RequireComponent(typeof(MTRSceneManager))]
 [RequireComponent(typeof(MTRInteractionSystem))]
 [RequireComponent(typeof(MTRStoryManager))]
