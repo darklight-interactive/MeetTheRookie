@@ -20,12 +20,21 @@ GroupBox.MenuBox {
 }
 
 SelectableButton.button {
+    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
+    transition-duration: 0.4s, 0.4s;
+    flex-grow: 1;
+    font-size: 24px;
     margin-top: 2%;
     margin-right: 2%;
     margin-bottom: 2%;
     margin-left: 2%;
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
-    transition-duration: 0.4s;
+    align-items: stretch;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 70%;
+    transition-property: -unity-background-image-tint-color, scale;
 }
 
 Label.TabTitle {
@@ -160,17 +169,74 @@ Button.Fullscreen.Selected {
 SelectableSlider {
     flex-grow: 1;
     align-items: center;
+    flex-direction: row;
 }
 
-.selected {
-    border-left-color: rgb(255, 177, 0);
-    border-right-color: rgb(255, 177, 0);
-    border-top-color: rgb(255, 177, 0);
-    border-bottom-color: rgb(255, 177, 0);
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
+SelectableSlider .unity-text-element {
+    -unity-text-align: middle-center;
+    -unity-background-image-tint-color: rgba(252, 252, 252, 0.54);
+    color: rgb(0, 0, 0);
+    background-image: url("project://database/Assets/[SPRITES]/_ui/mtr_choicebox_atlas.png?fileID=-738666230365796136&guid=2e4892fab6b6a8d46a90fdc4c3a66701&type=3#mtr_choice_box_atlas_2");
+    flex-grow: 0;
+    font-size: 20px;
+    height: 48%;
+    width: 13%;
+    flex-shrink: 0;
+}
+
+SelectableSlider .unity-base-slider__tracker {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Slider_.png?fileID=1361678115227503379&guid=84c6f665b7f7e794380ea8be75a9c460&type=3#Ui_Slider__0");
+    height: 12%;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+SelectableSlider .unity-base-slider__dragger-border {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Slider_Shaded_Bar.png?fileID=-2262083059964613331&guid=c6fbc80d884dff34fbe52089d0da8d39&type=3#Ui_Slider_Shaded_Bar_0");
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+SelectableSlider .unity-base-slider__dragger {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Pin.png?fileID=4690419380084828854&guid=d5d4be384c1732247bb9fe36b6bcbacf&type=3#Ui_Pin_0");
+    height: 25%;
+    flex-grow: 1;
+    width: 26px;
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.1s;
+}
+
+SelectableSlider .unity-base-slider__dragger:hover {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Pin.png?fileID=4690419380084828854&guid=d5d4be384c1732247bb9fe36b6bcbacf&type=3#Ui_Pin_0");
+    height: 25%;
+    flex-grow: 1;
+    width: 26px;
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 1;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
 }
 
 .disabled {
@@ -179,4 +245,20 @@ SelectableSlider {
 
 .unity-text-element {
     color: rgb(255, 255, 255);
+}
+
+.selected {
+    border-left-color: rgb(255, 177, 0);
+    border-right-color: rgb(255, 177, 0);
+    border-top-color: rgb(255, 177, 0);
+    border-bottom-color: rgb(255, 177, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    flex-grow: 1;
+    -unity-background-image-tint-color: rgb(186, 186, 186);
+    scale: 1.05 1.1;
+    transition-duration: 0.4s, 0.4s;
+    transition-property: -unity-background-image-tint-color, scale;
 }
