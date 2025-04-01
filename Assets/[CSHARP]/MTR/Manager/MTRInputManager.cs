@@ -6,7 +6,7 @@ public class MTRInputManager : UniversalInputManager
 {
     public new static MTRInputManager Instance;
 
-    InputAction _tertiaryInteract => activeActionMap.FindAction("TertiaryInteract");
+    //InputAction _tertiaryInteract => activeActionMap.FindAction("TertiaryInteract");
 
     public static event Action OnTertiaryInteract;
 }
