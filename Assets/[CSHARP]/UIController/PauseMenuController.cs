@@ -25,18 +25,26 @@ public class PauseMenuController : UXML_UIDocumentObject
 
 
     // << MENU ELEMENTS >>
+    const string HOME_PAGE = "tab-container";
     const string CONTROLS_PAGE = "controls-page";
     const string SETTINGS_PAGE = "settings-page";
-    const string SCENES_PAGE = "scenes-page";
-    VisualElement _controlsPage;
+    //const string SCENES_PAGE = "scenes-page";
+    VisualElement _homePage;
+    VisualElement _controlsPage; 
     VisualElement _settingsPage;
-    VisualElement _scenesPage;
+    //VisualElement _scenesPage;
 
 
     const string RESUME_BTN = "resume-btn";
-    const string CONTROLS_RETRUN_BTN = "return-btn";
+    const string HOME_BTN = "home-btn";
+    const string CONTROLS_BTN = "controls-btn";
+    const string SETTINGS_BTN = "settings-btn";
+    //const string CONTROLS_RETURN_BTN = "return-btn";
     SelectableButton _resumeButton;
-    SelectableButton _controlsReturnButton;
+    SelectableButton _homeButton;
+    SelectableButton _controlsButton;
+    SelectableButton _settingsButton;
+    //SelectableButton _controlsReturnButton;
 
 
 
@@ -68,46 +76,81 @@ public class PauseMenuController : UXML_UIDocumentObject
         // Load the selectable buttons
         selectableElements.Load(ElementQueryAll<SelectableButton>());
 
-        /*
+        
         // Store references to the folders
+        _homePage = ElementQuery<VisualElement>(HOME_PAGE);
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
+
+        // Initilize visuals
+        _homePage.visible = false;
         _controlsPage.visible = false;
         _settingsPage.visible = false;
-        _scenesPage.visible = false;
+        //_scenesPage.visible = false;
+        _homePage.style.display = DisplayStyle.Flex;
+        _controlsPage.style.display = DisplayStyle.None;
+        _settingsPage.style.display = DisplayStyle.None;
+        // _scenesPage.style.display = DisplayStyle.None;
 
         // << PAUSE MENU ACTIONS >>
-        _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
-        _controlsButton.OnSelect += () =>
-        {
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
-
-            _controlsPage.visible = true;
-            _settingsPage.visible = false;
-            _scenesPage.visible = false;
-        };
-
-        _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
-        _settingsButton.OnSelect += () =>
-        {
-            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
-
-            _controlsPage.visible = false;
-            _settingsPage.visible = true;
-            _scenesPage.visible = false;
-        };
-        */
-
         _resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
         _resumeButton.OnClick += OnMenuButtonAction;
 
-        _controlsReturnButton = ElementQuery<SelectableButton>(CONTROLS_RETRUN_BTN);
-        _controlsReturnButton.OnSelect += () =>
+        _homeButton = ElementQuery<SelectableButton>(HOME_BTN);
+        _homeButton.OnClick += () => // OnClick or OnSelect???
         {
-            Debug.Log("CONTROLS RETURN BUTTON SELECTED");
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.Flex;
+            _controlsPage.style.display = DisplayStyle.None;
+            _settingsPage.style.display = DisplayStyle.None;
+
+            _homePage.visible = true;
+            _controlsPage.visible = false;
+            _settingsPage.visible = false;
+            //_scenesPage.visible = false;
         };
 
+        _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
+        _controlsButton.OnClick += () => // OnClick or OnSelect???
+        {
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.None;
+            _controlsPage.style.display = DisplayStyle.Flex;
+            _settingsPage.style.display = DisplayStyle.None;
+
+            _homePage.visible = false;
+            _controlsPage.visible = true;
+            _settingsPage.visible = false;
+            //_scenesPage.visible = false;
+        };
+
+        _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
+        _settingsButton.OnClick += () => // OnClick or OnSelect???
+        {
+            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.None;
+            _controlsPage.style.display = DisplayStyle.None;
+            _settingsPage.style.display = DisplayStyle.Flex;
+
+            _homePage.visible = false;
+            _controlsPage.visible = false;
+            _settingsPage.visible = true;
+            //_scenesPage.visible = false;
+        };
+
+        //_controlsReturnButton = ElementQuery<SelectableButton>(CONTROLS_RETURN_BTN);
+        //_controlsReturnButton.OnSelect += () =>
+        //{
+        //    Debug.Log("CONTROLS RETURN BUTTON SELECTED");
+        //};
+
+
+
+        // SLIDERS
         SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
         musicSlider.OnValueChanged += () =>
         {
@@ -215,8 +258,9 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
-            //_controlsPage.style.visibility = Visibility.Hidden;
-            //_settingsPage.style.visibility = Visibility.Hidden;
+            _homePage.style.visibility = Visibility.Hidden;
+            _controlsPage.style.visibility = Visibility.Hidden;
+            _settingsPage.style.visibility = Visibility.Hidden;
             //_scenesPage.style.visibility = Visibility.Hidden;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
@@ -230,10 +274,11 @@ public class PauseMenuController : UXML_UIDocumentObject
             if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
 
             Debug.Log("PAUSE MENU CONTAINER NOT VISIBLE");
-            _controlsReturnButton?.Select();
+            //_resumeButton?.Select();
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
+            _homePage.style.visibility = Visibility.Visible;
             //_controlsPage.style.visibility = Visibility.Visible;
             //_settingsPage.style.visibility = Visibility.Visible;
             //_scenesPage.style.visibility = Visibility.Visible;
