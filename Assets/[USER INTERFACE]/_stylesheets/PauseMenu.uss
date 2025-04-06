@@ -8,6 +8,25 @@ VisualElement.Folder {
     -unity-background-scale-mode: scale-to-fit;
     justify-content: center;
     align-self: center;
+    transition-property: height, translate;
+    transition-duration: 0.3s, 0.3s;
+    transition-timing-function: ease, ease;
+    transition-delay: 0s, 0s;
+}
+
+VisualElement.Folder.disabled {
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    background-image: none;
+    flex-grow: 1;
+    width: 100%;
+    height: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    justify-content: center;
+    align-self: center;
+    translate: 0 100%;
+    transition-property: height, translate;
+    transition-duration: 0.3s, 0.3s;
 }
 
 GroupBox.MenuBox {
@@ -20,10 +39,10 @@ GroupBox.MenuBox {
 }
 
 SelectableButton.button {
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=7526846761729532893&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_0");
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/pause%20menu%20back%20tab%201.png?fileID=-3176154091391899561&guid=bc853dba31f2b1947b636063ff36d5f3&type=3#pause menu back tab 1_0");
     transition-duration: 0.4s, 0.4s;
     flex-grow: 1;
-    font-size: 24px;
+    font-size: 33px;
     margin-top: 2%;
     margin-right: 2%;
     margin-bottom: 2%;
@@ -35,13 +54,75 @@ SelectableButton.button {
     padding-left: 0;
     width: 70%;
     transition-property: -unity-background-image-tint-color, scale;
+    -unity-font-definition: resource('Fonts/daniel/danielbd');
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-background-image-tint-color: rgba(249, 236, 218, 0.82);
+}
+
+SelectableButton.button.unity-text-element {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/pause%20menu%20back%20tab%201.png?fileID=-3176154091391899561&guid=bc853dba31f2b1947b636063ff36d5f3&type=3#pause menu back tab 1_0");
+    transition-duration: 0.4s, 0.4s;
+    flex-grow: 1;
+    font-size: 33px;
+    margin-top: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+    align-items: stretch;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 70%;
+    transition-property: -unity-background-image-tint-color, scale;
+    -unity-font-definition: resource('Fonts/daniel/danielbd');
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-font-style: normal;
+    color: rgb(67, 47, 15);
+}
+
+SelectableButton.button.selected {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/pause%20menu%20back%20tab%201.png?fileID=-3176154091391899561&guid=bc853dba31f2b1947b636063ff36d5f3&type=3#pause menu back tab 1_0");
+    transition-duration: 0.4s, 0.4s;
+    flex-grow: 1;
+    font-size: 33px;
+    margin-top: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+    align-items: stretch;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 70%;
+    transition-property: -unity-background-image-tint-color, scale;
+    -unity-font-definition: resource('Fonts/daniel/danielbd');
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    scale: 1.2 1.2;
+    translate: 0 -2%;
 }
 
 Label.TabTitle {
     -unity-font-definition: resource('Fonts/cour');
     -unity-font-style: bold;
-    font-size: 20px;
-    color: rgb(43, 47, 55);
+    font-size: 86px;
+    color: rgb(168, 139, 110);
+    -unity-text-align: upper-center;
+    padding-top: 6%;
+    height: 15%;
 }
 
 Label.TabTitle.Selected {
@@ -62,7 +143,7 @@ SliderInt.SoundSlider {
 SliderInt Label {
     background-color: rgba(221, 39, 39, 0);
     color: rgb(35, 40, 46);
-    -unity-font-definition: resource('Fonts/cour');
+    -unity-font-definition: url("project://database/Assets/Plugins/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=36b22829bdfd5284c82359ec62ba0be2&type=3#NotInter-Regular");
     -unity-font-style: bold;
     background-image: none;
     -unity-text-align: middle-right;
@@ -175,13 +256,14 @@ SelectableSlider {
 SelectableSlider .unity-text-element {
     -unity-text-align: middle-center;
     -unity-background-image-tint-color: rgba(252, 252, 252, 0.54);
-    color: rgb(0, 0, 0);
+    color: rgb(115, 74, 35);
     background-image: url("project://database/Assets/[SPRITES]/_ui/mtr_choicebox_atlas.png?fileID=-738666230365796136&guid=2e4892fab6b6a8d46a90fdc4c3a66701&type=3#mtr_choice_box_atlas_2");
     flex-grow: 0;
     font-size: 20px;
     height: 48%;
     width: 13%;
     flex-shrink: 0;
+    -unity-font-definition: resource('Fonts/daniel/danielbk');
 }
 
 SelectableSlider .unity-base-slider__tracker {
@@ -210,7 +292,7 @@ SelectableSlider .unity-base-slider__dragger {
     background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Pin.png?fileID=4690419380084828854&guid=d5d4be384c1732247bb9fe36b6bcbacf&type=3#Ui_Pin_0");
     height: 25%;
     flex-grow: 1;
-    width: 26px;
+    width: 3%;
     -unity-background-scale-mode: scale-to-fit;
     flex-shrink: 1;
     -unity-background-image-tint-color: rgb(255, 255, 255);
@@ -219,14 +301,16 @@ SelectableSlider .unity-base-slider__dragger {
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    transition-duration: 0.1s;
+    transition-duration: 0.3s, 0.3s;
+    rotate: 0;
+    transition-property: scale, rotate;
 }
 
-SelectableSlider .unity-base-slider__dragger:hover {
+SelectableSlider .unity-base-slider__dragger.selected {
     background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Pin.png?fileID=4690419380084828854&guid=d5d4be384c1732247bb9fe36b6bcbacf&type=3#Ui_Pin_0");
     height: 25%;
     flex-grow: 1;
-    width: 26px;
+    width: 3%;
     -unity-background-scale-mode: scale-to-fit;
     flex-shrink: 1;
     -unity-background-image-tint-color: rgb(255, 255, 255);
@@ -235,8 +319,11 @@ SelectableSlider .unity-base-slider__dragger:hover {
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    scale: 1.1 1.1;
-    transition-duration: 0.1s;
+    scale: 1.3 1.3;
+    transition-duration: 0.3s, 0.3s;
+    translate: 0 0;
+    rotate: 360deg;
+    transition-property: scale, rotate;
 }
 
 .disabled {

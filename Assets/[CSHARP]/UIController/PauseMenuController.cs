@@ -25,7 +25,7 @@ public class PauseMenuController : UXML_UIDocumentObject
 
 
     // << MENU ELEMENTS >>
-    const string HOME_PAGE = "tab-container";
+    const string HOME_PAGE = "home-page";
     const string CONTROLS_PAGE = "controls-page";
     const string SETTINGS_PAGE = "settings-page";
     //const string SCENES_PAGE = "scenes-page";
@@ -33,7 +33,6 @@ public class PauseMenuController : UXML_UIDocumentObject
     VisualElement _controlsPage; 
     VisualElement _settingsPage;
     //VisualElement _scenesPage;
-
 
     const string RESUME_BTN = "resume-btn";
     const string HOME_BTN = "home-btn";
@@ -45,9 +44,6 @@ public class PauseMenuController : UXML_UIDocumentObject
     SelectableButton _controlsButton;
     SelectableButton _settingsButton;
     //SelectableButton _controlsReturnButton;
-
-
-
 
 
     SelectableVectorField<VisualElement> selectableElements = new SelectableVectorField<VisualElement>();
@@ -258,10 +254,19 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
-            _homePage.style.visibility = Visibility.Hidden;
-            _controlsPage.style.visibility = Visibility.Hidden;
-            _settingsPage.style.visibility = Visibility.Hidden;
+            //_homePage.style.visibility = Visibility.Hidden;
+            //_controlsPage.style.visibility = Visibility.Hidden;
+            //_settingsPage.style.visibility = Visibility.Hidden;
             //_scenesPage.style.visibility = Visibility.Hidden;
+
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.None;
+            _controlsPage.style.display = DisplayStyle.None;
+            _settingsPage.style.display = DisplayStyle.None;
+            _homePage.visible = false;
+            _controlsPage.visible = false;
+            _settingsPage.visible = false;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
 
@@ -278,10 +283,15 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
-            _homePage.style.visibility = Visibility.Visible;
+            //_homePage.style.visibility = Visibility.Visible;
             //_controlsPage.style.visibility = Visibility.Visible;
             //_settingsPage.style.visibility = Visibility.Visible;
             //_scenesPage.style.visibility = Visibility.Visible;
+
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.Flex;
+            _homePage.visible = true;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
 
