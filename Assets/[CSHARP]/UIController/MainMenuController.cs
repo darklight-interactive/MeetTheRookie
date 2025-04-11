@@ -17,6 +17,8 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     bool lockSelection = false;
 
+    SelectableButton currentButton;
+
     public void Awake()
     {
         sceneManager = MTRSceneManager.Instance as MTRSceneManager;
@@ -40,6 +42,7 @@ public class MainMenuController : UXML_UIDocumentObject
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
         selectableVectorField.Selectables.First().Select();
+        currentButton = selectableVectorField.Selectables.First();
 
         // Listen to the input manager
         UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
@@ -58,11 +61,13 @@ public class MainMenuController : UXML_UIDocumentObject
     {
         if (selectedButton == null || lockSelection) return;
 
-        SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        //SelectableButton previousButton = selectableVectorField.PreviousSelection;
+        SelectableButton previousButton = currentButton;
         if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
             selectedButton.Select();
+            currentButton = selectedButton;
             lockSelection = true;
             MTR_AudioManager.Instance.PlayMenuHoverEvent();
             Invoke(nameof(UnlockSelection), 0.1f);

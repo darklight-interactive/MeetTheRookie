@@ -54,35 +54,72 @@
 }
 
 SelectableButton {
-    background-image: url("project://database/Assets/[SPRITES]/_ui/ui_boxes.png?fileID=2371981046512543649&guid=87d54583fce2d4948a580954f560d140&type=3#ui_boxes_3");
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&guid=e9f3108207bed5c4caa303e96ced19e3&type=3#ui-folder-1_0");
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
     background-color: rgba(255, 255, 255, 0.43);
     color: rgb(255, 255, 255);
-    font-size: 400%;
+    font-size: 257%;
     flex-grow: 1;
     max-height: 64px;
     align-self: stretch;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
+    margin-top: 2%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+    -unity-font-definition: resource('Fonts/cour');
+    scale: 1 1;
+    transition-property: scale, -unity-background-image-tint-color, translate, rotate;
+    transition-duration: 0.3s, 0.3s, 0.3s, 0.3s;
+    -unity-background-image-tint-color: rgb(45, 65, 83);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    transition-delay: 0s, 0s, 0s, 0.1s;
 }
 
 SelectableButton.selected {
-    scale: 1.025 1.025;
-    transition-property: scale;
-    transition-duration: 0.5s;
-    border-top-width: 10px;
-    border-right-width: 10px;
-    border-bottom-width: 10px;
-    border-left-width: 10px;
-    border-left-color: rgb(60, 34, 106);
-    border-right-color: rgb(60, 34, 106);
-    border-top-color: rgb(60, 34, 106);
-    border-bottom-color: rgb(60, 34, 106);
+    scale: 1.1 1.1;
+    transition-property: scale, -unity-background-image-tint-color, translate, rotate;
+    transition-duration: 0.3s, 0.3s, 0.3s, 0.3s;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(35, 28, 75);
+    border-right-color: rgb(35, 28, 75);
+    border-top-color: rgb(35, 28, 75);
+    border-bottom-color: rgb(35, 28, 75);
+    font-size: 257%;
+    flex-grow: 1;
+    -unity-background-image-tint-color: rgb(53, 78, 101);
+    translate: 3% 0;
+    rotate: -1deg;
+    transition-delay: 0s, 0s, 0.1s, 0s;
+}
+
+SelectableButton.unity-text-element {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    color: rgb(160, 201, 233);
+    font-size: 257%;
+    flex-grow: 1;
+    max-height: 64px;
+    align-self: stretch;
+    margin-top: 2%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+    -unity-font-definition: resource('Fonts/cour');
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 GroupBox {
@@ -146,6 +183,7 @@ Label.unity-text-element.h3 {
     border-bottom-color: rgba(154, 154, 154, 0.35);
     font-size: 32px;
     color: rgb(0, 0, 0);
+    flex-grow: 1;
 }
 
 .ChoiceGroup SelectableButton.selected {
@@ -159,6 +197,11 @@ Label.unity-text-element.h3 {
     border-right-color: rgb(162, 62, 140);
     border-top-color: rgb(162, 62, 140);
     border-bottom-color: rgb(162, 62, 140);
+    flex-grow: 1;
+    scale: 1.1 1.1;
+    transition-property: scale;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in;
 }
 
 .selected {
