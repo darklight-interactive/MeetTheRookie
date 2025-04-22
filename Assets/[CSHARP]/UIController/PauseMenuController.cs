@@ -94,7 +94,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         _resumeButton.OnClick += OnMenuButtonAction;
 
         _homeButton = ElementQuery<SelectableButton>(HOME_BTN);
-        _homeButton.OnClick += () => // OnClick or OnSelect???
+        _homeButton.OnClick += () =>
         {
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
@@ -109,7 +109,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         };
 
         _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
-        _controlsButton.OnClick += () => // OnClick or OnSelect???
+        _controlsButton.OnClick += () =>
         {
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
 
@@ -124,7 +124,7 @@ public class PauseMenuController : UXML_UIDocumentObject
         };
 
         _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
-        _settingsButton.OnClick += () => // OnClick or OnSelect???
+        _settingsButton.OnClick += () =>
         {
             selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
 
@@ -190,8 +190,16 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             if (dir.y == 0)
             {
-                if (dir.x > 0) { slider.Increment(); }
-                else if (dir.x < 0) { slider.Decrement(); }
+                if (dir.x > 0)
+                {
+                    slider.Increment();
+                    MTR_AudioManager.Instance.PlayMenuSliderEvent();
+                }
+                else if (dir.x < 0)
+                {
+                    slider.Decrement();
+                    MTR_AudioManager.Instance.PlayMenuSliderEvent();
+                }
                 return;
             }
         }

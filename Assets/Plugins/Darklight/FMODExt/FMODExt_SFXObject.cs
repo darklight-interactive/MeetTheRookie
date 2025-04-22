@@ -13,6 +13,7 @@ public class FMODExt_SFXObject : ScriptableObject
     [Header("Menu Interaction SFX")]
     public EventReference menuHover;
     public EventReference menuSelect;
+    public EventReference menuSlider;
 
     [Header("Game Interaction SFX")]
     public EventReference itemPickup;
