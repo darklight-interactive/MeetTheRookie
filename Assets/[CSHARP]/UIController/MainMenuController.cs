@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Collections.Generic;
+//using System.Collections.IEnumerable;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
 
@@ -14,14 +16,16 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableButton settingsButton;
     SelectableButton creditsButton;
     SelectableButton quitButton;
-    SelectableButton returnButton1;
-    SelectableButton returnButton2;
+    SelectableButton returnButtonSettings;
+    SelectableButton returnButtonCredits;
     SelectableButton currentButton;
+    Dictionary<string, SelectableButton[]> buttonGroups;
     SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
     bool lockSelection = false;
 
     SelectableVectorField<VisualElement> selectableElements = new SelectableVectorField<VisualElement>();
 
+    const string MAIN_PAGE = "main";
     const string SETTINGS_PAGE = "main-settings";
     const string CREDITS_PAGE = "main-credits";
     VisualElement _settingsPage;
@@ -35,16 +39,25 @@ public class MainMenuController : UXML_UIDocumentObject
 
     void Start()
     {
-        // Load the selectable buttons
-        selectableElements.Load(ElementQueryAll<SelectableButton>());
-
         // Store the local references to the buttons
         playButton = ElementQuery<SelectableButton>("play-button");
         settingsButton = ElementQuery<SelectableButton>("settings-button");
         creditsButton = ElementQuery<SelectableButton>("credits-button");
         quitButton = ElementQuery<SelectableButton>("quit-button");
-        returnButton1 = ElementQuery<SelectableButton>("return-button-settings");
-        returnButton2 = ElementQuery<SelectableButton>("return-button-credits");
+        returnButtonSettings = ElementQuery<SelectableButton>("return-button-settings");
+        returnButtonCredits = ElementQuery<SelectableButton>("return-button-credits");
+
+        buttonGroups = new Dictionary<string, SelectableButton[]>
+        {
+            { MAIN_PAGE, new SelectableButton[]{ playButton, settingsButton, creditsButton, quitButton } },
+            { SETTINGS_PAGE, new SelectableButton[]{ returnButtonSettings } },
+            { CREDITS_PAGE, new SelectableButton[]{ returnButtonCredits } }
+        };
+
+        // Load the selectable buttons, remove elements not currently active in the page
+        selectableElements.Load(ElementQueryAll<SelectableButton>());
+        selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+        selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
 
         // Store references to the folders
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
@@ -57,36 +70,49 @@ public class MainMenuController : UXML_UIDocumentObject
         settingsButton.OnClick += () =>
         {
             selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+            selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+
             _settingsPage.style.display = DisplayStyle.Flex;
             //_settingsPage.visible = true;
             _settingsPage.AddToClassList("visible");
         };
 
-        creditsButton.OnClick += () =>
+        returnButtonSettings.OnClick += () =>
         {
+            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
             selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
-            _creditsPage.style.display = DisplayStyle.Flex;
-            //_creditsPage.visible = true;
-            _creditsPage.AddToClassList("visible");
-        };
+            selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
 
-        quitButton.OnClick += Quit;
-
-        returnButton1.OnClick += () =>
-        {
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
             _settingsPage.RemoveFromClassList("visible");
             _settingsPage.style.display = DisplayStyle.None;
             //_settingsPage.visible = false;
         };
 
-        returnButton2.OnClick += () =>
+        creditsButton.OnClick += () =>
         {
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+            selectableElements.AddRange(ElementQueryAll<Scroller>());
+            selectableElements.AddRange(buttonGroups[CREDITS_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+
+            _creditsPage.style.display = DisplayStyle.Flex;
+            //_creditsPage.visible = true;
+            _creditsPage.AddToClassList("visible");
+        };
+
+        returnButtonCredits.OnClick += () =>
+        {
+            selectableElements.RemoveRange(ElementQueryAll<Scroller>());
+            selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
+            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
+
             _creditsPage.RemoveFromClassList("visible");
             _creditsPage.style.display = DisplayStyle.None;
             //_creditsPage.visible = false;
         };
+
+        quitButton.OnClick += Quit;
+
 
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
