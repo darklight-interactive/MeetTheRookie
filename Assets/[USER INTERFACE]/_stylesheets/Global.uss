@@ -246,15 +246,20 @@ SelectableSlider {
 
 SelectableSlider .unity-text-element {
     -unity-text-align: middle-center;
-    -unity-background-image-tint-color: rgba(191, 191, 191, 0.54);
+    -unity-background-image-tint-color: rgba(146, 125, 96, 0.21);
     color: rgb(91, 62, 33);
-    background-image: url("project://database/Assets/[SPRITES]/_ui/mtr_choicebox_atlas.png?fileID=-738666230365796136&guid=2e4892fab6b6a8d46a90fdc4c3a66701&type=3#mtr_choice_box_atlas_2");
+    background-image: url("project://database/Assets/[SPRITES]/_interactables/[PIXEL]%20general%20store/genstore_enlarged_blank_note.png?fileID=-3837518041837279857&guid=737c92ea2612af84d9c2356c9f05ab09&type=3#enlarged_blank_note_0");
     flex-grow: 0;
-    font-size: 20px;
+    font-size: 24px;
     height: 48%;
     width: 13%;
     flex-shrink: 0;
-    -unity-font-definition: resource('Fonts/daniel/danielbk');
+    -unity-font-definition: resource('Fonts/daniel/daniel');
+    border-top-left-radius: -9px;
+    border-top-right-radius: -9px;
+    border-bottom-right-radius: -9px;
+    border-bottom-left-radius: -9px;
+    -unity-font-style: bold;
 }
 
 SelectableSlider .unity-base-slider__tracker {

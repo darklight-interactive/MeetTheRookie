@@ -60,7 +60,7 @@ SelectableButton.button {
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
-    -unity-background-image-tint-color: rgba(249, 236, 218, 0.82);
+    -unity-background-image-tint-color: rgba(255, 254, 246, 0.67);
 }
 
 SelectableButton.button.unity-text-element {
@@ -113,6 +113,7 @@ SelectableButton.button.selected {
     border-left-width: 0;
     scale: 1.2 1.2;
     translate: 0 -2%;
+    -unity-background-image-tint-color: rgb(255, 254, 246);
 }
 
 Label.TabTitle {
@@ -255,15 +256,20 @@ SelectableSlider {
 
 SelectableSlider .unity-text-element {
     -unity-text-align: middle-center;
-    -unity-background-image-tint-color: rgba(252, 252, 252, 0.54);
+    -unity-background-image-tint-color: rgba(177, 155, 113, 0.18);
     color: rgb(115, 74, 35);
-    background-image: url("project://database/Assets/[SPRITES]/_ui/mtr_choicebox_atlas.png?fileID=-738666230365796136&guid=2e4892fab6b6a8d46a90fdc4c3a66701&type=3#mtr_choice_box_atlas_2");
+    background-image: url("project://database/Assets/[SPRITES]/_interactables/[PIXEL]%20general%20store/genstore_enlarged_blank_note.png?fileID=-3837518041837279857&guid=737c92ea2612af84d9c2356c9f05ab09&type=3#enlarged_blank_note_0");
     flex-grow: 0;
-    font-size: 20px;
+    font-size: 30px;
     height: 48%;
     width: 13%;
     flex-shrink: 0;
-    -unity-font-definition: resource('Fonts/daniel/danielbk');
+    -unity-font-definition: resource('Fonts/daniel/daniel');
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
+    -unity-font-style: bold;
 }
 
 SelectableSlider .unity-base-slider__tracker {

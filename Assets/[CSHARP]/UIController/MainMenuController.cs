@@ -40,12 +40,12 @@ public class MainMenuController : UXML_UIDocumentObject
     void Start()
     {
         // Store the local references to the buttons
-        playButton = ElementQuery<SelectableButton>("play-button");
-        settingsButton = ElementQuery<SelectableButton>("settings-button");
-        creditsButton = ElementQuery<SelectableButton>("credits-button");
-        quitButton = ElementQuery<SelectableButton>("quit-button");
-        returnButtonSettings = ElementQuery<SelectableButton>("return-button-settings");
-        returnButtonCredits = ElementQuery<SelectableButton>("return-button-credits");
+        playButton = ElementQuery<SelectableButton>("play-btn");
+        settingsButton = ElementQuery<SelectableButton>("settings-btn");
+        creditsButton = ElementQuery<SelectableButton>("credits-btn");
+        quitButton = ElementQuery<SelectableButton>("quit-btn");
+        returnButtonSettings = ElementQuery<SelectableButton>("return-btn-settings");
+        returnButtonCredits = ElementQuery<SelectableButton>("return-btn-credits");
 
         buttonGroups = new Dictionary<string, SelectableButton[]>
         {
