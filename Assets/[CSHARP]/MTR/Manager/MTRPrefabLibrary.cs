@@ -8,6 +8,7 @@ public class MTRPrefabLibrary : ScriptableObject
     [Header("Interactable")]
     public Material spriteDefaultMaterial;
     public Material spriteOutlineMaterial;
+    public Material spriteShimmerMaterial;
 
     [Header("UXML RenderTexture")]
     public Material uxmlRenderTextureMaterial;
