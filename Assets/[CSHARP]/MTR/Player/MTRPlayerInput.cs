@@ -88,13 +88,13 @@ public class MTRPlayerInput : MonoBehaviour
     {
         if (enable && !_movementInputEnabled)
         {
-            UniversalInputManager.OnMoveInput += HandleMoveInput;
-            UniversalInputManager.OnMoveInputCanceled += HandleOnMoveInputCanceled;
+            MTRInputManager.OnMoveInput += HandleMoveInput;
+            MTRInputManager.OnMoveInputCanceled += HandleOnMoveInputCanceled;
         }
         else if (!enable && _movementInputEnabled)
         {
-            UniversalInputManager.OnMoveInput -= HandleMoveInput;
-            UniversalInputManager.OnMoveInputCanceled -= HandleOnMoveInputCanceled;
+            MTRInputManager.OnMoveInput -= HandleMoveInput;
+            MTRInputManager.OnMoveInputCanceled -= HandleOnMoveInputCanceled;
         }
         _movementInputEnabled = enable;
         Debug.Log("MTRPlayerInput :: SetMovementInputEnabled :: " + enable, this);
@@ -104,13 +104,13 @@ public class MTRPlayerInput : MonoBehaviour
     {
         if (enable && !_interactInputEnabled)
         {
-            UniversalInputManager.OnPrimaryInteract += HandlePrimaryInteract;
-            UniversalInputManager.OnPrimaryInteractCanceled += HandlePrimaryInteractCanceled;
+            MTRInputManager.OnPrimaryInteract += HandlePrimaryInteract;
+            MTRInputManager.OnPrimaryInteractCanceled += HandlePrimaryInteractCanceled;
         }
         else if (!enable && _interactInputEnabled)
         {
-            UniversalInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
-            UniversalInputManager.OnPrimaryInteractCanceled -= HandlePrimaryInteractCanceled;
+            MTRInputManager.OnPrimaryInteract -= HandlePrimaryInteract;
+            MTRInputManager.OnPrimaryInteractCanceled -= HandlePrimaryInteractCanceled;
         }
         _interactInputEnabled = enable;
         Debug.Log("MTRPlayerInput :: SetInteractInputEnabled :: " + enable, this);

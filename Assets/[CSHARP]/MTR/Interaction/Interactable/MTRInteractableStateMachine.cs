@@ -188,9 +188,11 @@ public partial class MTRInteractable
                         out Vector2 destination
                     );
                     player.Controller.StartWalkOverride(destination.x);
+                    /*
                     Debug.Log(
                         $"{PREFIX} :: {interactable.Name} >> Starting walk override to {destination}"
                     );
+                    */
                 }
                 else
                 {
