@@ -13,15 +13,18 @@ namespace Darklight.UnityExt.UXML
     /// </summary>
     /// <typeparam name="TElement">The selectables we'll be looking over.</typeparam>
     [Serializable]
-    public class SelectableVectorField<TElement> where TElement : VisualElement, new()
+    public class SelectableVectorField<TElement>
+        where TElement : VisualElement, new()
     {
         HashSet<TElement> _selectables = new HashSet<TElement>();
         TElement _previousSelection;
         TElement _currentSelection;
 
-        [SerializeField, ShowOnly] string _previousSelectionName;
-        [SerializeField, ShowOnly] string _currentSelectionName;
+        [SerializeField, ShowOnly]
+        string _previousSelectionName;
 
+        [SerializeField, ShowOnly]
+        string _currentSelectionName;
 
         public HashSet<TElement> Selectables
         {
@@ -47,12 +50,14 @@ namespace Darklight.UnityExt.UXML
                     _currentSelectionName = value.name;
             }
         }
+
         public void Add(TElement selectable)
         {
             _selectables.Add(selectable);
             if (CurrentSelection == null)
                 CurrentSelection = selectable;
         }
+
         public void Remove(TElement selectable)
         {
             _selectables.Remove(selectable);
@@ -61,16 +66,19 @@ namespace Darklight.UnityExt.UXML
                 CurrentSelection = _selectables.First();
             }
         }
+
         public void Load(IEnumerable<TElement> selectables)
         {
             _selectables = new HashSet<TElement>(selectables);
             CurrentSelection = _selectables.First();
         }
+
         public void Clear()
         {
             _selectables.Clear();
             CurrentSelection = null;
         }
+
         public void AddRange(IEnumerable<TElement> selectables)
         {
             foreach (TElement selectable in selectables)
@@ -86,7 +94,6 @@ namespace Darklight.UnityExt.UXML
                 _selectables.Remove(selectable);
             }
         }
-
 
         /// <summary>
 
@@ -111,19 +118,25 @@ namespace Darklight.UnityExt.UXML
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
-                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}");
+                    Debug.Log(
+                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}"
+                    );
                 }
                 else
                 {
                     // If we didn't find a new element, just return the old one.
                     pick = CurrentSelection;
-                    Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection.");
+                    Debug.Log(
+                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection."
+                    );
                 }
                 return pick;
             }
             else
             {
-                Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
+                Debug.LogError(
+                    ">> SelectableVectorField :: GetElementInDirection :: Direction is zero."
+                );
             }
             return CurrentSelection;
         }
@@ -133,7 +146,8 @@ namespace Darklight.UnityExt.UXML
             string s = "Selectables: ";
             foreach (TElement selectable in _selectables)
             {
-                s += $"{selectable}, {selectable.worldBound.center} {selectable == CurrentSelection}";
+                s +=
+                    $"{selectable}, {selectable.worldBound.center} {selectable == CurrentSelection}";
                 s += "\n";
             }
             Debug.Log(s);
@@ -190,24 +204,36 @@ namespace Darklight.UnityExt.UXML
                         // t = (direction.y * (center.y - C_1) + direction.x * (center.x - C_2))/(direction.x^2 + direction.y^2).
 
                         // Visualization: https://www.desmos.com/calculator/kl2oypib1f
-                        float t = (direction.y * (selectable_center.y - from.y)
-                            + direction.x * (selectable_center.x - from.x))
-                            / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
+                        float t =
+                            (
+                                direction.y * (selectable_center.y - from.y)
+                                + direction.x * (selectable_center.x - from.x)
+                            ) / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
                         // And so we get the x and y from our t-value:
-                        Vector2 dirClose = new Vector2(direction.x * t + from.x, direction.y * t + from.y);
+                        Vector2 dirClose = new Vector2(
+                            direction.x * t + from.x,
+                            direction.y * t + from.y
+                        );
                         // And now we just find the distance, and see if it's closer than the other distances we've calculated.
                         float dist = Vector2.Distance(dirClose, selectable_center);
 
                         // Check if the point is within the rect bounds.
                         Vector2 selectFullPos = selectable.worldBound.position;
-                        bool withinRectBounds = dirClose.x >= selectFullPos.x
+                        bool withinRectBounds =
+                            dirClose.x >= selectFullPos.x
                             && dirClose.x <= selectFullPos.x + selectable.worldBound.width
                             && dirClose.y >= selectFullPos.y
                             && dirClose.y <= selectFullPos.y + selectable.worldBound.height;
 
                         // If we're within the rect bounds, && its the closest , select it.
-                        float actualElementDist = Vector2.Distance(from, selectable.worldBound.center);
-                        if ((dist <= threshhold || withinRectBounds) && (actualElementDist < closestDir || closestDir == -1))
+                        float actualElementDist = Vector2.Distance(
+                            from,
+                            selectable.worldBound.center
+                        );
+                        if (
+                            (dist <= threshhold || withinRectBounds)
+                            && (actualElementDist < closestDir || closestDir == -1)
+                        )
                         {
                             closestDir = actualElementDist;
                             selected = selectable;
@@ -246,6 +272,5 @@ namespace Darklight.UnityExt.UXML
                             Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
                         }
         */
-
     }
 }

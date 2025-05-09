@@ -1,12 +1,9 @@
 using System.Collections.Generic;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Editor;
-using NaughtyAttributes;
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -19,17 +16,26 @@ namespace Darklight.UnityExt.UXML
     /// and assign it to the UIDocumentObject in the inspector.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class UXML_UIDocumentObject : MonoBehaviour
+    public class UXML_UIDocumentObject : MonoBehaviour, IUnityEditorListener
     {
         // << PUBLIC ACCESSORS >> //
         [Header("UXML_UIDocumentObject")]
-        [SerializeField, Expandable] public UXML_UIDocumentPreset preset;
+        [SerializeField, Expandable]
+        public UXML_UIDocumentPreset preset;
 
         public UIDocument document => GetComponent<UIDocument>();
         public VisualElement root => document.rootVisualElement;
         public bool isVisible { get; protected set; }
 
-        public virtual void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
+        public void OnEditorReloaded()
+        {
+            Initialize();
+        }
+
+        public virtual void Initialize(
+            UXML_UIDocumentPreset preset,
+            bool clonePanelSettings = false
+        )
         {
             this.preset = preset;
             if (preset == null)
@@ -42,9 +48,9 @@ namespace Darklight.UnityExt.UXML
 
             if (clonePanelSettings)
             {
-
                 // Create a new PanelSettings instance
-                PanelSettings clonedPanelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+                PanelSettings clonedPanelSettings =
+                    ScriptableObject.CreateInstance<PanelSettings>();
 
                 // Copy properties from the original PanelSettings to the new one
                 CopyPanelSettings(preset.panelSettings, clonedPanelSettings);
@@ -54,7 +60,6 @@ namespace Darklight.UnityExt.UXML
             {
                 document.panelSettings = preset.panelSettings;
             }
-
 
             // Assign the layer
             gameObject.layer = LayerMask.NameToLayer("UI");
@@ -74,7 +79,8 @@ namespace Darklight.UnityExt.UXML
         /// <typeparam name="T">The type of VisualElement to query for.</typeparam>
         /// <param name="tagOrClass">Optional tag or class name to further refine the query.</param>
         /// <returns>The first matching element, or null if no match is found.</returns>
-        public T ElementQuery<T>(string tagOrClass = null) where T : VisualElement
+        public T ElementQuery<T>(string tagOrClass = null)
+            where T : VisualElement
         {
             UQueryBuilder<T> query = root.Query<T>(tagOrClass);
             return query.First();
@@ -86,7 +92,8 @@ namespace Darklight.UnityExt.UXML
         /// <typeparam name="T">The type of VisualElement to query for.</typeparam>
         /// <param name="tagOrClass">Optional tag or class name to further refine the query.</param>
         /// <returns>An enumerable of all matching elements.</returns>
-        public IEnumerable<T> ElementQueryAll<T>(string tagOrClass = null) where T : VisualElement
+        public IEnumerable<T> ElementQueryAll<T>(string tagOrClass = null)
+            where T : VisualElement
         {
             HashSet<T> elements = new HashSet<T>();
             root.Query<T>(tagOrClass).ForEach(element => elements.Add(element));
@@ -110,6 +117,7 @@ namespace Darklight.UnityExt.UXML
             isVisible = visible;
             root.visible = isVisible;
         }
+
         private void CopyPanelSettings(PanelSettings source, PanelSettings destination)
         {
             // Scale and Resolution Settings
@@ -138,6 +146,21 @@ namespace Darklight.UnityExt.UXML
             destination.referenceDpi = source.referenceDpi;
             destination.referenceResolution = source.referenceResolution;
         }
-
     }
+
+#if UNITY_EDITOR
+    [UnityEditor.CustomEditor(typeof(UXML_UIDocumentObject))]
+    public class UXML_UIDocumentObjectCustomEditor : UnityEditor.Editor
+    {
+        SerializedObject _serializedObject;
+        UXML_UIDocumentObject _script;
+
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(target);
+            _script = (UXML_UIDocumentObject)target;
+            _script.Initialize();
+        }
+    }
+#endif
 }

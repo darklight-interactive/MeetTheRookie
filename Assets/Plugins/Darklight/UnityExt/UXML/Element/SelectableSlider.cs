@@ -46,10 +46,7 @@ namespace Darklight.UnityExt.UXML
         public float StepSize
         {
             get { return _stepSize; }
-            set
-            {
-                _stepSize = value;
-            }
+            set { _stepSize = value; }
         }
 
         // UXML attributes for slider elements
@@ -106,9 +103,12 @@ namespace Darklight.UnityExt.UXML
         public new class UxmlTraits : Slider.UxmlTraits
         {
             // UXML descriptions for background, fill, and handle images
-            UxmlAssetAttributeDescription<Texture2D> backgroundImage = new UxmlAssetAttributeDescription<Texture2D> { name = "background-image" };
-            UxmlAssetAttributeDescription<Texture2D> fillImage = new UxmlAssetAttributeDescription<Texture2D> { name = "fill-image" };
-            UxmlAssetAttributeDescription<Texture2D> handleImage = new UxmlAssetAttributeDescription<Texture2D> { name = "handle-image" };
+            UxmlAssetAttributeDescription<Texture2D> backgroundImage =
+                new UxmlAssetAttributeDescription<Texture2D> { name = "background-image" };
+            UxmlAssetAttributeDescription<Texture2D> fillImage =
+                new UxmlAssetAttributeDescription<Texture2D> { name = "fill-image" };
+            UxmlAssetAttributeDescription<Texture2D> handleImage =
+                new UxmlAssetAttributeDescription<Texture2D> { name = "handle-image" };
 
             public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
             {

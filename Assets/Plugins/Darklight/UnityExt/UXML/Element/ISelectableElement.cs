@@ -9,5 +9,4 @@ public interface ISelectableElement
     void Deselect();
     void Enable();
     void Disable();
-
 }
