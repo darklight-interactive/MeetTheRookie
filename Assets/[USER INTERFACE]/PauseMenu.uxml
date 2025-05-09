@@ -1,31 +1,32 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/PauseMenu.uss?fileID=7433441132597879392&amp;guid=6627ac181f9b66f46ad8d2ace8d36769&amp;type=3#PauseMenu" />
-    <engine:VisualElement name="pausemenu-container" style="flex-grow: 1; align-items: center; justify-content: center; align-self: stretch; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; display: flex; visibility: visible; opacity: 1; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgba(0, 0, 0, 0.65); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: column;">
-        <engine:VisualElement name="tab-container" style="justify-content: center; width: 90%; height: 90%; display: none;">
-            <engine:Label text="Paused" name="header" class="TabTitle" style="color: rgb(255, 255, 255); -unity-text-align: middle-center; flex-grow: 1; justify-content: center; align-items: stretch;" />
-            <engine:GroupBox name="selectable-group" style="flex-grow: 1;">
-                <Darklight.UnityExt.UXML.SelectableButton name="resume-btn" text="Resume" class="button" />
-                <Darklight.UnityExt.UXML.SelectableButton name="settings-btn" text="Settings" class="button" />
-                <Darklight.UnityExt.UXML.SelectableButton name="controls-btn" text="Controls" class="button" />
-                <Darklight.UnityExt.UXML.SelectableButton name="mainmenu-btn" text="Main Menu" class="button" />
+    <engine:VisualElement name="pausemenu-container" style="flex-grow: 1; align-items: center; justify-content: center; align-self: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; opacity: 1; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgba(0, 0, 0, 0.65); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: column; visibility: visible; height: 90%; width: 90%;">
+        <engine:VisualElement name="home-page" class="Folder" style="justify-content: center; width: 90%; height: 90%; display: none; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&amp;guid=e9f3108207bed5c4caa303e96ced19e3&amp;type=3#ui-folder-1_0&quot;); -unity-background-scale-mode: stretch-to-fill; visibility: visible; translate: 0 0;">
+            <engine:Label text="Paused" emoji-fallback-support="true" class="TabTitle" style="padding-top: 6%;" />
+            <engine:GroupBox name="selectable-group" style="flex-grow: 1; align-items: center; justify-content: space-around; flex-shrink: 1; height: 78%; margin-top: 0; margin-right: 0; margin-left: 0; margin-bottom: 0; background-image: none; align-self: stretch; width: 100%; flex-direction: column; padding-top: 5%; padding-right: 0; padding-bottom: 5%; padding-left: 0;">
+                <Darklight.UnityExt.UXML.SelectableButton name="resume-btn" text="Resume" class="button" style="flex-direction: column; translate: -21px 0; rotate: 2deg;" />
+                <Darklight.UnityExt.UXML.SelectableButton name="settings-btn" text="Settings" class="button" style="white-space: normal; flex-direction: column; rotate: 0; translate: 27px 0;" />
+                <Darklight.UnityExt.UXML.SelectableButton name="controls-btn" text="Controls" class="button" style="white-space: normal; flex-direction: column; translate: 7px 0; rotate: 2deg;" />
+                <Darklight.UnityExt.UXML.SelectableButton name="mainmenu-btn" text="Main Menu" class="button" style="rotate: -2deg; translate: 35px 0;" />
             </engine:GroupBox>
         </engine:VisualElement>
-        <engine:VisualElement name="settings-page" style="flex-grow: 0; display: flex; align-items: stretch; justify-content: center; align-self: center; width: 90%; height: 90%;">
-            <engine:GroupBox name="slider-group" style="flex-grow: 2; width: auto; flex-shrink: 1;">
-                <Darklight.UnityExt.UXML.SelectableSlider label="Music" name="music-slider" direction="Horizontal" style="display: flex;" />
-                <Darklight.UnityExt.UXML.SelectableSlider label="SFX" name="sfx-slider" />
-                <Darklight.UnityExt.UXML.SelectableSlider label="Dialogue" name="dialogue-slider" />
+        <engine:VisualElement name="settings-page" class="Folder" style="flex-grow: 1; display: none; align-items: stretch; justify-content: center; align-self: center; width: 90%; height: 90%; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&amp;guid=e9f3108207bed5c4caa303e96ced19e3&amp;type=3#ui-folder-1_0&quot;); visibility: visible; -unity-slice-scale: 0; -unity-background-scale-mode: stretch-to-fill;">
+            <engine:Label text="Settings" emoji-fallback-support="true" name="Label" class="TabTitle" />
+            <engine:GroupBox name="selectable-group" style="height: auto; background-image: none; flex-shrink: 1; flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-direction: column; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; justify-content: center; align-items: center; align-self: stretch;">
+                <engine:GroupBox name="slider-group" style="flex-grow: 1; width: 85%; flex-shrink: 1; margin-left: 0; margin-top: 0; margin-bottom: 5%; height: 63%; margin-right: 0; align-self: center;">
+                    <Darklight.UnityExt.UXML.SelectableSlider label="Music" name="music-slider" style="display: flex; align-items: center; justify-content: center; align-self: center; rotate: -1deg;" />
+                    <Darklight.UnityExt.UXML.SelectableSlider label="SFX" name="sfx-slider" style="align-self: center; align-items: center; justify-content: center; rotate: 0;" />
+                    <Darklight.UnityExt.UXML.SelectableSlider label="Dialogue" name="dialogue-slider" style="justify-content: center; align-self: center; flex-direction: row; rotate: -1deg;" />
+                </engine:GroupBox>
+                <Darklight.UnityExt.UXML.SelectableButton name="return-btn-settings" enable-rich-text="true" text="Return" class="button" style="flex-direction: column; width: 30%; flex-shrink: 1; margin-top: 0; margin-right: 0; margin-bottom: 6%; margin-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; justify-content: flex-start; align-self: center; height: auto; align-items: center; rotate: -2deg;" />
             </engine:GroupBox>
-            <engine:VisualElement name="empty-space" style="flex-grow: 1;" />
-            <Darklight.UnityExt.UXML.SelectableButton name="return-btn" text="Return" class="button" style="flex-shrink: 0; text-overflow: clip; -unity-text-align: middle-center; flex-grow: 0;" />
-            <engine:VisualElement name="empty-space" style="flex-grow: 1;" />
         </engine:VisualElement>
-        <engine:VisualElement name="controls-page" style="flex-grow: 1; padding-top: 25px; padding-right: 25px; padding-bottom: 25px; padding-left: 25px; flex-direction: column; flex-shrink: 1; display: none; align-items: stretch; justify-content: center; align-self: center; width: 90%; height: 90%;">
-            <engine:VisualElement name="empty-space" style="flex-grow: 1; flex-shrink: 6; align-items: auto; align-self: stretch; display: flex;" />
-            <engine:Label text="[A/D] or [&lt;-] [-&gt;] to walk&#10;[Z] - Select/Interact&#10;[X] - Deselect/Back OR Open Synthesis&#10;[C] - Combine/Flip Character Stack&#10;[?] - Open Synthesis&#10;" name="control-desc" enable-rich-text="false" style="-unity-font-definition: resource(&apos;Fonts/cour&apos;); -unity-font-style: bold; font-size: 15px; -unity-text-align: middle-center; align-self: center; flex-direction: column; align-items: stretch; white-space: nowrap; flex-wrap: nowrap; text-overflow: ellipsis; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; max-width: 100%; max-height: 100px; flex-shrink: 1; flex-grow: 3;" />
-            <engine:VisualElement name="empty-space" style="flex-grow: 1; flex-shrink: 6; align-items: auto; align-self: stretch; display: flex;" />
-            <Darklight.UnityExt.UXML.SelectableButton name="return-btn" text="Return" selectable="false" class="button" style="flex-shrink: 1; text-overflow: clip; -unity-text-align: middle-center; flex-grow: 0;" />
-            <engine:VisualElement name="empty-space" style="flex-grow: 1; flex-shrink: 1; align-items: auto; align-self: stretch;" />
+        <engine:VisualElement name="controls-page" class="Folder" style="flex-grow: 1; flex-direction: column; flex-shrink: 1; display: flex; align-items: stretch; justify-content: center; align-self: center; width: 90%; height: 90%; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&amp;guid=e9f3108207bed5c4caa303e96ced19e3&amp;type=3#ui-folder-1_0&quot;); -unity-background-scale-mode: stretch-to-fill;">
+            <engine:Label text="Controls" emoji-fallback-support="true" name="Label" class="TabTitle" />
+            <engine:VisualElement style="flex-grow: 1;">
+                <engine:Label text="[A/D] or [&lt;-] [-&gt;] to walk&#10;[Z] - Select/Interact&#10;[X] - Deselect/Back OR Open Synthesis&#10;[C] - Combine/Flip Character Stack&#10;[?] - Open Synthesis&#10;" name="control-desc" enable-rich-text="false" style="-unity-font-definition: resource(&apos;Fonts/cour&apos;); -unity-font-style: bold; font-size: 40px; -unity-text-align: middle-center; align-self: center; flex-direction: column; align-items: stretch; white-space: nowrap; flex-wrap: nowrap; text-overflow: ellipsis; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-shrink: 1; flex-grow: 1; color: rgb(115, 72, 40); display: flex; height: 63%; rotate: 5deg;" />
+                <Darklight.UnityExt.UXML.SelectableButton name="return-btn-controls" enable-rich-text="true" text="Return" class="button" style="flex-direction: column; width: 30%; flex-shrink: 1; margin-top: 0; margin-right: 0; margin-bottom: 6%; margin-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; justify-content: flex-start; align-self: center; height: auto; align-items: center; rotate: 1deg;" />
+            </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

@@ -25,21 +25,39 @@ public class PauseMenuController : UXML_UIDocumentObject
 
 
     // << MENU ELEMENTS >>
-    const string CONTROLS_PAGE = "controls-page";
+
+    // VISUALS
+    const string HOME_PAGE = "home-page";
     const string SETTINGS_PAGE = "settings-page";
-    const string SCENES_PAGE = "scenes-page";
-    VisualElement _controlsPage;
+    const string CONTROLS_PAGE = "controls-page";
+    //const string SCENES_PAGE = "scenes-page";
+    VisualElement _homePage;
+    VisualElement _controlsPage; 
     VisualElement _settingsPage;
-    VisualElement _scenesPage;
+    //VisualElement _scenesPage;
 
-
+    // BUTTONS
     const string RESUME_BTN = "resume-btn";
-    const string CONTROLS_RETRUN_BTN = "return-btn";
+    //const string HOME_BTN = "home-btn";
+    const string SETTINGS_BTN = "settings-btn";
+    const string CONTROLS_BTN = "controls-btn";
+    const string MAINMENU_BTN = "mainmenu-btn";
+    const string RETURN_BTN_SETTINGS = "return-btn-settings";
+    const string RETURN_BTN_CONTROLS = "return-btn-controls";
     SelectableButton _resumeButton;
-    SelectableButton _controlsReturnButton;
+    //SelectableButton _homeButton;
+    SelectableButton _settingsButton;
+    SelectableButton _controlsButton;
+    SelectableButton _mainMenuButton;
+    SelectableButton _returnButtonSettings;
+    SelectableButton _returnButtonControls;
+    //SelectableButton _controlsReturnButton;
+    Dictionary<string, SelectableButton[]> buttonGroups;
 
-
-
+    // SLIDERS
+    const string MUSIC_BUS = "bus:/Music";
+    const string SFX_BUS = "bus:/SFX";
+    const string DIALOGUE_BUS = "bus:/Dialogue";
 
 
     SelectableVectorField<VisualElement> selectableElements = new SelectableVectorField<VisualElement>();
@@ -65,74 +83,153 @@ public class PauseMenuController : UXML_UIDocumentObject
 
     public void Start()
     {
-        // Load the selectable buttons
-        selectableElements.Load(ElementQueryAll<SelectableButton>());
+        // << VISUALS >>
 
-        /*
         // Store references to the folders
+        _homePage = ElementQuery<VisualElement>(HOME_PAGE);
         _controlsPage = ElementQuery<VisualElement>(CONTROLS_PAGE);
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
-        _scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
-        _controlsPage.visible = false;
-        _settingsPage.visible = false;
-        _scenesPage.visible = false;
+        //_scenesPage = ElementQuery<VisualElement>(SCENES_PAGE);
 
-        // << PAUSE MENU ACTIONS >>
-        _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
-        _controlsButton.OnSelect += () =>
-        {
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+        // Initilize visuals
+        _homePage.style.display = DisplayStyle.None;
+        _controlsPage.style.display = DisplayStyle.None;
+        _settingsPage.style.display = DisplayStyle.None;
+        // _scenesPage.style.display = DisplayStyle.None;
 
-            _controlsPage.visible = true;
-            _settingsPage.visible = false;
-            _scenesPage.visible = false;
-        };
+        
 
-        _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
-        _settingsButton.OnSelect += () =>
-        {
-            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+        // << BUTTONS >>
 
-            _controlsPage.visible = false;
-            _settingsPage.visible = true;
-            _scenesPage.visible = false;
-        };
-        */
-
+        // Initialize Buttons
         _resumeButton = ElementQuery<SelectableButton>(RESUME_BTN);
+        _settingsButton = ElementQuery<SelectableButton>(SETTINGS_BTN);
+        _controlsButton = ElementQuery<SelectableButton>(CONTROLS_BTN);
+        _mainMenuButton = ElementQuery<SelectableButton>(MAINMENU_BTN);
+        //_homeButton = ElementQuery<SelectableButton>(HOME_BTN);
+        _returnButtonSettings = ElementQuery<SelectableButton>(RETURN_BTN_SETTINGS);
+        _returnButtonControls = ElementQuery<SelectableButton>(RETURN_BTN_CONTROLS);
+
+        buttonGroups = new Dictionary<string, SelectableButton[]>
+        {
+            { HOME_PAGE, new SelectableButton[]{ _resumeButton, _settingsButton, _controlsButton, _mainMenuButton } },
+            { SETTINGS_PAGE, new SelectableButton[]{ _returnButtonSettings } },
+            { CONTROLS_PAGE, new SelectableButton[]{ _returnButtonControls } }
+        };
+
+        // Load the selectable buttons
+        selectableElements.Load(ElementQueryAll<SelectableButton>());
+        selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+        selectableElements.RemoveRange(buttonGroups[CONTROLS_PAGE]);
+
+
+
+        // << BUTTON ACTIONS >>
+
         _resumeButton.OnClick += OnMenuButtonAction;
 
-        _controlsReturnButton = ElementQuery<SelectableButton>(CONTROLS_RETRUN_BTN);
-        _controlsReturnButton.OnSelect += () =>
+        
+        _settingsButton.OnClick += () =>
         {
-            Debug.Log("CONTROLS RETURN BUTTON SELECTED");
+            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+            selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[HOME_PAGE]);
+
+            _settingsPage.style.display = DisplayStyle.Flex;
+            _homePage.style.display = DisplayStyle.None;
+
+            //_homePage.visible = false;
+            //_settingsPage.visible = true;
         };
 
+        
+        _controlsButton.OnClick += () =>
+        {
+            selectableElements.AddRange(buttonGroups[CONTROLS_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[HOME_PAGE]);
+
+            _controlsPage.style.display = DisplayStyle.Flex;
+            _homePage.style.display = DisplayStyle.None;
+
+            //_homePage.visible = false;
+            //_controlsPage.visible = true;
+        };
+
+        
+        _mainMenuButton.OnClick += () =>
+        {
+            Debug.Log("Main menu button clicked");
+        };
+
+        //_homeButton.OnClick += () =>
+        //{
+        //    selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+        //    _homePage.style.display = DisplayStyle.Flex;
+        //    _controlsPage.style.display = DisplayStyle.None;
+        //    _settingsPage.style.display = DisplayStyle.None;
+
+        //    //_homePage.visible = true;
+        //    //_controlsPage.visible = false;
+        //    //_settingsPage.visible = false;
+        //    //_scenesPage.visible = false;
+        //};
+
+        _returnButtonSettings.OnClick += () =>
+        {
+            selectableElements.AddRange(buttonGroups[HOME_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.Flex;
+            _settingsPage.style.display = DisplayStyle.None;
+        };
+
+        _returnButtonControls.OnClick += () =>
+        {
+            selectableElements.AddRange(buttonGroups[HOME_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[CONTROLS_PAGE]);
+
+            _homePage.style.display = DisplayStyle.Flex;
+            _controlsPage.style.display = DisplayStyle.None;
+
+            //_homePage.visible = false;
+            //_controlsPage.visible = true;
+        };
+
+
+
+
+        // << SLIDERS >>
         SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
+        SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
+        SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
+
+        musicSlider.value = MTR_AudioManager.Instance.GetBus(MUSIC_BUS).Volume;
+        sfxSlider.value = MTR_AudioManager.Instance.GetBus(SFX_BUS).Volume;
+        dialogueSlider.value = MTR_AudioManager.Instance.GetBus(DIALOGUE_BUS).Volume;
+
         musicSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume(MUSIC_BUS, musicSlider.value);
+            //Debug.Log("MUSIC: " + musicSlider.value);
         };
-        Debug.Log("MUSIC: " + musicSlider.value);
+        
 
-        SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
+        
         sfxSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", sfxSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume(SFX_BUS, sfxSlider.value);
         };
 
-        SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
+        
         dialogueSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume(DIALOGUE_BUS, dialogueSlider.value);
         };
 
+        SetVisibility(false); // Is this necessary?
 
-        musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
-        sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
-        dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
-
-        SetVisibility(false);
     }
 
     void OnDestroy()
@@ -151,8 +248,16 @@ public class PauseMenuController : UXML_UIDocumentObject
         {
             if (dir.y == 0)
             {
-                if (dir.x > 0) { slider.Increment(); }
-                else if (dir.x < 0) { slider.Decrement(); }
+                if (dir.x > 0)
+                {
+                    slider.Increment();
+                    MTR_AudioManager.Instance.PlayMenuSliderEvent();
+                }
+                else if (dir.x < 0)
+                {
+                    slider.Decrement();
+                    MTR_AudioManager.Instance.PlayMenuSliderEvent();
+                }
                 return;
             }
         }
@@ -215,9 +320,22 @@ public class PauseMenuController : UXML_UIDocumentObject
 
             SetVisibility(false);
             _pauseMenuContainer.style.visibility = Visibility.Hidden;
+            //_homePage.style.visibility = Visibility.Hidden;
             //_controlsPage.style.visibility = Visibility.Hidden;
             //_settingsPage.style.visibility = Visibility.Hidden;
             //_scenesPage.style.visibility = Visibility.Hidden;
+
+            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+            selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+            selectableElements.RemoveRange(buttonGroups[CONTROLS_PAGE]);
+            selectableElements.AddRange(buttonGroups[HOME_PAGE]);
+
+            _homePage.style.display = DisplayStyle.None;
+            _controlsPage.style.display = DisplayStyle.None;
+            _settingsPage.style.display = DisplayStyle.None;
+            //_homePage.visible = false;
+            //_controlsPage.visible = false;
+            //_settingsPage.visible = false;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
 
@@ -230,13 +348,19 @@ public class PauseMenuController : UXML_UIDocumentObject
             if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE) { return; }
 
             Debug.Log("PAUSE MENU CONTAINER NOT VISIBLE");
-            _controlsReturnButton?.Select();
+            //_resumeButton?.Select();
 
             SetVisibility(true);
             _pauseMenuContainer.style.visibility = Visibility.Visible;
+            //_homePage.style.visibility = Visibility.Visible;
             //_controlsPage.style.visibility = Visibility.Visible;
             //_settingsPage.style.visibility = Visibility.Visible;
             //_scenesPage.style.visibility = Visibility.Visible;
+
+            //selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+
+            _homePage.style.display = DisplayStyle.Flex;
+            //_homePage.visible = true;
 
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
 

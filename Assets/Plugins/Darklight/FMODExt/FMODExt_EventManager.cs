@@ -86,6 +86,11 @@ namespace Darklight.UnityExt.FMODExt
         {
             PlayOneShot(_generalSFX.menuSelect);
         }
+
+        public void PlayMenuSliderEvent()
+        {
+            PlayOneShot(_generalSFX.menuSlider);
+        }
         #endregion
 
         #endregion
