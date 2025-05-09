@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-
-
 
 public class PinPad : MonoBehaviour
 {
@@ -20,19 +18,20 @@ public class PinPad : MonoBehaviour
     private string correctcode;
     public int Inputted = 0;
     public bool ispinpadcorrect;
+
     // Start is called before the first frame update
 
     void Start()
     {
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
         VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         groupbase = root.Q<VisualElement>("Base");
         Numbers = root.Q<VisualElement>("Numbers").Q<Label>("Numbers");
         LFlasher = root.Q<VisualElement>("LFlasher");
         RFlasher = root.Q<VisualElement>("RFlasher");
         foreach (VisualElement row in groupbase.Children())
-        { 
+        {
             foreach (VisualElement child in row.Children())
             {
                 buttons.Add(child);
@@ -46,60 +45,60 @@ public class PinPad : MonoBehaviour
         groupbase.style.scale = new StyleScale(new Scale(new Vector2(1.4f, 1.4f)));
         Debug.Log(buttons.Count());
     }
-    
+
     void OnMoveInputStartAction(Vector2 dir)
     {
-        Vector2 directionInScreenSpace = new Vector2 (dir.x, -dir.y);
+        Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y);
         if (directionInScreenSpace.x > 0)
         {
             if (selector < 11)
             {
-            UnHover();
-            selector += 1;
-            currentselected = buttons[selector];
-            Hover();
+                UnHover();
+                selector += 1;
+                currentselected = buttons[selector];
+                Hover();
             }
         }
         if (directionInScreenSpace.y > 0)
         {
             if (selector < 9)
             {
-            UnHover();
-            selector += 3;
-            currentselected = buttons[selector];
-            Hover();
+                UnHover();
+                selector += 3;
+                currentselected = buttons[selector];
+                Hover();
             }
         }
         if (directionInScreenSpace.x < 0)
         {
             if (selector > 0)
             {
-            UnHover();
-            selector -= 1;
-            currentselected = buttons[selector];
-            Hover();
+                UnHover();
+                selector -= 1;
+                currentselected = buttons[selector];
+                Hover();
             }
         }
         if (directionInScreenSpace.y < 0)
         {
             if (selector > 2)
             {
-            UnHover();
-            selector -= 3;
-            currentselected = buttons[selector];
-            Hover();
+                UnHover();
+                selector -= 3;
+                currentselected = buttons[selector];
+                Hover();
             }
         }
     }
+
     // Update is called once per frame
-    void Update()
-    {
-    }
-    
+    void Update() { }
+
     void OnPrimaryInteractAction()
     {
         StartCoroutine(Select());
     }
+
     IEnumerator Select()
     {
         currentselected.RemoveFromClassList("Hovered");
@@ -108,9 +107,11 @@ public class PinPad : MonoBehaviour
         {
             if (Inputted < 6)
             {
-            Inputted += 1;
-            Numbers.text += currentselected.name;
-            MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadNumber);
+                Inputted += 1;
+                Numbers.text += currentselected.name;
+                MTR_AudioManager.Instance.PlayOneShotSFX(
+                    MTR_AudioManager.Instance.generalSFX.pinpadNumber
+                );
             }
         }
         if (currentselected.name == "Star")
@@ -133,31 +134,40 @@ public class PinPad : MonoBehaviour
         currentselected.RemoveFromClassList("Selected");
         currentselected.AddToClassList("Hovered");
     }
+
     IEnumerator Correct()
     {
-        MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadSuccess);
+        MTR_AudioManager.Instance.PlayOneShotSFX(
+            MTR_AudioManager.Instance.generalSFX.pinpadSuccess
+        );
         yield return new WaitForSecondsRealtime(0.6f);
-        LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
+        LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
         ispinpadcorrect = true;
-
     }
+
     IEnumerator Incorrect()
     {
         MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadFail);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
+        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(.4156f,.4156f,.4156f,1));
+        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(
+            new Color(.4156f, .4156f, .4156f, 1)
+        );
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1,1,1,1));
+        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
         yield return new WaitForSecondsRealtime(0.2f);
-        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(.4156f,.4156f,.4156f,1));
+        RFlasher.style.unityBackgroundImageTintColor = new StyleColor(
+            new Color(.4156f, .4156f, .4156f, 1)
+        );
     }
+
     void UnHover()
     {
         currentselected.RemoveFromClassList("Selected");
         currentselected.RemoveFromClassList("Hovered");
         currentselected.AddToClassList("UnHovered");
     }
+
     void Hover()
     {
         currentselected.RemoveFromClassList("UnHovered");
@@ -166,8 +176,7 @@ public class PinPad : MonoBehaviour
 
     private void OnDestroy()
     {
-        UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
     }
-    
 }

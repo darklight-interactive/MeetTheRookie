@@ -1,11 +1,9 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 //using System.Collections.IEnumerable;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
-
 using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,10 +18,12 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableButton returnButtonCredits;
     SelectableButton currentButton;
     Dictionary<string, SelectableButton[]> buttonGroups;
-    SelectableVectorField<SelectableButton> selectableVectorField = new SelectableVectorField<SelectableButton>();
+    SelectableVectorField<SelectableButton> selectableVectorField =
+        new SelectableVectorField<SelectableButton>();
     bool lockSelection = false;
 
-    SelectableVectorField<VisualElement> selectableElements = new SelectableVectorField<VisualElement>();
+    SelectableVectorField<VisualElement> selectableElements =
+        new SelectableVectorField<VisualElement>();
 
     const string MAIN_PAGE = "main";
     const string SETTINGS_PAGE = "main-settings";
@@ -49,9 +49,12 @@ public class MainMenuController : UXML_UIDocumentObject
 
         buttonGroups = new Dictionary<string, SelectableButton[]>
         {
-            { MAIN_PAGE, new SelectableButton[]{ playButton, settingsButton, creditsButton, quitButton } },
-            { SETTINGS_PAGE, new SelectableButton[]{ returnButtonSettings } },
-            { CREDITS_PAGE, new SelectableButton[]{ returnButtonCredits } }
+            {
+                MAIN_PAGE,
+                new SelectableButton[] { playButton, settingsButton, creditsButton, quitButton }
+            },
+            { SETTINGS_PAGE, new SelectableButton[] { returnButtonSettings } },
+            { CREDITS_PAGE, new SelectableButton[] { returnButtonCredits } }
         };
 
         // Load the selectable buttons, remove elements not currently active in the page
@@ -113,7 +116,6 @@ public class MainMenuController : UXML_UIDocumentObject
 
         quitButton.OnClick += Quit;
 
-
         // Load the Selectable Elements
         selectableVectorField.Load(ElementQueryAll<SelectableButton>());
         selectableVectorField.Selectables.First().Select();
@@ -139,16 +141,13 @@ public class MainMenuController : UXML_UIDocumentObject
             MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
         };
 
-
         musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
         sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
         dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
 
-
-
         // Listen to the input manager
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
     }
 
     void OnMoveInputStartAction(Vector2 dir)
@@ -163,7 +162,6 @@ public class MainMenuController : UXML_UIDocumentObject
                 {
                     slider.Increment();
                     MTR_AudioManager.Instance.PlayMenuSliderEvent();
-
                 }
                 else if (dir.x < 0)
                 {
@@ -173,7 +171,6 @@ public class MainMenuController : UXML_UIDocumentObject
                 return;
             }
         }
-
 
         // Select the next button in the direction
         VisualElement oldButton = selectableElements.CurrentSelection;
@@ -186,7 +183,9 @@ public class MainMenuController : UXML_UIDocumentObject
             button.Deselect();
         }
 
-        VisualElement newButton = selectableElements.SelectElementInDirection(directionInScreenSpace);
+        VisualElement newButton = selectableElements.SelectElementInDirection(
+            directionInScreenSpace
+        );
         if (newButton is SelectableSlider newSlider)
         {
             newSlider.Select();
@@ -201,7 +200,10 @@ public class MainMenuController : UXML_UIDocumentObject
             Invoke(nameof(UnlockSelection), 0.1f);
         }
 
-        if (directionInScreenSpace.y != 0.0 && oldButton != newButton) { MTR_AudioManager.Instance.PlayMenuHoverEvent(); }
+        if (directionInScreenSpace.y != 0.0 && oldButton != newButton)
+        {
+            MTR_AudioManager.Instance.PlayMenuHoverEvent();
+        }
         //SelectableButton button = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
         //Select(button);
         //Debug.Log($"MainMenuController: OnMoveInputStartAction({dir}) -> {button.name}");
@@ -210,7 +212,8 @@ public class MainMenuController : UXML_UIDocumentObject
     // UNUSED AFTER ADDING SLIDERS TO THE MENU
     void Select(SelectableButton selectedButton)
     {
-        if (selectedButton == null || lockSelection) return;
+        if (selectedButton == null || lockSelection)
+            return;
 
         //SelectableButton previousButton = selectableVectorField.PreviousSelection;
         SelectableButton previousButton = currentButton;
@@ -249,8 +252,8 @@ public class MainMenuController : UXML_UIDocumentObject
 
     private void OnDestroy()
     {
-        UniversalInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-        UniversalInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
     }
 
     public void Quit()

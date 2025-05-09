@@ -254,15 +254,15 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     void EnableInput()
     {
-        UniversalInputManager.OnMoveInputStarted += HandleSelectionInput;
-        UniversalInputManager.OnPrimaryInteract += Select;
+        MTRInputManager.OnMoveInputStarted += HandleSelectionInput;
+        MTRInputManager.OnPrimaryInteract += Select;
         _inputEnabled = true;
     }
 
     void DisableInput()
     {
-        UniversalInputManager.OnMoveInputStarted -= HandleSelectionInput;
-        UniversalInputManager.OnPrimaryInteract -= Select;
+        MTRInputManager.OnMoveInputStarted -= HandleSelectionInput;
+        MTRInputManager.OnPrimaryInteract -= Select;
         _inputEnabled = false;
     }
 

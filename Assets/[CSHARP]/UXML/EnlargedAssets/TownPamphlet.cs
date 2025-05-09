@@ -11,14 +11,17 @@ public class TownPamphlet : MonoBehaviour
     public VisualElement pamphlet;
     public VisualElement currentselected;
     public int page;
+
     // Start is called before the first frame update
     void Start()
     {
-        UniversalInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-        UniversalInputManager.OnMenuButton += OnMenuButtonAction;
+        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        MTRInputManager.OnMenuButton += OnMenuButtonAction;
 
         // Audio
-        MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.paperInteract);
+        MTR_AudioManager.Instance.PlayOneShotSFX(
+            MTR_AudioManager.Instance.generalSFX.paperInteract
+        );
 
         VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         pamphlet = root.Q<VisualElement>("Pamphlet");
@@ -38,20 +41,20 @@ public class TownPamphlet : MonoBehaviour
         {
             if (page < 3)
             {
-            currentselected.AddToClassList("Unselected");
-            page += 1;
-            currentselected = Pages[page];
-            currentselected.RemoveFromClassList("Unselected");
+                currentselected.AddToClassList("Unselected");
+                page += 1;
+                currentselected = Pages[page];
+                currentselected.RemoveFromClassList("Unselected");
             }
         }
         if (direction.x < 0)
         {
             if (page > 0)
             {
-            currentselected.AddToClassList("Unselected");
-            page -= 1;
-            currentselected = Pages[page];
-            currentselected.RemoveFromClassList("Unselected");
+                currentselected.AddToClassList("Unselected");
+                page -= 1;
+                currentselected = Pages[page];
+                currentselected.RemoveFromClassList("Unselected");
             }
         }
     }
@@ -62,8 +65,5 @@ public class TownPamphlet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Update() { }
 }

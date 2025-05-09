@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: MAIN_MENU
   m_EditorClassIdentifier: 
   _sceneObject:
-    m_SceneName: 
-  _name: 
-  _path: 
+    m_SceneName: MAIN_MENU
+  _name: MAIN_MENU
+  _path: Assets/Scenes/Build/MAIN_MENU.unity
   _internalSceneKnot: None
   _sceneKnot: None
   _forceInteractionOnEnter: 0
@@ -23,10 +23,12 @@ MonoBehaviour:
   _cameraBoundsOffset: 0.25
   _sceneBounds:
     _center: {x: 0, y: 1}
-    _minX: 0
-    _maxX: 0
+    _minX: -5
+    _maxX: 5
+    _minY: -1.5
+    _maxY: 1
   _cameraBounds:
     Center: {x: 0, y: 1}
-    XAxisValues: {x: -5, y: 5}
-    YAxisValues: {x: -1, y: 1}
+    XAxisValues: {x: -5.25, y: 5.25}
+    YAxisValues: {x: -1.75, y: 1.25}
   _onStartCameraSetting: 0
