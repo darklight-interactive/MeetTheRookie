@@ -1,12 +1,9 @@
+using System.Data;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
-
-using Darklight.UnityExt.Utility;
-using Darklight.UnityExt.Editor;
-using NaughtyAttributes;
-using System.Data;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,20 +14,30 @@ namespace Darklight.UnityExt.UXML
     public partial class ControlledLabel : VisualElement
     {
         const string TAG = "controlledLabel";
-        const string PATH_TO_DEFAULTBKG = "Assets/Plugins/Darklight/_textures/DRKL_TextBubble_Default_0.png";
+        const string PATH_TO_DEFAULTBKG =
+            "Assets/Plugins/Darklight/_textures/DRKL_TextBubble_Default_0.png";
 
         VisualElement _labelContainer;
         Label _label;
         Sprite _backgroundImage;
 
-        string _fullText = "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
+        string _fullText =
+            "New UXML Element Controlled Label. This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
         float _rollingTextPercentValue = 1;
         int _currentIndex;
         int _fontSizePercent = 100;
         int _padding = 32;
 
-        protected VisualElement labelContainer { get { return _labelContainer; } set { _labelContainer = value; } }
-        protected Label label { get { return _label; } set { _label = value; } }
+        protected VisualElement labelContainer
+        {
+            get { return _labelContainer; }
+            set { _labelContainer = value; }
+        }
+        protected Label label
+        {
+            get { return _label; }
+            set { _label = value; }
+        }
 
         #region ======== [[ PROPERTIES ]] ================================== >>>>
 
@@ -41,7 +48,6 @@ namespace Darklight.UnityExt.UXML
             get { return _fullText; }
             set { SetFullText(value); }
         }
-
 
         [UxmlAttribute, ShowOnly]
         public string CurrentText
@@ -99,10 +105,7 @@ namespace Darklight.UnityExt.UXML
         [UxmlAttribute]
         public Sprite BackgroundImage
         {
-            get
-            {
-                return _backgroundImage;
-            }
+            get { return _backgroundImage; }
             set
             {
                 _backgroundImage = value;
@@ -148,13 +151,11 @@ namespace Darklight.UnityExt.UXML
 
                     fontSize = Length.Percent(100),
                 }
-
             };
 
             // Add the label to the container
             _labelContainer.Add(label);
             this.Add(_labelContainer);
-
 
             label.style.fontSize = _fontSizePercent;
         }
@@ -188,7 +189,6 @@ namespace Darklight.UnityExt.UXML
             _currentIndex = Mathf.Min(ind, FullText.Length);
             this.CurrentText = FullText.Substring(0, _currentIndex);
         }
-
 
         public void InstantCompleteText()
         {

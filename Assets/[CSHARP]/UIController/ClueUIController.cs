@@ -27,7 +27,7 @@ public class StoryUIController : UXML_UIDocumentObject
         MTRStoryManager.OnActiveQuestListUpdate += UpdateQuests;
 
         _questGroupBox = ElementQuery<GroupBox>(QUEST_GROUP_BOX);
-        SetDefaultQuests();
+        //SetDefaultQuests();
     }
 
     void SetDefaultQuests()

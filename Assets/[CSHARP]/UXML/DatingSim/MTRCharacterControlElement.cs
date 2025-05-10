@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 [UxmlElement]
 public partial class MTRCharacterControlElement : VisualElement
 {
@@ -12,14 +11,11 @@ public partial class MTRCharacterControlElement : VisualElement
     const string ACTIVE_CLASS = "active";
     const string INACTIVE_CLASS = "inactive";
 
-
     bool _active = true;
     string _characterName = "unknown";
     Texture2D _characterImage;
 
-
     VisualElement _imageElement;
-
 
     [Header("(( Character Control Element )) ---- >>")]
     [UxmlAttribute]
@@ -69,15 +65,8 @@ public partial class MTRCharacterControlElement : VisualElement
 
     void CreateCharacterControlElement(string characterName, out VisualElement imageElement)
     {
-
         // << CREATE CHARACTER IMAGE ELEMENT >>
-        imageElement = new VisualElement()
-        {
-            style =
-            {
-                backgroundImage = CharacterImage,
-            }
-        };
+        imageElement = new VisualElement() { style = { backgroundImage = CharacterImage, } };
         imageElement.name = $"{CHAR_IMAGE_TAG}-{characterName}";
         imageElement.AddToClassList(CHAR_IMAGE_CLASS);
 

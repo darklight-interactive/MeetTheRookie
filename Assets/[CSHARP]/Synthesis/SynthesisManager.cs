@@ -26,6 +26,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 
     const string LIBRARY_PATH = "Assets/Resources/Synthesis";
     const string LIBRARY_NAME = "SynthesisClueLibrary";
+
+    [Expandable]
     public SynthesisClueLibrary clueLibrary;
 
     protected Dictionary<string, SynthesisClueElement> synthesisItems =

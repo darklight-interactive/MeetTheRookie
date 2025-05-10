@@ -1,7 +1,7 @@
+using Darklight.UnityExt.Core2D;
+using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.UXML;
-using Darklight.UnityExt.Core2D;
 
 [UxmlElement]
 public partial class TextBubble : ControlledLabel
@@ -27,7 +27,12 @@ public partial class TextBubble : ControlledLabel
         set { AlignToOriginPoint(value); }
     }
 
-    [UxmlAttribute, Tooltip("The directional anchor point of the bubble. Determines the alignment of the bubble and what sprite is used.")]
+    [
+        UxmlAttribute,
+        Tooltip(
+            "The directional anchor point of the bubble. Determines the alignment of the bubble and what sprite is used."
+        )
+    ]
     public Spatial2D.AnchorPoint DirectionPoint
     {
         get { return _directionPoint; }
@@ -48,6 +53,7 @@ public partial class TextBubble : ControlledLabel
         AlignToOriginPoint(originPoint);
         AlignToDirectionPoint(directionPoint);
     }
+
     public void AlignBubble() => AlignBubble(_originPoint, _directionPoint);
 
     void AlignToOriginPoint(Spatial2D.AnchorPoint originPoint)
@@ -91,7 +97,6 @@ public partial class TextBubble : ControlledLabel
                 this.style.justifyContent = Justify.FlexEnd;
                 this.style.alignItems = Align.FlexEnd;
                 break;
-
         }
     }
 
@@ -145,5 +150,4 @@ public partial class TextBubble : ControlledLabel
     }
 
     public new class UxmlFactory : UxmlFactory<TextBubble> { }
-
 }
