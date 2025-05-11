@@ -29,35 +29,24 @@ public partial class MTRInteractable
         State.CONTINUE
     };
 
-    [SerializeField, ShowOnly]
     bool _isPreloaded;
-
-    [SerializeField, ShowOnly]
     bool _isRegistered;
-
-    [SerializeField, ShowOnly]
     bool _isInitialized;
 
-    [HorizontalLine(color: EColor.Gray)]
-    [SerializeField]
-    InteractionRequestDataObject _request;
+    [SerializeField, Expandable]
+    MTRInteractableDataSO _dataSO;
+
+    [SerializeField, Expandable]
+    InteractionRequestDataObject _recieverRequest;
 
     [SerializeField]
     InteractionRecieverLibrary _recievers;
 
-    [HorizontalLine(color: EColor.Gray)]
-    [SerializeField]
+    [SerializeField, HorizontalLine(color: EColor.Gray)]
     InternalData _data;
 
     [SerializeField, ShowOnly]
     State _currentState;
-
-    [HorizontalLine(color: EColor.Gray)]
-    [Dropdown("dropdown_knotList"), SerializeField]
-    string _sceneKnot = "scene_default";
-
-    [Dropdown("dropdown_interactionStitchList"), SerializeField]
-    string _interactionStitch = "interaction_default";
 
     [Header("Interactable")]
     [SerializeField]
@@ -68,31 +57,6 @@ public partial class MTRInteractable
     protected new BoxCollider2D collider;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
-    protected List<string> dropdown_knotList
-    {
-        get
-        {
-            List<string> knots = new List<string>(100);
-            if (MTRStoryManager.Instance != null)
-            {
-                knots = MTRStoryManager.Instance.KnotList;
-            }
-            return knots;
-        }
-    }
-    List<string> dropdown_interactionStitchList
-    {
-        get
-        {
-            List<string> stitches = new List<string>(100);
-            if (MTRStoryManager.Instance != null)
-            {
-                stitches = MTRStoryManager.GetAllStitchesInKnot(_sceneKnot);
-            }
-            return stitches;
-        }
-    }
-
     public override string Name
     {
         get
@@ -122,8 +86,8 @@ public partial class MTRInteractable
     }
     public override InteractionRequestDataObject Request
     {
-        get { return _request; }
-        protected set => _request = value;
+        get { return _recieverRequest; }
+        protected set => _recieverRequest = value;
     }
     public override InteractionRecieverLibrary Recievers
     {
@@ -157,14 +121,12 @@ public partial class MTRInteractable
         }
     }
     public override Type TypeKey => Type.BASE;
-    public string InteractionStitch
-    {
-        get => _interactionStitch;
-        set => _interactionStitch = value;
-    }
+    public string InteractionStitch => _data.Key;
     #endregion
 
     #region ======== <PRIVATE_METHODS> ================================== >>>>
+
+
     protected virtual void PreloadSpriteRenderer()
     {
         // << GET OR ADD SPRITE RENDERER >> ------------------------------------
@@ -231,7 +193,7 @@ public partial class MTRInteractable
 
     protected virtual void GenerateRecievers()
     {
-        Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
+        //Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
 
         if (Request == null)
         {
@@ -336,6 +298,7 @@ public partial class MTRInteractable
         }
     }
 
+    [Button]
     public override void Initialize()
     {
         _isInitialized = false;
@@ -351,7 +314,7 @@ public partial class MTRInteractable
             }
         }
 
-        Debug.Log($"{PREFIX} {Name} :: Initialize", this);
+        //Debug.Log($"{PREFIX} {Name} :: Initialize", this);
 
         InitializeStateMachine();
 
@@ -482,6 +445,7 @@ public partial class MTRInteractable
             }
         }
 
+        /*
         public override void OnInspectorGUI()
         {
             _serializedObject.Update();
@@ -527,6 +491,7 @@ public partial class MTRInteractable
                 _script.Preload();
             }
         }
+        */
     }
 #endif
 }

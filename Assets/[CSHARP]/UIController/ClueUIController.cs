@@ -24,7 +24,7 @@ public class StoryUIController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         _storyManager = MTRStoryManager.Instance;
-        MTRStoryManager.OnActiveQuestListUpdate += UpdateQuests;
+        //MTRStoryManager.OnActiveQuestListUpdate += UpdateQuests;
 
         _questGroupBox = ElementQuery<GroupBox>(QUEST_GROUP_BOX);
         //SetDefaultQuests();
@@ -40,7 +40,7 @@ public class StoryUIController : UXML_UIDocumentObject
 
     void UpdateQuests(List<string> questNames)
     {
-        ClearQuests();
+        //ClearQuests();
         AddQuestLabelsToGroupBox(questNames);
     }
 

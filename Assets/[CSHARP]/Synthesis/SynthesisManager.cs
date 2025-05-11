@@ -19,11 +19,6 @@ using UnityEditor;
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 {
-    public void OnEditorReloaded()
-    {
-        Show(false);
-    }
-
     const string LIBRARY_PATH = "Assets/Resources/Synthesis";
     const string LIBRARY_NAME = "SynthesisClueLibrary";
 
@@ -44,8 +39,8 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 
     void Start()
     {
-        Show(false);
-
+        SetVisibility(false);
+        MTRInputManager.OnTertiaryInteract += ToggleVisibility;
 #if UNITY_EDITOR
         clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(
             LIBRARY_PATH,
@@ -58,31 +53,6 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         itemsSelection.Add(synthesizeButton);
 
         Initialize();
-    }
-
-    ///oijqwdoijqwodijqwd
-    void Initialize()
-    {
-        if (MTRInputManager.Instance == null)
-        {
-            Debug.LogWarning("MTRInputManager is not initialized");
-            return;
-        }
-
-        //UniversalInputManager.OnMoveInputStarted += SelectMove;
-        MTRInputManager.OnPrimaryInteract += Select;
-        //InkyStoryManager.GlobalStoryObject.BindExternalFunction("playerAddItem", AddItem);
-
-        //InkyStoryManager.GlobalStoryObject.StoryValue.BindExternalFunction("AddSynthesisClue", (string clue) => AddClue(clue));
-
-        MTRStoryManager.GlobalStory.BindExternalFunction(
-            "playerRemoveItem",
-            (object[] args) => RemoveItem(args)
-        );
-        MTRStoryManager.GlobalStory.BindExternalFunction(
-            "playerHasItem",
-            (object[] args) => HasItem(args)
-        );
     }
 
     void SelectMove(Vector2 move)
@@ -102,7 +72,6 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         }
     }
 
-    [Button]
     public void AddClue(string clue)
     {
         Debug.Log("Synthesis Adding clue: " + clue);
@@ -234,46 +203,4 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
         }
         return null;
     }
-
-    public void Show(bool visible)
-    {
-        synthesisActive = visible;
-        Debug.Log("SynthesisManager: Show(" + visible + ")");
-        //VisualElement container = ElementQuery<VisualElement>("synthesis-container");
-        //container.visible = visible;
-    }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(SynthesisManager))]
-public class SynthesisManagerCustomEditor : Editor
-{
-    SerializedObject _serializedObject;
-    SynthesisManager _script;
-
-    private void OnEnable()
-    {
-        _serializedObject = new SerializedObject(target);
-        _script = (SynthesisManager)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        _serializedObject.Update();
-
-        EditorGUI.BeginChangeCheck();
-
-        if (GUILayout.Button("Toggle Visibility"))
-        {
-            _script.ToggleVisibility();
-        }
-
-        base.OnInspectorGUI();
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            _serializedObject.ApplyModifiedProperties();
-        }
-    }
-}
-#endif

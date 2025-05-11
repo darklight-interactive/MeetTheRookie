@@ -202,7 +202,7 @@ public partial class MTRInteractable
                 yield return new WaitUntil(
                     () => player.Controller.CurrentState == MTRPlayerState.INTERACTION
                 );
-                MTRStoryManager.GoToPath(interactable._interactionStitch);
+                MTRStoryManager.GoToPath(interactable.InteractionStitch);
                 MTR_AudioManager.Instance.PlayStartInteractionEvent();
                 stateMachine.GoToState(State.CONTINUE);
             }

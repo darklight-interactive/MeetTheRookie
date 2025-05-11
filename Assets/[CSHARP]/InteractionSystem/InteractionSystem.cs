@@ -1,13 +1,10 @@
+using System.Collections.Generic;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Library;
+using Darklight.UnityExt.Utility;
 using NaughtyAttributes;
 using UnityEngine;
-using System.Collections.Generic;
-using Darklight.UnityExt.Utility;
-using Darklight.UnityExt.Editor;
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,17 +19,20 @@ public enum InteractionType
     DESTINATION
 }
 
-
-
 [ExecuteAlways]
 public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUnityEditorListener
 {
-    [SerializeField, Expandable] InteractionSystemSettings _settings;
+    [SerializeField, Expandable]
+    InteractionSystemSettings _settings;
 
     [HorizontalLine(4, color: EColor.Gray)]
-    [SerializeField] Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
+    [SerializeField]
+    Library<string, Interactable> _interactableRegistry = new Library<string, Interactable>();
 
-    public static InteractionSystemSettings Settings { get => Instance._settings; }
+    public static InteractionSystemSettings Settings
+    {
+        get => Instance._settings;
+    }
 
     public void OnEditorReloaded()
     {
@@ -91,27 +91,48 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
         public static InteractionSystemSettings CreateSettings()
         {
-            InteractionSystemSettings settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionSystemSettings>(ASSET_PATH, SETTINGS_NAME);
+            InteractionSystemSettings settings =
+                ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionSystemSettings>(
+                    ASSET_PATH,
+                    SETTINGS_NAME
+                );
             return settings;
         }
 
-        public static InteractionRequestDataObject CreateOrLoadInteractionRequest(string typeString, out InteractionRequestDataObject request, List<InteractionType> keys = null)
+        public static InteractionRequestDataObject CreateOrLoadInteractionRequest(
+            string typeString,
+            out InteractionRequestDataObject request,
+            List<InteractionType> keys = null
+        )
         {
             string name = $"{typeString} {REQUEST_BASE_NAME}";
-            request = ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(REQUEST_PATH, name);
+            request =
+                ScriptableObjectUtility.CreateOrLoadScriptableObject<InteractionRequestDataObject>(
+                    REQUEST_PATH,
+                    name
+                );
             request.RequiredKeys = keys;
             request.Refresh();
             return request;
         }
 
-        static void InstantiateInteractionReciever(Interactable interactable, InteractionType key, out GameObject gameObject)
+        static void InstantiateInteractionReciever(
+            Interactable interactable,
+            InteractionType key,
+            out GameObject gameObject
+        )
         {
-            GameObject prefab = interactable.Request.TryGetValue(key, out GameObject recieverPrefab) ? recieverPrefab : null;
+            GameObject prefab = interactable.Request.TryGetValue(key, out GameObject recieverPrefab)
+                ? recieverPrefab
+                : null;
 
             GameObject recieverGameObject = Instantiate(prefab, interactable.transform);
             if (recieverGameObject == null)
             {
-                Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject is null.", interactable);
+                Debug.LogError(
+                    $"CreateInteractionHandler failed for key {key}. GameObject is null.",
+                    interactable
+                );
                 gameObject = null;
             }
             else
@@ -124,7 +145,10 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             InteractionReciever reciever = recieverGameObject.GetComponent<InteractionReciever>();
             if (reciever == null)
             {
-                Debug.LogError($"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.", interactable);
+                Debug.LogError(
+                    $"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.",
+                    interactable
+                );
                 ObjectUtility.DestroyAlways(recieverGameObject);
                 gameObject = null;
             }
@@ -142,7 +166,10 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
             foreach (InteractionType key in requestedKeys)
             {
-                interactable.Recievers.TryGetValue(key, out InteractionReciever interactableReciever);
+                interactable.Recievers.TryGetValue(
+                    key,
+                    out InteractionReciever interactableReciever
+                );
                 if (interactableReciever == null)
                 {
                     InteractionReciever recieverInChild = GetRecieverInChildren(interactable, key);
@@ -152,13 +179,16 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
                         continue;
                     }
 
-                    InstantiateInteractionReciever(interactable, key, out GameObject recieverGameObject);
+                    InstantiateInteractionReciever(
+                        interactable,
+                        key,
+                        out GameObject recieverGameObject
+                    );
                 }
                 else
                 {
                     Debug.Log($"Reciever for {key} already exists", interactable);
                     //currRequestedReciever.transform.localPosition = Vector3.zero;
-
                 }
             }
 
@@ -169,21 +199,28 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
         public static void RemoveUnusedRecievers(Interactable interactable)
         {
-            InteractionReciever[] allRecieversInChildren = interactable.GetComponentsInChildren<InteractionReciever>();
+            InteractionReciever[] allRecieversInChildren =
+                interactable.GetComponentsInChildren<InteractionReciever>();
             foreach (InteractionReciever childReciever in allRecieversInChildren)
             {
                 // If the reciever is not in the library, destroy it
-                if (!interactable.Recievers.ContainsKey(childReciever.InteractionType)
-                    || interactable.Recievers[childReciever.InteractionType] != childReciever)
+                if (
+                    !interactable.Recievers.ContainsKey(childReciever.InteractionType)
+                    || interactable.Recievers[childReciever.InteractionType] != childReciever
+                )
                 {
                     ObjectUtility.DestroyAlways(childReciever.gameObject);
                 }
             }
         }
 
-        public static InteractionReciever GetRecieverInChildren(Interactable interactable, InteractionType key)
+        public static InteractionReciever GetRecieverInChildren(
+            Interactable interactable,
+            InteractionType key
+        )
         {
-            InteractionReciever[] recievers = interactable.GetComponentsInChildren<InteractionReciever>();
+            InteractionReciever[] recievers =
+                interactable.GetComponentsInChildren<InteractionReciever>();
             foreach (InteractionReciever reciever in recievers)
             {
                 if (reciever.InteractionType == key)
@@ -197,7 +234,10 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
     #region == REGISTRY <STATIC_CLASS> == [[ Interactable Registry ]] =========================== >>>>
     public static class Registry
     {
-        public static Library<string, Interactable> Interactables = new Library<string, Interactable>()
+        public static Library<string, Interactable> Interactables = new Library<
+            string,
+            Interactable
+        >()
         {
             ReadOnlyKey = true,
             ReadOnlyValue = true
@@ -206,8 +246,13 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
         static void ReloadInteractables()
         {
             Interactables.Clear();
-            Interactable[] interactables = FindObjectsByType<Interactable>(FindObjectsSortMode.None);
-            Debug.Log($"{Prefix} Refreshing Interactable Registry : Found {interactables.Length} interactables", Instance);
+            Interactable[] interactables = FindObjectsByType<Interactable>(
+                FindObjectsSortMode.None
+            );
+            Debug.Log(
+                $"{Prefix} Refreshing Interactable Registry : Found {interactables.Length} interactables",
+                Instance
+            );
 
             foreach (Interactable interactable in interactables)
             {
@@ -227,7 +272,11 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
         /// <param name="interactable"></param>
         /// <param name="overwrite"></param>
         /// <returns></returns>
-        public static void TryRegisterInteractable(Interactable interactable, out bool result, bool overwrite = false)
+        public static void TryRegisterInteractable(
+            Interactable interactable,
+            out bool result,
+            bool overwrite = false
+        )
         {
             result = false;
             if (Interactables.ContainsKey(interactable.Key))
@@ -240,7 +289,10 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
                 }
                 else if (Interactables[interactable.Key] == null)
                 {
-                    Debug.LogWarning($"{Prefix} Overwriting null value of Interactable {interactable.Print()}", interactable);
+                    Debug.LogWarning(
+                        $"{Prefix} Overwriting null value of Interactable {interactable.Print()}",
+                        interactable
+                    );
                     Interactables[interactable.Key] = interactable;
                     result = true;
                 }
@@ -248,13 +300,19 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
                 {
                     if (overwrite)
                     {
-                        Debug.Log($"{Prefix} Overwriting non-null value of Interactable {interactable.Print()}", interactable);
+                        Debug.Log(
+                            $"{Prefix} Overwriting non-null value of Interactable {interactable.Print()}",
+                            interactable
+                        );
                         Interactables[interactable.Key] = interactable;
                         result = true;
                     }
                     else
                     {
-                        Debug.LogError($"{Prefix} Interactable {interactable.Print()} already registered", interactable);
+                        Debug.LogError(
+                            $"{Prefix} Interactable {interactable.Print()} already registered",
+                            interactable
+                        );
                         result = false;
                     }
                 }
@@ -282,7 +340,8 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             return Interactables;
         }
 
-        public static void TryGetInteractable<TInteractable>(out TInteractable interactable) where TInteractable : Interactable
+        public static void TryGetInteractable<TInteractable>(out TInteractable interactable)
+            where TInteractable : Interactable
         {
             interactable = null;
             foreach (Interactable item in Interactables.Values)
@@ -294,7 +353,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
                 }
             }
         }
-        #endregion
+    #endregion
 
 
         #region ==== (OLD_METHODS) ======== ))
@@ -397,6 +456,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
         {
             SerializedObject _serializedObject;
             InteractionSystem _script;
+
             private void OnEnable()
             {
                 _serializedObject = new SerializedObject(target);

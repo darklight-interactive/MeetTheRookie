@@ -1,20 +1,28 @@
 using System;
 using Darklight.UnityExt.Editor;
+using NaughtyAttributes;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public partial class MTRInteractable
 {
     [Serializable]
     public new class InternalData : InternalData<MTRInteractable>
     {
-        [SerializeField, ShowOnly]
-        string _name;
+        const string DEFAULT_SCENE = "scene_default";
+        const string DEFAULT_KEY = "interaction_default";
+        const string DEFAULT_NAME = "default_interactable";
 
         [SerializeField, ShowOnly]
-        string _scene;
+        string _scene = DEFAULT_SCENE;
 
         [SerializeField, ShowOnly]
-        string _key;
+        string _key = DEFAULT_KEY;
+
+        [SerializeField, ShowOnly]
+        string _name = DEFAULT_NAME;
 
         [SerializeField, ShowOnly]
         string _layer;
@@ -22,7 +30,7 @@ public partial class MTRInteractable
         [SerializeField, ShowOnly]
         Type _type = Type.BASE;
 
-        [SerializeField]
+        [SerializeField, NaughtyAttributes.ReadOnly]
         Sprite _sprite;
 
         public override string Name => _name;
@@ -53,54 +61,123 @@ public partial class MTRInteractable
         /// <param name="key"></param>
         public void SetKey(string key) => _key = key;
 
+#if UNITY_EDITOR
+        void CreateDataSO(
+            MTRInteractable interactable,
+            string sceneKnot,
+            string interactionStitch,
+            Sprite sprite
+        )
+        {
+            // Create the directory if it doesn't exist
+            string directoryPath = "Assets/Resources/MeetTheRookie/InteractableData";
+            if (!System.IO.Directory.Exists(directoryPath))
+            {
+                System.IO.Directory.CreateDirectory(directoryPath);
+            }
+
+            // Find a DataSO with the same interaction stitch
+            MTRInteractableDataSO existingDataSO =
+                AssetDatabase.LoadAssetAtPath<MTRInteractableDataSO>(
+                    $"{directoryPath}/{interactionStitch}.asset"
+                );
+            if (existingDataSO != null)
+            {
+                interactable._dataSO = existingDataSO;
+                return;
+            }
+
+            // Create a new DataSO
+            string assetPath = $"{directoryPath}/NewInteractableData.asset";
+
+            // Create the ScriptableObject
+            MTRInteractableDataSO newDataSO =
+                ScriptableObject.CreateInstance<MTRInteractableDataSO>();
+
+            // Save the asset
+            AssetDatabase.CreateAsset(newDataSO, assetPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            // Initialize the asset
+            newDataSO.Initialize(sceneKnot, interactionStitch, sprite);
+            interactable._dataSO = newDataSO;
+
+            Debug.Log(
+                $"Created new DataSO for {interactable.name} :: {assetPath}",
+                interactable.gameObject
+            );
+        }
+#else
+        void CreateDataSO(
+            string sceneKnot,
+            string interactionStitch,
+            Sprite sprite,
+            out MTRInteractableDataSO dataSO
+        )
+        {
+            Debug.LogWarning("CreateDataSO can only be called in the Unity Editor");
+            dataSO = null;
+        }
+#endif
+
         public override void LoadData(MTRInteractable interactable)
         {
-            _scene = interactable._sceneKnot;
-            _key = interactable._interactionStitch;
-
-            _name = _key.Replace($"{_scene}.", "");
             _type = interactable.TypeKey;
 
-            if (interactable is MTRPlayerInteractor)
+            // Handle player interactor
+            if (interactable is MTRPlayerInteractor playerInteractor)
             {
-                _key = (interactable as MTRPlayerInteractor).SpeakerTag.ToString();
+                _key = playerInteractor.SpeakerTag.ToString();
                 _layer = InteractionSystem.Settings.PlayerLayer;
-
                 _name = $"PLAYER_{_key}";
-                //interactable.gameObject.name = $"PLAYER_Lupe";
+                return;
             }
-            else if (interactable is MTRCharacterInteractable)
-            {
-                _key = (interactable as MTRCharacterInteractable).SpeakerTag.ToString();
-                _layer = InteractionSystem.Settings.NPCLayer;
 
-                string split_name = _key.Replace("Speaker.", "");
-                _name = $"CHARACTER_{split_name}";
-                //interactable.gameObject.name = $"CHARACTER_{name}";
+            // Handle character interactable
+            if (interactable is MTRCharacterInteractable characterInteractable)
+            {
+                _key = characterInteractable.SpeakerTag.ToString();
+                _layer = InteractionSystem.Settings.NPCLayer;
+                string splitName = _key.Replace("Speaker.", "");
+                _name = $"CHARACTER_{splitName}";
             }
+            // Handle general interactable
             else if (interactable is MTRInteractable)
             {
-                _key = interactable._interactionStitch;
                 _layer = InteractionSystem.Settings.InteractableLayer;
-
                 _name = $"INTRCT_{_key}";
-                //interactable.gameObject.name = $"INTRCT_{_key}";
             }
+            // Handle unknown type
             else
             {
                 _layer = DEFAULT_LAYER;
             }
 
-            _type = interactable.TypeKey;
+            // Handle DataSO creation and assignment for non-player interactables
+            if (interactable._dataSO == null)
+            {
+                // Create the DataSO with the current data values, which may be set already or if not, are set to default values
+                CreateDataSO(interactable, _scene, _key, _sprite);
+            }
+
+            // Store the DataSO values
+            _scene = interactable._dataSO.SceneKnot;
+            _key = interactable._dataSO.InteractionStitch;
+            _sprite = interactable._dataSO.Sprite;
+
+            // Set the layer
             interactable.gameObject.layer = LayerMask.NameToLayer(_layer);
 
-            // << SET THE INITIAL SPRITE >> ------------------------------------
-            // If the data contains a sprite, assign it to the sprite renderer
+            // Handle sprite assignment
             if (_sprite != null)
+            {
                 interactable.spriteRenderer.sprite = _sprite;
-            // Else if the sprite renderer has a sprite, assign it to the data
+            }
             else if (interactable.spriteRenderer.sprite != null)
+            {
                 _sprite = interactable.spriteRenderer.sprite;
+            }
         }
     }
 }
