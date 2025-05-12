@@ -89,11 +89,12 @@ public partial class MTRClueElement : VisualElement
         this.Add(_clueTextElement);
     }
 
-    public MTRClueElement(Texture2D backgroundImage, Texture2D clueImage)
+    public MTRClueElement(Texture2D backgroundImage, Texture2D clueImage, int size = 250)
         : this()
     {
         BackgroundImage = backgroundImage;
         ClueImage = clueImage;
+        Size = size;
     }
 
     public new class UxmlFactory : UxmlFactory<MTRClueElement> { }

@@ -8,8 +8,24 @@ public partial class MTRClueContainer : VisualElement
 {
     List<MTRClueElement> _clues = new List<MTRClueElement>();
 
+    Texture2D _defaultBackgroundImage;
+    Texture2D _defaultClueImage;
     int _clueCount = 5;
     int _clueSize = 100;
+
+    [UxmlAttribute]
+    public Texture2D DefaultBackgroundImage
+    {
+        get => _defaultBackgroundImage;
+        set => _defaultBackgroundImage = value;
+    }
+
+    [UxmlAttribute]
+    public Texture2D DefaultClueImage
+    {
+        get => _defaultClueImage;
+        set => _defaultClueImage = value;
+    }
 
     [UxmlAttribute, Range(1, 10)]
     public int ClueCount
@@ -52,7 +68,11 @@ public partial class MTRClueContainer : VisualElement
 
         for (int i = 0; i < ClueCount; i++)
         {
-            MTRClueElement clue = new MTRClueElement();
+            MTRClueElement clue = new MTRClueElement(
+                DefaultBackgroundImage,
+                DefaultClueImage,
+                _clueSize
+            );
 
             this.Add(clue);
             _clues.Add(clue);
