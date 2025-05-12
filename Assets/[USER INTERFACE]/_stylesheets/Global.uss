@@ -146,7 +146,7 @@ VisualElement.panel {
     padding-bottom: 0;
     padding-left: 0;
     opacity: 0;
-    display: none;
+    display: flex;
     translate: 0 0;
 }
 
@@ -275,12 +275,15 @@ SelectableSlider .unity-base-slider__tracker {
     border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(218, 201, 190);
     background-color: rgba(0, 0, 0, 0);
+    flex-grow: 1;
+    align-items: stretch;
+    -unity-background-scale-mode: stretch-to-fill;
 }
 
 SelectableSlider .unity-base-slider__dragger-border {
     background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/Ui_Slider_Shaded_Bar.png?fileID=-2262083059964613331&guid=c6fbc80d884dff34fbe52089d0da8d39&type=3#Ui_Slider_Shaded_Bar_0");
     flex-grow: 1;
-    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-scale-mode: stretch-to-fill;
     flex-shrink: 1;
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(0, 0, 0, 0);

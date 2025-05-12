@@ -76,7 +76,7 @@ public class MainMenuController : UXML_UIDocumentObject
             selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
             selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
 
-            _settingsPage.style.display = DisplayStyle.Flex;
+            //_settingsPage.style.display = DisplayStyle.Flex;
             //_settingsPage.visible = true;
             _settingsPage.AddToClassList("visible");
         };
@@ -88,7 +88,7 @@ public class MainMenuController : UXML_UIDocumentObject
             selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
 
             _settingsPage.RemoveFromClassList("visible");
-            _settingsPage.style.display = DisplayStyle.None;
+            //_settingsPage.style.display = DisplayStyle.None;
             //_settingsPage.visible = false;
         };
 
@@ -98,7 +98,7 @@ public class MainMenuController : UXML_UIDocumentObject
             selectableElements.AddRange(buttonGroups[CREDITS_PAGE]);
             selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
 
-            _creditsPage.style.display = DisplayStyle.Flex;
+            //_creditsPage.style.display = DisplayStyle.Flex;
             //_creditsPage.visible = true;
             _creditsPage.AddToClassList("visible");
         };
@@ -110,7 +110,7 @@ public class MainMenuController : UXML_UIDocumentObject
             selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
 
             _creditsPage.RemoveFromClassList("visible");
-            _creditsPage.style.display = DisplayStyle.None;
+            //_creditsPage.style.display = DisplayStyle.None;
             //_creditsPage.visible = false;
         };
 
