@@ -1,12 +1,10 @@
+using System.Collections;
 using System.Linq;
+using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Collections;
-using Darklight.UnityExt.Core2D;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,17 +13,17 @@ public class TextBubbleObject : UXML_RenderTextureObject
 {
     TextBubble _textBubble;
 
-    readonly string DEFAULT_TEXT = "This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
+    readonly string DEFAULT_TEXT =
+        "This is a test string to see how the text wraps around the bubble. Hopefully it works well.";
 
-    [SerializeField, ShowOnly] string _currText;
+    [SerializeField, ShowOnly]
+    string _currText;
 
     private bool _isTransitioning = false;
 
     protected override void OnInitialized()
     {
-
         base.OnInitialized();
-
 
         root.style.flexGrow = 1;
         root.style.flexDirection = FlexDirection.Column;
@@ -43,9 +41,7 @@ public class TextBubbleObject : UXML_RenderTextureObject
         });
 
         // Register for geometry changes (size/layout)
-        _textBubble.RegisterCallback<GeometryChangedEvent>(evt =>
-        {
-        });
+        _textBubble.RegisterCallback<GeometryChangedEvent>(evt => { });
 
         // Register for animation events
         _textBubble.RegisterCallback<TransitionRunEvent>(evt =>
@@ -68,8 +64,6 @@ public class TextBubbleObject : UXML_RenderTextureObject
             _textBubble.InstantCompleteText();
         }
     }
-
-
 
     public void Select()
     {

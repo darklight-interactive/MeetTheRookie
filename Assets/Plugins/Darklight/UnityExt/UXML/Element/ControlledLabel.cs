@@ -146,8 +146,6 @@ namespace Darklight.UnityExt.UXML
                     whiteSpace = WhiteSpace.Normal,
                     overflow = Overflow.Hidden,
                     alignSelf = Align.Stretch,
-                    flexGrow = 1,
-                    flexShrink = 1,
 
                     fontSize = Length.Percent(100),
                 }

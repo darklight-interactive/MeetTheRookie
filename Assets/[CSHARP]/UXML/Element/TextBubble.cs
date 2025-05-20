@@ -40,6 +40,7 @@ public partial class TextBubble : ControlledLabel
     }
 
     public TextBubble()
+        : base()
     {
         this.style.flexGrow = 1;
         this.style.flexDirection = FlexDirection.Column;
