@@ -62,22 +62,7 @@ public partial class MTRClueContainer : VisualElement
     /// <summary>
     /// Generates a random set of ClueElements within the container area
     /// </summary>
-    private void GenerateRandomClues()
-    {
-        DestroyAllClues();
-
-        for (int i = 0; i < ClueCount; i++)
-        {
-            MTRClueElement clue = new MTRClueElement(
-                DefaultBackgroundImage,
-                DefaultClueImage,
-                _clueSize
-            );
-
-            this.Add(clue);
-            _clues.Add(clue);
-        }
-    }
+    private void GenerateRandomClues() { }
 
     private void DestroyAllClues()
     {

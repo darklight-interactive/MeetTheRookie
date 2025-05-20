@@ -1,23 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Core2D;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.UXML;
-
 using Ink.Runtime;
-
 using NaughtyAttributes;
-
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Core2D;
-using System.Linq;
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -34,17 +27,24 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     PauseMenuController _gameUI;
     SynthesisManager _synthesisManager;
 
+    [SerializeField, ShowOnly]
+    Vector2 _screenSize;
 
+    [SerializeField, ShowOnly]
+    float _screenAspectRatio;
 
-    [SerializeField, ShowOnly] Vector2 _screenSize;
-    [SerializeField, ShowOnly] float _screenAspectRatio;
-    [SerializeField] CharacterColors _characterColors;
+    [SerializeField]
+    CharacterColors _characterColors;
 
     [HorizontalLine(color: EColor.Gray)]
-    [SerializeField] UXML_UIDocumentPreset _mainMenuPreset;
-    [SerializeField] UXML_UIDocumentPreset _gameUIPreset;
-    [SerializeField] UXML_UIDocumentPreset _synthesisUIPreset;
+    [SerializeField]
+    UXML_UIDocumentPreset _mainMenuPreset;
 
+    [SerializeField]
+    UXML_UIDocumentPreset _gameUIPreset;
+
+    [SerializeField]
+    UXML_UIDocumentPreset _synthesisUIPreset;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public PauseMenuController gameUIController
@@ -77,24 +77,25 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
                 return _synthesisManager;
 
             // Create a new SynthesisManager if it doesn't
-            _synthesisManager = UXML_Utility.CreateUIDocumentObject<SynthesisManager>(_synthesisUIPreset);
+            _synthesisManager = UXML_Utility.CreateUIDocumentObject<SynthesisManager>(
+                _synthesisUIPreset
+            );
             return _synthesisManager;
         }
     }
 
     public MTRSceneTransitionController SceneTransitionController
     {
-        get
-        {
-            return FindAnyObjectByType<MTRSceneTransitionController>();
-        }
+        get { return FindAnyObjectByType<MTRSceneTransitionController>(); }
     }
-
 
     #region ------ [[ DIALOGUE BUBBLE ]] ------------------------ >>
     public void CreateDialogueBubbleAtSpeaker(string speaker, string text)
     {
-        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(FindObjectsSortMode.InstanceID).ToList();
+        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(
+                FindObjectsSortMode.InstanceID
+            )
+            .ToList();
 
         MTRDialogueReciever dialogueHandler = null;
         foreach (MTRDialogueReciever d in dialogueHandlers)
@@ -117,10 +118,12 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         Debug.Log("Creating Speech Bubble for speaker: " + speaker);
     }
 
-
     public void DestroyAllSpeechBubbles()
     {
-        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(FindObjectsSortMode.InstanceID).ToList();
+        List<MTRDialogueReciever> dialogueHandlers = FindObjectsByType<MTRDialogueReciever>(
+                FindObjectsSortMode.InstanceID
+            )
+            .ToList();
 
         foreach (MTRDialogueReciever d in dialogueHandlers)
         {

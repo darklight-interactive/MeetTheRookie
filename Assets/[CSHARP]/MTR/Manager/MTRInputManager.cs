@@ -203,6 +203,9 @@ public class MTRInputManager : MonoBehaviourSingleton<MTRInputManager>
             _secondaryButtonAction.performed -= HandleSecondaryPerformed;
             _secondaryButtonAction.canceled -= HandleSecondaryCanceled;
 
+            _tertiaryButtonAction.performed -= HandleTertiaryPerformed;
+            _tertiaryButtonAction.canceled -= HandleTertiaryCanceled;
+
             _menuButtonAction.started -= HandleMenuStarted;
         }
         catch (System.Exception e)

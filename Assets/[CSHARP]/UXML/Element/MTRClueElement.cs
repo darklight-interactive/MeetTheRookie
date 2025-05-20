@@ -4,98 +4,118 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class MTRClueElement : VisualElement
 {
+    const string UNDISCOVERED_CLASS = "undiscovered";
+
     const string CLUE_IMAGE_TAG = "clue-image";
     const string CLUE_TEXT_TAG = "clue-text";
 
-    string _name = "???";
+    MTRClueLibrary _library;
+    MTRInteractableDataSO _clueData;
+    VisualElement _imageElement;
+    TextElement _textElement;
+    int _padding = 10;
     int _size = 100;
-    Texture2D _backgroundImage;
-    Texture2D _clueImage;
-
-    VisualElement _clueImageElement;
-    Label _clueTextElement;
+    string _name = "???";
+    bool _isDiscovered = false;
 
     [UxmlAttribute]
-    public string Name
+    public MTRInteractableDataSO ClueData
     {
-        get => _name;
-        set => _name = value;
+        get => _clueData;
+        set
+        {
+            _clueData = value;
+            if (_clueData == null)
+            {
+                _imageElement.style.backgroundImage = null;
+                _imageElement.style.backgroundColor = Color.white;
+                _textElement.text = "???";
+            }
+            else
+            {
+                _imageElement.style.backgroundImage = new StyleBackground(_clueData.Sprite);
+                _imageElement.style.backgroundColor = Color.clear;
+
+                _textElement.text = _clueData.name;
+            }
+        }
     }
 
-    [UxmlAttribute, Range(10, 500)]
+    [UxmlAttribute, Range(0, 100)]
+    public int Padding
+    {
+        get => _padding;
+        set { SetPadding(value); }
+    }
+
+    [UxmlAttribute, Range(100, 1000)]
     public int Size
     {
         get => _size;
-        set
-        {
-            _size = value;
-            this.style.width = _size;
-            this.style.height = _size;
-        }
+        set { SetSize(value); }
     }
 
     [UxmlAttribute]
-    public Texture2D BackgroundImage
+    public bool IsDiscovered
     {
-        get => _backgroundImage;
+        get => _isDiscovered;
         set
         {
-            _backgroundImage = value;
-            this.style.backgroundImage = new StyleBackground(value);
-        }
-    }
-
-    [UxmlAttribute]
-    public Texture2D ClueImage
-    {
-        get => _clueImage;
-        set
-        {
-            _clueImage = value;
-            _clueImageElement.style.backgroundImage = new StyleBackground(value);
+            _isDiscovered = value;
+            if (_isDiscovered)
+            {
+                _imageElement.AddToClassList(UNDISCOVERED_CLASS);
+                _textElement.text = "???";
+            }
+            else
+            {
+                _imageElement.RemoveFromClassList(UNDISCOVERED_CLASS);
+                _textElement.text = _clueData.name;
+            }
         }
     }
 
     public MTRClueElement()
     {
         // << BASE STYLE >>
-        Size = this._size;
         this.style.position = Position.Relative;
         this.style.flexDirection = FlexDirection.Column;
         this.style.alignSelf = Align.Stretch;
-        this.style.backgroundImage = new StyleBackground(BackgroundImage);
+        this.style.backgroundColor = Color.yellow;
 
-        // << CLUE IMAGE >>
-        _clueImageElement = new VisualElement()
-        {
-            name = CLUE_IMAGE_TAG,
-            style =
-            {
-                backgroundImage = _clueImage,
-                flexGrow = 1,
-                flexDirection = FlexDirection.Column,
-                alignSelf = Align.Stretch,
-            }
-        };
-        this.Add(_clueImageElement);
+        SetPadding(_padding);
+        SetSize(_size);
 
-        // << CLUE TEXT >>
-        _clueTextElement = new Label()
-        {
-            name = CLUE_TEXT_TAG,
-            style = { color = Color.black, fontSize = 16, }
-        };
-        _clueTextElement.text = Name;
-        this.Add(_clueTextElement);
+        // << CREATE CLUE IMAGE >>
+        _imageElement = new VisualElement();
+        _imageElement.name = CLUE_IMAGE_TAG;
+        _imageElement.style.backgroundColor = Color.white;
+        _imageElement.style.minWidth = new StyleLength(Length.Percent(80));
+        _imageElement.style.minHeight = new StyleLength(Length.Percent(80));
+
+        this.Add(_imageElement);
+
+        // << CREATE CLUE TEXT >>
+        _textElement = new TextElement();
+        _textElement.name = CLUE_TEXT_TAG;
+        _textElement.text = _name;
+        _textElement.style.unityTextAlign = TextAnchor.MiddleCenter;
+        this.Add(_textElement);
     }
 
-    public MTRClueElement(Texture2D backgroundImage, Texture2D clueImage, int size = 250)
-        : this()
+    public void SetPadding(int padding)
     {
-        BackgroundImage = backgroundImage;
-        ClueImage = clueImage;
-        Size = size;
+        _padding = padding;
+        this.style.paddingLeft = _padding;
+        this.style.paddingRight = _padding;
+        this.style.paddingTop = _padding;
+        this.style.paddingBottom = _padding;
     }
 
-    public new class UxmlFactory : UxmlFactory<MTRClueElement> { }
+    public void SetSize(int size)
+    {
+        _size = size;
+        this.style.width = _size;
+        this.style.height = _size;
+    }
 }

@@ -19,8 +19,9 @@ using UnityEditor;
 [RequireComponent(typeof(UIDocument))]
 public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
 {
-    const string LIBRARY_PATH = "Assets/Resources/Synthesis";
-    const string LIBRARY_NAME = "SynthesisClueLibrary";
+    const string CONTAINER_TAG = "container";
+
+    private VisualElement _rootContainer => ElementQuery<VisualElement>(CONTAINER_TAG);
 
     [Expandable]
     public SynthesisClueLibrary clueLibrary;
@@ -37,22 +38,19 @@ public class SynthesisManager : UXML_UIDocumentObject, IUnityEditorListener
     VisualElement synthesizeButton;
     bool synthesisActive = false;
 
+    void Awake()
+    {
+        MTRInputManager.OnTertiaryInteract += OnSynthesisButtonPressed;
+    }
+
     void Start()
     {
-        SetVisibility(false);
-        MTRInputManager.OnTertiaryInteract += ToggleVisibility;
-#if UNITY_EDITOR
-        clueLibrary = ScriptableObjectUtility.CreateOrLoadScriptableObject<SynthesisClueLibrary>(
-            LIBRARY_PATH,
-            LIBRARY_NAME
-        );
-        clueLibrary.LoadMysteryClues();
-#endif
-        mystery1Container = ElementQuery<GroupBox>("mystery1");
-        synthesizeButton = ElementQuery<VisualElement>("title");
-        itemsSelection.Add(synthesizeButton);
+        _rootContainer.visible = false;
+    }
 
-        Initialize();
+    void OnSynthesisButtonPressed()
+    {
+        _rootContainer.visible = !_rootContainer.visible;
     }
 
     void SelectMove(Vector2 move)
