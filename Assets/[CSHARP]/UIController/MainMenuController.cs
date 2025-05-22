@@ -39,6 +39,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
     void Start()
     {
+        #region //---UI ELEMENT REFERENCES---//
         // Store the local references to the buttons
         playButton = ElementQuery<SelectableButton>("play-btn");
         settingsButton = ElementQuery<SelectableButton>("settings-btn");
@@ -46,13 +47,11 @@ public class MainMenuController : UXML_UIDocumentObject
         quitButton = ElementQuery<SelectableButton>("quit-btn");
         returnButtonSettings = ElementQuery<SelectableButton>("return-btn-settings");
         returnButtonCredits = ElementQuery<SelectableButton>("return-btn-credits");
+        #endregion
 
         buttonGroups = new Dictionary<string, SelectableButton[]>
         {
-            {
-                MAIN_PAGE,
-                new SelectableButton[] { playButton, settingsButton, creditsButton, quitButton }
-            },
+            { MAIN_PAGE, new SelectableButton[] { playButton, settingsButton, creditsButton, quitButton }},
             { SETTINGS_PAGE, new SelectableButton[] { returnButtonSettings } },
             { CREDITS_PAGE, new SelectableButton[] { returnButtonCredits } }
         };
@@ -72,9 +71,11 @@ public class MainMenuController : UXML_UIDocumentObject
         //creditsButton.OnClick += () => Debug.Log("Credits Button Clicked");
         settingsButton.OnClick += () =>
         {
-            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
-            selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
-            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+            //selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
+            //selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
+            //selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+
+            UpdateSelectableElements(buttonGroups[SETTINGS_PAGE], buttonGroups[MAIN_PAGE], true);
 
             //_settingsPage.style.display = DisplayStyle.Flex;
             //_settingsPage.visible = true;
@@ -83,9 +84,11 @@ public class MainMenuController : UXML_UIDocumentObject
 
         returnButtonSettings.OnClick += () =>
         {
-            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
-            selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+            //selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
+            //selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
+            //selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+
+            UpdateSelectableElements(buttonGroups[MAIN_PAGE], buttonGroups[SETTINGS_PAGE], false);
 
             _settingsPage.RemoveFromClassList("visible");
             //_settingsPage.style.display = DisplayStyle.None;
@@ -94,9 +97,10 @@ public class MainMenuController : UXML_UIDocumentObject
 
         creditsButton.OnClick += () =>
         {
-            selectableElements.AddRange(ElementQueryAll<Scroller>());
-            selectableElements.AddRange(buttonGroups[CREDITS_PAGE]);
-            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+            //selectableElements.AddRange(buttonGroups[CREDITS_PAGE]);
+            //selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+
+            UpdateSelectableElements(buttonGroups[CREDITS_PAGE], buttonGroups[MAIN_PAGE], false);
 
             //_creditsPage.style.display = DisplayStyle.Flex;
             //_creditsPage.visible = true;
@@ -105,9 +109,10 @@ public class MainMenuController : UXML_UIDocumentObject
 
         returnButtonCredits.OnClick += () =>
         {
-            selectableElements.RemoveRange(ElementQueryAll<Scroller>());
-            selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
-            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
+            //selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
+            //selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
+
+            UpdateSelectableElements(buttonGroups[MAIN_PAGE], buttonGroups[CREDITS_PAGE], false);
 
             _creditsPage.RemoveFromClassList("visible");
             //_creditsPage.style.display = DisplayStyle.None;
@@ -127,7 +132,7 @@ public class MainMenuController : UXML_UIDocumentObject
         {
             MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
         };
-        Debug.Log("MUSIC: " + musicSlider.value);
+        //Debug.Log("MUSIC: " + musicSlider.value);
 
         SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
         sfxSlider.OnValueChanged += () =>
@@ -207,6 +212,17 @@ public class MainMenuController : UXML_UIDocumentObject
         //SelectableButton button = selectableVectorField.SelectElementInDirection(directionInScreenSpace);
         //Select(button);
         //Debug.Log($"MainMenuController: OnMoveInputStartAction({dir}) -> {button.name}");
+    }
+
+    public void UpdateSelectableElements(SelectableButton[] newGroup, SelectableButton[] oldGroup, bool addSliders)
+    {
+        if (addSliders) { selectableElements.AddRange(ElementQueryAll<SelectableSlider>()); }
+        else { selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>()); }
+
+        selectableElements.RemoveRange(oldGroup);
+        selectableElements.AddRange(newGroup);
+
+        //currentButton.Deselect();
     }
 
     // UNUSED AFTER ADDING SLIDERS TO THE MENU

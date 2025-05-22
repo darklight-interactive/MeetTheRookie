@@ -235,6 +235,9 @@ public class PauseMenuController : UXML_UIDocumentObject
         // << RESUME GAME >>
         if (_stateMachine.CurrentState != PauseMenuState.NONE)
         {
+            if (_selectableVectorField.CurrentSelection is SelectableButton button) { button.Deselect(); }
+
+
             _stateMachine.GoToState(PauseMenuState.NONE);
             MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
 
@@ -345,6 +348,7 @@ public class PauseMenuController : UXML_UIDocumentObject
             {
                 Debug.Log($"[PauseMenuController] {StateType} Enter");
                 _controller.ShowPage(StateType);
+                if (_controller._selectableVectorField.CurrentSelection is SelectableButton button) { button.Deselect(); }
                 _controller.LoadSelectableElements(StateType);
             }
 
