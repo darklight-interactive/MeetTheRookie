@@ -20,6 +20,14 @@ public enum MTRSpeaker
     JENKINS
 }
 
+public enum MTRMystery
+{
+    UNKNOWN,
+    MYSTERY_0,
+    MYSTERY_1,
+    MYSTERY_2
+}
+
 public class MTRStoryManager : InkyStoryManager
 {
     public static new MTRStoryManager Instance => (MTRStoryManager)InkyStoryManager.Instance;
@@ -51,6 +59,16 @@ public class MTRStoryManager : InkyStoryManager
     #region ( Clue Fields ) ------------------------ >>
     [SerializeField]
     StoryVariableContainer _globalKnowledge;
+
+    [SerializeField]
+    StoryVariableContainer _mystery0Clues;
+
+    [SerializeField]
+    StoryVariableContainer _mystery1Clues;
+
+    [SerializeField]
+    StoryVariableContainer _mystery2Clues;
+
     #endregion
 
 
@@ -78,6 +96,7 @@ public class MTRStoryManager : InkyStoryManager
     public static event SpeakerUpdateEvent OnNewSpeaker;
     public static event ListUpdateEvent OnActiveQuestListUpdate;
     public static event ListUpdateEvent OnCompletedQuestListUpdate;
+    public static event ListUpdateEvent OnGlobalKnowledgeUpdate;
 
     protected override void HandleStoryInitialized()
     {
@@ -190,6 +209,7 @@ public class MTRStoryManager : InkyStoryManager
             {
                 SetVariable(varName, newValue);
                 TryGetVariableContainer(varName, out _globalKnowledge);
+                OnGlobalKnowledgeUpdate?.Invoke(_globalKnowledge.ValueAsStringList);
                 Debug.Log($"{Prefix} >> Global Knowledge: {_globalKnowledge.Value}");
             }
         );
@@ -211,7 +231,7 @@ public class MTRStoryManager : InkyStoryManager
         if (speakerVar != null)
         {
             this._speakerVariable = speakerVar;
-            Debug.Log($"{Prefix} >> Speaker List: {speakerVar.ToString()}");
+            //Debug.Log($"{Prefix} >> Speaker List: {speakerVar}");
         }
         else
         {
@@ -224,6 +244,11 @@ public class MTRStoryManager : InkyStoryManager
         TryGetVariableValue("CURRENT_SPEAKER", out object currentSpeaker);
         if (currentSpeaker != null)
             SetSpeaker(currentSpeaker.ToString());
+
+        // << INITIALIZE CLUES >> ------------------------ >>
+        TryGetVariableContainer("Mystery0", out _mystery0Clues);
+        TryGetVariableContainer("Mystery1", out _mystery1Clues);
+        TryGetVariableContainer("Mystery2", out _mystery2Clues);
     }
 
     public static MTRSpeaker GetSpeaker(string speaker)
@@ -248,5 +273,20 @@ public class MTRStoryManager : InkyStoryManager
         MTRSpeaker speakerEnum = GetSpeaker(speaker);
         CurrentSpeaker = speakerEnum;
         OnNewSpeaker?.Invoke(speakerEnum);
+    }
+
+    public static List<string> GetClueList(MTRMystery mystery)
+    {
+        switch (mystery)
+        {
+            case MTRMystery.MYSTERY_0:
+                return Instance._mystery0Clues.ValueAsStringList;
+            case MTRMystery.MYSTERY_1:
+                return Instance._mystery1Clues.ValueAsStringList;
+            case MTRMystery.MYSTERY_2:
+                return Instance._mystery2Clues.ValueAsStringList;
+            default:
+                return new List<string>();
+        }
     }
 }

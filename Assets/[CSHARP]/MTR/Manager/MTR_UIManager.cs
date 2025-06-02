@@ -25,7 +25,7 @@ using UnityEditor;
 public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
     PauseMenuController _gameUI;
-    SynthesisManager _synthesisManager;
+    SynthesisUIController _synthesisManager;
 
     [SerializeField, ShowOnly]
     Vector2 _screenSize;
@@ -65,19 +65,19 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
         }
     }
 
-    public SynthesisManager synthesisManager
+    public SynthesisUIController synthesisManager
     {
         get
         {
             // Find the SynthesisManager if it exists
             if (_synthesisManager != null)
                 return _synthesisManager;
-            _synthesisManager = FindAnyObjectByType<SynthesisManager>();
+            _synthesisManager = FindAnyObjectByType<SynthesisUIController>();
             if (_synthesisManager != null)
                 return _synthesisManager;
 
             // Create a new SynthesisManager if it doesn't
-            _synthesisManager = UXML_Utility.CreateUIDocumentObject<SynthesisManager>(
+            _synthesisManager = UXML_Utility.CreateUIDocumentObject<SynthesisUIController>(
                 _synthesisUIPreset
             );
             return _synthesisManager;

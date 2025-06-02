@@ -3,7 +3,8 @@
 === function outsideCluesFound() ===
     ~ return IsClueFound(evidence_fence) && IsClueFound(evidence_broken_window) && IsClueFound(evidence_footsteps)
 === function insideCluesFound() ===
-    ~ return IsQuestComplete(visit_barrels) && IsClueFound(evidence_damages) && IsQuestComplete(visit_floor) && IsClueFound(evidence_claw_marks) && IsClueFound(evidence_handprint) && IsQuestComplete(visit_inside_window)
+    ~return  IsClueFound(evidence_damages) && IsClueFound(evidence_claw_marks) && IsClueFound(evidence_handprint) && IsClueFound(evidence_broken_window)
+
 === scene3_1 ===
 // location : The Winery, outside
 
@@ -53,7 +54,6 @@
     // ADD TO SYNTHESIS
     ~ SetSpeaker(Speaker.Lupe)
     Seems like the fence has been cut through. That gap looks just big enough for a person...
-    ~ CompleteQuest(visit_fence)
     ~ DiscoverClue(evidence_fence)
     -> DONE
 
@@ -78,12 +78,11 @@
 // Lupe looks down at the ground and sees a series of strange footsteps that look humanoid...ish..
 // ADD TO SYNTHESIS
 {IsQuestComplete(talk_to_misra_quest):
-    {IsQuestComplete(visit_footsteps):
+    {IsClueFound(evidence_footsteps):
         ~ SetSpeaker(Speaker.Misra)
         Maybe they didn't want to leave shoe prints? -> DONE 
     
     -else:
-        ~ CompleteQuest(visit_footsteps)
         ~ DiscoverClue(evidence_footsteps)
         ~ SetSpeaker(Speaker.Lupe)
         ...What's this?
@@ -121,7 +120,7 @@ TODO SFX door close
 = inside_window
     ~ SetSpeaker(Speaker.Lupe)
     Something about this broken window doesn't make sense to me...
-    ~ CompleteQuest(visit_inside_window)
+    ~ DiscoverClue(evidence_broken_window)
     -> DONE
 
 = handprint
@@ -155,7 +154,6 @@ TODO SFX door close
 = floor_splatters
     ~ SetSpeaker(Speaker.Misra)
     I know what you're thinking! Don't worry, it's not blood. I'm sure you've already deduced this, but it's dried up wine from when this place was used.
-    ~ CompleteQuest(visit_floor)
     -> DONE
 
 = equipment
@@ -167,7 +165,6 @@ TODO SFX door close
     
 
 = wine_barrels
-    ~ CompleteQuest(visit_barrels)
     ~ SetSpeaker(Speaker.Misra)
     Back in the day, this place really did make good wine.
     ~ SetSpeaker(Speaker.Lupe)
@@ -182,10 +179,10 @@ TODO SFX door close
     I don't drink when I'm on a case.
     ~ SetSpeaker(Speaker.Misra)
     I know, I know. Professional, as always.
+    ~ DiscoverClue(evidence_claw_marks)
     -> DONE
 
 = door_office
-    ~ CompleteQuest(visit_backroom_door)
     ~ SetSpeaker(Speaker.Lupe)
     Where does this lead?
     ~ SetSpeaker(Speaker.Misra)

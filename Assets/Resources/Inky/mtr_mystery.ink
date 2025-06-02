@@ -1,5 +1,13 @@
+// ====== CLUE HANDLING == >>
+LIST GLOBAL_KNOWLEDGE = DEFAULT
+=== function DiscoverClue(clue)
+    ~ GLOBAL_KNOWLEDGE += clue
+=== function IsClueFound(clue)
+    ~ return GLOBAL_KNOWLEDGE ? clue
 
-LIST Mystery0 = (broken_gas_pump), (broken_cash_reg), (cashreg_fix)
+
+
+LIST Mystery0 = (evidence_broken_gas_pump), (evidence_broken_cash_reg), (evidence_cashreg_fix)
 
 LIST Mystery1 = (evidence_broken_window) , (evidence_footsteps), (evidence_fence), (evidence_claw_marks), (evidence_damages), (evidence_handprint)
 

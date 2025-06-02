@@ -5,16 +5,10 @@
     max-width: 512px;
 }
 
-.highlight {
-    background-color: rgba(187, 157, 0, 0.53);
-}
-
 .selected {
-    background-color: rgba(121, 175, 200, 0.63);
-}
-
-.selected.highlight {
-    background-color: rgba(224, 150, 79, 0.73);
+    scale: 1.2 1.2;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
 }
 
 .hover {
@@ -32,16 +26,6 @@ Button.Arrow {
     min-height: 100px;
 }
 
-Label.unity-text-element.unity-label {
-    -unity-font-definition: url("project://database/Assets/Resources/Fonts/daniel/daniel.ttf?fileID=12800000&guid=8847c6029752d8745976a0b6c128c7ca&type=3#daniel");
-    align-self: stretch;
-    white-space: normal;
-    padding-top: 64px;
-    padding-right: 64px;
-    padding-bottom: 64px;
-    padding-left: 64px;
-}
-
 GroupBox.synthesis-mystery {
     padding-top: 2%;
     padding-right: 2%;
@@ -53,26 +37,24 @@ GroupBox.synthesis-mystery {
 }
 
 #clue-image {
+    transition-duration: 0.25s;
+    transition-property: -unity-background-image-tint-color;
     -unity-background-scale-mode: scale-to-fit;
 }
 
 #clue-image.undiscovered {
     -unity-background-image-tint-color: rgb(0, 0, 0);
-    transition-duration: 0.25s;
-    transition-timing-function: ease-in-out-circ;
+    transition-duration: 1s;
+    transition-timing-function: ease-in;
+    transition-property: -unity-background-image-tint-color;
 }
 
 #clue-text {
     font-size: 100%;
     -unity-font-definition: resource('Fonts/daniel/danielbd');
-    margin-top: 15%;
-    margin-right: 15%;
-    margin-bottom: 15%;
-    margin-left: 15%;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    transition-timing-function: ease-in-out;
-    transition-duration: 0.125s;
+}
+
+#clue-container {
+    justify-content: space-around;
+    flex-direction: row;
 }

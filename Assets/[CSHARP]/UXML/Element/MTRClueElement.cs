@@ -1,58 +1,40 @@
+using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [UxmlElement]
-public partial class MTRClueElement : VisualElement
+public partial class MTRClueElement : SelectableVisualElement
 {
     const string UNDISCOVERED_CLASS = "undiscovered";
 
     const string CLUE_IMAGE_TAG = "clue-image";
     const string CLUE_TEXT_TAG = "clue-text";
+    const int PADDING = 25;
+    const int MARGIN = 25;
 
-    MTRClueLibrary _library;
-    MTRInteractableDataSO _clueData;
+    //const int SIZE = 300;
+    const int FONT_SIZE = 20;
+
     VisualElement _imageElement;
     TextElement _textElement;
-    int _padding = 10;
-    int _size = 100;
-    string _name = "???";
+    string _name = "default_name";
+    Sprite _image;
     bool _isDiscovered = false;
+    MTRInteractableDataSO _interactableData;
+    Sprite _backgroundImage;
 
     [UxmlAttribute]
-    public MTRInteractableDataSO ClueData
+    public MTRInteractableDataSO InteractableData
     {
-        get => _clueData;
-        set
-        {
-            _clueData = value;
-            if (_clueData == null)
-            {
-                _imageElement.style.backgroundImage = null;
-                _imageElement.style.backgroundColor = Color.white;
-                _textElement.text = "???";
-            }
-            else
-            {
-                _imageElement.style.backgroundImage = new StyleBackground(_clueData.Sprite);
-                _imageElement.style.backgroundColor = Color.clear;
-
-                _textElement.text = _clueData.name;
-            }
-        }
+        get => _interactableData;
+        set { SetInteractableData(value); }
     }
 
-    [UxmlAttribute, Range(0, 100)]
-    public int Padding
+    [UxmlAttribute]
+    public Sprite BackgroundImage
     {
-        get => _padding;
-        set { SetPadding(value); }
-    }
-
-    [UxmlAttribute, Range(100, 1000)]
-    public int Size
-    {
-        get => _size;
-        set { SetSize(value); }
+        get => _backgroundImage;
+        set { SetBackgroundImage(value); }
     }
 
     [UxmlAttribute]
@@ -62,7 +44,7 @@ public partial class MTRClueElement : VisualElement
         set
         {
             _isDiscovered = value;
-            if (_isDiscovered)
+            if (!_isDiscovered)
             {
                 _imageElement.AddToClassList(UNDISCOVERED_CLASS);
                 _textElement.text = "???";
@@ -70,7 +52,7 @@ public partial class MTRClueElement : VisualElement
             else
             {
                 _imageElement.RemoveFromClassList(UNDISCOVERED_CLASS);
-                _textElement.text = _clueData.name;
+                _textElement.text = _name;
             }
         }
     }
@@ -80,42 +62,109 @@ public partial class MTRClueElement : VisualElement
         // << BASE STYLE >>
         this.style.position = Position.Relative;
         this.style.flexDirection = FlexDirection.Column;
-        this.style.alignSelf = Align.Stretch;
-        this.style.backgroundColor = Color.yellow;
 
-        SetPadding(_padding);
-        SetSize(_size);
+        SetPadding();
+        SetMargin();
+        SetBackgroundImage(_backgroundImage);
 
         // << CREATE CLUE IMAGE >>
-        _imageElement = new VisualElement();
-        _imageElement.name = CLUE_IMAGE_TAG;
-        _imageElement.style.backgroundColor = Color.white;
-        _imageElement.style.minWidth = new StyleLength(Length.Percent(80));
-        _imageElement.style.minHeight = new StyleLength(Length.Percent(80));
-
+        _imageElement = new VisualElement()
+        {
+            name = CLUE_IMAGE_TAG,
+            style =
+            {
+                flexGrow = 1,
+                alignSelf = Align.Center,
+                minWidth = 150,
+                maxWidth = 250,
+                minHeight = 150,
+                maxHeight = 300,
+            },
+        };
+        SetImage(_image);
         this.Add(_imageElement);
 
         // << CREATE CLUE TEXT >>
-        _textElement = new TextElement();
-        _textElement.name = CLUE_TEXT_TAG;
-        _textElement.text = _name;
-        _textElement.style.unityTextAlign = TextAnchor.MiddleCenter;
+        _textElement = new TextElement()
+        {
+            name = CLUE_TEXT_TAG,
+            text = _name,
+            style =
+            {
+                unityTextAlign = TextAnchor.MiddleCenter,
+                fontSize = FONT_SIZE,
+                width = Length.Percent(100),
+            }
+        };
         this.Add(_textElement);
     }
 
-    public void SetPadding(int padding)
+    public MTRClueElement(MTRInteractableDataSO interactableData)
+        : this()
     {
-        _padding = padding;
-        this.style.paddingLeft = _padding;
-        this.style.paddingRight = _padding;
-        this.style.paddingTop = _padding;
-        this.style.paddingBottom = _padding;
+        SetInteractableData(interactableData);
     }
 
-    public void SetSize(int size)
+    void SetPadding()
     {
-        _size = size;
-        this.style.width = _size;
-        this.style.height = _size;
+        this.style.paddingLeft = PADDING;
+        this.style.paddingRight = PADDING;
+        this.style.paddingTop = PADDING;
+        this.style.paddingBottom = PADDING;
+    }
+
+    void SetMargin()
+    {
+        this.style.marginLeft = MARGIN;
+        this.style.marginRight = MARGIN;
+        this.style.marginTop = MARGIN;
+        this.style.marginBottom = MARGIN;
+    }
+
+    void SetInteractableData(MTRInteractableDataSO interactableData)
+    {
+        _interactableData = interactableData;
+        if (_interactableData == null)
+            return;
+
+        _name = interactableData.ClueName;
+        _image = interactableData.Sprite;
+
+        SetImage(_image);
+        SetText(_name);
+    }
+
+    void SetBackgroundImage(Sprite backgroundImage)
+    {
+        _backgroundImage = backgroundImage;
+        if (_backgroundImage != null)
+        {
+            this.style.backgroundImage = new StyleBackground(_backgroundImage);
+            this.style.backgroundColor = Color.clear;
+        }
+        else
+        {
+            this.style.backgroundColor = Color.yellow;
+        }
+    }
+
+    void SetImage(Sprite image)
+    {
+        _image = image;
+
+        if (_image != null)
+        {
+            _imageElement.style.backgroundImage = new StyleBackground(_image);
+            _imageElement.style.backgroundColor = Color.clear;
+        }
+        else
+        {
+            _imageElement.style.backgroundColor = Color.white;
+        }
+    }
+
+    void SetText(string text)
+    {
+        _textElement.text = text;
     }
 }

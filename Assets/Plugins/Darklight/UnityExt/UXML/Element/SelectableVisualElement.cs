@@ -8,8 +8,6 @@ using UnityEngine.UIElements;
 
 namespace Darklight.UnityExt.UXML
 {
-
-
     #region ---- [[ SELECTABLE VISUAL ELEMENT ]] ----
     /// <summary>
     /// Base class for controlled elements that encapsulates common functionalities for UXML elements.
@@ -19,9 +17,51 @@ namespace Darklight.UnityExt.UXML
     [UxmlElement]
     public partial class SelectableVisualElement : VisualElement, ISelectableElement
     {
-        public class SelectableVisualElementFactory : UxmlFactory<SelectableVisualElement> { }
+        const string SELECTED_CLASS = "selected";
+        const string DISABLED_CLASS = "disabled";
+        bool _selected = false;
+        bool _disabled = false;
+
         public VisualElement Element { get; protected set; }
+
+        [UxmlAttribute]
+        public bool Selected
+        {
+            get => _selected;
+            set
+            {
+                _selected = value;
+                if (value)
+                {
+                    Select();
+                }
+                else
+                {
+                    Deselect();
+                }
+            }
+        }
+
+        [UxmlAttribute]
+        public bool Disabled
+        {
+            get => _disabled;
+            set
+            {
+                _disabled = value;
+                if (value)
+                {
+                    Disable();
+                }
+                else
+                {
+                    Enable();
+                }
+            }
+        }
+
         public event Action OnSelect;
+
         public SelectableVisualElement()
         {
             Element = this;
@@ -30,26 +70,27 @@ namespace Darklight.UnityExt.UXML
 
         public virtual void Select()
         {
-            this.AddToClassList("selected");
+            this.AddToClassList(SELECTED_CLASS);
             this.Focus();
             OnSelect?.Invoke();
         }
 
         public virtual void Deselect()
         {
-            this.RemoveFromClassList("selected");
+            this.RemoveFromClassList(SELECTED_CLASS);
         }
+
         public virtual void Enable()
         {
-            this.RemoveFromClassList("disabled");
+            this.RemoveFromClassList(DISABLED_CLASS);
         }
 
         public virtual void Disable()
         {
-            this.AddToClassList("disabled");
+            this.AddToClassList(DISABLED_CLASS);
         }
+
+        public class SelectableVisualElementFactory : UxmlFactory<SelectableVisualElement> { }
     }
     #endregion
-
-
 }

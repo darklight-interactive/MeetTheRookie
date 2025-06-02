@@ -101,7 +101,7 @@ TODO SFX DOOR CLOSE
     -> DONE
 
 = employee
-{IsQuestComplete(broken_cash_reg):
+{IsQuestComplete(evidence_broken_cash_reg):
     ~ SetSpeaker(Speaker.Beth)
         {The register drawer is busted. | Register is still busted. | Stillllllll busted, buddy.}
 -else:
@@ -114,7 +114,6 @@ TODO SFX DOOR CLOSE
     ...The pump's broken. It says to pay inside?
     ~ SetSpeaker(Speaker.Beth) 
     Yeahhhhh. You can't pay right now. The register drawer is busted.
-    ~ CompleteQuest(broken_cash_reg)
     ~ SetSpeaker(Speaker.Lupe)
     * Can you, uh, fix it? -> can_u_fix
     * ...maybe just try, uh...hitting it? -> hit_that_thang
@@ -129,7 +128,7 @@ TODO SFX DOOR CLOSE
     Whose paygrade is it <i>not</i> above?
     ~ SetSpeaker(Speaker.Beth) 
     My manager's in the bathroom.
-    ~DiscoverClue(broken_cash_reg)
+    ~DiscoverClue(Mystery0.evidence_broken_cash_reg)
     -> DONE
 
 =hit_that_thang
@@ -214,7 +213,7 @@ TODO SFX DOOR CLOSE
 + [door to mainroom] -> door_to_mainroom
 
 = mel
-{IsClueFound(cashreg_fix) == false:
+{IsClueFound(evidence_cashreg_fix) == false:
     ~ SetSpeaker(Speaker.Lupe)
     Hey. You're the manager, right?
     ~ SetSpeaker(Speaker.Mel)
@@ -242,7 +241,7 @@ TODO SFX DOOR CLOSE
     ~ SetSpeaker(Speaker.Lupe)
     I don't know.
     Lucky guess.
-    ~ DiscoverClue(cashreg_fix)
+    ~ DiscoverClue(evidence_cashreg_fix)
     -> DONE
     
     -else:
@@ -314,7 +313,7 @@ I think I'd rather lick ground than eat something out of here.
 -> DONE
 
 = employee
-  {IsClueFound(cashreg_fix):
+  {IsClueFound(evidence_cashreg_fix):
         ~ SetSpeaker(Speaker.Beth)
         I told you--
         ~ SetSpeaker(Speaker.Lupe)

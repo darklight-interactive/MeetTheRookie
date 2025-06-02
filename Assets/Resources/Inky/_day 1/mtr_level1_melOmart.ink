@@ -51,7 +51,7 @@ Alright. Bye.
 
 = gas_pump
     ~ CompleteQuest(Level1_Quests.first_interact)
-    ~ DiscoverClue(Level1_Clues.broken_gas_pump)
+    ~ DiscoverClue(Mystery0.evidence_broken_gas_pump)
     ~ gas_pumps += 1
     {
     - IsQuestComplete(pay_for_gas) && (look_at_tree):
@@ -152,8 +152,8 @@ TODO SFX Door close
     -> DONE
 
 = employee
-{IsClueFound(broken_cash_reg):
-    {IsClueFound(cashreg_fix):
+{IsClueFound(evidence_broken_cash_reg):
+    {IsClueFound(evidence_cashreg_fix):
         ~ SetSpeaker(Speaker.Beth)
         I told you--
         ~ SetSpeaker(Speaker.Lupe)
@@ -200,13 +200,13 @@ TODO SFX Door close
     Oh he's not using it just cleaning some weird thing.
     ~ SetSpeaker(Speaker.Lupe)
     Okay...
-    ~DiscoverClue(broken_cash_reg)
+    ~DiscoverClue(evidence_broken_cash_reg)
     -> DONE
 }
 
 = door_to_backroom
 TODO SFX
-{IsClueFound(broken_cash_reg):
+{IsClueFound(evidence_broken_cash_reg):
     ~ openDoor()
     ~ ChangeGameScene("scene1_3")
     -> DONE
@@ -238,7 +238,7 @@ TODO SFX
 + [mel] -> mel
 
 = mel
-{IsClueFound(cashreg_fix) == false:
+{IsClueFound(evidence_cashreg_fix) == false:
     ~ SetSpeaker(Speaker.Lupe)
     Hey. Are you the manager?
     ~ SetSpeaker(Speaker.Mel)
@@ -258,7 +258,7 @@ TODO SFX
      ~ SetSpeaker(Speaker.Lupe)
      Huh.
      Weird.
-    ~ DiscoverClue(cashreg_fix)
+    ~ DiscoverClue(evidence_cashreg_fix)
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Mel)

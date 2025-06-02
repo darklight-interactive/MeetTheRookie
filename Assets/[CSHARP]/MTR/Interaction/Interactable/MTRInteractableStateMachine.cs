@@ -48,17 +48,28 @@ public partial class MTRInteractable
             }
             else
             {
-                InteractionSystem.Registry.Interactables.TryGetValue(
-                    speaker.ToString(),
-                    out MTRCharacterInteractable character
-                );
-                if (character == null)
+                // << FIND THE CHARACTER >>
+                bool found = false;
+                foreach (var interactable in InteractionSystem.Registry.Interactables)
+                {
+                    // check if the interactable is a character & match the speaker tag
+                    if (
+                        interactable.Value is MTRCharacterInteractable character
+                        && character.SpeakerTag == speaker
+                    )
+                    {
+                        // output the dialogue reciever
+                        character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
+                        found = true;
+                        break;
+                    }
+                }
+
+                // << LOG ERRORS >>
+                if (!found)
                     Debug.LogError(
                         $"{PREFIX} :: Could not find character with speaker tag: {speaker}"
                     );
-
-                if (character != null)
-                    character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
 
                 if (reciever == null)
                     Debug.LogError(

@@ -23,6 +23,12 @@ public class MTRInteractableDataSO : ScriptableObject
     string _interactionStitch = "interaction_default";
 
     [SerializeField]
+    MTRMystery _mystery = MTRMystery.UNKNOWN;
+
+    [Dropdown("dropdown_clueList"), SerializeField]
+    string _clue;
+
+    [SerializeField]
     Sprite _sprite;
 
     protected List<string> dropdown_knotList
@@ -32,7 +38,7 @@ public class MTRInteractableDataSO : ScriptableObject
             List<string> knots = new List<string>(100);
             if (MTRStoryManager.Instance != null)
             {
-                knots = MTRStoryManager.Instance.KnotList;
+                knots = MTRStoryManager.Instance.SceneKnotList;
             }
             return knots;
         }
@@ -50,9 +56,35 @@ public class MTRInteractableDataSO : ScriptableObject
         }
     }
 
+    List<string> dropdown_clueList
+    {
+        get
+        {
+            List<string> clues = new List<string>(100);
+            if (MTRStoryManager.Instance != null)
+            {
+                clues = MTRStoryManager.GetClueList(_mystery);
+                if (clues.Count == 0)
+                    clues = new List<string>(100) { "None" };
+            }
+            return clues;
+        }
+    }
+
     public string SceneKnot => _sceneKnot;
     public string InteractionStitch => _interactionStitch;
     public Sprite Sprite => _sprite;
+
+    public string ClueName
+    {
+        // Get the last part of the interaction stitch
+        get
+        {
+            string[] nameParts = _interactionStitch.Split('.');
+            string lastPart = nameParts[nameParts.Length - 1];
+            return lastPart.Replace("_", " "); // Replace underscores with spaces
+        }
+    }
 
     /// <summary>
     /// Generates a unique asset name by appending an incremental number if the base name already exists

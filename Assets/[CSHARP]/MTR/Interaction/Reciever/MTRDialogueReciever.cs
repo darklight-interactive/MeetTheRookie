@@ -1,12 +1,10 @@
 using System.Collections;
 using Darklight.UnityExt.Core2D;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Darklight.UnityExt.Editor;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,17 +15,28 @@ public class MTRDialogueReciever : InteractionReciever
     Grid2D_OverlapWeightSpawner _grid;
     bool _isInDialogue = false;
 
-    [SerializeField, ShowOnly] string _speakerTag = "";
-    [SerializeField, ShowOnly] TextBubbleObject _dialogueBubbleObject;
-    [SerializeField, Expandable] UXML_UIDocumentPreset _speechBubblePreset;
-    [SerializeField, Expandable] TextBubbleLibrary _dialogueBubbleLibrary;
+    [SerializeField, ShowOnly]
+    string _speakerTag = "";
+
+    [SerializeField, ShowOnly]
+    TextBubbleObject _dialogueBubbleObject;
+
+    [SerializeField, Expandable]
+    UXML_UIDocumentPreset _speechBubblePreset;
+
+    [SerializeField, Expandable]
+    TextBubbleLibrary _dialogueBubbleLibrary;
 
     Material _material => MTRGameManager.PrefabLibrary.uxmlRenderTextureMaterial;
     RenderTexture _renderTexture => MTRGameManager.PrefabLibrary.uxmlRenderTexture;
 
     public bool IsInDialogue => _isInDialogue;
     public override InteractionType InteractionType => InteractionType.DIALOGUE;
-    public string SpeakerTag { get => _speakerTag; set => _speakerTag = value; }
+    public string SpeakerTag
+    {
+        get => _speakerTag;
+        set => _speakerTag = value;
+    }
     public Grid2D_OverlapWeightSpawner Grid
     {
         get
@@ -39,11 +48,13 @@ public class MTRDialogueReciever : InteractionReciever
             return _grid;
         }
     }
+
     public void Awake()
     {
         if (_dialogueBubbleLibrary == null)
         {
-            _dialogueBubbleLibrary = MTRAssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
+            _dialogueBubbleLibrary =
+                MTRAssetManager.CreateOrLoadScriptableObject<TextBubbleLibrary>();
         }
     }
 
@@ -60,16 +71,17 @@ public class MTRDialogueReciever : InteractionReciever
         }
 
         // Create a new Bubble
-        _dialogueBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_speechBubblePreset, _material, _renderTexture);
+        _dialogueBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(
+            _speechBubblePreset,
+            _material,
+            _renderTexture
+        );
         _dialogueBubbleObject.transform.SetParent(transform);
-
 
         Cell2D bestCell = Grid.GetBestCell();
         Grid.SpawnerComponent.AssignTransformToCell(_dialogueBubbleObject.transform, bestCell);
 
-
         TextBubble textBubble = _dialogueBubbleObject.ElementQuery<TextBubble>();
-
 
         textBubble.Library = _dialogueBubbleLibrary; // << Set the bubble library
 
@@ -180,6 +192,7 @@ public class MTRDialogueReciever : InteractionReciever
     {
         SerializedObject _serializedObject;
         MTRDialogueReciever _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);

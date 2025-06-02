@@ -6,46 +6,35 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class MTRClueContainer : VisualElement
 {
+    MTRMysteryDataSO _mysteryData;
     List<MTRClueElement> _clues = new List<MTRClueElement>();
-
-    Texture2D _defaultBackgroundImage;
-    Texture2D _defaultClueImage;
-    int _clueCount = 5;
-    int _clueSize = 100;
-
-    [UxmlAttribute]
-    public Texture2D DefaultBackgroundImage
-    {
-        get => _defaultBackgroundImage;
-        set => _defaultBackgroundImage = value;
-    }
+    VisualElement _headerElement;
+    Label _headerTitle;
+    VisualElement _clueContainerElement;
+    bool _discoverAllOverride = false;
 
     [UxmlAttribute]
-    public Texture2D DefaultClueImage
+    public MTRMysteryDataSO MysteryData
     {
-        get => _defaultClueImage;
-        set => _defaultClueImage = value;
-    }
-
-    [UxmlAttribute, Range(1, 10)]
-    public int ClueCount
-    {
-        get => _clueCount;
+        get => _mysteryData;
         set
         {
-            _clueCount = value;
-            GenerateRandomClues();
+            _mysteryData = value;
+            GenerateClues();
         }
     }
 
-    [UxmlAttribute, Range(100, 250)]
-    public int ClueSize
+    [UxmlAttribute]
+    public bool DiscoverAllOverride
     {
-        get => _clueSize;
+        get => _discoverAllOverride;
         set
         {
-            _clueSize = value;
-            GenerateRandomClues();
+            _discoverAllOverride = value;
+            foreach (var clue in _clues)
+            {
+                clue.IsDiscovered = value;
+            }
         }
     }
 
@@ -54,17 +43,85 @@ public partial class MTRClueContainer : VisualElement
         this.style.flexGrow = 1;
         this.style.position = Position.Relative;
         this.style.alignSelf = Align.Stretch;
-        this.style.flexDirection = FlexDirection.Row;
+        this.style.flexDirection = FlexDirection.Column;
 
-        GenerateRandomClues();
+        CreateHeader();
+        CreateClueContainer();
+        GenerateClues();
     }
 
-    /// <summary>
-    /// Generates a random set of ClueElements within the container area
-    /// </summary>
-    private void GenerateRandomClues() { }
+    void CreateHeader()
+    {
+        _headerElement = new VisualElement()
+        {
+            name = "header",
+            style =
+            {
+                position = Position.Relative,
+                alignSelf = Align.Stretch,
+                justifyContent = Justify.Center,
+                backgroundColor = new Color(0, 0, 0, 0.5f),
+                height = 200,
+                width = Length.Percent(100),
+            }
+        };
+        this.Add(_headerElement);
 
-    private void DestroyAllClues()
+        _headerTitle = new Label()
+        {
+            text = "Mystery Title",
+            style =
+            {
+                color = Color.white,
+                fontSize = 40,
+                flexGrow = 1,
+                alignSelf = Align.Center,
+            }
+        };
+        _headerElement.Add(_headerTitle);
+    }
+
+    void SetHeaderTitle(string title)
+    {
+        _headerTitle.text = title;
+    }
+
+    void CreateClueContainer()
+    {
+        _clueContainerElement = new GroupBox()
+        {
+            name = "clue-container",
+            style =
+            {
+                flexGrow = 1,
+                position = Position.Relative,
+                //justifyContent = Justify.Center,
+                //alignSelf = Align.Stretch,
+                //flexDirection = FlexDirection.Row,
+
+                maxWidth = Length.Percent(50),
+                flexWrap = Wrap.Wrap,
+            }
+        };
+        this.Add(_clueContainerElement);
+    }
+
+    void GenerateClues()
+    {
+        DestroyAllClues();
+        if (_mysteryData == null)
+            return;
+
+        SetHeaderTitle(_mysteryData.mysteryName);
+        foreach (MTRInteractableDataSO clue in _mysteryData.clueDataList)
+        {
+            MTRClueElement clueElement = new MTRClueElement(clue);
+            _clues.Add(clueElement);
+            _clueContainerElement.Add(clueElement);
+        }
+    }
+
+    void DestroyAllClues()
     {
         foreach (var clue in _clues)
         {

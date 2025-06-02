@@ -47,7 +47,7 @@ EXTERNAL PlaySFX(sfx)
     ~ return
 
 // ====== SPEAKER HANDLING == >>
-LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
+LIST SPEAKER_LIST = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
 VAR CURRENT_SPEAKER = Speaker.Lupe
 === function SetSpeaker(speaker)
     # SetSpeaker >> {speaker}
@@ -72,18 +72,8 @@ LIST COMPLETED_QUESTS = DEFAULT // <- all completed quests
     #IsQuestActive >> {quest}
     ~ return ACTIVE_QUESTS ? quest
 
-// ====== CLUE HANDLING == >>
-LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
-=== function DiscoverClue(clue)
-    #DiscoverClue >> {clue}
-    ~ GLOBAL_KNOWLEDGE += clue
-    ~ AddSynthesisClue(clue)
-=== function IsClueFound(clue)
-    ~ return GLOBAL_KNOWLEDGE ? clue
 
 
-=== function AddSynthesisClue(clue)
-    ~ return
 === function openDoor()
     ~PlaySFX("Doors/doorOpen")
     ~ return
@@ -93,10 +83,10 @@ LIST GLOBAL_KNOWLEDGE = (DEFAULTCLUE)
 
 // -------------------- LEVEL 1 ------------------------------------
 LIST Level1_Quests = (first_interact), (pay_for_gas), (look_at_tree)
-LIST Level1_Clues = (broken_gas_pump)
 
 // -------------------- LEVEL 3 ------------------------------------
-LIST Level3_Quests = (talk_to_misra_quest), (visit_fence), (visit_window), (discover_outside_clues), (discuss_misra), (visit_footsteps), (visit_floor), (visit_barrels), (visit_backroom_door), (discover_inside_clues), (visit_inside_window)
+LIST Level3_Quests = (talk_to_misra_quest), (discover_outside_clues), (discuss_misra), (discover_inside_clues)
+
 
 // -------------------- LEVEL 4 ------------------------------------
 LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visited_misra), (visited_roy), (complete_gen_store), (complete_arcade), (visited_machines), (visited_jenny), (visited_calvin), (visited_josh), (irene_intro), (memorial_plaque_visited), (irene_convo_1), (irene_convo_2), (jenkins_wakes_up), (calvin_first_interact), (josh_first_interact), (KR_jenny_quest), (personal_info_jenny_quest), (winery_jenny_quest), (personal_info_josh_quest), (KR_josh_quest), (winery_josh_quest), (suspects), (jenkins_intro), (what_is_hosi), (lupe_not_a_cop), (jenny_KR_question), (jenny_local_question), (jenny_personal_question), (jenny_winery_question), (jenny_crazies_question), (calvin_KR_questions), (calvin_personal_question), (calvin_local_question), (josh_KR_question), (josh_personal_questions), (jenny_first_interact), (calvin_KR_question), (calvin_winery_question), (josh_winery_question), (josh_suspicion), (jenny_suspicion), (calvin_suspicion), (car_first_interact), (irene_gives_cue), (jenkins_first_interact), (visit_roy_window), (gooptalk)
