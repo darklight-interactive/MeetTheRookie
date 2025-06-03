@@ -20,13 +20,35 @@ using UnityEditor;
 public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
 {
     const string CONTAINER_TAG = "container";
+    const string MYSTERY_0_TAG = "mystery-0";
+    const string MYSTERY_1_TAG = "mystery-1";
+    const string MYSTERY_2_TAG = "mystery-2";
+
     private VisualElement _rootContainer => ElementQuery<VisualElement>(CONTAINER_TAG);
-    private MTRClueContainer _clueContainer => ElementQuery<MTRClueContainer>();
+    private MTRClueContainer _mystery0ClueContainer =>
+        ElementQuery<MTRClueContainer>(MYSTERY_0_TAG);
+    private MTRClueContainer _mystery1ClueContainer =>
+        ElementQuery<MTRClueContainer>(MYSTERY_1_TAG);
+    private MTRClueContainer _mystery2ClueContainer =>
+        ElementQuery<MTRClueContainer>(MYSTERY_2_TAG);
+
+    private List<MTRClueContainer> _mysteryContainers;
 
     void Awake()
     {
         MTRInputManager.OnTertiaryInteract += OnSynthesisButtonPressed;
         MTRStoryManager.OnGlobalKnowledgeUpdate += OnGlobalKnowledgeUpdate;
+        InitializeMysteryContainers();
+    }
+
+    private void InitializeMysteryContainers()
+    {
+        _mysteryContainers = new List<MTRClueContainer>
+        {
+            _mystery0ClueContainer,
+            _mystery1ClueContainer,
+            _mystery2ClueContainer
+        };
     }
 
     void Update() { }
@@ -36,5 +58,23 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
         _rootContainer.visible = !_rootContainer.visible;
     }
 
-    void OnGlobalKnowledgeUpdate(List<string> clues) { }
+    void OnGlobalKnowledgeUpdate(List<string> knowledge)
+    {
+        Debug.Log("OnGlobalKnowledgeUpdate: " + string.Join(", ", knowledge));
+
+        foreach (var container in _mysteryContainers)
+        {
+            if (container == null)
+                continue;
+
+            foreach (string clueName in knowledge)
+            {
+                container.Contains(clueName, out MTRClueElement clueElement);
+                if (clueElement != null)
+                {
+                    clueElement.IsDiscovered = true;
+                }
+            }
+        }
+    }
 }

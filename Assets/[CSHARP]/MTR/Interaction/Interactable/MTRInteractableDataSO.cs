@@ -73,9 +73,11 @@ public class MTRInteractableDataSO : ScriptableObject
 
     public string SceneKnot => _sceneKnot;
     public string InteractionStitch => _interactionStitch;
+    public string Mystery => _mystery.ToString();
+    public string ClueTag => _clue;
     public Sprite Sprite => _sprite;
 
-    public string ClueName
+    public string Name
     {
         // Get the last part of the interaction stitch
         get

@@ -62,6 +62,7 @@ public partial class MTRClueElement : SelectableVisualElement
         // << BASE STYLE >>
         this.style.position = Position.Relative;
         this.style.flexDirection = FlexDirection.Column;
+        this.style.height = 300;
 
         SetPadding();
         SetMargin();
@@ -127,7 +128,7 @@ public partial class MTRClueElement : SelectableVisualElement
         if (_interactableData == null)
             return;
 
-        _name = interactableData.ClueName;
+        _name = interactableData.Name;
         _image = interactableData.Sprite;
 
         SetImage(_image);

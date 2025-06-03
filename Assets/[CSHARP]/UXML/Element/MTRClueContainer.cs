@@ -38,10 +38,12 @@ public partial class MTRClueContainer : VisualElement
         }
     }
 
+    public List<MTRClueElement> ClueList => _clues;
+
     public MTRClueContainer()
     {
         this.style.flexGrow = 1;
-        this.style.position = Position.Relative;
+        this.style.position = Position.Absolute;
         this.style.alignSelf = Align.Stretch;
         this.style.flexDirection = FlexDirection.Column;
 
@@ -58,6 +60,7 @@ public partial class MTRClueContainer : VisualElement
             style =
             {
                 position = Position.Relative,
+                flexGrow = 1,
                 alignSelf = Align.Stretch,
                 justifyContent = Justify.Center,
                 backgroundColor = new Color(0, 0, 0, 0.5f),
@@ -128,5 +131,25 @@ public partial class MTRClueContainer : VisualElement
             clue.RemoveFromHierarchy();
         }
         _clues.Clear();
+    }
+
+    /// <summary>
+    /// Returns true if the clue container contains a clue with the given name.
+    /// </summary>
+    /// <param name="clueTag">The tag of the clue to check for.</param>
+    /// <param name="clueElement">The clue element if found, otherwise null.</param>
+    /// <returns>True if the clue container contains a clue with the given tag, otherwise false.</returns>
+    public bool Contains(string clueTag, out MTRClueElement clueElement)
+    {
+        foreach (MTRClueElement clue in _clues)
+        {
+            if (clue.InteractableData.ClueTag == clueTag)
+            {
+                clueElement = clue;
+                return true;
+            }
+        }
+        clueElement = null;
+        return false;
     }
 }
