@@ -93,9 +93,11 @@ public class MTRStoryManager : InkyStoryManager
 
     public delegate void SpeakerUpdateEvent(MTRSpeaker speaker);
     public delegate void ListUpdateEvent(List<string> list);
+    public delegate void MysteryKnowledgeUpdateEvent(int mysteryIndex);
     public static event SpeakerUpdateEvent OnNewSpeaker;
     public static event ListUpdateEvent OnActiveQuestListUpdate;
     public static event ListUpdateEvent OnCompletedQuestListUpdate;
+    public static event MysteryKnowledgeUpdateEvent OnMysteryKnowledgeUpdate;
     public static event ListUpdateEvent OnGlobalKnowledgeUpdate;
 
     protected override void HandleStoryInitialized()
@@ -162,6 +164,15 @@ public class MTRStoryManager : InkyStoryManager
             }
         );
         Debug.Log($"{Prefix} >> BOUND 'SetSpeaker' to external function.");
+
+        GlobalStory.BindExternalFunction(
+            "DiscoverMystery",
+            (int mystery) =>
+            {
+                OnMysteryKnowledgeUpdate?.Invoke(mystery);
+                Debug.Log($"{Prefix} >> DiscoverMystery: {mystery}");
+            }
+        );
 
         // << OBSERVE VARIABLES >> ------------------------ >>
         GlobalStory.ObserveVariable(

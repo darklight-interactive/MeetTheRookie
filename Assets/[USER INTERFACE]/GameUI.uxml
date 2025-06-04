@@ -17,5 +17,16 @@
             </engine:GroupBox>
         </engine:VisualElement>
     </engine:VisualElement>
-    <engine:VisualElement name="footer" style="flex-grow: 1;" />
+    <engine:VisualElement name="footer" style="flex-grow: 1;">
+        <engine:VisualElement name="input-ui-container" style="flex-grow: 1; align-self: stretch; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; display: flex; flex-direction: row; justify-content: center;">
+            <engine:VisualElement name="interact-input-container" class="input-ui-container">
+                <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/icon_interact.png?fileID=2800000&amp;guid=40e70f19364c41a40a12697a0eeb3530&amp;type=3#icon_interact&quot;); -unity-background-scale-mode: scale-to-fit; width: 100%; height: 100%; margin-top: 15%; margin-right: 15%; margin-bottom: 15%; margin-left: 15%;" />
+                <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Z%20input%20.PNG?fileID=2800000&amp;guid=5b89e296700074cc0819e3f0878c2833&amp;type=3#Z input &quot;); background-color: rgb(126, 152, 197); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; left: 0; bottom: -15px;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="synth-input-container" class="input-ui-container" style="background-image: url(&quot;project://database/Assets/[TEXTURES]/mtr_color/mtr_color_31.png?fileID=2800000&amp;guid=0e7bad099db78144a8d0d12e3f6cef50&amp;type=3#mtr_color_31&quot;);">
+                <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Lupe_Synth_Icon_Ui.png?fileID=2800000&amp;guid=f4f47c54b44e3894da968bc3240e8e77&amp;type=3#Lupe_Synth_Icon_Ui&quot;); width: 100px; height: 100px;" />
+                <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/C%20input.PNG?fileID=2800000&amp;guid=e2c7e5a36f69c4c4c88c304093d078ca&amp;type=3#C input&quot;); background-color: rgb(130, 83, 132); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; top: auto; left: 0; bottom: -15px;" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>

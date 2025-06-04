@@ -47,7 +47,7 @@ EXTERNAL PlaySFX(sfx)
     ~ return
 
 // ====== SPEAKER HANDLING == >>
-LIST SPEAKER_LIST = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
+LIST Speaker = (Unknown), (Misra), (Lupe), (Chief_Thelton), (Marlowe), (Beth), (Mel), (Roy_Rodgerson), (Jenny), (Calvin), (Josh), (Irene), (Jenkins)
 VAR CURRENT_SPEAKER = Speaker.Lupe
 === function SetSpeaker(speaker)
     # SetSpeaker >> {speaker}

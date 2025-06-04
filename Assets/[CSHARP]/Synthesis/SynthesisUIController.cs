@@ -25,37 +25,52 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
     const string MYSTERY_2_TAG = "mystery-2";
 
     private VisualElement _rootContainer => ElementQuery<VisualElement>(CONTAINER_TAG);
-    private MTRClueContainer _mystery0ClueContainer =>
-        ElementQuery<MTRClueContainer>(MYSTERY_0_TAG);
-    private MTRClueContainer _mystery1ClueContainer =>
-        ElementQuery<MTRClueContainer>(MYSTERY_1_TAG);
-    private MTRClueContainer _mystery2ClueContainer =>
-        ElementQuery<MTRClueContainer>(MYSTERY_2_TAG);
+    private List<MTRClueContainer> _mysteryContainers =>
+        new List<MTRClueContainer>
+        {
+            ElementQuery<MTRClueContainer>(MYSTERY_0_TAG),
+            ElementQuery<MTRClueContainer>(MYSTERY_1_TAG),
+            ElementQuery<MTRClueContainer>(MYSTERY_2_TAG)
+        };
 
-    private List<MTRClueContainer> _mysteryContainers;
+    [SerializeField, ReadOnly]
+    private bool _isVisible = false;
+
+    [SerializeField, ReadOnly]
+    private int _activeMysteryIndex = 0;
 
     void Awake()
     {
         MTRInputManager.OnTertiaryInteract += OnSynthesisButtonPressed;
         MTRStoryManager.OnGlobalKnowledgeUpdate += OnGlobalKnowledgeUpdate;
-        InitializeMysteryContainers();
-    }
+        MTRStoryManager.OnMysteryKnowledgeUpdate += OnMysteryKnowledgeUpdate;
 
-    private void InitializeMysteryContainers()
-    {
-        _mysteryContainers = new List<MTRClueContainer>
-        {
-            _mystery0ClueContainer,
-            _mystery1ClueContainer,
-            _mystery2ClueContainer
-        };
+        SetVisible(false);
     }
 
     void Update() { }
 
+    void OnDestroy()
+    {
+        MTRInputManager.OnTertiaryInteract -= OnSynthesisButtonPressed;
+        MTRStoryManager.OnGlobalKnowledgeUpdate -= OnGlobalKnowledgeUpdate;
+        MTRStoryManager.OnMysteryKnowledgeUpdate -= OnMysteryKnowledgeUpdate;
+    }
+
     void OnSynthesisButtonPressed()
     {
-        _rootContainer.visible = !_rootContainer.visible;
+        ToggleVisibility();
+
+        if (_isVisible)
+            MTRSceneController.StateMachine.GoToState(MTRSceneState.SYNTHESIS_MODE);
+        else
+            MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
+    }
+
+    void OnMysteryKnowledgeUpdate(int mysteryIndex)
+    {
+        Debug.Log("OnMysteryKnowledgeUpdate: " + mysteryIndex);
+        SetActiveMystery(mysteryIndex);
     }
 
     void OnGlobalKnowledgeUpdate(List<string> knowledge)
@@ -76,5 +91,53 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
                 }
             }
         }
+    }
+
+    void SetActiveMystery(int mysteryIndex)
+    {
+        _activeMysteryIndex = mysteryIndex;
+        ResetMysteries();
+        _mysteryContainers[mysteryIndex].style.display = DisplayStyle.Flex;
+    }
+
+    void ResetMysteries()
+    {
+        foreach (var container in _mysteryContainers)
+        {
+            if (container == null)
+                continue;
+
+            container.style.display = DisplayStyle.None;
+        }
+    }
+
+    void SetVisible(bool visible)
+    {
+        _isVisible = visible;
+        _rootContainer.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;
+    }
+
+    [Button]
+    public new void ToggleVisibility()
+    {
+        SetVisible(!_isVisible);
+    }
+
+    [Button]
+    public void DisplayMystery0()
+    {
+        SetActiveMystery(0);
+    }
+
+    [Button]
+    public void DisplayMystery1()
+    {
+        SetActiveMystery(1);
+    }
+
+    [Button]
+    public void DisplayMystery2()
+    {
+        SetActiveMystery(2);
     }
 }

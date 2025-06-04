@@ -297,7 +297,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Exit()
             {
-                playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
+                //playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 
             public override void Execute()
@@ -316,18 +316,15 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                Debug.Log("Synthesis Mode State Enter");
+                playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
             public override void Exit()
             {
-                Debug.Log("Synthesis Mode State Exit");
+                //playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.EXIT);
-            }
+            public override void Execute() { }
         }
         #endregion
 

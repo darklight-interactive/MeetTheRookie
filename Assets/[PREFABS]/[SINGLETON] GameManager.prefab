@@ -308,6 +308,18 @@ MonoBehaviour:
     _key: 
     _valueAsString: 
     _valueAsStringList: []
+  _mystery0Clues:
+    _key: 
+    _valueAsString: 
+    _valueAsStringList: []
+  _mystery1Clues:
+    _key: 
+    _valueAsString: 
+    _valueAsStringList: []
+  _mystery2Clues:
+    _key: 
+    _valueAsString: 
+    _valueAsStringList: []
 --- !u!114 &3231504660078741222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,22 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
   _interactableRegistry:
-    _items:
-    - _id: 0
-      _key: scene3_1.window
-      _value: {fileID: 0}
-    - _id: 1
-      _key: scene3_1.door_main_room
-      _value: {fileID: 0}
-    - _id: 2
-      _key: scene3_1.strange_footsteps
-      _value: {fileID: 0}
-    - _id: 3
-      _key: scene3_1.fence
-      _value: {fileID: 0}
-    - _id: 4
-      _key: LUPE
-      _value: {fileID: 0}
+    _items: []
     _readOnlyKey: 1
     _readOnlyValue: 1
 --- !u!114 &7660991113585935654
@@ -530,7 +527,7 @@ GameObject:
   - component: {fileID: 497600930602257893}
   - component: {fileID: 3150071391316046395}
   m_Layer: 5
-  m_Name: StoryUIController
+  m_Name: GameUIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,7 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: 9b3a92b9a918eea40b11e9a8e06da64b, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 28f3dc5d2630baf4ab20c1a76f69ceb4, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 88a090da3c5184f30928f5dc6a3fb9ea, type: 3}
   m_SortingOrder: 0
 --- !u!114 &3150071391316046395
 MonoBehaviour:
@@ -642,10 +639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: b6ae11a3b89c76f49818ff6343792cd1, type: 2}
-  clueLibrary: {fileID: 11400000, guid: a3f42b5a64f1aa24bacc88d2196c2e28, type: 2}
-  itemsSelection:
-    _previousSelectionName: 
-    _currentSelectionName: 
+  _activeMysteryIndex: 0
 --- !u!1 &8011570990142218001
 GameObject:
   m_ObjectHideFlags: 0

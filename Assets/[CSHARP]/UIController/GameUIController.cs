@@ -4,7 +4,7 @@ using Darklight.UnityExt.UXML;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class StoryUIController : UXML_UIDocumentObject
+public class GameUIController : UXML_UIDocumentObject
 {
     const string QUEST_CONTAINER = "quest-container";
     const string QUEST_GROUP_BOX = "quest-group-box";

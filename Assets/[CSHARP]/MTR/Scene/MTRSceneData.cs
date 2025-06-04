@@ -87,6 +87,7 @@ public class MTRSceneData : BuildSceneScriptableData
     #endregion
 
     //  ---------------- [ METHODS ] -----------------------------
+    [Button]
     public override void Refresh()
     {
         base.Refresh();

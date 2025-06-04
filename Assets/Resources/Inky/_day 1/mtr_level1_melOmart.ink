@@ -64,7 +64,7 @@ Alright. Bye.
         TODO SFX Car closing door noise and leaving
         //~PlaySFX("carStartAndLeave") Doesn't play audio after scene changes!
         //fade to black, go to precinct day 1 
-     - IsQuestComplete(pay_for_gas):
+    - IsQuestComplete(pay_for_gas):
         That noise didn't sound good. I should probably see what's up.
     - else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -72,6 +72,7 @@ Alright. Bye.
         	- gas_pumps == 1:
         		"Out of order. Pay inside." Of course. Just my luck. 
                 ~ StartQuest(Level1_Quests.pay_for_gas)
+                ~ DiscoverMystery(0)
         		-> DONE
             - gas_pumps == 2: 
                 Let's get this over with. Sooner I pay, sooner I can get back on the road, sooner Thelton won't bite my head off. -> DONE

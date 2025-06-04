@@ -43,7 +43,7 @@ public partial class MTRClueContainer : VisualElement
     public MTRClueContainer()
     {
         this.style.flexGrow = 1;
-        this.style.position = Position.Absolute;
+        this.style.position = Position.Relative;
         this.style.alignSelf = Align.Stretch;
         this.style.flexDirection = FlexDirection.Column;
 
@@ -60,11 +60,10 @@ public partial class MTRClueContainer : VisualElement
             style =
             {
                 position = Position.Relative,
-                flexGrow = 1,
                 alignSelf = Align.Stretch,
                 justifyContent = Justify.Center,
+                alignItems = Align.Center,
                 backgroundColor = new Color(0, 0, 0, 0.5f),
-                height = 200,
                 width = Length.Percent(100),
             }
         };
@@ -151,5 +150,19 @@ public partial class MTRClueContainer : VisualElement
         }
         clueElement = null;
         return false;
+    }
+
+    /// <summary>
+    /// Returns true if all clues in the container are discovered.
+    /// </summary>
+    /// <returns>True if all clues are discovered, otherwise false.</returns>
+    public bool IsComplete()
+    {
+        foreach (var clue in _clues)
+        {
+            if (!clue.IsDiscovered)
+                return false;
+        }
+        return true;
     }
 }

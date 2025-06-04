@@ -1,11 +1,18 @@
+
+
+EXTERNAL DiscoverMystery(mystery_index)
+
+
 // ====== CLUE HANDLING == >>
+LIST MYSTERY_KNOWLEDGE = DEFAULT
+=== function DiscoverMystery(mystery_index)
+    ~ return
+
 LIST GLOBAL_KNOWLEDGE = DEFAULT
 === function DiscoverClue(clue)
     ~ GLOBAL_KNOWLEDGE += clue
 === function IsClueFound(clue)
     ~ return GLOBAL_KNOWLEDGE ? clue
-
-
 
 LIST Mystery0 = (evidence_broken_gas_pump), (evidence_broken_cash_reg), (evidence_cashreg_fix)
 

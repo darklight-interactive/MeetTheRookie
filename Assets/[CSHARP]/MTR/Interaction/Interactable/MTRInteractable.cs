@@ -281,7 +281,7 @@ public partial class MTRInteractable
         _isRegistered = false;
 
         //Debug.Log($"{PREFIX} {Name} :: Register", this);
-        this.gameObject.name = $"{Name}";
+        //this.gameObject.name = $"{Name}";
 
         // << REGISTER INTERACTABLE >> ------------------------------------
         InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
