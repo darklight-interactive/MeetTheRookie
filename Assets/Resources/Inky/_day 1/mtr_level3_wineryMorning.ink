@@ -29,6 +29,7 @@
     ~ SetSpeaker(Speaker.Lupe)
     Right... 
     ~ CompleteQuest(talk_to_misra_quest)
+    ~ DiscoverMystery(1)
     
     -> DONE
 

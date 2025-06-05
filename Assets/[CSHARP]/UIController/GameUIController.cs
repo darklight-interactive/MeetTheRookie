@@ -17,6 +17,20 @@ public class GameUIController : UXML_UIDocumentObject
     public void Awake()
     {
         Initialize(preset);
+        MTRSceneController.Instance.OnSceneStateChanged += HandleSceneStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        MTRSceneController.Instance.OnSceneStateChanged -= HandleSceneStateChanged;
+    }
+
+    void HandleSceneStateChanged(MTRSceneState state)
+    {
+        if (state == MTRSceneState.PLAY_MODE)
+            SetVisibility(true);
+        else
+            SetVisibility(false);
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)

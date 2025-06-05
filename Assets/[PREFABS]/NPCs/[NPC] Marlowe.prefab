@@ -646,10 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205dc2afc2535084da85b1e6b53b9386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isPreloaded: 1
-  _isRegistered: 0
-  _isInitialized: 0
-  _request: {fileID: 11400000, guid: bb7119d448fa6c34d8b49b3e90e977f8, type: 2}
+  _dataSO: {fileID: 11400000, guid: 7254b61205e01b44cb003373fd4fec68, type: 2}
+  _recieverRequest: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -665,15 +663,13 @@ MonoBehaviour:
     _readOnlyValue: 1
     _defaultToAllKeys: 0
   _data:
-    _name: interaction_default
     _scene: scene_default
     _key: MARLOWE
+    _name: interaction_default
     _layer: NPC
     _type: 1
     _sprite: {fileID: 17772899, guid: 2b2869026cf45f448bcc1e1e69037c73, type: 3}
   _currentState: 1
-  _sceneKnot: scene_default
-  _interactionStitch: scene_default.interaction_default
   autoSizeCollider: 1
   _speakerTag: 4
 --- !u!114 &4051804638718979080

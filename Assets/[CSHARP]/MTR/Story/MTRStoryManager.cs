@@ -12,7 +12,7 @@ public enum MTRSpeaker
     MARLOWE,
     BETH,
     MEL,
-    ROY_RODGERS,
+    ROY_RODGERSON,
     JENNY,
     CALVIN,
     JOSH,

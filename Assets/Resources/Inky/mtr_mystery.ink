@@ -1,7 +1,4 @@
-
-
 EXTERNAL DiscoverMystery(mystery_index)
-
 
 // ====== CLUE HANDLING == >>
 LIST MYSTERY_KNOWLEDGE = DEFAULT

@@ -57,12 +57,6 @@ public class MTRCharacterInteractable : MTRInteractable
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        //Recievers.SetRequiredKeys(Data.InteractionRequest.Keys);
-    }
-
     public void PlayAnimation(NPCState state)
     {
         GetComponent<NPC_Controller>().stateMachine.GoToState(NPCState.PLAY_ANIMATION);

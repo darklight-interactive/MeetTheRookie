@@ -44,8 +44,6 @@ Alright. Bye.
 // FUNC_SCENE_CHANGE
 // PLAYER_PROMPT -> highlight gas pump
 
-* [npc] -> marlowe
-* [lupe's car] -> car
 * [gas pump] -> gas_pump
 * [front door] -> enter_store
 
@@ -87,47 +85,6 @@ Alright. Bye.
 	    }
     }
 
-= car
-    {
-    - IsQuestComplete(look_at_tree):
-        ~ SetSpeaker(Speaker.Lupe)
-        "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
-        ~ ChangeGameScene("scene2_DS")
-                TODO SFX Car closing door noise and leaving
-                //~PlaySFX("carStartAndLeave")
-
-        -> DONE
-    - IsQuestComplete(pay_for_gas):
-        That noise didn't sound good. I should probably see what's up.
-    - else: 
-        ~ SetSpeaker(Speaker.Lupe)
-        Still gotta pay.
-        -> DONE
-    }
-
-
-= marlowe
-    {IsQuestComplete(pay_for_gas):
-        ~ SetSpeaker(Speaker.Marlowe)
-        Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
-        ~ SetSpeaker(Speaker.Lupe)
-        ...great. Any way I can get this fixed?
-        ~ SetSpeaker(Speaker.Marlowe)
-        Got a chainsaw on ya? 
-        Heheheheh. 
-        Ah, don't look so grumpy. 
-        If you put in a complaint with the local Police 
-        I'm sure you'll be out of here in no time.
-        ~ CompleteQuest(look_at_tree)
-        -> DONE
-    - else :
-        ~ SetSpeaker(Speaker.Marlowe)
-        You're stuck at the pump too, eh? 
-        Good luck getting that lazybones to help you. 
-        Heh. Youth these days, am I right?
-        -> DONE
-    }
-
 = enter_store
     ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
@@ -162,7 +119,7 @@ TODO SFX Door close
         // the employee whacks the side of the register.The Drawer pops open.
         //TODO ^^ SFX, cash register hit noise
         ~ PlaySpecialAnimation(Speaker.Beth)
-        ~PlaySFX("cashRegisterWhack")
+        ~ PlaySFX("cashRegisterWhack")
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $20.34.
         ~ SetSpeaker(Speaker.Lupe)
@@ -171,7 +128,8 @@ TODO SFX Door close
         Finally
         ~ CompleteQuest(pay_for_gas)
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
-        What was that? 
+        What was that?
+        ~ StartQuest(look_at_tree)
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Beth)
@@ -274,17 +232,46 @@ TODO SFX
     //TODO SFX Door open
     ~openDoor()
     ->DONE
+    
 // ------------- SCENE1.4 Tree Falls
 === scene1_4 ===
-
 // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
 ~ SetSpeaker(Speaker.Lupe)
+* [car] -> car
 * [fallen tree] -> fallen_tree
 
+= marlowe
+    -> fallen_tree
     
+= car
+    {
+    - IsQuestComplete(look_at_tree):
+        ~ SetSpeaker(Speaker.Lupe)
+        "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
+        ~ ChangeGameScene("scene2_DS")
+                TODO SFX Car closing door noise and leaving
+                //~PlaySFX("carStartAndLeave")
+        -> DONE
+    - IsQuestComplete(pay_for_gas):
+        That noise didn't sound good. I should probably see what's up.
+    - else: 
+        ~ SetSpeaker(Speaker.Lupe)
+        Still gotta pay.
+        -> DONE
+    }
+
 = fallen_tree 
     // Lupe sees a tree has fallen and blocked the way out of town.
-    -> scene1_1.marlowe
+    ~ SetSpeaker(Speaker.Marlowe)
+    Timber. Heh heh. Hope you didn't need to be anywhere anytime soon.
+    ~ SetSpeaker(Speaker.Lupe)
+    ...great. Any way I can get this fixed?
+    ~ SetSpeaker(Speaker.Marlowe)
+    Got a chainsaw on ya? 
+    Heheheheh. 
+    Ah, don't look so grumpy. 
+    If you put in a complaint with the local Police 
+    I'm sure you'll be out of here in no time.
+    ~ CompleteQuest(look_at_tree)
     -> DONE
-    //* What the hell... -> npc
   

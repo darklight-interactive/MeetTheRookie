@@ -281,7 +281,7 @@ public partial class MTRInteractable
         _isRegistered = false;
 
         //Debug.Log($"{PREFIX} {Name} :: Register", this);
-        //this.gameObject.name = $"{Name}";
+
 
         // << REGISTER INTERACTABLE >> ------------------------------------
         InteractionSystem.Registry.TryRegisterInteractable(this, out bool inRegistry);
@@ -296,6 +296,12 @@ public partial class MTRInteractable
         {
             Debug.LogError($"{PREFIX} {Name} :: Register Failed.", this);
         }
+    }
+
+    [Button]
+    public void RefreshName()
+    {
+        gameObject.name = $"{Name}";
     }
 
     [Button]
@@ -328,10 +334,11 @@ public partial class MTRInteractable
             StateMachine.Step();
     }
 
+    [Button]
     public override void Reset()
     {
-        //_isPreloaded = false;
-        //_isRegistered = false;
+        _isPreloaded = false;
+        _isRegistered = false;
         _isInitialized = false;
 
         if (StateMachine == null)
@@ -426,72 +433,4 @@ public partial class MTRInteractable
         COMPLETE,
         DISABLED
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(MTRInteractable), true)]
-    public class InteractableCustomEditor : Editor
-    {
-        SerializedObject _serializedObject;
-        MTRInteractable _script;
-
-        private void OnEnable()
-        {
-            _serializedObject = new SerializedObject(target);
-            _script = (MTRInteractable)target;
-
-            if (!Application.isPlaying)
-            {
-                _script.Preload();
-            }
-        }
-
-        /*
-        public override void OnInspectorGUI()
-        {
-            _serializedObject.Update();
-
-            EditorGUI.BeginChangeCheck();
-
-            // << BUTTONS >> ------------------------------------
-            if (!_script.IsPreloaded)
-            {
-                if (GUILayout.Button("Preload"))
-                {
-                    _script.Preload();
-                }
-            }
-            else if (!_script.IsRegistered)
-            {
-                if (GUILayout.Button("Register"))
-                {
-                    _script.Register();
-                }
-            }
-            else if (!_script.IsInitialized)
-            {
-                if (GUILayout.Button("Initialize"))
-                {
-                    _script.Initialize();
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("Reset"))
-                {
-                    _script.Reset();
-                }
-            }
-
-            // << DRAW DEFAULT INSPECTOR >> ------------------------------------
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _serializedObject.ApplyModifiedProperties();
-                _script.Preload();
-            }
-        }
-        */
-    }
-#endif
 }

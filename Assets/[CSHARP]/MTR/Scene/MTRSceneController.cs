@@ -44,10 +44,17 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
     public MTRCameraController CameraController => MTRGameManager.CameraController;
 
+    public delegate void SceneStateChangedEvent(MTRSceneState state);
+    public event SceneStateChangedEvent OnSceneStateChanged;
+
     public override void Initialize()
     {
         _stateMachine = new InternalStateMachine(this);
-        _stateMachine.OnStateChanged += OnSceneStateChanged;
+        _stateMachine.OnStateChanged += HandleSceneStateChanged;
+        _stateMachine.OnStateChanged += (MTRSceneState state) =>
+        {
+            OnSceneStateChanged?.Invoke(state);
+        };
         _stateMachine.GoToState(MTRSceneState.INITIALIZE);
     }
 
@@ -56,7 +63,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         _stateMachine.Step();
     }
 
-    void OnSceneStateChanged(MTRSceneState state)
+    void HandleSceneStateChanged(MTRSceneState state)
     {
         Debug.Log($"Scene State Changed: {state}");
         _currentSceneState = state;

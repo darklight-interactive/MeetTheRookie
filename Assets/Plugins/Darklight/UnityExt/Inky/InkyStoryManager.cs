@@ -410,13 +410,24 @@ namespace Darklight.UnityExt.Inky
         /// </returns>
         public static List<string> GetAllStitchesInKnot(string knot)
         {
-            Container container = GlobalStory.KnotContainerWithName(knot);
-            List<string> stitches = new List<string>();
-            foreach (string stitch in container.namedContent.Keys.ToList())
+            if (GlobalStory == null)
+                return new List<string>();
+
+            try
             {
-                stitches.Add($"{knot}.{stitch}");
+                Container container = GlobalStory.KnotContainerWithName(knot);
+                List<string> stitches = new List<string>();
+                foreach (string stitch in container.namedContent.Keys.ToList())
+                {
+                    stitches.Add($"{knot}.{stitch}");
+                }
+                return stitches;
             }
-            return stitches;
+            catch (Exception e)
+            {
+                Debug.LogError($"{Prefix} Knot: {knot} :: Error: {e.Message}");
+                return new List<string>();
+            }
         }
 
         static void RepopulateChoiceMap()

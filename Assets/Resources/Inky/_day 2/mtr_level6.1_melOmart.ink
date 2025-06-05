@@ -375,7 +375,7 @@ TODO DOOR CLOSE
 
 = fallen_tree 
     // Lupe sees a tree has fallen and blocked the way out of town.
-    -> scene1_1.marlowe
+    -> scene1_4.fallen_tree
     -> DONE
     //* What the hell... -> npc
 
