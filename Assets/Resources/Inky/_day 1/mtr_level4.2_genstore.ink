@@ -9,6 +9,7 @@
         ->DONE
 = intro
     -> Roy_Dialogue.roy_intro_cutscene
+    
 = pamphlet
     ~ DiscoverClue(merch_pamphlet)
     ~ SetSpeaker(Speaker.Lupe)
@@ -16,6 +17,12 @@
    -> DONE
 = roy
     -> Roy_Dialogue
+    
+= misra
+    ~ SetSpeaker(Speaker.Misra)
+    Sup?
+    -> DONE
+    
 = store_window
     -> Roy_Dialogue.window
     

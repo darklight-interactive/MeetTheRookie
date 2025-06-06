@@ -1,20 +1,16 @@
-using UnityEngine;
+using System.Collections.Generic;
 using Darklight.UnityExt.Behaviour.Interface;
 using Darklight.UnityExt.Editor;
+using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace Darklight.UnityExt.Core2D
 {
-
     public partial class Grid2D
     {
-
         /// <summary>
         /// The base MonoBehaviour class for all Grid2D components. <br/>
         /// <para>Grid2D components are used to extend the functionality of a Grid2D object.</para>
@@ -26,16 +22,25 @@ namespace Darklight.UnityExt.Core2D
             // ======== [[ FIELDS ]] ================================== >>>>
             Grid2D _baseGrid;
 
-            [SerializeField, ShowOnly] int _guid;
-            [SerializeField, ShowOnly] ComponentTypeKey _typeKey;
-            [SerializeField] bool _showGizmos;
+            [SerializeField, ShowOnly]
+            int _guid;
+
+            [SerializeField, ShowOnly]
+            ComponentTypeKey _typeKey;
+
+            [SerializeField, ShowOnly]
+            bool _isInitialized;
+
+            [SerializeField]
+            bool _showGizmos;
 
             // ======== [[ PROPERTIES ]] ================================== >>>>
             public Grid2D BaseGrid
             {
                 get
                 {
-                    if (_baseGrid == null) _baseGrid = GetComponent<Grid2D>();
+                    if (_baseGrid == null)
+                        _baseGrid = GetComponent<Grid2D>();
                     return _baseGrid;
                 }
                 private set => _baseGrid = value;
@@ -43,6 +48,7 @@ namespace Darklight.UnityExt.Core2D
 
             public int GUID => _guid;
             public ComponentTypeKey TypeKey => GetTypeKey();
+            public bool IsInitialized => _isInitialized;
             public bool ShowGizmos
             {
                 get
@@ -65,8 +71,11 @@ namespace Darklight.UnityExt.Core2D
 
             // -- (( UNITY METHODS )) -------- ))
             public void Awake() => OnInitialize(BaseGrid);
-            public void Update() => OnUpdate();
+
+            public void LateUpdate() => OnUpdate();
+
             public void OnDrawGizmos() => DrawGizmos();
+
             public void OnDrawGizmosSelected() => DrawSelectedGizmos();
 
             // -- (( INTERFACE METHODS )) -------- ))
@@ -78,33 +87,46 @@ namespace Darklight.UnityExt.Core2D
 
                 if (BaseGrid == null)
                 {
-                    Debug.LogError("Grid2D_Component: BaseGrid is null. Cannot initialize component.");
+                    Debug.LogError(
+                        "Grid2D_Component: BaseGrid is null. Cannot initialize component."
+                    );
+                    _isInitialized = false;
                     return;
                 }
                 BaseGrid.SendVisitorToAllCells(CellComponent_InitVisitor);
+                _isInitialized = true;
             }
+
             public virtual void OnUpdate()
             {
+                if (IsInitialized == false)
+                    return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_UpdateVisitor);
             }
+
             public virtual void DrawGizmos()
             {
-                if (ShowGizmos == false) return;
+                if (ShowGizmos == false || IsInitialized == false)
+                    return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_BaseGizmosVisitor);
             }
+
             public virtual void DrawSelectedGizmos()
             {
-                if (ShowGizmos == false) return;
+                if (ShowGizmos == false || IsInitialized == false)
+                    return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_SelectedGizmosVisitor);
             }
+
             public virtual void DrawEditorGizmos()
             {
+                if (ShowGizmos == false || IsInitialized == false)
+                    return;
                 BaseGrid.SendVisitorToAllCells(CellComponent_EditorGizmosVisitor);
             }
 
             // -- (( GETTERS )) -------- ))
             public virtual ComponentTypeKey GetTypeKey() => ComponentRegistry.GetTypeKey(this);
-
 
 #if UNITY_EDITOR
             [CustomEditor(typeof(Component), true)]
@@ -128,7 +150,8 @@ namespace Darklight.UnityExt.Core2D
 
                 public override void OnInspectorGUI()
                 {
-                    if (_serializedObject == null) return;
+                    if (_serializedObject == null)
+                        return;
                     _serializedObject.Update();
 
                     EditorGUI.BeginChangeCheck();
@@ -140,8 +163,7 @@ namespace Darklight.UnityExt.Core2D
                     {
                         _serializedObject.ApplyModifiedProperties();
                     }
-                    _script.Update();
-
+                    _script.LateUpdate();
                 }
 
                 private void OnSceneGUI()
@@ -155,15 +177,30 @@ namespace Darklight.UnityExt.Core2D
         public abstract class BaseComponent : Component
         {
             protected override Cell2D.ComponentVisitor CellComponent_InitVisitor =>
-                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseInitFunc);
+                Cell2D.VisitorFactory.CreateComponentVisitor(
+                    this,
+                    Cell2D.EventRegistry.BaseInitFunc
+                );
             protected override Cell2D.ComponentVisitor CellComponent_UpdateVisitor =>
-                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseUpdateFunc);
+                Cell2D.VisitorFactory.CreateComponentVisitor(
+                    this,
+                    Cell2D.EventRegistry.BaseUpdateFunc
+                );
             protected override Cell2D.ComponentVisitor CellComponent_BaseGizmosVisitor =>
-                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseGizmosFunc);
+                Cell2D.VisitorFactory.CreateComponentVisitor(
+                    this,
+                    Cell2D.EventRegistry.BaseGizmosFunc
+                );
             protected override Cell2D.ComponentVisitor CellComponent_SelectedGizmosVisitor =>
-                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseSelectedGizmosFunc);
+                Cell2D.VisitorFactory.CreateComponentVisitor(
+                    this,
+                    Cell2D.EventRegistry.BaseSelectedGizmosFunc
+                );
             protected override Cell2D.ComponentVisitor CellComponent_EditorGizmosVisitor =>
-                Cell2D.VisitorFactory.CreateComponentVisitor(this, Cell2D.EventRegistry.BaseEditorGizmosFunc);
+                Cell2D.VisitorFactory.CreateComponentVisitor(
+                    this,
+                    Cell2D.EventRegistry.BaseEditorGizmosFunc
+                );
         }
 
         public abstract class CompositeComponent<TComponentA, TComponentB> : BaseComponent
@@ -175,17 +212,22 @@ namespace Darklight.UnityExt.Core2D
 
             public override void OnInitialize(Grid2D baseObj)
             {
-                if (_componentA == null) _componentA = GetComponent<TComponentA>();
-                if (_componentA == null) _componentA = gameObject.AddComponent<TComponentA>();
+                if (_componentA == null)
+                    _componentA = GetComponent<TComponentA>();
+                if (_componentA == null)
+                    _componentA = gameObject.AddComponent<TComponentA>();
 
-                if (_componentB == null) _componentB = GetComponent<TComponentB>();
-                if (_componentB == null) _componentB = gameObject.AddComponent<TComponentB>();
+                if (_componentB == null)
+                    _componentB = GetComponent<TComponentB>();
+                if (_componentB == null)
+                    _componentB = gameObject.AddComponent<TComponentB>();
 
                 base.OnInitialize(baseObj);
             }
         }
 
-        public abstract class CompositeComponent<TComponentA, TComponentB, TComponentC> : CompositeComponent<TComponentA, TComponentB>
+        public abstract class CompositeComponent<TComponentA, TComponentB, TComponentC>
+            : CompositeComponent<TComponentA, TComponentB>
             where TComponentA : Component
             where TComponentB : Component
             where TComponentC : Component
@@ -194,8 +236,10 @@ namespace Darklight.UnityExt.Core2D
 
             public override void OnInitialize(Grid2D baseObj)
             {
-                if (_componentC == null) _componentC = GetComponent<TComponentC>();
-                if (_componentC == null) _componentC = gameObject.AddComponent<TComponentC>();
+                if (_componentC == null)
+                    _componentC = GetComponent<TComponentC>();
+                if (_componentC == null)
+                    _componentC = gameObject.AddComponent<TComponentC>();
 
                 base.OnInitialize(baseObj);
             }

@@ -1,15 +1,10 @@
+using System;
 using System.Collections.Generic;
-
 using Darklight.UnityExt.Behaviour.Interface;
 using Darklight.UnityExt.Editor;
-
-using UnityEngine;
-using System;
-using NaughtyAttributes;
 using Darklight.UnityExt.Utility;
-
-
-
+using NaughtyAttributes;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -29,19 +24,26 @@ namespace Darklight.UnityExt.Core2D
         ComponentRegistry _componentRegistry;
 
         [Header("States")]
-        [SerializeField, ShowOnly] bool _isLoaded = false;
-        [SerializeField, ShowOnly] bool _isInitialized = false;
+        [SerializeField, ShowOnly]
+        bool _isLoaded = false;
+
+        [SerializeField, ShowOnly]
+        bool _isInitialized = false;
 
         [Header("Gizmos")]
-        [SerializeField] bool _showGizmos;
+        [SerializeField]
+        bool _showGizmos;
 
         [Space(5), Header("Config")]
-        [SerializeField] Config _config;
-        [SerializeField, Expandable] Grid2D_ConfigDataObject _configObj;
+        [SerializeField]
+        Config _config;
+
+        [SerializeField, Expandable]
+        Grid2D_ConfigDataObject _configObj;
 
         [Space(5), Header("Cells")]
-        [SerializeField] List<Cell2D> _cellsInMap;
-
+        [SerializeField]
+        List<Cell2D> _cellsInMap;
 
         // ======== [[ PROPERTIES ]] ======================================================= >>>>
         protected ConsoleGUI GridConsole => _consoleGUI;
@@ -71,12 +73,13 @@ namespace Darklight.UnityExt.Core2D
         public HashSet<Cell2D> CellValues => new HashSet<Cell2D>(CellMap.Values);
 
         // -- (( VISITORS )) ------------------ >>
-        protected Cell2D.Visitor CellUpdateVisitor => new Cell2D.Visitor(cell =>
-        {
-            cell.RecalculateDataFromGrid(this);
-            cell.Update();
-            return true;
-        });
+        protected Cell2D.Visitor CellUpdateVisitor =>
+            new Cell2D.Visitor(cell =>
+            {
+                cell.RecalculateDataFromGrid(this);
+                cell.Update();
+                return true;
+            });
 
         // ======== [[ EVENTS ]] ======================================================= >>>>
         public delegate void GridEvent();
@@ -102,10 +105,12 @@ namespace Darklight.UnityExt.Core2D
         #region -- (( VISITOR PATTERN )) -------- )))
         public void SendVisitorToCell(Vector2Int key, IVisitor<Cell2D> visitor)
         {
-            if (CellMap == null) return;
+            if (CellMap == null)
+                return;
 
             // Skip if the key is not in the map
-            if (!CellMap.ContainsKey(key)) return;
+            if (!CellMap.ContainsKey(key))
+                return;
 
             // Apply the map function to the cell
             Cell2D cell = CellMap[key];
@@ -114,13 +119,15 @@ namespace Darklight.UnityExt.Core2D
 
         public void SendVisitorToAllCells(IVisitor<Cell2D> visitor)
         {
-            if (CellMap == null) return;
+            if (CellMap == null)
+                return;
 
             List<Vector2Int> keys = new List<Vector2Int>(CellMap.Keys);
             foreach (Vector2Int key in keys)
             {
                 // Skip if the key is not in the map
-                if (!CellMap.ContainsKey(key)) continue;
+                if (!CellMap.ContainsKey(key))
+                    continue;
 
                 // Apply the map function to the cell
                 Cell2D cell = CellMap[key];
@@ -198,10 +205,12 @@ namespace Darklight.UnityExt.Core2D
 
         public void SetCells(List<Cell2D> cells)
         {
-            if (cells == null || cells.Count == 0) return;
+            if (cells == null || cells.Count == 0)
+                return;
             foreach (Cell2D cell in cells)
             {
-                if (cell == null) continue;
+                if (cell == null)
+                    continue;
                 if (CellMap.ContainsKey(cell.Key))
                     CellMap[cell.Key] = cell;
                 else
@@ -249,7 +258,8 @@ namespace Darklight.UnityExt.Core2D
 
         void Initialize()
         {
-            if (!_isLoaded) Preload();
+            if (!_isLoaded)
+                Preload();
 
             // Generate a new grid from the config
             bool mapGenerated = GenerateCellMap();
@@ -258,7 +268,8 @@ namespace Darklight.UnityExt.Core2D
             _isInitialized = mapGenerated;
 
             // Return if the grid was not initialized
-            if (!_isInitialized) return;
+            if (!_isInitialized)
+                return;
 
             // Invoke the grid initialized event
             OnGridInitialized?.Invoke();
@@ -326,7 +337,8 @@ namespace Darklight.UnityExt.Core2D
         bool GenerateCellMap()
         {
             // Skip if already initialized
-            if (_isInitialized) return false;
+            if (_isInitialized)
+                return false;
 
             // Clear the map
             _cellMap.Clear();
@@ -342,19 +354,22 @@ namespace Darklight.UnityExt.Core2D
                 }
             }
 
-            if (_cellMap.Count == 0) return false;
+            if (_cellMap.Count == 0)
+                return false;
             return true;
         }
 
         void ResizeCellMap()
         {
-            if (!_isInitialized) return;
+            if (!_isInitialized)
+                return;
             Vector2Int newDimensions = Configuration.GridDimensions;
 
             // Check if the dimensions have changed
             int newGridArea = newDimensions.x * newDimensions.y;
             int oldGridArea = CellMap.Count;
-            if (newGridArea == oldGridArea) return;
+            if (newGridArea == oldGridArea)
+                return;
 
             // Remove cells that are out of bounds
             List<Vector2Int> keys = new List<Vector2Int>(CellMap.Keys);
@@ -380,7 +395,11 @@ namespace Darklight.UnityExt.Core2D
         Grid2D_ConfigDataObject CreateNewConfigDataObject()
         {
             string name = this.name;
-            _configObj = ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_ConfigDataObject>(Grid2D.DataObjectRegistry.CONFIG_PATH, name);
+            _configObj =
+                ScriptableObjectUtility.CreateOrLoadScriptableObject<Grid2D_ConfigDataObject>(
+                    Grid2D.DataObjectRegistry.CONFIG_PATH,
+                    name
+                );
             _configObj.name = name;
             return _configObj;
         }
@@ -389,9 +408,15 @@ namespace Darklight.UnityExt.Core2D
         // ======== [[ NESTED TYPES ]] ======================================================= >>>>
         public enum Alignment
         {
-            TopLeft, TopCenter, TopRight,
-            MiddleLeft, Center, MiddleRight,
-            BottomLeft, BottomCenter, BottomRight
+            TopLeft,
+            TopCenter,
+            TopRight,
+            MiddleLeft,
+            Center,
+            MiddleRight,
+            BottomLeft,
+            BottomCenter,
+            BottomRight
         }
 
 #if UNITY_EDITOR
@@ -421,7 +446,10 @@ namespace Darklight.UnityExt.Core2D
 
                 // < CUSTOM INSPECTOR > ------------------ >>
                 CustomInspectorGUI.DrawHorizontalLine(Color.gray, 4, 10);
-                if (GUILayout.Button("Initialize")) { _script.Initialize(); }
+                if (GUILayout.Button("Initialize"))
+                {
+                    _script.Initialize();
+                }
 
                 if (_script._configObj == null)
                 {
@@ -452,6 +480,4 @@ namespace Darklight.UnityExt.Core2D
         }
 #endif
     }
-
-
 }

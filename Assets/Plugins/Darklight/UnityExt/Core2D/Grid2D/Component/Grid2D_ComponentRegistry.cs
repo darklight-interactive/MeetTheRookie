@@ -26,12 +26,15 @@ namespace Darklight.UnityExt.Core2D
         public class ComponentRegistry
         {
             // ======== [[ STATIC FIELDS ]] ================================== >>>>
-            private static readonly Dictionary<ComponentTypeKey, Type> _typeMap = new Dictionary<ComponentTypeKey, Type>
+            private static readonly Dictionary<ComponentTypeKey, Type> _typeMap = new Dictionary<
+                ComponentTypeKey,
+                Type
+            >
             {
-                {ComponentTypeKey.BASE, typeof(Component)},
-                {ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent)},
-                {ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent)},
-                {ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent)},
+                { ComponentTypeKey.BASE, typeof(Component) },
+                { ComponentTypeKey.OVERLAP, typeof(Grid2D_OverlapComponent) },
+                { ComponentTypeKey.WEIGHT, typeof(Grid2D_WeightComponent) },
+                { ComponentTypeKey.SPAWNER, typeof(Grid2D_SpawnerComponent) },
             };
 
             private readonly Grid2D _grid;
@@ -60,11 +63,12 @@ namespace Darklight.UnityExt.Core2D
 
             private void UpdateComponents()
             {
-                _components.ForEach(component => component.Update());
+                _components.ForEach(component => component.LateUpdate());
             }
 
             // ---- (( STATIC METHODS )) -------- )))
-            public static ComponentTypeKey GetTypeKey<TComponent>() where TComponent : Component
+            public static ComponentTypeKey GetTypeKey<TComponent>()
+                where TComponent : Component
             {
                 Type type = typeof(TComponent);
                 ComponentTypeKey typeKey = ComponentTypeKey.BASE;
@@ -99,7 +103,6 @@ namespace Darklight.UnityExt.Core2D
                 }
                 return typeKey;
             }
-
         }
     }
 }

@@ -48,16 +48,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isLoaded: 1
   _isInitialized: 1
+  _showGizmos: 0
   _config:
     _lockPosToTransform: 1
-    _lockNormalToTransform: 1
+    _lockNormalToTransform: 0
     _gridAlignment: 4
     _gridLocalPosition: {x: 0, y: 0, z: 0}
     _gridNormal: {x: 0, y: 0, z: 1}
-    _gridDimensions: {x: 9, y: 1}
+    _gridDimensions: {x: 5, y: 1}
     _cellConfig:
       _cellDimensions: {x: 0.25, y: 1}
-      _cellSpacing: {x: 0, y: 1}
+      _cellSpacing: {x: 0.5, y: 1}
       _cellBonding: {x: 0, y: 0}
   _configObj: {fileID: 11400000, guid: 82b322b2b704b4c149429a826c8f2a6a, type: 2}
   _cellsInMap:
@@ -67,11 +68,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1672797140
+      _guid: 339932658
       _key: {x: 0, y: 0}
-      _coordinate: {x: -4, y: 0}
-      _position: {x: -1.61, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
+      _coordinate: {x: -2, y: 0}
+      _position: {x: -1.36, y: -0.01, z: 0}
+      _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.25, y: 1}
       _isDisabled: 0
   - _name: Cell2D (1,0)
@@ -80,11 +81,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 789114137
+      _guid: -1701577656
       _key: {x: 1, y: 0}
-      _coordinate: {x: -3, y: 0}
-      _position: {x: -1.36, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
+      _coordinate: {x: -1, y: 0}
+      _position: {x: -0.985, y: -0.01, z: 0}
+      _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.25, y: 1}
       _isDisabled: 0
   - _name: Cell2D (2,0)
@@ -93,11 +94,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1787485625
+      _guid: -827152145
       _key: {x: 2, y: 0}
-      _coordinate: {x: -2, y: 0}
-      _position: {x: -1.11, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
+      _coordinate: {x: 0, y: 0}
+      _position: {x: -0.61, y: -0.01, z: 0}
+      _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.25, y: 1}
       _isDisabled: 0
   - _name: Cell2D (3,0)
@@ -106,11 +107,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -262559905
+      _guid: 1442825025
       _key: {x: 3, y: 0}
-      _coordinate: {x: -1, y: 0}
-      _position: {x: -0.86, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
+      _coordinate: {x: 1, y: 0}
+      _position: {x: -0.23500001, y: -0.01, z: 0}
+      _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.25, y: 1}
       _isDisabled: 0
   - _name: Cell2D (4,0)
@@ -119,63 +120,11 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -426525535
+      _guid: 602234521
       _key: {x: 4, y: 0}
-      _coordinate: {x: 0, y: 0}
-      _position: {x: -0.61, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
-      _dimensions: {x: 0.25, y: 1}
-      _isDisabled: 0
-  - _name: Cell2D (5,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 372709045
-      _key: {x: 5, y: 0}
-      _coordinate: {x: 1, y: 0}
-      _position: {x: -0.36, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
-      _dimensions: {x: 0.25, y: 1}
-      _isDisabled: 0
-  - _name: Cell2D (6,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -1332711640
-      _key: {x: 6, y: 0}
       _coordinate: {x: 2, y: 0}
-      _position: {x: -0.110000014, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
-      _dimensions: {x: 0.25, y: 1}
-      _isDisabled: 0
-  - _name: Cell2D (7,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: 119058392
-      _key: {x: 7, y: 0}
-      _coordinate: {x: 3, y: 0}
       _position: {x: 0.13999999, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
-      _dimensions: {x: 0.25, y: 1}
-      _isDisabled: 0
-  - _name: Cell2D (8,0)
-    _config:
-      _cellDimensions: {x: 1, y: 1}
-      _cellSpacing: {x: 1, y: 1}
-      _cellBonding: {x: 0, y: 0}
-    _data:
-      _guid: -1352382169
-      _key: {x: 8, y: 0}
-      _coordinate: {x: 4, y: 0}
-      _position: {x: 0.39, y: -0.01, z: 0}
-      _normal: {x: 0, y: 0, z: 2}
+      _normal: {x: 0, y: 0, z: 1}
       _dimensions: {x: 0.25, y: 1}
       _isDisabled: 0
 --- !u!114 &7354803291614445865
@@ -190,12 +139,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -2006415573
+  _guid: 930957047
   _typeKey: 1
+  _showGizmos: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 384
-  _showGizmos: 0
 --- !u!114 &2147830255030003591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,3 +157,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50988825fe7d84648bcad0fd7ddc1d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellLibrary:
+    _items:
+    - _id: 0
+      _key: {x: 0, y: 0}
+      _value: 0
+    - _id: 1
+      _key: {x: 1, y: 0}
+      _value: 0
+    - _id: 2
+      _key: {x: 2, y: 0}
+      _value: 0
+    - _id: 3
+      _key: {x: 3, y: 0}
+      _value: 0
+    - _id: 4
+      _key: {x: 4, y: 0}
+      _value: 0
+    - _id: 5
+      _key: {x: 5, y: 0}
+      _value: 0
+    - _id: 6
+      _key: {x: 6, y: 0}
+      _value: 0
+    - _id: 7
+      _key: {x: 7, y: 0}
+      _value: 0
+    - _id: 8
+      _key: {x: 8, y: 0}
+      _value: 0
+    _readOnlyKey: 1
+    _readOnlyValue: 0
