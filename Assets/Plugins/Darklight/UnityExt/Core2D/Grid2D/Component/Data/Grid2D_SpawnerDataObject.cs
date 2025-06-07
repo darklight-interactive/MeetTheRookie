@@ -69,6 +69,15 @@ namespace Darklight.UnityExt.Core2D
             HashSet<Vector2Int> validKeys = new HashSet<Vector2Int>(grid.CellKeys);
             List<Vector2Int> keysToRemove = new List<Vector2Int>();
 
+            // If the grid is null
+            if (grid == null)
+                return;
+            if (
+                _serializedCellSpawnData.Count == validKeys.Count
+                && _serializedCellSpawnData.All(data => validKeys.Contains(data.CellKey))
+            )
+                return;
+
             // Dangerous debug - be wary this will print a lot of logs
             //Debug.Log($"{this.name} - Valid keys: {string.Join(", ", validKeys.ToList())}", this);
 

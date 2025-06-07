@@ -22,12 +22,21 @@ namespace Darklight.UnityExt.Core2D
     {
         public enum AnchorPoint
         {
-            TOP_LEFT, TOP_CENTER, TOP_RIGHT,
-            CENTER_LEFT, CENTER, CENTER_RIGHT,
-            BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
+            TOP_LEFT,
+            TOP_CENTER,
+            TOP_RIGHT,
+            CENTER_LEFT,
+            CENTER,
+            CENTER_RIGHT,
+            BOTTOM_LEFT,
+            BOTTOM_CENTER,
+            BOTTOM_RIGHT
         }
 
-        public static readonly Dictionary<AnchorPoint, Vector2> anchorPointOffsets = new Dictionary<AnchorPoint, Vector2>
+        public static readonly Dictionary<AnchorPoint, Vector2> anchorPointOffsets = new Dictionary<
+            AnchorPoint,
+            Vector2
+        >
         {
             { AnchorPoint.TOP_LEFT, new Vector2(-0.5f, 0.5f) },
             { AnchorPoint.TOP_CENTER, new Vector2(0, 0.5f) },
@@ -62,7 +71,11 @@ namespace Darklight.UnityExt.Core2D
         /// </param>
         /// <param name="anchorTag"></param>
         /// <returns></returns>
-        static Vector3 CalculateAnchorPointPosition(Vector3 center, Vector2 dimensions, AnchorPoint anchorTag)
+        static Vector3 CalculateAnchorPointPosition(
+            Vector3 center,
+            Vector2 dimensions,
+            AnchorPoint anchorTag
+        )
         {
             return center + CalculateAnchorPointOffset(dimensions, anchorTag);
         }
@@ -77,11 +90,14 @@ namespace Darklight.UnityExt.Core2D
             return CalculateAnchorPointOffset(dimensions, anchorTag);
         }
 
-        public static Vector3 GetAnchorPointPosition(Vector3 center, Vector2 dimensions, AnchorPoint anchorTag)
+        public static Vector3 GetAnchorPointPosition(
+            Vector3 center,
+            Vector2 dimensions,
+            AnchorPoint anchorTag
+        )
         {
             return CalculateAnchorPointPosition(center, dimensions, anchorTag);
         }
-
 
         // ---- (( SETTERS )) ---- >>
         public static void SetTransformToDefaultValues(Transform transform)
@@ -91,14 +107,24 @@ namespace Darklight.UnityExt.Core2D
             transform.rotation = Quaternion.identity;
         }
 
-        public static void SetTransformValues(Transform transform, Vector3 position, Vector2 dimensions, Vector3 normal)
+        public static void SetTransformValues(
+            Transform transform,
+            Vector3 position,
+            Vector2 dimensions,
+            Vector3 normal
+        )
         {
             transform.position = position;
             SetTransformScale_ToDimensions(transform, dimensions);
             SetTransformRotation_ToNormal(transform, normal);
         }
 
-        public static void SetTransformPos_ToAnchor(Transform transform, Vector3 position, Vector2 dimensions, AnchorPoint anchorTag)
+        public static void SetTransformPos_ToAnchor(
+            Transform transform,
+            Vector3 position,
+            Vector2 dimensions,
+            AnchorPoint anchorTag
+        )
         {
             Vector3 positionOffset = CalculateAnchorPointOffset(dimensions, anchorTag);
             transform.position = position - positionOffset;
@@ -116,6 +142,9 @@ namespace Darklight.UnityExt.Core2D
 
         public static void SetTransformRotation_ToNormal(Transform transform, Vector3 normal)
         {
+            if (normal == Vector3.zero)
+                normal = Vector3.forward;
+
             transform.localRotation = Quaternion.LookRotation(normal, Vector3.up);
         }
     }

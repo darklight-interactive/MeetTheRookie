@@ -1,15 +1,19 @@
 using UnityEngine;
+
 namespace Darklight.UnityExt.Core2D
 {
-
     public partial class Grid2D
     {
         public static class SpatialUtility
         {
             public static void CalculateCellTransform(
-            out Vector3 position, out Vector2Int coordinate,
-                out Vector3 normal, out Vector2 dimensions,
-            Cell2D cell, Config config)
+                out Vector3 position,
+                out Vector2Int coordinate,
+                out Vector3 normal,
+                out Vector2 dimensions,
+                Cell2D cell,
+                Config config
+            )
             {
                 position = CalculatePositionFromKey(cell.Key, config);
                 coordinate = CalculateCoordinateFromKey(cell.Key, config);
@@ -45,11 +49,22 @@ namespace Darklight.UnityExt.Core2D
                 cellPosition *= spacingOffsetPos; // << Multiply the spacing offset
                 cellPosition += bondingOffset; // << Add the bonding offset
 
+                // Ensure the grid normal is not zero
+                Vector3 gridNormal = config.GetGridNormal();
+                if (gridNormal == Vector3.zero)
+                {
+                    gridNormal = Vector3.forward; // Default to forward if normal is zero
+                    //Debug.LogWarning("Grid normal was zero, defaulting to Vector3.forward");
+                }
+
                 // Create a rotation matrix based on the grid's normal
-                Quaternion rotation = Quaternion.LookRotation(config.GridNormal, Vector3.forward);
+                Quaternion rotation = Quaternion.LookRotation(gridNormal, Vector3.forward);
 
                 // Apply the rotation to the grid offset and return the final world position
-                return config.GetGridWorldPosition() + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
+                return config.GetGridWorldPosition()
+                    + (rotation * new Vector3(cellPosition.x, cellPosition.y, 0));
+
+                // << RETURN >>
             }
 
             static Vector2Int CalculateCoordinateFromKey(Vector2Int key, Grid2D.Config config)
@@ -79,15 +94,15 @@ namespace Darklight.UnityExt.Core2D
                         break;
                     case Grid2D.Alignment.Center:
                         originKey = new Vector2Int(
-                        Mathf.FloorToInt(gridDimensions.x / 2),
+                            Mathf.FloorToInt(gridDimensions.x / 2),
                             Mathf.FloorToInt(gridDimensions.y / 2)
-                            );
+                        );
                         break;
                     case Grid2D.Alignment.MiddleRight:
                         originKey = new Vector2Int(
                             Mathf.FloorToInt(gridDimensions.x),
                             Mathf.FloorToInt(gridDimensions.y / 2)
-                            );
+                        );
                         break;
                     case Grid2D.Alignment.TopLeft:
                         originKey = new Vector2Int(0, Mathf.FloorToInt(gridDimensions.y));
@@ -96,13 +111,13 @@ namespace Darklight.UnityExt.Core2D
                         originKey = new Vector2Int(
                             Mathf.FloorToInt(gridDimensions.x / 2),
                             Mathf.FloorToInt(gridDimensions.y)
-                            );
+                        );
                         break;
                     case Grid2D.Alignment.TopRight:
                         originKey = new Vector2Int(
                             Mathf.FloorToInt(gridDimensions.x),
                             Mathf.FloorToInt(gridDimensions.y)
-                            );
+                        );
                         break;
                 }
 

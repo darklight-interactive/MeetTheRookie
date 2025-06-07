@@ -1,5 +1,6 @@
 
 === function mainStreetCheck() ===
+    ~ SetSpeaker(Speaker.Lupe)
     {
     - IsQuestComplete(complete_arcade) && IsClueFound(roys_suspicion):
         ~ ChangeGameScene("scene4_1_DUSK")
@@ -83,6 +84,7 @@
     ~ SetSpeaker(Speaker.Jenny)
         Bye loooosersss.
     ~ mainStreetCheck()
+    
     -> DONE
     
     

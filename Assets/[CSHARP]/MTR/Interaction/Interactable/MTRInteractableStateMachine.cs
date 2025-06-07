@@ -327,7 +327,7 @@ public partial class MTRInteractable
                     out MTRDialogueReciever endDialogueReciever
                 );
 
-                if (endDialogueReciever.IsInDialogue)
+                if (endDialogueReciever != null && endDialogueReciever.IsInDialogue)
                 {
                     //endDialogueReciever.ForceComplete();
                     Debug.Log(
