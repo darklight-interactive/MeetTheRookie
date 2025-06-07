@@ -80,6 +80,7 @@ public class MTRSceneData : BuildSceneScriptableData
     }
 
     public string SceneKnot => _sceneKnot;
+    public bool ForceInteractionOnEnter => _forceInteractionOnEnter;
     public string OnEnterStitch => _onEnterInteractionStitch;
     public MTRSceneBounds SceneBounds => _sceneBounds;
     public MTRCameraController.SettingType OnStartCameraSetting => _onStartCameraSetting;

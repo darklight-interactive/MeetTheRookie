@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
@@ -99,6 +100,13 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             return settings;
         }
 
+        /// <summary>
+        /// Create or load an interaction request from Resources
+        /// </summary>
+        /// <param name="typeString">The type of interactable to create the request for. Also used to find the name of the request in the file system</param>
+        /// <param name="request">The interaction request data object</param>
+        /// <param name="keys">The keys to add to the request</param>
+        /// <returns>The interaction request data object</returns>
         public static InteractionRequestDataObject CreateOrLoadInteractionRequest(
             string typeString,
             out InteractionRequestDataObject request,
@@ -122,39 +130,51 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             out GameObject gameObject
         )
         {
-            GameObject prefab = interactable.Request.TryGetValue(key, out GameObject recieverPrefab)
-                ? recieverPrefab
-                : null;
-
-            GameObject recieverGameObject = Instantiate(prefab, interactable.transform);
-            if (recieverGameObject == null)
+            try
             {
-                Debug.LogError(
-                    $"CreateInteractionHandler failed for key {key}. GameObject is null.",
-                    interactable
-                );
+                GameObject prefab = interactable.Request.TryGetValue(
+                    key,
+                    out GameObject recieverPrefab
+                )
+                    ? recieverPrefab
+                    : null;
+
+                GameObject recieverGameObject = Instantiate(prefab, interactable.transform);
+                if (recieverGameObject == null)
+                {
+                    Debug.LogError(
+                        $"CreateInteractionHandler failed for key {key}. GameObject is null.",
+                        interactable
+                    );
+                    gameObject = null;
+                }
+                else
+                {
+                    recieverGameObject.transform.localPosition = Vector3.zero;
+                    recieverGameObject.transform.localRotation = Quaternion.identity;
+                    recieverGameObject.transform.localScale = Vector3.one;
+                }
+
+                InteractionReciever reciever =
+                    recieverGameObject.GetComponent<InteractionReciever>();
+                if (reciever == null)
+                {
+                    Debug.LogError(
+                        $"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.",
+                        interactable
+                    );
+                    ObjectUtility.DestroyAlways(recieverGameObject);
+                    gameObject = null;
+                }
+
+                interactable.Recievers[key] = reciever;
+                gameObject = recieverGameObject;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e, interactable);
                 gameObject = null;
             }
-            else
-            {
-                recieverGameObject.transform.localPosition = Vector3.zero;
-                recieverGameObject.transform.localRotation = Quaternion.identity;
-                recieverGameObject.transform.localScale = Vector3.one;
-            }
-
-            InteractionReciever reciever = recieverGameObject.GetComponent<InteractionReciever>();
-            if (reciever == null)
-            {
-                Debug.LogError(
-                    $"CreateInteractionHandler failed for key {key}. GameObject does not contain InteractionHandler.",
-                    interactable
-                );
-                ObjectUtility.DestroyAlways(recieverGameObject);
-                gameObject = null;
-            }
-
-            interactable.Recievers[key] = reciever;
-            gameObject = recieverGameObject;
         }
 
         public static void GenerateInteractableRecievers(Interactable interactable)

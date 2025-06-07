@@ -235,16 +235,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 transitionController?.StartWipeOpen();
                 yield return new WaitForSeconds(0.5f);
 
-                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                MTRInteractionSystem.TryGetInteractableByStitch(
-                    activeSceneData.OnEnterStitch,
-                    out MTRInteractable interactable
-                );
-                if (interactable != null)
-                {
-                    MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
-                }
-
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }
@@ -258,6 +248,28 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
+                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
+                if (activeSceneData.ForceInteractionOnEnter)
+                {
+                    Debug.Log(
+                        $"{PREFIX} {activeSceneData.name} :: Force Interaction On Enter {activeSceneData.OnEnterStitch}"
+                    );
+                    MTRInteractionSystem.TryGetInteractableByStitch(
+                        activeSceneData.OnEnterStitch,
+                        out MTRInteractable interactable
+                    );
+                    if (interactable != null)
+                    {
+                        MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                    }
+                    else
+                    {
+                        Debug.LogError(
+                            $"{PREFIX} {activeSceneData.name} :: No Interactable Found for {activeSceneData.OnEnterStitch}"
+                        );
+                    }
+                }
+
                 if (playerStateMachine.CurrentState == MTRPlayerState.OVERRIDE_IDLE)
                     playerStateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }

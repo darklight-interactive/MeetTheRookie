@@ -1,14 +1,14 @@
+using System;
 using System.Collections.Generic;
 using Darklight.UnityExt.Core2D;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
 using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
-using UnityEngine;
-using NaughtyAttributes;
 using Darklight.UnityExt.UXML;
 using Ink.Runtime;
-using System;
-using Darklight.UnityExt.Inky;
-
+using NaughtyAttributes;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,13 +18,33 @@ public class MTRChoiceReciever : InteractionReciever
 {
     Grid2D_OverlapWeightSpawner _grid;
 
+    /// <summary>
+    /// The currently selected bubble
+    /// </summary>
+    [SerializeField, ReadOnly]
     TextBubbleObject _selectedBubble;
-    Queue<TextBubbleObject> _choiceSelectionQueue = new Queue<TextBubbleObject>();
-    Dictionary<TextBubbleObject, Choice> _bubbleChoiceMap = new Dictionary<TextBubbleObject, Choice>();
 
+    [SerializeField, ShowOnly]
+    int _selectedIndex;
+
+    /// <summary>
+    /// The queue of bubbles that are available to be selected
+    /// </summary>
+    [SerializeField, ReadOnly]
+    List<TextBubbleObject> _choiceObjects = new List<TextBubbleObject>();
+    Dictionary<TextBubbleObject, Choice> _bubbleChoiceMap =
+        new Dictionary<TextBubbleObject, Choice>();
+
+    /// <summary>
+    /// The library of bubbleObjects that are attached to the grid
+    /// </summary>
     public Library<Vector2Int, TextBubbleObject> _attachedBubbles;
-    [SerializeField, Expandable] UXML_UIDocumentPreset _choiceBubblePreset;
-    [SerializeField, Expandable] ChoiceBubbleLibrary _choiceBubbleLibrary;
+
+    [SerializeField, Expandable]
+    UXML_UIDocumentPreset _choiceBubblePreset;
+
+    [SerializeField, Expandable]
+    ChoiceBubbleLibrary _choiceBubbleLibrary;
 
     public override InteractionType InteractionType => InteractionType.CHOICE;
     public Grid2D_OverlapWeightSpawner Grid
@@ -39,17 +59,19 @@ public class MTRChoiceReciever : InteractionReciever
         }
     }
     public bool ChoiceSelected => _selectedBubble != null;
-
     Material _material => MTRGameManager.PrefabLibrary.uxmlRenderTextureMaterial;
     RenderTexture _renderTexture => MTRGameManager.PrefabLibrary.uxmlRenderTexture;
 
     public void Awake()
     {
+        // << SETUP BUBBLE LIBRARY >>
         if (_choiceBubbleLibrary == null)
         {
-            _choiceBubbleLibrary = MTRAssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
+            _choiceBubbleLibrary =
+                MTRAssetManager.CreateOrLoadScriptableObject<ChoiceBubbleLibrary>();
         }
 
+        // << SETUP ATTACHED BUBBLES >>
         if (_attachedBubbles == null)
         {
             _attachedBubbles = new Library<Vector2Int, TextBubbleObject>
@@ -61,17 +83,13 @@ public class MTRChoiceReciever : InteractionReciever
             _attachedBubbles.SetRequiredKeys(Grid.GetCellKeys().ToArray());
         }
 
+        // << SETUP INPUT LISTENERS >>
+        MTRInputManager.OnMoveInputStarted += (direction) => RotateSelection(direction.y > 0);
     }
 
-    public void Update()
+    public void OnDestroy()
     {
-        if (_choiceSelectionQueue.Count > 0)
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                RotateSelection();
-            }
-        }
+        MTRInputManager.OnMoveInputStarted -= (direction) => RotateSelection(direction.y > 0);
     }
 
     public TextBubbleObject CreateBubbleAtNextAvailableCell(string fullText)
@@ -106,7 +124,13 @@ public class MTRChoiceReciever : InteractionReciever
         Cell2D.SpawnerComponent spawnerComponent = cell.GetComponent<Cell2D.SpawnerComponent>();
         if (spawnerComponent != null)
         {
-            TextBubbleObject choiceBubbleObject = UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(_choiceBubblePreset, _material, _renderTexture, true);
+            TextBubbleObject choiceBubbleObject =
+                UXML_Utility.CreateUXMLRenderTextureObject<TextBubbleObject>(
+                    _choiceBubblePreset,
+                    _material,
+                    _renderTexture,
+                    true
+                );
 
             _attachedBubbles[cell.Key] = choiceBubbleObject;
 
@@ -130,7 +154,9 @@ public class MTRChoiceReciever : InteractionReciever
 
     void DestroyAllBubbles()
     {
-        List<UXML_RenderTextureObject> bubbles = new List<UXML_RenderTextureObject>(_attachedBubbles.Values);
+        List<UXML_RenderTextureObject> bubbles = new List<UXML_RenderTextureObject>(
+            _attachedBubbles.Values
+        );
         for (int i = 0; i < bubbles.Count; i++)
         {
             if (bubbles[i] != null && bubbles[i].gameObject != null)
@@ -139,38 +165,59 @@ public class MTRChoiceReciever : InteractionReciever
         _attachedBubbles.Reset();
     }
 
-
     public void LoadChoices(List<Choice> choices)
     {
+        // << CREATE BUBBLES >>
         for (int i = 0; i < choices.Count; i++)
         {
-            TextBubbleObject textBubble = CreateBubbleAtNextAvailableCell(choices[i].text);
-            _choiceSelectionQueue.Enqueue(textBubble);
+            // Instantiate the bubble at the next available cell
+            TextBubbleObject choiceBubble = CreateBubbleAtNextAvailableCell(choices[i].text);
+            _choiceObjects.Add(choiceBubble);
 
             // Map the text bubble to the choice
-            _bubbleChoiceMap[textBubble] = choices[i];
+            _bubbleChoiceMap[choiceBubble] = choices[i];
         }
 
-        if (_choiceSelectionQueue.Count > 0)
+        // << SELECT THE FIRST BUBBLE >>
+        if (_choiceObjects.Count > 0)
         {
-            TextBubbleObject firstChoice = _choiceSelectionQueue.Dequeue();
+            TextBubbleObject firstChoice = _choiceObjects[0];
             firstChoice.Select();
             _selectedBubble = firstChoice;
         }
     }
 
-    public void RotateSelection()
+    /// <summary>
+    /// Rotates the selection of choice bubbles either up or down in the queue
+    /// </summary>
+    /// <param name="rotateUp">If true, rotates selection upward (default). If false, rotates downward.</param>
+    public void RotateSelection(bool rotateUp = true)
     {
-        if (_selectedBubble != null)
+        if (_selectedBubble == null || _choiceObjects.Count == 0)
+            return;
+
+        // Deselect the current bubble
+        _selectedBubble.Deselect();
+        if (rotateUp)
         {
-            // Deselect the old bubble and enqueue it
-            _selectedBubble.Deselect();
-            _choiceSelectionQueue.Enqueue(_selectedBubble);
+            // Standard upward rotation
+            _selectedIndex++;
+            // If the selected index is greater than the number of choices, wrap around to the first index
+            if (_selectedIndex >= _choiceObjects.Count)
+                _selectedIndex = 0;
+            _selectedBubble = _choiceObjects[_selectedIndex];
+        }
+        else
+        {
+            // Downward rotation
+            _selectedIndex--;
+            // If the selected index is less than 0, wrap around to the last index
+            if (_selectedIndex < 0)
+                _selectedIndex = _choiceObjects.Count - 1;
+            _selectedBubble = _choiceObjects[_selectedIndex];
         }
 
-
-        // Select the next bubble in the queue
-        _selectedBubble = _choiceSelectionQueue.Dequeue();
+        // Select the new bubble
         _selectedBubble.Select();
     }
 
@@ -182,7 +229,7 @@ public class MTRChoiceReciever : InteractionReciever
 
         _bubbleChoiceMap.Clear();
         _selectedBubble = null;
-        _choiceSelectionQueue.Clear();
+        _choiceObjects.Clear();
         DestroyAllBubbles();
     }
 
@@ -218,13 +265,13 @@ public class MTRChoiceReciever : InteractionReciever
     {
         SerializedObject _serializedObject;
         MTRChoiceReciever _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
             _script = (MTRChoiceReciever)target;
             _script.Awake();
         }
-
 
         public override void OnInspectorGUI()
         {
@@ -233,7 +280,6 @@ public class MTRChoiceReciever : InteractionReciever
             EditorGUI.BeginChangeCheck();
 
             base.OnInspectorGUI();
-
 
             if (GUILayout.Button("Create Bubble At Next Available Cell"))
             {
@@ -244,7 +290,6 @@ public class MTRChoiceReciever : InteractionReciever
                     "This is a medium length test choice that should wrap around the bubble.",
                     "This is a suuuuuper long test choice. Like unnecessarily long - like your momma long.",
                 };
-
 
                 string randChoice = testChoices[UnityEngine.Random.Range(0, testChoices.Count)];
                 _script.CreateBubbleAtNextAvailableCell(randChoice);
@@ -268,5 +313,3 @@ public class MTRChoiceReciever : InteractionReciever
     }
 #endif
 }
-
-

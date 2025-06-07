@@ -206,12 +206,17 @@ public partial class MTRInteractable
 
         if (Request == null)
         {
+            /*
             InteractionSystem.Factory.CreateOrLoadInteractionRequest(
                 TypeKey.ToString(),
                 out InteractionRequestDataObject newRequest,
                 new List<InteractionType> { InteractionType.TARGET, InteractionType.DESTINATION }
             );
             Request = newRequest;
+            */
+
+            Debug.LogError($"{PREFIX} {Name} :: No Interaction Request Found", this);
+            return;
         }
 
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
