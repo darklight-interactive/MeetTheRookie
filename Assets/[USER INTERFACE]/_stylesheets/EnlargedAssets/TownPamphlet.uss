@@ -1,33 +1,18 @@
-VisualElement.Pamphlet {
-    flex-grow: 0;
-    background-image: url("project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/readable_page4.png?fileID=-9221409168140752355&guid=939720acfad71dd45868f177cb1607fe&type=3#readable_page4_0");
-    width: 384px;
-    height: 768px;
-    top: 165px;
-    left: 785px;
-    position: absolute;
-}
-
-VisualElement.Pamphlet.Unselected {
-    flex-grow: 0;
-    background-image: url("project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/readable_page4.png?fileID=-9221409168140752355&guid=939720acfad71dd45868f177cb1607fe&type=3#readable_page4_0");
-    width: 384px;
-    height: 768px;
-    top: 165px;
-    left: 785px;
-    position: absolute;
-    visibility: hidden;
-}
-
 Label.TextBox {
-    top: 242px;
-    width: 256px;
-    position: absolute;
-    left: 62px;
     color: rgb(132, 73, 49);
     -unity-font-definition: resource('Fonts/cour');
     white-space: normal;
-    font-size: 18px;
+    font-size: 100%;
     -unity-font-style: bold;
-    height: 450px;
+    height: 100%;
+    top: 35%;
+    max-width: 35%;
+}
+
+.pamphlet {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/readable_page1.png?fileID=8188620987103541275&guid=681cd15e3ce7e764789487abbeb4108f&type=3#pg1_0");
+    display: flex;
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+    align-items: center;
 }

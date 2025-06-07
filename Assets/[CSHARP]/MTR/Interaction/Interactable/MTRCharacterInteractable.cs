@@ -48,12 +48,19 @@ public class MTRCharacterInteractable : MTRInteractable
 
     protected override void GenerateRecievers()
     {
+        if (Request == null)
+        {
+            Debug.LogError($"{PREFIX} {Name} :: No Request Found", this);
+            return;
+        }
+        /*
         InteractionSystem.Factory.CreateOrLoadInteractionRequest(
             TypeKey.ToString(),
             out InteractionRequestDataObject interactionRequest,
             new List<InteractionType> { InteractionType.TARGET, InteractionType.DIALOGUE }
         );
         Request = interactionRequest;
+        */
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
 

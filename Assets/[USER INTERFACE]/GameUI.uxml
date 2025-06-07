@@ -1,21 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="TownPamphlet" src="project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/TownPamphlet.uxml?fileID=9197481963319205126&amp;guid=7d90d53c5b8790a44aaffedc1d1e61f6&amp;type=3#TownPamphlet" />
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
+    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/EnlargedAssets/TownPamphlet.uss?fileID=7433441132597879392&amp;guid=65abe930aec334bfdb1aade811d94ad3&amp;type=3#TownPamphlet" />
     <engine:VisualElement name="header">
         <engine:VisualElement name="container" />
     </engine:VisualElement>
     <engine:VisualElement name="body" style="align-self: stretch; align-items: center;">
-        <engine:VisualElement name="MenuPanel" class="panel" style="flex-grow: 1; flex-basis: 50%;">
-            <engine:Label text="Menu" name="h3" />
-        </engine:VisualElement>
-        <engine:VisualElement name="CenterGap" style="flex-grow: 1; flex-basis: 25%;" />
-        <engine:VisualElement name="ChoicePanel" class="panel" style="flex-grow: 1; flex-basis: 50%;">
-            <engine:Label text="Choices" name="h3" />
-            <engine:GroupBox name="ChoiceBox" class="ChoiceGroup" style="flex-direction: column; align-items: auto; padding-top: 5%; padding-right: 5%; padding-bottom: 5%; padding-left: 5%;">
-                <Darklight.UnityExt.UXML.SelectableButton />
-                <Darklight.UnityExt.UXML.SelectableButton />
-                <Darklight.UnityExt.UXML.SelectableButton />
-            </engine:GroupBox>
-        </engine:VisualElement>
+        <engine:Instance template="TownPamphlet" name="gen-store-pamphlet" style="flex-grow: 1; display: flex;" />
     </engine:VisualElement>
     <engine:VisualElement name="footer" style="flex-grow: 1;">
         <engine:VisualElement name="input-ui-container" style="flex-grow: 1; align-self: stretch; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; display: flex; flex-direction: row; justify-content: center;">

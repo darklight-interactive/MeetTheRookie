@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Darklight.UnityExt.UXML;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,12 +12,18 @@ public class GameUIController : UXML_UIDocumentObject
 
     MTRStoryManager _storyManager;
 
-    GroupBox _questGroupBox;
-    List<Label> _questLabels = new List<Label>();
+    bool _displayGenStorePamphlet;
+    public List<VisualElement> Pages = new List<VisualElement>();
+    public VisualElement currentselected;
+    public int page;
+    protected VisualElement _genStorePamphletElement =>
+        ElementQuery<VisualElement>("gen-store-pamphlet");
 
     public void Awake()
     {
         Initialize(preset);
+        DisplayGenStorePamphlet(false);
+
         MTRSceneController.Instance.OnSceneStateChanged += HandleSceneStateChanged;
     }
 
@@ -38,75 +45,63 @@ public class GameUIController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         _storyManager = MTRStoryManager.Instance;
-        //MTRStoryManager.OnActiveQuestListUpdate += UpdateQuests;
-
-        _questGroupBox = ElementQuery<GroupBox>(QUEST_GROUP_BOX);
-        //SetDefaultQuests();
+        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
     }
 
-    void SetDefaultQuests()
+    // Start is called before the first frame update
+    void Start() { }
+
+    public void DisplayGenStorePamphlet(bool display)
     {
-        ClearQuests();
-        AddNewQuestLabelToGroupBox("Quest A");
-        AddNewQuestLabelToGroupBox("Quest B");
-        AddNewQuestLabelToGroupBox("Quest C");
+        _displayGenStorePamphlet = display;
+        _genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+
+        // Audio
+        MTR_AudioManager.Instance.PlayOneShotSFX(
+            MTR_AudioManager.Instance.generalSFX.paperInteract
+        );
+
+        if (!display)
+            return;
+
+        // << SETUP PAGES >>
+        foreach (VisualElement page in _genStorePamphletElement.Children())
+        {
+            Pages.Add(page);
+            page.AddToClassList("Unselected");
+        }
+        currentselected = Pages[page];
+        currentselected.RemoveFromClassList("Unselected");
     }
 
-    void UpdateQuests(List<string> questNames)
+    private void OnMoveInputStartAction(Vector2 moveInput)
     {
-        //ClearQuests();
-        AddQuestLabelsToGroupBox(questNames);
+        Vector2 direction = new Vector2(moveInput.x, moveInput.y);
+        if (direction.x > 0)
+        {
+            if (page < 3)
+            {
+                currentselected.AddToClassList("Unselected");
+                page += 1;
+                currentselected = Pages[page];
+                currentselected.RemoveFromClassList("Unselected");
+            }
+        }
+        if (direction.x < 0)
+        {
+            if (page > 0)
+            {
+                currentselected.AddToClassList("Unselected");
+                page -= 1;
+                currentselected = Pages[page];
+                currentselected.RemoveFromClassList("Unselected");
+            }
+        }
     }
 
-    void AddQuestLabelToGroupBox(Label label)
+    [Button]
+    public void ToggleGenStorePamphlet()
     {
-        if (!_questLabels.Contains(label))
-            _questLabels.Add(label);
-
-        if (!_questGroupBox.Contains(label))
-            _questGroupBox.Add(label);
-    }
-
-    void AddNewQuestLabelToGroupBox(string questName)
-    {
-        Label label = new Label(questName);
-        label.AddToClassList("h3");
-        AddQuestLabelToGroupBox(label);
-    }
-
-    void AddQuestLabelsToGroupBox(List<string> questNames)
-    {
-        foreach (string questName in questNames)
-            AddNewQuestLabelToGroupBox(questName);
-    }
-
-    void RemoveQuestLabelFromGroupBox(Label label)
-    {
-        if (_questLabels.Contains(label))
-            _questLabels.Remove(label);
-
-        if (_questGroupBox.Contains(label))
-            _questGroupBox.Remove(label);
-    }
-
-    void AddQuestLabelsToGroupBox(List<Label> questLabels)
-    {
-        foreach (Label label in questLabels)
-            AddQuestLabelToGroupBox(label);
-    }
-
-    void RemoveQuestLabelsFromGroupBox(List<Label> questLabels)
-    {
-        foreach (Label label in questLabels)
-            RemoveQuestLabelFromGroupBox(label);
-    }
-
-    void ClearQuests()
-    {
-        List<VisualElement> children = new List<VisualElement>(_questGroupBox.Children());
-        foreach (VisualElement child in children)
-            _questGroupBox.Remove(child);
-
-        _questLabels.Clear();
+        DisplayGenStorePamphlet(!_displayGenStorePamphlet);
     }
 }

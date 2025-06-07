@@ -235,6 +235,49 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 transitionController?.StartWipeOpen();
                 yield return new WaitForSeconds(0.5f);
 
+                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
+                if (activeSceneData.ForceInteractionOnEnter)
+                {
+                    Debug.Log(
+                        $"{PREFIX} {activeSceneData.name} :: Force Interaction On Enter {activeSceneData.OnEnterStitch}"
+                    );
+
+                    // << TRY TO GET INTERACTABLE >>
+                    // If the interactable is not found, try again up to 3 times with a delay of 0.5 seconds between attempts
+                    // This is to account for the fact that the interactable may not be loaded yet
+                    const int MAX_ATTEMPTS = 3;
+                    const float ATTEMPT_DELAY = 1f;
+                    MTRInteractable interactable = null;
+                    for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)
+                    {
+                        MTRInteractionSystem.TryGetInteractableByStitch(
+                            activeSceneData.OnEnterStitch,
+                            out interactable
+                        );
+
+                        if (interactable != null)
+                        {
+                            MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                            break;
+                        }
+
+                        if (attempt < MAX_ATTEMPTS)
+                        {
+                            Debug.Log(
+                                $"{PREFIX} Attempt {attempt} failed, retrying in {ATTEMPT_DELAY} seconds..."
+                            );
+                            yield return new WaitForSeconds(ATTEMPT_DELAY);
+                        }
+                    }
+
+                    if (interactable == null)
+                    {
+                        Debug.LogError(
+                            $"{PREFIX} {activeSceneData.name} :: No Interactable Found for {activeSceneData.OnEnterStitch} after {MAX_ATTEMPTS} attempts"
+                        );
+                    }
+                }
+
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }
@@ -248,28 +291,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                if (activeSceneData.ForceInteractionOnEnter)
-                {
-                    Debug.Log(
-                        $"{PREFIX} {activeSceneData.name} :: Force Interaction On Enter {activeSceneData.OnEnterStitch}"
-                    );
-                    MTRInteractionSystem.TryGetInteractableByStitch(
-                        activeSceneData.OnEnterStitch,
-                        out MTRInteractable interactable
-                    );
-                    if (interactable != null)
-                    {
-                        MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
-                    }
-                    else
-                    {
-                        Debug.LogError(
-                            $"{PREFIX} {activeSceneData.name} :: No Interactable Found for {activeSceneData.OnEnterStitch}"
-                        );
-                    }
-                }
-
                 if (playerStateMachine.CurrentState == MTRPlayerState.OVERRIDE_IDLE)
                     playerStateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
