@@ -367,7 +367,7 @@ namespace Darklight.UnityExt.Inky
         /// <returns>
         ///     A list of knot names.
         /// </returns>
-        static List<string> GetAllKnots()
+        public static List<string> GetAllKnots()
         {
             return GlobalStory.mainContentContainer.namedContent.Keys.ToList();
         }
@@ -384,7 +384,7 @@ namespace Darklight.UnityExt.Inky
         ///    The variable value is an object, so it must be cast to the appropriate type.
         ///    For example, if the variable is an integer, cast it to an integer.
         /// </returns>
-        static void GetAllVariables(out Dictionary<string, object> variableDictionary)
+        public static void GetAllVariables(out Dictionary<string, object> variableDictionary)
         {
             Dictionary<string, object> output = new Dictionary<string, object>();
             foreach (string variableName in GlobalStory.variablesState)

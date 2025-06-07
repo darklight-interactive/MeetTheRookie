@@ -202,23 +202,13 @@ public partial class MTRInteractable
 
     protected virtual void GenerateRecievers()
     {
-        //Debug.Log($"{PREFIX} {Name} :: Recievers Generated", this);
-
         if (Request == null)
         {
-            /*
-            InteractionSystem.Factory.CreateOrLoadInteractionRequest(
-                TypeKey.ToString(),
-                out InteractionRequestDataObject newRequest,
-                new List<InteractionType> { InteractionType.TARGET, InteractionType.DESTINATION }
-            );
-            Request = newRequest;
-            */
-
-            Debug.LogError($"{PREFIX} {Name} :: No Interaction Request Found", this);
+            Debug.LogError($"{PREFIX} {Name} :: No Request Found", this);
             return;
         }
 
+        // Generate the recievers from the request
         InteractionSystem.Factory.GenerateInteractableRecievers(this);
     }
 
@@ -364,6 +354,7 @@ public partial class MTRInteractable
 
     public override bool AcceptTarget(IInteractor interactor, bool force = false)
     {
+        base.AcceptTarget(interactor, force);
         if (interactor == null)
             return false;
 
@@ -383,6 +374,7 @@ public partial class MTRInteractable
 
     public override bool AcceptInteraction(IInteractor interactor, bool force = false)
     {
+        base.AcceptInteraction(interactor, force);
         if (interactor == null)
             return false;
 

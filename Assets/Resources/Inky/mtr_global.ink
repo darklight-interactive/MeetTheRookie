@@ -73,7 +73,6 @@ LIST COMPLETED_QUESTS = DEFAULT // <- all completed quests
     ~ return ACTIVE_QUESTS ? quest
 
 
-
 === function openDoor()
     ~PlaySFX("Doors/doorOpen")
     ~ return

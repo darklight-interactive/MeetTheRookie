@@ -16,13 +16,13 @@ public class MTRInteractionSystem : InteractionSystem
     }
     public static MTRPlayerInput PlayerInputController
     {
-        get
-        {
-            return PlayerInteractor.GetComponent<MTRPlayerInput>();
-        }
+        get { return PlayerInteractor.GetComponent<MTRPlayerInput>(); }
     }
 
-    public static void TryGetInteractableByStitch(string stitchName, out MTRInteractable interactable)
+    public static void TryGetInteractableByStitch(
+        string stitchName,
+        out MTRInteractable interactable
+    )
     {
         interactable = null;
 

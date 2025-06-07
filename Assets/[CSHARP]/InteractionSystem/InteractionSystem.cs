@@ -37,7 +37,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
     public void OnEditorReloaded()
     {
-        Registry.ResetRegistry();
+        Registry.RefreshRegistry();
     }
 
     public override void Initialize()
@@ -45,6 +45,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
         // Confirm Settings are loaded
         if (_settings == null)
             _settings = Factory.CreateSettings();
+        Registry.RefreshRegistry();
     }
 
     void Update()
@@ -350,9 +351,10 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             return Interactables.ContainsKey(interactable.Key);
         }
 
-        public static void ResetRegistry()
+        public static void RefreshRegistry()
         {
             Interactables.Clear();
+            ReloadInteractables();
         }
 
         public static Library<string, Interactable> GetLibrary()
@@ -494,7 +496,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
 
                 if (GUILayout.Button("Refresh Registry"))
                 {
-                    Registry.ResetRegistry();
+                    Registry.RefreshRegistry();
                     Registry.ReloadInteractables();
                 }
 

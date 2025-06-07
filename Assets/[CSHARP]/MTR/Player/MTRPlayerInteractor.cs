@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Core2D;
-using Darklight.UnityExt.Inky;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Darklight.UnityExt.Core2D;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Utility;
 using NaughtyAttributes;
-using Darklight.UnityExt.Library;
-using System.Linq;
-
-
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,39 +19,60 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 {
     const float INTERACTOR_X_OFFSET = 0.35f;
 
-
     [Header("Interactor Settings")]
-    [SerializeField, ShowOnly] bool _enabled = false;
-    [SerializeField] LayerMask _layerMask;
-    [SerializeField] Vector2 _dimensions = new Vector2(1, 1);
-    [SerializeField, ShowOnly] Vector2 _offsetPosition = new Vector2(0, 0);
-
-    [Header("Interactables")]
-    [SerializeField, ShowOnly] Interactable _lastTarget;
-    [SerializeField, ShowOnly] Interactable _target;
-
-    [Space(10)]
-    [SerializeField, ShowOnly] Interactable _closestInteractable;
+    [SerializeField, ShowOnly]
+    bool _enabled = false;
 
     [SerializeField]
-    protected Library<Interactable, string> _nearbyInteractables
-        = new Library<Interactable, string>()
-        {
-            ReadOnlyKey = true,
-            ReadOnlyValue = true
-        };
+    LayerMask _layerMask;
+
+    [SerializeField]
+    Vector2 _dimensions = new Vector2(1, 1);
+
+    [SerializeField, ShowOnly]
+    Vector2 _offsetPosition = new Vector2(0, 0);
+
+    [Header("Interactables")]
+    [SerializeField, ShowOnly]
+    Interactable _lastTarget;
+
+    [SerializeField, ShowOnly]
+    Interactable _target;
+
+    [Space(10)]
+    [SerializeField, ShowOnly]
+    Interactable _closestInteractable;
+
+    [SerializeField]
+    protected Library<Interactable, string> _nearbyInteractables = new Library<
+        Interactable,
+        string
+    >()
+    {
+        ReadOnlyKey = true,
+        ReadOnlyValue = true
+    };
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public override Type TypeKey => Type.PLAYER;
-    public LayerMask LayerMask { get => _layerMask; set => _layerMask = value; }
+    public LayerMask LayerMask
+    {
+        get => _layerMask;
+        set => _layerMask = value;
+    }
     public Library<Interactable, string> NearbyInteractables => _nearbyInteractables;
     public Interactable TargetInteractable => _target;
 
-    public Vector2 OffsetPosition { get => _offsetPosition; set => _offsetPosition = value; }
+    public Vector2 OffsetPosition
+    {
+        get => _offsetPosition;
+        set => _offsetPosition = value;
+    }
     protected Vector2 OverlapCenter => (Vector2)transform.position + _offsetPosition;
 
-
+    // ======== [[ EVENTS ]] ================================== >>>>
+    public event Action<Interactable> OnInteractableAccepted;
 
     #region ======== [[ PROPERTIES ]] ================================== >>>>
     public MTRPlayerController PlayerController => GetComponent<MTRPlayerController>();
@@ -64,12 +83,14 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
     #region ======== <METHODS> (( UNITY RUNTIME )) ================================== >>>>
     void OnDrawGizmosSelected()
     {
-        if (!_enabled) return;
+        if (!_enabled)
+            return;
 
         CustomGizmos.DrawWireRect(OverlapCenter, _dimensions, Vector3.forward, Color.red);
         foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
-            if (interactable == null) continue;
+            if (interactable == null)
+                continue;
             if (interactable == _target)
             {
                 Gizmos.color = Color.red;
@@ -95,18 +116,10 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
         LayerMask = InteractionSystem.Settings.GetCombinedNPCAndInteractableLayer();
     }
 
-    protected override void GenerateRecievers()
-    {
-        InteractionSystem.Factory.CreateOrLoadInteractionRequest(TypeKey.ToString(),
-            out InteractionRequestDataObject interactionRequest,
-            new List<InteractionType> { InteractionType.DIALOGUE });
-        Request = interactionRequest;
-        InteractionSystem.Factory.GenerateInteractableRecievers(this);
-    }
-
     public override void Refresh()
     {
-        if (!_enabled) return;
+        if (!_enabled)
+            return;
 
         base.Refresh();
         RefreshNearbyInteractables();
@@ -121,8 +134,10 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             OffsetPosition = new Vector2(-INTERACTOR_X_OFFSET, 0);
 
             // If the target is to the right of the player, clear the target
-            if (TargetInteractable != null &&
-                TargetInteractable.transform.position.x > transform.position.x)
+            if (
+                TargetInteractable != null
+                && TargetInteractable.transform.position.x > transform.position.x
+            )
                 ClearTarget();
         }
         else if (PlayerController.DirectionFacing == MTRPlayerDirectionFacing.RIGHT)
@@ -130,8 +145,10 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
             OffsetPosition = new Vector2(INTERACTOR_X_OFFSET, 0);
 
             // If the target is to the left of the player, clear the target
-            if (TargetInteractable != null &&
-                TargetInteractable.transform.position.x < transform.position.x)
+            if (
+                TargetInteractable != null
+                && TargetInteractable.transform.position.x < transform.position.x
+            )
                 ClearTarget();
         }
     }
@@ -156,7 +173,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void TryAddInteractable(Interactable interactable)
     {
-        if (interactable == null) return;
+        if (interactable == null)
+            return;
         if (!_nearbyInteractables.ContainsKey(interactable))
             _nearbyInteractables.Add(interactable, interactable.Name);
         else
@@ -165,21 +183,25 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void RemoveInteractable(Interactable interactable)
     {
-        if (interactable == null) return;
+        if (interactable == null)
+            return;
         if (_nearbyInteractables.ContainsKey(interactable))
             _nearbyInteractables.Remove(interactable);
     }
 
     public Interactable GetClosestReadyInteractable(Vector3 position)
     {
-        if (_nearbyInteractables.Count == 0) return null;
-        if (_nearbyInteractables.Count == 1) return _nearbyInteractables.Keys.First();
+        if (_nearbyInteractables.Count == 0)
+            return null;
+        if (_nearbyInteractables.Count == 1)
+            return _nearbyInteractables.Keys.First();
 
         Interactable closestInteractable = _nearbyInteractables.Keys.First();
         float closestDistance = float.MaxValue;
         foreach (Interactable interactable in _nearbyInteractables.Keys)
         {
-            if (interactable == null) continue;
+            if (interactable == null)
+                continue;
 
             // Calculate the distance to the interactable.
             float distance = Vector3.Distance(interactable.transform.position, position);
@@ -194,11 +216,15 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public bool TryAssignTarget(Interactable interactable)
     {
-        if (!_enabled) return false;
+        if (!_enabled)
+            return false;
 
-        if (interactable == null) return false;
-        if (_target == interactable) return false;
-        if (_lastTarget == interactable) return false;
+        if (interactable == null)
+            return false;
+        if (_target == interactable)
+            return false;
+        if (_lastTarget == interactable)
+            return false;
 
         bool result = interactable.AcceptTarget(this);
         if (result)
@@ -215,7 +241,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void ClearTarget()
     {
-        if (!_enabled) return;
+        if (!_enabled)
+            return;
 
         _lastTarget = _target;
         _target = null;
@@ -224,20 +251,25 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public bool InteractWith(Interactable interactable, bool force = false)
     {
-        if (interactable == null) return false;
+        if (interactable == null)
+            return false;
 
         _target = interactable;
 
         Debug.Log($"[{name}] Interacting with: {interactable.name} : force={force}");
 
-        return interactable.AcceptInteraction(this, force);
+        bool result = interactable.AcceptInteraction(this, force);
+        if (result)
+            OnInteractableAccepted?.Invoke(interactable);
+        return result;
     }
 
     public bool InteractWithTarget() => InteractWith(_target);
 
     public void RefreshNearbyInteractables()
     {
-        if (!_enabled) return;
+        if (!_enabled)
+            return;
 
         // Update the interactables dictionary with the overlap interactables.
         List<Interactable> overlapInteractables = FindInteractables();
@@ -277,7 +309,8 @@ public class MTRPlayerInteractor : MTRCharacterInteractable, IInteractor
 
     public void SetEnabled(bool enabled)
     {
-        if (_enabled == enabled) return;
+        if (_enabled == enabled)
+            return;
 
         _enabled = enabled;
         Debug.Log($"[{name}] Interactor Enabled: {_enabled}");

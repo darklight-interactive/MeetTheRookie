@@ -7,12 +7,13 @@ using UnityEngine.UIElements;
 
 public class GameUIController : UXML_UIDocumentObject
 {
-    const string QUEST_CONTAINER = "quest-container";
-    const string QUEST_GROUP_BOX = "quest-group-box";
-
     MTRStoryManager _storyManager;
 
     bool _displayGenStorePamphlet;
+
+    [SerializeField]
+    InkyStoryStitchData _genStorePamphletStitch;
+
     public List<VisualElement> Pages = new List<VisualElement>();
     public VisualElement currentselected;
     public int page;
@@ -25,6 +26,7 @@ public class GameUIController : UXML_UIDocumentObject
         DisplayGenStorePamphlet(false);
 
         MTRSceneController.Instance.OnSceneStateChanged += HandleSceneStateChanged;
+        MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted += HandleInteractableAccepted;
     }
 
     void OnDestroy()
@@ -45,11 +47,21 @@ public class GameUIController : UXML_UIDocumentObject
         base.Initialize(preset, clonePanelSettings);
 
         _storyManager = MTRStoryManager.Instance;
-        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
     }
 
     // Start is called before the first frame update
     void Start() { }
+
+    void HandleInteractableAccepted(Interactable interactable)
+    {
+        if (interactable is MTRInteractable mtrInteractable)
+        {
+            if (mtrInteractable.Data.Key == _genStorePamphletStitch.Stitch)
+            {
+                DisplayGenStorePamphlet(true);
+            }
+        }
+    }
 
     public void DisplayGenStorePamphlet(bool display)
     {
@@ -61,17 +73,23 @@ public class GameUIController : UXML_UIDocumentObject
             MTR_AudioManager.Instance.generalSFX.paperInteract
         );
 
-        if (!display)
-            return;
-
-        // << SETUP PAGES >>
-        foreach (VisualElement page in _genStorePamphletElement.Children())
+        if (display)
         {
-            Pages.Add(page);
-            page.AddToClassList("Unselected");
+            // << SETUP PAGES >>
+            foreach (VisualElement page in _genStorePamphletElement.Children())
+            {
+                Pages.Add(page);
+                page.AddToClassList("Unselected");
+            }
+            currentselected = Pages[page];
+            currentselected.RemoveFromClassList("Unselected");
+
+            MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         }
-        currentselected = Pages[page];
-        currentselected.RemoveFromClassList("Unselected");
+        else
+        {
+            MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        }
     }
 
     private void OnMoveInputStartAction(Vector2 moveInput)

@@ -44,6 +44,9 @@ public abstract class Interactable : MonoBehaviour, IInteractable
     public abstract bool IsPreloaded { get; protected set; }
     public abstract bool IsInitialized { get; protected set; }
 
+    public event Action<IInteractor> OnAcceptTarget;
+    public event Action<IInteractor> OnAcceptInteraction;
+
     /// <summary>
     /// Preload the interactable with core data & subscriptions <br/>
     /// This is called when the interactable is first created or enabled
@@ -73,8 +76,18 @@ public abstract class Interactable : MonoBehaviour, IInteractable
     /// Reset the interactable to its default state & values
     /// </summary>
     public abstract void Reset();
-    public abstract bool AcceptTarget(IInteractor interactor, bool force = false);
-    public abstract bool AcceptInteraction(IInteractor interactor, bool force = false);
+
+    public virtual bool AcceptTarget(IInteractor interactor, bool force = false)
+    {
+        OnAcceptTarget?.Invoke(interactor);
+        return true;
+    }
+
+    public virtual bool AcceptInteraction(IInteractor interactor, bool force = false)
+    {
+        OnAcceptInteraction?.Invoke(interactor);
+        return true;
+    }
 
     public virtual string Print()
     {
