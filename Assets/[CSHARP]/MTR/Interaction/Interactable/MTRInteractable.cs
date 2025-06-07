@@ -17,7 +17,8 @@ public partial class MTRInteractable
         MTRInteractable.InternalStateMachine,
         MTRInteractable.State,
         MTRInteractable.Type
-    >
+    >,
+        IUnityEditorListener
 {
     public const string DEFAULT_KNOT = "scene_default";
     public const string DEFAULT_STITCH = "interaction_default";
@@ -29,8 +30,13 @@ public partial class MTRInteractable
         State.CONTINUE
     };
 
+    [SerializeField, ShowOnly]
     bool _isPreloaded;
+
+    [SerializeField, ShowOnly]
     bool _isRegistered;
+
+    [SerializeField, ShowOnly]
     bool _isInitialized;
 
     [SerializeField, Expandable]
@@ -51,6 +57,9 @@ public partial class MTRInteractable
     [Header("Interactable")]
     [SerializeField]
     bool autoSizeCollider = true;
+
+    [SerializeField]
+    bool _disableCollider = false;
 
     protected InternalStateMachine stateMachine;
     protected SpriteRenderer spriteRenderer;
@@ -320,6 +329,8 @@ public partial class MTRInteractable
             }
         }
 
+        SetColliderEnabled(!_disableCollider);
+
         //Debug.Log($"{PREFIX} {Name} :: Initialize", this);
 
         InitializeStateMachine();
@@ -413,6 +424,14 @@ public partial class MTRInteractable
 
         _currentState = CurrentState;
         yield return null;
+    }
+
+    void SetColliderEnabled(bool enabled)
+    {
+        if (collider == null)
+            return;
+        collider.enabled = enabled;
+        //Debug.Log($"{PREFIX} {Name} :: SetColliderEnabled to {enabled}", this);
     }
 
     // ====== [[ Enums ]] ======================================

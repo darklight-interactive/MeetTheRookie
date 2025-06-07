@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 1677031752
   _typeKey: 2
+  _isInitialized: 0
   _showGizmos: 0
   _weightDataObject: {fileID: 11400000, guid: 7f344a1289caba647a181907a99119e8, type: 2}
 --- !u!114 &4169482115352162148
@@ -149,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 415502929
   _typeKey: 1
+  _isInitialized: 0
   _showGizmos: 0
   _layerMask:
     serializedVersion: 2
@@ -167,7 +169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 2108384267
   _typeKey: 3
+  _isInitialized: 0
   _showGizmos: 0
+  _dataMapReadOnly: []
   _dataObject: {fileID: 11400000, guid: e070674a4331ac1429d4160a0c17614e, type: 2}
 --- !u!114 &6921753949276291617
 MonoBehaviour:
@@ -183,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 1076486413
   _typeKey: 0
+  _isInitialized: 0
   _showGizmos: 0
 --- !u!1 &2243979563928760883
 GameObject:
@@ -357,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: 515557308
   _typeKey: 2
+  _isInitialized: 0
   _showGizmos: 1
   _weightDataObject: {fileID: 11400000, guid: 24dcb0f5b4d90004aac03ba5054bede0, type: 2}
 --- !u!114 &2660873713398991222
@@ -373,6 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: -701419863
   _typeKey: 1
+  _isInitialized: 0
   _showGizmos: 0
   _layerMask:
     serializedVersion: 2
@@ -391,7 +398,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: -816194881
   _typeKey: 3
+  _isInitialized: 0
   _showGizmos: 1
+  _dataMapReadOnly: []
   _dataObject: {fileID: 11400000, guid: 5352108613b065749b246635221b4920, type: 2}
 --- !u!114 &107925243022773711
 MonoBehaviour:
@@ -407,6 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _guid: -1761843160
   _typeKey: 0
+  _isInitialized: 0
   _showGizmos: 0
 --- !u!1 &6879612917963182113
 GameObject:
@@ -461,7 +471,8 @@ MonoBehaviour:
   _isPreloaded: 1
   _isRegistered: 0
   _isInitialized: 0
-  _request: {fileID: 11400000, guid: bb7119d448fa6c34d8b49b3e90e977f8, type: 2}
+  _dataSO: {fileID: 0}
+  _recieverRequest: {fileID: 0}
   _recievers:
     _items:
     - _id: 0
@@ -477,16 +488,15 @@ MonoBehaviour:
     _readOnlyValue: 1
     _defaultToAllKeys: 0
   _data:
-    _name: roy_intro_cutscene
     _scene: Roy_Dialogue
     _key: ROY_RODGERS
+    _name: roy_intro_cutscene
     _layer: NPC
     _type: 1
     _sprite: {fileID: 68715502, guid: 4cf2d8a27f080e84699715ad2df8e67b, type: 3}
   _currentState: 0
-  _sceneKnot: Roy_Dialogue
-  _interactionStitch: Roy_Dialogue.roy_intro_cutscene
   autoSizeCollider: 1
+  _disableInteraction: 0
   _speakerTag: 7
 --- !u!114 &2528446817011783710
 MonoBehaviour:

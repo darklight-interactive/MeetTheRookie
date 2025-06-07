@@ -15,19 +15,27 @@ using UnityEditor;
 [Serializable]
 public class MTRInteractableDataSO : ScriptableObject
 {
-    [HorizontalLine(color: EColor.Gray)]
+    [Header("Interaction"), HorizontalLine(color: EColor.Gray)]
+    [Tooltip("The knot to read from when the interactable is interacted with")]
     [Dropdown("dropdown_knotList"), SerializeField]
     string _sceneKnot = "scene_default";
 
+    [Tooltip("The stitch to read from when the interactable is interacted with")]
     [Dropdown("dropdown_interactionStitchList"), SerializeField]
     string _interactionStitch = "interaction_default";
 
+    [SerializeField]
+    [Tooltip("If true, the interaction will only be triggered once")]
+    bool _isOneShot = false;
+
+    [Header("Mystery"), HorizontalLine(color: EColor.Gray)]
     [SerializeField]
     MTRMystery _mystery = MTRMystery.UNKNOWN;
 
     [Dropdown("dropdown_clueList"), SerializeField]
     string _clue;
 
+    [Header("Visuals"), HorizontalLine(color: EColor.Gray)]
     [SerializeField]
     Sprite _sprite;
 

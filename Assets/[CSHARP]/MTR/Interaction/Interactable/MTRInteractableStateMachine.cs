@@ -35,6 +35,11 @@ public partial class MTRInteractable
             GoToState(State.NULL);
         }
 
+        /// <summary>
+        /// Try to get the dialogue reciever for the given speaker
+        /// </summary>
+        /// <param name="speaker">The speaker to get the dialogue reciever for</param>
+        /// <param name="reciever">The dialogue reciever for the given speaker</param>
         protected void TryGetDialogueReciever(MTRSpeaker speaker, out MTRDialogueReciever reciever)
         {
             reciever = null;
@@ -367,11 +372,16 @@ public partial class MTRInteractable
             public override void Enter()
             {
                 base.Enter();
+                interactable.SetColliderEnabled(false);
             }
 
             public override void Execute() { }
 
-            public override void Exit() { }
+            public override void Exit()
+            {
+                base.Exit();
+                interactable.SetColliderEnabled(true);
+            }
         }
         #endregion
     }
