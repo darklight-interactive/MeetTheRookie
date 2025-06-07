@@ -202,6 +202,11 @@ public class MTRInteractableDataSO : ScriptableObject
 
             base.OnInspectorGUI();
 
+            if (GUILayout.Button("Initialize"))
+            {
+                _script.Initialize();
+            }
+
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();

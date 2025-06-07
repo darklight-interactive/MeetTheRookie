@@ -230,6 +230,9 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             IEnumerator EnterStateCoroutine()
             {
+                // << REFRESH REGISTRY >>
+                InteractionSystem.Registry.RefreshRegistry();
+
                 cameraController?.SetPlayerAsFollowTarget();
 
                 transitionController?.StartWipeOpen();
@@ -297,7 +300,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                if (playerStateMachine.CurrentState == MTRPlayerState.OVERRIDE_IDLE)
+                if (playerStateMachine?.CurrentState == MTRPlayerState.OVERRIDE_IDLE)
                     playerStateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 
@@ -343,7 +346,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Exit()
             {
-                //playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
+                playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 
             public override void Execute()

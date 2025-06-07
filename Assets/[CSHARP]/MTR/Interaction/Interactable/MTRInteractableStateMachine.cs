@@ -55,6 +55,9 @@ public partial class MTRInteractable
             {
                 // << FIND THE CHARACTER >>
                 bool found = false;
+                Debug.Log(
+                    $"{PREFIX} :: Trying to find dialogue reciever for {speaker} in {InteractionSystem.Registry.Interactables.Count} interactables. \n{string.Join("\n", InteractionSystem.Registry.Interactables.Keys)}\n"
+                );
                 foreach (var interactable in InteractionSystem.Registry.Interactables)
                 {
                     // check if the interactable is a character & match the speaker tag
@@ -63,6 +66,8 @@ public partial class MTRInteractable
                         && character.SpeakerTag == speaker
                     )
                     {
+                        character.GenerateRecievers(); // Confirm the recievers are generated
+
                         // output the dialogue reciever
                         character.Recievers.TryGetValue(InteractionType.DIALOGUE, out reciever);
                         found = true;
@@ -211,7 +216,7 @@ public partial class MTRInteractable
                 }
                 else
                 {
-                    player.Controller.EnterInteraction();
+                    player.Controller.StateMachine.GoToState(MTRPlayerState.INTERACTION);
                 }
 
                 yield return new WaitUntil(

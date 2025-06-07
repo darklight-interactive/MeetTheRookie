@@ -118,9 +118,7 @@ public abstract class Interactable<TData, TStateMachine, TStateEnum, TTypeEnum>
     #endregion
 
     #region [[ UNITY_METHODS ]] < PROTECTED > ================================== >>>>
-    protected void Awake() => Preload();
-
-    protected void Start() => Initialize();
+    protected virtual void Awake() => Preload();
 
     protected void Update() => Refresh();
 

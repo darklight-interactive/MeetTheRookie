@@ -22,8 +22,8 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         {
             { MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL) },
             { MTRPlayerState.FREE_IDLE, new BasePlayerState(this, MTRPlayerState.FREE_IDLE) },
-            { MTRPlayerState.OVERRIDE_IDLE, new IdleOverrideState(this) },
             { MTRPlayerState.FREE_WALK, new BasePlayerState(this, MTRPlayerState.FREE_WALK) },
+            { MTRPlayerState.OVERRIDE_IDLE, new IdleOverrideState(this) },
             { MTRPlayerState.OVERRIDE_WALK, new WalkOverrideState(this) },
             { MTRPlayerState.INTERACTION, new InteractionState(this) },
             { MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE) }
@@ -128,9 +128,15 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
                 && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE
             )
             {
+                controller.ResetMoveDirection();
                 stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
                 interactor.ClearTarget();
             }
+        }
+
+        public override void Exit()
+        {
+            //controller.ExitInteraction();
         }
     }
 
@@ -187,7 +193,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         public override void Enter()
         {
-            controller.StartIdleOverride();
+            controller.ResetMoveDirection();
         }
 
         public override void Execute() { }

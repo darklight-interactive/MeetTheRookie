@@ -138,6 +138,11 @@ public partial class MTRInteractable
 
     #region ======== <PRIVATE_METHODS> ================================== >>>>
 
+    protected override void Awake()
+    {
+        Reset();
+        base.Awake();
+    }
 
     protected virtual void PreloadSpriteRenderer()
     {

@@ -102,8 +102,12 @@ public class MTRPlayerController : MonoBehaviour
     #region [ MOVEMENT ] < PRIVATE_METHODS > =============================================== >>
     void UpdateMovement()
     {
-        // If the player is in an interaction state, do not allow movement
-        if (CurrentState == MTRPlayerState.INTERACTION)
+        // If the player is in a non-free state, do not allow movement
+        if (
+            CurrentState != MTRPlayerState.FREE_IDLE
+            && CurrentState != MTRPlayerState.FREE_WALK
+            && CurrentState != MTRPlayerState.OVERRIDE_WALK
+        )
             return;
 
         // << Calculate Direction >>
@@ -258,31 +262,13 @@ public class MTRPlayerController : MonoBehaviour
 
     public void HandleOnMoveInputCanceled() => SetMoveDirection(0);
 
-    void SetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection.x);
+    public void SetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection.x);
 
-    void ResetMoveDirection()
+    public void ResetMoveDirection()
     {
         _overrideTargetPosX = _currentPosX;
         SetMoveDirection(0);
         StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
-    }
-
-    /// <summary>
-    /// Moves the player into the interaction state
-    /// </summary>
-    public void EnterInteraction()
-    {
-        StateMachine.GoToState(MTRPlayerState.INTERACTION);
-        //Debug.Log("Player Controller :: Enter Interaction");
-    }
-
-    /// <summary>
-    /// Removes the player from the interaction state
-    /// </summary>
-    public void ExitInteraction()
-    {
-        StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
-        //Debug.Log("Player Controller :: Exit Interaction");
     }
 
     public void StartWalkOverride(float targetXPos)
@@ -297,16 +283,6 @@ public class MTRPlayerController : MonoBehaviour
 
         SetMoveDirection(direction);
         StateMachine.GoToState(MTRPlayerState.OVERRIDE_WALK);
-    }
-
-    public void StartIdleOverride()
-    {
-        if (StateMachine == null)
-            return;
-
-        ResetMoveDirection();
-
-        StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
     }
 
     public bool IsAtMoveTarget()
