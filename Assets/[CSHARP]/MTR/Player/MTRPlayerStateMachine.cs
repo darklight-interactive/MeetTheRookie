@@ -1,9 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
-using Darklight.UnityExt.FMODExt;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.FMODExt;
 using FMODUnity;
 using UnityEngine;
-using System.Collections;
 
 public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
@@ -18,17 +18,15 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     public MTRPlayerStateMachine(MTRPlayerController controller)
     {
         this.controller = controller;
-        possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>> {
-            {MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL)},
-
-            {MTRPlayerState.FREE_IDLE, new BasePlayerState(this, MTRPlayerState.FREE_IDLE)},
-            {MTRPlayerState.OVERRIDE_IDLE, new BasePlayerState(this, MTRPlayerState.OVERRIDE_IDLE)},
-
-            {MTRPlayerState.FREE_WALK, new BasePlayerState(this, MTRPlayerState.FREE_WALK)},
-            {MTRPlayerState.OVERRIDE_WALK, new WalkOverrideState(this)},
-
-            {MTRPlayerState.INTERACTION, new InteractionState(this)},
-            {MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE)}
+        possibleStates = new Dictionary<MTRPlayerState, FiniteState<MTRPlayerState>>
+        {
+            { MTRPlayerState.NULL, new BasePlayerState(this, MTRPlayerState.NULL) },
+            { MTRPlayerState.FREE_IDLE, new BasePlayerState(this, MTRPlayerState.FREE_IDLE) },
+            { MTRPlayerState.OVERRIDE_IDLE, new IdleOverrideState(this) },
+            { MTRPlayerState.FREE_WALK, new BasePlayerState(this, MTRPlayerState.FREE_WALK) },
+            { MTRPlayerState.OVERRIDE_WALK, new WalkOverrideState(this) },
+            { MTRPlayerState.INTERACTION, new InteractionState(this) },
+            { MTRPlayerState.HIDE, new BasePlayerState(this, MTRPlayerState.HIDE) }
         };
     }
 
@@ -92,6 +90,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
                 break;
         }
     }
+
     #region  [[ STATES ]] ======================================================== >>
 
     public class BasePlayerState : FiniteState<MTRPlayerState>
@@ -101,24 +100,33 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         protected MTRPlayerInput input => controller.Input;
         protected MTRPlayerAnimator animator => controller.Animator;
         protected MTRPlayerInteractor interactor => controller.Interactor;
-        public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType) : base(stateMachine, stateType)
+
+        public BasePlayerState(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType)
+            : base(stateMachine, stateType)
         {
             this.stateMachine = stateMachine;
         }
-        public override void Enter() { }
-        public override void Execute() { }
-        public override void Exit() { }
 
+        public override void Enter() { }
+
+        public override void Execute() { }
+
+        public override void Exit() { }
     }
 
     public class InteractionState : BasePlayerState
     {
         MTRInteractable targetInteractable => interactor.TargetInteractable as MTRInteractable;
-        public InteractionState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.INTERACTION) { }
+
+        public InteractionState(MTRPlayerStateMachine stateMachine)
+            : base(stateMachine, MTRPlayerState.INTERACTION) { }
 
         public override void Execute()
         {
-            if (targetInteractable != null && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE)
+            if (
+                targetInteractable != null
+                && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE
+            )
             {
                 stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
                 interactor.ClearTarget();
@@ -129,12 +137,15 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
     public class WalkOverrideState : BasePlayerState
     {
         bool _isAtMoveTarget = false;
-        public WalkOverrideState(MTRPlayerStateMachine stateMachine) : base(stateMachine, MTRPlayerState.OVERRIDE_WALK) { }
+
+        public WalkOverrideState(MTRPlayerStateMachine stateMachine)
+            : base(stateMachine, MTRPlayerState.OVERRIDE_WALK) { }
 
         public override void Enter()
         {
             _isAtMoveTarget = false;
         }
+
         public override void Execute()
         {
             if (controller.IsAtMoveTarget() && !_isAtMoveTarget)
@@ -147,7 +158,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
                     return;
                 }
 
-                controller.OverrideResetMoveDirection();
                 controller.StartCoroutine(WaitAndGoToInteractionState());
             }
         }
@@ -170,6 +180,21 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         }
     }
 
+    public class IdleOverrideState : BasePlayerState
+    {
+        public IdleOverrideState(MTRPlayerStateMachine stateMachine)
+            : base(stateMachine, MTRPlayerState.OVERRIDE_IDLE) { }
+
+        public override void Enter()
+        {
+            controller.StartIdleOverride();
+        }
+
+        public override void Execute() { }
+
+        public override void Exit() { }
+    }
+
     #endregion
 }
 
@@ -180,9 +205,16 @@ public class PlayerStateObject : FiniteState<MTRPlayerState>
     public EventReference soundOnEnter;
     public EventReference soundOnExit;
     public EventReference repeatingSound;
-    [SerializeField, Range(0.1f, 1f)] private float repeatingSoundInterval = 1f;
 
-    public PlayerStateObject(MTRPlayerStateMachine stateMachine, MTRPlayerState stateType, params object[] args) : base(stateMachine, stateType) { }
+    [SerializeField, Range(0.1f, 1f)]
+    private float repeatingSoundInterval = 1f;
+
+    public PlayerStateObject(
+        MTRPlayerStateMachine stateMachine,
+        MTRPlayerState stateType,
+        params object[] args
+    )
+        : base(stateMachine, stateType) { }
 
     public override void Enter()
     {

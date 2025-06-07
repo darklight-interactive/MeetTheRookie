@@ -197,18 +197,17 @@ public partial class MTRInteractable
                     InteractionType.DESTINATION,
                     out MTRDestinationReciever destinationReciever
                 );
-                if (destinationReciever != null)
+                if (destinationReciever != null && interactable._allowWalkToDestination)
                 {
                     destinationReciever.GetClosestDestination(
                         player.transform.position,
                         out Vector2 destination
                     );
                     player.Controller.StartWalkOverride(destination.x);
-                    /*
+
                     Debug.Log(
                         $"{PREFIX} :: {interactable.Name} >> Starting walk override to {destination}"
                     );
-                    */
                 }
                 else
                 {

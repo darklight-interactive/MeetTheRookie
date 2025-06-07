@@ -1,22 +1,24 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="TownPamphlet" src="project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/TownPamphlet.uxml?fileID=9197481963319205126&amp;guid=7d90d53c5b8790a44aaffedc1d1e61f6&amp;type=3#TownPamphlet" />
-    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/EnlargedAssets/TownPamphlet.uss?fileID=7433441132597879392&amp;guid=65abe930aec334bfdb1aade811d94ad3&amp;type=3#TownPamphlet" />
-    <engine:VisualElement name="header">
-        <engine:VisualElement name="container" />
-    </engine:VisualElement>
-    <engine:VisualElement name="body" style="align-self: stretch; align-items: center;">
-        <engine:Instance template="TownPamphlet" name="gen-store-pamphlet" style="flex-grow: 1; display: flex;" />
-    </engine:VisualElement>
-    <engine:VisualElement name="footer" style="flex-grow: 1;">
-        <engine:VisualElement name="input-ui-container" style="flex-grow: 1; align-self: stretch; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; display: flex; flex-direction: row; justify-content: center;">
-            <engine:VisualElement name="interact-input-container" class="input-ui-container">
-                <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/icon_interact.png?fileID=2800000&amp;guid=40e70f19364c41a40a12697a0eeb3530&amp;type=3#icon_interact&quot;); -unity-background-scale-mode: scale-to-fit; width: 100%; height: 100%; margin-top: 15%; margin-right: 15%; margin-bottom: 15%; margin-left: 15%;" />
-                <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Z%20input%20.PNG?fileID=2800000&amp;guid=5b89e296700074cc0819e3f0878c2833&amp;type=3#Z input &quot;); background-color: rgb(126, 152, 197); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; left: 0; bottom: -15px;" />
-            </engine:VisualElement>
-            <engine:VisualElement name="synth-input-container" class="input-ui-container" style="background-image: url(&quot;project://database/Assets/[TEXTURES]/mtr_color/mtr_color_31.png?fileID=2800000&amp;guid=0e7bad099db78144a8d0d12e3f6cef50&amp;type=3#mtr_color_31&quot;);">
-                <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Lupe_Synth_Icon_Ui.png?fileID=2800000&amp;guid=f4f47c54b44e3894da968bc3240e8e77&amp;type=3#Lupe_Synth_Icon_Ui&quot;); width: 100px; height: 100px;" />
-                <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/C%20input.PNG?fileID=2800000&amp;guid=e2c7e5a36f69c4c4c88c304093d078ca&amp;type=3#C input&quot;); background-color: rgb(130, 83, 132); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; top: auto; left: 0; bottom: -15px;" />
+    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
+    <engine:VisualElement name="container" style="flex-grow: 1;">
+        <engine:VisualElement name="header" style="flex-grow: 1;">
+            <engine:VisualElement name="container" />
+        </engine:VisualElement>
+        <engine:VisualElement name="body" style="align-self: stretch; align-items: center; flex-grow: 5;">
+            <engine:Instance template="TownPamphlet" name="gen-store-pamphlet" style="position: absolute; width: 100%; height: 100%;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="footer" style="flex-grow: 1; align-self: stretch; align-items: stretch; justify-content: center;">
+            <engine:VisualElement name="input-ui-container" style="align-self: center; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; display: flex; flex-direction: row; justify-content: center;">
+                <engine:VisualElement name="interact-input-container" class="input-ui-container" style="width: 100px; background-color: rgb(37, 58, 94);">
+                    <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_ui/icon_interact.png?fileID=2800000&amp;guid=40e70f19364c41a40a12697a0eeb3530&amp;type=3#icon_interact&quot;); -unity-background-scale-mode: scale-to-fit; width: 100%; height: 100%; margin-top: 15%; margin-right: 15%; margin-bottom: 15%; margin-left: 15%;" />
+                    <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Z%20input%20.PNG?fileID=2800000&amp;guid=5b89e296700074cc0819e3f0878c2833&amp;type=3#Z input &quot;); background-color: rgb(126, 152, 197); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; left: 0; bottom: -15px;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="synth-input-container" class="input-ui-container" style="background-image: url(&quot;project://database/Assets/[TEXTURES]/mtr_color/mtr_color_31.png?fileID=2800000&amp;guid=0e7bad099db78144a8d0d12e3f6cef50&amp;type=3#mtr_color_31&quot;);">
+                    <engine:VisualElement name="icon" style="background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/Lupe_Synth_Icon_Ui.png?fileID=2800000&amp;guid=f4f47c54b44e3894da968bc3240e8e77&amp;type=3#Lupe_Synth_Icon_Ui&quot;); width: 100px; height: 100px;" />
+                    <engine:VisualElement name="input" style="width: 50px; height: 50px; background-image: url(&quot;project://database/Assets/[SPRITES]/_synthesis/C%20input.PNG?fileID=2800000&amp;guid=e2c7e5a36f69c4c4c88c304093d078ca&amp;type=3#C input&quot;); background-color: rgb(130, 83, 132); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; position: absolute; top: auto; left: 0; bottom: -15px;" />
+                </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>

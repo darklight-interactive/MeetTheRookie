@@ -56,10 +56,13 @@ public partial class MTRInteractable
 
     [Header("Interactable")]
     [SerializeField]
-    bool autoSizeCollider = true;
+    bool _autoSizeCollider = true;
 
     [SerializeField]
     bool _disableCollider = false;
+
+    [SerializeField]
+    bool _allowWalkToDestination = true;
 
     protected InternalStateMachine stateMachine;
     protected SpriteRenderer spriteRenderer;
@@ -156,7 +159,7 @@ public partial class MTRInteractable
 
         // << SET THE COLLIDER SIZE >> ------------------------------------
         // Set the collider size to half the size of the transform scale
-        if (autoSizeCollider)
+        if (_autoSizeCollider)
             collider.size = Vector2.one * transform.localScale.x * 0.5f;
     }
 
@@ -354,7 +357,6 @@ public partial class MTRInteractable
 
     public override bool AcceptTarget(IInteractor interactor, bool force = false)
     {
-        base.AcceptTarget(interactor, force);
         if (interactor == null)
             return false;
 
@@ -368,13 +370,13 @@ public partial class MTRInteractable
 
         // << ACCEPT TARGET >> ------------------------------------
         StateMachine.GoToState(State.TARGET);
-        Debug.Log($"{PREFIX} {Name} :: AcceptTarget from {interactor}", this);
+        base.AcceptTarget(interactor, force);
+        //Debug.Log($"{PREFIX} {Name} :: AcceptTarget from {interactor}", this);
         return true;
     }
 
     public override bool AcceptInteraction(IInteractor interactor, bool force = false)
     {
-        base.AcceptInteraction(interactor, force);
         if (interactor == null)
             return false;
 
@@ -389,7 +391,7 @@ public partial class MTRInteractable
         {
             StartCoroutine(AcceptInteractionRoutine(playerInteractor, force));
         }
-
+        base.AcceptInteraction(interactor, force);
         return true;
     }
     #endregion

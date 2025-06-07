@@ -56,6 +56,10 @@ public class MTRPlayerController : MonoBehaviour
     [SerializeField, ShowOnly]
     bool _canWalkRight;
 
+    [Header("Destination")]
+    [SerializeField]
+    float _destinationReachThreshold = 0.25f;
+
     public MTRPlayerInput Input => GetComponent<MTRPlayerInput>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
     public MTRPlayerAnimator Animator => GetComponent<MTRPlayerAnimator>();
@@ -254,10 +258,9 @@ public class MTRPlayerController : MonoBehaviour
 
     public void HandleOnMoveInputCanceled() => SetMoveDirection(0);
 
-    public void OverrideSetMoveDirection(Vector2 moveDirection) =>
-        SetMoveDirection(moveDirection.x);
+    void SetMoveDirection(Vector2 moveDirection) => SetMoveDirection(moveDirection.x);
 
-    public void OverrideResetMoveDirection()
+    void ResetMoveDirection()
     {
         _overrideTargetPosX = _currentPosX;
         SetMoveDirection(0);
@@ -292,13 +295,23 @@ public class MTRPlayerController : MonoBehaviour
         _overrideTargetPosX = targetXPos;
         GetDirectionToPos(targetXPos, out Vector2 direction);
 
-        OverrideSetMoveDirection(direction);
+        SetMoveDirection(direction);
         StateMachine.GoToState(MTRPlayerState.OVERRIDE_WALK);
+    }
+
+    public void StartIdleOverride()
+    {
+        if (StateMachine == null)
+            return;
+
+        ResetMoveDirection();
+
+        StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
     }
 
     public bool IsAtMoveTarget()
     {
-        if (Mathf.Abs(transform.position.x - _overrideTargetPosX) < 0.05f)
+        if (Mathf.Abs(transform.position.x - _overrideTargetPosX) < _destinationReachThreshold)
         {
             return true;
         }

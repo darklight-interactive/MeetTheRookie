@@ -1,6 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/EnlargedAssets/TownPamphlet.uss?fileID=7433441132597879392&amp;guid=65abe930aec334bfdb1aade811d94ad3&amp;type=3#TownPamphlet" />
-    <engine:VisualElement name="container" style="flex-grow: 1;">
+    <Style src="project://database/Assets/[USER%20INTERFACE]/_stylesheets/Global.uss?fileID=7433441132597879392&amp;guid=37b11a59d10b548be8719ac25628bde6&amp;type=3#Global" />
+    <engine:VisualElement name="container" style="flex-direction: row; align-self: center; align-items: center; justify-content: center; margin-top: 2%; margin-right: 2%; margin-bottom: 2%; margin-left: 2%;">
+        <Darklight.UnityExt.UXML.SelectableButton name="left-arrow-button" class="arrow-button" />
         <engine:VisualElement name="page-1" class="pamphlet" style="display: none; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/readable_page0.png?fileID=4903444425233771384&amp;guid=c7347b3ffa6cb3742af21b3a3e4c987a&amp;type=3#readable_page0_0&quot;);">
             <engine:Label text="1890: Founding of Kettle Rock&#10;The small, homegrown town of Kettle Rock was first settled in 1889 by a small group of pioneers braving the North Territory of the US.&#10;The community of the town was optimistic about their beginnings. The land was good, and their spirits were determined." name="TextBox" class="TextBox" />
         </engine:VisualElement>
@@ -13,5 +15,6 @@
         <engine:VisualElement name="page-4" class="pamphlet" style="display: flex; background-image: url(&quot;project://database/Assets/[USER%20INTERFACE]/EnlargedAssets/TownPamphlet/readable_page4.png?fileID=-9221409168140752355&amp;guid=939720acfad71dd45868f177cb1607fe&amp;type=3#readable_page4_0&quot;);">
             <engine:Label text="1941 - 1995: The Golden Age&#10;Shortly after the Tragedy, Prosperity rained down on Kettle Rock. The Winery flourished, and people from all over the country came to sample the town&apos;s goods and wares. Kettle Rock Winery was even ranked third for best wine product in the US during 1967! With the rough patches behind them, this small town&apos;s underdog story is truly remarkable." name="TextBox" class="TextBox" />
         </engine:VisualElement>
+        <Darklight.UnityExt.UXML.SelectableButton name="right-arrow-button" class="arrow-button" style="rotate: 180deg;" />
     </engine:VisualElement>
 </engine:UXML>

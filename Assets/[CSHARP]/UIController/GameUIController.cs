@@ -7,7 +7,13 @@ using UnityEngine.UIElements;
 
 public class GameUIController : UXML_UIDocumentObject
 {
+    const string SELECTED_CLASS = "selected";
+    const string LEFT_ARROW_BUTTON_TAG = "left-arrow-button";
+    const string RIGHT_ARROW_BUTTON_TAG = "right-arrow-button";
+
     MTRStoryManager _storyManager;
+    SelectableButton _previousSelectedButton;
+    SelectableButton _currentSelectedButton;
 
     bool _displayGenStorePamphlet;
 
@@ -15,9 +21,15 @@ public class GameUIController : UXML_UIDocumentObject
     InkyStoryStitchData _genStorePamphletStitch;
 
     public List<VisualElement> Pages = new List<VisualElement>();
-    public VisualElement currentselected;
     public int page;
-    protected VisualElement _genStorePamphletElement =>
+
+    /// <summary>
+    /// The current selectable elements in the pamphlet. This is updated based on the current state.
+    /// </summary>
+    SelectableVectorField<SelectableButton> _selectableVectorField =
+        new SelectableVectorField<SelectableButton>();
+
+    protected VisualElement genStorePamphletElement =>
         ElementQuery<VisualElement>("gen-store-pamphlet");
 
     public void Awake()
@@ -25,21 +37,28 @@ public class GameUIController : UXML_UIDocumentObject
         Initialize(preset);
         DisplayGenStorePamphlet(false);
 
-        MTRSceneController.Instance.OnSceneStateChanged += HandleSceneStateChanged;
         MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted += HandleInteractableAccepted;
     }
 
     void OnDestroy()
     {
-        MTRSceneController.Instance.OnSceneStateChanged -= HandleSceneStateChanged;
+        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
     }
 
-    void HandleSceneStateChanged(MTRSceneState state)
+    void OnExitButtonClick()
     {
-        if (state == MTRSceneState.PLAY_MODE)
-            SetVisibility(true);
-        else
-            SetVisibility(false);
+        DisplayGenStorePamphlet(false);
+    }
+
+    void OnLeftArrowButtonClick()
+    {
+        Debug.Log("Left Arrow Button Clicked");
+    }
+
+    void OnRightArrowButtonClick()
+    {
+        Debug.Log("Right Arrow Button Clicked");
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
@@ -66,7 +85,7 @@ public class GameUIController : UXML_UIDocumentObject
     public void DisplayGenStorePamphlet(bool display)
     {
         _displayGenStorePamphlet = display;
-        _genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+        genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
 
         // Audio
         MTR_AudioManager.Instance.PlayOneShotSFX(
@@ -75,46 +94,55 @@ public class GameUIController : UXML_UIDocumentObject
 
         if (display)
         {
-            // << SETUP PAGES >>
-            foreach (VisualElement page in _genStorePamphletElement.Children())
-            {
-                Pages.Add(page);
-                page.AddToClassList("Unselected");
-            }
-            currentselected = Pages[page];
-            currentselected.RemoveFromClassList("Unselected");
+            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PAUSE_MODE);
+
+            // Load the selectable elements
+            _selectableVectorField.Clear();
+            _selectableVectorField.Load(ElementQueryAll<SelectableButton>());
 
             MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+            MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+            MTRInputManager.OnMenuButton += () => DisplayGenStorePamphlet(false);
         }
         else
         {
+            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PLAY_MODE);
+            _selectableVectorField.Clear();
+
             MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+            MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+            MTRInputManager.OnMenuButton -= () => DisplayGenStorePamphlet(false);
         }
     }
 
     private void OnMoveInputStartAction(Vector2 moveInput)
     {
+        if (!_displayGenStorePamphlet)
+            return;
+
         Vector2 direction = new Vector2(moveInput.x, moveInput.y);
-        if (direction.x > 0)
+        _currentSelectedButton = _selectableVectorField.SelectElementInDirection(direction);
+
+        // If we have a new selection, update the previous and current selected buttons
+        if (_currentSelectedButton != null && _currentSelectedButton != _previousSelectedButton)
         {
-            if (page < 3)
-            {
-                currentselected.AddToClassList("Unselected");
-                page += 1;
-                currentselected = Pages[page];
-                currentselected.RemoveFromClassList("Unselected");
-            }
+            // Remove the selected class from the previous selected button
+            if (_previousSelectedButton != null)
+                _previousSelectedButton.RemoveFromClassList(SELECTED_CLASS);
+
+            // Add the selected class to the current selected button
+            _currentSelectedButton.AddToClassList(SELECTED_CLASS);
+            _previousSelectedButton = _currentSelectedButton;
         }
-        if (direction.x < 0)
-        {
-            if (page > 0)
-            {
-                currentselected.AddToClassList("Unselected");
-                page -= 1;
-                currentselected = Pages[page];
-                currentselected.RemoveFromClassList("Unselected");
-            }
-        }
+    }
+
+    private void OnPrimaryInteractAction()
+    {
+        if (!_displayGenStorePamphlet)
+            return;
+
+        // Handle any primary interaction with the current page if needed
+        MTR_AudioManager.Instance.PlayMenuSelectEvent();
     }
 
     [Button]

@@ -118,25 +118,19 @@ namespace Darklight.UnityExt.UXML
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
-                    Debug.Log(
-                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}"
-                    );
+                    // Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}");
                 }
                 else
                 {
                     // If we didn't find a new element, just return the old one.
                     pick = CurrentSelection;
-                    Debug.Log(
-                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection."
-                    );
+                    // Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection.");
                 }
                 return pick;
             }
             else
             {
-                Debug.LogError(
-                    ">> SelectableVectorField :: GetElementInDirection :: Direction is zero."
-                );
+                // Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
             }
             return CurrentSelection;
         }
