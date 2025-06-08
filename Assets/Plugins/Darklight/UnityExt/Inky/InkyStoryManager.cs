@@ -18,7 +18,7 @@ namespace Darklight.UnityExt.Inky
     /// <summary>
     ///  Singleton class for handling the data from Ink Stories and decrypting them into interpretable game data.
     /// </summary>
-    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>
+    public class InkyStoryManager : MonoBehaviourSingleton<InkyStoryManager>, IUnityEditorListener
     {
         const string ASSET_PATH = "Assets/Resources/Darklight/InkyStory";
 
@@ -138,7 +138,10 @@ namespace Darklight.UnityExt.Inky
         public static event StorySimpleEvent OnEndKnot;
         #endregion
 
-
+        void IUnityEditorListener.OnEditorReloaded()
+        {
+            Initialize();
+        }
 
         #region ---- < PROTECTED_VIRTUAL_METHODS > ( Internal Data Handling ) ---------------------------------
 
