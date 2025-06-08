@@ -110,14 +110,13 @@ public partial class MTRInteractable
         }
 #else
         void CreateDataSO(
+            MTRInteractable interactable,
             string sceneKnot,
             string interactionStitch,
-            Sprite sprite,
-            out MTRInteractableDataSO dataSO
+            Sprite sprite
         )
         {
             Debug.LogWarning("CreateDataSO can only be called in the Unity Editor");
-            dataSO = null;
         }
 #endif
 

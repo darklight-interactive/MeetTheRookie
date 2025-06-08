@@ -107,6 +107,7 @@ public class MTRInteractableDataSO : ScriptableObject
         string uniqueName = baseName;
         int counter = 1;
 
+#if UNITY_EDITOR
         // If the original name is taken by this asset, return the original name
         string currentPath = AssetDatabase.GetAssetPath(this);
         string basePath = Path.Combine(directory, $"{uniqueName}.asset").Replace('\\', '/');
@@ -131,7 +132,7 @@ public class MTRInteractableDataSO : ScriptableObject
                 return baseName;
             }
         }
-
+#endif
         return uniqueName;
     }
 

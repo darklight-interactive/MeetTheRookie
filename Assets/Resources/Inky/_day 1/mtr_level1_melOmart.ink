@@ -134,6 +134,7 @@ TODO SFX Door close
     - else:
         ~ SetSpeaker(Speaker.Beth)
         {The register drawer is busted. | Register is still busted. | Stillllllll busted, buddy.}
+        -> DONE
     }
 -else:
     // -- DISCOVER CASHREG_BROKEN
