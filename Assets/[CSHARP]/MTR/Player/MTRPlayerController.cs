@@ -314,23 +314,21 @@ public class MTRPlayerController : MonoBehaviour
         return false;
     }
 
-    public bool IsFacingPosition(Vector3 position)
-    {
-        if (DirectionFacing == MTRPlayerDirectionFacing.RIGHT && transform.position.x < position.x)
-            return true;
-        else if (
-            DirectionFacing == MTRPlayerDirectionFacing.LEFT
-            && transform.position.x > position.x
-        )
-            return true;
-        return false;
-    }
-
     public void FacePosition(Vector3 position)
     {
         if (transform.position.x < position.x)
+        {
             SetAnimationDirection(MTRPlayerDirectionFacing.RIGHT);
+            _directionFacing = MTRPlayerDirectionFacing.RIGHT;
+        }
         else if (transform.position.x > position.x)
+        {
             SetAnimationDirection(MTRPlayerDirectionFacing.LEFT);
+            _directionFacing = MTRPlayerDirectionFacing.LEFT;
+        }
+
+        Debug.Log(
+            $"PlayerController :: FacePosition :: {transform.position.x} | {position.x} | {DirectionFacing}"
+        );
     }
 }

@@ -56,6 +56,7 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         switch (stateType)
         {
             case MTRPlayerState.OVERRIDE_IDLE:
+            case MTRPlayerState.INTERACTION:
                 stateType = MTRPlayerState.FREE_IDLE;
                 break;
             case MTRPlayerState.OVERRIDE_WALK:
@@ -128,6 +129,12 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         public InteractionState(MTRPlayerStateMachine stateMachine)
             : base(stateMachine, MTRPlayerState.INTERACTION) { }
 
+        public override void Enter()
+        {
+            if (targetInteractable != null)
+                controller.FacePosition(targetInteractable.transform.position);
+        }
+
         public override void Execute()
         {
             if (
@@ -177,16 +184,6 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 
         IEnumerator WaitAndGoToInteractionState()
         {
-            animator.PlayStateAnimation(MTRPlayerState.FREE_IDLE); // Play idle animation
-
-            // Wait for the player to face the target position
-            Vector3 targetPos = interactor.TargetInteractable.transform.position;
-            if (!controller.IsFacingPosition(targetPos))
-            {
-                yield return new WaitForSeconds(0.15f);
-                controller.FacePosition(targetPos);
-            }
-
             // Delay before going to interaction state
             yield return new WaitForSeconds(0.5f);
             stateMachine.GoToState(MTRPlayerState.INTERACTION);

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Darklight.UnityExt.Animation;
-using UnityEngine;
 using NaughtyAttributes;
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -30,7 +29,10 @@ public class MTRPlayerAnimator : FrameAnimationPlayer
             else
                 Debug.LogError("No sprite sheet found for state: " + animationStateOverride);
         }
-        else { Debug.LogError("No animation state set for player animator"); }
+        else
+        {
+            Debug.LogError("No animation state set for player animator");
+        }
 
         _playerController = GetComponent<MTRPlayerController>();
         UpdateFacing();
@@ -45,7 +47,8 @@ public class MTRPlayerAnimator : FrameAnimationPlayer
     void UpdateFacing()
     {
         // Update facing direction from the player controller
-        if (_playerController == null) return;
+        if (_playerController == null)
+            return;
         if (_playerController.DirectionFacing == MTRPlayerDirectionFacing.LEFT)
             SetFacing(SpriteDirection.LEFT);
         else if (_playerController.DirectionFacing == MTRPlayerDirectionFacing.RIGHT)
@@ -75,13 +78,13 @@ public class MTRPlayerAnimator : FrameAnimationPlayer
     }
 }
 
-
 #if UNITY_EDITOR
 [CustomEditor(typeof(MTRPlayerAnimator)), CanEditMultipleObjects]
 public class PlayerAnimationEditor : UnityEditor.Editor
 {
     SerializedObject _serializedObject;
     MTRPlayerAnimator _script;
+
     private void OnEnable()
     {
         _serializedObject = new SerializedObject(target);
@@ -99,8 +102,6 @@ public class PlayerAnimationEditor : UnityEditor.Editor
 
         if (EditorGUI.EndChangeCheck())
         {
-
-
             _serializedObject.ApplyModifiedProperties();
         }
     }
