@@ -25,7 +25,8 @@ public enum MTRMystery
     UNKNOWN,
     MYSTERY_0,
     MYSTERY_1,
-    MYSTERY_2
+    MYSTERY_2,
+    MYSTERY_3
 }
 
 public class MTRStoryManager : InkyStoryManager
@@ -69,6 +70,9 @@ public class MTRStoryManager : InkyStoryManager
     [SerializeField]
     StoryVariableContainer _mystery2Clues;
 
+    [SerializeField]
+    StoryVariableContainer _mystery3Clues;
+
     #endregion
 
 
@@ -92,6 +96,7 @@ public class MTRStoryManager : InkyStoryManager
     }
 
     public delegate void SpeakerUpdateEvent(MTRSpeaker speaker);
+    public delegate void StringUpdateEvent(string str);
     public delegate void ListUpdateEvent(List<string> list);
     public delegate void MysteryKnowledgeUpdateEvent(int mysteryIndex);
     public static event SpeakerUpdateEvent OnNewSpeaker;
@@ -99,6 +104,7 @@ public class MTRStoryManager : InkyStoryManager
     public static event ListUpdateEvent OnCompletedQuestListUpdate;
     public static event MysteryKnowledgeUpdateEvent OnMysteryKnowledgeUpdate;
     public static event ListUpdateEvent OnGlobalKnowledgeUpdate;
+    public static event StringUpdateEvent OnRequestSpecialUI;
 
     protected override void HandleStoryInitialized()
     {
@@ -171,6 +177,15 @@ public class MTRStoryManager : InkyStoryManager
             {
                 OnMysteryKnowledgeUpdate?.Invoke(mystery);
                 Debug.Log($"{Prefix} >> DiscoverMystery: {mystery}");
+            }
+        );
+
+        GlobalStory.BindExternalFunction(
+            "RequestSpecialUI",
+            (string ui) =>
+            {
+                OnRequestSpecialUI?.Invoke(ui);
+                Debug.Log($"{Prefix} >> RequestSpecialUI: {ui}");
             }
         );
 
@@ -260,6 +275,7 @@ public class MTRStoryManager : InkyStoryManager
         TryGetVariableContainer("Mystery0", out _mystery0Clues);
         TryGetVariableContainer("Mystery1", out _mystery1Clues);
         TryGetVariableContainer("Mystery2", out _mystery2Clues);
+        TryGetVariableContainer("Mystery3", out _mystery3Clues);
     }
 
     public static MTRSpeaker GetSpeaker(string speaker)
@@ -296,6 +312,8 @@ public class MTRStoryManager : InkyStoryManager
                 return Instance._mystery1Clues.ValueAsStringList;
             case MTRMystery.MYSTERY_2:
                 return Instance._mystery2Clues.ValueAsStringList;
+            case MTRMystery.MYSTERY_3:
+                return Instance._mystery3Clues.ValueAsStringList;
             default:
                 return new List<string>();
         }

@@ -133,11 +133,11 @@ public partial class MTRClueContainer : VisualElement
     }
 
     /// <summary>
-    /// Returns true if the clue container contains a clue with the given name.
+    /// Returns true if the clue container data contains the given clue tag.
     /// </summary>
     /// <param name="clueTag">The tag of the clue to check for.</param>
     /// <param name="clueElement">The clue element if found, otherwise null.</param>
-    /// <returns>True if the clue container contains a clue with the given tag, otherwise false.</returns>
+    /// <returns>True if the clue container data contains the given clue tag, otherwise false.</returns>
     public bool Contains(string clueTag, out MTRClueElement clueElement)
     {
         foreach (MTRClueElement clue in _clues)

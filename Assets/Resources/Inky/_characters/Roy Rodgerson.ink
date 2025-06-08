@@ -151,7 +151,7 @@ Someone's got to try and turn things around.
     ~ SetSpeaker(Speaker.Lupe)
     Any ideas on who would want to break in and trash the place? 
         -> potential_suspects
-        }
+    }
 
 = merch_shirt
         Really leaning into that small town appeal, I see.

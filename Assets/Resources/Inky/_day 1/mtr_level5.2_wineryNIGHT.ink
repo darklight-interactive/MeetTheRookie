@@ -112,90 +112,65 @@ I can't leave--not without Misra.
 -> DONE
 
 === scene5_4 ====
-    //TODO SFX DOOR CLOSE 
-
-
-  + [handwritten_note_on_corkboard] -> handwritten_note
-   
-
++ [handwritten_note_on_corkboard] -> handwritten_note
 + [winery_blueprint] -> winery_blueprint
-
 //+ [locked_door_number_pad] ->number_pad
-
 + [newspaper_article_pinned_on_corkboard] -> read_newspaper
-
 + [door back to main room] -> door_back_to_main_room
-
-= read_newspaper
-    {IsQuestComplete(newspaper):
-    ~SetSpeaker(Speaker.Lupe)
-     Well, that's depressing. Seems like the Winery closing was the last straw.
-        -> DONE
-        
-    - else:
-        This place really did have bad luck.
-     ~ CompleteQuest(newspaper)
-    
-    -> DONE
-}
-
 + [winery_graph] -> winery_graph
 
+= read_newspaper
+    ~ DiscoverClue(Mystery3.evidence_newspaper)
+    ~ SetSpeaker(Speaker.Lupe)
+    Well, that's depressing. Seems like the Winery closing was the last straw.
+    -> DONE
+
 = winery_graph
-    {IsQuestComplete(winerygraph):
-        ~SetSpeaker(Speaker.Lupe)
-        Hmm...
-        
-        ->scene5_3
-        
-    -else:
-        ~SetSpeaker(Speaker.Lupe)
-
-        This place has really seen some bad days. 
-        And some good ones, too. 
-        I've never seen profit be this erratic and inconsistent.
-    ~ CompleteQuest(winerygraph)
+    ~ DiscoverClue(Mystery3.evidence_winerygraph)
+    ~ SetSpeaker(Speaker.Lupe)
+    This place has really seen some bad days. 
+    And some good ones, too. 
+    I've never seen profit be this erratic and inconsistent.
     -> DONE
-}
 
-=winery_blueprint
-{IsQuestComplete (blueprint):
-     ~SetSpeaker(Speaker.Lupe)
-    I'm in the Main Office...where could Misra have gone?
-    -> DONE
--else:
-    ~SetSpeaker(Speaker.Lupe)
+= winery_blueprint
+    ~ DiscoverClue(Mystery3.evidence_blueprint)
+    ~ SetSpeaker(Speaker.Lupe)
     What's this...?
     Huh...someone's birthday...
     Why does Sarah sound familiar...
-~ CompleteQuest (blueprint)
     -> DONE
- }
 
-
-=handwritten_note
- // stardew valley thing
-    {IsQuestComplete:
-        ~ SetSpeaker(Speaker. Lupe)
-        Another goat reference... 
-        -> DONE
-    
-    -else:
-         ~ SetSpeaker(Speaker. Lupe)
-        What's this...?
-        ~ CompleteQuest(handwrittennote)
-        -> DONE
-    }
+= handwritten_note
+    ~ DiscoverClue(Mystery3.evidence_handwrittennote)
+    ~ SetSpeaker(Speaker.Lupe)
+    Another goat reference... 
+    -> DONE
 
 
 = door_back_to_main_room
- ~ SetSpeaker(Speaker. Lupe)
- {No, no, no--Misra's got to be here somewhere. | I can't leave yet. | I know they're here <i> somewhere </i>. }
- -> DONE
+    ~ SetSpeaker(Speaker.Lupe)
+    {No, no, no--Misra's got to be here somewhere. | I can't leave yet. | I know they're here <i> somewhere </i>. }
+    -> DONE
  
 
 = door_pinpad
 TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
+~ DiscoverClue(evidence_pinpad)
+{IsQuestComplete(Level5_Quests.discover_pinpad):
+    ~ SetSpeaker(Speaker.Lupe)
+    ~ CompleteQuest(discover_pinpad)
+    Hmm.
+    What could the code be?
+- else:
+    ~ SetSpeaker(Speaker.Lupe)
+    Why not try the basic option...
+    someone's birthday...
+}
+~ RequestSpecialUI(su_pinpad)
+-> DONE
+
+
 // = number_pad
 
 // {winery_blueprint_evidence:

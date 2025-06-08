@@ -39,6 +39,7 @@ INCLUDE _day 2/mtr_level6.1_melOmart.ink
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName)
 EXTERNAL SetSpeaker(speaker)
+EXTERNAL RequestSpecialUI(special_ui_tag)
 EXTERNAL PlaySpecialAnimation(speaker)
 EXTERNAL PlaySFX(sfx)
 
@@ -52,6 +53,11 @@ VAR CURRENT_SPEAKER = Speaker.Lupe
 === function SetSpeaker(speaker)
     # SetSpeaker >> {speaker}
     ~ CURRENT_SPEAKER = speaker
+    ~ return
+
+// ====== SPECIAL_UI == >>
+LIST SPECIAL_UI = (su_pamphlet), (su_plaque), (su_pinpad)
+=== function RequestSpecialUI(special_ui_tag)
     ~ return
 
 // ====== QUEST HANDLING == >>
@@ -94,7 +100,7 @@ LIST Level4_Quests = (entered_arcade), (visited_goop), (visited_symbol), (visite
 //  LEVEL 5 : Quests and Clues
 // ----------------------------------------------------
 
-    LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote)
+LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote), (discover_pinpad)
 
 // LEVEL 6 
     LIST Level6_Quests = (haggle)
@@ -118,3 +124,4 @@ Just so you're aware, this is for bug testing.
 Sky really likes little things like to help figure things out
 They tend to break stuff.
 -> DONE
+

@@ -39,6 +39,7 @@ public class GameUIController : UXML_UIDocumentObject
         DisplayGenStorePamphlet(false);
 
         MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted += HandleInteractableAccepted;
+        MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
     }
 
     void OnDestroy()
@@ -70,6 +71,22 @@ public class GameUIController : UXML_UIDocumentObject
             {
                 DisplayGenStorePamphlet(true);
             }
+        }
+    }
+
+    void HandleRequestSpecialUI(string ui)
+    {
+        switch (ui)
+        {
+            case "su_pamphlet":
+                DisplayGenStorePamphlet(true);
+                break;
+            case "su_plaque":
+                break;
+            case "su_pinpad":
+                break;
+            default:
+                break;
         }
     }
 

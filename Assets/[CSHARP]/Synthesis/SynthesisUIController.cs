@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Darklight.UnityExt.Editor;
-using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.Input;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.UXML;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 /// <summary>
@@ -23,6 +18,7 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
     const string MYSTERY_0_TAG = "mystery-0";
     const string MYSTERY_1_TAG = "mystery-1";
     const string MYSTERY_2_TAG = "mystery-2";
+    const string MYSTERY_3_TAG = "mystery-3";
 
     private VisualElement _rootContainer => ElementQuery<VisualElement>(CONTAINER_TAG);
     private List<MTRClueContainer> _mysteryContainers =>
@@ -30,13 +26,14 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
         {
             ElementQuery<MTRClueContainer>(MYSTERY_0_TAG),
             ElementQuery<MTRClueContainer>(MYSTERY_1_TAG),
-            ElementQuery<MTRClueContainer>(MYSTERY_2_TAG)
+            ElementQuery<MTRClueContainer>(MYSTERY_2_TAG),
+            ElementQuery<MTRClueContainer>(MYSTERY_3_TAG)
         };
 
-    [SerializeField, ReadOnly]
+    [SerializeField, ShowOnly]
     private bool _isVisible = false;
 
-    [SerializeField, ReadOnly]
+    [SerializeField, ShowOnly]
     private int _activeMysteryIndex = 0;
 
     void Awake()
@@ -95,11 +92,22 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
 
     void SetActiveMystery(int mysteryIndex)
     {
+        // If the mystery index is out of bounds, return
+        if (mysteryIndex < 0 || mysteryIndex >= _mysteryContainers.Count)
+            return;
+
+        // Set the active mystery index
         _activeMysteryIndex = mysteryIndex;
         ResetMysteries();
-        _mysteryContainers[mysteryIndex].style.display = DisplayStyle.Flex;
+
+        // Set the active mystery container to visible
+        if (_mysteryContainers[mysteryIndex] != null)
+            _mysteryContainers[mysteryIndex].style.display = DisplayStyle.Flex;
     }
 
+    /// <summary>
+    /// Reset all the mystery containers to hidden
+    /// </summary>
     void ResetMysteries()
     {
         foreach (var container in _mysteryContainers)
@@ -117,6 +125,11 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
         _rootContainer.style.visibility = visible ? Visibility.Visible : Visibility.Hidden;
     }
 
+    void DisplayMystery(int mysteryIndex)
+    {
+        SetActiveMystery(mysteryIndex);
+    }
+
     [Button]
     public new void ToggleVisibility()
     {
@@ -124,20 +137,14 @@ public class SynthesisUIController : UXML_UIDocumentObject, IUnityEditorListener
     }
 
     [Button]
-    public void DisplayMystery0()
-    {
-        SetActiveMystery(0);
-    }
+    public void DisplayMystery0() => DisplayMystery(0);
 
     [Button]
-    public void DisplayMystery1()
-    {
-        SetActiveMystery(1);
-    }
+    public void DisplayMystery1() => DisplayMystery(1);
 
     [Button]
-    public void DisplayMystery2()
-    {
-        SetActiveMystery(2);
-    }
+    public void DisplayMystery2() => DisplayMystery(2);
+
+    [Button]
+    public void DisplayMystery3() => DisplayMystery(3);
 }
