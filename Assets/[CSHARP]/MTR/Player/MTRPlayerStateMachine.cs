@@ -35,13 +35,20 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         bool result = base.GoToState(stateType);
         if (result)
         {
-            Debug.Log($"Player GoToState: {stateType}");
+            //Debug.Log($"Player GoToState: {stateType}");
             SetAnimation(stateType);
             SetInputs(stateType);
             SetInteractor(stateType);
         }
 
         return result;
+    }
+
+    public void RefreshStateValues()
+    {
+        SetAnimation(CurrentState);
+        SetInputs(CurrentState);
+        SetInteractor(CurrentState);
     }
 
     void SetAnimation(MTRPlayerState stateType)

@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Darklight.UnityExt.Input;
-
-using UnityEngine;
-using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Behaviour;
-using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Input;
 using EasyButtons;
-
-
+using UnityEngine;
+using static Darklight.UnityExt.Animation.FrameAnimationPlayer;
 #if UNITY_EDITOR
 using UnityEditor;
 using EasyButtons.Editor;
 #endif
-
 
 /// <summary>
 /// This class is responsible for translating player input into movement and interaction.
@@ -26,25 +22,30 @@ public class MTRPlayerInput : MonoBehaviour
     bool _sceneListenerInitialized = false;
 
     [Header("Enabled States")]
-    [SerializeField, ShowOnly] bool _allInputEnabled;
-    [SerializeField, ShowOnly] bool _movementInputEnabled;
-    [SerializeField, ShowOnly] bool _interactInputEnabled;
+    [SerializeField, ShowOnly]
+    bool _allInputEnabled;
+
+    [SerializeField, ShowOnly]
+    bool _movementInputEnabled;
+
+    [SerializeField, ShowOnly]
+    bool _interactInputEnabled;
 
     [Header("Active Inputs")]
-    [SerializeField, ShowOnly] Vector2 _activeMoveInput = Vector2.zero;
-    [SerializeField, ShowOnly] bool _activePrimaryInteractInput = false;
+    [SerializeField, ShowOnly]
+    Vector2 _activeMoveInput = Vector2.zero;
+
+    [SerializeField, ShowOnly]
+    bool _activePrimaryInteractInput = false;
 
     public MTRPlayerController Controller => GetComponent<MTRPlayerController>();
     public MTRPlayerInteractor Interactor => GetComponent<MTRPlayerInteractor>();
     public bool IsAllInputEnabled
     {
-        get
-        {
-            return _allInputEnabled = _movementInputEnabled && _interactInputEnabled;
-        }
+        get { return _allInputEnabled = _movementInputEnabled && _interactInputEnabled; }
     }
 
-    #region ---- < PRIVATE_METHODS > ( UNITY_RUNTIME ) --------------------------------- 
+    #region ---- < PRIVATE_METHODS > ( UNITY_RUNTIME ) ---------------------------------
     void Awake()
     {
         SetAllInputsEnabled(false);
@@ -59,7 +60,6 @@ public class MTRPlayerInput : MonoBehaviour
     {
         _allInputEnabled = _movementInputEnabled && _interactInputEnabled;
     }
-
 
     #endregion
 
@@ -97,7 +97,7 @@ public class MTRPlayerInput : MonoBehaviour
             MTRInputManager.OnMoveInputCanceled -= HandleOnMoveInputCanceled;
         }
         _movementInputEnabled = enable;
-        Debug.Log("MTRPlayerInput :: SetMovementInputEnabled :: " + enable, this);
+        // Debug.Log("MTRPlayerInput :: SetMovementInputEnabled :: " + enable, this);
     }
 
     public void SetInteractInputEnabled(bool enable)
@@ -113,7 +113,7 @@ public class MTRPlayerInput : MonoBehaviour
             MTRInputManager.OnPrimaryInteractCanceled -= HandlePrimaryInteractCanceled;
         }
         _interactInputEnabled = enable;
-        Debug.Log("MTRPlayerInput :: SetInteractInputEnabled :: " + enable, this);
+        // Debug.Log("MTRPlayerInput :: SetInteractInputEnabled :: " + enable, this);
     }
 
     void HandleMoveInput(Vector2 moveInput)
@@ -139,7 +139,6 @@ public class MTRPlayerInput : MonoBehaviour
         _activePrimaryInteractInput = false;
     }
 
-
     // =================================== [[ TRIGGER ]] =================================== >>
     /*
     void OnTriggerEnter2D(Collider2D other)
@@ -157,7 +156,7 @@ public class MTRPlayerInput : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        // Reset state to Walk/Idle 
+        // Reset state to Walk/Idle
         if (other.GetComponent<Hideable_Object>() != null)
         {
             StateMachine.GoToState(MTRPlayerState.IDLE);
@@ -214,8 +213,3 @@ public class MTRPlayerInput : MonoBehaviour
     }
 #endif
 }
-
-
-
-
-

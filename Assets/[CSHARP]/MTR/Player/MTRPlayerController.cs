@@ -89,8 +89,13 @@ public class MTRPlayerController : MonoBehaviour
     {
         _stateMachine = new MTRPlayerStateMachine(this);
         _stateMachine.OnStateChanged += (state) => _currentState = state;
+    }
 
-        _stateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
+    void Start()
+    {
+        _stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
+
+        StateMachine.RefreshStateValues(); // just to make sure the state is set correctly
     }
 
     void FixedUpdate()
@@ -256,7 +261,7 @@ public class MTRPlayerController : MonoBehaviour
     // << PUBLIC_METHODS >> ==================================================================== >>
     public void HandleMoveInput(Vector2 moveInput)
     {
-        Debug.Log("<MTRPlayerController> HandleMoveInput :: " + moveInput);
+        //Debug.Log("<MTRPlayerController> HandleMoveInput :: " + moveInput);
         SetMoveDirection(moveInput.x);
     }
 

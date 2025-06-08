@@ -1,19 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.FMODExt;
-using Darklight.UnityExt.Inky;
-using Darklight.UnityExt.Input;
-using Darklight.UnityExt.Utility;
 using Darklight.UnityExt.UXML;
 using Ink.Runtime;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 public partial class MTRDatingSimController : UXML_UIDocumentObject
@@ -36,6 +34,10 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     bool _choicesActive;
     bool _isRolling = false;
+
+    Coroutine _rollingTextCoroutine;
+    Coroutine _choicesCoroutine;
+
     ControlledLabel _dialogueLabel;
     VisualElement _continueTriangle;
     VisualElement _lupe_nameTag;
@@ -68,7 +70,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     // ================ [[ PROPERTIES ]] ================================ >>>>
 
     // ================ [[ UNITY METHODS ]] ============================ >>>>
-    void Start()
+    void Awake()
     {
         MTRSceneController.StateMachine.OnStateChanged += OnSceneStateChanged;
 
@@ -255,15 +257,44 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     void EnableInput()
     {
         MTRInputManager.OnMoveInputStarted += HandleSelectionInput;
-        MTRInputManager.OnPrimaryInteract += Select;
+        MTRInputManager.OnPrimaryInteract += HandlePrimaryInput;
         _inputEnabled = true;
     }
 
     void DisableInput()
     {
         MTRInputManager.OnMoveInputStarted -= HandleSelectionInput;
-        MTRInputManager.OnPrimaryInteract -= Select;
+        MTRInputManager.OnPrimaryInteract -= HandlePrimaryInput;
         _inputEnabled = false;
+    }
+
+    /// <summary>
+    /// The function to handle primary input
+    /// </summary>
+    void HandlePrimaryInput()
+    {
+        // If the rolling text is rolling, skip it
+        if (_isRolling && _rollingTextCoroutine != null)
+        {
+            SkipRollingText();
+            return;
+        }
+
+        // If the choices are active, and the choices coroutine is not running, select a choice
+        if (_choicesActive)
+        {
+            SelectChoice();
+            return;
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"{PREFIX} >> Primary Input: Cannot skip choice while coroutine is running"
+            );
+        }
+
+        // If the story is not rolling, and the choices are not active, continue the story
+        MTRStoryManager.ContinueStory();
     }
 
     #region ======== [[ STORY DIALOGUE ]] <PRIVATE_METHODS> ========================== >>>>
@@ -276,7 +307,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         // TODO: Convert tags to function calls
 
         MTRStoryManager.TryGetTags(out IEnumerable<string> tags);
-
         foreach (string tag in tags)
         {
             string[] splitTag = tag.ToLower().Split(":");
@@ -322,8 +352,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         }
 
         Debug.Log($"{PREFIX} >> Dialogue: {dialogue} - Speaker: {MTRStoryManager.CurrentSpeaker}");
-
-        StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
+        _rollingTextCoroutine = StartCoroutine(RollingTextRoutine(dialogue, 0.025f));
     }
 
     void HandleSpeaker(MTRSpeaker speaker)
@@ -358,11 +387,13 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
     IEnumerator RollingTextRoutine(string fullText, float interval)
     {
+        // Setup
         _isRolling = true;
         _continueTriangle.visible = false;
         _dialogueLabel.SetFullText(fullText); // << Set rolling text
         float buffer = 1f;
 
+        // foreach character in the full text, step the rolling text
         for (int i = 0; i < _dialogueLabel.FullText.Length; i++)
         {
             _dialogueLabel.RollingTextStep();
@@ -378,6 +409,18 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         _isRolling = false;
         _continueTriangle.visible = true;
     }
+
+    void SkipRollingText()
+    {
+        if (_rollingTextCoroutine != null)
+        {
+            StopCoroutine(_rollingTextCoroutine);
+            _rollingTextCoroutine = null;
+        }
+
+        _dialogueLabel.InstantCompleteText();
+        _isRolling = false;
+    }
     #endregion
 
     #region ======== [[ STORY CHOICE ]] <PRIVATE_METHODS> ========================== >>>>
@@ -390,13 +433,12 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
 
         ResetChoiceMap();
 
-        StartCoroutine(HandleStoryChoicesRoutine(choices));
+        _choicesCoroutine = StartCoroutine(HandleStoryChoicesRoutine(choices));
     }
 
     IEnumerator HandleStoryChoicesRoutine(List<Choice> choices)
     {
         yield return new WaitForSeconds(0.5f);
-
         int index = 0;
         foreach (Choice choice in choices)
         {
@@ -443,28 +485,6 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         else
         {
             //Debug.LogError($"{PREFIX} >> Move: {move} - No Selected Move Target");
-        }
-    }
-
-    /// <summary>
-    /// The function to select choice via input
-    /// </summary>
-    void Select()
-    {
-        if (_isRolling)
-        {
-            StopAllCoroutines();
-            _dialogueLabel.InstantCompleteText();
-            _isRolling = false;
-            _continueTriangle.visible = true;
-        }
-        else if (_choicesActive)
-        {
-            SelectChoice();
-        }
-        else
-        {
-            MTRStoryManager.ContinueStory();
         }
     }
 

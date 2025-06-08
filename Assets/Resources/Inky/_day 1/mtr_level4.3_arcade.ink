@@ -47,7 +47,6 @@
     }
 = teens
     -> Teens_Dialogue.teens
-    
 = jenny
     -> Teens_Dialogue.jenny
 = calvin

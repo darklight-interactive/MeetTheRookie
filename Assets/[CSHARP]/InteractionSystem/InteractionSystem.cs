@@ -341,7 +341,7 @@ public class InteractionSystem : MonoBehaviourSingleton<InteractionSystem>, IUni
             else
             {
                 Interactables.Add(interactable.Key, interactable);
-                Debug.Log($"{Prefix} Adding {interactable.Print()} to the Registry", interactable);
+                //Debug.Log($"{Prefix} Adding {interactable.Print()} to the Registry", interactable);
                 result = true;
             }
         }

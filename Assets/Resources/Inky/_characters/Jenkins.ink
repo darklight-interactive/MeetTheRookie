@@ -52,7 +52,6 @@
 
 = jenkins_winery_
     ~ SetSpeaker(Speaker.Jenkins)
-    .
      Will I ever stop hearing about the godforsaken place? 
      S'worth nothing but the dirt it stands on.
     ~ SetSpeaker(Speaker.Lupe)
@@ -64,11 +63,10 @@
     ...
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(jenkins_winery)
-    -> DONE
+    -> jenkins_questions
 
 = jenkins_last_night
     ~ SetSpeaker(Speaker.Jenkins)
-    .
      Last night?
      S'was here last night, I was.
     ~ SetSpeaker(Speaker.Lupe)
@@ -79,12 +77,10 @@
      I feel like I can still hear them...
     ~ SetSpeaker(Speaker.Lupe)
     ~ DiscoverClue(council_mentioned)
-    // Add to Synthesis: Who broke into the Old Winery?
-    -> DONE
+    -> jenkins_questions
 
 = jenkins_kettle_rock
     ~ SetSpeaker(Speaker.Jenkins)
-    .
      Kettle goddammed Rock.
      All that blood sunk into this town.
      All that blood turned into fleeting money.
@@ -93,12 +89,11 @@
      What have you done, Sarah?
     // Add to Synthesis: The Town of KR 
     ~ DiscoverClue(sarah_mentioned)
-    -> DONE
+    -> jenkins_questions
     
     
 = jenkins_council
     ~ SetSpeaker(Speaker.Jenkins)
-    .
      <i>Them</i>. 
      I feel them.
      I feel their sacrifice.
@@ -115,12 +110,10 @@
      To give us time and--and--
      ...
     ~ DiscoverClue(sacrifice_mentioned_jenkins)
-    // Add to Synthesis: the Town of KR
-    -> DONE
+    -> jenkins_questions
 
 = jenkins_sarah
     ~ SetSpeaker(Speaker.Jenkins)
-    .
      Such a good heart.
      But desperation misguides the good.
      She thought she was right,
@@ -138,12 +131,10 @@
     ~ SetSpeaker(Speaker.Misra)
      I..
      I-I don't know who you're talking about.
-    //Add to Synthesis: The Town of KR
-    -> DONE    
+    -> jenkins_questions
     
 = jenkins_sacrifice
     ~ SetSpeaker(Speaker.Lupe)
-    .
     That's the second time I've heard that word tossed around. Are you talking about the people who vanished? The ..Council?
 ~ SetSpeaker(Speaker.Jenkins)
      'Vanished', psh...
