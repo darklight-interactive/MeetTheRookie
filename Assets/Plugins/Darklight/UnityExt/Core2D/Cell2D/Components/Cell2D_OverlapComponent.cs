@@ -40,13 +40,12 @@ namespace Darklight.UnityExt.Core2D
                 base.OnUpdate();
                 UpdateColliders();
             }
-
             public override void DrawGizmos()
             {
                 BaseCell.GetTransformData(out Vector3 position, out Vector2 dimensions, out Vector3 normal);
                 GetColor(out Color color);
                 int colliderCount = GetColliderCount();
-
+#if UNITY_EDITOR
                 // << DRAW LABEL >>
                 string label = $"Overlap Colliders : {colliderCount}";
                 Vector3 labelPosition = position + (new Vector3(-dimensions.x, dimensions.y, 0) * 0.5f);
@@ -65,11 +64,11 @@ namespace Darklight.UnityExt.Core2D
                     Color alphaColor = new Color(color.r, color.g, color.b, 0.3f);
                     CustomGizmos.DrawSolidRect(position, dimensions, normal, alphaColor);
                 }
+#endif
             }
 
             public override void DrawSelectedGizmos() { }
             public override void DrawEditorGizmos() { }
-
             // ======== [[ PUBLIC METHODS ]] =========================== >>>>
             public int GetColliderCount()
             {
