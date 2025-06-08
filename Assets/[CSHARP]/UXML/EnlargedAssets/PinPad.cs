@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Darklight.UnityExt.Editor;
 using Darklight.UnityExt.Input;
 using Darklight.UnityExt.UXML;
 using UnityEngine;
@@ -15,16 +16,22 @@ public class PinPad : MonoBehaviour
     public VisualElement LFlasher;
     public VisualElement RFlasher;
     private int selector = 0;
-    private string correctcode;
-    public int Inputted = 0;
-    public bool ispinpadcorrect;
 
-    // Start is called before the first frame update
+    [SerializeField, ShowOnly]
+    string _correctcode = "100722";
 
-    void Start()
+    [SerializeField, ShowOnly]
+    [Tooltip("Current number of input values")]
+    int _numInputValues = 0;
+
+    [SerializeField, ShowOnly]
+    bool _isPinPadCorrect;
+
+    void Initialize()
     {
         MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+
         VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
         groupbase = root.Q<VisualElement>("Base");
         Numbers = root.Q<VisualElement>("Numbers").Q<Label>("Numbers");
@@ -37,13 +44,26 @@ public class PinPad : MonoBehaviour
                 buttons.Add(child);
             }
         }
-        correctcode = "100722";
         buttons.Remove(Numbers);
         currentselected = buttons[selector];
         currentselected.RemoveFromClassList("UnHovered");
         currentselected.AddToClassList("Hovered");
         groupbase.style.scale = new StyleScale(new Scale(new Vector2(1.4f, 1.4f)));
         Debug.Log(buttons.Count());
+    }
+
+    void Reset()
+    {
+        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+    }
+
+    public void EnablePinPad(bool display)
+    {
+        if (display)
+            Initialize();
+        else
+            Reset();
     }
 
     void OnMoveInputStartAction(Vector2 dir)
@@ -105,9 +125,9 @@ public class PinPad : MonoBehaviour
         currentselected.AddToClassList("Selected");
         if (currentselected.name != "Pound" && currentselected.name != "Star")
         {
-            if (Inputted < 6)
+            if (_numInputValues < 6)
             {
-                Inputted += 1;
+                _numInputValues += 1;
                 Numbers.text += currentselected.name;
                 MTR_AudioManager.Instance.PlayOneShotSFX(
                     MTR_AudioManager.Instance.generalSFX.pinpadNumber
@@ -116,16 +136,16 @@ public class PinPad : MonoBehaviour
         }
         if (currentselected.name == "Star")
         {
-            Inputted = 0;
+            _numInputValues = 0;
             Numbers.text = "";
         }
         if (currentselected.name == "Pound")
         {
-            if (Numbers.text != correctcode)
+            if (Numbers.text != _correctcode)
             {
                 StartCoroutine(Incorrect());
             }
-            if (Numbers.text == correctcode)
+            if (Numbers.text == _correctcode)
             {
                 StartCoroutine(Correct());
             }
@@ -142,7 +162,7 @@ public class PinPad : MonoBehaviour
         );
         yield return new WaitForSecondsRealtime(0.6f);
         LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
-        ispinpadcorrect = true;
+        _isPinPadCorrect = true;
     }
 
     IEnumerator Incorrect()

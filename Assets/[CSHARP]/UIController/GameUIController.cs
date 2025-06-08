@@ -5,18 +5,21 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(PinPad))]
 public class GameUIController : UXML_UIDocumentObject
 {
     const string SELECTED_CLASS = "selected";
     const string LEFT_ARROW_BUTTON_TAG = "left-arrow-button";
     const string RIGHT_ARROW_BUTTON_TAG = "right-arrow-button";
     const string GEN_STORE_PAMPHLET_TAG = "gen-store-pamphlet";
+    const string PIN_PAD_TAG = "winery-pinpad";
 
     MTRStoryManager _storyManager;
     SelectableButton _previousSelectedButton;
     SelectableButton _currentSelectedButton;
 
-    bool _displayGenStorePamphlet;
+    bool _pamphletIsDisplayed;
+    bool _pinPadIsDisplayed;
 
     [SerializeField]
     InkyStoryStitchData _genStorePamphletStitch;
@@ -33,10 +36,16 @@ public class GameUIController : UXML_UIDocumentObject
     SelectableButton _leftArrowButton;
     SelectableButton _rightArrowButton;
 
+    PinPad _pinPadScript;
+    VisualElement _pinPadElement;
+
     public void Awake()
     {
+        _pinPadScript = GetComponent<PinPad>();
+
         Initialize(preset);
         DisplayGenStorePamphlet(false);
+        DisplayPinPad(false);
 
         MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted += HandleInteractableAccepted;
         MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
@@ -44,13 +53,15 @@ public class GameUIController : UXML_UIDocumentObject
 
     void OnDestroy()
     {
+        MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted -= HandleInteractableAccepted;
+        MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
+
         MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
         MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-    }
+        MTRInputManager.OnMenuButton -= OnMenuButtonAction;
 
-    void OnExitButtonClick()
-    {
-        DisplayGenStorePamphlet(false);
+        _leftArrowButton.OnClick -= OnLeftArrowButtonClick;
+        _rightArrowButton.OnClick -= OnRightArrowButtonClick;
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
@@ -84,6 +95,7 @@ public class GameUIController : UXML_UIDocumentObject
             case "su_plaque":
                 break;
             case "su_pinpad":
+                DisplayPinPad(true);
                 break;
             default:
                 break;
@@ -92,7 +104,7 @@ public class GameUIController : UXML_UIDocumentObject
 
     public void DisplayGenStorePamphlet(bool display)
     {
-        _displayGenStorePamphlet = display;
+        _pamphletIsDisplayed = display;
 
         _genStorePamphletElement = ElementQuery<VisualElement>(GEN_STORE_PAMPHLET_TAG);
         _genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
@@ -124,7 +136,7 @@ public class GameUIController : UXML_UIDocumentObject
 
             MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton += () => DisplayGenStorePamphlet(false);
+            MTRInputManager.OnMenuButton += OnMenuButtonAction;
 
             _leftArrowButton.OnClick += OnLeftArrowButtonClick;
             _rightArrowButton.OnClick += OnRightArrowButtonClick;
@@ -138,10 +150,36 @@ public class GameUIController : UXML_UIDocumentObject
 
             MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton -= () => DisplayGenStorePamphlet(false);
+            MTRInputManager.OnMenuButton -= OnMenuButtonAction;
 
             _leftArrowButton.OnClick -= OnLeftArrowButtonClick;
             _rightArrowButton.OnClick -= OnRightArrowButtonClick;
+        }
+    }
+
+    void DisplayPinPad(bool display)
+    {
+        _pinPadIsDisplayed = display;
+
+        _pinPadElement = ElementQuery<VisualElement>(PIN_PAD_TAG);
+        _pinPadElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+        _pinPadScript.EnablePinPad(display);
+
+        if (display)
+        {
+            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PAUSE_MODE);
+
+            MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+            MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+            MTRInputManager.OnMenuButton += OnMenuButtonAction;
+        }
+        else
+        {
+            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PLAY_MODE);
+
+            MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+            MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
+            MTRInputManager.OnMenuButton -= OnMenuButtonAction;
         }
     }
 
@@ -174,6 +212,12 @@ public class GameUIController : UXML_UIDocumentObject
         }
     }
 
+    void OnMenuButtonAction()
+    {
+        DisplayGenStorePamphlet(false);
+        DisplayPinPad(false);
+    }
+
     void SetPamphletPage(int pageIndex)
     {
         if (pageIndex < 0 || pageIndex >= _genStorePamphletPages.Count)
@@ -203,7 +247,13 @@ public class GameUIController : UXML_UIDocumentObject
     [Button]
     public void ToggleGenStorePamphlet()
     {
-        DisplayGenStorePamphlet(!_displayGenStorePamphlet);
+        DisplayGenStorePamphlet(!_pamphletIsDisplayed);
+    }
+
+    [Button]
+    public void TogglePinPad()
+    {
+        DisplayPinPad(!_pinPadIsDisplayed);
     }
 
     [Button]

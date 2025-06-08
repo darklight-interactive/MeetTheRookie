@@ -309,17 +309,73 @@ MonoBehaviour:
     _valueAsString: 
     _valueAsStringList: []
   _mystery0Clues:
-    _key: 
-    _valueAsString: 
-    _valueAsStringList: []
+    _key: Mystery0
+    _valueAsString: evidence_broken_gas_pump, evidence_broken_cash_reg, evidence_cashreg_fix
+    _valueAsStringList:
+    - Mystery0.evidence_broken_gas_pump
+    - Mystery0.evidence_broken_cash_reg
+    - Mystery0.evidence_cashreg_fix
   _mystery1Clues:
-    _key: 
-    _valueAsString: 
-    _valueAsStringList: []
+    _key: Mystery1
+    _valueAsString: evidence_broken_window, evidence_footsteps, evidence_fence, evidence_claw_marks,
+      evidence_damages, evidence_handprint
+    _valueAsStringList:
+    - Mystery1.evidence_broken_window
+    - Mystery1.evidence_footsteps
+    - Mystery1.evidence_fence
+    - Mystery1.evidence_claw_marks
+    - Mystery1.evidence_damages
+    - Mystery1.evidence_handprint
   _mystery2Clues:
-    _key: 
-    _valueAsString: 
-    _valueAsStringList: []
+    _key: Mystery2
+    _valueAsString: merch_pamphlet, roys_suspicion, roy_personal_info, roy_winery_closing,
+      golden_age, tragedy, rocky_years, roy_town_history, HOSI_mentioned, jenny_crazies,
+      HOSI_calvin, josh_suspects, calvin_suspects, goats_mentioned, sacrifice_mentioned,
+      KR_irene, closed_shops_irene, jenkins_winery, sarah_mentioned, council_mentioned,
+      sacrifice_mentioned_jenkins, symbol_evidence, goop_evidence, HOSI_highscore,
+      personal_info_jenny, personal_info_josh, winery_josh, KR_josh, calvin_questions_intro,
+      josh_questions_intro
+    _valueAsStringList:
+    - Mystery2.merch_pamphlet
+    - Mystery2.roys_suspicion
+    - Mystery2.roy_personal_info
+    - Mystery2.roy_winery_closing
+    - Mystery2.golden_age
+    - Mystery2.tragedy
+    - Mystery2.rocky_years
+    - Mystery2.roy_town_history
+    - Mystery2.HOSI_mentioned
+    - Mystery2.jenny_crazies
+    - Mystery2.HOSI_calvin
+    - Mystery2.josh_suspects
+    - Mystery2.calvin_suspects
+    - Mystery2.goats_mentioned
+    - Mystery2.sacrifice_mentioned
+    - Mystery2.KR_irene
+    - Mystery2.closed_shops_irene
+    - Mystery2.jenkins_winery
+    - Mystery2.sarah_mentioned
+    - Mystery2.council_mentioned
+    - Mystery2.sacrifice_mentioned_jenkins
+    - Mystery2.symbol_evidence
+    - Mystery2.goop_evidence
+    - Mystery2.HOSI_highscore
+    - Mystery2.personal_info_jenny
+    - Mystery2.personal_info_josh
+    - Mystery2.winery_josh
+    - Mystery2.KR_josh
+    - Mystery2.calvin_questions_intro
+    - Mystery2.josh_questions_intro
+  _mystery3Clues:
+    _key: Mystery3
+    _valueAsString: evidence_winerygraph, evidence_blueprint, evidence_newspaper,
+      evidence_handwrittennote, evidence_pinpad
+    _valueAsStringList:
+    - Mystery3.evidence_winerygraph
+    - Mystery3.evidence_blueprint
+    - Mystery3.evidence_newspaper
+    - Mystery3.evidence_handwrittennote
+    - Mystery3.evidence_pinpad
 --- !u!114 &3231504660078741222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,7 +390,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: f07cc0a1cc2e82d428d539f855854a51, type: 2}
   _interactableRegistry:
-    _items: []
+    _items:
+    - _id: 0
+      _key: scene5_4.winery_blueprint
+      _value: {fileID: 0}
+    - _id: 1
+      _key: scene5_4.winery_graph
+      _value: {fileID: 0}
+    - _id: 2
+      _key: scene5_4.read_newspaper
+      _value: {fileID: 0}
+    - _id: 3
+      _key: scene5_4.door_pinpad
+      _value: {fileID: 0}
+    - _id: 4
+      _key: LUPE
+      _value: {fileID: 0}
+    - _id: 5
+      _key: scene5_4.handwritten_note
+      _value: {fileID: 0}
+    - _id: 6
+      _key: scene5_4.door_back_to_main_room
+      _value: {fileID: 0}
     _readOnlyKey: 1
     _readOnlyValue: 1
 --- !u!114 &7660991113585935654
@@ -526,6 +603,7 @@ GameObject:
   - component: {fileID: 8956101955322927365}
   - component: {fileID: 497600930602257893}
   - component: {fileID: 3150071391316046395}
+  - component: {fileID: 4943068039928297893}
   m_Layer: 5
   m_Name: GameUIController
   m_TagString: Untagged
@@ -578,9 +656,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: edd809d35122df948839c0de65098950, type: 2}
   _genStorePamphletStitch:
-    _sceneKnot: scene4_2
-    _interactionStitch: scene4_2.pamphlet
-  page: 0
+    _knot: scene_default
+    _stitch: interaction_default
+--- !u!114 &4943068039928297893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394230022270883758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db03a7952b93e431896982fc339f2f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Inputted: 0
+  ispinpadcorrect: 0
 --- !u!1 &6381094831533181254
 GameObject:
   m_ObjectHideFlags: 0
