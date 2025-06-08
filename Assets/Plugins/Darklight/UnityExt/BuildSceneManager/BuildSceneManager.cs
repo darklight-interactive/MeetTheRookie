@@ -69,7 +69,7 @@ namespace Darklight.UnityExt.BuildScene
     }
     #endregion
 
-    public abstract class BuildSceneManager<TData> : MonoBehaviourSingleton<BuildSceneManager<TData>>
+    public abstract class BuildSceneManager<TData> : MonoBehaviourSingleton<BuildSceneManager<TData>>, IUnityEditorListener
         where TData : IBuildSceneData, new()
     {
         const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
@@ -127,6 +127,13 @@ namespace Darklight.UnityExt.BuildScene
                 string scenePath = _pathKeys[i];
                 editorBuildSettingsScenes[i] = new EditorBuildSettingsScene(scenePath, true);
                 EditorBuildSettingsScene newEditorBuildSettingsScene = editorBuildSettingsScenes[i];
+
+                /* Debug.Log($"{Prefix} Found scene {scenePath} and added it to the build settings." +
+                    $"\nIndex: {i}" +
+                    $"\nPath: {newEditorBuildSettingsScene.path}" +
+                    $"\nEnabled: {newEditorBuildSettingsScene.enabled}" +
+                    $"\nGUID: {newEditorBuildSettingsScene.guid}");
+                */
             }
             EditorBuildSettings.scenes = editorBuildSettingsScenes;
 
@@ -151,6 +158,8 @@ namespace Darklight.UnityExt.BuildScene
             EditorUtility.SetDirty(this);
 #endif
         }
+
+
 
         void HandleActiveSceneChanged(Scene oldScene, Scene newScene)
         {

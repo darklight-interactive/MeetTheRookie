@@ -1,4 +1,9 @@
+using System;
 using Darklight.UnityExt.Behaviour;
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Inky;
+using UnityEditorInternal;
+using UnityEngine;
 
 public partial class BaseInteractable
 {

@@ -35,15 +35,4 @@ public class MTRInteractionSystem : InteractionSystem
             }
         }
     }
-
-    public static void ResetAllInteractablesExcept(List<MTRInteractable> whitelist)
-    {
-        foreach (MTRInteractable interactable in Registry.Interactables.Values)
-        {
-            if (!whitelist.Contains(interactable))
-            {
-                interactable.Reset();
-            }
-        }
-    }
 }
