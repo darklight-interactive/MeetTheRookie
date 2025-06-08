@@ -536,7 +536,10 @@ public class PlayAnimationState : FiniteState<NPCState>
         _returnState = (NPCState)args[1];
     }
 
-    public override void Enter() { }
+    public override void Enter()
+    {
+        _stateMachine.animator.PlayStateAnimation(NPCState.PLAY_ANIMATION);
+    }
 
     public override void Exit() { }
 

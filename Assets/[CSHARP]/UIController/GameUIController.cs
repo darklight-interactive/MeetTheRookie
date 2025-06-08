@@ -172,6 +172,8 @@ public class GameUIController : UXML_UIDocumentObject
             MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
             MTRInputManager.OnMenuButton += OnMenuButtonAction;
+
+            _pinPadScript.OnPinPadCorrect += OnPinPadCorrectAction;
         }
         else
         {
@@ -180,6 +182,8 @@ public class GameUIController : UXML_UIDocumentObject
             MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
             MTRInputManager.OnMenuButton -= OnMenuButtonAction;
+
+            _pinPadScript.OnPinPadCorrect -= OnPinPadCorrectAction;
         }
     }
 
@@ -216,6 +220,27 @@ public class GameUIController : UXML_UIDocumentObject
     {
         DisplayGenStorePamphlet(false);
         DisplayPinPad(false);
+    }
+
+    void OnPinPadCorrectAction()
+    {
+        DisplayPinPad(false);
+
+        // << FORCED INTERACTION WITH CORRECT CODE STITCH >>
+        MTRInteractionSystem.TryGetInteractableByStitch(
+            _pinPadScript.CorrectCodeStitch,
+            out var interactable
+        );
+        Debug.Log($"OnPinPadCorrectAction {_pinPadScript.CorrectCodeStitch} : {interactable}");
+        if (interactable != null)
+            MTRInteractionSystem.PlayerInteractor.InteractWith(interactable, true);
+
+        MTR_Misra_Controller misraController = FindFirstObjectByType<MTR_Misra_Controller>();
+        if (misraController != null)
+        {
+            misraController.enabled = true;
+            misraController.GetComponent<SpriteRenderer>().enabled = true;
+        }
     }
 
     void SetPamphletPage(int pageIndex)

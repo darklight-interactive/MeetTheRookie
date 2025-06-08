@@ -195,47 +195,60 @@ TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
 //         -> scene5_3
 // }
 
-
-
-
-// = misra_found
-// // the player has inputed the correct code, and when they back out of keypad close up, Misra is standing there, behind them. Lupe is startled.
-// [Misra] BOO!
-// [Lupe] Jesus! 
-// [Misra] Hahahaha!
-// [Misra] Gotcha!
-// [Lupe] Are you serious?
-// [Lupe] Was this just all a bit for you to scare me again?
-// [Misra] I mean, no.
-// [Misra] I don't know what that noise was.
-// [Misra] I looked around and found nothing.
-// [Misra] So I took the opportunity to spook ya.
-// [Lupe]...
-// [Lupe] Not cool.
-// [Lupe] Or very professional.
-// [Lupe] Splitting up like that is a rookie move.
-// [Misra] Sorry, sorry. 
-// [Misra] You're right. 
-// [Misra] It wasn't in good taste.
-// [Lupe] Whatever.
-// [Lupe] I'm just...glad you're alright.
-// [Lupe] But if this wasn't all a joke, then what about the noises?
-// [Misra] I haven't heard anything else.
-// [Misra] Was probably just the wind or something.
-// [Lupe] But what about--
-// //they are interrupted by another noise coming from behind the locked door. this one is more monster like. 
-// [Lupe] ...
-// [Misra] ...
-// [Lupe] What was that?
-// [Misra] Run.
-// [Lupe] But what-
-// [Misra] RUN. Now!
-// //A tentacle bursts through the door and makes a grab toward Misra.
-// [Lupe] WHAT THE-
-// //Screen cuts to black, and over the black we hear monster noises, screams, and death. EL fin.
-
-
-// -> DONE //{go to gas station, day 2}
+= locked_door
+    ~ SetSpeaker(Speaker.Misra)
+    BOO!
+    ~ SetSpeaker(Speaker.Lupe)
+    Jesus! 
+    ~ SetSpeaker(Speaker.Misra)
+    Hahahaha!
+    Gotcha!
+    ~ SetSpeaker(Speaker.Lupe)
+    Are you serious?
+    Was this just all a bit for you to scare me again?
+    ~ SetSpeaker(Speaker.Misra)
+    I mean, no.
+    I don't know what that noise was.
+    I looked around and found nothing.
+    So I took the opportunity to spook ya.
+    ~ SetSpeaker(Speaker.Lupe)
+    ...
+    Not cool.
+    Or very professional.
+    Splitting up like that is a rookie move.
+    ~ SetSpeaker(Speaker.Misra)
+    Sorry, sorry. 
+    You're right. 
+    It wasn't in good taste.
+    ~ SetSpeaker(Speaker.Lupe)
+    Whatever.
+    I'm just...glad you're alright.
+    But if this wasn't all a joke, then what about the noises?
+    ~ SetSpeaker(Speaker.Misra)
+    I haven't heard anything else.
+    Was probably just the wind or something.
+    ~ SetSpeaker(Speaker.Lupe)
+    But what about--
+    // TODO: Add monster noise SFX here
+    ~ PlaySFX("monsterGrowl")
+    ~ SetSpeaker(Speaker.Lupe)
+    ...
+    ~ SetSpeaker(Speaker.Misra)
+    ...
+    ~ SetSpeaker(Speaker.Lupe)
+    What was that?
+    ~ SetSpeaker(Speaker.Misra)
+    Run.
+    ~ SetSpeaker(Speaker.Lupe)
+    But what-
+    ~ SetSpeaker(Speaker.Misra)
+    RUN. Now!
+    // TODO: Add tentacle animation and SFX
+    ~ SetSpeaker(Speaker.Lupe)
+    WHAT THE-
+    ~ SetSpeaker(Speaker.Misra)
+    ~ PlaySpecialAnimation(Speaker.Misra)
+    -> DONE
 
 
 

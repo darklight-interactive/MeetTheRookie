@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ public class PinPad : MonoBehaviour
 
     [SerializeField, ShowOnly]
     bool _isPinPadCorrect;
+
+    [SerializeField]
+    InkyStoryStitchData _correctCodeStitchData;
+
+    public string CorrectCodeStitch => _correctCodeStitchData.Stitch;
+
+    public Action OnPinPadCorrect;
 
     void Initialize()
     {
@@ -163,6 +171,7 @@ public class PinPad : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.6f);
         LFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
         _isPinPadCorrect = true;
+        OnPinPadCorrect?.Invoke();
     }
 
     IEnumerator Incorrect()
