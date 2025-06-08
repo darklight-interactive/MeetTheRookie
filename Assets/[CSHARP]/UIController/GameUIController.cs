@@ -10,6 +10,7 @@ public class GameUIController : UXML_UIDocumentObject
     const string SELECTED_CLASS = "selected";
     const string LEFT_ARROW_BUTTON_TAG = "left-arrow-button";
     const string RIGHT_ARROW_BUTTON_TAG = "right-arrow-button";
+    const string GEN_STORE_PAMPHLET_TAG = "gen-store-pamphlet";
 
     MTRStoryManager _storyManager;
     SelectableButton _previousSelectedButton;
@@ -20,17 +21,17 @@ public class GameUIController : UXML_UIDocumentObject
     [SerializeField]
     InkyStoryStitchData _genStorePamphletStitch;
 
-    public List<VisualElement> Pages = new List<VisualElement>();
-    public int page;
-
     /// <summary>
     /// The current selectable elements in the pamphlet. This is updated based on the current state.
     /// </summary>
     SelectableVectorField<SelectableButton> _selectableVectorField =
         new SelectableVectorField<SelectableButton>();
 
-    protected VisualElement genStorePamphletElement =>
-        ElementQuery<VisualElement>("gen-store-pamphlet");
+    protected VisualElement _genStorePamphletElement;
+    List<VisualElement> _genStorePamphletPages = new List<VisualElement>();
+    int _currentPageIndex = 0;
+    SelectableButton _leftArrowButton;
+    SelectableButton _rightArrowButton;
 
     public void Awake()
     {
@@ -49,16 +50,6 @@ public class GameUIController : UXML_UIDocumentObject
     void OnExitButtonClick()
     {
         DisplayGenStorePamphlet(false);
-    }
-
-    void OnLeftArrowButtonClick()
-    {
-        Debug.Log("Left Arrow Button Clicked");
-    }
-
-    void OnRightArrowButtonClick()
-    {
-        Debug.Log("Right Arrow Button Clicked");
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
@@ -85,7 +76,21 @@ public class GameUIController : UXML_UIDocumentObject
     public void DisplayGenStorePamphlet(bool display)
     {
         _displayGenStorePamphlet = display;
-        genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+
+        _genStorePamphletElement = ElementQuery<VisualElement>(GEN_STORE_PAMPHLET_TAG);
+        _genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+
+        _genStorePamphletPages.Clear();
+        _genStorePamphletPages = new List<VisualElement>()
+        {
+            ElementQuery<VisualElement>("pamphlet-page-1"),
+            ElementQuery<VisualElement>("pamphlet-page-2"),
+            ElementQuery<VisualElement>("pamphlet-page-3"),
+            ElementQuery<VisualElement>("pamphlet-page-4")
+        };
+
+        _leftArrowButton = ElementQuery<SelectableButton>(LEFT_ARROW_BUTTON_TAG);
+        _rightArrowButton = ElementQuery<SelectableButton>(RIGHT_ARROW_BUTTON_TAG);
 
         // Audio
         MTR_AudioManager.Instance.PlayOneShotSFX(
@@ -103,6 +108,11 @@ public class GameUIController : UXML_UIDocumentObject
             MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
             MTRInputManager.OnMenuButton += () => DisplayGenStorePamphlet(false);
+
+            _leftArrowButton.OnClick += OnLeftArrowButtonClick;
+            _rightArrowButton.OnClick += OnRightArrowButtonClick;
+
+            SetPamphletPage(0);
         }
         else
         {
@@ -112,14 +122,14 @@ public class GameUIController : UXML_UIDocumentObject
             MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
             MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
             MTRInputManager.OnMenuButton -= () => DisplayGenStorePamphlet(false);
+
+            _leftArrowButton.OnClick -= OnLeftArrowButtonClick;
+            _rightArrowButton.OnClick -= OnRightArrowButtonClick;
         }
     }
 
     private void OnMoveInputStartAction(Vector2 moveInput)
     {
-        if (!_displayGenStorePamphlet)
-            return;
-
         Vector2 direction = new Vector2(moveInput.x, moveInput.y);
         _currentSelectedButton = _selectableVectorField.SelectElementInDirection(direction);
 
@@ -138,16 +148,58 @@ public class GameUIController : UXML_UIDocumentObject
 
     private void OnPrimaryInteractAction()
     {
-        if (!_displayGenStorePamphlet)
-            return;
-
         // Handle any primary interaction with the current page if needed
         MTR_AudioManager.Instance.PlayMenuSelectEvent();
+
+        if (_currentSelectedButton != null)
+        {
+            _currentSelectedButton.InvokeClickAction();
+        }
+    }
+
+    void SetPamphletPage(int pageIndex)
+    {
+        if (pageIndex < 0 || pageIndex >= _genStorePamphletPages.Count)
+            return;
+
+        HideAllPages();
+        _genStorePamphletPages[pageIndex].style.display = DisplayStyle.Flex;
+        _currentPageIndex = pageIndex;
+
+        if (pageIndex == 0)
+            _leftArrowButton.style.display = DisplayStyle.None;
+        else if (pageIndex == _genStorePamphletPages.Count - 1)
+            _rightArrowButton.style.display = DisplayStyle.None;
+        else
+        {
+            _leftArrowButton.style.display = DisplayStyle.Flex;
+            _rightArrowButton.style.display = DisplayStyle.Flex;
+        }
+    }
+
+    void HideAllPages()
+    {
+        foreach (VisualElement page in _genStorePamphletPages)
+            page.style.display = DisplayStyle.None;
     }
 
     [Button]
     public void ToggleGenStorePamphlet()
     {
         DisplayGenStorePamphlet(!_displayGenStorePamphlet);
+    }
+
+    [Button]
+    public void OnLeftArrowButtonClick()
+    {
+        _currentPageIndex--;
+        SetPamphletPage(_currentPageIndex);
+    }
+
+    [Button]
+    public void OnRightArrowButtonClick()
+    {
+        _currentPageIndex++;
+        SetPamphletPage(_currentPageIndex);
     }
 }

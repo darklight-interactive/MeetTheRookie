@@ -106,7 +106,7 @@ namespace Darklight.UnityExt.UXML
             if (_selectables == null || _selectables.Count == 0)
                 return null;
 
-            PrintSelectables();
+            //PrintSelectables();
 
             // If we have a direction, we can try to find the next element.
             if (dir != Vector2.zero)
@@ -118,7 +118,9 @@ namespace Darklight.UnityExt.UXML
                 {
                     PreviousSelection = CurrentSelection;
                     CurrentSelection = pick;
-                    // Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}");
+                    Debug.Log(
+                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}"
+                    );
                 }
                 else
                 {
