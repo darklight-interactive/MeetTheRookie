@@ -49,6 +49,7 @@ VAR canIntroArcade = true
     There's bound to be some locals around - where do you want to start?
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
+    
 = misra_cutscene_golden_hour
 TODO SFX door close
     {

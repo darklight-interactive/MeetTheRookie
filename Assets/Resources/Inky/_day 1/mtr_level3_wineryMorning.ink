@@ -196,8 +196,9 @@ TODO SFX door close
 
 = door_winery_exterior
     {IsClueFound(evidence_claw_marks) && IsClueFound(evidence_damages):
+        -> Misra_Dialogue.3_2
         ~ ChangeGameScene("scene4_1")
-        TODO SFX door open
+        ~ openDoor()
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Misra)
