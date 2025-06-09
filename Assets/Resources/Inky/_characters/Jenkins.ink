@@ -42,15 +42,15 @@
 
 
 = jenkins_questions
-* [The Old Winery on the hill...] -> jenkins_winery_
-* {IsClueFound(jenkins_winery)}[Were you at the Winery last night?] -> jenkins_last_night
-* [So, Kettle Rock...] -> jenkins_kettle_rock
-* {IsClueFound(council_mentioned)} [Hear who?] -> jenkins_council
-* {IsClueFound(sarah_mentioned)} [Sarah?] -> jenkins_sarah
-* {IsClueFound(sacrifice_mentioned_jenkins)} [Sacrifice...?] -> jenkins_sacrifice
+    * [The Old Winery on the hill...] -> jenkins_winery_question
+    * {IsQuestComplete(Level4_4_Quests.jenkins_winery)}[Were you at the Winery last night?] -> jenkins_last_night_question
+    * [So, Kettle Rock...] -> jenkins_kettle_rock_question
+    * {IsQuestComplete(Level4_4_Quests.jenkins_council)} [Hear who?] -> jenkins_council_question
+    * {IsQuestComplete(Level4_4_Quests.jenkins_sarah)} [Sarah?] -> jenkins_sarah_question
+    * {IsQuestComplete(Level4_4_Quests.jenkins_sacrifice)} [Sacrifice...?] -> jenkins_sacrifice_question
 
 
-= jenkins_winery_
+= jenkins_winery_question
     ~ SetSpeaker(Speaker.Jenkins)
      Will I ever stop hearing about the godforsaken place? 
      S'worth nothing but the dirt it stands on.
@@ -62,10 +62,10 @@
      For many, many many, many...
     ...
     ~ SetSpeaker(Speaker.Lupe)
-    ~ DiscoverClue(jenkins_winery)
+    ~ CompleteQuest(jenkins_winery)
     -> jenkins_questions
 
-= jenkins_last_night
+= jenkins_last_night_question
     ~ SetSpeaker(Speaker.Jenkins)
      Last night?
      S'was here last night, I was.
@@ -76,10 +76,10 @@
      I'm reminded of 'em everytime I set foot in the building.
      I feel like I can still hear them...
     ~ SetSpeaker(Speaker.Lupe)
-    ~ DiscoverClue(council_mentioned)
+    ~ CompleteQuest(jenkins_council)
     -> jenkins_questions
 
-= jenkins_kettle_rock
+= jenkins_kettle_rock_question
     ~ SetSpeaker(Speaker.Jenkins)
      Kettle goddammed Rock.
      All that blood sunk into this town.
@@ -88,11 +88,11 @@
      Was <i>this</i> worth it?
      What have you done, Sarah?
     // Add to Synthesis: The Town of KR 
-    ~ DiscoverClue(sarah_mentioned)
+    ~ CompleteQuest(jenkins_council)
     -> jenkins_questions
     
     
-= jenkins_council
+= jenkins_council_question
     ~ SetSpeaker(Speaker.Jenkins)
      <i>Them</i>. 
      I feel them.
@@ -109,10 +109,10 @@
      They did what they did for <i>us</i>.
      To give us time and--and--
      ...
-    ~ DiscoverClue(sacrifice_mentioned_jenkins)
+    ~ CompleteQuest(jenkins_council)
     -> jenkins_questions
 
-= jenkins_sarah
+= jenkins_sarah_question
     ~ SetSpeaker(Speaker.Jenkins)
      Such a good heart.
      But desperation misguides the good.
@@ -133,7 +133,7 @@
      I-I don't know who you're talking about.
     -> jenkins_questions
     
-= jenkins_sacrifice
+= jenkins_sacrifice_question
     ~ SetSpeaker(Speaker.Lupe)
     That's the second time I've heard that word tossed around. Are you talking about the people who vanished? The ..Council?
 ~ SetSpeaker(Speaker.Jenkins)

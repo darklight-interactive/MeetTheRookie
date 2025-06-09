@@ -41,8 +41,7 @@
     Jenkins Tomm.
     He used to work there.
     ~ SetSpeaker(Speaker.Lupe)
-    // Add to Synthesis: Who Broke into the Old Winery?
-    ~ DiscoverClue(calvin_suspects)
+    ~ DiscoverClue(evidence_calvin)
     -> DONE
 }
     

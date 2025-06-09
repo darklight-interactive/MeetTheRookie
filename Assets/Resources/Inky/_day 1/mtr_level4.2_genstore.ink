@@ -11,9 +11,8 @@
     -> Roy_Dialogue.roy_intro_cutscene
     
 = pamphlet
-    ~ DiscoverClue(merch_pamphlet)
-    ~ SetSpeaker(Speaker.Lupe)
-    TODO Wow, it's a pamphlet w/ loads of info!
+    ~ DiscoverClue(evidence_pamphlet)
+    ~ RequestSpecialUI(su_pamphlet)
    -> DONE
    
 = roy

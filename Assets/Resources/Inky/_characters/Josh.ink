@@ -46,30 +46,16 @@
 {IsQuestActive(suspects):
     ~ SetSpeaker(Speaker.Josh)
     I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
-    ~ DiscoverClue(josh_suspects)
-    // Add to Synthesis: Who broke into the Old Winery?
+    ~ DiscoverClue(Mystery2.evidence_josh)
     -> DONE
 }
 
-= 4_3_josh_questions
+= josh_questions
+    * [So. Who're you?] -> josh_personal_info_question
+    * [You a local Kettle Rockian?] -> josh_KR_question
+    * [The Old Winery on the hill...] -> josh_winery_question
 
-* So. Who're you?
-    ~ StartQuest(personal_info_josh_quest)
-    -> DONE
-
-* You a local Kettle Rockian?
-    ~ StartQuest(KR_josh_quest)
-    -> DONE
-
-* The Old Winery on the hill...
-    ~ StartQuest(winery_josh_quest)
-    -> DONE
-
-* {IsClueFound(personal_info_josh) && IsClueFound(winery_josh) && IsClueFound(KR_josh)} [Well...] 
-    ~ CompleteQuest(visited_josh)
-    -> DONE
-
-= 4_3_josh_personal_info
+= josh_personal_info_question
     ~ SetSpeaker(Speaker.Josh)
     Josh.
     Josh the Squash.
@@ -84,10 +70,10 @@
     You don't get it?
     ~ SetSpeaker(Speaker.Lupe)
      I, uh...
-    ~ DiscoverClue(personal_info_josh)
+    ~ CompleteQuest(josh_personal_info)
     -> DONE
 
-= 4_3_KR_josh
+= josh_KR_question
     ~ SetSpeaker(Speaker.Josh)
      This place is SO boring.
     ~ SetSpeaker(Speaker.Misra)
@@ -102,10 +88,10 @@
     ~ SetSpeaker(Speaker.Josh)
      Yawwwnnnn. Boring.
     ~ SetSpeaker(Speaker.Lupe)
-    ~ DiscoverClue(KR_josh)
+    ~ CompleteQuest(josh_KR)
     -> DONE
 
-= 4_3_winery_josh
+= josh_winery_question
     ~ SetSpeaker(Speaker.Josh)
     It's got good walls. 
     ~ SetSpeaker(Speaker.Lupe)
@@ -114,7 +100,7 @@
     I dunno, bro.
     You asked me.
     ~ SetSpeaker(Speaker.Lupe)
-    {IsClueFound(roys_suspicion):
+    {IsClueFound(evidence_roy):
         ~ SetSpeaker(Speaker.Lupe)
          You wouldn't have happened to go up there recently?
          Say, last night?
@@ -125,12 +111,18 @@
          You--
          SORRY. 
          THIS IS A REALLY GOOD SONG.
-        ~ DiscoverClue(winery_josh)
-        ~ CompleteQuest(winery_josh_quest)
+        ~ CompleteQuest(josh_winery)
         -> DONE
     -else:
-        ~ DiscoverClue(winery_josh)
-        ~ CompleteQuest(winery_josh_quest)
+        ~ CompleteQuest(josh_winery)
         -> DONE
     }
 
+= josh_suspicion_question
+    ~ SetSpeaker(Speaker.Lupe)
+        Josh.
+        If you had to pick one person in town that might've been at the Winery last night, who would it be?
+    ~SetSpeaker(Speaker.Josh)
+    I'D SAY JENKINS, BUT HE'S PROBABLY TOO DRUNK TO TELL YOU ANYTHING.
+    ~ DiscoverClue(Mystery2.evidence_josh)
+    -> DONE

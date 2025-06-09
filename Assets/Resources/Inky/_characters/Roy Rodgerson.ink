@@ -34,9 +34,9 @@
 * [Tell me about yourself.] -> personal_info
 * [Tell me about this Town.] -> town_history
 * [Tell me about the Winery.] -> winery_closing
-* {IsClueFound(merch_pamphlet)} -> pamphlet
+* {IsClueFound(evidence_pamphlet)} -> pamphlet
     
-{IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
+{CompleteQuest(roy_personal_info) && CompleteQuest(roy_winery_closing) && CompleteQuest(roy_town_history):
     Thank you for your cooperation. 
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Of course. 
@@ -46,41 +46,39 @@
     -> DONE
 
 = personal_info
-~ SetSpeaker(Speaker.Roy_Rodgerson)
-.
- Well, I was born and raised here in Kettle Rock.
- Lived here my whole life.
- IdaHome is my family's business.
-~ SetSpeaker(Speaker.Lupe)
-Are they local, as well?
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- No. 
- They've all passed. 
- My sister was the last, in 1940. 
- Unless, of course, you count Misra.
-~ SetSpeaker(Speaker.Lupe)
-You two are related?
-~ SetSpeaker(Speaker.Misra)
-Not biologically.
-Roy's my godfather.
-When my parent's moved away, he became my guardian.
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- I begged and begged for Misra to leave, too. 
- But they wouldn't go.
-~ SetSpeaker(Speaker.Misra)
-Kettle Rock is my home.
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- Of course. 
- But things are changing.
- A young person like yourself should be out there,
- in the world.
- Not here, where things move at a snails pace.
-~ SetSpeaker(Speaker.Misra)
-~ DiscoverClue(roy_personal_info)
-// TODO Add to Synthesis - The Town of KR
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Well, I was born and raised here in Kettle Rock.
+    Lived here my whole life.
+    IdaHome is my family's business.
+    ~ SetSpeaker(Speaker.Lupe)
+    Are they local, as well?
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    No. 
+    They've all passed. 
+    My sister was the last, in 1940. 
+    Unless, of course, you count Misra.
+    ~ SetSpeaker(Speaker.Lupe)
+    You two are related?
+    ~ SetSpeaker(Speaker.Misra)
+    Not biologically.
+    Roy's my godfather.
+    When my parent's moved away, he became my guardian.
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    I begged and begged for Misra to leave, too. 
+    But they wouldn't go.
+    ~ SetSpeaker(Speaker.Misra)
+    Kettle Rock is my home.
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Of course. 
+    But things are changing.
+    A young person like yourself should be out there,
+    in the world.
+    Not here, where things move at a snails pace.
+    ~ SetSpeaker(Speaker.Misra)
+    ~ CompleteQuest(roy_personal_info)
     ...
-~ SetSpeaker(Speaker.Lupe)
--> DONE
+    ~ SetSpeaker(Speaker.Lupe)
+    -> DONE
 
 = town_history
 ~ SetSpeaker(Speaker.Roy_Rodgerson)
@@ -119,14 +117,14 @@ Someone's got to try and turn things around.
 
 
 = window
-  {IsQuestComplete(visit_roy_window): 
+  {IsQuestComplete(roy_window): 
     ~SetSpeaker(Speaker.Lupe)
     Other than the abandoned Winery, the environment is kinda pretty...
     -> DONE
   
    - else: 
     ~ SetSpeaker(Speaker.Lupe)
-    ~ CompleteQuest(visit_roy_window)
+    ~ CompleteQuest(roy_window)
     You have a perfect view of the Winery from here.
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
      I do.
@@ -180,127 +178,117 @@ Someone's got to try and turn things around.
 = pamphlet
 * The Rocky Years?
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     Dios Mio; that was a hard time.
-     Although I'd argue that we've fallen on harder times now.
+    Dios Mio; that was a hard time.
+    Although I'd argue that we've fallen on harder times now.
     ~ SetSpeaker(Speaker.Misra)
     Come on Roy, don't say that!
     Have a little hope.
     We'll bounce back, I'm sure!
     We just need more time.
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     So optimistic, and I love you for that.
-     But not very realistic.
-     The Rocky Years was a time of inconsistency.
-     We would flourish for the first part of the decade and struggle the latter.
-     Disease of an unexplained nature swept through town.
-     We couldn't link it to anything -
-     not spoiled food or contaminated water,
-     No known infection or flu.
+    So optimistic, and I love you for that.
+    But not very realistic.
+    The Rocky Years was a time of inconsistency.
+    We would flourish for the first part of the decade and struggle the latter.
+    Disease of an unexplained nature swept through town.
+    We couldn't link it to anything -
+    not spoiled food or contaminated water,
+    No known infection or flu.
     ~ SetSpeaker(Speaker.Lupe)
     That bad, huh?
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     It was. I do not miss that time.
+    It was. I do not miss that time.
     ~ SetSpeaker(Speaker.Lupe)
-    ~ DiscoverClue(rocky_years)
-      // Add to Synthesis - The Town of KR
+    ~ CompleteQuest(roy_rocky_years)
     -> pamphlet
 
 * The Tragedy?
- ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
     ...
-     Terrible.
-     Delusional people.
-     Folk around here speak ill of them, but don't listen.
-     Certain people even like to gossip, call them names, 
-     insinuate that there was something else going on.
-      ~ SetSpeaker(Speaker.Lupe)
+    Terrible.
+    Delusional people.
+    Folk around here speak ill of them, but don't listen.
+    Certain people even like to gossip, call them names, 
+    insinuate that there was something else going on.
+    ~ SetSpeaker(Speaker.Lupe)
     Like what?
-     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     Nothing real, and nothing worth talking about.
-    ~ DiscoverClue(tragedy)
-    // Add to Synthesis - The Town of KR
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Nothing real, and nothing worth talking about.
+    ~ CompleteQuest(roy_tragedy)
     -> pamphlet
 
 * The Golden Age?
- ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     A time of true prosperity.
-     Business was, as you say, booming.
-     The Winery sales were good, tourism was up.
-     people recovered from whatever mysterious disease had passed over us.
-     It was a good time, but it's over now.
-      ~ SetSpeaker(Speaker.Misra)
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    A time of true prosperity.
+    Business was, as you say, booming.
+    The Winery sales were good, tourism was up.
+    people recovered from whatever mysterious disease had passed over us.
+    It was a good time, but it's over now.
+    ~ SetSpeaker(Speaker.Misra)
     For now. Good times will come again!
-     ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     Sometimes that's not the case, mijo.
-     Sometimes, the good times are just behind us.
-     And that's okay.
-     ~ SetSpeaker(Speaker.Misra)
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Sometimes that's not the case, mijo.
+    Sometimes, the good times are just behind us.
+    And that's okay.
+    ~ SetSpeaker(Speaker.Misra)
     ...
-    ~ DiscoverClue(golden_age)
-        // Add to Synthesis - The Town of KR
-
+    ~ CompleteQuest(roy_golden_age)
     -> pamphlet
   
  //* {golden_age && tragedy && rocky_years} -> scene4_2  
 
 = potential_suspects
-{IsQuestComplete(complete_arcade):
-    ~ SetSpeaker(Speaker.Roy_Rodgerson)
-     If I had to place blame,
-     Those delinquents at Power Up.
-    ~ SetSpeaker(Speaker.Lupe)
-    Ah, them.
-    ~ SetSpeaker(Speaker.Misra)
-    We talked with them earlier.
-    They didn't let much slip.
-    ~ SetSpeaker(Speaker.Lupe)
-     ~ DiscoverClue(roys_suspicion)
-    // Add to Synthesis: Who broke into the Old Winery?
-    -> DONE
+    {IsQuestComplete(complete_arcade):
+        ~ SetSpeaker(Speaker.Roy_Rodgerson)
+        If I had to place blame,
+        Those delinquents at Power Up.
+        ~ SetSpeaker(Speaker.Lupe)
+        Ah, them.
+        ~ SetSpeaker(Speaker.Misra)
+        We talked with them earlier.
+        They didn't let much slip.
     - else:
-    
-    ~ SetSpeaker(Speaker.Roy_Rodgerson)
-    I don't like to gossip.
-     ~ SetSpeaker(Speaker.Lupe)
-     I just need something to go off of.
-      ~ SetSpeaker(Speaker.Misra)
-      Please Roy,
-      this is important to me.
-      ~ SetSpeaker(Speaker.Roy_Rodgerson)
-      ...
-     If I had to pick someone...
-     I'd say those troublemakers down at the Arcade.
-    ~ SetSpeaker(Speaker.Misra)
-    Oh.
-    <i>Those</i> guys.
-    // Add to Synthesis: Who broke into the Old Winery?
-    ~ DiscoverClue(roys_suspicion)
+        ~ SetSpeaker(Speaker.Roy_Rodgerson)
+        I don't like to gossip.
+        ~ SetSpeaker(Speaker.Lupe)
+        I just need something to go off of.
+        ~ SetSpeaker(Speaker.Misra)
+        Please Roy,
+        this is important to me.
+        ~ SetSpeaker(Speaker.Roy_Rodgerson)
+        ...
+        If I had to pick someone...
+        I'd say those troublemakers down at the Arcade.
+        ~ SetSpeaker(Speaker.Misra)
+        Oh.
+        <i>Those</i> guys.
+    }
+    ~ DiscoverClue(Mystery2.evidence_roy)
     -> DONE
-}
 
 = teenagers
-~ SetSpeaker(Speaker.Lupe)
-We spoke to the teens at Power Up.
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- Those rascals.
- Jenny still giving you a hard time?
-~ SetSpeaker(Speaker.Misra)
-Ugh.
-Yes.
-~ SetSpeaker(Speaker.Lupe)
-They denied having anything to do with the Winery.
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- I'm sure they did.
-~ SetSpeaker(Speaker.Lupe)
-They did point us towards a "Jenkins Tomm".
-~ SetSpeaker(Speaker.Roy_Rodgerson)
- ...
- I'm not sure he'll be any help to you.
- Really, Misra, I think you two should leave this alone.
-~ SetSpeaker(Speaker.Misra)
-We've got to get to the bottom of this!
-~ SetSpeaker(Speaker.Lupe)
--> DONE
+    ~ SetSpeaker(Speaker.Lupe)
+    We spoke to the teens at Power Up.
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Those rascals.
+    Jenny still giving you a hard time?
+    ~ SetSpeaker(Speaker.Misra)
+    Ugh.
+    Yes.
+    ~ SetSpeaker(Speaker.Lupe)
+    They denied having anything to do with the Winery.
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    I'm sure they did.
+    ~ SetSpeaker(Speaker.Lupe)
+    They did point us towards a "Jenkins Tomm".
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    ...
+    I'm not sure he'll be any help to you.
+    Really, Misra, I think you two should leave this alone.
+    ~ SetSpeaker(Speaker.Misra)
+    We've got to get to the bottom of this!
+    ~ SetSpeaker(Speaker.Lupe)
+    -> DONE
 
  
 

@@ -41,15 +41,15 @@
         -> DONE
 
     - else: 
-    * {IsClueFound(goats_mentioned)} [Goats...?] -> irene_goats
-    * {IsQuestComplete(memorial_plaque_visited)} [Your picture has vandalized.] -> irene_plaque
-    * {IsClueFound(sacrifice_mentioned)} [Sorry, a sacrifice?] -> irene_sacrifice
-    * [How long have you lived here?] -> irene_kettle_rock
-    * {KR_irene && closed_shops_irene} [What do you know about the Winery?] -> irene_winery
-    * [The Rockin' Kettle...] -> irene_still_standing
+    * {IsQuestComplete(Level4_4_Quests.irene_mention_goats)} [Goats...?] -> irene_goats_question
+    * {IsQuestComplete(Level4_4_Quests.memorial_plaque_visited)} [Your picture has vandalized.] -> irene_plaque_question
+    * {IsQuestComplete(Level4_4_Quests.irene_sacrifice)} [Sorry, a sacrifice?] -> irene_sacrifice_question
+    * [How long have you lived here?] -> irene_kettle_rock_question
+    * {IsQuestComplete(Level4_4_Quests.irene_KR) && IsQuestComplete(Level4_4_Quests.irene_closed_shops)} [What do you know about the Winery?] -> irene_winery_question
+    * [The Rockin' Kettle...] -> irene_still_standing_question
     }
 
-= irene_goats
+= irene_goats_question
     ~ SetSpeaker(Speaker.Lupe)
      .
      People have been mentioning Goats a lot.
@@ -81,27 +81,23 @@
      Like, you know, a sacrificial lamb. 
      But less cute. 
      So, goat.
-    ~ DiscoverClue(sacrifice_mentioned)
-    // Add to Synthesis: The Town of KR
     -> DONE
 
-= irene_plaque
+= irene_plaque_question
     ~ SetSpeaker(Speaker.Irene)
-    .
-     Damn it! 
-     People keep doing that.
-     It's disrespectful. 
-     I'll clean it off when I close up.
+    Damn it! 
+    People keep doing that.
+    It's disrespectful. 
+    I'll clean it off when I close up.
     ~ SetSpeaker(Speaker.Lupe)
-     It says something about "goats"?
+    It says something about "goats"?
     ~ SetSpeaker(Speaker.Irene)
-     Yeah, that's usually the message...
-    ~ DiscoverClue(goats_mentioned)
+    Yeah, that's usually the message...
+    ~ CompleteQuest(irene_mention_goats)
     -> DONE
     
-= irene_sacrifice
+= irene_sacrifice_question
     ~ SetSpeaker(Speaker.Misra)
-    .
      It's nothing.
      Like Irene said, stupid gossip.
     ~ SetSpeaker(Speaker.Lupe)
@@ -138,7 +134,7 @@
      // Add to Synthesis: The Town of KR
     -> DONE
 
-= irene_kettle_rock
+= irene_kettle_rock_question
     ~ SetSpeaker(Speaker.Irene)
     .
      I moved here when I was 13!
@@ -149,10 +145,10 @@
      That's right!
      Misra's a total sweetheart. 
      But I'm sure you know that already.
-    ~ DiscoverClue(KR_irene)
+    ~ CompleteQuest(irene_KR)
     -> DONE
 
-= irene_winery
+= irene_winery_question
     ~ SetSpeaker(Speaker.Irene)
     .
      Sheesh, that old shack on the hill?
@@ -182,7 +178,7 @@
     ~ CompleteQuest(irene_convo_2)
     -> DONE
 
-= irene_still_standing
+= irene_still_standing_question
     ~ SetSpeaker(Speaker.Lupe)
     Despite all the closed shops and stores, this place is still open.
     ~ SetSpeaker(Speaker.Irene)
@@ -209,7 +205,7 @@
      Causing more people to leave.
     ~ SetSpeaker(Speaker.Irene)
      I couldn't say.
-    ~ DiscoverClue(closed_shops_irene)
+    ~ CompleteQuest(irene_closed_shops)
     // Add to Synthesis: the Town of KR
     -> DONE
     

@@ -41,74 +41,36 @@ VAR canIntroArcade = true
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 
-= misra_cutscene_afternoon
+= misra_cutscene
     ~ DiscoverMystery(2)
-    ~ CompleteQuest(visited_misra)
-    ~ SetSpeaker(Speaker.Misra)
-    Here we are! 
-    Kettle Rock, Main Street. Heart of the Downtown. 
-    There's bound to be some locals around - where do you want to start?
-    ~ SetSpeaker(Speaker.Lupe)
+    {
+    - !IsQuestComplete(visited_misra):
+        ~ SetSpeaker(Speaker.Misra)
+        Here we are! 
+        Kettle Rock, Main Street. Heart of the Downtown. 
+        There's bound to be some locals around - where do you want to start?
+        ~ SetSpeaker(Speaker.Lupe)
+        ~ CompleteQuest(visited_misra)
+    - IsClueFound(Mystery2.evidence_roy):
+        ~ SetSpeaker(Speaker.Misra)
+        I'm sorry if Roy seems like a bit of a downer.
+        He has no faith.
+        ~ SetSpeaker(Speaker.Lupe)
+        He seems like he's got a pretty good acceptance of the situation.
+        From what I can tell.
+        ~ SetSpeaker(Speaker.Misra)
+        Well, you've only been here a day...
+        ~ SetSpeaker(Speaker.Lupe)
+    - IsClueFound(Mystery2.evidence_josh) && IsClueFound(Mystery2.evidence_jenny) && IsClueFound(Mystery2.evidence_calvin):
+        ~ SetSpeaker(Speaker.Misra)
+        Those guys are the worst.
+        ~ SetSpeaker(Speaker.Lupe)
+        They're definitely hiding <i>something</i>.
+        ~ SetSpeaker(Speaker.Misra)
+        Good luck getting anything out of them.
+        ~ SetSpeaker(Speaker.Lupe)
+    }
     ->DONE
-    
-= misra_cutscene_golden_hour
-TODO SFX door close
-    {
-    - IsQuestComplete(complete_arcade):
-        {canStreetTeensCutscene:
-            ~ canStreetTeensCutscene = false
-            ~ teensFirst = true
-            -> misra_cutscene_after_teens
-        }
-        ->DONE
-    - IsClueFound(roys_suspicion):
-        {canStreetRoyCutscene:
-            ~ canStreetRoyCutscene = false
-            ~ royFirst = true
-            ->misra_cutscene_after_general_store
-        }
-        ->DONE
-    -else:
-        ->DONE
-    }
-= misra_cutscene_dusk
-TODO SFX door close
-    {
-        
-    -teensFirst && IsClueFound(roys_suspicion) && canStreetRoyCutscene:
-        ~ canStreetRoyCutscene = false
-        ->misra_cutscene_after_general_store
-    -royFirst && (IsQuestComplete(jenny_suspicion) || IsQuestComplete(calvin_suspicion) || IsQuestComplete(josh_suspicion) ) && canStreetTeensCutscene:
-        ~canStreetRoyCutscene = false
-        ->misra_cutscene_after_teens
-    
-    }
-    
-= misra_cutscene_after_general_store
-TODO SFX door close
-TODO SFX gen store bell
-    ~ SetSpeaker(Speaker.Misra)
-    I'm sorry if Roy seems like a bit of a downer.
-    He has no faith.
-    ~ SetSpeaker(Speaker.Lupe)
-    He seems like he's got a pretty good acceptance of the situation.
-    From what I can tell.
-    ~ SetSpeaker(Speaker.Misra)
-    Well, you've only been here a day...
-    ~ SetSpeaker(Speaker.Lupe)
-    -> DONE
-
-=misra_cutscene_after_teens
-//TODO SFX door close
-    ~ SetSpeaker(Speaker.Misra)
-     Those guys are the worst.
-    ~ SetSpeaker(Speaker.Lupe)
-     They're definitely hiding <i>something</i>.
-    ~ SetSpeaker(Speaker.Misra)
-     Good luck getting anything out of them.
-    ~ SetSpeaker(Speaker.Lupe)
-     // Add to Synthesis: Who broke into the Winery?
--> DONE
 
 = lupe_car
 {IsQuestComplete(car_first_interact):
@@ -184,9 +146,7 @@ TODO SFX DOOR OPEN
     ~ SetSpeaker(Speaker.Misra)
     Hm. Looks like some sort of silly engravement.
     ~ SetSpeaker(Speaker.Lupe)
-    ~  DiscoverClue(symbol_evidence)
-        ~ CompleteQuest(visited_symbol)
-    # ADD TO SYNTHESIS
+    ~ CompleteQuest(visited_symbol)
     -> DONE
     }
 
@@ -203,53 +163,39 @@ TODO SFX DOOR OPEN
         ~ SetSpeaker(Speaker.Lupe)
         Yeah. 
         It was at the Gas Station near the edge of town. 
-         ~ CompleteQuest(visited_goop)
-         ~ DiscoverClue(goop_evidence)
-        // Add to Synthesis - The Town of KR
-         -> DONE
+        ~ CompleteQuest(visited_goop)
+        -> DONE
     }
 
 = door_the_rockin_kettle
-    {(IsQuestComplete(jenny_suspicion) or IsQuestComplete(calvin_suspicion) or IsQuestComplete(josh_suspicion) ):
-        {IsClueFound(roys_suspicion):
-            ~ SetSpeaker(Speaker.Misra)
-            Looks like the Bar is open! Shall we?
-            ~ SetSpeaker(Speaker.Lupe)
-            I shouldn't drink.
-            I still need to drive back out tonight once the road is cleared.
-            ~ SetSpeaker(Speaker.Misra)
-            Right, about that...
-            I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
-            I'm really sorry.
-            I know you had somewhere to be.
-            ~ SetSpeaker(Speaker.Lupe)
-            Ah...
-            Well, that's not great.
-            But I suppose there's nothing you can do about it.
-            ~ SetSpeaker(Speaker.Misra)
-            Think of it this way...we get more time to crack this case!
-            But in the meantime, let's take a bit of a break...
-            TODO SFX DOOR OPEN
-            ~ SetSpeaker(Speaker.Lupe)
-             ~ ChangeGameScene("scene4_4")
-             ->DONE
-        - else:
-            ~ SetSpeaker(Speaker.Misra)
-            Someone wants a drink, I see.
-            The Rockin Kettle doesn't open until happy hour! 
-            Which around here, is 8 PM, so after sunset.
-            We can come back later.
-            ~ SetSpeaker(Speaker.Lupe)
-            -> DONE
-        }
+    {IsClueFound(evidence_jenny) && IsClueFound(evidence_josh) && IsClueFound(evidence_calvin) && IsClueFound(evidence_roy):
+        ~ SetSpeaker(Speaker.Misra)
+        Looks like the Bar is open! Shall we?
+        ~ SetSpeaker(Speaker.Lupe)
+        I shouldn't drink.
+        I still need to drive back out tonight once the road is cleared.
+        ~ SetSpeaker(Speaker.Misra)
+        Right, about that...
+        I forgot to tell you, but the earliest I can get someone out there to clear the tree is tomorrow morning.
+        I'm really sorry.
+        I know you had somewhere to be.
+        ~ SetSpeaker(Speaker.Lupe)
+        Ah...
+        Well, that's not great.
+        But I suppose there's nothing you can do about it.
+        ~ SetSpeaker(Speaker.Misra)
+        Think of it this way...we get more time to crack this case!
+        But in the meantime, let's take a bit of a break...
+        ~ openDoor()
+        ~ SetSpeaker(Speaker.Lupe)
+        ~ ChangeGameScene("scene4_4")
     - else:
         ~ SetSpeaker(Speaker.Misra)
         Someone wants a drink, I see.
         The Rockin Kettle doesn't open until happy hour! 
         We can come back later.
-        ~ SetSpeaker(Speaker.Lupe)
-        -> DONE
     }
+    -> DONE
     
 
 = laundromat_closed_sign
