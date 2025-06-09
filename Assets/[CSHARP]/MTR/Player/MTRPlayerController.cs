@@ -273,7 +273,8 @@ public class MTRPlayerController : MonoBehaviour
     {
         _overrideTargetPosX = _currentPosX;
         SetMoveDirection(0);
-        StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
+        // StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
+        Debug.Log($"PlayerController :: ResetMoveDirection :: {_currentPosX}");
     }
 
     public void StartWalkOverride(float targetXPos)

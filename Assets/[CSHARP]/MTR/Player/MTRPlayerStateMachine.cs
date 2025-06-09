@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.FMODExt;
 using FMODUnity;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
 {
+    const string PREFIX = "[MTRPlayerStateMachine]";
     protected MTRPlayerController controller;
     protected MTRPlayerInput _input => controller.Input;
     protected MTRPlayerAnimator _animator => controller.Animator;
@@ -132,25 +134,20 @@ public class MTRPlayerStateMachine : FiniteStateMachine<MTRPlayerState>
         public override void Enter()
         {
             if (targetInteractable != null)
-                controller.FacePosition(targetInteractable.transform.position);
-        }
-
-        public override void Execute()
-        {
-            if (
-                targetInteractable != null
-                && targetInteractable.CurrentState == MTRInteractable.State.COMPLETE
-            )
             {
-                controller.ResetMoveDirection();
-                stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
-                interactor.ClearTarget();
+                controller.FacePosition(targetInteractable.transform.position);
+                controller.StartCoroutine(WaitForInteractableComplete());
             }
         }
 
-        public override void Exit()
+        IEnumerator WaitForInteractableComplete()
         {
-            //controller.ExitInteraction();
+            yield return new WaitUntil(
+                () => targetInteractable.CurrentState == MTRInteractable.State.COMPLETE
+            );
+            controller.ResetMoveDirection();
+            stateMachine.GoToState(MTRPlayerState.FREE_IDLE);
+            interactor.ClearTarget();
         }
     }
 
