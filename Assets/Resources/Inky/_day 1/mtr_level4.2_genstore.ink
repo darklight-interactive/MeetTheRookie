@@ -36,6 +36,7 @@
 = front_door
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
-    //~closeDoor()
+    ~ closeDoor()
     ~ ChangeGameScene("scene4_1")
+    ~ SetSpeaker(Speaker.Lupe)
     ->DONE

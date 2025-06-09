@@ -45,6 +45,7 @@ EXTERNAL PlaySFX(sfx)
 
 // ====== SCENE HANDLING == >>
 === function ChangeGameScene(knotName)
+    ~ SetSpeaker(Speaker.Lupe)
     ~ return
 
 // ====== SPEAKER HANDLING == >>

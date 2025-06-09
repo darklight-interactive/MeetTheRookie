@@ -202,6 +202,10 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     {
         if (_dialogueLabel != null)
             _dialogueLabel.FullText = "";
+        _misra_characterControl.style.visibility = Visibility.Hidden;
+        _misra_nameTag.style.visibility = Visibility.Hidden;
+        _lupe_characterControl.style.visibility = Visibility.Hidden;
+        _lupe_nameTag.style.visibility = Visibility.Hidden;
         ResetChoiceMap();
         Debug.Log($"{PREFIX} >> Reset Dating Sim");
     }

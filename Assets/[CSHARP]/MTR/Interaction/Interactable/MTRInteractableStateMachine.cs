@@ -243,7 +243,7 @@ public partial class MTRInteractable
                     out MTRDialogueReciever speakerDialogueReciever
                 );
 
-                if (speakerDialogueReciever.IsInDialogue)
+                if (speakerDialogueReciever != null && speakerDialogueReciever.IsInDialogue)
                 {
                     speakerDialogueReciever.ForceComplete();
                     Debug.Log(

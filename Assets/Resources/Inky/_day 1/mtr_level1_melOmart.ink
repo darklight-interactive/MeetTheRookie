@@ -16,30 +16,29 @@ VAR gas_pumps = 0
 
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
-# emote : Misra \| Voice_call
-# sfx : on
-
-~ SetSpeaker(Speaker.Chief_Thelton)
-//TODO SFX phone ringing and ringing,
-//~PlayLoopingSFX("phoneCallingTone")
-...
-//~StopLoopingSFX("phoneCallingTone")
-You've reached Chief Detective Inspector Thelton, Boise Precinct. 
-I'm not available right now. You know what to do!
-// We hear a generic voicemail beep.
-~ PlaySFX("phoneVoicemailBeep")
-
-# name: Lupe
-# emote : Lupe \| Serious_2
-~ SetSpeaker(Speaker.Lupe)
-...
-Hey, it's Lupe. Had to change my route; 
-tank was running low. 
-I pit stopped outside of Kettle Rock, Idaho. 
-Should be back on the road soon
-don't jump on me for being late. 
-I'll debrief the Watchowski Case with you when I get back.
-Alright. Bye.
+    # hide: Misra
+    //# emote : Misra \| Voice_call
+    # sfx : on
+    //TODO SFX phone ringing and ringing,
+    //~PlayLoopingSFX("phoneCallingTone")
+    ...
+    //~StopLoopingSFX("phoneCallingTone")
+    ~ SetSpeaker(Speaker.Chief_Thelton)
+    You've reached Chief Detective Inspector Thelton, Boise Precinct. 
+    I'm not available right now. You know what to do!
+    // We hear a generic voicemail beep.
+    ~ PlaySFX("phoneVoicemailBeep")
+    
+    # name: Lupe
+    # emote : Lupe \| Serious_2
+    ...
+    Hey, it's Lupe. Had to change my route; 
+    tank was running low. 
+    I pit stopped outside of Kettle Rock, Idaho. 
+    Should be back on the road soon
+    don't jump on me for being late. 
+    I'll debrief the Watchowski Case with you when I get back.
+    Alright. Bye.
     ~PlaySFX("phoneDialBeep")
     ~ChangeGameScene("scene1_1")
     -> DONE

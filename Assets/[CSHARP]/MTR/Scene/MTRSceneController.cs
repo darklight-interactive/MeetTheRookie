@@ -116,7 +116,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             protected MTRSceneData activeSceneData => MTRSceneManager.ActiveSceneData;
             protected MTRCameraController cameraController => MTRGameManager.CameraController;
             protected MTRPlayerController playerController => MTRGameManager.PlayerController;
-            protected MTRPlayerStateMachine playerStateMachine => playerController.StateMachine;
+            protected MTRPlayerStateMachine playerStateMachine => playerController?.StateMachine;
             protected MTRSceneTransitionController transitionController
             {
                 get
@@ -303,7 +303,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                if (playerStateMachine?.CurrentState == MTRPlayerState.OVERRIDE_IDLE)
+                if (playerStateMachine != null)
                     playerStateMachine.GoToState(MTRPlayerState.FREE_IDLE);
             }
 

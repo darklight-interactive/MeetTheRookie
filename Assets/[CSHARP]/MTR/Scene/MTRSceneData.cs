@@ -98,6 +98,14 @@ public class MTRSceneData : BuildSceneScriptableData
         RefreshStorySettings();
     }
 
+    [Button]
+    public void UnsetSceneKnot()
+    {
+        _sceneKnot = "None";
+        _internalSceneKnot = "None";
+        _foundSceneKnot = false;
+    }
+
     void RefreshSceneSettings()
     {
         // Initialize scene bounds if not set
@@ -161,6 +169,7 @@ public class MTRSceneData : BuildSceneScriptableData
         }
 
         // << PARSE SCENE NAME >>
+        /*
         string sceneName = Name.ToLower();
         sceneName = sceneName.Replace(" ", ""); // Get the scene name and remove spaces
         sceneName = sceneName.Replace("-", "_"); // Replace hyphens with underscores
@@ -172,6 +181,9 @@ public class MTRSceneData : BuildSceneScriptableData
             string sceneIndex = sceneNameParts[1];
             string sectionIndex = sceneNameParts[2];
 
+            
+            string description = sceneNameParts[3];
+
             // Check if the scene knot exists
             if (sceneKnotList.Contains($"scene{sceneIndex}_{sectionIndex}"))
             {
@@ -181,6 +193,7 @@ public class MTRSceneData : BuildSceneScriptableData
                 return;
             }
         }
+        */
     }
 
     public void DrawGizmos()
