@@ -15,27 +15,34 @@ using UnityEditor;
 [Serializable]
 public class MTRInteractableDataSO : ScriptableObject
 {
-    [Header("Interaction"), HorizontalLine(color: EColor.Gray)]
+    [SerializeField, ShowOnly]
+    string _internalSceneKnot = "";
+
+    [SerializeField, ShowOnly]
+    string _internalInteractionStitch = "";
+
+    [SerializeField, ShowOnly]
+    string _internalClue;
+
     [Tooltip("The knot to read from when the interactable is interacted with")]
-    [Dropdown("dropdown_knotList"), SerializeField]
+    [Dropdown("dropdown_knotList"), SerializeField, HideIf("InternalSceneKnotSet")]
     string _sceneKnot = "scene_default";
 
     [Tooltip("The stitch to read from when the interactable is interacted with")]
-    [Dropdown("dropdown_interactionStitchList"), SerializeField]
+    [
+        Dropdown("dropdown_interactionStitchList"),
+        SerializeField,
+        HideIf("InternalInteractionStitchSet")
+    ]
     string _interactionStitch = "interaction_default";
 
-    [SerializeField]
-    [Tooltip("If true, the interaction will only be triggered once")]
-    bool _isOneShot = false;
-
-    [Header("Mystery"), HorizontalLine(color: EColor.Gray)]
-    [SerializeField]
+    [SerializeField, AllowNesting, HideIf("InternalMysterySet")]
     MTRMystery _mystery = MTRMystery.UNKNOWN;
 
-    [Dropdown("dropdown_clueList"), SerializeField]
-    string _clue;
+    [Dropdown("dropdown_clueList"), SerializeField, HideIf("InternalClueSet")]
+    string _clue = "";
 
-    [Header("Visuals"), HorizontalLine(color: EColor.Gray)]
+    [HorizontalLine(color: EColor.Gray)]
     [SerializeField]
     Sprite _sprite;
 
@@ -79,10 +86,39 @@ public class MTRInteractableDataSO : ScriptableObject
         }
     }
 
-    public string SceneKnot => _sceneKnot;
-    public string InteractionStitch => _interactionStitch;
+    bool InternalSceneKnotSet => _internalSceneKnot != "";
+    bool InternalInteractionStitchSet => _internalInteractionStitch != "";
+    bool InternalMysterySet => _mystery != MTRMystery.UNKNOWN;
+    bool InternalClueSet => _internalClue != "" && _internalClue != "None";
+
+    public string SceneKnot
+    {
+        get
+        {
+            if (_internalSceneKnot == "" && _sceneKnot != "scene_default")
+                _internalSceneKnot = _sceneKnot;
+            return _internalSceneKnot;
+        }
+    }
+    public string InteractionStitch
+    {
+        get
+        {
+            if (_internalInteractionStitch == "" && _interactionStitch != "interaction_default")
+                _internalInteractionStitch = _interactionStitch;
+            return _internalInteractionStitch;
+        }
+    }
     public string Mystery => _mystery.ToString();
-    public string ClueTag => _clue;
+    public string ClueTag
+    {
+        get
+        {
+            if (_internalClue == "" && _clue != "" && _clue != "None")
+                _internalClue = _clue;
+            return _internalClue;
+        }
+    }
     public Sprite Sprite => _sprite;
 
     public string Name
@@ -90,7 +126,7 @@ public class MTRInteractableDataSO : ScriptableObject
         // Get the last part of the interaction stitch
         get
         {
-            string[] nameParts = _interactionStitch.Split('.');
+            string[] nameParts = InteractionStitch.Split('.');
             string lastPart = nameParts[nameParts.Length - 1];
             return lastPart.Replace("_", " "); // Replace underscores with spaces
         }
@@ -147,9 +183,16 @@ public class MTRInteractableDataSO : ScriptableObject
     {
         if (sceneKnot != "scene_default")
             _sceneKnot = sceneKnot;
+        if (_sceneKnot != "scene_default")
+            _internalSceneKnot = _sceneKnot;
 
         if (interactionStitch != "interaction_default")
             _interactionStitch = interactionStitch;
+        if (_interactionStitch != "interaction_default")
+            _internalInteractionStitch = _interactionStitch;
+
+        if (_mystery != MTRMystery.UNKNOWN && _clue != "" && _clue != "None")
+            _internalClue = _clue;
 
         if (sprite != null)
             _sprite = sprite;
@@ -167,7 +210,7 @@ public class MTRInteractableDataSO : ScriptableObject
             string extension = Path.GetExtension(assetPath);
 
             // Generate a unique name if needed
-            string uniqueName = GenerateUniqueAssetName(_interactionStitch, directory);
+            string uniqueName = GenerateUniqueAssetName(InteractionStitch, directory);
 
             // Create new path with the updated name
             string newPath = Path.Combine(directory, $"{uniqueName}{extension}");
@@ -182,6 +225,18 @@ public class MTRInteractableDataSO : ScriptableObject
 #endif
     }
 
+    void ResetStitch()
+    {
+        _internalSceneKnot = "";
+        _internalInteractionStitch = "";
+    }
+
+    void ResetClue()
+    {
+        _mystery = MTRMystery.UNKNOWN;
+        _internalClue = "";
+    }
+
 #if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(MTRInteractableDataSO))]
     public class MTRInteractableDataSOCustomEditor : UnityEditor.Editor
@@ -193,6 +248,7 @@ public class MTRInteractableDataSO : ScriptableObject
         {
             _serializedObject = new SerializedObject(target);
             _script = (MTRInteractableDataSO)target;
+            _script.Initialize();
         }
 
         public override void OnInspectorGUI()
@@ -208,10 +264,22 @@ public class MTRInteractableDataSO : ScriptableObject
                 _script.Initialize();
             }
 
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Reset Stitch"))
+            {
+                _script.ResetStitch();
+            }
+
+            if (GUILayout.Button("Reset Clue"))
+            {
+                _script.ResetClue();
+            }
+            EditorGUILayout.EndHorizontal();
+
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
-                _script.Initialize();
+                //_script.Initialize();
             }
         }
     }
