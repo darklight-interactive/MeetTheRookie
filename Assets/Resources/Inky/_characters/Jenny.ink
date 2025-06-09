@@ -1,33 +1,66 @@
 === Jenny_Dialogue ===
-{IsQuestComplete(visited_jenny):
-    ~ SetSpeaker(Speaker.Jenny)
-    {Look, unless you want to talk about HOSI, we're done. | Get lost.}
-    -> DONE
--else:
-    ~ CompleteQuest(visited_jenny)
-    ~ SetSpeaker(Speaker.Lupe)
+    {IsQuestComplete(visited_jenny):
+        ~ SetSpeaker(Speaker.Jenny)
+        {Look, unless you want to talk about HOSI, we're done. | Get lost.}
+        -> jenny_questions
+    -else:
+        ~ SetSpeaker(Speaker.Lupe)
         Hey--
-    ~ SetSpeaker(Speaker.Jenny)
+        ~ SetSpeaker(Speaker.Jenny)
         Do you mind?
         We're kinda busy.
-    ~ SetSpeaker(Speaker.Lupe)
+        ~ SetSpeaker(Speaker.Lupe)
         I just want to ask you a few questions.
-    ~ SetSpeaker(Speaker.Jenny)
+        ~ SetSpeaker(Speaker.Jenny)
         I don't talk to cops.
         Especially <i>you</i>, Rookie.
-    ~ SetSpeaker(Speaker.Misra)
+        ~ SetSpeaker(Speaker.Misra)
         Come on, Jenny.
         You're still mad about the HO:SI thing?
-    ~ SetSpeaker(Speaker.Lupe)
+        ~ SetSpeaker(Speaker.Lupe)
         HO:SI...?
+        ~ SetSpeaker(Speaker.Lupe)
+        What's "HO:SI?"
+        ~ SetSpeaker(Speaker.Jenny)
+        Hamster Origins: Space Invaders.
+        ~ SetSpeaker(Speaker.Misra)
+        It's the game they're playing.
+        They've been trying to beat it for a while now.
+        ~ SetSpeaker(Speaker.Lupe)
+        What does that have to do with anything? 
+        ~ SetSpeaker(Speaker.Misra)
+        It's the only game in here they <i>don't</i> have the high score on.
+        ~ SetSpeaker(Speaker.Lupe)
+        Why does that matter?
+        ~ SetSpeaker(Speaker.Misra)
+        ...
+        Because <i>I</i> have the high score.
+        ~ SetSpeaker(Speaker.Lupe)
+        Well, <i>I'm</i> not a cop.
+        And I'm not the one blocking you from your high score.
+        ~ SetSpeaker(Speaker.Jenny)
+        ...
+        What do you want, then?
+        ~ SetSpeaker(Speaker.Lupe)
+        I'm...just passing through. 
+        I wanted to learn a little more about the town.
+        ~ SetSpeaker(Speaker.Jenny)
+        I can tell when someone's lying, you know.
+        ~ SetSpeaker(Speaker.Lupe)
+        Am I lying?
+        ~ SetSpeaker(Speaker.Jenny)
+        ...
+        ~ CompleteQuest(visited_jenny)
+        -> jenny_questions
     }
     -> DONE
 
 = jenny_questions
+    ~ SetSpeaker(Speaker.Lupe)
     * [Tell me about Kettle Rock.] -> jenny_KR_question
     * [The Old Winery on the hill...] -> jenny_winery_question
     * [You're a local?] -> jenny_personal_question
-    * {IsQuestComplete(jenny_crazies_question)} ["Crazies?"] -> jenny_crazies_question
+    * {IsQuestActive(jenny_crazies)} ["Crazies?"] -> jenny_crazies_question
     
 = jenny_KR_question
     ~ SetSpeaker(Speaker.Jenny)
@@ -50,41 +83,41 @@
     ~ SetSpeaker(Speaker.Jenny)
     Case in point.
     ~ CompleteQuest(jenny_KR_question)
-    ~ CompleteQuest(jenny_crazies_question)
-        -> DONE
+    ~ StartQuest(jenny_crazies)
+    -> jenny_questions
     
 = jenny_winery_question
-~ SetSpeaker(Speaker.Jenny)
-    Yeah?
-     What about it?
-    ~ SetSpeaker(Speaker.Lupe)
-     I don't know.
-     It seemed kinda important, to like, the town.
     ~ SetSpeaker(Speaker.Jenny)
-     Oh, sure.
-     I mean, the stupid Goats sure liked it up there.
+    Yeah?
+    What about it?
     ~ SetSpeaker(Speaker.Lupe)
-    // Add to Synthesis: WHo broke into the Old Winery?
-        {IsClueFound(evidence_roy):
-            ~ SetSpeaker(Speaker.Lupe)
-             Someone told us that you guys like to hang around up there.
-            ~ SetSpeaker(Speaker.Jenny)
-             Psh. Whatever.
-            ~ SetSpeaker(Speaker.Lupe)
-             You know, I have knack for when someone's not telling me the whole truth, too.
-            ~ SetSpeaker(Speaker.Jenny)
-            ...
-             I've never set foot inside that place.
-             That's the truth.
-            ~ SetSpeaker(Speaker.Lupe)
-             Hmm.
-            ~ DiscoverClue(Mystery2.evidence_jenny)
-            ~ CompleteQuest(jenny_winery_question)
-                -> DONE
-        }
+    I don't know.
+    It seemed kinda important, to like, the town.
+    ~ SetSpeaker(Speaker.Jenny)
+    Oh, sure.
+    I mean, the stupid Goats sure liked it up there.
+    ~ SetSpeaker(Speaker.Lupe)
+    {IsClueFound(evidence_roy):
+        ~ SetSpeaker(Speaker.Lupe)
+         Someone told us that you guys like to hang around up there.
+        ~ SetSpeaker(Speaker.Jenny)
+         Psh. Whatever.
+        ~ SetSpeaker(Speaker.Lupe)
+         You know, I have knack for when someone's not telling me the whole truth, too.
+        ~ SetSpeaker(Speaker.Jenny)
+        ...
+         I've never set foot inside that place.
+         That's the truth.
+        ~ SetSpeaker(Speaker.Lupe)
+         Hmm.
+        ~ DiscoverClue(Mystery2.evidence_jenny)
+        ~ CompleteQuest(jenny_winery_question)
+            -> DONE
+    }
+    -> jenny_questions
+
 = jenny_personal_question
     ~ SetSpeaker(Speaker.Jenny)
-    .
     Mhm.
     ~ SetSpeaker(Speaker.Lupe)
     What do you do for fun?
@@ -92,19 +125,18 @@
      ...
     Public artwork.
     ~ CompleteQuest(jenny_personal_question)
-    -> DONE
+    -> jenny_questions
     
 = jenny_crazies_question
     ~ SetSpeaker(Speaker.Jenny)
-    ~ CompleteQuest(jenny_crazies_question)
     .
     As in, crazy people.
     ~ SetSpeaker(Speaker.Lupe)
     Yeah, I got that part.
     ~ SetSpeaker(Speaker.Jenny)
     Uh, it's kinda self explanatory. 
-    
-    -> DONE
+    ~ CompleteQuest(jenny_crazies)
+    -> jenny_questions
     
 = jenny_suspicion_question
     ~ SetSpeaker(Speaker.Lupe)
@@ -116,26 +148,8 @@
     Gah.
     Dumb old Goat.
     ~ DiscoverClue(Mystery2.evidence_jenny)
-        -> DONE
+    -> DONE
 
-= jenny_hosi_question
-    ~ SetSpeaker(Speaker.Lupe)
-    What's "HO:SI?"
-    ~ SetSpeaker(Speaker.Jenny)
-     Hamster Origins: Space Invaders.
-    ~ SetSpeaker(Speaker.Misra)
-     It's the game they're playing.
-     They've been trying to beat it for a while now.
-    ~ SetSpeaker(Speaker.Lupe)
-     What does that have to do with anything? 
-    ~ SetSpeaker(Speaker.Misra)
-     It's the only game in here they <i>don't</i> have the high score on.
-    ~ SetSpeaker(Speaker.Lupe)
-     Why does that matter?
-    ~ SetSpeaker(Speaker.Misra)
-     ...
-     Because <i>I</i> have the high score.
-        -> DONE
 
 // Secondary Dialogue
 

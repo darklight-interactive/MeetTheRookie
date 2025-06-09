@@ -1,7 +1,6 @@
-
-
 === scene4_3 ===
 # Location: Power Up Arcade
+-> DONE
 = intro
     ~ closeDoor()
     {IsQuestComplete(visited_josh) && IsQuestComplete(visited_jenny) && IsQuestComplete(visited_calvin):
@@ -55,7 +54,7 @@
     }
 
 = jenny
-    -> Teens_Dialogue.jenny
+    -> Jenny_Dialogue
 = calvin
     -> Teens_Dialogue.calvin
 = josh 
