@@ -31,6 +31,9 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
 
+    [SerializeField]
+    SceneObject _mainMenuScene;
+
     public MTRSceneController SceneController
     {
         get
@@ -109,6 +112,11 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         Gizmos.color = Color.green;
         if (ActiveSceneData != null)
             ActiveSceneData.DrawGizmos();
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneController.TryLoadScene(_mainMenuScene);
     }
 
 #if UNITY_EDITOR

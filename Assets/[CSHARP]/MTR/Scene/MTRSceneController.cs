@@ -239,54 +239,57 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 yield return new WaitForSeconds(0.5f);
 
                 // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-                if (activeSceneData.ForceInteractionOnEnter)
-                    sceneController.StartCoroutine(ForceInteractionOnEnterCoroutine());
+
+                sceneController.StartCoroutine(ForceInteractionOnEnterCoroutine());
             }
 
             IEnumerator ForceInteractionOnEnterCoroutine()
             {
-                Debug.Log(
-                    $"{PREFIX} {activeSceneData.name} :: Force Interaction On Enter {activeSceneData.OnEnterStitch}"
-                );
-
-                // << TRY TO GET INTERACTABLE >>
-                // If the interactable is not found, try again up to 3 times with a delay of 0.5 seconds between attempts
-                // This is to account for the fact that the interactable may not be loaded yet
-                const int MAX_ATTEMPTS = 3;
-                const float ATTEMPT_DELAY = 0.5f;
-                MTRInteractable interactable = null;
-                for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)
+                if (activeSceneData.ForceInteractionOnEnter)
                 {
-                    MTRInteractionSystem.TryGetInteractableByStitch(
-                        activeSceneData.OnEnterStitch,
-                        out interactable
+                    Debug.Log(
+                        $"{PREFIX} {activeSceneData.name} :: Force Interaction On Enter {activeSceneData.OnEnterStitch}"
                     );
 
-                    if (interactable != null)
+                    // << TRY TO GET INTERACTABLE >>
+                    // If the interactable is not found, try again up to 3 times with a delay of 0.5 seconds between attempts
+                    // This is to account for the fact that the interactable may not be loaded yet
+                    const int MAX_ATTEMPTS = 3;
+                    const float ATTEMPT_DELAY = 0.5f;
+                    MTRInteractable interactable = null;
+                    for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)
                     {
-                        MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
-                        break;
-                    }
-
-                    if (attempt < MAX_ATTEMPTS)
-                    {
-                        Debug.Log(
-                            $"{PREFIX} Attempt {attempt} failed, retrying in {ATTEMPT_DELAY} seconds..."
+                        MTRInteractionSystem.TryGetInteractableByStitch(
+                            activeSceneData.OnEnterStitch,
+                            out interactable
                         );
-                        yield return new WaitForSeconds(ATTEMPT_DELAY);
-                    }
-                }
 
-                if (interactable == null)
-                {
-                    Debug.LogError(
-                        $"{PREFIX} {activeSceneData.name} :: No Interactable Found for {activeSceneData.OnEnterStitch} after {MAX_ATTEMPTS} attempts"
+                        if (interactable != null)
+                        {
+                            MTRInteractionSystem.PlayerInteractor?.InteractWith(interactable, true);
+                            break;
+                        }
+
+                        if (attempt < MAX_ATTEMPTS)
+                        {
+                            Debug.Log(
+                                $"{PREFIX} Attempt {attempt} failed, retrying in {ATTEMPT_DELAY} seconds..."
+                            );
+                            yield return new WaitForSeconds(ATTEMPT_DELAY);
+                        }
+                    }
+
+                    if (interactable == null)
+                    {
+                        Debug.LogError(
+                            $"{PREFIX} {activeSceneData.name} :: No Interactable Found for {activeSceneData.OnEnterStitch} after {MAX_ATTEMPTS} attempts"
+                        );
+                    }
+
+                    yield return new WaitUntil(
+                        () => interactable.CurrentState == MTRInteractable.State.COMPLETE
                     );
                 }
-
-                yield return new WaitUntil(
-                    () => interactable.CurrentState == MTRInteractable.State.COMPLETE
-                );
                 stateMachine.GoToState(MTRSceneState.PLAY_MODE);
             }
         }

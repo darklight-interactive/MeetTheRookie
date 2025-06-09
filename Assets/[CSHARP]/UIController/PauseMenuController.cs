@@ -122,7 +122,11 @@ public class PauseMenuController : UXML_UIDocumentObject
 
         _controlsPageButton.OnClick += () => _stateMachine.GoToState(PauseMenuState.CONTROLS);
 
-        _mainMenuButton.OnClick += () => Debug.Log("Main menu button clicked");
+        _mainMenuButton.OnClick += () =>
+        {
+            ClosePauseMenu();
+            MTRSceneManager.Instance.LoadMainMenu();
+        };
 
         _settingsReturnButton.OnClick += () => _stateMachine.GoToState(PauseMenuState.HOME);
 
@@ -230,30 +234,36 @@ public class PauseMenuController : UXML_UIDocumentObject
 
     void OnMenuButtonAction()
     {
-        Debug.Log("[PauseMenuController] OnMenuButtonAction");
-
         // << RESUME GAME >>
         if (_stateMachine.CurrentState != PauseMenuState.NONE)
-        {
-            _stateMachine.GoToState(PauseMenuState.NONE);
-            MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
-
-            MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-        }
+            ClosePauseMenu();
         // << OPEN PAUSE MENU >>
         else
-        {
-            if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE)
-                return;
+            OpenPauseMenu();
+    }
 
-            _stateMachine.GoToState(PauseMenuState.HOME);
-            MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
+    void OpenPauseMenu()
+    {
+        if (MTRSceneController.StateMachine.CurrentState != MTRSceneState.PLAY_MODE)
+            return;
 
-            // Listen to the input manager
-            MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-        }
+        Debug.Log("[PauseMenuController] OpenPauseMenu");
+        _stateMachine.GoToState(PauseMenuState.HOME);
+        MTRSceneController.StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
+
+        // Listen to the input manager
+        MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+    }
+
+    void ClosePauseMenu()
+    {
+        Debug.Log("[PauseMenuController] ClosePauseMenu");
+        _stateMachine.GoToState(PauseMenuState.NONE);
+        MTRSceneController.StateMachine.GoToState(MTRSceneState.PLAY_MODE);
+
+        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
+        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
     }
     #endregion
 
