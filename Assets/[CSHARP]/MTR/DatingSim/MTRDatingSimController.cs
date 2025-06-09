@@ -63,7 +63,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         new SelectableVectorField<SelectableButton>();
     public bool inCar = false;
 
-    [SerializeField]
+    [SerializeField, Expandable]
     [Tooltip("Place Dating Sim Emotes Asset Here Please")]
     private DatingSimEmotes emotes;
 

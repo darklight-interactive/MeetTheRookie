@@ -49,6 +49,7 @@ Alright. Bye.
 
 = gas_pump
     ~ CompleteQuest(Level1_Quests.first_interact)
+    ~ DiscoverMystery(0)
     ~ DiscoverClue(Mystery0.evidence_broken_gas_pump)
     ~ gas_pumps += 1
     {

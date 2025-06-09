@@ -42,6 +42,7 @@ VAR canIntroArcade = true
 -> DONE
 
 = misra_cutscene_afternoon
+    ~ DiscoverMystery(2)
     ~ CompleteQuest(visited_misra)
     ~ SetSpeaker(Speaker.Misra)
     Here we are! 
