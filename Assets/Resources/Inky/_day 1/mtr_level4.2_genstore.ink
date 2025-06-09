@@ -37,5 +37,5 @@
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
     //~closeDoor()
-    ~ mainStreetCheck()
+    ~ ChangeGameScene("scene4_1")
     ->DONE

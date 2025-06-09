@@ -37,12 +37,13 @@
 * {IsClueFound(merch_pamphlet)} -> pamphlet
     
 {IsClueFound(roy_personal_info) && IsClueFound(roy_winery_closing) && IsClueFound(roy_town_history):
-        Thank you for your cooperation. 
-        ~ SetSpeaker(Speaker.Roy_Rodgerson)
-        Of course. 
-        Feel free to look around, if it helps any.
-        -> DONE
-        }
+    Thank you for your cooperation. 
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
+    Of course. 
+    Feel free to look around, if it helps any.
+    -> DONE
+}
+    -> DONE
 
 = personal_info
 ~ SetSpeaker(Speaker.Roy_Rodgerson)

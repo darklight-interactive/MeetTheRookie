@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
 using UnityEditor;
-using System;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Emote Collection", menuName = "Addressables/Emote Collection")]
 public class DatingSimEmotes : ScriptableObject
@@ -11,7 +11,8 @@ public class DatingSimEmotes : ScriptableObject
     [Serializable]
     private class TrueDatingSimEmotes
     {
-        [HideInInspector] public string key;
+        [HideInInspector]
+        public string key;
         public Texture2D value;
 
         public TrueDatingSimEmotes(string k, Texture2D v)
@@ -27,12 +28,17 @@ public class DatingSimEmotes : ScriptableObject
     public string lupeDefaultEmoteName = "neutral";
     public string misraDefaultEmoteName = "neutral";
 
+    [SerializeField]
+    private List<Texture2D> lupeImages = new List<Texture2D>();
 
-    [SerializeField] private List<Texture2D> lupeImages = new List<Texture2D>();
-    [SerializeField] private List<Texture2D> misraImages = new List<Texture2D>();
+    [SerializeField]
+    private List<Texture2D> misraImages = new List<Texture2D>();
 
-    [SerializeField] private List<TrueDatingSimEmotes> lupeEmotes = new List<TrueDatingSimEmotes>();
-    [SerializeField] private List<TrueDatingSimEmotes> misraEmotes = new List<TrueDatingSimEmotes>();
+    [SerializeField]
+    private List<TrueDatingSimEmotes> lupeEmotes = new List<TrueDatingSimEmotes>();
+
+    [SerializeField]
+    private List<TrueDatingSimEmotes> misraEmotes = new List<TrueDatingSimEmotes>();
 
     // private Dictionary<string, Texture2D> old_lupeEmotes = new Dictionary<string, Texture2D>();
     // private Dictionary<string, Texture2D> old_misraEmotes = new Dictionary<string, Texture2D>();
@@ -70,7 +76,9 @@ public class DatingSimEmotes : ScriptableObject
             currMisraEmote = misraEmotes.Find(x => x.key == emote).value;
             return true;
         }
-        Debug.LogError("DatingSimEmotes: Could not get emote \"" + emote + "\" of character \"" + name + "\"");
+        Debug.LogError(
+            "DatingSimEmotes: Could not get emote \"" + emote + "\" of character \"" + name + "\""
+        );
         return false;
     }
 

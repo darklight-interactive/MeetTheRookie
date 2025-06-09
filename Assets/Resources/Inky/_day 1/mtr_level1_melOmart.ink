@@ -16,6 +16,9 @@ VAR gas_pumps = 0
 
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
+# emote : Misra \| Voice_call
+# sfx : on
+
 ~ SetSpeaker(Speaker.Chief_Thelton)
 //TODO SFX phone ringing and ringing,
 //~PlayLoopingSFX("phoneCallingTone")
@@ -24,8 +27,10 @@ VAR gas_pumps = 0
 You've reached Chief Detective Inspector Thelton, Boise Precinct. 
 I'm not available right now. You know what to do!
 // We hear a generic voicemail beep.
-~PlaySFX("phoneVoicemailBeep")
+~ PlaySFX("phoneVoicemailBeep")
 
+# name: Lupe
+# emote : Lupe \| Serious_2
 ~ SetSpeaker(Speaker.Lupe)
 ...
 Hey, it's Lupe. Had to change my route; 

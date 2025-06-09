@@ -37,7 +37,7 @@ VAR phoneCall = 0
 -> soul
 
 = hello
-#name:Lupe
+# name:Lupe
 # emote : Lupe \| Serious_2
 "Hello?" 
 

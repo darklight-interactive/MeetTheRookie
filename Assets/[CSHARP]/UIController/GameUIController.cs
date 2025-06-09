@@ -47,13 +47,20 @@ public class GameUIController : UXML_UIDocumentObject
         DisplayGenStorePamphlet(false);
         DisplayPinPad(false);
 
-        MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted += HandleInteractableAccepted;
+        if (MTRInteractionSystem.PlayerInteractor != null)
+            MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted +=
+                HandleInteractableAccepted;
         MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
     }
 
     void OnDestroy()
     {
-        MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted -= HandleInteractableAccepted;
+        if (MTRInteractionSystem.PlayerInteractor != null)
+        {
+            MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted -=
+                HandleInteractableAccepted;
+        }
+
         MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
 
         MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
