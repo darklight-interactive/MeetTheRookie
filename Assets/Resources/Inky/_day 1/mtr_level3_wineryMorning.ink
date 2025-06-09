@@ -105,7 +105,7 @@ TODO SFX door close
 
 // Note, only the main room is accessible during this time. The door that leads to the office area is closed and locked, located on the back wall.
 
-* [misra] -> Misra_Dialogue.3_2
+* [misra] -> misra
 * [wine barrels] -> wine_barrels
 * [claw marks] -> claw_marks
 * [damaged equipment] -> equipment
@@ -114,8 +114,45 @@ TODO SFX door close
 * [winery front door] -> door_winery_exterior
 * [handprint] -> handprint
 * [inside_window] ->inside_window
+
 = misra 
-    -> Misra_Dialogue.3_2
+    {IsClueFound(evidence_claw_marks) && IsClueFound(evidence_damages):
+        ~ SetSpeaker(Speaker.Misra)
+        Thoughts?
+        ~ SetSpeaker(Speaker.Lupe)
+        It's obscure. Someone was definitely here, but I can't speak to motive. Who would want to break into an abandoned Winery?
+        ~ SetSpeaker(Speaker.Misra)
+        That sounds like it's time for some profiling! We need a suspect list.
+        ~ SetSpeaker(Speaker.Lupe)
+        Any leads on who it could be?
+        ~ SetSpeaker(Speaker.Misra)
+        Our best bet is questioning some locals. 
+        ~ SetSpeaker(Speaker.Lupe)
+        I agree.
+        ~ SetSpeaker(Speaker.Misra)
+        Copy that, Detective. Lead the way! 
+        ~ SetSpeaker(Speaker.Lupe)
+        I...don't know the way to Downtown.
+        ~ SetSpeaker(Speaker.Misra)
+        Oh, right! Yeah, of course you don't. 
+        I can give you directions in the car.
+        ~ CompleteQuest(discover_inside_clues)
+        ~ openDoor()
+        ~ PlaySFX("carStartAndLeave")
+        ~ ChangeGameScene("scene4_1")
+        -> DONE
+        
+    - else:
+        ~ SetSpeaker(Speaker.Lupe)
+        Wow. The inside is <i>so</i> much better than the outside.
+        ~ SetSpeaker(Speaker.Misra)
+        Never judge a book by it's cover! 
+        ~ SetSpeaker(Speaker.Lupe)
+        That was sarcasm, you know that, right?
+        ~ SetSpeaker(Speaker.Misra)
+        I do! The advice still applies.
+        -> DONE
+    }
     
 = inside_window
     ~ SetSpeaker(Speaker.Lupe)
@@ -196,9 +233,7 @@ TODO SFX door close
 
 = door_winery_exterior
     {IsClueFound(evidence_claw_marks) && IsClueFound(evidence_damages):
-        -> Misra_Dialogue.3_2
-        ~ ChangeGameScene("scene4_1")
-        ~ openDoor()
+        -> misra
         -> DONE
     - else:
         ~ SetSpeaker(Speaker.Misra)
