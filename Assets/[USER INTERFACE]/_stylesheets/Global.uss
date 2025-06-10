@@ -212,6 +212,7 @@ SelectableSlider .unity-base-slider__tracker {
     border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(218, 201, 190);
     background-color: rgba(0, 0, 0, 0);
+    -unity-background-scale-mode: scale-and-crop;
 }
 
 SelectableSlider .unity-base-slider__dragger-border {
@@ -326,4 +327,43 @@ SelectableSlider .unity-base-slider__dragger.selected {
     margin-right: 25px;
     margin-bottom: 0;
     margin-left: 0;
+}
+
+SelectableButton.main-menu {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&guid=e9f3108207bed5c4caa303e96ced19e3&type=3#ui-folder-1_0");
+    -unity-background-image-tint-color: rgb(39, 73, 107);
+    color: rgb(221, 235, 255);
+    font-size: 20px;
+    -unity-font-style: normal;
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
+    transition-duration: 0.4s;
+    flex-grow: 1;
+    margin-top: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+}
+
+SelectableButton.main-menu.selected {
+    background-image: url("project://database/Assets/[USER%20INTERFACE]/PauseMenu/bg_folders/ui-folder-1-body2.png?fileID=1445594954290753641&guid=e9f3108207bed5c4caa303e96ced19e3&type=3#ui-folder-1_0");
+    -unity-background-image-tint-color: rgb(39, 73, 107);
+    color: rgb(221, 235, 255);
+    font-size: 20px;
+    -unity-font-style: normal;
+    -unity-font-definition: resource('Fonts/digital_disco/DigitalDisco-Thin');
+    transition-duration: 0.4s;
+    translate: 3% 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    scale: 1.1 1.1;
 }
