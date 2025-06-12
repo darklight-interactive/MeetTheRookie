@@ -36,7 +36,7 @@ INCLUDE _day 2/mtr_level7.1_DS.ink
 INCLUDE _day 2/mtr_level6.1_melOmart.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
-EXTERNAL ChangeGameScene(knotName)
+EXTERNAL ChangeGameScene(knotName, spawnIndex)
 EXTERNAL SetSpeaker(speaker)
 EXTERNAL RequestSpecialUI(special_ui_tag)
 EXTERNAL PlaySpecialAnimation(speaker)
@@ -44,7 +44,7 @@ EXTERNAL PlaySFX(sfx)
 
 
 // ====== SCENE HANDLING == >>
-=== function ChangeGameScene(knotName)
+=== function ChangeGameScene(knotName, spawnIndex)
     ~ SetSpeaker(Speaker.Lupe)
     ~ return
 

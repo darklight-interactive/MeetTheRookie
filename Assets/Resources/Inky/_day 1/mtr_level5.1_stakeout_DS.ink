@@ -602,5 +602,5 @@
 
 <i> You rapidly unbuckle your seatbelt to follow. </i> 
 ~PlaySFX("carDoorOpenAndClose")
-~ ChangeGameScene("scene5_2")
+~ ChangeGameScene("scene5_2", 0)
 -> DONE

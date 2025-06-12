@@ -36,6 +36,20 @@ public class MTRInteractionSystem : InteractionSystem
         }
     }
 
+    public static void GetSpawnPointInteractables(out List<MTRInteractable> interactables)
+    {
+        // Get interactables that are spawn points
+        interactables = new List<MTRInteractable>();
+        foreach (MTRInteractable i in Registry.Interactables.Values)
+        {
+            if (i.Data.IsSpawnPoint)
+                interactables.Add(i);
+        }
+
+        // Sort the interactables by spawn index
+        interactables.Sort((a, b) => a.Data.SpawnIndex.CompareTo(b.Data.SpawnIndex));
+    }
+
     public static void ResetAllInteractablesExcept(List<MTRInteractable> whitelist)
     {
         foreach (MTRInteractable interactable in Registry.Interactables.Values)

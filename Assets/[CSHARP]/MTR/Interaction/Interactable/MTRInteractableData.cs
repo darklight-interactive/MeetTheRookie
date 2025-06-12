@@ -33,6 +33,12 @@ public partial class MTRInteractable
         [SerializeField, NaughtyAttributes.ReadOnly]
         Sprite _sprite;
 
+        [SerializeField, ShowOnly]
+        bool _isSpawnPoint = false;
+
+        [SerializeField, ShowOnly]
+        int _spawnIndex = 0;
+
         public override string Name => _name;
         public override string Key => _key;
         public override string Layer => _layer;
@@ -40,6 +46,8 @@ public partial class MTRInteractable
         public string SceneKnot => _scene;
         public Type Type => _type;
         public Sprite Sprite => _sprite;
+        public bool IsSpawnPoint => _isSpawnPoint;
+        public int SpawnIndex => _spawnIndex;
 
         public InternalData(MTRInteractable interactable)
             : base(interactable)
@@ -164,6 +172,8 @@ public partial class MTRInteractable
             _scene = interactable._dataSO.SceneKnot;
             _key = interactable._dataSO.InteractionStitch;
             _sprite = interactable._dataSO.Sprite;
+            _isSpawnPoint = interactable._dataSO.IsSpawnPoint;
+            _spawnIndex = interactable._dataSO.SpawnIndex;
 
             // Set the layer
             interactable.gameObject.layer = LayerMask.NameToLayer(_layer);

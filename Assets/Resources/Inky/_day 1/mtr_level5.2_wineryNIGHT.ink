@@ -34,7 +34,7 @@ Whoever left these here...are they here again?
 
 = door_to_inside_winery_night
     ~ openDoor()
-    ~ ChangeGameScene("scene5_3") 
+    ~ ChangeGameScene("scene5_3", 0) 
     -> DONE
 
 ===scene5_3===
@@ -103,7 +103,7 @@ Wait...
 Wasn't this closed before?
 ~ openDoor()
 
-~ ChangeGameScene("scene5_4")
+~ ChangeGameScene("scene5_4", 0)
 -> DONE
 
 = exit

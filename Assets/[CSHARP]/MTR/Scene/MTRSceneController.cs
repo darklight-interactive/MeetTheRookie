@@ -39,6 +39,9 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
     [SerializeField, ShowOnly]
     string _sceneToLoad;
 
+    [SerializeField, ShowOnly]
+    int _spawnIndex;
+
     public MTR_UIManager UIManager => MTR_UIManager.Instance;
     public MTRSceneTransitionController TransitionController => UIManager.SceneTransitionController;
     public MTRPlayerController PlayerController => MTRGameManager.PlayerController;
@@ -69,7 +72,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         _currentSceneState = state;
     }
 
-    public void TryLoadScene(string sceneName)
+    public void TryLoadScene(string sceneName, int spawnIndex = 0)
     {
         if (sceneName == null || sceneName == "")
             return;
@@ -81,7 +84,59 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         }
 
         _sceneToLoad = sceneName;
+        _spawnIndex = spawnIndex;
         StateMachine.GoToState(MTRSceneState.EXIT);
+    }
+
+    public void SetPlayerSpawnPoint(int spawnIndex)
+    {
+        if (PlayerController == null)
+            return;
+
+        // << SET PLAYER SPAWN POINT >>
+        MTRInteractionSystem.GetSpawnPointInteractables(out List<MTRInteractable> interactables);
+
+        // if there are spawn points, get the closest valid destination
+        if (interactables.Count > 0)
+        {
+            MTRInteractable spawnPointInteractable = interactables[spawnIndex];
+
+            // << SET PLAYER POSITION >>
+            PlayerController.transform.position = new Vector3(
+                spawnPointInteractable.transform.position.x,
+                PlayerController.transform.position.y,
+                0
+            );
+            Debug.Log(
+                $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex})",
+                spawnPointInteractable
+            );
+            /*
+            MTRDestinationReciever reciever = null;
+            spawnPointInteractable.Recievers.TryGetValue(InteractionType.DESTINATION, out reciever);
+            if (reciever != null)
+            {
+                reciever.GetClosestValidDestination(
+                    PlayerController.transform.position,
+                    out Vector2 destination
+                );
+                PlayerController.transform.position = new Vector3(
+                    destination.x,
+                    PlayerController.transform.position.y,
+                    0
+                );
+                Debug.Log(
+                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex}) {destination}"
+                );
+            }
+            else
+            {
+                Debug.LogError(
+                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: No Destination Reciever Found for {spawnPointInteractable.name} ({_spawnIndex})"
+                );
+            }
+            */
+        }
     }
 
     #region ( InternalStateMachine ) ================================================================
@@ -233,13 +288,17 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 // << REFRESH REGISTRY >>
                 InteractionSystem.Registry.RefreshRegistry();
 
+                // << SET PLAYER SPAWN POINT >>
+                sceneController.SetPlayerSpawnPoint(sceneController._spawnIndex);
+
+                // << SET CAMERA FOLLOW TARGET >>
                 cameraController?.SetPlayerAsFollowTarget();
 
+                // << BEGIN TRANSITION >>
                 transitionController?.StartWipeOpen();
                 yield return new WaitForSeconds(0.5f);
 
                 // << FORCE PLAYER INTERACT WITH ON START INTERACTION STITCH >>
-
                 sceneController.StartCoroutine(ForceInteractionOnEnterCoroutine());
             }
 
