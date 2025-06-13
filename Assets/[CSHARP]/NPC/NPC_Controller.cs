@@ -117,6 +117,11 @@ public class NPC_Controller : MonoBehaviour
         destinationWrapper.walkDestinationX = walkDestinationX;
     }
 
+    void FixedUpdate()
+    {
+        stateMachine.FixedStep();
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawLine(

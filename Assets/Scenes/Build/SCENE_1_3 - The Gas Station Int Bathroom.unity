@@ -8349,15 +8349,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.301
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.061
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8975,7 +8975,7 @@ PrefabInstance:
     - target: {fileID: 8403832537613495249, guid: 0d5ea15293dc95744b9374453b55b6db, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 6285674850972441328, guid: bad536425cbd56b47aca7332018d781e, type: 3}
+      objectReference: {fileID: 8379782980816617672, guid: bad536425cbd56b47aca7332018d781e, type: 3}
     - target: {fileID: 8403832537613495249, guid: 0d5ea15293dc95744b9374453b55b6db, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -9136,6 +9136,8 @@ MonoBehaviour:
     _layer: Interactable
     _type: 0
     _sprite: {fileID: -6538129623186974381, guid: 7718ce52f2ba1474bbe972b14ef3d27e, type: 3}
+    _isSpawnPoint: 0
+    _spawnIndex: 0
   _currentState: 0
   _autoSizeCollider: 1
   _disableCollider: 0
@@ -9174,7 +9176,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.7935116}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -9184,7 +9186,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.5, y: 0.40716594}
   m_EdgeRadius: 0
 --- !u!212 &947796968
 SpriteRenderer:
@@ -10768,7 +10770,7 @@ PrefabInstance:
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -5432544297458954025, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
+      objectReference: {fileID: 3930773334014634419, guid: 34152eec57f312b4abc5d37e9eaf7457, type: 3}
     - target: {fileID: 4967726323117418543, guid: f38374023554ea349a889ef5ff8244e6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -11198,13 +11200,13 @@ MonoBehaviour:
       _value: 0
     - _id: 2
       _key: {x: 2, y: 0}
-      _value: 0
+      _value: 1
     - _id: 3
       _key: {x: 3, y: 0}
-      _value: 0
+      _value: 1
     - _id: 4
       _key: {x: 4, y: 0}
-      _value: 0
+      _value: 1
     - _id: 5
       _key: {x: 5, y: 0}
       _value: 0
@@ -11231,7 +11233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1696210673
+  _guid: 1005029052
   _typeKey: 1
   _isInitialized: 1
   _showGizmos: 0
@@ -11272,7 +11274,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1385006357
+      _guid: 238144469
       _key: {x: 0, y: 0}
       _coordinate: {x: -2, y: 0}
       _position: {x: -2.979326, y: 0.99999994, z: 0.50227547}
@@ -11285,7 +11287,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 861389594
+      _guid: 1801918740
       _key: {x: 1, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -2.604326, y: 0.99999994, z: 0.50227547}
@@ -11298,7 +11300,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 719679862
+      _guid: -2126720503
       _key: {x: 2, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -2.229326, y: 0.99999994, z: 0.50227547}
@@ -11311,7 +11313,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: 1970086769
+      _guid: 1555401557
       _key: {x: 3, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -1.854326, y: 0.99999994, z: 0.50227547}
@@ -11324,7 +11326,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -40641367
+      _guid: -1133975269
       _key: {x: 4, y: 0}
       _coordinate: {x: 2, y: 0}
       _position: {x: -1.479326, y: 0.99999994, z: 0.50227547}
@@ -13021,7 +13023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093a844c1695d1d4b94751a88be316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 1926006440
+  _guid: 2101147060
   _typeKey: 0
   _isInitialized: 1
   _showGizmos: 0
@@ -13037,7 +13039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d6a3ed76415a643b202c6d7e01df2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -108744511
+  _guid: 103402602
   _typeKey: 3
   _isInitialized: 1
   _showGizmos: 0
@@ -13078,7 +13080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf412c4aeae3b48bc8e1eb33bc9523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: 2127188457
+  _guid: 2098539628
   _typeKey: 1
   _isInitialized: 1
   _showGizmos: 0
@@ -13097,7 +13099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32122bc34b45c41438db31d0cb425516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _guid: -1288262704
+  _guid: 1511969853
   _typeKey: 2
   _isInitialized: 1
   _showGizmos: 0
@@ -13136,7 +13138,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -1222234513
+      _guid: 2056125956
       _key: {x: 0, y: 0}
       _coordinate: {x: -1, y: 0}
       _position: {x: -2.291826, y: 1.05, z: 0.50227547}
@@ -13149,7 +13151,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -167299983
+      _guid: 2025024055
       _key: {x: 1, y: 0}
       _coordinate: {x: 0, y: 0}
       _position: {x: -2.229326, y: 0.99999994, z: 0.50227547}
@@ -13162,7 +13164,7 @@ MonoBehaviour:
       _cellSpacing: {x: 1, y: 1}
       _cellBonding: {x: 0, y: 0}
     _data:
-      _guid: -781890388
+      _guid: -804593087
       _key: {x: 2, y: 0}
       _coordinate: {x: 1, y: 0}
       _position: {x: -2.166826, y: 1.05, z: 0.50227547}
