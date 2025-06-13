@@ -39,6 +39,9 @@ public partial class MTRInteractable
         [SerializeField, ShowOnly]
         int _spawnIndex = 0;
 
+        [SerializeField, ShowOnly]
+        bool _spawnMisra = false;
+
         public override string Name => _name;
         public override string Key => _key;
         public override string Layer => _layer;
@@ -48,6 +51,7 @@ public partial class MTRInteractable
         public Sprite Sprite => _sprite;
         public bool IsSpawnPoint => _isSpawnPoint;
         public int SpawnIndex => _spawnIndex;
+        public bool SpawnMisra => _spawnMisra;
 
         public InternalData(MTRInteractable interactable)
             : base(interactable)
@@ -174,6 +178,7 @@ public partial class MTRInteractable
             _sprite = interactable._dataSO.Sprite;
             _isSpawnPoint = interactable._dataSO.IsSpawnPoint;
             _spawnIndex = interactable._dataSO.SpawnIndex;
+            _spawnMisra = interactable._dataSO.SpawnMisra;
 
             // Set the layer
             interactable.gameObject.layer = LayerMask.NameToLayer(_layer);

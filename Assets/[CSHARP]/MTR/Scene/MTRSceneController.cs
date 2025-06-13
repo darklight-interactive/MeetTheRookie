@@ -107,35 +107,31 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 PlayerController.transform.position.y,
                 0
             );
+
+            if (spawnPointInteractable.Data.SpawnMisra)
+            {
+                MTR_Misra_Controller misra_Controller =
+                    FindFirstObjectByType<MTR_Misra_Controller>();
+                if (misra_Controller != null)
+                {
+                    misra_Controller.transform.position = new Vector3(
+                        spawnPointInteractable.transform.position.x - 1,
+                        misra_Controller.transform.position.y,
+                        0
+                    );
+                }
+                else
+                {
+                    Debug.LogError(
+                        $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: No Misra Controller Found"
+                    );
+                }
+            }
+
             Debug.Log(
                 $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex})",
                 spawnPointInteractable
             );
-            /*
-            MTRDestinationReciever reciever = null;
-            spawnPointInteractable.Recievers.TryGetValue(InteractionType.DESTINATION, out reciever);
-            if (reciever != null)
-            {
-                reciever.GetClosestValidDestination(
-                    PlayerController.transform.position,
-                    out Vector2 destination
-                );
-                PlayerController.transform.position = new Vector3(
-                    destination.x,
-                    PlayerController.transform.position.y,
-                    0
-                );
-                Debug.Log(
-                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex}) {destination}"
-                );
-            }
-            else
-            {
-                Debug.LogError(
-                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: No Destination Reciever Found for {spawnPointInteractable.name} ({_spawnIndex})"
-                );
-            }
-            */
         }
     }
 
