@@ -406,15 +406,13 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
-            public override void Exit()
-            {
-                playerController.StateMachine.GoToState(MTRPlayerState.FREE_IDLE);
-            }
-
             public override void Execute()
             {
-                //StateMachine.GoToState(MTRSceneState.SYNTHESIS_MODE);
+                if (playerController.StateMachine.CurrentState != MTRPlayerState.OVERRIDE_IDLE)
+                    playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
+
+            public override void Exit() { }
         }
         #endregion
 

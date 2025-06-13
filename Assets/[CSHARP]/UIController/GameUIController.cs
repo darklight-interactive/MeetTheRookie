@@ -5,165 +5,79 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(PinPad))]
 public class GameUIController : UXML_UIDocumentObject
 {
-    const string SELECTED_CLASS = "selected";
-    const string LEFT_ARROW_BUTTON_TAG = "left-arrow-button";
-    const string RIGHT_ARROW_BUTTON_TAG = "right-arrow-button";
     const string GEN_STORE_PAMPHLET_TAG = "gen-store-pamphlet";
     const string PIN_PAD_TAG = "winery-pinpad";
-
-    MTRStoryManager _storyManager;
-    SelectableButton _previousSelectedButton;
-    SelectableButton _currentSelectedButton;
-
-    bool _pamphletIsDisplayed;
-    bool _pinPadIsDisplayed;
+    const string PLAQUE_TAG = "memorial-plaque";
+    const string HANDWRITTEN_NOTE_TAG = "handwritten-note";
 
     [SerializeField]
-    InkyStoryStitchData _genStorePamphletStitch;
+    GenStorePamphletElement _genStorePamphletElement;
 
-    /// <summary>
-    /// The current selectable elements in the pamphlet. This is updated based on the current state.
-    /// </summary>
-    SelectableVectorField<SelectableButton> _selectableVectorField =
-        new SelectableVectorField<SelectableButton>();
+    [SerializeField]
+    WineryPinPadElement _wineryPinPadElement;
 
-    protected VisualElement _genStorePamphletElement;
-    List<VisualElement> _genStorePamphletPages = new List<VisualElement>();
-    int _currentPageIndex = 0;
-    SelectableButton _leftArrowButton;
-    SelectableButton _rightArrowButton;
+    [SerializeField]
+    BaseSpecialUIElement _memorialPlaqueElement;
 
-    PinPad _pinPadScript;
-    VisualElement _pinPadElement;
+    [SerializeField]
+    BaseSpecialUIElement _handwrittenNoteElement;
 
-    public void Awake()
+    void Awake()
     {
-        _pinPadScript = GetComponent<PinPad>();
-
-        Initialize(preset);
-        DisplayGenStorePamphlet(false);
-        DisplayPinPad(false);
-
-        if (MTRInteractionSystem.PlayerInteractor != null)
-            MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted +=
-                HandleInteractableAccepted;
         MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
-    }
-
-    void OnDestroy()
-    {
-        if (MTRInteractionSystem.PlayerInteractor != null)
-        {
-            MTRInteractionSystem.PlayerInteractor.OnInteractableAccepted -=
-                HandleInteractableAccepted;
-        }
-
-        MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
-
-        MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-        MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-        MTRInputManager.OnMenuButton -= OnMenuButtonAction;
-
-        _leftArrowButton.OnClick -= OnLeftArrowButtonClick;
-        _rightArrowButton.OnClick -= OnRightArrowButtonClick;
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
         base.Initialize(preset, clonePanelSettings);
+        _genStorePamphletElement = new GenStorePamphletElement(this, GEN_STORE_PAMPHLET_TAG);
+        _memorialPlaqueElement = new BaseSpecialUIElement(this, PLAQUE_TAG);
+        _handwrittenNoteElement = new BaseSpecialUIElement(this, HANDWRITTEN_NOTE_TAG);
 
-        _storyManager = MTRStoryManager.Instance;
-    }
-
-    // Start is called before the first frame update
-    void Start() { }
-
-    void HandleInteractableAccepted(Interactable interactable)
-    {
-        if (interactable is MTRInteractable mtrInteractable)
+        // Initialize the pin pad element with the correct code stitch data
+        if (_wineryPinPadElement != null)
+            _wineryPinPadElement = new WineryPinPadElement(
+                this,
+                PIN_PAD_TAG,
+                _wineryPinPadElement.CorrectCodeStitchData
+            );
+        else
         {
-            if (mtrInteractable.Data.Key == _genStorePamphletStitch.Stitch)
-            {
-                DisplayGenStorePamphlet(true);
-            }
+            _wineryPinPadElement = new WineryPinPadElement(this, PIN_PAD_TAG, null);
         }
     }
 
-    void HandleRequestSpecialUI(string ui)
+    void OnDestroy()
     {
-        switch (ui)
+        MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
+    }
+
+    void HandleRequestSpecialUI(string ui_request)
+    {
+        Initialize();
+
+        switch (ui_request)
         {
             case "su_pamphlet":
-                DisplayGenStorePamphlet(true);
+                _genStorePamphletElement.Display(true);
+                break;
+            case "su_note":
+                _handwrittenNoteElement.Display(true);
                 break;
             case "su_plaque":
+                _memorialPlaqueElement.Display(true);
                 break;
             case "su_pinpad":
-                DisplayPinPad(true);
+                _wineryPinPadElement.Display(true);
                 break;
             default:
                 break;
         }
     }
 
-    public void DisplayGenStorePamphlet(bool display)
-    {
-        _pamphletIsDisplayed = display;
-
-        _genStorePamphletElement = ElementQuery<VisualElement>(GEN_STORE_PAMPHLET_TAG);
-        _genStorePamphletElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
-
-        _genStorePamphletPages.Clear();
-        _genStorePamphletPages = new List<VisualElement>()
-        {
-            ElementQuery<VisualElement>("pamphlet-page-1"),
-            ElementQuery<VisualElement>("pamphlet-page-2"),
-            ElementQuery<VisualElement>("pamphlet-page-3"),
-            ElementQuery<VisualElement>("pamphlet-page-4")
-        };
-
-        _leftArrowButton = ElementQuery<SelectableButton>(LEFT_ARROW_BUTTON_TAG);
-        _rightArrowButton = ElementQuery<SelectableButton>(RIGHT_ARROW_BUTTON_TAG);
-
-        // Audio
-        MTR_AudioManager.Instance.PlayOneShotSFX(
-            MTR_AudioManager.Instance.generalSFX.paperInteract
-        );
-
-        if (display)
-        {
-            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PAUSE_MODE);
-
-            // Load the selectable elements
-            _selectableVectorField.Clear();
-            _selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-
-            MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton += OnMenuButtonAction;
-
-            _leftArrowButton.OnClick += OnLeftArrowButtonClick;
-            _rightArrowButton.OnClick += OnRightArrowButtonClick;
-
-            SetPamphletPage(0);
-        }
-        else
-        {
-            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PLAY_MODE);
-            _selectableVectorField.Clear();
-
-            MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton -= OnMenuButtonAction;
-
-            _leftArrowButton.OnClick -= OnLeftArrowButtonClick;
-            _rightArrowButton.OnClick -= OnRightArrowButtonClick;
-        }
-    }
-
+    /*
     void DisplayPinPad(bool display)
     {
         _pinPadIsDisplayed = display;
@@ -193,112 +107,30 @@ public class GameUIController : UXML_UIDocumentObject
             _pinPadScript.OnPinPadCorrect -= OnPinPadCorrectAction;
         }
     }
+    */
 
-    private void OnMoveInputStartAction(Vector2 moveInput)
-    {
-        Vector2 direction = new Vector2(moveInput.x, moveInput.y);
-        _currentSelectedButton = _selectableVectorField.SelectElementInDirection(direction);
-
-        // If we have a new selection, update the previous and current selected buttons
-        if (_currentSelectedButton != null && _currentSelectedButton != _previousSelectedButton)
-        {
-            // Remove the selected class from the previous selected button
-            if (_previousSelectedButton != null)
-                _previousSelectedButton.RemoveFromClassList(SELECTED_CLASS);
-
-            // Add the selected class to the current selected button
-            _currentSelectedButton.AddToClassList(SELECTED_CLASS);
-            _previousSelectedButton = _currentSelectedButton;
-        }
-    }
-
-    private void OnPrimaryInteractAction()
-    {
-        // Handle any primary interaction with the current page if needed
-        MTR_AudioManager.Instance.PlayMenuSelectEvent();
-
-        if (_currentSelectedButton != null)
-        {
-            _currentSelectedButton.InvokeClickAction();
-        }
-    }
-
-    void OnMenuButtonAction()
-    {
-        DisplayGenStorePamphlet(false);
-        DisplayPinPad(false);
-    }
-
-    void OnPinPadCorrectAction()
-    {
-        DisplayPinPad(false);
-
-        // << FORCED INTERACTION WITH CORRECT CODE STITCH >>
-        MTRInteractionSystem.TryGetInteractableByStitch(
-            _pinPadScript.CorrectCodeStitch,
-            out var interactable
-        );
-        Debug.Log($"OnPinPadCorrectAction {_pinPadScript.CorrectCodeStitch} : {interactable}");
-        if (interactable != null)
-            MTRInteractionSystem.PlayerInteractor.InteractWith(interactable, true);
-
-        MTR_Misra_Controller misraController = FindFirstObjectByType<MTR_Misra_Controller>();
-        if (misraController != null)
-        {
-            misraController.enabled = true;
-            misraController.GetComponent<SpriteRenderer>().enabled = true;
-        }
-    }
-
-    void SetPamphletPage(int pageIndex)
-    {
-        if (pageIndex < 0 || pageIndex >= _genStorePamphletPages.Count)
-            return;
-
-        HideAllPages();
-        _genStorePamphletPages[pageIndex].style.display = DisplayStyle.Flex;
-        _currentPageIndex = pageIndex;
-
-        if (pageIndex == 0)
-            _leftArrowButton.style.display = DisplayStyle.None;
-        else if (pageIndex == _genStorePamphletPages.Count - 1)
-            _rightArrowButton.style.display = DisplayStyle.None;
-        else
-        {
-            _leftArrowButton.style.display = DisplayStyle.Flex;
-            _rightArrowButton.style.display = DisplayStyle.Flex;
-        }
-    }
-
-    void HideAllPages()
-    {
-        foreach (VisualElement page in _genStorePamphletPages)
-            page.style.display = DisplayStyle.None;
-    }
 
     [Button]
-    public void ToggleGenStorePamphlet()
+    public void TogglePamphlet()
     {
-        DisplayGenStorePamphlet(!_pamphletIsDisplayed);
+        _genStorePamphletElement.Display(!_genStorePamphletElement.IsDisplayed);
     }
 
     [Button]
     public void TogglePinPad()
     {
-        DisplayPinPad(!_pinPadIsDisplayed);
+        _wineryPinPadElement.Display(!_wineryPinPadElement.IsDisplayed);
     }
 
     [Button]
-    public void OnLeftArrowButtonClick()
+    public void ToggleMemorialPlaque()
     {
-        _currentPageIndex--;
-        SetPamphletPage(_currentPageIndex);
+        _memorialPlaqueElement.Display(!_memorialPlaqueElement.IsDisplayed);
     }
 
     [Button]
-    public void OnRightArrowButtonClick()
+    public void ToggleHandwrittenNote()
     {
-        _currentPageIndex++;
-        SetPamphletPage(_currentPageIndex);
+        _handwrittenNoteElement.Display(!_handwrittenNoteElement.IsDisplayed);
     }
 }
