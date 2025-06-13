@@ -7,11 +7,6 @@
 // ---------------------------------------------- >>/^*
 // ---- [[ LOCAL VARIABLES ]] ---- >>
 VAR closed_signs = 0
-VAR teensFirst = false
-VAR royFirst = false
-VAR canStreetRoyCutscene = true
-VAR canStreetTeensCutscene = true
-VAR canIntroArcade = true
 
 // ============================================================
 // ========================== SCENE 4.1 =======================
@@ -75,11 +70,6 @@ VAR canIntroArcade = true
     ~ DiscoverMystery(2)
     ~ SetSpeaker(Speaker.Misra)
     {
-    - !IsQuestComplete(visited_misra):
-        Here we are! 
-        Kettle Rock, Main Street. Heart of the Downtown. 
-        There's bound to be some locals around - where do you want to start?
-        ~ CompleteQuest(visited_misra)
     - IsClueFound(Mystery2.evidence_roy):
         I'm sorry if Roy seems like a bit of a downer.
         He has no faith.
@@ -89,13 +79,18 @@ VAR canIntroArcade = true
         ~ SetSpeaker(Speaker.Misra)
         Well, you've only been here a day...
         ~ SetSpeaker(Speaker.Lupe)
-    - IsClueFound(Mystery2.evidence_josh) && IsClueFound(Mystery2.evidence_jenny) && IsClueFound(Mystery2.evidence_calvin):
+    - IsClueFound(Mystery2.evidence_josh) || IsClueFound(Mystery2.evidence_jenny) || IsClueFound(Mystery2.evidence_calvin):
         Those guys are the worst.
         ~ SetSpeaker(Speaker.Lupe)
         They're definitely hiding <i>something</i>.
         ~ SetSpeaker(Speaker.Misra)
         Good luck getting anything out of them.
         ~ SetSpeaker(Speaker.Lupe)
+    - !IsQuestComplete(visited_misra):
+        Here we are! 
+        Kettle Rock, Main Street. Heart of the Downtown. 
+        There's bound to be some locals around - where do you want to start?
+        ~ CompleteQuest(visited_misra)
     - else:
         Where to next detective?
     }
@@ -108,7 +103,7 @@ TODO SFX DOOR OPEN
     -> DONE
 = door_powerup_arcade
 TODO SFX DOOR OPEN
-    {canIntroArcade:
+    {IsQuestComplete(entered_arcade) == false:
         ~ SetSpeaker("Speaker.Misra")
         Okay...
         Just so you know, these guys in here are a litte...
