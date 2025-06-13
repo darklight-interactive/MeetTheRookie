@@ -55,7 +55,7 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
         MTRStoryManager.GlobalStory.BindExternalFunction(
             "ChangeGameScene",
-            (string knotName) => ChangeGameScene(knotName)
+            (string knotName, int spawnIndex) => ChangeGameScene(knotName, spawnIndex)
         );
         Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
     }
@@ -65,13 +65,13 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
     /// </summary>
     /// <param name="args">0 : The name of the sceneKnot</param>
     /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    bool ChangeGameScene(string knotName)
+    bool ChangeGameScene(string knotName, int spawnIndex = 0)
     {
         TryGetSceneDataByKnot(knotName, out MTRSceneData data);
         if (data == null)
             return false;
 
-        SceneController.TryLoadScene(data.Name);
+        SceneController.TryLoadScene(data.Name, spawnIndex);
         Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
 
         RefreshData();

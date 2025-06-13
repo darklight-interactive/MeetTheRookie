@@ -32,10 +32,14 @@
 = merch_sticker
     -> Roy_Dialogue.merch_sticker
 
+= handwritten_note
+    ~ RequestSpecialUI(su_note)
+    -> DONE
+
 = front_door
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
     ~ closeDoor()
-    ~ ChangeGameScene("scene4_1")
+    ~ ChangeGameScene("scene4_1", 0)
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE

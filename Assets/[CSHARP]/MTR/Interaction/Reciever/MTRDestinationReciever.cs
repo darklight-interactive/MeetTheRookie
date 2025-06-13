@@ -22,24 +22,35 @@ public class MTRDestinationReciever : InteractionReciever
         cellLibrary.SetRequiredKeys(_overlapGrid.BaseGrid.CellKeys);
     }
 
-    public void GetClosestDestination(Vector2 origin, out Vector2 destination)
+    /// <summary>
+    /// Get the closest, valid destination cell to the origin
+    /// </summary>
+    /// <param name="origin">The origin of the external object</param>
+    /// <param name="destination">The closest, valid destination cell</param>
+    public void GetClosestValidDestination(Vector2 origin, out Vector2 destination)
     {
+        // If the cell library is not set, set it to the overlap grid's cell keys
         if (cellLibrary.Count == 0)
         {
             cellLibrary.SetRequiredKeys(_overlapGrid.BaseGrid.CellKeys);
         }
 
+        // Get the closest cell to the origin
         Cell2D closestCell = _overlapGrid.BaseGrid.GetClosestCellTo(origin);
         destination = closestCell.Position;
 
+        // Get the empty cells
         List<Cell2D> emptyCells = _overlapGrid.GetCellsWithColliderCount(0);
 
+        // Find the closest empty cell
         float minDistance = float.MaxValue;
         foreach (Cell2D cell in emptyCells)
         {
             // Skip if cell is already occupied / disabled
-            if (cellLibrary[cell.Key] == true) continue;
+            if (cellLibrary[cell.Key] == true)
+                continue;
 
+            // Compare the distance to the last minimum distance
             float distance = Vector2.Distance(origin, cell.Position);
             if (distance < minDistance)
             {
@@ -47,10 +58,7 @@ public class MTRDestinationReciever : InteractionReciever
                 destination = cell.Position;
             }
         }
-
     }
-
-
 
     public void OnDrawGizmosSelected()
     {
@@ -58,7 +66,10 @@ public class MTRDestinationReciever : InteractionReciever
         {
             List<Cell2D> emptyCells = _overlapGrid.GetCellsWithColliderCount(0);
             MTRPlayerInteractor playerInteractor = FindFirstObjectByType<MTRPlayerInteractor>();
-            GetClosestDestination(playerInteractor.transform.position, out Vector2 destination);
+            GetClosestValidDestination(
+                playerInteractor.transform.position,
+                out Vector2 destination
+            );
             foreach (Cell2D cell in _overlapGrid.BaseGrid.GetCells())
             {
                 if (cellLibrary[cell.Key] == true)
@@ -80,19 +91,20 @@ public class MTRDestinationReciever : InteractionReciever
                 Gizmos.DrawLine(cell.Position, cell.Position + Vector3.up * 1f);
                 Gizmos.DrawSphere(cell.Position, 0.025f);
             }
-
         }
         catch (System.Exception e)
         {
             Debug.LogError(e);
         }
     }
+
 #if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(MTRDestinationReciever))]
     public class MTRDestinationRecieverCustomEditor : UnityEditor.Editor
     {
         UnityEditor.SerializedObject _serializedObject;
         MTRDestinationReciever _script;
+
         private void OnEnable()
         {
             _serializedObject = new UnityEditor.SerializedObject(target);

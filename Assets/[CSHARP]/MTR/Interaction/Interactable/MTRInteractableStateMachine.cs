@@ -204,7 +204,7 @@ public partial class MTRInteractable
                 );
                 if (destinationReciever != null && interactable._allowWalkToDestination)
                 {
-                    destinationReciever.GetClosestDestination(
+                    destinationReciever.GetClosestValidDestination(
                         player.transform.position,
                         out Vector2 destination
                     );

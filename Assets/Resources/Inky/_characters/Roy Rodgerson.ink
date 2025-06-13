@@ -25,6 +25,7 @@
     Of course, in anyway that I can.
     -> interogate
 - else:
+    ~ SetSpeaker(Speaker.Roy_Rodgerson)
     What do you want to know?
     -> interogate
 }

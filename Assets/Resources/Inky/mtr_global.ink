@@ -36,7 +36,7 @@ INCLUDE _day 2/mtr_level7.1_DS.ink
 INCLUDE _day 2/mtr_level6.1_melOmart.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
-EXTERNAL ChangeGameScene(knotName)
+EXTERNAL ChangeGameScene(knotName, spawnIndex)
 EXTERNAL SetSpeaker(speaker)
 EXTERNAL RequestSpecialUI(special_ui_tag)
 EXTERNAL PlaySpecialAnimation(speaker)
@@ -44,7 +44,7 @@ EXTERNAL PlaySFX(sfx)
 
 
 // ====== SCENE HANDLING == >>
-=== function ChangeGameScene(knotName)
+=== function ChangeGameScene(knotName, spawnIndex)
     ~ SetSpeaker(Speaker.Lupe)
     ~ return
 
@@ -57,7 +57,7 @@ VAR CURRENT_SPEAKER = Speaker.Lupe
     ~ return
 
 // ====== SPECIAL_UI == >>
-LIST SPECIAL_UI = (su_pamphlet), (su_plaque), (su_pinpad)
+LIST SPECIAL_UI = (su_pamphlet), (su_plaque), (su_pinpad), (su_note), (su_blueprint)
 === function RequestSpecialUI(special_ui_tag)
     ~ return
 
@@ -101,9 +101,6 @@ LIST Level4_2_Quests = (visited_roy), (roy_personal_info), (roy_winery_closing),
 LIST Level4_3_Quests = (entered_arcade), (visited_machines), (what_is_hosi), (hosi_highscore), (lupe_not_a_cop), (complete_arcade), (visited_jenny), (jenny_first_interact), (jenny_KR), (jenny_personal_info), (jenny_winery), (jenny_local), (jenny_crazies), (visited_josh), (josh_first_interact), (josh_personal_info), (josh_KR), (josh_winery), (visited_calvin), (calvin_hosi), (calvin_KR), (calvin_personal_info), (calvin_local), (calvin_winery)
 
 LIST Level4_4_Quests = (memorial_plaque_visited),(irene_intro), (irene_convo_1), (irene_convo_2), (irene_mention_goats), (irene_sacrifice), (irene_gives_cue), (irene_KR), (irene_closed_shops),  (jenkins_first_interact), (jenkins_intro), (jenkins_wakes_up), (jenkins_winery), (jenkins_sacrifice), (jenkins_council), (jenkins_sarah), (gooptalk)
-// ----------------------------------------------------
-//  LEVEL 5 : Quests and Clues
-// ----------------------------------------------------
 
 LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote), (discover_pinpad)
 

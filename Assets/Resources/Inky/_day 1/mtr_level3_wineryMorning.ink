@@ -40,7 +40,7 @@
     ~ SetSpeaker(Speaker.Lupe)
     In we go.
     ~ openDoor()
-    ~ ChangeGameScene("scene3_2")
+    ~ ChangeGameScene("scene3_2", 0)
     -> DONE
 - else:
     ~ SetSpeaker(Speaker.Lupe)
@@ -139,7 +139,7 @@ TODO SFX door close
         ~ CompleteQuest(discover_inside_clues)
         ~ openDoor()
         ~ PlaySFX("carStartAndLeave")
-        ~ ChangeGameScene("scene4_1")
+        ~ ChangeGameScene("scene4_1", 0)
         -> DONE
         
     - else:

@@ -75,6 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentSceneState: 0
   _sceneToLoad: 
+  _spawnIndex: 0
 --- !u!114 &188870416500937314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +260,8 @@ MonoBehaviour:
     _data: {fileID: 11400000, guid: aeaafc12032f02c459d18f3257cab40e, type: 2}
   - _sceneName: SCENE_7_0 - The Precinct - Dating Sim
     _data: {fileID: 11400000, guid: 600f3f1a1c04226429c3b7114a128b6f, type: 2}
+  _mainMenuScene:
+    m_SceneName: 
 --- !u!114 &398433143409627402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,25 +395,31 @@ MonoBehaviour:
   _interactableRegistry:
     _items:
     - _id: 0
-      _key: scene5_4.winery_blueprint
+      _key: scene5_4.locked_door
       _value: {fileID: 0}
     - _id: 1
-      _key: scene5_4.winery_graph
+      _key: scene5_4.door_back_to_main_room
       _value: {fileID: 0}
     - _id: 2
-      _key: scene5_4.read_newspaper
+      _key: scene5_4.winery_graph
       _value: {fileID: 0}
     - _id: 3
-      _key: scene5_4.door_pinpad
-      _value: {fileID: 0}
-    - _id: 4
       _key: LUPE
       _value: {fileID: 0}
+    - _id: 4
+      _key: scene5_4.door_pinpad
+      _value: {fileID: 0}
     - _id: 5
-      _key: scene5_4.handwritten_note
+      _key: scene_default.interaction_default
       _value: {fileID: 0}
     - _id: 6
-      _key: scene5_4.door_back_to_main_room
+      _key: scene5_4.winery_blueprint
+      _value: {fileID: 0}
+    - _id: 7
+      _key: scene5_4.handwritten_note
+      _value: {fileID: 0}
+    - _id: 8
+      _key: scene5_4.read_newspaper
       _value: {fileID: 0}
     _readOnlyKey: 1
     _readOnlyValue: 1
@@ -603,7 +612,6 @@ GameObject:
   - component: {fileID: 8956101955322927365}
   - component: {fileID: 497600930602257893}
   - component: {fileID: 3150071391316046395}
-  - component: {fileID: 4943068039928297893}
   m_Layer: 5
   m_Name: GameUIController
   m_TagString: Untagged
@@ -655,27 +663,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preset: {fileID: 11400000, guid: edd809d35122df948839c0de65098950, type: 2}
-  _genStorePamphletStitch:
-    _knot: scene_default
-    _stitch: interaction_default
---- !u!114 &4943068039928297893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5394230022270883758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db03a7952b93e431896982fc339f2f77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _correctcode: 100722
-  _numInputValues: 0
-  _isPinPadCorrect: 0
-  _correctCodeStitchData:
-    _knot: scene5_4
-    _stitch: scene5_4.locked_door
+  _genStorePamphletElement:
+    _isDisplayed: 0
+    _elementTag: gen-store-pamphlet
+    _currentPageIndex: 0
+  _wineryPinPadElement:
+    _isDisplayed: 0
+    _elementTag: winery-pinpad
+    _correctcode: 100722
+    _numInputValues: 0
+    _isPinPadCorrect: 0
+    _correctCodeStitchData:
+      _knot: scene5_4
+      _stitch: scene5_4.locked_door
+  _memorialPlaqueElement:
+    _isDisplayed: 0
+    _elementTag: memorial-plaque
+  _handwrittenNoteElement:
+    _isDisplayed: 0
+    _elementTag: handwritten-note
 --- !u!1 &6381094831533181254
 GameObject:
   m_ObjectHideFlags: 0
