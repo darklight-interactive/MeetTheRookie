@@ -189,6 +189,14 @@ public class MTRStoryManager : InkyStoryManager
             }
         );
 
+        GlobalStory.BindExternalFunction(
+            "ShakeCamera",
+            (float duration, float intensity, float delay) =>
+            {
+                MTRGameManager.CameraController.Rig.ShakeCamera(duration, intensity, delay);
+            }
+        );
+
         // << OBSERVE VARIABLES >> ------------------------ >>
         GlobalStory.ObserveVariable(
             "CURRENT_SPEAKER",

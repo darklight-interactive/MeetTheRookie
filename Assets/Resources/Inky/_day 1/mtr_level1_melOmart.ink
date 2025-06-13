@@ -128,11 +128,11 @@ TODO SFX Door close
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $20.34.
         ~ SetSpeaker(Speaker.Lupe)
-        // TODO CRASHING TREE NOISE 
-        ~PlaySFX("treeFalls")
         Finally
         ~ CompleteQuest(pay_for_gas)
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
+        ~ PlaySFX("treeFalls")
+        ~ ShakeCamera(0.25, 0.05, 0.25)
         What was that?
         ~ StartQuest(look_at_tree)
         -> DONE

@@ -44,6 +44,11 @@ namespace Darklight.UnityExt.Animation
         public SpriteSheet SpriteSheet => _spriteSheet;
         protected SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
         protected float timePerFrame => 1 / (float)_frameRate; // Time each frame should be displayed
+        protected int FrameRate
+        {
+            get => _frameRate;
+            set => _frameRate = value;
+        }
 
         public void Awake() => Initialize();
 

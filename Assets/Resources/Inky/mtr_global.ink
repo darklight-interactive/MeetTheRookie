@@ -38,6 +38,7 @@ EXTERNAL SetSpeaker(speaker)
 EXTERNAL RequestSpecialUI(special_ui_tag)
 EXTERNAL PlaySpecialAnimation(speaker)
 EXTERNAL PlaySFX(sfx)
+EXTERNAL ShakeCamera(duration, intensity, delay)
 
 
 // ====== SCENE HANDLING == >>

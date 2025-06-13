@@ -560,10 +560,14 @@ public class PlayAnimationState : BaseState
 
     public override void Enter()
     {
+        _stateMachine.animator.SetFrameRate(10);
         _stateMachine.animator.PlayStateAnimation(NPCState.PLAY_ANIMATION);
     }
 
-    public override void Exit() { }
+    public override void Exit()
+    {
+        _stateMachine.animator.SetFrameRate(4);
+    }
 
     public override void Execute()
     {
