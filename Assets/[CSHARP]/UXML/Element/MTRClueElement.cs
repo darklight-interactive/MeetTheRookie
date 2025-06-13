@@ -100,10 +100,11 @@ public partial class MTRClueElement : SelectableVisualElement
         this.Add(_textElement);
     }
 
-    public MTRClueElement(MTRInteractableDataSO interactableData)
+    public MTRClueElement(MTRInteractableDataSO interactableData, Sprite backgroundImage)
         : this()
     {
         SetInteractableData(interactableData);
+        SetBackgroundImage(backgroundImage);
     }
 
     void SetPadding()
