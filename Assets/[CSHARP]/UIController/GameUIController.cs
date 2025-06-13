@@ -54,6 +54,7 @@ public class GameUIController : UXML_UIDocumentObject
         MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
     }
 
+    // Receiving requests from the story manager
     void HandleRequestSpecialUI(string ui_request)
     {
         Initialize();

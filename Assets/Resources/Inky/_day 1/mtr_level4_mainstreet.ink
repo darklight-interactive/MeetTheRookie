@@ -41,44 +41,11 @@ VAR canIntroArcade = true
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 
-= misra_cutscene
-    ~ DiscoverMystery(2)
-    {
-    - !IsQuestComplete(visited_misra):
-        ~ SetSpeaker(Speaker.Misra)
-        Here we are! 
-        Kettle Rock, Main Street. Heart of the Downtown. 
-        There's bound to be some locals around - where do you want to start?
-        ~ SetSpeaker(Speaker.Lupe)
-        ~ CompleteQuest(visited_misra)
-    - IsClueFound(Mystery2.evidence_roy):
-        ~ SetSpeaker(Speaker.Misra)
-        I'm sorry if Roy seems like a bit of a downer.
-        He has no faith.
-        ~ SetSpeaker(Speaker.Lupe)
-        He seems like he's got a pretty good acceptance of the situation.
-        From what I can tell.
-        ~ SetSpeaker(Speaker.Misra)
-        Well, you've only been here a day...
-        ~ SetSpeaker(Speaker.Lupe)
-    - IsClueFound(Mystery2.evidence_josh) && IsClueFound(Mystery2.evidence_jenny) && IsClueFound(Mystery2.evidence_calvin):
-        ~ SetSpeaker(Speaker.Misra)
-        Those guys are the worst.
-        ~ SetSpeaker(Speaker.Lupe)
-        They're definitely hiding <i>something</i>.
-        ~ SetSpeaker(Speaker.Misra)
-        Good luck getting anything out of them.
-        ~ SetSpeaker(Speaker.Lupe)
-    }
-    ->DONE
-
 = lupe_car
 {IsQuestComplete(car_first_interact):
   ~ SetSpeaker(Speaker.Misra)
     {Your park job, may I say, is impeccable!| Hot wheels for a hot...let's continue. | Have you ever considered getting one of those little hula dashboard figurines? You know, to spice it up!| I don't think it's time to go yet, we should look around more!}
-
     -> DONE
-
 - else:
   ~ CompleteQuest(car_first_interact)
   ~ SetSpeaker(Speaker.Lupe)
@@ -105,7 +72,35 @@ VAR canIntroArcade = true
  }
     
 = talk_to_misra
-    -> Misra_Dialogue.4_1
+    ~ DiscoverMystery(2)
+    ~ SetSpeaker(Speaker.Misra)
+    {
+    - !IsQuestComplete(visited_misra):
+        Here we are! 
+        Kettle Rock, Main Street. Heart of the Downtown. 
+        There's bound to be some locals around - where do you want to start?
+        ~ CompleteQuest(visited_misra)
+    - IsClueFound(Mystery2.evidence_roy):
+        I'm sorry if Roy seems like a bit of a downer.
+        He has no faith.
+        ~ SetSpeaker(Speaker.Lupe)
+        He seems like he's got a pretty good acceptance of the situation.
+        From what I can tell.
+        ~ SetSpeaker(Speaker.Misra)
+        Well, you've only been here a day...
+        ~ SetSpeaker(Speaker.Lupe)
+    - IsClueFound(Mystery2.evidence_josh) && IsClueFound(Mystery2.evidence_jenny) && IsClueFound(Mystery2.evidence_calvin):
+        Those guys are the worst.
+        ~ SetSpeaker(Speaker.Lupe)
+        They're definitely hiding <i>something</i>.
+        ~ SetSpeaker(Speaker.Misra)
+        Good luck getting anything out of them.
+        ~ SetSpeaker(Speaker.Lupe)
+    - else:
+        Where to next detective?
+    }
+    -> DONE
+        
     
 = door_idahome_and_goods
 TODO SFX DOOR OPEN

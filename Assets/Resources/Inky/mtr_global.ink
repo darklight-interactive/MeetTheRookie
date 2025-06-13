@@ -14,9 +14,6 @@ INCLUDE mtr_mystery.ink
 INCLUDE _characters/Misra.ink
 INCLUDE _characters/Roy Rodgerson.ink
 INCLUDE _characters/Teens.ink
-INCLUDE _characters/Jenny.ink
-INCLUDE _characters/Calvin.ink
-INCLUDE _characters/Josh.ink
 INCLUDE _characters/Jenkins.ink
 INCLUDE _characters/Irene.ink
 
@@ -94,11 +91,11 @@ LIST Level1_Quests = (first_interact), (pay_for_gas), (look_at_tree)
 LIST Level3_Quests = (talk_to_misra_quest), (discover_outside_clues), (discuss_misra), (discover_inside_clues)
 
 // -------------------- LEVEL 4 ------------------------------------
-LIST Level4_1_Quests =  (visited_goop), (visited_symbol), (visited_misra),   (calvin_first_interact),  (suspects),  (car_first_interact)
+LIST Level4_1_Quests =  (visited_goop), (visited_symbol), (visited_misra), (car_first_interact)
 
 LIST Level4_2_Quests = (visited_roy), (roy_personal_info), (roy_winery_closing), (roy_town_history), (roy_window), (roy_rocky_years), (roy_tragedy), (roy_golden_age), (complete_gen_store)
 
-LIST Level4_3_Quests = (entered_arcade), (visited_machines), (what_is_hosi), (hosi_highscore), (lupe_not_a_cop), (complete_arcade), (visited_jenny), (jenny_first_interact), (jenny_KR), (jenny_personal_info), (jenny_winery), (jenny_local), (jenny_crazies), (visited_josh), (josh_first_interact), (josh_personal_info), (josh_KR), (josh_winery), (visited_calvin), (calvin_hosi), (calvin_KR), (calvin_personal_info), (calvin_local), (calvin_winery)
+LIST Level4_3_Quests = (entered_arcade), (visited_machines), (what_is_hosi), (hosi_highscore), (lupe_not_a_cop), (complete_arcade), (visited_jenny), (jenny_KR), (jenny_personal_info), (jenny_winery), (jenny_local), (jenny_crazies), (jenny_suspects), (visited_josh), (josh_first_interact), (josh_personal_info), (josh_KR), (josh_winery), (josh_suspects), (visited_calvin), (calvin_first_interact), (calvin_hosi), (calvin_KR), (calvin_personal_info), (calvin_local), (calvin_winery), (calvin_suspects)
 
 LIST Level4_4_Quests = (memorial_plaque_visited),(irene_intro), (irene_convo_1), (irene_convo_2), (irene_mention_goats), (irene_sacrifice), (irene_gives_cue), (irene_KR), (irene_closed_shops),  (jenkins_first_interact), (jenkins_intro), (jenkins_wakes_up), (jenkins_winery), (jenkins_sacrifice), (jenkins_council), (jenkins_sarah), (gooptalk)
 

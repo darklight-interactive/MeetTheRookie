@@ -26,8 +26,3 @@ Idk to each their own , just take it away now. -> DONE
 }
 
 
-= 4_1
-~ SetSpeaker(Speaker.Misra)
-Where to next, Detective?
-    -> DONE
-

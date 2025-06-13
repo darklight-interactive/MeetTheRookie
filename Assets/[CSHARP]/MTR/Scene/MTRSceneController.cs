@@ -403,12 +403,16 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
+                if (playerController != null)
+                    playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
             public override void Execute()
             {
-                if (playerController.StateMachine.CurrentState != MTRPlayerState.OVERRIDE_IDLE)
+                if (
+                    playerController != null
+                    && playerController.StateMachine.CurrentState != MTRPlayerState.OVERRIDE_IDLE
+                )
                     playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
