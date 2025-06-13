@@ -43,11 +43,11 @@
 
 = jenkins_questions
     * [The Old Winery on the hill...] -> jenkins_winery_question
-    * {IsQuestComplete(Level4_4_Quests.jenkins_winery)}[Were you at the Winery last night?] -> jenkins_last_night_question
     * [So, Kettle Rock...] -> jenkins_kettle_rock_question
-    * {IsQuestComplete(Level4_4_Quests.jenkins_council)} [Hear who?] -> jenkins_council_question
-    * {IsQuestComplete(Level4_4_Quests.jenkins_sarah)} [Sarah?] -> jenkins_sarah_question
-    * {IsQuestComplete(Level4_4_Quests.jenkins_sacrifice)} [Sacrifice...?] -> jenkins_sacrifice_question
+    * {IsQuestComplete(jenkins_winery)}[Were you at the Winery last night?] -> jenkins_last_night_question
+    * {IsQuestComplete(jenkins_council)} [Hear who?] -> jenkins_council_question
+    * {IsQuestActive(jenkins_sarah)} [Sarah?] -> jenkins_sarah_question
+    * {IsQuestActive(jenkins_sacrifice)} [Sacrifice...?] -> jenkins_sacrifice_question
 
 
 = jenkins_winery_question
@@ -65,6 +65,18 @@
     ~ CompleteQuest(jenkins_winery)
     -> jenkins_questions
 
+
+= jenkins_kettle_rock_question
+    ~ SetSpeaker(Speaker.Jenkins)
+    Kettle goddammed Rock.
+    All that blood sunk into this town.
+    All that blood turned into fleeting money.
+    Was it worth it, do you think?
+    Was <i>this</i> worth it?
+    What have you done, Sarah?
+    ~ StartQuest(jenkins_sarah)
+    -> jenkins_questions
+
 = jenkins_last_night_question
     ~ SetSpeaker(Speaker.Jenkins)
      Last night?
@@ -79,82 +91,75 @@
     ~ CompleteQuest(jenkins_council)
     -> jenkins_questions
 
-= jenkins_kettle_rock_question
-    ~ SetSpeaker(Speaker.Jenkins)
-     Kettle goddammed Rock.
-     All that blood sunk into this town.
-     All that blood turned into fleeting money.
-     Was it worth it, do you think?
-     Was <i>this</i> worth it?
-     What have you done, Sarah?
-    // Add to Synthesis: The Town of KR 
-    ~ CompleteQuest(jenkins_council)
-    -> jenkins_questions
-    
-    
 = jenkins_council_question
     ~ SetSpeaker(Speaker.Jenkins)
-     <i>Them</i>. 
-     I feel them.
-     I feel their sacrifice.
+    <i>Them</i>. 
+    I feel them.
+    I feel their sacrifice.
     ~ SetSpeaker(Speaker.Lupe)
-     The...Goats?
+    The...Goats?
     ~ SetSpeaker(Speaker.Jenkins)
-     NO!
-     DON'T CALL THEM THAT!
-     The Council was s'much more than that.
-     Their sacrifice s'not somethin to throw away,
-     or make fun of.
-     or point fingers at.
-     They did what they did for <i>us</i>.
-     To give us time and--and--
-     ...
+    NO!
+    DON'T CALL THEM THAT!
+    The Council was s'much more than that.
+    Their sacrifice s'not somethin to throw away,
+    or make fun of.
+    or point fingers at.
+    They did what they did for <i>us</i>.
+    To give us time and--and--
+    ...
     ~ CompleteQuest(jenkins_council)
+    ~ StartQuest(jenkins_sacrifice)
     -> jenkins_questions
 
 = jenkins_sarah_question
     ~ SetSpeaker(Speaker.Jenkins)
-     Such a good heart.
-     But desperation misguides the good.
-     She thought she was right,
-     I thought she was right,
-     They all thought she was right.
-     Now look at us.
-     End of the line, ship s'goin down.
-     Everyone s'jumping overboard.
-     Not me.
+    Such a good heart.
+    But desperation misguides the good.
+    She thought she was right,
+    I thought she was right,
+    They all thought she was right.
+    Now look at us.
+    End of the line, ship s'goin down.
+    Everyone s'jumping overboard.
+    Not me.
     ~ SetSpeaker(Speaker.Lupe)
-     Who's Sarah?
+    Who's Sarah?
     ~ SetSpeaker(Speaker.Jenkins)
-     ...
-     Rookie Sheriff, do you remember her?
+    ...
+    Rookie Sheriff, do you remember her?
     ~ SetSpeaker(Speaker.Misra)
-     I..
-     I-I don't know who you're talking about.
+    I..
+    I-I don't know who you're talking about.
+    ~ CompleteQuest(jenkins_sarah)
+    ~ DiscoverClue(evidence_jenkins)
     -> jenkins_questions
     
 = jenkins_sacrifice_question
     ~ SetSpeaker(Speaker.Lupe)
-    That's the second time I've heard that word tossed around. Are you talking about the people who vanished? The ..Council?
-~ SetSpeaker(Speaker.Jenkins)
-     'Vanished', psh...
-     That's what this town slaps over the truth.
-     But what <i>really<i> happened...
-     Argh...Eckup...I don't feel so good...
-     Bachitan...
+    That's the second time I've heard that word tossed around. 
+    Are you talking about the people who vanished? 
+    The ..Council?
+    ~ SetSpeaker(Speaker.Jenkins)
+    'Vanished', psh...
+    That's what this town slaps over the truth.
+    But what <i>really<i> happened...
+    Argh...Eckup...I don't feel so good...
+    Bachitan...
+    ~ CompleteQuest(jenkins_sacrifice)
     ~ SetSpeaker(Speaker.Misra)
-     Okay, I think that's enough.
+    Okay, I think that's enough.
     ~ SetSpeaker(Speaker.Lupe)
-     What?
-     We're starting to pick up some steam with this.
-     Now you want to stop?
+    What?
+    We're starting to pick up some steam with this.
+    Now you want to stop?
     ~ SetSpeaker(Speaker.Misra)
-     We've been questioning people all day.
-     Let's take a break.
-     Irene!
-     Can we get a drink?
-     ~ChangeGameScene("scene4_5_DS", 0)
-    -> DONE //{Go to Dating Sim: Bar}
+    We've been questioning people all day.
+    Let's take a break.
+    Irene!
+    Can we get a drink?
+    ~ ChangeGameScene("scene4_5_DS", 0)
+    -> DONE
 
 
 
