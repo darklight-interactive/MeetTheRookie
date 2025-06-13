@@ -7,10 +7,13 @@ using UnityEngine.UIElements;
 
 public class GameUIController : UXML_UIDocumentObject
 {
+    const string INPUT_UI_CONTAINER_TAG = "input-ui-container";
     const string GEN_STORE_PAMPHLET_TAG = "gen-store-pamphlet";
     const string PIN_PAD_TAG = "winery-pinpad";
     const string PLAQUE_TAG = "memorial-plaque";
     const string HANDWRITTEN_NOTE_TAG = "handwritten-note";
+
+    VisualElement _inputUIContainer;
 
     [SerializeField]
     GenStorePamphletElement _genStorePamphletElement;
@@ -27,11 +30,13 @@ public class GameUIController : UXML_UIDocumentObject
     void Awake()
     {
         MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
+        MTRSceneController.Instance.OnSceneStateChanged += OnSceneStateChanged;
     }
 
     public override void Initialize(UXML_UIDocumentPreset preset, bool clonePanelSettings = false)
     {
         base.Initialize(preset, clonePanelSettings);
+        _inputUIContainer = ElementQuery<VisualElement>(INPUT_UI_CONTAINER_TAG);
         _genStorePamphletElement = new GenStorePamphletElement(this, GEN_STORE_PAMPHLET_TAG);
         _memorialPlaqueElement = new BaseSpecialUIElement(this, PLAQUE_TAG);
         _handwrittenNoteElement = new BaseSpecialUIElement(this, HANDWRITTEN_NOTE_TAG);
@@ -49,9 +54,24 @@ public class GameUIController : UXML_UIDocumentObject
         }
     }
 
+    void OnSceneStateChanged(MTRSceneState state)
+    {
+        _inputUIContainer = ElementQuery<VisualElement>(INPUT_UI_CONTAINER_TAG);
+
+        if (state == MTRSceneState.PAUSE_MODE || state == MTRSceneState.SYNTHESIS_MODE)
+        {
+            _inputUIContainer.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _inputUIContainer.style.display = DisplayStyle.Flex;
+        }
+    }
+
     void OnDestroy()
     {
         MTRStoryManager.OnRequestSpecialUI -= HandleRequestSpecialUI;
+        MTRSceneController.Instance.OnSceneStateChanged -= OnSceneStateChanged;
     }
 
     // Receiving requests from the story manager
@@ -77,39 +97,6 @@ public class GameUIController : UXML_UIDocumentObject
                 break;
         }
     }
-
-    /*
-    void DisplayPinPad(bool display)
-    {
-        _pinPadIsDisplayed = display;
-
-        _pinPadElement = ElementQuery<VisualElement>(PIN_PAD_TAG);
-        _pinPadElement.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
-        _pinPadScript.EnablePinPad(display);
-
-        if (display)
-        {
-            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PAUSE_MODE);
-
-            MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton += OnMenuButtonAction;
-
-            _pinPadScript.OnPinPadCorrect += OnPinPadCorrectAction;
-        }
-        else
-        {
-            MTRSceneController.StateMachine?.GoToState(MTRSceneState.PLAY_MODE);
-
-            MTRInputManager.OnMoveInputStarted -= OnMoveInputStartAction;
-            MTRInputManager.OnPrimaryInteract -= OnPrimaryInteractAction;
-            MTRInputManager.OnMenuButton -= OnMenuButtonAction;
-
-            _pinPadScript.OnPinPadCorrect -= OnPinPadCorrectAction;
-        }
-    }
-    */
-
 
     [Button]
     public void TogglePamphlet()
