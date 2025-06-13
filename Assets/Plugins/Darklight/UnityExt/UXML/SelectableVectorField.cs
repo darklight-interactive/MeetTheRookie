@@ -16,9 +16,17 @@ namespace Darklight.UnityExt.UXML
     public class SelectableVectorField<TElement>
         where TElement : VisualElement, new()
     {
+        const string SELECTED_CLASS = "selected";
+
         HashSet<TElement> _selectables = new HashSet<TElement>();
         TElement _previousSelection;
         TElement _currentSelection;
+
+        [SerializeField]
+        bool _debug = false;
+
+        [SerializeField, ShowOnly]
+        List<string> _selectableNames = new List<string>();
 
         [SerializeField, ShowOnly]
         string _previousSelectionName;
@@ -37,7 +45,7 @@ namespace Darklight.UnityExt.UXML
             private set
             {
                 _previousSelection = value;
-                _previousSelectionName = value.name;
+                _previousSelectionName = value?.name ?? "";
             }
         }
         public TElement CurrentSelection
@@ -51,90 +59,13 @@ namespace Darklight.UnityExt.UXML
             }
         }
 
-        public void Add(TElement selectable)
+        void Refresh()
         {
-            _selectables.Add(selectable);
-            if (CurrentSelection == null)
-                CurrentSelection = selectable;
-        }
-
-        public void Remove(TElement selectable)
-        {
-            _selectables.Remove(selectable);
-            if (CurrentSelection == selectable)
+            _selectableNames.Clear();
+            foreach (TElement selectable in _selectables)
             {
-                CurrentSelection = _selectables.First();
+                _selectableNames.Add(selectable.name);
             }
-        }
-
-        public void Load(IEnumerable<TElement> selectables)
-        {
-            _selectables = new HashSet<TElement>(selectables);
-            CurrentSelection = _selectables.First();
-        }
-
-        public void Clear()
-        {
-            _selectables.Clear();
-            CurrentSelection = null;
-        }
-
-        public void AddRange(IEnumerable<TElement> selectables)
-        {
-            foreach (TElement selectable in selectables)
-            {
-                _selectables.Add(selectable);
-            }
-        }
-
-        public void RemoveRange(IEnumerable<TElement> selectables)
-        {
-            foreach (TElement selectable in selectables)
-            {
-                _selectables.Remove(selectable);
-            }
-        }
-
-        /// <summary>
-
-        /// Select an element given our currently selected element.
-        /// </summary>
-        /// <param name="dir">The direction from which to select.</param>
-        /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
-        public TElement SelectElementInDirection(Vector2 dir)
-        {
-            if (_selectables == null || _selectables.Count == 0)
-                return null;
-
-            //PrintSelectables();
-
-            // If we have a direction, we can try to find the next element.
-            if (dir != Vector2.zero)
-            {
-                //Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir}");
-                // Potentially select a new element.
-                TElement pick = RaycastEstimate(CurrentSelection.worldBound.center, dir);
-                if (pick != null && pick.name != CurrentSelection.name)
-                {
-                    PreviousSelection = CurrentSelection;
-                    CurrentSelection = pick;
-                    Debug.Log(
-                        $"SelectableVectorField :: GetElementInDirection :: {dir} :: {PreviousSelection.name} -> {CurrentSelection.name}"
-                    );
-                }
-                else
-                {
-                    // If we didn't find a new element, just return the old one.
-                    pick = CurrentSelection;
-                    // Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection.");
-                }
-                return pick;
-            }
-            else
-            {
-                // Debug.LogError(">> SelectableVectorField :: GetElementInDirection :: Direction is zero.");
-            }
-            return CurrentSelection;
         }
 
         void PrintSelectables()
@@ -242,31 +173,132 @@ namespace Darklight.UnityExt.UXML
         }
         #endregion
 
-        /*
-                        // Visualization: https://www.desmos.com/calculator/kl2oypib1f
-                        var t = (direction.y * (selectable.worldBound.center.y - from.y)
-                            + direction.x * (selectable.worldBound.center.x - from.x))
-                            / (Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
-                        // And so we get the x and y from our t-value:
-                        var dirClose = new Vector2(direction.x * t + from.x, direction.y * t + from.y);
-                        // And now we just find the distance, and see if it's closer than the other distances we've calculated.
-                        var dist = Vector2.Distance(dirClose, selectable.worldBound.center);
+        public void Add(TElement selectable)
+        {
+            _selectables.Add(selectable);
+            if (CurrentSelection == null)
+                CurrentSelection = selectable;
+            Refresh();
+        }
 
-                        // Check if the point is within the rect bounds.
-                        Vector2 selectFullPos = selectable.worldBound.position;
-                        bool withinRectBounds = dirClose.x >= selectFullPos.x
-                            && dirClose.x <= selectFullPos.x + selectable.worldBound.width
-                            && dirClose.y >= selectFullPos.y
-                            && dirClose.y <= selectFullPos.y + selectable.worldBound.height;
+        public void Remove(TElement selectable)
+        {
+            _selectables.Remove(selectable);
+            if (CurrentSelection == selectable)
+            {
+                CurrentSelection = _selectables.First();
+            }
+            Refresh();
+        }
 
-                        // If we're within the rect bounds, && its the closest , select it.
-                        float actualElementDist = Vector2.Distance(from, selectable.worldBound.center);
-                        if ((dist <= threshhold || withinRectBounds) && (actualElementDist < closestDir || closestDir == -1))
-                        {
-                            closestDir = actualElementDist;
-                            selected = selectable;
-                            Debug.Log($"Selected: {selected.name} Input : {direction}  {actualElementDist} {closestDir}");
-                        }
-        */
+        public void Load(IEnumerable<TElement> selectables)
+        {
+            _selectables = new HashSet<TElement>(selectables);
+            Reset();
+            Select(_selectables.First());
+            Refresh();
+        }
+
+        public void Clear()
+        {
+            _selectables.Clear();
+            Reset();
+        }
+
+        public void AddRange(IEnumerable<TElement> selectables)
+        {
+            foreach (TElement selectable in selectables)
+            {
+                _selectables.Add(selectable);
+            }
+        }
+
+        public void RemoveRange(IEnumerable<TElement> selectables)
+        {
+            foreach (TElement selectable in selectables)
+            {
+                _selectables.Remove(selectable);
+            }
+        }
+
+        public void Reset()
+        {
+            foreach (TElement selectable in _selectables)
+            {
+                selectable.RemoveFromClassList(SELECTED_CLASS);
+            }
+            CurrentSelection = null;
+            PreviousSelection = null;
+            Refresh();
+        }
+
+        public bool Select(TElement selectable)
+        {
+            if (
+                selectable == null
+                || selectable == CurrentSelection
+                || !_selectables.Contains(selectable)
+            )
+                return false;
+            PreviousSelection = CurrentSelection;
+            CurrentSelection = selectable;
+            selectable.AddToClassList(SELECTED_CLASS);
+            _previousSelection?.RemoveFromClassList(SELECTED_CLASS);
+            _currentSelection?.AddToClassList(SELECTED_CLASS);
+            return true;
+        }
+
+        /// <summary>
+        /// Select an element given our currently selected element.
+        /// </summary>
+        /// <param name="dir">The direction from which to select.</param>
+        /// <returns>If we found a successful element, a new pick. Otherwise it's just the previous one.</returns>
+        public TElement SelectElementInDirection(Vector2 dir)
+        {
+            if (_selectables == null || _selectables.Count == 0)
+                return null;
+
+            //PrintSelectables();
+
+            // If we have a direction, we can try to find the next element.
+            if (dir != Vector2.zero)
+            {
+                //Debug.Log($"SelectableVectorField :: GetElementInDirection :: {dir}");
+                // Potentially select a new element.
+                TElement pick = RaycastEstimate(CurrentSelection.worldBound.center, dir);
+                if (pick != null && pick.name != CurrentSelection.name)
+                {
+                    Select(pick);
+                    if (_debug)
+                    {
+                        Debug.Log(
+                            $"SelectableVectorField :: GetElementInDirection :: {dir} :: New selection: {pick.name}"
+                        );
+                    }
+                }
+                else
+                {
+                    // If we didn't find a new element, just return the old one.
+                    pick = CurrentSelection;
+                    if (_debug)
+                    {
+                        Debug.Log(
+                            $"SelectableVectorField :: GetElementInDirection :: {dir} :: No new selection."
+                        );
+                    }
+                }
+                return pick;
+            }
+            else
+            {
+                if (_debug)
+                {
+                    Debug.LogError(
+                        ">> SelectableVectorField :: GetElementInDirection :: Direction is zero."
+                    );
+                }
+            }
+            return CurrentSelection;
+        }
     }
 }
