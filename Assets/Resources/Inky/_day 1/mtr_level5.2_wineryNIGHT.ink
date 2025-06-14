@@ -10,8 +10,8 @@
 + [door] -> door_to_inside_winery_night
 
 = lupe_intro
-TODO SFX CAR DOOR CLOSE NOISE
-~PlaySFX("carDoorOpenAndClose")
+~ DiscoverMystery(3)
+~ PlaySFX("carDoorOpenAndClose")
 ~ SetSpeaker(Speaker.Lupe)
 Misra, WAIT!
 -> DONE 
@@ -34,7 +34,7 @@ Whoever left these here...are they here again?
 
 = door_to_inside_winery_night
     ~ openDoor()
-    ~ ChangeGameScene("scene5_3", 0) 
+    ~ ChangeGameScene("scene5_3", 0, 0) 
     -> DONE
 
 ===scene5_3===
@@ -103,7 +103,7 @@ Wait...
 Wasn't this closed before?
 ~ openDoor()
 
-~ ChangeGameScene("scene5_4", 0)
+~ ChangeGameScene("scene5_4", 0, 0)
 -> DONE
 
 = exit
@@ -137,6 +137,8 @@ I can't leave--not without Misra.
     ~ DiscoverClue(Mystery3.evidence_blueprint)
     ~ SetSpeaker(Speaker.Lupe)
     What's this...?
+    ~ RequestSpecialUI(su_blueprint)
+    .
     Huh...someone's birthday...
     Why does Sarah sound familiar...
     -> DONE
@@ -155,20 +157,20 @@ I can't leave--not without Misra.
  
 
 = door_pinpad
-TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
-~ DiscoverClue(evidence_pinpad)
-{IsQuestComplete(Level5_Quests.discover_pinpad):
-    ~ SetSpeaker(Speaker.Lupe)
-    ~ CompleteQuest(discover_pinpad)
-    Hmm.
-    What could the code be?
-- else:
-    ~ SetSpeaker(Speaker.Lupe)
-    Why not try the basic option...
-    someone's birthday...
-}
-~ RequestSpecialUI(su_pinpad)
--> DONE
+    ~ DiscoverClue(evidence_pinpad)
+    {
+    -!IsQuestComplete(Level5_Quests.discover_pinpad):
+        ~ SetSpeaker(Speaker.Lupe)
+        Hmm.
+        What could the code be?
+        ~ CompleteQuest(discover_pinpad)
+    - else:
+        ~ SetSpeaker(Speaker.Lupe)
+        Why not try the basic option...
+        someone's birthday...
+    }
+    ~ RequestSpecialUI(su_pinpad)
+    -> DONE
 
 
 // = number_pad
@@ -248,6 +250,7 @@ TODO The Number Pad Interaction, Misra appearing in the scene, and the animation
     WHAT THE-
     ~ SetSpeaker(Speaker.Misra)
     ~ PlaySpecialAnimation(Speaker.Misra)
+    ~ ChangeGameScene("scene6_0", 0, 4)
     -> DONE
 
 

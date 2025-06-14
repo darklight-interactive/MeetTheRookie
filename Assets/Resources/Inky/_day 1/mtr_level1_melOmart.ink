@@ -40,7 +40,7 @@ VAR gas_pumps = 0
     I'll debrief the Watchowski Case with you when I get back.
     Alright. Bye.
     ~PlaySFX("phoneDialBeep")
-    ~ChangeGameScene("scene1_1", 0)
+    ~ChangeGameScene("scene1_1", 0, 0)
     -> DONE
 
 // ------------- SCENE1.1 Outside MelOMarket
@@ -62,7 +62,7 @@ VAR gas_pumps = 0
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." 
         Ugh. Guess I'll be more than a little late...
         Thelton's gonna kill me. Gah. Let's blow this popsicle stand. 
-         ~ ChangeGameScene("scene2_DS", 0)
+         ~ ChangeGameScene("scene2_DS", 0, 0)
         -> DONE 
         TODO SFX Car closing door noise and leaving
         //~PlaySFX("carStartAndLeave") Doesn't play audio after scene changes!
@@ -96,7 +96,7 @@ VAR gas_pumps = 0
     TODO SFX Door open
     ~openDoor()
     
-    ~ ChangeGameScene("scene1_2", 0)
+    ~ ChangeGameScene("scene1_2", 0, 0)
     -> DONE
 
 // ------------- SCENE1.2 MelOMarket Store
@@ -125,14 +125,14 @@ TODO SFX Door close
         //TODO ^^ SFX, cash register hit noise
         ~ PlaySpecialAnimation(Speaker.Beth)
         ~ PlaySFX("cashRegisterWhack")
+        ~ PlaySFX("treeFalls")
+        ~ ShakeCamera(0.25, 0.05, 4)
         ~ SetSpeaker(Speaker.Beth) 
         Cool. $20.34.
         ~ SetSpeaker(Speaker.Lupe)
-        Finally
+        <i>Fiiiinally</i>
         ~ CompleteQuest(pay_for_gas)
         // Lupe pays. Suddenly, a loud crashing noise is heard from outside.
-        ~ PlaySFX("treeFalls")
-        ~ ShakeCamera(0.25, 0.05, 0.25)
         What was that?
         ~ StartQuest(look_at_tree)
         -> DONE
@@ -173,7 +173,7 @@ TODO SFX Door close
 TODO SFX
 {IsClueFound(evidence_broken_cash_reg):
     ~ openDoor()
-    ~ ChangeGameScene("scene1_3", 0)
+    ~ ChangeGameScene("scene1_3", 0, 0)
     -> DONE
     - else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -185,7 +185,7 @@ TODO SFX
 {IsQuestComplete(pay_for_gas):
     //TODO SFX
     ~ openDoor()
-    ~ChangeGameScene("scene1_4", 0)
+    ~ChangeGameScene("scene1_4", 0, 0)
 
     -> DONE
     -else:
@@ -234,7 +234,7 @@ TODO SFX
 
 
 = door_back_to_interior
-    ~ ChangeGameScene("scene1_2", 1) 
+    ~ ChangeGameScene("scene1_2", 1, 0) 
     //TODO SFX Door open
     ~openDoor()
     ->DONE
@@ -254,7 +254,7 @@ TODO SFX
     - IsQuestComplete(look_at_tree):
         ~ SetSpeaker(Speaker.Lupe)
         "Sorry I was so late to the debrief boss, I had to go report a suspicious fallen tree." Ugh. Guess I'll be more than a little late...Thelton's gonna kill me.
-        ~ ChangeGameScene("scene2_DS", 0)
+        ~ ChangeGameScene("scene2_DS", 0, 0)
                 TODO SFX Car closing door noise and leaving
                 //~PlaySFX("carStartAndLeave")
         -> DONE

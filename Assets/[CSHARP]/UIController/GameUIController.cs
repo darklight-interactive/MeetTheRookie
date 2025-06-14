@@ -12,6 +12,7 @@ public class GameUIController : UXML_UIDocumentObject
     const string PIN_PAD_TAG = "winery-pinpad";
     const string PLAQUE_TAG = "memorial-plaque";
     const string HANDWRITTEN_NOTE_TAG = "handwritten-note";
+    const string BLUEPRINT_TAG = "winery-blueprint";
 
     VisualElement _inputUIContainer;
 
@@ -27,6 +28,9 @@ public class GameUIController : UXML_UIDocumentObject
     [SerializeField]
     BaseSpecialUIElement _handwrittenNoteElement;
 
+    [SerializeField]
+    BaseSpecialUIElement _blueprintElement;
+
     void Awake()
     {
         MTRStoryManager.OnRequestSpecialUI += HandleRequestSpecialUI;
@@ -40,6 +44,7 @@ public class GameUIController : UXML_UIDocumentObject
         _genStorePamphletElement = new GenStorePamphletElement(this, GEN_STORE_PAMPHLET_TAG);
         _memorialPlaqueElement = new BaseSpecialUIElement(this, PLAQUE_TAG);
         _handwrittenNoteElement = new BaseSpecialUIElement(this, HANDWRITTEN_NOTE_TAG);
+        _blueprintElement = new BaseSpecialUIElement(this, BLUEPRINT_TAG);
 
         // Initialize the pin pad element with the correct code stitch data
         if (_wineryPinPadElement != null)
@@ -92,6 +97,9 @@ public class GameUIController : UXML_UIDocumentObject
                 break;
             case "su_pinpad":
                 _wineryPinPadElement.Display(true);
+                break;
+            case "su_blueprint":
+                _blueprintElement.Display(true);
                 break;
             default:
                 break;

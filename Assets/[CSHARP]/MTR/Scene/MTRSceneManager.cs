@@ -26,7 +26,6 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
     public static new MTRSceneManager Instance =>
         BuildSceneScriptableDataManager<MTRSceneData>.Instance as MTRSceneManager;
 
-    //  ================================ [[ Fields ]] ================================
     MTRSceneController _sceneController;
 
     protected override string AssetPath => "Assets/Resources/MeetTheRookie/BuildSceneData";
@@ -46,38 +45,20 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
         }
     }
 
-    void HandleStoryInitialized()
+    IEnumerator ChangeGameSceneRoutine(string knotName, int spawnIndex, float delay)
     {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-            return;
-#endif
-
-        MTRStoryManager.GlobalStory.BindExternalFunction(
-            "ChangeGameScene",
-            (string knotName, int spawnIndex) => ChangeGameScene(knotName, spawnIndex)
-        );
-        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
-    }
-
-    /// <summary>
-    /// This is the main external function that is called from the Ink story to change the game scene.
-    /// </summary>
-    /// <param name="args">0 : The name of the sceneKnot</param>
-    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
-    bool ChangeGameScene(string knotName, int spawnIndex = 0)
-    {
+        yield return new WaitForSeconds(delay);
         TryGetSceneDataByKnot(knotName, out MTRSceneData data);
         if (data == null)
-            return false;
+            yield break;
 
         SceneController.TryLoadScene(data.Name, spawnIndex);
-        Debug.Log($"{Prefix} >> Inky ChangeGameScene >> {data.Name}");
+        Debug.Log(
+            $"{Prefix} >> Inky ChangeGameScene >> {knotName} Spawn Index: {spawnIndex} Delay: {delay}"
+        );
 
         RefreshData();
         InkyStoryManager.GoToPath(knotName);
-
-        return true;
     }
 
     protected override void RefreshData()
@@ -97,9 +78,16 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
         // << Set Active Camera Bounds && Settings >>
         SceneController.CameraController?.Refresh();
+    }
 
-        // << Initialize Story >>
-        MTRStoryManager.OnStoryInitialized += HandleStoryInitialized;
+    /// <summary>
+    /// This is the main external function that is called from the Ink story to change the game scene.
+    /// </summary>
+    /// <param name="args">0 : The name of the sceneKnot</param>
+    /// <returns>False if BuildSceneData is null. True if BuildSceneData is valid.</returns>
+    public void HandleChangeGameScene(string knotName, int spawnIndex = 0, float delay = 0)
+    {
+        StartCoroutine(ChangeGameSceneRoutine(knotName, spawnIndex, delay));
     }
 
     public void TryGetSceneDataByKnot(string knot, out MTRSceneData sceneData)

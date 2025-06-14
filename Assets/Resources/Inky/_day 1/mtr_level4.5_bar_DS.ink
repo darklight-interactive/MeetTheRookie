@@ -1149,5 +1149,5 @@ They'll have...
 
 {scene4_5_DS.offerToPay: <i>You pay the tab for both your drink and Misra's, then head out.</i>} 
 {scene4_5_DS.MisraOrdersForThemselves: <i>You pay your tab, Misra pays for theirs, and you both leave the bar.</i>} 
-~ ChangeGameScene("scene5_1_DS", 0)
+~ ChangeGameScene("scene5_1_DS", 0, 0)
 -> DONE

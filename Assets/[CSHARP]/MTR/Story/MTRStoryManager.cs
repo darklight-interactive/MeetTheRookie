@@ -163,6 +163,15 @@ public class MTRStoryManager : InkyStoryManager
         }
 
         GlobalStory.BindExternalFunction(
+            "ChangeGameScene",
+            (string knotName, int spawnIndex, float delay) =>
+            {
+                MTRSceneManager.Instance.HandleChangeGameScene(knotName, spawnIndex, delay);
+            }
+        );
+        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
+
+        GlobalStory.BindExternalFunction(
             "SetSpeaker",
             (string speaker) =>
             {

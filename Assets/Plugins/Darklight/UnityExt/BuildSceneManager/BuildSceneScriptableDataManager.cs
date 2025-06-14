@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-
-using UnityEngine;
-using Darklight.UnityExt.Library;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Library;
 using NaughtyAttributes;
-
+using UnityEngine;
 #if UNITY_EDITOR
 using Darklight.UnityExt.Utility;
 using UnityEditor;
@@ -13,15 +11,23 @@ using UnityEditor;
 
 namespace Darklight.UnityExt.BuildScene
 {
-    public abstract class BuildSceneScriptableDataManager<TScriptObj> : BuildSceneManager<TScriptObj>
+    public abstract class BuildSceneScriptableDataManager<TScriptObj>
+        : BuildSceneManager<TScriptObj>
         where TScriptObj : ScriptableObject, IBuildSceneData, new()
     {
-        [SerializeField] ScriptableSceneDataLibrary _objLibrary = new ScriptableSceneDataLibrary();
+        [SerializeField]
+        ScriptableSceneDataLibrary _objLibrary = new ScriptableSceneDataLibrary();
 
         [Header("Scriptable Data Manager ---- >>")]
-        [SerializeField, ShowOnly] string _assetPath;
-        [SerializeField, Expandable] TScriptObj _activeSceneScriptableData;
-        [SerializeField] List<ExpandableSceneScriptableData> _fullSceneDataList = new List<ExpandableSceneScriptableData>();
+        [SerializeField, ShowOnly]
+        string _assetPath;
+
+        [SerializeField, Expandable]
+        TScriptObj _activeSceneScriptableData;
+
+        [SerializeField]
+        List<ExpandableSceneScriptableData> _fullSceneDataList =
+            new List<ExpandableSceneScriptableData>();
 
         protected abstract string AssetPath { get; }
 
@@ -29,7 +35,10 @@ namespace Darklight.UnityExt.BuildScene
         protected override TScriptObj CreateData(string path)
         {
             string objName = IBuildSceneData.ExtractNameFromPath(path);
-            TScriptObj obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(AssetPath, objName);
+            TScriptObj obj = ScriptableObjectUtility.CreateOrLoadScriptableObject<TScriptObj>(
+                AssetPath,
+                objName
+            );
             if (!obj.IsValid())
                 obj.Initialize(path);
             else
@@ -126,8 +135,11 @@ namespace Darklight.UnityExt.BuildScene
         [Serializable]
         public class ExpandableSceneScriptableData
         {
-            [SerializeField, ShowOnly] string _sceneName;
-            [SerializeField, Expandable] TScriptObj _data;
+            [SerializeField, ShowOnly]
+            string _sceneName;
+
+            [SerializeField, Expandable]
+            TScriptObj _data;
 
             public ExpandableSceneScriptableData(TScriptObj obj)
             {
@@ -140,8 +152,8 @@ namespace Darklight.UnityExt.BuildScene
     /// <summary>
     /// A base class for managing the build scene data for a project using scriptable objects.
     /// </summary>
-    public class BuildSceneScriptableDataManager :
-        BuildSceneScriptableDataManager<BuildSceneScriptableData>
+    public class BuildSceneScriptableDataManager
+        : BuildSceneScriptableDataManager<BuildSceneScriptableData>
     {
         protected override string AssetPath => "Assets/Resources/Darklight/BuildSceneData";
     }

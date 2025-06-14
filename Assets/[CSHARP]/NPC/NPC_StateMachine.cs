@@ -561,6 +561,10 @@ public class PlayAnimationState : BaseState
     public override void Enter()
     {
         _stateMachine.animator.SetFrameRate(10);
+
+        _stateMachine.animator.GetComponent<SpriteRenderer>().flipX = _stateMachine
+            .controller
+            .specialAnimFlipX;
         _stateMachine.animator.PlayStateAnimation(NPCState.PLAY_ANIMATION);
     }
 
@@ -571,10 +575,10 @@ public class PlayAnimationState : BaseState
 
     public override void Execute()
     {
-        if (_stateMachine.animator.AnimationIsOver())
-        {
-            _stateMachine.GoToState(_returnState);
-        }
+        // if (_stateMachine.animator.AnimationIsOver())
+        // {
+        //     _stateMachine.GoToState(_returnState);
+        // }
     }
 }
 

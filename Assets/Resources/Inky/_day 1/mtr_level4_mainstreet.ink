@@ -99,7 +99,7 @@ VAR closed_signs = 0
     
 = door_idahome_and_goods
 TODO SFX DOOR OPEN
-    ~ ChangeGameScene("scene4_2", 0)
+    ~ ChangeGameScene("scene4_2", 0, 0)
     -> DONE
 = door_powerup_arcade
 TODO SFX DOOR OPEN
@@ -121,7 +121,7 @@ TODO SFX DOOR OPEN
         If you say so...
         ~ CompleteQuest(entered_arcade)
     }
-    ~ ChangeGameScene("scene4_3", 0)
+    ~ ChangeGameScene("scene4_3", 0, 0)
     -> DONE
 
 = strange_symbol_on_fountain
@@ -178,7 +178,7 @@ TODO SFX DOOR OPEN
         But in the meantime, let's take a bit of a break...
         ~ openDoor()
         ~ SetSpeaker(Speaker.Lupe)
-        ~ ChangeGameScene("scene4_4", 0)
+        ~ ChangeGameScene("scene4_4", 0, 0)
     - else:
         ~ SetSpeaker(Speaker.Misra)
         Someone wants a drink, I see.

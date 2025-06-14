@@ -158,7 +158,7 @@
     Let's take a break.
     Irene!
     Can we get a drink?
-    ~ ChangeGameScene("scene4_5_DS", 0)
+    ~ ChangeGameScene("scene4_5_DS", 0, 0)
     -> DONE
 
 

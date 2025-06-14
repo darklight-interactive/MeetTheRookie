@@ -136,6 +136,7 @@
     -> calvin_questions
     
 = calvin_sus_question
+    ~ SetSpeaker(Speaker.Lupe)
     Calvin, you're not in trouble,
     but I need you to tell me who should be.
     Who do you think would've been at the Winery last night?

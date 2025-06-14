@@ -17,7 +17,7 @@ I'm a bit scatterbrained right now.
 Don't jump on me for being late.
 I'll debrief the Watchowski Case with you when I get back.
 Alright. Bye.
-~ ChangeGameScene("scene6_1", 0)
+~ ChangeGameScene("scene6_1", 0, 0)
 -> DONE
 
 === scene6_1 ===
@@ -54,7 +54,7 @@ Alright. Bye.
         ~ SetSpeaker(Speaker.Lupe)
         Something tells me I'll be here longer than I think. I should probably try Thelton again at some point.
         TODO SFX CAR DOOR OPEN CLOSE AND STARTING
-        ~ ChangeGameScene("scene7_1_DS", 0)
+        ~ ChangeGameScene("scene7_1_DS", 0, 0)
         -> DONE
     - IsQuestComplete(pay_for_gas):
         That noise didn't sound good. I should probably see what's up.
@@ -69,7 +69,7 @@ Alright. Bye.
         ~ SetSpeaker(Speaker.Lupe)
          {God, I feel weird. The Deja Vu is killing me right now. | Alright. Let's get this over with. | I hope it doesn't take too long.}
                  TODO SFX CAR DOOR OPEN CLOSE AND STARTING
-                ~ ChangeGameScene("scene7_1_DS", 0)
+                ~ ChangeGameScene("scene7_1_DS", 0, 0)
   
 
           -> DONE 
@@ -84,7 +84,7 @@ Alright. Bye.
  ~ SetSpeaker(Speaker.Lupe)
     I guess I'll find someone to help me inside here.
     ~ openDoor()
-    ~ ChangeGameScene("scene6_2", 0)
+    ~ ChangeGameScene("scene6_2", 0, 0)
     -> DONE
     
 === scene6_2 ===
@@ -190,13 +190,13 @@ I'll be right back.
 
 =door_to_backroom
 ~ openDoor()
- ~ ChangeGameScene("scene6_3", 0)
+ ~ ChangeGameScene("scene6_3", 0, 0)
     -> DONE
 
 =door_to_outside
 {IsQuestComplete(pay_for_gas):
     ~openDoor()
-    ~ChangeGameScene("scene6_4", 0)
+    ~ChangeGameScene("scene6_4", 0, 0)
     -> DONE
     -else:
         ~ SetSpeaker(Speaker.Lupe)
@@ -290,7 +290,7 @@ It's been annoying the hell outta me.
 -> DONE
 
 = door_to_mainroom
-    ~ ChangeGameScene("scene6_4", 0)
+    ~ ChangeGameScene("scene6_4", 0, 0)
     TODO SFX DOOR OPEN
     -> DONE
 
@@ -358,12 +358,12 @@ I think I'd rather lick ground than eat something out of here.
     
     
 = door_to_backroom
-    ~ ChangeGameScene("scene6_3", 0)
+    ~ ChangeGameScene("scene6_3", 0, 0)
     TODO SFX DOOR OPEN
     -> DONE
 
 = door_to_outside
-    ~ ChangeGameScene("scene6_5", 0)
+    ~ ChangeGameScene("scene6_5", 0, 0)
     TODO SFX DOOR OPEN
     -> DONE
 

@@ -418,6 +418,9 @@ public class MTRCameraRig : MonoBehaviour
     public void ShakeCamera(float duration, float intensity, float delay = 0)
     {
         StartCoroutine(CameraShakeRoutine(duration, intensity, delay));
+        Debug.Log(
+            $"[MTRCameraRig] Camera Shake: {duration}s, {intensity} intensity, {delay} delay"
+        );
     }
 
     public void QuickShakeCamera()

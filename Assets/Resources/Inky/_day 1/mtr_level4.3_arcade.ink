@@ -64,7 +64,7 @@
         ~ openDoor()
         ~ SetSpeaker(Speaker.Jenny)
             Bye loooosersss.
-        ~ ChangeGameScene("scene4_1", 2)
+        ~ ChangeGameScene("scene4_1", 2, 0)
     -else:
         ~ SetSpeaker(Speaker.Misra)
         We haven't really found anything yet...

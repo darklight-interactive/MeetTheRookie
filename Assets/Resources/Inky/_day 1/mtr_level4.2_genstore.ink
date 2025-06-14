@@ -40,6 +40,6 @@
     ~ SetSpeaker(Speaker.Roy_Rodgerson)
     Take care!
     ~ closeDoor()
-    ~ ChangeGameScene("scene4_1", 1)
+    ~ ChangeGameScene("scene4_1", 1, 0)
     ~ SetSpeaker(Speaker.Lupe)
     ->DONE
