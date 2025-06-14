@@ -230,6 +230,11 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         SetInputEnabled(true);
         Debug.Log($"{PREFIX} >> Input Enabled: {_inputEnabled}");
 
+        yield return new WaitUntil(
+            () => MTRSceneController.StateMachine.CurrentState == MTRSceneState.PLAY_MODE
+        );
+        MTRSceneController.StateMachine.GoToState(MTRSceneState.CINEMA_MODE);
+
         yield return null;
     }
 

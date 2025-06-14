@@ -11,12 +11,7 @@
 //VAR spooked = false
 //VAR snooped = false
 
-
-
-
-* [BEGIN] -> scene7_1_DS
-
-=== scene7_1_DS ===
+=== scene7_DS ===
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2
@@ -1209,6 +1204,9 @@ And a black and white picture of the winery stained with age.
 #name: Misra 
 { tease_level > sincerity_level:  "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" | <i> They quickly follow behind. </i> } 
 
- 
-->END
-->END
+#hide: Misra
+#hide: Lupe
+
+<b><i>To Be Continued...</i><b>
+~ ChangeGameScene("scene_default", 0, 0)
+-> DONE

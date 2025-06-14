@@ -16,8 +16,8 @@ VAR gas_pumps = 0
 
 // == ( SCENE 1 ) ================================= >>
 === scene1_0 ===
-    # hide: Misra
-    //# emote : Misra \| Voice_call
+    //# hide: Misra
+    # emote : Misra \| Voice_call
     # sfx : on
     //TODO SFX phone ringing and ringing,
     //~PlayLoopingSFX("phoneCallingTone")

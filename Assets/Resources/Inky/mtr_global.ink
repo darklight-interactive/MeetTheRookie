@@ -29,8 +29,8 @@ INCLUDE _day 1/mtr_level5.1_stakeout_DS.ink
 INCLUDE _day 1/mtr_level5.2_wineryNIGHT.ink
 
 // DAY 2 
-INCLUDE _day 2/mtr_level7.1_DS.ink
-INCLUDE _day 2/mtr_level6.1_melOmart.ink
+INCLUDE _day 2/mtr_level6_melOmart.ink
+INCLUDE _day 2/mtr_level7_DS.ink
 
 // ====== EXTERNAL FUNCTIONS == >>
 EXTERNAL ChangeGameScene(knotName, spawnIndex, delay)
@@ -100,10 +100,11 @@ LIST Level4_3_Quests = (entered_arcade), (visited_machines), (what_is_hosi), (ho
 
 LIST Level4_4_Quests = (memorial_plaque_visited),(irene_intro), (irene_convo_1), (irene_convo_2), (irene_mention_goats), (irene_sacrifice), (irene_gives_cue), (irene_KR), (irene_closed_shops),  (jenkins_first_interact), (jenkins_intro), (jenkins_wakes_up), (jenkins_winery), (jenkins_sacrifice), (jenkins_council), (jenkins_sarah), (gooptalk)
 
+// -------------------- LEVEL 4 ------------------------------------
 LIST Level5_Quests = (winerygraph) , (blueprint) , (newspaper), (handwrittennote), (discover_pinpad)
 
-// LEVEL 6 
-LIST Level6_Quests = (haggle)
+// -------------------- LEVEL 5 ------------------------------------
+LIST Level6_Quests = (beth_first_interact), (haggle), (mel_first_interact), (pay_for_gas_again), (look_at_tree_again)
 
 
 
@@ -117,12 +118,17 @@ LIST Level6_Quests = (haggle)
 
 
 === scene_default ===
+= main_menu
+    -> DONE
+    
 = interaction_default
-~ SetSpeaker(Speaker.Lupe)
-Hey, it's Lupe here.
-It seems like you're hanging out in the default scene.
-Just so you're aware, this is for bug testing.
-Sky really likes little things like to help figure things out
-They tend to break stuff.
--> DONE
+    ~ SetSpeaker(Speaker.Lupe)
+    Hey, it's Lupe here.
+    It seems like you're hanging out in the default scene.
+    Just so you're aware, this is for bug testing.
+    Sky really likes little things like to help figure things out
+    They tend to break stuff.
+    -> DONE
+
+
 

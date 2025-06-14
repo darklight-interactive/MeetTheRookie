@@ -63,7 +63,18 @@ public class GameUIController : UXML_UIDocumentObject
     {
         _inputUIContainer = ElementQuery<VisualElement>(INPUT_UI_CONTAINER_TAG);
 
-        if (state == MTRSceneState.PAUSE_MODE || state == MTRSceneState.SYNTHESIS_MODE)
+        var datingSim = FindFirstObjectByType<MTRDatingSimController>();
+        if (datingSim != null)
+        {
+            ForceDisplayInputUI(false);
+            return;
+        }
+
+        if (
+            state == MTRSceneState.PAUSE_MODE
+            || state == MTRSceneState.SYNTHESIS_MODE
+            || state == MTRSceneState.CINEMA_MODE
+        )
         {
             _inputUIContainer.style.display = DisplayStyle.None;
         }
@@ -104,6 +115,18 @@ public class GameUIController : UXML_UIDocumentObject
             default:
                 break;
         }
+    }
+
+    public void ForceDisplayInputUI(bool display)
+    {
+        _inputUIContainer.style.display = display ? DisplayStyle.Flex : DisplayStyle.None;
+        Debug.Log($"[GameUIController] ForceDisplayInputUI: {display}");
+    }
+
+    [Button]
+    public void ToggleInputUI()
+    {
+        ForceDisplayInputUI(!_inputUIContainer.style.display.value.Equals(DisplayStyle.Flex));
     }
 
     [Button]

@@ -20,8 +20,7 @@ public enum MTRSceneState
     CINEMA_MODE,
     PAUSE_MODE,
     SYNTHESIS_MODE,
-    EXIT,
-    CHOICEMODE
+    EXIT
 }
 
 [RequireComponent(typeof(MTRSceneManager))]
@@ -156,7 +155,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 },
                 { MTRSceneState.EXIT, new ExitState(this, MTRSceneState.EXIT) },
                 { MTRSceneState.LOADING, new LoadingState(this, MTRSceneState.LOADING) },
-                { MTRSceneState.CHOICEMODE, new ChoiceModeState(this, MTRSceneState.CHOICEMODE) },
             };
             initialState = MTRSceneState.INITIALIZE;
         }
@@ -374,20 +372,11 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             public CinemaModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
                 : base(stateMachine, stateType) { }
 
-            public override void Enter()
-            {
-                Debug.Log("Cinema Mode State Enter");
-            }
+            public override void Enter() { }
 
-            public override void Exit()
-            {
-                Debug.Log("Cinema Mode State Exit");
-            }
+            public override void Exit() { }
 
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
-            }
+            public override void Execute() { }
         }
         #endregion
 
@@ -459,22 +448,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 yield return new WaitForSeconds(2f);
                 stateMachine.GoToState(MTRSceneState.LOADING);
             }
-        }
-        #endregion
-
-
-
-        #region ================== [ CHOICE MODE STATE ] ==================
-        public class ChoiceModeState : BaseState
-        {
-            public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
-                : base(stateMachine, stateType) { }
-
-            public override void Enter() { }
-
-            public override void Execute() { }
-
-            public override void Exit() { }
         }
         #endregion
     }
