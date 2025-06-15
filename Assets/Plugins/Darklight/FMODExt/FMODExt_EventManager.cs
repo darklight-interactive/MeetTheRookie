@@ -1,23 +1,18 @@
 using System.Collections;
-
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
-
 using FMOD;
 using FMOD.Studio;
-
 using FMODUnity;
-
+using NaughtyAttributes;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
-using Debug = UnityEngine.Debug;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using NaughtyAttributes;
 
 namespace Darklight.UnityExt.FMODExt
 {
@@ -50,8 +45,11 @@ namespace Darklight.UnityExt.FMODExt
         #region == [[ FMODExt EVENT OBJECTS ]] ============================================== >>
 
         [Header("FMOD Event Objects")]
-        [SerializeField, Expandable] FMODExt_MusicObject _backgroundMusic;
-        [SerializeField, Expandable] FMODExt_SFXObject _generalSFX;
+        [SerializeField, Expandable]
+        FMODExt_MusicObject _backgroundMusic;
+
+        [SerializeField, Expandable]
+        FMODExt_SFXObject _generalSFX;
         public FMODExt_MusicObject BackgroundMusic => _backgroundMusic;
         public FMODExt_SFXObject GeneralSFX => _generalSFX;
 
@@ -98,12 +96,18 @@ namespace Darklight.UnityExt.FMODExt
         #region == [[ BUSES & BANKS ]] ====================================================== >>
 
         [Header("(( ---- FMOD BANKS ---- ))")]
-        [SerializeField, ShowOnly] FMOD.RESULT _bankLoadResult;
-        [SerializeField] List<FMODExt_Bank> _bankData;
+        [SerializeField, ShowOnly]
+        FMOD.RESULT _bankLoadResult;
+
+        [SerializeField]
+        List<FMODExt_Bank> _bankData;
 
         [Header("(( ---- FMOD BUSES ---- ))")]
-        [SerializeField, ShowOnly] FMOD.RESULT _busLoadResult;
-        [SerializeField] List<FMODExt_Bus> _busData;
+        [SerializeField, ShowOnly]
+        FMOD.RESULT _busLoadResult;
+
+        [SerializeField]
+        List<FMODExt_Bus> _busData;
 
         #region -- (( LOADING )) ----------------------- ))
         public void LoadBanksAndBuses()
@@ -115,6 +119,7 @@ namespace Darklight.UnityExt.FMODExt
         {
             // ------- Load Banks ------- //
             InternalConsole.Log($"{Prefix} Loading Banks.");
+            Debug.Log($"{Prefix} Loading Banks.");
             FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] _banks);
             foreach (FMOD.Studio.Bank bank in _banks)
             {
@@ -124,19 +129,28 @@ namespace Darklight.UnityExt.FMODExt
                 {
                     FMODExt_Bank newBankData = new FMODExt_Bank(bank);
                     _bankData.Add(newBankData);
-                    InternalConsole.Log($"Bank Load Result: " + newBankData.Path + " -> " + _bankLoadResult, 1);
+                    InternalConsole.Log(
+                        $"Bank Load Result: " + newBankData.Path + " -> " + _bankLoadResult,
+                        1
+                    );
+                    Debug.Log($"Bank Load Result: " + newBankData.Path + " -> " + _bankLoadResult);
                 }
             }
 
             // ------- Load Buses ------- //
             InternalConsole.Log($"{Prefix} Loading Buses.");
+            Debug.Log($"{Prefix} Loading Buses.");
             foreach (FMODExt_Bank bank in _bankData)
             {
                 List<FMODExt_Bus> busData = bank.BusData;
                 _busData.AddRange(busData);
                 foreach (FMODExt_Bus bus in busData)
                 {
-                    InternalConsole.Log($"Bus Load Result: " + bus.Path + " -> " + bus.LoadResult, 1);
+                    InternalConsole.Log(
+                        $"Bus Load Result: " + bus.Path + " -> " + bus.LoadResult,
+                        1
+                    );
+                    Debug.Log($"Bus Load Result: " + bus.Path + " -> " + bus.LoadResult);
                 }
             }
 
@@ -225,8 +239,8 @@ namespace Darklight.UnityExt.FMODExt
             }
         }
 
-
         Coroutine repeatEventCoroutine;
+
         // Method to start repeating an event
         public void StartRepeatingEvent(EventReference eventReference, float interval)
         {
@@ -239,13 +253,13 @@ namespace Darklight.UnityExt.FMODExt
             StopCoroutine(repeatEventCoroutine);
         }
 
-
-
         public void PlaySong(EventReference newSongEventRef)
         {
             if (newSongEventRef.IsNull)
             {
-                Debug.LogWarning($"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef);
+                Debug.LogWarning(
+                    $"{Prefix} FMOD SONG event path does not exist: " + newSongEventRef
+                );
                 return;
             }
 
@@ -259,12 +273,17 @@ namespace Darklight.UnityExt.FMODExt
             // Compare the GUIDs
             if (currentEventGuid == newEventGuid)
             {
-                Debug.LogWarning($"{Prefix} FMOD SONG event is already playing: " + newSongEventRef);
+                Debug.LogWarning(
+                    $"{Prefix} FMOD SONG event is already playing: " + newSongEventRef
+                );
                 return;
             }
 
             // If the current background music is playing, fade it out and start the new song
-            if (CurrentSongInstance.isValid() && PlaybackState(CurrentSongInstance) == PLAYBACK_STATE.PLAYING)
+            if (
+                CurrentSongInstance.isValid()
+                && PlaybackState(CurrentSongInstance) == PLAYBACK_STATE.PLAYING
+            )
             {
                 StartCoroutine(EventTransitionRoutine(newSongEventRef));
                 return;
@@ -276,7 +295,6 @@ namespace Darklight.UnityExt.FMODExt
             newSongInstance.start();
             newSongInstance.release();
         }
-
 
         IEnumerator EventTransitionRoutine(EventReference newSongEventRef)
         {
@@ -326,13 +344,13 @@ namespace Darklight.UnityExt.FMODExt
         }
     }
 
-
 #if UNITY_EDITOR
     [CustomEditor(typeof(FMODExt_EventManager), true)]
     public class FMODExt_EventManagerCustomEditor : UnityEditor.Editor
     {
         SerializedObject _serializedObject;
         FMODExt_EventManager _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -357,5 +375,4 @@ namespace Darklight.UnityExt.FMODExt
         }
     }
 #endif
-
 }
