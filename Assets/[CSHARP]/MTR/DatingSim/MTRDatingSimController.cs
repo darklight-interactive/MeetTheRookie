@@ -213,6 +213,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     IEnumerator StartDatingSimRoutine()
     {
         ResetDatingSim();
+        emotes.MakeEmotes();
 
         yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
         Debug.Log($"{PREFIX} >> Story Initialized: {MTRStoryManager.IsInitialized}");
@@ -229,6 +230,11 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         // << ENABLE INPUTS >>
         SetInputEnabled(true);
         Debug.Log($"{PREFIX} >> Input Enabled: {_inputEnabled}");
+
+        yield return new WaitUntil(
+            () => MTRSceneController.StateMachine.CurrentState == MTRSceneState.PLAY_MODE
+        );
+        MTRSceneController.StateMachine.GoToState(MTRSceneState.CINEMA_MODE);
 
         yield return null;
     }

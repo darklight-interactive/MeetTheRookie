@@ -48,6 +48,9 @@ public class NPC_Controller : MonoBehaviour
     public NPCState stateAfterWalking = NPCState.IDLE;
     private DestinationWrapper destinationWrapper;
 
+    [Tooltip("Whether to flip the sprite in the special animation")]
+    public bool specialAnimFlipX = false;
+
     // ================ [ UNITY MAIN METHODS ] =================== //
     public virtual void Start()
     {
@@ -115,6 +118,11 @@ public class NPC_Controller : MonoBehaviour
         stateMachine.Step();
         currentState = stateMachine.CurrentState;
         destinationWrapper.walkDestinationX = walkDestinationX;
+    }
+
+    void FixedUpdate()
+    {
+        stateMachine.FixedStep();
     }
 
     private void OnDrawGizmosSelected()

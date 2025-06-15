@@ -46,25 +46,6 @@ public class MTRGameManager : MonoBehaviourSingleton<MTRGameManager>, IUnityEdit
     [SerializeField, ShowOnly]
     MTRPlayerController _playerController;
 
-    IEnumerator SceneChangeRoutine(Scene newScene)
-    {
-        if (MTRSceneManager.ActiveSceneData != null)
-        {
-            if (MTRStoryManager.IsInitialized == false)
-                yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
-
-            MTRStoryManager.GoToPath(MTRSceneManager.ActiveSceneData.SceneKnot);
-            MTR_AudioManager.Instance.PlaySceneBackgroundMusic(newScene.name);
-        }
-        else
-        {
-            Debug.LogError(
-                $"{Prefix} >> SceneChangeRoutine: Scene data not found for scene {newScene.name}"
-            );
-        }
-        yield return null;
-    }
-
     public void OnEditorReloaded()
     {
 #if UNITY_EDITOR

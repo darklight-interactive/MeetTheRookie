@@ -55,6 +55,11 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         }
     }
 
+    void Awake()
+    {
+
+    }
+
     void Start()
     {
         Refresh();

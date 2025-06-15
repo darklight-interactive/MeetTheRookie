@@ -75,7 +75,6 @@ public partial class MTRClueContainer : VisualElement
             style =
             {
                 color = Color.white,
-                fontSize = 40,
                 flexGrow = 1,
                 alignSelf = Align.Center,
             }
@@ -90,21 +89,7 @@ public partial class MTRClueContainer : VisualElement
 
     void CreateClueContainer()
     {
-        _clueContainerElement = new GroupBox()
-        {
-            name = "clue-container",
-            style =
-            {
-                flexGrow = 1,
-                position = Position.Relative,
-                //justifyContent = Justify.Center,
-                //alignSelf = Align.Stretch,
-                //flexDirection = FlexDirection.Row,
-
-                maxWidth = Length.Percent(50),
-                flexWrap = Wrap.Wrap,
-            }
-        };
+        _clueContainerElement = new GroupBox() { name = "clue-container" };
         this.Add(_clueContainerElement);
     }
 
@@ -117,7 +102,10 @@ public partial class MTRClueContainer : VisualElement
         SetHeaderTitle(_mysteryData.mysteryName);
         foreach (MTRInteractableDataSO clue in _mysteryData.clueDataList)
         {
-            MTRClueElement clueElement = new MTRClueElement(clue);
+            MTRClueElement clueElement = new MTRClueElement(
+                clue,
+                _mysteryData.GetRandomClueBackground()
+            );
             _clues.Add(clueElement);
             _clueContainerElement.Add(clueElement);
         }

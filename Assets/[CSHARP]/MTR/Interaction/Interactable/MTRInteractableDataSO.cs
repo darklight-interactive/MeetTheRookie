@@ -47,9 +47,12 @@ public class MTRInteractableDataSO : ScriptableObject
     [SerializeField]
     bool _isSpawnPoint = false;
 
-    [SerializeField, EnableIf("IsSpawnPoint")]
+    [SerializeField, ShowIf("IsSpawnPoint")]
     [Range(0, 3)]
     int _spawnIndex = 0;
+
+    [SerializeField, ShowIf("IsSpawnPoint")]
+    bool _spawnMisra = false;
 
     [HorizontalLine(color: EColor.Gray)]
     [SerializeField]
@@ -101,6 +104,7 @@ public class MTRInteractableDataSO : ScriptableObject
     public bool InternalClueSet => _internalClue != "" && _internalClue != "None";
     public bool IsSpawnPoint => _isSpawnPoint;
     public int SpawnIndex => _spawnIndex;
+    public bool SpawnMisra => _spawnMisra;
 
     public string SceneKnot
     {

@@ -271,6 +271,8 @@ MonoBehaviour:
   _inputEnabled: 0
   _knot: scene1_0
   _choiceMap:
+    _debug: 0
+    _selectableNames: []
     _previousSelectionName: 
     _currentSelectionName: 
   inCar: 0
@@ -438,9 +440,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 5d18e599e505714499d5099f01bba280, type: 2}
     - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _dataValues.Array.size
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _activeSceneScriptableData
       value: 
       objectReference: {fileID: 11400000, guid: 5d18e599e505714499d5099f01bba280, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_dataValues.Array.data[24]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b2f9b7146003304b87b2d9b3920d949, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: '_dataValues.Array.data[25]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 600f3f1a1c04226429c3b7114a128b6f, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.size
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _objLibrary._items.Array.size
+      value: 28
+      objectReference: {fileID: 0}
     - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _dataValues.Array.data[1].SceneKnot
       value: scene1_0
@@ -532,6 +554,226 @@ PrefabInstance:
     - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _dataValues.Array.data[25].SceneKnot
       value: scene6_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _objLibrary._items.Array.data[27]._id
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[0]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 77ef2eee04a7dba4e8b66cbb83f20783, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[1]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d18e599e505714499d5099f01bba280, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[2]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 370df585f9de90a479627cb20998eee8, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[3]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 1805dc5b783c519489125a5fca7c07d8, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[4]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 95222474449aae043a73c778b3a5b85e, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[5]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 279c78db9f51eb34db5b5b6184f189a3, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[6]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 07e5ae629c42bbc48a190c9dbe0f0b71, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[7]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 009476a6107b9614eb760eb262932866, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[8]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: fd639c33ff48ab3489fdfee74da2bbec, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[9]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 430f648fed8da454a8700bd96ddf46f9, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _objLibrary._items.Array.data[27]._key
+      value: SCENE_6_4 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[10]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 95c51709d83ade941acaec92b0912820, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[11]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: a83169d7c7e70884d918094b60a3a430, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[12]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 570f84bf00eeb2642b627dfc42daa025, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[13]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: dcde5334770f89d41a34b1473cfd6d8d, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[14]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: d37fd3cfc5a883f408961707f3196482, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[15]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: d51362e795758064ab1cec529705c022, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[16]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 826bef29ef066bd46b4a1bfb2f50dd35, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[17]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: f5a32c024818b1d42bc07fe0c20cf2c0, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[18]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a6c3998a462e7b43bfbd7816e04f5a1, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[19]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: c1cc31d657ba0b14a828e818dfee3814, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[20]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e5150abecc319744b82424375f1570d, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[21]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a7e3b711e2d8144d9ee83e293f9d326, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[22]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: e7fba6bd50c196144a8d33141ca36809, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[23]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: bbf86470169ede44490a0641f91ed865, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[24]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b2f9b7146003304b87b2d9b3920d949, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[25]._data
+      value: 
+      objectReference: {fileID: 11400000, guid: 600f3f1a1c04226429c3b7114a128b6f, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _objLibrary._items.Array.data[27]._value
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b2f9b7146003304b87b2d9b3920d949, type: 2}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[0]._sceneName
+      value: MAIN_MENU
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[1]._sceneName
+      value: SCENE_1_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[2]._sceneName
+      value: SCENE_1_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[3]._sceneName
+      value: SCENE_1_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[4]._sceneName
+      value: SCENE_1_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[5]._sceneName
+      value: SCENE_1_4 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[6]._sceneName
+      value: SCENE_2_0 - The Precinct - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[7]._sceneName
+      value: SCENE_3_1 - The Winery Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[8]._sceneName
+      value: SCENE_3_2 - The Winery Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[9]._sceneName
+      value: SCENE_4_1 - Main Street_AFTERNOON
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[10]._sceneName
+      value: SCENE_4_1 - Main Street_DUSK
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[11]._sceneName
+      value: SCENE_4_1 - Main Street_GOLDENHOUR
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[12]._sceneName
+      value: SCENE_4_2 - The General Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[13]._sceneName
+      value: SCENE_4_3 - The Arcade
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[14]._sceneName
+      value: SCENE_4_4 - The Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[15]._sceneName
+      value: SCENE_4_5 - The Bar - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[16]._sceneName
+      value: SCENE_5_1 - Stakeout - Dating Sim
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[17]._sceneName
+      value: SCENE_5_2 - The Winery Ext_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[18]._sceneName
+      value: SCENE_5_3 - The Winery Int_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[19]._sceneName
+      value: SCENE_5_4 - The Winery Office Interior_EVENING
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[20]._sceneName
+      value: SCENE_6_0 - Intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[21]._sceneName
+      value: SCENE_6_1 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[22]._sceneName
+      value: SCENE_6_2 - The Gas Station Int
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[23]._sceneName
+      value: SCENE_6_3 - The Gas Station Int Bathroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[24]._sceneName
+      value: SCENE_6_4 - The Gas Station Ext
+      objectReference: {fileID: 0}
+    - target: {fileID: 188870416500937314, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
+      propertyPath: _fullSceneDataList.Array.data[25]._sceneName
+      value: SCENE_7_0 - The Precinct - Dating Sim
       objectReference: {fileID: 0}
     - target: {fileID: 276824283454709858, guid: b98fe6343db00478ab792e4a56ca3734, type: 3}
       propertyPath: _isVisible
@@ -893,6 +1135,7 @@ MonoBehaviour:
   chaseSpeakDistance: 0.75
   walkDestinationX: 0
   stateAfterWalking: 1
+  specialAnimFlipX: 0
 --- !u!212 &1944492955
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -972,7 +1215,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 294617130321755958, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 4.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 348082412807241120, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1016,7 +1259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1148548231494987092, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 4.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2895742502396242152, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_Name
@@ -1032,11 +1275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.539519
+      value: 2.039363
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.964637
+      value: -29.95839
       objectReference: {fileID: 0}
     - target: {fileID: 5314045156112960354, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1056,11 +1299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5663657954300164996, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 4.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6029335792472997658, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: field of view
-      value: 4.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7167559734855225826, guid: 5518d78ba09f24065b0f42fafde8b304, type: 3}
       propertyPath: _baseFOV

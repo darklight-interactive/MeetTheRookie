@@ -685,7 +685,7 @@ TODO Test this dialogue conditional to see if it works
 #name:Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!" 
-~ ChangeGameScene("scene3_1", 0) 
+~ ChangeGameScene("scene3_1", 0, 0) 
 -> DONE
 
 = door 
@@ -694,5 +694,5 @@ TODO Test this dialogue conditional to see if it works
 # name : Misra
 # emote : Misra \| Neutral_1
 "Alright! Misra and Lupe on the case! Watch out Kettle Rock, we gon'na figure you OUT!"
-~ ChangeGameScene("scene3_1", 0) 
+~ ChangeGameScene("scene3_1", 0, 0) 
 -> DONE

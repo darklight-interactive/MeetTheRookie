@@ -69,4 +69,9 @@ public class MTRCharacterAnimator : FrameAnimationPlayer
         else
             SetFacing(SpriteDirection.LEFT);
     }
+
+    public void SetFrameRate(int frameRate)
+    {
+        FrameRate = frameRate;
+    }
 }

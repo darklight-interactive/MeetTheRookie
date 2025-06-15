@@ -4,7 +4,7 @@
 # Location: The Rockin Kettle, Bar 
 # Only accessible after Gen Store and Arcade have been visited
 
-+ [Irene] -> irene_text
++ [Irene] -> irene
 + {IsQuestComplete(irene_intro)} [memorial_plaque] -> memorial_plaque
 + [slumped_man] -> man
 + {irene_intro}[goop] -> goop
@@ -13,7 +13,7 @@
 = intro
     ~ closeDoor()
     -> Irene_Dialogue.irene_intro_cutscene
-= irene_text
+= irene
     -> Irene_Dialogue
 = man 
     -> Jenkins_Dialogue

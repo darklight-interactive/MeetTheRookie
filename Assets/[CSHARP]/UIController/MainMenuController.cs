@@ -9,20 +9,21 @@ using UnityEngine.UIElements;
 
 public class MainMenuController : UXML_UIDocumentObject
 {
-    MTRSceneManager sceneManager;
-    SelectableButton playButton;
-    SelectableButton settingsButton;
-    SelectableButton creditsButton;
-    SelectableButton quitButton;
-    SelectableButton returnButtonSettings;
-    SelectableButton returnButtonCredits;
-    SelectableButton currentButton;
+    SelectableButton _playButton;
+    SelectableButton _settingsButton;
+    SelectableButton _creditsButton;
+    SelectableButton _quitButton;
+    SelectableSlider _musicSlider;
+    SelectableSlider _sfxSlider;
+    SelectableSlider _dialogueSlider;
+    SelectableButton _returnButtonSettings;
+    SelectableButton _returnButtonCredits;
+    SelectableButton _currentButton;
     Dictionary<string, SelectableButton[]> buttonGroups;
-    SelectableVectorField<SelectableButton> selectableVectorField =
-        new SelectableVectorField<SelectableButton>();
     bool lockSelection = false;
 
-    SelectableVectorField<VisualElement> selectableElements =
+    [SerializeField]
+    SelectableVectorField<VisualElement> _selectableVectorField =
         new SelectableVectorField<VisualElement>();
 
     const string MAIN_PAGE = "main";
@@ -33,117 +34,117 @@ public class MainMenuController : UXML_UIDocumentObject
 
     public void Awake()
     {
-        sceneManager = MTRSceneManager.Instance as MTRSceneManager;
         Initialize(preset);
     }
 
     void Start()
     {
         // Store the local references to the buttons
-        playButton = ElementQuery<SelectableButton>("play-btn");
-        settingsButton = ElementQuery<SelectableButton>("settings-btn");
-        creditsButton = ElementQuery<SelectableButton>("credits-btn");
-        quitButton = ElementQuery<SelectableButton>("quit-btn");
-        returnButtonSettings = ElementQuery<SelectableButton>("return-btn-settings");
-        returnButtonCredits = ElementQuery<SelectableButton>("return-btn-credits");
+        _playButton = ElementQuery<SelectableButton>("play-btn");
+        _settingsButton = ElementQuery<SelectableButton>("settings-btn");
+        _creditsButton = ElementQuery<SelectableButton>("credits-btn");
+        _quitButton = ElementQuery<SelectableButton>("quit-btn");
+        _musicSlider = ElementQuery<SelectableSlider>("music-slider");
+        _sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
+        _dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
+        _returnButtonSettings = ElementQuery<SelectableButton>("return-btn-settings");
+        _returnButtonCredits = ElementQuery<SelectableButton>("return-btn-credits");
 
         buttonGroups = new Dictionary<string, SelectableButton[]>
         {
             {
                 MAIN_PAGE,
-                new SelectableButton[] { playButton, settingsButton, creditsButton, quitButton }
+                new SelectableButton[] { _playButton, _settingsButton, _creditsButton, _quitButton }
             },
-            { SETTINGS_PAGE, new SelectableButton[] { returnButtonSettings } },
-            { CREDITS_PAGE, new SelectableButton[] { returnButtonCredits } }
+            { SETTINGS_PAGE, new SelectableButton[] { _returnButtonSettings } },
+            { CREDITS_PAGE, new SelectableButton[] { _returnButtonCredits } }
         };
 
         // Load the selectable buttons, remove elements not currently active in the page
-        selectableElements.Load(ElementQueryAll<SelectableButton>());
-        selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
-        selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
+        _selectableVectorField.Load(ElementQueryAll<SelectableButton>());
+        _selectableVectorField.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+        _selectableVectorField.RemoveRange(buttonGroups[CREDITS_PAGE]);
 
         // Store references to the folders
         _settingsPage = ElementQuery<VisualElement>(SETTINGS_PAGE);
         _creditsPage = ElementQuery<VisualElement>(CREDITS_PAGE);
 
         // Assign the events
-        playButton.OnClick += PlayButtonAction;
-        //settingsButton.OnClick += () => Debug.Log("Options Button Clicked");
-        //creditsButton.OnClick += () => Debug.Log("Credits Button Clicked");
-        settingsButton.OnClick += () =>
+        _playButton.OnClick += PlayButtonAction;
+        _settingsButton.OnClick += () =>
         {
-            selectableElements.AddRange(ElementQueryAll<SelectableSlider>());
-            selectableElements.AddRange(buttonGroups[SETTINGS_PAGE]);
-            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+            _selectableVectorField.AddRange(ElementQueryAll<SelectableSlider>());
+            _selectableVectorField.AddRange(buttonGroups[SETTINGS_PAGE]);
+            _selectableVectorField.RemoveRange(buttonGroups[MAIN_PAGE]);
 
             _settingsPage.style.display = DisplayStyle.Flex;
-            //_settingsPage.visible = true;
             _settingsPage.AddToClassList("visible");
+
+            _selectableVectorField.Reset();
+            _selectableVectorField.Select(_musicSlider);
         };
 
-        returnButtonSettings.OnClick += () =>
+        _returnButtonSettings.OnClick += () =>
         {
-            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
-            selectableElements.RemoveRange(ElementQueryAll<SelectableSlider>());
-            selectableElements.RemoveRange(buttonGroups[SETTINGS_PAGE]);
+            _selectableVectorField.AddRange(buttonGroups[MAIN_PAGE]);
+            _selectableVectorField.RemoveRange(ElementQueryAll<SelectableSlider>());
+            _selectableVectorField.RemoveRange(buttonGroups[SETTINGS_PAGE]);
 
             _settingsPage.RemoveFromClassList("visible");
             _settingsPage.style.display = DisplayStyle.None;
-            //_settingsPage.visible = false;
+
+            _selectableVectorField.Reset();
+            _selectableVectorField.Select(_settingsButton);
         };
 
-        creditsButton.OnClick += () =>
+        _creditsButton.OnClick += () =>
         {
-            selectableElements.AddRange(ElementQueryAll<Scroller>());
-            selectableElements.AddRange(buttonGroups[CREDITS_PAGE]);
-            selectableElements.RemoveRange(buttonGroups[MAIN_PAGE]);
+            _selectableVectorField.AddRange(ElementQueryAll<Scroller>());
+            _selectableVectorField.AddRange(buttonGroups[CREDITS_PAGE]);
+            _selectableVectorField.RemoveRange(buttonGroups[MAIN_PAGE]);
 
             _creditsPage.style.display = DisplayStyle.Flex;
-            //_creditsPage.visible = true;
             _creditsPage.AddToClassList("visible");
+
+            _selectableVectorField.Reset();
+            _selectableVectorField.Select(_returnButtonCredits);
         };
 
-        returnButtonCredits.OnClick += () =>
+        _returnButtonCredits.OnClick += () =>
         {
-            selectableElements.RemoveRange(ElementQueryAll<Scroller>());
-            selectableElements.RemoveRange(buttonGroups[CREDITS_PAGE]);
-            selectableElements.AddRange(buttonGroups[MAIN_PAGE]);
+            _selectableVectorField.RemoveRange(ElementQueryAll<Scroller>());
+            _selectableVectorField.RemoveRange(buttonGroups[CREDITS_PAGE]);
+            _selectableVectorField.AddRange(buttonGroups[MAIN_PAGE]);
 
             _creditsPage.RemoveFromClassList("visible");
             _creditsPage.style.display = DisplayStyle.None;
-            //_creditsPage.visible = false;
+
+            _selectableVectorField.Reset();
+            _selectableVectorField.Select(_creditsButton);
         };
 
-        quitButton.OnClick += Quit;
-
-        // Load the Selectable Elements
-        selectableVectorField.Load(ElementQueryAll<SelectableButton>());
-        selectableVectorField.Selectables.First().Select();
-        currentButton = selectableVectorField.Selectables.First();
+        _quitButton.OnClick += Quit;
 
         // Sliders
-        SelectableSlider musicSlider = ElementQuery<SelectableSlider>("music-slider");
-        musicSlider.OnValueChanged += () =>
+        _musicSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/Music", musicSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume("bus:/Music", _musicSlider.value);
         };
-        Debug.Log("MUSIC: " + musicSlider.value);
+        Debug.Log("MUSIC: " + _musicSlider.value);
 
-        SelectableSlider sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
-        sfxSlider.OnValueChanged += () =>
+        _sfxSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", sfxSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume("bus:/SFX", _sfxSlider.value);
         };
 
-        SelectableSlider dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
-        dialogueSlider.OnValueChanged += () =>
+        _dialogueSlider.OnValueChanged += () =>
         {
-            MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", dialogueSlider.value);
+            MTR_AudioManager.Instance.SetBusVolume("bus:/Dialogue", _dialogueSlider.value);
         };
 
-        musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
-        sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
-        dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
+        _musicSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Music").Volume;
+        _sfxSlider.value = MTR_AudioManager.Instance.GetBus("bus:/SFX").Volume;
+        _dialogueSlider.value = MTR_AudioManager.Instance.GetBus("bus:/Dialogue").Volume;
 
         // Listen to the input manager
         MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
@@ -154,7 +155,7 @@ public class MainMenuController : UXML_UIDocumentObject
     {
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y); // inverted y for screen space
 
-        if (selectableElements.CurrentSelection is SelectableSlider slider)
+        if (_selectableVectorField.CurrentSelection is SelectableSlider slider)
         {
             if (dir.y == 0)
             {
@@ -173,7 +174,7 @@ public class MainMenuController : UXML_UIDocumentObject
         }
 
         // Select the next button in the direction
-        VisualElement oldButton = selectableElements.CurrentSelection;
+        VisualElement oldButton = _selectableVectorField.CurrentSelection;
         if (oldButton is SelectableSlider oldSlider)
         {
             oldSlider.Deselect();
@@ -183,7 +184,7 @@ public class MainMenuController : UXML_UIDocumentObject
             button.Deselect();
         }
 
-        VisualElement newButton = selectableElements.SelectElementInDirection(
+        VisualElement newButton = _selectableVectorField.SelectElementInDirection(
             directionInScreenSpace
         );
         if (newButton is SelectableSlider newSlider)
@@ -195,7 +196,7 @@ public class MainMenuController : UXML_UIDocumentObject
         else if (newButton is SelectableButton newSelectableButton)
         {
             newSelectableButton.Select();
-            currentButton = newSelectableButton;
+            _currentButton = newSelectableButton;
             lockSelection = true;
             Invoke(nameof(UnlockSelection), 0.1f);
         }
@@ -216,12 +217,12 @@ public class MainMenuController : UXML_UIDocumentObject
             return;
 
         //SelectableButton previousButton = selectableVectorField.PreviousSelection;
-        SelectableButton previousButton = currentButton;
+        SelectableButton previousButton = _currentButton;
         if (selectedButton != previousButton)
         {
             previousButton?.Deselect();
             selectedButton.Select();
-            currentButton = selectedButton;
+            _currentButton = selectedButton;
             lockSelection = true;
             MTR_AudioManager.Instance.PlayMenuHoverEvent();
             Invoke(nameof(UnlockSelection), 0.1f);
@@ -232,7 +233,7 @@ public class MainMenuController : UXML_UIDocumentObject
     {
         //selectableVectorField.CurrentSelection?.InvokeClickAction();
 
-        if (selectableElements.CurrentSelection is SelectableButton button)
+        if (_selectableVectorField.CurrentSelection is SelectableButton button)
         {
             button.InvokeClickAction();
             MTR_AudioManager.Instance.PlayMenuSelectEvent();
@@ -241,7 +242,7 @@ public class MainMenuController : UXML_UIDocumentObject
 
     void PlayButtonAction()
     {
-        sceneManager.TryGetSceneDataByKnot("scene1_0", out MTRSceneData scene);
+        MTRSceneManager.Instance.TryGetSceneDataByKnot("scene1_0", out MTRSceneData scene);
         MTRSceneController.Instance.TryLoadScene(scene.Name);
     }
 

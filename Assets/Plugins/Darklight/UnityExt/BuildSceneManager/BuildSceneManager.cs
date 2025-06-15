@@ -1,15 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using Darklight.UnityExt.Behaviour;
 using Darklight.UnityExt.Editor;
-
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using NaughtyAttributes;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -27,7 +23,8 @@ namespace Darklight.UnityExt.BuildScene
         bool IsValid();
 
         public static string FormatPath(string path) => path.Replace("\\", "/");
-        public static string ExtractNameFromPath(string path) => path.Split('/').Last().Split('.').First();
+        public static string ExtractNameFromPath(string path) =>
+            path.Split('/').Last().Split('.').First();
     }
 
     #region < PUBLIC_CLASS > [[ BuildSceneData ]] =========================
@@ -37,12 +34,23 @@ namespace Darklight.UnityExt.BuildScene
     [System.Serializable]
     public class BuildSceneData : IBuildSceneData
     {
-        [SerializeField, ShowOnly] string _name = "None";
-        [SerializeField, ShowOnly] string _path = "None";
+        [SerializeField, ShowOnly]
+        string _name = "None";
+
+        [SerializeField, ShowOnly]
+        string _path = "None";
 
         //  ---------------- [ PROPERTIES ] -----------------------------
-        public string Name { get => _name; set => _name = value; }
-        public string Path { get => _path; set => _path = value; }
+        public string Name
+        {
+            get => _name;
+            set => _name = value;
+        }
+        public string Path
+        {
+            get => _path;
+            set => _path = value;
+        }
 
         // ---------------- [ METHODS ] -----------------------------
         public virtual void Initialize(string path)
@@ -69,7 +77,8 @@ namespace Darklight.UnityExt.BuildScene
     }
     #endregion
 
-    public abstract class BuildSceneManager<TData> : MonoBehaviourSingleton<BuildSceneManager<TData>>
+    public abstract class BuildSceneManager<TData>
+        : MonoBehaviourSingleton<BuildSceneManager<TData>>
         where TData : IBuildSceneData, new()
     {
         const string BUILD_SCENE_DIRECTORY = "Assets/Scenes/Build";
@@ -86,10 +95,14 @@ namespace Darklight.UnityExt.BuildScene
         Dictionary<string, TData> _dataMap = new Dictionary<string, TData>();
 
         [Header("Build Scene Manager ---- >>")]
-        [SerializeField, ShowOnly] string _directory;
-        [SerializeField, ReadOnly, AllowNesting] TData _activeSceneData;
-        [SerializeField, ReadOnly, AllowNesting] TData[] _dataValues = new TData[0];
+        [SerializeField, ShowOnly]
+        string _directory;
 
+        [SerializeField, ReadOnly, AllowNesting]
+        TData _activeSceneData;
+
+        [SerializeField, ReadOnly, AllowNesting]
+        TData[] _dataValues = new TData[0];
 
         //  ================================ [[ EVENTS ]] ================================
         public delegate void SceneChangeEvent(Scene oldScene, Scene newScene);
@@ -97,7 +110,7 @@ namespace Darklight.UnityExt.BuildScene
 
         //  ================================ [[ METHODS ]] ================================
 
-        #region < PRIVATE_METHODS > [[ Unity Runtime ]] ============================= 
+        #region < PRIVATE_METHODS > [[ Unity Runtime ]] =============================
         void OnEnable()
         {
             SceneManager.activeSceneChanged += HandleActiveSceneChanged;
@@ -114,10 +127,16 @@ namespace Darklight.UnityExt.BuildScene
         {
 #if UNITY_EDITOR
             //  ---- ( CREATE PATH KEYS ) ---- >>
-            this._pathKeys = Directory.GetFiles(BUILD_SCENE_DIRECTORY, "*.unity", SearchOption.AllDirectories);
+            this._pathKeys = Directory.GetFiles(
+                BUILD_SCENE_DIRECTORY,
+                "*.unity",
+                SearchOption.AllDirectories
+            );
 
             // << CREATE EDITOR BUILD SCENES >> -----------------------------------
-            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[_pathKeys.Length];
+            EditorBuildSettingsScene[] editorBuildSettingsScenes = new EditorBuildSettingsScene[
+                _pathKeys.Length
+            ];
             for (int i = 0; i < _pathKeys.Length; i++)
             {
                 // Replace all backslashes with forward slashes
@@ -129,7 +148,6 @@ namespace Darklight.UnityExt.BuildScene
                 EditorBuildSettingsScene newEditorBuildSettingsScene = editorBuildSettingsScenes[i];
             }
             EditorBuildSettings.scenes = editorBuildSettingsScenes;
-
 
             //  ---- ( CREATE OR STORE DATA VALUES ) ---- >>
             _dataValues = new TData[_pathKeys.Length];
@@ -200,7 +218,7 @@ namespace Darklight.UnityExt.BuildScene
         }
         #endregion
 
-        #region < PUBLIC_METHODS > ================================================================ 
+        #region < PUBLIC_METHODS > ================================================================
         // ---- ( IUnityEditorListener ) ----
         public void OnEditorReloaded() => Initialize();
 

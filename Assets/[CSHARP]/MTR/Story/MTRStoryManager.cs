@@ -163,6 +163,15 @@ public class MTRStoryManager : InkyStoryManager
         }
 
         GlobalStory.BindExternalFunction(
+            "ChangeGameScene",
+            (string knotName, int spawnIndex, float delay) =>
+            {
+                MTRSceneManager.Instance.HandleChangeGameScene(knotName, spawnIndex, delay);
+            }
+        );
+        Debug.Log($"{Prefix} >> BOUND 'ChangeGameScene' to external function.");
+
+        GlobalStory.BindExternalFunction(
             "SetSpeaker",
             (string speaker) =>
             {
@@ -186,6 +195,14 @@ public class MTRStoryManager : InkyStoryManager
             {
                 OnRequestSpecialUI?.Invoke(ui);
                 Debug.Log($"{Prefix} >> RequestSpecialUI: {ui}");
+            }
+        );
+
+        GlobalStory.BindExternalFunction(
+            "ShakeCamera",
+            (float duration, float intensity, float delay) =>
+            {
+                MTRGameManager.CameraController.Rig.ShakeCamera(duration, intensity, delay);
             }
         );
 

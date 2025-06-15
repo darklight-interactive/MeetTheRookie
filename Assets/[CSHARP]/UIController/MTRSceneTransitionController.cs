@@ -1,6 +1,7 @@
-using Darklight.UnityExt.UXML;
-using UnityEngine;
 using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.UXML;
+using NaughtyAttributes;
+using UnityEngine;
 
 public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorListener
 {
@@ -30,11 +31,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         }
     }
 
-    public void OnEditorReloaded()
-    {
-        Initialize(preset);
-    }
-
+    [Button]
     public void StartFadeIn()
     {
         _fadeIn = true;
@@ -44,6 +41,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         _screenTransitionElement.FadeIn();
     }
 
+    [Button]
     public void StartFadeOut()
     {
         _fadeIn = false;
@@ -53,6 +51,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         _screenTransitionElement.FadeOut();
     }
 
+    [Button]
     public void StartWipeOpen()
     {
         _wipeOpen = true;
@@ -62,6 +61,7 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         _screenTransitionElement.WipeOpen();
     }
 
+    [Button]
     public void StartWipeClose()
     {
         _wipeOpen = false;
@@ -157,5 +157,4 @@ public class MTRSceneTransitionController : UXML_UIDocumentObject, IUnityEditorL
         }
     #endif
     */
-
 }

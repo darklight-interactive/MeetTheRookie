@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Darklight.UnityExt.Editor;
-using NaughtyAttributes;
-using Darklight.UnityExt.Utility;
 using System.Linq;
-
-
+using Darklight.UnityExt.Editor;
+using Darklight.UnityExt.Utility;
+using NaughtyAttributes;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 /// <summary>
-/// This Camera Rig is the main Monobehaviour reference for the full Camera System. 
+/// This Camera Rig is the main Monobehaviour reference for the full Camera System.
 /// It should be set as the parent object for all cameras in the scene.
 /// </summary>
 [ExecuteAlways]
@@ -24,28 +22,50 @@ public class MTRCameraRig : MonoBehaviour
 
     static Vector2 SpeedRange = new Vector2(0, 10);
 
+    [SerializeField, ShowOnly]
+    Vector3 _origin;
 
-    [SerializeField, ShowOnly] Vector3 _origin;
-    [SerializeField, ShowOnly] Vector3 _targetPosition;
-    [SerializeField, ShowOnly] Quaternion _targetRotation;
-    [SerializeField, ShowOnly] float _targetFOV;
+    [SerializeField, ShowOnly]
+    Vector3 _targetPosition;
+
+    [SerializeField, ShowOnly]
+    Quaternion _targetRotation;
+
+    [SerializeField, ShowOnly]
+    float _targetFOV;
 
     [Header("Debug")]
-    [SerializeField] bool _showGizmos;
-    [SerializeField] bool _lerpInEditor;
+    [SerializeField]
+    bool _showGizmos;
+
+    [SerializeField]
+    bool _lerpInEditor;
 
     [Header("Data")]
-    [SerializeField] Transform _followTarget;
-    [SerializeField] Camera _mainCamera;
-    [SerializeField, ShowOnly] List<Camera> _overlayCameras = new List<Camera>();
+    [SerializeField]
+    Transform _followTarget;
+
+    [SerializeField]
+    Camera _mainCamera;
+
+    [SerializeField, ShowOnly]
+    List<Camera> _overlayCameras = new List<Camera>();
 
     [Header("Speed")]
-    [SerializeField, DynamicRange("SpeedRange")] float _positionLerpSpeed = 10f;
-    [SerializeField, DynamicRange("SpeedRange")] float _rotationLerpSpeed = 10f;
-    [SerializeField, DynamicRange("SpeedRange")] float _fovLerpSpeed = 10f;
+    [SerializeField, DynamicRange("SpeedRange")]
+    float _positionLerpSpeed = 10f;
 
-    [SerializeField, ReadOnly] MTRCameraSettingPreset _settings;
-    [SerializeField] MTRCameraBounds _bounds;
+    [SerializeField, DynamicRange("SpeedRange")]
+    float _rotationLerpSpeed = 10f;
+
+    [SerializeField, DynamicRange("SpeedRange")]
+    float _fovLerpSpeed = 10f;
+
+    [SerializeField, ReadOnly]
+    MTRCameraSettingPreset _settings;
+
+    [SerializeField]
+    MTRCameraBounds _bounds;
 
     // << PROPERTIES >> -------------------------------------------------
 
@@ -70,7 +90,8 @@ public class MTRCameraRig : MonoBehaviour
         get
         {
             // Calculate the half width of the camera frustum at the target depth
-            float halfWidth = Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * CameraZOffset * CameraAspect;
+            float halfWidth =
+                Mathf.Tan(0.5f * Mathf.Deg2Rad * _targetFOV) * CameraZOffset * CameraAspect;
             return Mathf.Abs(halfWidth); // Return the absolute value
         }
     }
@@ -90,7 +111,11 @@ public class MTRCameraRig : MonoBehaviour
         {
             if (_settings == null)
             {
-                _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraSettingPreset>(SETTINGS_PATH, "DefaultCameraSettings");
+                _settings =
+                    ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraSettingPreset>(
+                        SETTINGS_PATH,
+                        "DefaultCameraSettings"
+                    );
             }
             return _settings;
         }
@@ -140,7 +165,11 @@ public class MTRCameraRig : MonoBehaviour
     {
         if (_settings == null)
         {
-            _settings = ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraSettingPreset>(SETTINGS_PATH, "DefaultCameraSettings");
+            _settings =
+                ScriptableObjectUtility.CreateOrLoadScriptableObject<MTRCameraSettingPreset>(
+                    SETTINGS_PATH,
+                    "DefaultCameraSettings"
+                );
         }
 
         _bounds = MTRSceneManager.ActiveSceneData.CameraRigBounds;
@@ -183,17 +212,16 @@ public class MTRCameraRig : MonoBehaviour
             // Calculate the orbit position based on the radius and current offset (angle in degrees)
             float orbitRadians = (_settings.orbitRotation + 90) * Mathf.Deg2Rad; // Convert degrees to radians
 
-            // Set the radius to match the z offset 
+            // Set the radius to match the z offset
             float orbitRadius = _settings.zPosOffset;
 
-            // Calculate orbit based off of enforced bounds 
+            // Calculate orbit based off of enforced bounds
             Vector3 orbitPosition = new Vector3(
                 adjustedPosition.x + Mathf.Cos(orbitRadians) * orbitRadius,
                 adjustedPosition.y, // Keep the camera at the desired height
                 Origin.z + Mathf.Sin(orbitRadians) * orbitRadius
             );
             adjustedPosition = orbitPosition;
-
         }
 
         return adjustedPosition;
@@ -209,7 +237,6 @@ public class MTRCameraRig : MonoBehaviour
             camPosition.y = Origin.y;
             targetRotation = Quaternion.LookRotation(Origin - camPosition);
         }
-
 
         return targetRotation;
     }
@@ -238,14 +265,17 @@ public class MTRCameraRig : MonoBehaviour
 
         // << CALCULATE FRUSTRUM OFFSET >> ------------------------------
         Vector3 frustrumOffset = Vector3.zero;
-        Vector3[] frustumCorners = CalculateFrustumCorners(adjustedPosition, _mainCamera.transform.rotation);
+        Vector3[] frustumCorners = CalculateFrustumCorners(
+            adjustedPosition,
+            _mainCamera.transform.rotation
+        );
         for (int i = 0; i < frustumCorners.Length; i++)
         {
             Vector3 corner = frustumCorners[i];
 
             // ( X Axis Bounds ) ------------------------------------------------------
             // If the corner is outside the bounds, adjust the offset
-            // If the offset is larger than the difference between the corner and the bound, 
+            // If the offset is larger than the difference between the corner and the bound,
             //   keep the larger offset value
             if (corner.x < minXBound)
                 frustrumOffset.x = Mathf.Max(frustrumOffset.x, minXBound - corner.x);
@@ -260,8 +290,6 @@ public class MTRCameraRig : MonoBehaviour
         }
         return adjustedPosition + frustrumOffset;
     }
-
-
 
     /// <summary>
     /// Calculate the frustum corners of the camera based on the given parameters.
@@ -308,13 +336,25 @@ public class MTRCameraRig : MonoBehaviour
         if (useLerp)
         {
             // ( Lerp Camera Position ) ---------------------------------------
-            cam.transform.position = Vector3.Lerp(_mainCamera.transform.position, _targetPosition, _positionLerpSpeed * Time.deltaTime);
+            cam.transform.position = Vector3.Lerp(
+                _mainCamera.transform.position,
+                _targetPosition,
+                _positionLerpSpeed * Time.deltaTime
+            );
 
             // ( Slerp Camera Rotation ) ---------------------------------------
-            cam.transform.rotation = Quaternion.Slerp(_mainCamera.transform.rotation, _targetRotation, _rotationLerpSpeed * Time.deltaTime);
+            cam.transform.rotation = Quaternion.Slerp(
+                _mainCamera.transform.rotation,
+                _targetRotation,
+                _rotationLerpSpeed * Time.deltaTime
+            );
 
             // ( Lerp Camera Field of View ) ---------------------------------
-            cam.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _targetFOV, _fovLerpSpeed * Time.deltaTime);
+            cam.fieldOfView = Mathf.Lerp(
+                _mainCamera.fieldOfView,
+                _targetFOV,
+                _fovLerpSpeed * Time.deltaTime
+            );
         }
         else
         {
@@ -333,7 +373,8 @@ public class MTRCameraRig : MonoBehaviour
     {
         foreach (Camera camera in cameras)
         {
-            if (camera == _mainCamera) continue;
+            if (camera == _mainCamera)
+                continue;
             if (camera.transform.parent != _mainCamera.transform)
                 camera.transform.SetParent(_mainCamera.transform);
 
@@ -341,6 +382,23 @@ public class MTRCameraRig : MonoBehaviour
             camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
             camera.fieldOfView = _mainCamera.fieldOfView;
+        }
+    }
+
+    IEnumerator CameraShakeRoutine(float duration, float intensity, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float elapsed = 0;
+        Vector3 originalPosition = _mainCamera.transform.position;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * intensity;
+            float y = Random.Range(-1f, 1f) * intensity;
+            _mainCamera.transform.position = originalPosition + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
         }
     }
 
@@ -356,13 +414,27 @@ public class MTRCameraRig : MonoBehaviour
     {
         _bounds = bounds;
     }
+
+    public void ShakeCamera(float duration, float intensity, float delay = 0)
+    {
+        StartCoroutine(CameraShakeRoutine(duration, intensity, delay));
+        Debug.Log(
+            $"[MTRCameraRig] Camera Shake: {duration}s, {intensity} intensity, {delay} delay"
+        );
+    }
+
+    public void QuickShakeCamera()
+    {
+        ShakeCamera(0.25f, 0.05f);
+    }
     #endregion
 
     #region ( GIZMOS ) <PRIVATE_METHODS> ================================================
 
     void OnDrawGizmosSelected()
     {
-        if (!_showGizmos) return;
+        if (!_showGizmos)
+            return;
         _bounds.DrawGizmos();
 
         // Draw the camera frustum
@@ -377,7 +449,12 @@ public class MTRCameraRig : MonoBehaviour
     void DrawCameraFrustum(Camera cam)
     {
         Vector3[] frustumCorners = new Vector3[4];
-        cam.CalculateFrustumCorners(new Rect(0, 0, 1, 1), CameraZOffset, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        cam.CalculateFrustumCorners(
+            new Rect(0, 0, 1, 1),
+            CameraZOffset,
+            Camera.MonoOrStereoscopicEye.Mono,
+            frustumCorners
+        );
 
         // Transform the corners to world space considering the entire transform hierarchy
         for (int i = 0; i < 4; i++)
@@ -403,7 +480,12 @@ public class MTRCameraRig : MonoBehaviour
     void DrawCameraView()
     {
         Vector3[] frustumCorners = new Vector3[4];
-        _mainCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), CameraZOffset, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        _mainCamera.CalculateFrustumCorners(
+            new Rect(0, 0, 1, 1),
+            CameraZOffset,
+            Camera.MonoOrStereoscopicEye.Mono,
+            frustumCorners
+        );
         for (int i = 0; i < 4; i++)
         {
             frustumCorners[i] = _mainCamera.transform.TransformPoint(frustumCorners[i]);
@@ -427,6 +509,7 @@ public class MTRCameraRig : MonoBehaviour
     {
         SerializedObject _serializedObject;
         MTRCameraRig _script;
+
         private void OnEnable()
         {
             _serializedObject = new SerializedObject(target);
@@ -445,6 +528,11 @@ public class MTRCameraRig : MonoBehaviour
 
             base.OnInspectorGUI();
 
+            if (GUILayout.Button("Shake Camera"))
+            {
+                _script.QuickShakeCamera();
+            }
+
             if (EditorGUI.EndChangeCheck())
             {
                 _serializedObject.ApplyModifiedProperties();
@@ -460,4 +548,3 @@ public class MTRCameraRig : MonoBehaviour
     }
 #endif
 }
-

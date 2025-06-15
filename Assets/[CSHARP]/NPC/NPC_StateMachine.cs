@@ -49,6 +49,14 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
         base.Step();
     }
 
+    public void FixedStep()
+    {
+        if (currentFiniteState != null && currentFiniteState is BaseState baseState)
+        {
+            baseState.FixedExecute();
+        }
+    }
+
     public override bool GoToState(NPCState newState, bool force = false)
     {
         bool result = base.GoToState(newState);
@@ -58,12 +66,30 @@ public class NPC_StateMachine : FiniteStateMachine<NPCState>
     }
 }
 
+public class BaseState : FiniteState<NPCState>
+{
+    public NPC_StateMachine _stateMachine;
+
+    public BaseState(NPC_StateMachine stateMachine, NPCState stateType)
+        : base(stateMachine, stateType)
+    {
+        _stateMachine = stateMachine;
+    }
+
+    public override void Enter() { }
+
+    public override void Exit() { }
+
+    public override void Execute() { }
+
+    public virtual void FixedExecute() { }
+}
+
 #region ================== [ IDLE STATE ] ==================
 
 // IDLE
-public class IdleState : FiniteState<NPCState>
+public class IdleState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
     private readonly MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
 
@@ -97,9 +123,8 @@ public class IdleState : FiniteState<NPCState>
 #region ================== [ WALK STATE ] ==================
 
 // WALK
-public class WalkState : FiniteState<NPCState>
+public class WalkState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
     private int _walkDirection = 1;
     private float _walkDestinationX;
     private readonly float _walkSpeed;
@@ -185,10 +210,8 @@ public class WalkState : FiniteState<NPCState>
 
 #region ================== [ SPEAK STATE ] ==================
 
-public class SpeakState : FiniteState<NPCState>
+public class SpeakState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
-
     public SpeakState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
         : base(stateMachine, stateType)
     {
@@ -215,9 +238,8 @@ public class SpeakState : FiniteState<NPCState>
 
 #region ================== [ FOLLOW STATE ] ==================
 
-public class FollowState : FiniteState<NPCState>
+public class FollowState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
     private NPC_Controller _controller;
@@ -269,8 +291,12 @@ public class FollowState : FiniteState<NPCState>
 
     public override void Execute()
     {
-        int followDirection = (currentFollowDistance < 0) ? -1 : 1;
         _stateMachine.animator.SetFacingTowardsPosition(player.transform.position);
+    }
+
+    public override void FixedExecute()
+    {
+        int followDirection = (currentFollowDistance < 0) ? -1 : 1;
 
         if (movingInFollowState)
         {
@@ -324,9 +350,8 @@ public class FollowState : FiniteState<NPCState>
 
 #region ================== [ HIDE STATE ] ==================
 
-public class HideState : FiniteState<NPCState>
+public class HideState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
     private MonoBehaviour _coroutineRunner;
     private Coroutine coroutine = null;
 
@@ -465,10 +490,8 @@ public class HideState : FiniteState<NPCState>
 
 #region ================== [ CHASE STATE ] ==================
 
-public class ChaseState : FiniteState<NPCState>
+public class ChaseState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
-
     private float chaseSpeakDistance;
     private float chaseSpeed;
 
@@ -520,9 +543,8 @@ public class ChaseState : FiniteState<NPCState>
 #endregion
 
 #region ================== [ PLAY ANIMATION STATE ] ==================
-public class PlayAnimationState : FiniteState<NPCState>
+public class PlayAnimationState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
     public NPCState _returnState;
 
     public PlayAnimationState(
@@ -538,27 +560,33 @@ public class PlayAnimationState : FiniteState<NPCState>
 
     public override void Enter()
     {
+        _stateMachine.animator.SetFrameRate(10);
+
+        _stateMachine.animator.GetComponent<SpriteRenderer>().flipX = _stateMachine
+            .controller
+            .specialAnimFlipX;
         _stateMachine.animator.PlayStateAnimation(NPCState.PLAY_ANIMATION);
     }
 
-    public override void Exit() { }
+    public override void Exit()
+    {
+        _stateMachine.animator.SetFrameRate(4);
+    }
 
     public override void Execute()
     {
-        if (_stateMachine.animator.AnimationIsOver())
-        {
-            _stateMachine.GoToState(_returnState);
-        }
+        // if (_stateMachine.animator.AnimationIsOver())
+        // {
+        //     _stateMachine.GoToState(_returnState);
+        // }
     }
 }
 
 #endregion
 
 #region ================== [ GRABBED STATE ] ==================
-public class GrabbedState : FiniteState<NPCState>
+public class GrabbedState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
-
     public GrabbedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
         : base(stateMachine, stateType)
     {
@@ -581,10 +609,8 @@ public class GrabbedState : FiniteState<NPCState>
 #endregion
 
 #region ================== [ STRUGGLE STATE ] ==================
-public class StruggleState : FiniteState<NPCState>
+public class StruggleState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
-
     public StruggleState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
         : base(stateMachine, stateType)
     {
@@ -601,10 +627,8 @@ public class StruggleState : FiniteState<NPCState>
 #endregion
 
 #region ================== [ DRAGGED STATE ] ==================
-public class DraggedState : FiniteState<NPCState>
+public class DraggedState : BaseState
 {
-    public NPC_StateMachine _stateMachine;
-
     public DraggedState(NPC_StateMachine stateMachine, NPCState stateType, params object[] args)
         : base(stateMachine, stateType)
     {

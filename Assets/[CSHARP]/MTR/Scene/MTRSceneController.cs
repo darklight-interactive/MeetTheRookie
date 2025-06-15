@@ -20,8 +20,7 @@ public enum MTRSceneState
     CINEMA_MODE,
     PAUSE_MODE,
     SYNTHESIS_MODE,
-    EXIT,
-    CHOICEMODE
+    EXIT
 }
 
 [RequireComponent(typeof(MTRSceneManager))]
@@ -86,6 +85,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         _sceneToLoad = sceneName;
         _spawnIndex = spawnIndex;
         StateMachine.GoToState(MTRSceneState.EXIT);
+
+        
     }
 
     public void SetPlayerSpawnPoint(int spawnIndex)
@@ -107,35 +108,31 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 PlayerController.transform.position.y,
                 0
             );
+
+            if (spawnPointInteractable.Data.SpawnMisra)
+            {
+                MTR_Misra_Controller misra_Controller =
+                    FindFirstObjectByType<MTR_Misra_Controller>();
+                if (misra_Controller != null)
+                {
+                    misra_Controller.transform.position = new Vector3(
+                        spawnPointInteractable.transform.position.x - 1,
+                        misra_Controller.transform.position.y,
+                        0
+                    );
+                }
+                else
+                {
+                    Debug.LogError(
+                        $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: No Misra Controller Found"
+                    );
+                }
+            }
+
             Debug.Log(
                 $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex})",
                 spawnPointInteractable
             );
-            /*
-            MTRDestinationReciever reciever = null;
-            spawnPointInteractable.Recievers.TryGetValue(InteractionType.DESTINATION, out reciever);
-            if (reciever != null)
-            {
-                reciever.GetClosestValidDestination(
-                    PlayerController.transform.position,
-                    out Vector2 destination
-                );
-                PlayerController.transform.position = new Vector3(
-                    destination.x,
-                    PlayerController.transform.position.y,
-                    0
-                );
-                Debug.Log(
-                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: Player Spawn Point: {spawnPointInteractable.name} ({_spawnIndex}) {destination}"
-                );
-            }
-            else
-            {
-                Debug.LogError(
-                    $"{PREFIX} {MTRSceneManager.ActiveSceneData.name} :: No Destination Reciever Found for {spawnPointInteractable.name} ({_spawnIndex})"
-                );
-            }
-            */
         }
     }
 
@@ -160,7 +157,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 },
                 { MTRSceneState.EXIT, new ExitState(this, MTRSceneState.EXIT) },
                 { MTRSceneState.LOADING, new LoadingState(this, MTRSceneState.LOADING) },
-                { MTRSceneState.CHOICEMODE, new ChoiceModeState(this, MTRSceneState.CHOICEMODE) },
             };
             initialState = MTRSceneState.INITIALIZE;
         }
@@ -378,20 +374,11 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
             public CinemaModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
                 : base(stateMachine, stateType) { }
 
-            public override void Enter()
-            {
-                Debug.Log("Cinema Mode State Enter");
-            }
+            public override void Enter() { }
 
-            public override void Exit()
-            {
-                Debug.Log("Cinema Mode State Exit");
-            }
+            public override void Exit() { }
 
-            public override void Execute()
-            {
-                StateMachine.GoToState(MTRSceneState.PAUSE_MODE);
-            }
+            public override void Execute() { }
         }
         #endregion
 
@@ -403,12 +390,16 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
             public override void Enter()
             {
-                playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
+                if (playerController != null)
+                    playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
             public override void Execute()
             {
-                if (playerController.StateMachine.CurrentState != MTRPlayerState.OVERRIDE_IDLE)
+                if (
+                    playerController != null
+                    && playerController.StateMachine.CurrentState != MTRPlayerState.OVERRIDE_IDLE
+                )
                     playerController.StateMachine.GoToState(MTRPlayerState.OVERRIDE_IDLE);
             }
 
@@ -459,22 +450,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
                 yield return new WaitForSeconds(2f);
                 stateMachine.GoToState(MTRSceneState.LOADING);
             }
-        }
-        #endregion
-
-
-
-        #region ================== [ CHOICE MODE STATE ] ==================
-        public class ChoiceModeState : BaseState
-        {
-            public ChoiceModeState(InternalStateMachine stateMachine, MTRSceneState stateType)
-                : base(stateMachine, stateType) { }
-
-            public override void Enter() { }
-
-            public override void Execute() { }
-
-            public override void Exit() { }
         }
         #endregion
     }

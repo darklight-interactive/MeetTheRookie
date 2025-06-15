@@ -17,4 +17,14 @@ public class MTRMysteryDataSO : ScriptableObject
 
     [Expandable]
     public List<MTRInteractableDataSO> clueDataList = new List<MTRInteractableDataSO>();
+
+    public List<Sprite> clueBackgrounds = new List<Sprite>();
+
+    public Sprite GetRandomClueBackground()
+    {
+        if (clueBackgrounds.Count == 0)
+            return null;
+
+        return clueBackgrounds[UnityEngine.Random.Range(0, clueBackgrounds.Count)];
+    }
 }

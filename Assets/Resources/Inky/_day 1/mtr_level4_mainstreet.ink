@@ -7,11 +7,6 @@
 // ---------------------------------------------- >>/^*
 // ---- [[ LOCAL VARIABLES ]] ---- >>
 VAR closed_signs = 0
-VAR teensFirst = false
-VAR royFirst = false
-VAR canStreetRoyCutscene = true
-VAR canStreetTeensCutscene = true
-VAR canIntroArcade = true
 
 // ============================================================
 // ========================== SCENE 4.1 =======================
@@ -41,44 +36,11 @@ VAR canIntroArcade = true
 + {closed_signs >= 5} ["The Heart of Kettle Rock" seems a bit...barren.]
 -> DONE
 
-= misra_cutscene
-    ~ DiscoverMystery(2)
-    {
-    - !IsQuestComplete(visited_misra):
-        ~ SetSpeaker(Speaker.Misra)
-        Here we are! 
-        Kettle Rock, Main Street. Heart of the Downtown. 
-        There's bound to be some locals around - where do you want to start?
-        ~ SetSpeaker(Speaker.Lupe)
-        ~ CompleteQuest(visited_misra)
-    - IsClueFound(Mystery2.evidence_roy):
-        ~ SetSpeaker(Speaker.Misra)
-        I'm sorry if Roy seems like a bit of a downer.
-        He has no faith.
-        ~ SetSpeaker(Speaker.Lupe)
-        He seems like he's got a pretty good acceptance of the situation.
-        From what I can tell.
-        ~ SetSpeaker(Speaker.Misra)
-        Well, you've only been here a day...
-        ~ SetSpeaker(Speaker.Lupe)
-    - IsClueFound(Mystery2.evidence_josh) && IsClueFound(Mystery2.evidence_jenny) && IsClueFound(Mystery2.evidence_calvin):
-        ~ SetSpeaker(Speaker.Misra)
-        Those guys are the worst.
-        ~ SetSpeaker(Speaker.Lupe)
-        They're definitely hiding <i>something</i>.
-        ~ SetSpeaker(Speaker.Misra)
-        Good luck getting anything out of them.
-        ~ SetSpeaker(Speaker.Lupe)
-    }
-    ->DONE
-
 = lupe_car
 {IsQuestComplete(car_first_interact):
   ~ SetSpeaker(Speaker.Misra)
     {Your park job, may I say, is impeccable!| Hot wheels for a hot...let's continue. | Have you ever considered getting one of those little hula dashboard figurines? You know, to spice it up!| I don't think it's time to go yet, we should look around more!}
-
     -> DONE
-
 - else:
   ~ CompleteQuest(car_first_interact)
   ~ SetSpeaker(Speaker.Lupe)
@@ -105,15 +67,43 @@ VAR canIntroArcade = true
  }
     
 = talk_to_misra
-    -> Misra_Dialogue.4_1
+    ~ DiscoverMystery(2)
+    ~ SetSpeaker(Speaker.Misra)
+    {
+    - IsClueFound(Mystery2.evidence_roy):
+        I'm sorry if Roy seems like a bit of a downer.
+        He has no faith.
+        ~ SetSpeaker(Speaker.Lupe)
+        He seems like he's got a pretty good acceptance of the situation.
+        From what I can tell.
+        ~ SetSpeaker(Speaker.Misra)
+        Well, you've only been here a day...
+        ~ SetSpeaker(Speaker.Lupe)
+    - IsClueFound(Mystery2.evidence_josh) || IsClueFound(Mystery2.evidence_jenny) || IsClueFound(Mystery2.evidence_calvin):
+        Those guys are the worst.
+        ~ SetSpeaker(Speaker.Lupe)
+        They're definitely hiding <i>something</i>.
+        ~ SetSpeaker(Speaker.Misra)
+        Good luck getting anything out of them.
+        ~ SetSpeaker(Speaker.Lupe)
+    - !IsQuestComplete(visited_misra):
+        Here we are! 
+        Kettle Rock, Main Street. Heart of the Downtown. 
+        There's bound to be some locals around - where do you want to start?
+        ~ CompleteQuest(visited_misra)
+    - else:
+        Where to next detective?
+    }
+    -> DONE
+        
     
 = door_idahome_and_goods
 TODO SFX DOOR OPEN
-    ~ ChangeGameScene("scene4_2", 0)
+    ~ ChangeGameScene("scene4_2", 0, 0)
     -> DONE
 = door_powerup_arcade
 TODO SFX DOOR OPEN
-    {canIntroArcade:
+    {IsQuestComplete(entered_arcade) == false:
         ~ SetSpeaker("Speaker.Misra")
         Okay...
         Just so you know, these guys in here are a litte...
@@ -131,7 +121,7 @@ TODO SFX DOOR OPEN
         If you say so...
         ~ CompleteQuest(entered_arcade)
     }
-    ~ ChangeGameScene("scene4_3", 0)
+    ~ ChangeGameScene("scene4_3", 0, 0)
     -> DONE
 
 = strange_symbol_on_fountain
@@ -188,7 +178,7 @@ TODO SFX DOOR OPEN
         But in the meantime, let's take a bit of a break...
         ~ openDoor()
         ~ SetSpeaker(Speaker.Lupe)
-        ~ ChangeGameScene("scene4_4", 0)
+        ~ ChangeGameScene("scene4_4", 0, 0)
     - else:
         ~ SetSpeaker(Speaker.Misra)
         Someone wants a drink, I see.

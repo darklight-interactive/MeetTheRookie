@@ -125,7 +125,10 @@ namespace Darklight.UnityExt.Core2D
                         TargetAnchor = existingData?.TargetAnchor ?? _default_TargetAnchorPoint
                     };
                     uniqueEntries[key] = newData;
-                    Debug.Log($"{this.name} - Added key: {key} to serialized data", this);
+                    Debug.Log(
+                        $"{this.name} - Added key: {key} to serialized data",
+                        grid.gameObject
+                    );
                 }
             }
 

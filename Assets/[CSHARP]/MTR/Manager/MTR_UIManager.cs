@@ -24,7 +24,8 @@ using UnityEditor;
 /// </summary>
 public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
 {
-    PauseMenuController _gameUI;
+    PauseMenuController _pauseMenuController;
+    GameUIController _gameUI;
     SynthesisUIController _synthesisManager;
 
     [SerializeField, ShowOnly]
@@ -41,31 +42,44 @@ public class MTR_UIManager : MonoBehaviourSingleton<MTR_UIManager>
     UXML_UIDocumentPreset _mainMenuPreset;
 
     [SerializeField]
-    UXML_UIDocumentPreset _gameUIPreset;
+    UXML_UIDocumentPreset _pauseMenuPreset;
 
     [SerializeField]
     UXML_UIDocumentPreset _synthesisUIPreset;
 
     // ======== [[ PROPERTIES ]] ================================== >>>>
-    public PauseMenuController gameUIController
+    public PauseMenuController PauseMenuController
     {
         get
         {
             // Find the GameUIController if it exists
-            if (_gameUI != null)
-                return _gameUI;
-            _gameUI = FindAnyObjectByType<PauseMenuController>();
-            if (_gameUI != null)
-                return _gameUI;
+            if (_pauseMenuController != null)
+                return _pauseMenuController;
+            _pauseMenuController = FindAnyObjectByType<PauseMenuController>();
+            if (_pauseMenuController != null)
+                return _pauseMenuController;
 
             // Create a new GameUIController if it doesn't
-            _gameUI = UXML_Utility.CreateUIDocumentObject<PauseMenuController>(_gameUIPreset);
-            _gameUI.transform.SetParent(transform);
+            _pauseMenuController = UXML_Utility.CreateUIDocumentObject<PauseMenuController>(
+                _pauseMenuPreset
+            );
+            _pauseMenuController.transform.SetParent(transform);
+            return _pauseMenuController;
+        }
+    }
+
+    public GameUIController GameUIManager
+    {
+        get
+        {
+            if (_gameUI != null)
+                return _gameUI;
+            _gameUI = FindAnyObjectByType<GameUIController>();
             return _gameUI;
         }
     }
 
-    public SynthesisUIController synthesisManager
+    public SynthesisUIController SynthesisUIManager
     {
         get
         {

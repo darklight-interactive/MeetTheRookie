@@ -75,6 +75,9 @@ public class WineryPinPadElement : SpecialUIElement
 
     void OnMoveInputStartAction(Vector2 dir)
     {
+        if (_isPinPadCorrect)
+            return;
+
         Vector2 directionInScreenSpace = new Vector2(dir.x, -dir.y);
         if (directionInScreenSpace.x > 0)
         {
@@ -130,22 +133,13 @@ public class WineryPinPadElement : SpecialUIElement
     {
         _currentselected.RemoveFromClassList("Hovered");
         _currentselected.AddToClassList("Selected");
-        {
-            if (_numInputValues < 6)
-            {
-                _numInputValues += 1;
-                _numbers.text += _currentselected.name;
-                MTR_AudioManager.Instance.PlayOneShotSFX(
-                    MTR_AudioManager.Instance.generalSFX.pinpadNumber
-                );
-            }
-        }
+
         if (_currentselected.name == "Star")
         {
             _numInputValues = 0;
             _numbers.text = "";
         }
-        if (_currentselected.name == "Pound")
+        else if (_currentselected.name == "Pound")
         {
             if (_numbers.text != _correctcode)
             {
@@ -155,7 +149,18 @@ public class WineryPinPadElement : SpecialUIElement
             {
                 _documentObject.StartCoroutine(Correct());
             }
+            _numInputValues = 0;
+            _numbers.text = "";
         }
+        else if (_numInputValues < 6)
+        {
+            _numInputValues += 1;
+            _numbers.text += _currentselected.name;
+            MTR_AudioManager.Instance.PlayOneShotSFX(
+                MTR_AudioManager.Instance.generalSFX.pinpadNumber
+            );
+        }
+
         yield return new WaitForSecondsRealtime(0.3f);
         _currentselected.RemoveFromClassList("Selected");
         _currentselected.AddToClassList("Hovered");
@@ -163,17 +168,21 @@ public class WineryPinPadElement : SpecialUIElement
 
     IEnumerator Correct()
     {
+        _isPinPadCorrect = true;
+
         MTR_AudioManager.Instance.PlayOneShotSFX(
             MTR_AudioManager.Instance.generalSFX.pinpadSuccess
         );
-        yield return new WaitForSecondsRealtime(0.6f);
+        yield return new WaitForSecondsRealtime(0.2f);
         _lFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
-        _isPinPadCorrect = true;
+        yield return new WaitForSecondsRealtime(0.6f);
         OnPinPadCorrectAction();
     }
 
     IEnumerator Incorrect()
     {
+        _isPinPadCorrect = false;
+
         MTR_AudioManager.Instance.PlayOneShotSFX(MTR_AudioManager.Instance.generalSFX.pinpadFail);
         _rFlasher.style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
         yield return new WaitForSecondsRealtime(0.2f);
@@ -186,6 +195,7 @@ public class WineryPinPadElement : SpecialUIElement
         _rFlasher.style.unityBackgroundImageTintColor = new StyleColor(
             new Color(.4156f, .4156f, .4156f, 1)
         );
+        OnPinPadIncorrectAction();
     }
 
     void OnPinPadCorrectAction()
@@ -195,7 +205,7 @@ public class WineryPinPadElement : SpecialUIElement
         // << FORCED INTERACTION WITH CORRECT CODE STITCH >>
         MTRInteractionSystem.TryGetInteractableByStitch(
             _correctCodeStitchData.Stitch,
-            out var interactable
+            out MTRInteractable interactable
         );
         Debug.Log($"OnPinPadCorrectAction {_correctCodeStitchData.Stitch} : {interactable}");
         if (interactable != null)
@@ -208,6 +218,13 @@ public class WineryPinPadElement : SpecialUIElement
             misraController.enabled = true;
             misraController.GetComponent<SpriteRenderer>().enabled = true;
         }
+
+        interactable.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    void OnPinPadIncorrectAction()
+    {
+        Display(false);
     }
 
     void UnHover()
