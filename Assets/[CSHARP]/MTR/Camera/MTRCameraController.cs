@@ -55,10 +55,7 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         }
     }
 
-    void Awake()
-    {
-
-    }
+    void Awake() { }
 
     void Start()
     {
@@ -122,10 +119,9 @@ public class MTRCameraController : MonoBehaviour, IUnityEditorListener
         // Set the Camera Target to the Player
         if (_currSpeaker == MTRSpeaker.LUPE)
         {
-            MTRPlayerInteractor player = FindObjectsByType<MTRPlayerInteractor>(
-                FindObjectsSortMode.None
-            )[0];
-            Rig.SetFollowTarget(player.transform);
+            MTRPlayerInteractor player = FindFirstObjectByType<MTRPlayerInteractor>();
+            if (player != null)
+                Rig.SetFollowTarget(player.transform);
             return;
         }
 

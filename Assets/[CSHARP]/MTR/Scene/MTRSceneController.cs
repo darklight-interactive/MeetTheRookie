@@ -85,8 +85,6 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         _sceneToLoad = sceneName;
         _spawnIndex = spawnIndex;
         StateMachine.GoToState(MTRSceneState.EXIT);
-
-        
     }
 
     public void SetPlayerSpawnPoint(int spawnIndex)
@@ -289,6 +287,7 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
 
                 // << SET CAMERA FOLLOW TARGET >>
                 cameraController?.SetPlayerAsFollowTarget();
+                yield return new WaitForSeconds(0.5f);
 
                 // << BEGIN TRANSITION >>
                 transitionController?.StartWipeOpen();

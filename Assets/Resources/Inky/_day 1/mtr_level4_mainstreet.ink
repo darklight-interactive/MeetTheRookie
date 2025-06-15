@@ -79,6 +79,7 @@ VAR closed_signs = 0
         ~ SetSpeaker(Speaker.Misra)
         Well, you've only been here a day...
         ~ SetSpeaker(Speaker.Lupe)
+        -> DONE
     - IsClueFound(Mystery2.evidence_josh) || IsClueFound(Mystery2.evidence_jenny) || IsClueFound(Mystery2.evidence_calvin):
         Those guys are the worst.
         ~ SetSpeaker(Speaker.Lupe)
@@ -86,13 +87,16 @@ VAR closed_signs = 0
         ~ SetSpeaker(Speaker.Misra)
         Good luck getting anything out of them.
         ~ SetSpeaker(Speaker.Lupe)
+        -> DONE
     - !IsQuestComplete(visited_misra):
         Here we are! 
         Kettle Rock, Main Street. Heart of the Downtown. 
         There's bound to be some locals around - where do you want to start?
         ~ CompleteQuest(visited_misra)
+        -> DONE
     - else:
         Where to next detective?
+        -> DONE
     }
     -> DONE
         

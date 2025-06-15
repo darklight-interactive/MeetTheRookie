@@ -19,6 +19,8 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableButton _returnButtonSettings;
     SelectableButton _returnButtonCredits;
     SelectableButton _currentButton;
+    SelectableButton _cheat3Button;
+    SelectableButton _cheat4Button;
     Dictionary<string, SelectableButton[]> buttonGroups;
     bool lockSelection = false;
 
@@ -49,6 +51,8 @@ public class MainMenuController : UXML_UIDocumentObject
         _dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
         _returnButtonSettings = ElementQuery<SelectableButton>("return-btn-settings");
         _returnButtonCredits = ElementQuery<SelectableButton>("return-btn-credits");
+        _cheat3Button = ElementQuery<SelectableButton>("cheat3-btn");
+        _cheat4Button = ElementQuery<SelectableButton>("cheat4-btn");
 
         buttonGroups = new Dictionary<string, SelectableButton[]>
         {
@@ -149,6 +153,10 @@ public class MainMenuController : UXML_UIDocumentObject
         // Listen to the input manager
         MTRInputManager.OnMoveInputStarted += OnMoveInputStartAction;
         MTRInputManager.OnPrimaryInteract += OnPrimaryInteractAction;
+
+        // Cheats
+        _cheat3Button.OnClick += Cheat3ButtonAction;
+        _cheat4Button.OnClick += Cheat4ButtonAction;
     }
 
     void OnMoveInputStartAction(Vector2 dir)
@@ -243,6 +251,18 @@ public class MainMenuController : UXML_UIDocumentObject
     void PlayButtonAction()
     {
         MTRSceneManager.Instance.TryGetSceneDataByKnot("scene1_0", out MTRSceneData scene);
+        MTRSceneController.Instance.TryLoadScene(scene.Name);
+    }
+
+    void Cheat3ButtonAction()
+    {
+        MTRSceneManager.Instance.TryGetSceneDataByKnot("scene3_1", out MTRSceneData scene);
+        MTRSceneController.Instance.TryLoadScene(scene.Name);
+    }
+
+    void Cheat4ButtonAction()
+    {
+        MTRSceneManager.Instance.TryGetSceneDataByKnot("scene4_1", out MTRSceneData scene);
         MTRSceneController.Instance.TryLoadScene(scene.Name);
     }
 

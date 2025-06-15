@@ -137,8 +137,8 @@ TODO SFX door close
         Oh, right! Yeah, of course you don't. 
         I can give you directions in the car.
         ~ CompleteQuest(discover_inside_clues)
-        ~ openDoor()
-        ~ PlaySFX("carStartAndLeave")
+        //~ openDoor()
+        //~ PlaySFX("carStartAndLeave")
         ~ ChangeGameScene("scene4_1", 0, 0)
         -> DONE
         
