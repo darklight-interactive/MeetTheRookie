@@ -213,6 +213,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
     IEnumerator StartDatingSimRoutine()
     {
         ResetDatingSim();
+        emotes.MakeEmotes();
 
         yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
         Debug.Log($"{PREFIX} >> Story Initialized: {MTRStoryManager.IsInitialized}");

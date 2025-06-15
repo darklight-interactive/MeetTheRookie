@@ -1,6 +1,6 @@
 
 === scene6_0===
-    //hide: Misra
+    //#hide: Misra
     # emote : Misra \| Voice_call
     # sfx : on
     //TODO SFX phone ringing and ringing,

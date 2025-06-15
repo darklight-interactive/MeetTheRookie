@@ -47,6 +47,12 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
     IEnumerator ChangeGameSceneRoutine(string knotName, int spawnIndex, float delay)
     {
+        if (MTRSceneManager.ActiveSceneData != null)
+        {
+            if (MTRStoryManager.IsInitialized == false)
+                yield return new WaitUntil(() => MTRStoryManager.IsInitialized);
+        }
+
         yield return new WaitForSeconds(delay);
         TryGetSceneDataByKnot(knotName, out MTRSceneData data);
         if (data == null)
@@ -59,6 +65,11 @@ public class MTRSceneManager : BuildSceneScriptableDataManager<MTRSceneData>, IU
 
         RefreshData();
         InkyStoryManager.GoToPath(knotName);
+
+        Debug.Log($"{Prefix} >> Waiting for Master Bank to load");
+        yield return new WaitUntil(() => MTR_AudioManager.Instance.HasMasterBankLoaded);
+        Debug.Log($"{Prefix} >> Master Bank loaded");
+        MTR_AudioManager.Instance.PlaySceneBackgroundMusic(data.Name);
     }
 
     protected override void RefreshData()

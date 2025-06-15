@@ -1,26 +1,30 @@
-using Darklight.UnityExt.FMODExt;
-using FMODUnity;
-using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
+using Darklight.UnityExt.FMODExt;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MTR_AudioManager : FMODExt_EventManager
 {
     // Overwrite the Instance property to return the instance of this class
-    public static new MTR_AudioManager Instance => FMODExt_EventManager.Instance as MTR_AudioManager;
+    public static new MTR_AudioManager Instance =>
+        FMODExt_EventManager.Instance as MTR_AudioManager;
 
     // Overwrite the generalSFX property to return the instance of the MTR_GeneralSFX class
     public MTR_GeneralSFX generalSFX => base.GeneralSFX as MTR_GeneralSFX;
+
     // Overwrite the backgroundMusic property to return the instance of the MTR_MusicObject class
     public MTR_MusicObject backgroundMusic => base.BackgroundMusic as MTR_MusicObject;
 
+    public bool HasMasterBankLoaded => FMODUnity.RuntimeManager.HasBankLoaded("Master");
+
     // Keeps track of looping events
-    private Dictionary<string, EventInstance> activeEventInstances = new Dictionary<string, EventInstance>();
+    private Dictionary<string, EventInstance> activeEventInstances =
+        new Dictionary<string, EventInstance>();
 
-
-    #region ///--Accessing FMODExt_EventManager Static Events--/// 
+    #region ///--Accessing FMODExt_EventManager Static Events--///
 
     public override void Initialize()
     {
@@ -30,7 +34,14 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     void HandleSceneChange(Scene oldScene, Scene newScene)
     {
-        PlaySceneBackgroundMusic(newScene.name);
+        if (HasMasterBankLoaded)
+        {
+            PlaySceneBackgroundMusic(newScene.name);
+        }
+        else
+        {
+            Debug.Log($"{Prefix} >> Waiting for Master Bank to load");
+        }
     }
 
     public override void PlaySceneBackgroundMusic(string sceneName)
@@ -64,11 +75,16 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     public void StartFootstepEvent()
     {
-        if (player == null) { player = FindFirstObjectByType<MTRPlayerController>().gameObject; }
+        if (player == null)
+        {
+            player = FindFirstObjectByType<MTRPlayerController>().gameObject;
+        }
 
         if (generalSFX != null && !generalSFX.footstep.IsNull)
         {
-            repeatFootstepCoroutine = StartCoroutine(RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player));
+            repeatFootstepCoroutine = StartCoroutine(
+                RepeatEventRoutine(generalSFX.footstep, generalSFX.footstepInterval, player)
+            );
         }
         else
         {
@@ -77,7 +93,11 @@ public class MTR_AudioManager : FMODExt_EventManager
     }
 
     // Handling spatialized repeated events
-    private IEnumerator RepeatEventRoutine(EventReference eventReference, float interval, GameObject soundObject)
+    private IEnumerator RepeatEventRoutine(
+        EventReference eventReference,
+        float interval,
+        GameObject soundObject
+    )
     {
         footstepsPlaying = true;
         while (true)
@@ -89,7 +109,10 @@ public class MTR_AudioManager : FMODExt_EventManager
 
     public void StopFootstepEvent()
     {
-        if (player == null || !footstepsPlaying) { return; }
+        if (player == null || !footstepsPlaying)
+        {
+            return;
+        }
         StopCoroutine(repeatFootstepCoroutine);
         footstepsPlaying = false;
     }
@@ -102,7 +125,7 @@ public class MTR_AudioManager : FMODExt_EventManager
         //Debug.Log($"Started PlaySFX from Inky with SFX: {eventPath}");
     }
 
-    public void StartRepeatSFXByPath(string eventName)//, float interval)
+    public void StartRepeatSFXByPath(string eventName) //, float interval)
     {
         //Debug.Log("Started PlayLoopingSFX from Inky");
         string eventPath = "event:/SFX/" + eventName;

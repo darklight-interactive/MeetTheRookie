@@ -32,6 +32,11 @@ namespace Darklight.UnityExt.FMODExt
             LoadBanksAndBuses();
         }
 
+        public void Start()
+        {
+            LoadBanksAndBuses();
+        }
+
         public void Update()
         {
             // << UPDATE BUS DATA >>
@@ -119,7 +124,7 @@ namespace Darklight.UnityExt.FMODExt
         {
             // ------- Load Banks ------- //
             InternalConsole.Log($"{Prefix} Loading Banks.");
-            Debug.Log($"{Prefix} Loading Banks.");
+            Debug.Log($"{Prefix} Loading Banks. Count: {_bankData.Count}");
             FMODUnity.RuntimeManager.StudioSystem.getBankList(out FMOD.Studio.Bank[] _banks);
             foreach (FMOD.Studio.Bank bank in _banks)
             {
@@ -139,7 +144,7 @@ namespace Darklight.UnityExt.FMODExt
 
             // ------- Load Buses ------- //
             InternalConsole.Log($"{Prefix} Loading Buses.");
-            Debug.Log($"{Prefix} Loading Buses.");
+            Debug.Log($"{Prefix} Loading Buses. Count: {_busData.Count}");
             foreach (FMODExt_Bank bank in _bankData)
             {
                 List<FMODExt_Bus> busData = bank.BusData;
@@ -153,7 +158,6 @@ namespace Darklight.UnityExt.FMODExt
                     Debug.Log($"Bus Load Result: " + bus.Path + " -> " + bus.LoadResult);
                 }
             }
-
             yield return null;
         }
         #endregion

@@ -85,6 +85,8 @@ public class MTRSceneController : MonoBehaviourSingleton<MTRSceneController>
         _sceneToLoad = sceneName;
         _spawnIndex = spawnIndex;
         StateMachine.GoToState(MTRSceneState.EXIT);
+
+        
     }
 
     public void SetPlayerSpawnPoint(int spawnIndex)
