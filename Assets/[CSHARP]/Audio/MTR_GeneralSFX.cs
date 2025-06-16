@@ -23,16 +23,16 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
     [Header("Door Audio")]
     public EventReference doorOpen;
     public EventReference doorClose;
-    public EventReference doorLocked;
-    public EventReference doorUnlocked;
+    //public EventReference doorLocked;
+    //public EventReference doorUnlocked;
 
     [Header("Miscellaneous Audio")]
     public EventReference phoneDialBeep;
-    public EventReference phoneCallingTone;
+    //public EventReference phoneCallingTone;
     public EventReference phoneVoicemailBeep;
     public EventReference doorBell;
     public EventReference carDoor; // Does this go with "Door Audio"?
-    public EventReference carDrive;
+    //public EventReference carDrive;
 
 
     //----------------SCENE-SPECIFIC AUDIO----------------//
@@ -43,6 +43,8 @@ public class MTR_GeneralSFX : FMODExt_SFXObject
 
     [Header("Winery Audio")]
     public EventReference misraAndTentacle;
+    public EventReference suspiciousNoise;
+    //public EventReference cultMotif;
 
 
     //----------------DATING SIM AUDIO----------------//

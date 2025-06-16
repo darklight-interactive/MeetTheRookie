@@ -12,6 +12,7 @@
 //VAR snooped = false
 
 === scene7_DS ===
+# sfx : on
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2

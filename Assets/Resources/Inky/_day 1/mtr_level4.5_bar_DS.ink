@@ -18,6 +18,7 @@
 
 <i>Irene looks at you, awaiting for you to order a drink. </i>
 
+#sfx : on
 # name: Lupe
 # emote : Lupe \| Neutral_2
 

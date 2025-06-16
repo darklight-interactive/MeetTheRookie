@@ -13,8 +13,10 @@
     // We hear a generic voicemail beep.
     ~ PlaySFX("phoneVoicemailBeep")
     
+    # sfx : off
     # name: Lupe
     # emote : Lupe \| Serious_2
+    # sfx : on
     ...
     Hey...it's Lupe. Had to change my route; tank was running low.
     I pit stopped outside of Kettle Rock, Idaho.

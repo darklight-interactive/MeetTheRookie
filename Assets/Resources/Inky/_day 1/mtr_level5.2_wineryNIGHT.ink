@@ -11,7 +11,7 @@
 
 = lupe_intro
 ~ DiscoverMystery(3)
-~ PlaySFX("carDoorOpenAndClose")
+//~ PlaySFX("carDoorOpenAndClose")
 ~ SetSpeaker(Speaker.Lupe)
 Misra, WAIT!
 -> DONE 
@@ -232,7 +232,7 @@ I can't leave--not without Misra.
     ~ SetSpeaker(Speaker.Lupe)
     But what about--
     // TODO: Add monster noise SFX here
-    ~ PlaySFX("monsterGrowl")
+    ~ PlaySFX("suspiciousNoise")
     ~ SetSpeaker(Speaker.Lupe)
     ...
     ~ SetSpeaker(Speaker.Misra)
@@ -250,6 +250,7 @@ I can't leave--not without Misra.
     WHAT THE-
     ~ SetSpeaker(Speaker.Misra)
     ~ PlaySpecialAnimation(Speaker.Misra)
+    ~ PlaySFX("misraAndTentacle")
     ~ ChangeGameScene("scene6_0", 0, 4)
     -> DONE
 

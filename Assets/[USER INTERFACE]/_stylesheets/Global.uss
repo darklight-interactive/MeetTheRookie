@@ -185,6 +185,17 @@ SelectableSlider {
     flex-direction: row;
 }
 
+SelectableSlider.selected {
+    flex-grow: 1;
+    align-items: center;
+    flex-direction: row;
+    scale: 1 1;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
 SelectableSlider .unity-text-element {
     -unity-text-align: middle-center;
     -unity-background-image-tint-color: rgba(146, 125, 96, 0.21);
