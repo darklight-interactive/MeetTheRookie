@@ -515,7 +515,7 @@ public partial class MTRDatingSimController : UXML_UIDocumentObject
         _choicesActive = false;
 
         ResetChoiceMap();
-        MTRStoryManager.ContinueStory();
+        //MTRStoryManager.ContinueStory();
     }
     #endregion
 

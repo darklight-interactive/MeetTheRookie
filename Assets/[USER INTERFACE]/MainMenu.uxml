@@ -11,7 +11,10 @@
                 <Darklight.UnityExt.UXML.SelectableButton text="Quit" name="quit-btn" class="main-menu" style="-unity-font-definition: resource(&apos;Fonts/cour&apos;); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; flex-shrink: 1; border-left-color: rgb(35, 28, 75); border-right-color: rgb(35, 28, 75); border-top-color: rgb(35, 28, 75); border-bottom-color: rgb(35, 28, 75);" />
             </engine:GroupBox>
         </engine:VisualElement>
-        <engine:VisualElement name="right-panel" style="flex-grow: 1; flex-basis: auto; -unity-background-scale-mode: stretch-to-fill;" />
+        <engine:VisualElement name="right-panel" style="flex-grow: 0; flex-basis: auto; -unity-background-scale-mode: stretch-to-fill; flex-direction: row-reverse; flex-shrink: 0; width: 50%;">
+            <Darklight.UnityExt.UXML.SelectableButton text="4" name="scene4-btn" style="width: 5%; height: 5%;" />
+            <Darklight.UnityExt.UXML.SelectableButton text="3" name="scene3-btn" style="width: 5%; height: 5%;" />
+        </engine:VisualElement>
     </engine:VisualElement>
     <engine:VisualElement name="main-settings" class="panel" style="flex-grow: 1; position: absolute; background-image: url(&quot;project://database/Assets/[SPRITES]/_buildingSprites/[SPRITES]%20bar/frame%201.png?fileID=-2951802150405364340&amp;guid=0184c9713f4211849933c409d88cef90&amp;type=3#frame 1_0&quot;); width: 80%; height: 80%; justify-content: space-around; align-self: center; align-items: center; top: 10%; left: 10%; right: 0; bottom: 0; -unity-background-image-tint-color: rgb(211, 207, 195); flex-direction: column; padding-top: 3%; padding-right: 3%; padding-bottom: 3%; padding-left: 3%; transition-duration: 0.3s; display: none; visibility: visible;">
         <engine:Label text="Settings" name="header" style="-unity-text-align: upper-center; align-items: flex-start; flex-shrink: 1; flex-grow: 1; margin-top: 1%; font-size: 35px; -unity-font-definition: resource(&apos;Fonts/daniel/danielbd&apos;); color: rgb(88, 76, 66); position: relative; -unity-font-style: italic; flex-basis: auto; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
