@@ -12,10 +12,11 @@
 //VAR snooped = false
 
 === scene7_DS ===
-# sfx : on
+# sfx : off
 # name: description
 # hide : Misra
 # emote : Lupe \| Serious_2
+# sfx : on
 <i> You open the door to the precinct and are met with... no one.</i> 
 
 <i> Wait...that's not right.</i>
@@ -57,10 +58,13 @@
 
 =name 
 ~tease_level++
+# sfx : off
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "..."
 "......."
+# sfx : on
+# emote : Lupe \| Inquisitive_1
 "MISRA!!"
 
 #name: Misra 
@@ -82,7 +86,7 @@
 <i> Something's wrong.</i>
 <i> Deep down, you know for a fact there is someone here.</i>
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Where...are they?"
 
 #name:Misra
@@ -207,7 +211,9 @@
 { sincerity_level >= tease_level: "Sorry about that! } { tease_level >= sincerity_level:  Looks like we might get to know each other after all." } 
 
 # hide : Misra
+# sfx : off
 # emote : Lupe \| Neutral_2
+# sfx : on
 <i>They excuse themselves to make the call.</i>
 
 <i>You wait patiently...</i>
@@ -219,7 +225,7 @@
 + [Keep waiting.] -> wait
 
 = snoop
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 ~ tease_level++
 <i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. They probably entered a different room to make the call. </i>
 
@@ -237,7 +243,7 @@
 + [Don't be ridiculous.] -> wait
 
 = peek
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 ~ tease_level++
 ~ snooped = true
 <i>You quietly reach over the front desk and take a look at the case.</i>
@@ -426,7 +432,7 @@ And a black and white picture of the winery stained with age.
 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Let me guess, a week?" 
 
 #name: Misra
@@ -456,13 +462,13 @@ And a black and white picture of the winery stained with age.
 "So we go to the Winery and look around!" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry, we?" 
 -> We 
 
 =Witnesses
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Well for starters, witnesses. If something was going down, someone must have heard or seen something." 
 
 #name:Misra
@@ -477,7 +483,7 @@ And a black and white picture of the winery stained with age.
 "So we go to the Winery!" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry, we?" 
 -> We 
 
@@ -491,7 +497,7 @@ And a black and white picture of the winery stained with age.
 "Someone like yourself?" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry?" 
 -> We 
 
@@ -520,7 +526,7 @@ And a black and white picture of the winery stained with age.
 "You seem..." 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "...?" 
 
 #name: Misra 
@@ -551,7 +557,7 @@ And a black and white picture of the winery stained with age.
 
 = voicemail
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Thelton, Lupe here. Currently stuck in Kettle Rock..."
 
 +[Step away from Misra.] -> stepAway 
@@ -641,7 +647,7 @@ And a black and white picture of the winery stained with age.
 "Wow, callin' in the big guns?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "If she gets my message, possibly." 
 
 #name: Misra 
@@ -691,10 +697,12 @@ And a black and white picture of the winery stained with age.
 -> DONE
 
 ==BreakCycle==
+# sfx : off
 #name: Misra 
 # emote : Misra \| Curious_1
 "..." 
 
+# sfx : on
 # emote : Misra \| Nervous_1
 "I'm...sorry?" 
 
@@ -712,11 +720,13 @@ And a black and white picture of the winery stained with age.
 =insane 
 #name: Misra 
 # emote : Misra \| Curious_1
+# sfx : off
 # emote : Lupe \| Fright_1 
 "Wh-what...?" 
 
 <i> You feel a laugh slip between your words. </i> 
 
+# sfx : on
 #name: Lupe 
 "I...I've done this already." 
 
@@ -733,6 +743,7 @@ And a black and white picture of the winery stained with age.
 "Let's just...take a moment to breathe." 
 
 #name: Lupe 
+# emote : Lupe \| Fright_1 
 "Am I going crazy?! I-I-I've done this already." 
 
 #name: Misra 
@@ -753,9 +764,11 @@ And a black and white picture of the winery stained with age.
 #name: Lupe
 "And today's Tuesday...."
 
+# sfx : off
 # emote : Misra \| Surprised_2
 "RIGHT?!" 
 
+# sfx : on
 #name: Misra 
 # emote : Misra \| Nervous_1
 "Today's....Monday." 
@@ -773,7 +786,9 @@ And a black and white picture of the winery stained with age.
 ~sincerity_level++ 
 #name: Misra 
 # emote : Misra \| Neutral_1
+# sfx : off
 # emote : Lupe \| Fright_1
+# sfx : on
 "There you go...breathe." 
 
 #name: Misra 
@@ -851,7 +866,7 @@ And a black and white picture of the winery stained with age.
 
 =CallTheltonBreak
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Thelton, Lupe here. Currently stuck in Kettle Rock..."
 
 <i> You take a couple steps away from Misra and lower you voice. </i> 
@@ -904,7 +919,7 @@ And a black and white picture of the winery stained with age.
 { tease_level > sincerity_level:  "I've got one water for Mx. Deja vu!" | "Here you go."} 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 { tease_level > sincerity_level:  "I wish it was Deja Vu."} 
 
 { tease_level > sincerity_level: -> WaterFlirty}
@@ -936,7 +951,7 @@ And a black and white picture of the winery stained with age.
  "And that's ok! Take some time to get your groundings." 
  
   #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "That...thing." 
 
 #name: Misra 
@@ -967,7 +982,7 @@ And a black and white picture of the winery stained with age.
 
 =dontTakeHandwater 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Thanks." 
 
 #name: Lupe
@@ -1116,14 +1131,16 @@ And a black and white picture of the winery stained with age.
 { tease_level > sincerity_level: <i> Your face becomes warm for a brief moment. </i> }
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# sfx : off
+# emote : Lupe \| Inquisitive_1
+# sfx : on
 "..." 
 
 ->TheWinery
 
 =TheWinery
  #name: Lupe 
- # emote : Lupe \| Inquistive_1
+ # emote : Lupe \| Inquisitive_1
  "Let me see that winery case file again." 
  
   #name: Misra 
@@ -1143,7 +1160,7 @@ And a black and white picture of the winery stained with age.
 */
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Hmph." 
 
 { tease_level > sincerity_level:  <i> They pose themselves to reflect you. </i> ->MimicLupe} 
@@ -1180,7 +1197,9 @@ And a black and white picture of the winery stained with age.
 
 =WineryContinued
 #name: Lupe 
+# sfx : off
 # emote : Lupe \| Neutral_2
+# sfx : on
 "Come on." 
 
 #name: Misra 

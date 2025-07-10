@@ -141,7 +141,7 @@
 #name: Misra
 # emote : Misra \| Surprised_2
 # sfx : off
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 # sfx : on
 { tease_level > sincerity_level:  "Oh ok! C'mon, you're not going to get it right." | "Sure!" }
 
@@ -156,7 +156,7 @@
 <i>You reach into the back of your mind, and for some reason this color resonates with you. </i>
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Green." 
 
 #name: Misra
@@ -419,7 +419,7 @@ They'll have...
 "People keep leaving, thinking that this is some sort of crazy downfall." 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Is it not?" 
 
 #name: Misra
@@ -470,7 +470,7 @@ They'll have...
 
 # sfx : on
 #name: Lupe 
-# emote : Lupe \| Inquistive_1 
+# emote : Lupe \| Inquisitive_1 
 "Planning?" 
 
 #name: Misra 
@@ -566,7 +566,7 @@ They'll have...
 "Oh, that's just an old legend." 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Are we talking monster legend? Or some other legend?" 
 
 #name: Misra 
@@ -576,7 +576,7 @@ They'll have...
 "This town is so small you'd think someone would notice a monster by now!" 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Then what is it?" 
 +["Some sort of sacrifice cult?"] -> sacrifice 
 +["Some sort of club?"] -> club 
@@ -607,7 +607,7 @@ They'll have...
 "They say there was once some sort of 'council' in this town, though I don't know much about it myself." 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Why not? Shouldn't you know more about this supposed 'council' to help the people?" 
 
 #name: Misra 
@@ -629,7 +629,7 @@ They'll have...
 "Is everything alright?" 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Yeah..." 
 
 <i> There's no new calls. </i>
@@ -696,7 +696,7 @@ They'll have...
 "What about them?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "They're hiding something..." 
 
 #name: Misra 
@@ -757,7 +757,7 @@ They'll have...
  "Maybe we can find proof behind this accusation!" 
  
  #name: Lupe 
- # emote : Lupe \| Inquistive_1
+ # emote : Lupe \| Inquisitive_1
  "Perhaps." 
  -> questions
  
@@ -1049,7 +1049,7 @@ They'll have...
  "Well, what now?" 
  
  #name: Lupe 
- # emote : Lupe \| Inquistive_1
+ # emote : Lupe \| Inquisitive_1
  "Hm?" 
  
  #name: Misra 

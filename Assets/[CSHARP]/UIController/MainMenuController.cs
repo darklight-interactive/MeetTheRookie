@@ -13,8 +13,8 @@ public class MainMenuController : UXML_UIDocumentObject
     SelectableButton _settingsButton;
     SelectableButton _creditsButton;
     SelectableButton _quitButton;
-    SelectableButton _scene3Button;
-    SelectableButton _scene4Button;
+    //SelectableButton _scene3Button;
+    //SelectableButton _scene4Button;
     SelectableSlider _musicSlider;
     SelectableSlider _sfxSlider;
     SelectableSlider _dialogueSlider;
@@ -46,8 +46,8 @@ public class MainMenuController : UXML_UIDocumentObject
         _settingsButton = ElementQuery<SelectableButton>("settings-btn");
         _creditsButton = ElementQuery<SelectableButton>("credits-btn");
         _quitButton = ElementQuery<SelectableButton>("quit-btn");
-        _scene3Button = ElementQuery<SelectableButton>("scene3-btn");
-        _scene4Button = ElementQuery<SelectableButton>("scene4-btn");
+        //_scene3Button = ElementQuery<SelectableButton>("scene3-btn");
+        //_scene4Button = ElementQuery<SelectableButton>("scene4-btn");
         _musicSlider = ElementQuery<SelectableSlider>("music-slider");
         _sfxSlider = ElementQuery<SelectableSlider>("sfx-slider");
         _dialogueSlider = ElementQuery<SelectableSlider>("dialogue-slider");
@@ -129,17 +129,17 @@ public class MainMenuController : UXML_UIDocumentObject
 
         _quitButton.OnClick += Quit;
 
-        _scene3Button.OnClick += () =>
-        {
-            MTRSceneManager.Instance.TryGetSceneDataByKnot("scene3_1", out MTRSceneData scene);
-            MTRSceneController.Instance.TryLoadScene(scene.Name);
-        };
+        //_scene3Button.OnClick += () =>
+        //{
+        //    MTRSceneManager.Instance.TryGetSceneDataByKnot("scene3_1", out MTRSceneData scene);
+        //    MTRSceneController.Instance.TryLoadScene(scene.Name);
+        //};
 
-        _scene4Button.OnClick += () =>
-        {
-            MTRSceneManager.Instance.TryGetSceneDataByKnot("scene4_1", out MTRSceneData scene);
-            MTRSceneController.Instance.TryLoadScene(scene.Name);
-        };
+        //_scene4Button.OnClick += () =>
+        //{
+        //    MTRSceneManager.Instance.TryGetSceneDataByKnot("scene4_1", out MTRSceneData scene);
+        //    MTRSceneController.Instance.TryLoadScene(scene.Name);
+        //};
 
         // Sliders
         _musicSlider.OnValueChanged += () =>

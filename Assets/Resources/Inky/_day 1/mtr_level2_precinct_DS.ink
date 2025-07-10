@@ -225,7 +225,7 @@ VAR phoneCall = 0
 + [Keep waiting.] -> wait
 
 = snoop
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 ~ tease_level++
 <i>You lean over the front desk to see where the Sheriff went, but they're nowhere to be seen. </i> 
 
@@ -241,7 +241,7 @@ VAR phoneCall = 0
 + [Don't be ridiculous.] -> wait
 
 = peek
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 ~ tease_level++
 ~ snooped = true
 <i>You quietly reach over the front desk and take a look at the case.</i>
@@ -395,7 +395,7 @@ And a black and white picture of the winery stained with age.
 
 = police_report
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Is this...the whole file?" 
 
 #name:Misra
@@ -505,13 +505,13 @@ And a black and white picture of the winery stained with age.
 "So we go to the Winery and look around!" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry, we?" 
 -> We 
 
 =Witnesses
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Well for starters, witnesses. If something was going down, someone must have heard or seen something." 
 
 #name:Misra
@@ -526,7 +526,7 @@ And a black and white picture of the winery stained with age.
 "So we go to the Winery!" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry, we?" 
 -> We 
 
@@ -540,7 +540,7 @@ And a black and white picture of the winery stained with age.
 "Someone like yourself?" 
 
 #name:Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm sorry?" 
 -> We 
 
@@ -644,7 +644,7 @@ TODO Test this dialogue conditional to see if it works
 "The better question is when is she not."
 
 # sfx : off
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "...How'd you know I called my Chief?" 
 
 # sfx : on

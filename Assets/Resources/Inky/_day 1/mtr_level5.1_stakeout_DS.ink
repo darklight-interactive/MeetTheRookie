@@ -109,7 +109,7 @@
 "So you do listen to pop but never heard of Britney Smears?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Never."
 
 #name: Misra 
@@ -216,7 +216,7 @@
 "What do you mean?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I mean there have been many terms tossed around." 
 
 "Goats..." 
@@ -244,7 +244,7 @@
 "Actually, it's more like people want to believe they were insane to give reasoning behind their disappearances."
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "And were they not? They sounded like some sort of cult." 
 
 # sfx : off
@@ -291,7 +291,7 @@
 
 =yeah 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Yes, maybe." 
 
 #name: Lupe
@@ -318,7 +318,7 @@
 =Preserving 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "But if what you say is true, there's a possibility that the remaining members of this supposed 'council' is trying to preserve the town." 
 
 "And maybe their 'preservation methods' has something to do with this winery." 
@@ -332,7 +332,7 @@
 "Would be kinda nice, wouldn't it?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "What? { tease_level > sincerity_level: A giant group sacrifice?}" 
 
 #name: Misra 
@@ -377,7 +377,7 @@
 "What do you mean?" 
 
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "Seems like 'little ol' Kettle Rock' has had { tease_level > sincerity_level: ...well a <i> rocky </i> history." | a lot of turbulance." }
 
 #name: Misra  
@@ -395,7 +395,7 @@
 
 =leave2
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "I'm just saying that..." 
 
 "Curse or not, I understand why people are leaving." 
@@ -486,7 +486,7 @@
 {teens_bar_5_1: "Ok! So I'm not crazy."} 
 
 #name: Lupe
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "But this town is...different." 
 
 #name: Misra 
@@ -514,7 +514,7 @@
 
 ==teens_bar_5_1==
 #name: Lupe 
-# emote : Lupe \| Inquistive_1
+# emote : Lupe \| Inquisitive_1
 "It's probably those teens." 
 
 #name: Misra 
